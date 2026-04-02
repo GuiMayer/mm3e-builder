@@ -1,0 +1,138 @@
+[
+  {
+    "id": "damage",
+    "name": "Damage",
+    "type": "attack",
+    "baseCost": 1,
+    "action": "standard",
+    "range": "close",
+    "duration": "instant",
+    "description": "Inflicts physical or energy damage to the target.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Dano",
+        "description": "Inflige dano físico ou energético ao alvo."
+      }
+    }
+  },
+  {
+    "id": "affliction",
+    "name": "Affliction",
+    "type": "attack",
+    "baseCost": 1,
+    "action": "standard",
+    "range": "close",
+    "duration": "instant",
+    "description": "Imposes progressive debilitating conditions on the target (3 degrees).",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Aflição",
+        "description": "Impõe condições debilitantes progessivas ao alvo (3 graus)."
+      }
+    }
+  },
+  {
+    "id": "move_object",
+    "name": "Move Object",
+    "type": "control",
+    "baseCost": 2,
+    "action": "standard",
+    "range": "ranged",
+    "duration": "sustained",
+    "description": "Move objects at a distance with strength equal to rank.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Mover Objetos",
+        "description": "Move objetos à distância com força equivalente ao rank."
+      }
+    }
+  },
+  {
+    "id": "flight",
+    "name": "Flight",
+    "type": "movement",
+    "baseCost": 2,
+    "action": "free",
+    "range": "personal",
+    "duration": "sustained",
+    "description": "Allows flying at a speed proportional to the rank.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Voo",
+        "description": "Permite voar a uma velocidade proporcional ao rank."
+      }
+    }
+  },
+  {
+    "id": "protection",
+    "name": "Protection",
+    "type": "defense",
+    "baseCost": 1,
+    "action": "none",
+    "range": "personal",
+    "duration": "permanent",
+    "description": "Increases Toughness by +1 per rank.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Proteção",
+        "description": "Aumenta a Resistência (Toughness) em +1 por rank."
+      }
+    }
+  },
+  {
+    "id": "immunity",
+    "name": "Immunity",
+    "type": "defense",
+    "baseCost": 1,
+    "action": "none",
+    "range": "personal",
+    "duration": "permanent",
+    "description": "Grants immunity to a specific effect or condition.",
+    "variableCost": {
+      "options": [
+        { "name": "A rare effect", "cost": 1 },
+        { "name": "A common descriptor", "cost": 5 },
+        { "name": "All damage conditions", "cost": 10 },
+        { "name": "Fortitude effects", "cost": 30 },
+        { "name": "Toughness effects", "cost": 40 },
+        { "name": "All effects", "cost": 80 }
+      ]
+    },
+    "i18n": {
+      "pt-BR": {
+        "name": "Imunidade",
+        "description": "Concede imunidade a um efeito ou condição específica."
+      }
+    }
+  },
+  {
+    "id": "senses",
+    "name": "Senses",
+    "type": "sensory",
+    "baseCost": 1,
+    "action": "none",
+    "range": "personal",
+    "duration": "permanent",
+    "description": "Grants additional or enhanced senses.",
+    "variableCost": {
+      "options": [
+        { "name": "Darkvision", "cost": 1 },
+        { "name": "Radio Sense", "cost": 1 },
+        { "name": "Infravision", "cost": 1 },
+        { "name": "X-Ray Vision", "cost": 4 },
+        { "name": "Danger Sense", "cost": 2 }
+      ]
+    },
+    "i18n": {
+      "pt-BR": {
+        "name": "Sentidos",
+        "description": "Concede sentidos adicionais ou aprimorados."
+      }
+    }
+  }
+]

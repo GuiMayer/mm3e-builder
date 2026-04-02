@@ -1,0 +1,110 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.1.2 [39m[90mC:/Users/usuario/.gemini/antigravity/scratch/mm3e-builder[39m
+
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateCostPerRank[2m > [22mreturns base cost with no modifiers[32m 2[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateCostPerRank[2m > [22madds extras per rank[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateCostPerRank[2m > [22msubtracts flaws per rank[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateCostPerRank[2m > [22mhandles deeply fractional cost (2 flaws on base 1)[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculatePowerCost[2m > [22mDano 10 + Alcance + ├ürea - Cansativo = 20 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculatePowerCost[2m > [22mDano 10 simples = 10 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculatePowerCost[2m > [22mfractional power: base 1 - 1 flaw, rank 10 = 5 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculatePowerCost[2m > [22mincludes flat modifiers[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculatePowerCost[2m > [22mminimum cost is 1 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateArrayCost[2m > [22mmain 20 PP + 2 static alts + 1 dynamic = 24 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateAbilitiesCost[2m > [22mcalculates 2 PP per rank, skipping absent[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateDefensesCost[2m > [22msums bought ranks (1 PP each)[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateSkillsCost[2m > [22m1 PP per 2 ranks, rounds up[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/mathEngine.test.ts[2m > [22mmathEngine[2m > [22mcalculateAdvantagesCost[2m > [22msums ranks[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase cost 1, no modifiers ÔåÆ 1/rank (standard)[32m 2[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase cost 2 (Move Object), no modifiers ÔåÆ 2/rank[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase 1 + Ranged (+1) ÔåÆ 2/rank[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase 1 + Ranged (+1) + Area (+1) ÔåÆ 3/rank[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase 2 + Ranged (+1) + Area (+1) + Selective (+1) ÔåÆ 5/rank[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase 1 - Tiring (-1) ÔåÆ 0 effective ÔåÆ fractional 1:2[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase 1 - 2 flaws ÔåÆ -1 effective ÔåÆ fractional 1:3[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase 1 - 3 flaws ÔåÆ -2 effective ÔåÆ fractional 1:4[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase 1 - 4 flaws ÔåÆ -3 effective ÔåÆ fractional 1:5[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mbase 2 - 1 flaw ÔåÆ 1 effective ÔåÆ stays non-fractional[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mignores flat modifiers in per-rank calculation[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateCostPerRank[2m > [22mhandles unknown modifier IDs gracefully[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateFlatCost[2m > [22mreturns 0 with no modifiers[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateFlatCost[2m > [22msums positive flat modifiers (Accurate ├ù3 = +3)[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateFlatCost[2m > [22msums negative flat modifiers (Removable ├ù2 = -4)[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateFlatCost[2m > [22mmixes positive and negative flats (Homing ├ù2 + Removable ├ù1 = 0)[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateFlatCost[2m > [22mignores per_rank modifiers[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage Rank 10, no mods ÔåÆ 10 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage Rank 1, no mods ÔåÆ 1 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mProtection Rank 12 (base 1) ÔåÆ 12 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mFlight Rank 5 (base 2) ÔåÆ 10 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mMove Object Rank 10 (base 2) ÔåÆ 20 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 + Ranged ÔåÆ (1+1)├ù10 = 20 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 + Ranged + Area ÔåÆ (1+1+1)├ù10 = 30 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mMove Object 10 + Increased Range + Selective ÔåÆ (2+1+1)├ù10 = 40 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 + Ranged - Tiring ÔåÆ (1+1-1)├ù10 = 10 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mMove Object 10 - Tiring ÔåÆ (2-1)├ù10 = 10 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 - Tiring ÔåÆ fractional 1:2, ceil(10/2) = 5 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 - Tiring - Limited ÔåÆ fractional 1:3, ceil(10/3) = 4 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 - 3 flaws ÔåÆ fractional 1:4, ceil(10/4) = 3 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 - 4 flaws ÔåÆ fractional 1:5, ceil(10/5) = 2 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mfractional with odd ranks: Damage 7 - Tiring ÔåÆ ceil(7/2) = 4 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mfractional with odd ranks: Damage 11 - Tiring - Limited ÔåÆ ceil(11/3) = 4 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 + Homing ├ù3 ÔåÆ 10 + 3 = 13 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 + Accurate ├ù2 + Homing ├ù1 ÔåÆ 10 + 2 + 1 = 13 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mDamage 10 + Ranged + Accurate ├ù2 ÔåÆ (1+1)├ù10 + 2 = 22 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mfractional + flat positive: Damage 10 - Tiring + Homing ├ù3 ÔåÆ ceil(10/2) + 3 = 8 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mhuge negative flat: Removable ├ù5 on Damage 1 ÔåÆ max(1, 1-10) = 1 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculatePowerCost[2m > [22mfractional + negative flat: Damage 1 - Tiring + Removable ├ù1 ÔåÆ max(1, ceil(1/2) + (-2)) = max(1, -1) = 1 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateArrayCost[2m > [22mno alternates ÔåÆ just the main power cost[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateArrayCost[2m > [22m1 static alternate ÔåÆ main + 1 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateArrayCost[2m > [22m3 static alternates ÔåÆ main + 3 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateArrayCost[2m > [22m1 dynamic alternate ÔåÆ main + 2 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateArrayCost[2m > [22m5 alts: 3 static + 2 dynamic ÔåÆ 20 + 3 + 4 = 27 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateArrayCost[2m > [22mall dynamic: 4 dynamic ÔåÆ 20 + 8 = 28 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mcalculateArrayCost[2m > [22mmain cost 1 + 1 alt ÔåÆ 1 + 1 = 2 PP (cheapest possible array)[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mEnergy Blast: Damage 10 + Ranged = 20 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mSelective Area Attack: Damage 10 + Ranged + Area + Selective = 40 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mTiring Area Damage: Damage 10 + Ranged + Area - Tiring = 20 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mPrecise Ranged Blast: Damage 10 + Ranged + Accurate ├ù3 + Homing ├ù2 = 25 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mTelekinesis: Move Object 10 + Increased Range = 30 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mLimited Flight: Flight 5 - Limited = 5 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mHeavily Flawed Protection: Protection 10 - Tiring - Limited = 4 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mPower Armor Blast: Damage 10 + Ranged + Removable ├ù4 = 12 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mMagic Array: 20 PP base + 2 static + 1 dynamic = 24 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mGL Constructs: Move Object 20 PP + 3 dynamic alts = 26 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mUtility Belt: Batarang 12 PP + 4 alternates = 16 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mHeat Vision: Damage 13 + Ranged + Accurate ├ù2 = 28 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mReal M&M 3e Power Builds[2m > [22mMaximum Efficiency: Damage 20 with 4 flaws = 4 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mFull Character PP Budget[2m > [22mPL10 Blaster: total 117 / 150 PP, 33 remaining[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mFull Character PP Budget[2m > [22mPL12 Sorcerer: magic array + protection, 107 / 180 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mFull Character PP Budget[2m > [22mRobot: absent STA and PRE correctly excluded from cost[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mrank 0 power costs 0 (but clamped to 1 by minimum)[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mnegative abilities have negative cost[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mall abilities absent ÔåÆ 0 cost[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22m0 skill ranks ÔåÆ 0 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22m1 skill rank ÔåÆ 1 PP (rounds up)[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mempty advantages ÔåÆ 0 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mall defenses at 0 ÔåÆ 0 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mmixed extras and flaws that cancel out: Ranged + Tiring on base 1 ÔåÆ 1/rank[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mlarge rank values: Damage 100 = 100 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mlarge rank with fractional: Damage 100 - Tiring ÔåÆ ceil(100/2) = 50 PP[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22marray with 0 alternates is just the main cost[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/powerBuilder.test.ts[2m > [22mEdge Cases[2m > [22mmany alternates: 20 static + 10 dynamic on 30 PP base[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateAttackEffect[2m > [22mpasses when sum equals 2├ùPL[32m 2[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateAttackEffect[2m > [22mfails when sum exceeds 2├ùPL[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateDodgeToughness[2m > [22mpasses: 8 + 12 = 20[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateDodgeToughness[2m > [22mfails: 12 + 12 = 24[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateParryToughness[2m > [22mfails: 13 + 8 = 21[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateFortitudeWill[2m > [22mpasses: 10 + 10 = 20[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateSkillCap[2m > [22mnon-combat: passes at PL + 10[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateSkillCap[2m > [22mnon-combat: fails over PL + 10[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateSkillCap[2m > [22mcombat: passes at 2├ùPL[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/validation.test.ts[2m > [22mPL Validation[2m > [22mvalidateSkillCap[2m > [22mcombat: fails over 2├ùPL[32m 0[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/fileService.test.ts[2m > [22mfileService - Schema Validation[2m > [22mvalidates a correct character file[32m 4[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/fileService.test.ts[2m > [22mfileService - Schema Validation[2m > [22mrejects missing schemaVersion[32m 1[2mms[22m[39m
+ [32mÔ£ô[39m src/__tests__/fileService.test.ts[2m > [22mfileService - Schema Validation[2m > [22mrejects invalid ability key in absentAbilities[32m 0[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m101 passed[39m[22m[90m (101)[39m
+[2m   Start at [22m 16:37:29
+[2m   Duration [22m 368ms[2m (transform 230ms, setup 0ms, import 381ms, tests 33ms, environment 0ms)[22m
+

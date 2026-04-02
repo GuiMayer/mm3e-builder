@@ -1,0 +1,134 @@
+[
+  { 
+    "id": "power_attack", 
+    "name": "Power Attack", 
+    "ranked": false, 
+    "description": "Trade +2 attack bonus for +2 damage or vice versa (melee).",
+    "i18n": {
+      "pt-BR": {
+        "name": "Ataque Poderoso",
+        "description": "Trocar +2 de bônus de acerto por +2 de dano ou vice-versa (corpo-a-corpo)."
+      }
+    }
+  },
+  { 
+    "id": "ranged_attack", 
+    "name": "Ranged Attack", 
+    "ranked": true, 
+    "description": "+1 to ranged attack bonus per rank.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Ataque à Distância",
+        "description": "+1 ao bônus de ataque à distância por rank."
+      }
+    }
+  },
+  { 
+    "id": "close_attack", 
+    "name": "Close Attack", 
+    "ranked": true, 
+    "description": "+1 to close attack bonus per rank.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Ataque Corpo-a-Corpo",
+        "description": "+1 ao bônus de ataque corpo-a-corpo por rank."
+      }
+    }
+  },
+  { 
+    "id": "defensive_roll", 
+    "name": "Defensive Roll", 
+    "ranked": true, 
+    "description": "+1 Toughness per rank (active only when not vulnerable).",
+    "i18n": {
+      "pt-BR": {
+        "name": "Rolamento Defensivo",
+        "description": "+1 de Resistência (Toughness) por rank (ativo apenas sem estar vulnerável)."
+      }
+    }
+  },
+  { 
+    "id": "improved_initiative", 
+    "name": "Improved Initiative", 
+    "ranked": true, 
+    "description": "+4 to Initiative bonus per rank.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Iniciativa Aprimorada",
+        "description": "+4 de bônus de Iniciativa por rank."
+      }
+    }
+  },
+  { 
+    "id": "all_out_attack", 
+    "name": "All-out Attack", 
+    "ranked": false, 
+    "description": "Trade defense bonus for attack bonus up to +5.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Ataque Total",
+        "description": "Trocar bônus de defesa por bônus de ataque até +5."
+      }
+    }
+  },
+  { 
+    "id": "benefit", 
+    "name": "Benefit", 
+    "ranked": true, 
+    "description": "Social benefit, wealth, rank, or other narrative perk.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Benefício",
+        "description": "Benefício social, riqueza, posição ou outro benefício narrativo."
+      }
+    }
+  },
+  { 
+    "id": "evasion", 
+    "name": "Evasion", 
+    "ranked": true, 
+    "description": "Success on a Dodge resistance check reduces area damage effects.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Evasão",
+        "description": "Sucesso em check de resistência de Esquiva reduz efeitos de dano em área."
+      }
+    }
+  },
+  { 
+    "id": "fearless", 
+    "name": "Fearless", 
+    "ranked": false, 
+    "description": "Immune to fear effects.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Destemido",
+        "description": "Imune a efeitos de medo."
+      }
+    }
+  },
+  { 
+    "id": "great_endurance", 
+    "name": "Great Endurance", 
+    "ranked": false, 
+    "description": "+5 on checks against fatigue and environmental hazards.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Grande Resistência",
+        "description": "+5 em checks de fadiga e condições ambientais."
+      }
+    }
+  },
+  { 
+    "id": "luck", 
+    "name": "Luck", 
+    "ranked": true, 
+    "description": "Gain 1 extra Hero Point per rank at the start of each adventure.",
+    "i18n": {
+      "pt-BR": {
+        "name": "Sorte",
+        "description": "Ganha 1 Ponto Heróico extra por rank no início de cada aventura."
+      }
+    }
+  }
+]

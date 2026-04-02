@@ -1,0 +1,18 @@
+[
+  { "id": "acrobatics", "name": "Acrobatics", "baseAbility": "agl", "subtyped": false, "i18n": { "pt-BR": { "name": "Acrobacia" } } },
+  { "id": "athletics", "name": "Athletics", "baseAbility": "str", "subtyped": false, "i18n": { "pt-BR": { "name": "Atletismo" } } },
+  { "id": "close_combat", "name": "Close Combat", "baseAbility": "fgt", "subtyped": true, "i18n": { "pt-BR": { "name": "Combate Corpo-a-Corpo" } } },
+  { "id": "ranged_combat", "name": "Ranged Combat", "baseAbility": "dex", "subtyped": true, "i18n": { "pt-BR": { "name": "Combate à Distância" } } },
+  { "id": "deception", "name": "Deception", "baseAbility": "pre", "subtyped": false, "i18n": { "pt-BR": { "name": "Enganação" } } },
+  { "id": "expertise", "name": "Expertise", "baseAbility": "int", "subtyped": true, "i18n": { "pt-BR": { "name": "Especialidade" } } },
+  { "id": "stealth", "name": "Stealth", "baseAbility": "agl", "subtyped": false, "i18n": { "pt-BR": { "name": "Furtividade" } } },
+  { "id": "intimidation", "name": "Intimidation", "baseAbility": "pre", "subtyped": false, "i18n": { "pt-BR": { "name": "Intimidação" } } },
+  { "id": "investigation", "name": "Investigation", "baseAbility": "int", "subtyped": false, "i18n": { "pt-BR": { "name": "Investigação" } } },
+  { "id": "perception", "name": "Perception", "baseAbility": "awe", "subtyped": false, "i18n": { "pt-BR": { "name": "Percepção" } } },
+  { "id": "persuasion", "name": "Persuasion", "baseAbility": "pre", "subtyped": false, "i18n": { "pt-BR": { "name": "Persuasão" } } },
+  { "id": "sleight_of_hand", "name": "Sleight of Hand", "baseAbility": "dex", "subtyped": false, "i18n": { "pt-BR": { "name": "Prestidigitação" } } },
+  { "id": "technology", "name": "Technology", "baseAbility": "int", "subtyped": false, "i18n": { "pt-BR": { "name": "Tecnologia" } } },
+  { "id": "treatment", "name": "Treatment", "baseAbility": "int", "subtyped": false, "i18n": { "pt-BR": { "name": "Tratamento" } } },
+  { "id": "vehicles", "name": "Vehicles", "baseAbility": "dex", "subtyped": false, "i18n": { "pt-BR": { "name": "Veículos" } } },
+  { "id": "insight", "name": "Insight", "baseAbility": "awe", "subtyped": false, "i18n": { "pt-BR": { "name": "Intuição" } } }
+]

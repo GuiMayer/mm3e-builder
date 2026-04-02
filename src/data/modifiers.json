@@ -1,0 +1,167 @@
+[
+  {
+    "id": "ranged",
+    "name": "Ranged",
+    "category": "extra",
+    "costType": "per_rank",
+    "costValue": 1,
+    "description": "Changes the effect's range from Close to Ranged.",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "À Distância",
+        "description": "Muda o alcance do efeito de Perto para À Distância."
+      }
+    }
+  },
+  {
+    "id": "area",
+    "name": "Area",
+    "category": "extra",
+    "costType": "per_rank",
+    "costValue": 1,
+    "description": "The effect covers an area instead of a single target.",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Área",
+        "description": "O efeito cobre uma área ao invés de um único alvo."
+      }
+    }
+  },
+  {
+    "id": "increased_range",
+    "name": "Increased Range",
+    "category": "extra",
+    "costType": "per_rank",
+    "costValue": 1,
+    "description": "Increases the range by one step (Close→Ranged→Perception).",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Alcance Aumentado",
+        "description": "Aumenta o alcance em um passo (Perto→Distância→Percepção)."
+      }
+    }
+  },
+  {
+    "id": "selective",
+    "name": "Selective",
+    "category": "extra",
+    "costType": "per_rank",
+    "costValue": 1,
+    "description": "Allows choosing which targets in the area are affected.",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Seletivo",
+        "description": "Permite escolher quais alvos na área são afetados."
+      }
+    }
+  },
+  {
+    "id": "accurate",
+    "name": "Accurate",
+    "category": "extra",
+    "costType": "flat",
+    "costValue": 1,
+    "description": "+2 to the attack bonus per rank of this extra.",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Preciso",
+        "description": "+2 ao bônus de ataque por rank deste extra."
+      }
+    }
+  },
+  {
+    "id": "homing",
+    "name": "Homing",
+    "category": "extra",
+    "costType": "flat",
+    "costValue": 1,
+    "description": "The attack tries to hit the target again if it misses.",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Teleguiado",
+        "description": "O ataque tenta atingir o alvo novamente se errar."
+      }
+    }
+  },
+  {
+    "id": "tiring",
+    "name": "Tiring",
+    "category": "flaw",
+    "costType": "per_rank",
+    "costValue": -1,
+    "description": "Using the effect causes a fatigue condition.",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Cansativo",
+        "description": "Usar o efeito causa uma condição de fadiga."
+      }
+    }
+  },
+  {
+    "id": "limited",
+    "name": "Limited",
+    "category": "flaw",
+    "costType": "per_rank",
+    "costValue": -1,
+    "description": "The effect only works under specific conditions (half the time).",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Limitado",
+        "description": "O efeito só funciona sob condições específicas (metade das situações)."
+      }
+    }
+  },
+  {
+    "id": "unreliable",
+    "name": "Unreliable",
+    "category": "flaw",
+    "costType": "per_rank",
+    "costValue": -1,
+    "description": "The effect requires a check (11+) or has limited uses (5 per scene).",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Falho",
+        "description": "O efeito requer um check (11+) ou tem usos limitados (5 por cena)."
+      }
+    }
+  },
+  {
+    "id": "diminished_range",
+    "name": "Diminished Range",
+    "category": "flaw",
+    "costType": "per_rank",
+    "costValue": -1,
+    "description": "Reduces the range by one step (Perception→Ranged→Close).",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Alcance Reduzido",
+        "description": "Reduz o alcance em um passo (Percepção→Distância→Perto)."
+      }
+    }
+  },
+  {
+    "id": "removable",
+    "name": "Removable",
+    "category": "flaw",
+    "costType": "flat",
+    "costValue": -2,
+    "description": "The equipment can be taken away or destroyed (-2 flat per 5 PP).",
+    "incompatibleWith": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Removível",
+        "description": "O equipamento pode ser retirado ou destruído (-2 flat por 5 PP)."
+      }
+    }
+  }
+]

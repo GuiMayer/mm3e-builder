@@ -1,0 +1,405 @@
+/* ================================================
+   M&M 3e Builder — Design System (CSS Custom Properties)
+   Industry Standard Theming via :root + data-theme
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+/* ── Base Tokens (shared across all themes) ── */
+:root {
+  /* Typography */
+  --f-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --f-heading: 'Outfit', 'Inter', system-ui, sans-serif;
+
+  /* Spacing Scale */
+  --s-xs: 4px;
+  --s-sm: 8px;
+  --s-md: 16px;
+  --s-lg: 24px;
+  --s-xl: 32px;
+  --s-2xl: 48px;
+  --s-3xl: 64px;
+
+  /* Border Radius */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 20px rgba(var(--c-primary-rgb), 0.3);
+
+  /* Transitions */
+  --t-fast: 150ms ease;
+  --t-normal: 250ms ease;
+  --t-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Theme: Dark Knight (Default) ── */
+[data-theme="dark-knight"], :root {
+  --c-primary: #6C63FF;
+  --c-primary-rgb: 108, 99, 255;
+  --c-primary-hover: #7B73FF;
+  --c-primary-muted: rgba(108, 99, 255, 0.15);
+
+  --c-accent: #FF6B9D;
+  --c-accent-rgb: 255, 107, 157;
+
+  --c-success: #4ADE80;
+  --c-warning: #FBBF24;
+  --c-error: #F87171;
+  --c-info: #60A5FA;
+
+  --c-bg: #0D0D14;
+  --c-surface: #16161F;
+  --c-surface-elevated: #1E1E2A;
+  --c-surface-glass: rgba(22, 22, 31, 0.75);
+
+  --c-border: rgba(255, 255, 255, 0.08);
+  --c-border-active: rgba(108, 99, 255, 0.5);
+
+  --c-text: #F0F0F5;
+  --c-text-secondary: #9CA3AF;
+  --c-text-muted: #6B7280;
+  --c-text-inverse: #0D0D14;
+}
+
+/* ── Theme: Arc Reactor ── */
+[data-theme="arc-reactor"] {
+  --c-primary: #00D4FF;
+  --c-primary-rgb: 0, 212, 255;
+  --c-primary-hover: #33DDFF;
+  --c-primary-muted: rgba(0, 212, 255, 0.15);
+
+  --c-accent: #00FF94;
+  --c-accent-rgb: 0, 255, 148;
+
+  --c-success: #4ADE80;
+  --c-warning: #FBBF24;
+  --c-error: #F87171;
+  --c-info: #60A5FA;
+
+  --c-bg: #0A1628;
+  --c-surface: #0F1D32;
+  --c-surface-elevated: #15253E;
+  --c-surface-glass: rgba(15, 29, 50, 0.8);
+
+  --c-border: rgba(0, 212, 255, 0.1);
+  --c-border-active: rgba(0, 212, 255, 0.5);
+
+  --c-text: #E8F4F8;
+  --c-text-secondary: #8BA4B8;
+  --c-text-muted: #5A7A92;
+  --c-text-inverse: #0A1628;
+}
+
+/* ── Theme: Cyberpunk ── */
+[data-theme="cyberpunk"] {
+  --c-primary: #FF2D6B;
+  --c-primary-rgb: 255, 45, 107;
+  --c-primary-hover: #FF4D83;
+  --c-primary-muted: rgba(255, 45, 107, 0.15);
+
+  --c-accent: #FFD600;
+  --c-accent-rgb: 255, 214, 0;
+
+  --c-success: #4ADE80;
+  --c-warning: #FBBF24;
+  --c-error: #F87171;
+  --c-info: #A78BFA;
+
+  --c-bg: #1A0A1E;
+  --c-surface: #24102A;
+  --c-surface-elevated: #2E1636;
+  --c-surface-glass: rgba(36, 16, 42, 0.8);
+
+  --c-border: rgba(255, 45, 107, 0.12);
+  --c-border-active: rgba(255, 45, 107, 0.5);
+
+  --c-text: #F5E6F0;
+  --c-text-secondary: #B88FAF;
+  --c-text-muted: #7A5A74;
+  --c-text-inverse: #1A0A1E;
+}
+
+/* ── Theme: Light Print ── */
+[data-theme="light-print"] {
+  --c-primary: #2563EB;
+  --c-primary-rgb: 37, 99, 235;
+  --c-primary-hover: #3B82F6;
+  --c-primary-muted: rgba(37, 99, 235, 0.1);
+
+  --c-accent: #7C3AED;
+  --c-accent-rgb: 124, 58, 237;
+
+  --c-success: #16A34A;
+  --c-warning: #D97706;
+  --c-error: #DC2626;
+  --c-info: #2563EB;
+
+  --c-bg: #FAFAFA;
+  --c-surface: #FFFFFF;
+  --c-surface-elevated: #F3F4F6;
+  --c-surface-glass: rgba(255, 255, 255, 0.9);
+
+  --c-border: rgba(0, 0, 0, 0.1);
+  --c-border-active: rgba(37, 99, 235, 0.5);
+
+  --c-text: #111827;
+  --c-text-secondary: #4B5563;
+  --c-text-muted: #9CA3AF;
+  --c-text-inverse: #FFFFFF;
+}
+
+/* ── Global Reset & Base Styles ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--f-body);
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color var(--t-normal), color var(--t-normal);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--f-heading);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ── Utility Classes ── */
+.glass {
+  background: var(--c-surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--c-border);
+}
+
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: var(--s-lg);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.card:hover {
+  border-color: var(--c-border-active);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ── App Layout ── */
+.app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  padding: var(--s-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Scrollbar Styling ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--c-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-text-muted);
+  border-radius: var(--r-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-text-secondary);
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(var(--c-primary-rgb), 0.3); }
+  50% { box-shadow: 0 0 20px rgba(var(--c-primary-rgb), 0.6); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Panel System ── */
+.panel {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: var(--s-lg);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  animation: fadeIn 0.35s ease backwards;
+}
+
+.panel:nth-child(2) { animation-delay: 0.05s; }
+.panel:nth-child(3) { animation-delay: 0.10s; }
+.panel:nth-child(4) { animation-delay: 0.15s; }
+.panel:nth-child(5) { animation-delay: 0.20s; }
+.panel:nth-child(6) { animation-delay: 0.25s; }
+.panel:nth-child(7) { animation-delay: 0.30s; }
+
+.panel:hover {
+  border-color: rgba(var(--c-primary-rgb), 0.2);
+  box-shadow: 0 0 24px rgba(var(--c-primary-rgb), 0.06);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--s-md);
+  padding-bottom: var(--s-sm);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.panel-title {
+  font-family: var(--f-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--c-text);
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+}
+
+.panel-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background: var(--c-primary);
+  border-radius: var(--r-full);
+}
+
+.panel-cost {
+  font-family: var(--f-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--c-primary);
+  font-variant-numeric: tabular-nums;
+  padding: var(--s-xs) var(--s-md);
+  background: var(--c-primary-muted);
+  border-radius: var(--r-full);
+}
+
+/* ── PP Summary Footer ── */
+.pp-summary-footer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--s-sm);
+  padding: var(--s-md) var(--s-lg);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  animation: fadeIn 0.4s ease backwards;
+  animation-delay: 0.35s;
+}
+
+.pp-summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.pp-summary-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-text-muted);
+}
+
+.pp-summary-value {
+  font-family: var(--f-heading);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--c-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-summary-value--primary {
+  color: var(--c-primary);
+}
+
+.pp-summary-value--accent {
+  color: var(--c-accent);
+}
+
+.pp-summary-value--error {
+  color: var(--c-error);
+}
+
+.pp-summary-value--success {
+  color: var(--c-success);
+}
+
+/* ── Progress Bar ── */
+.pp-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--c-surface-elevated);
+  border-radius: var(--r-full);
+  overflow: hidden;
+  margin-top: var(--s-xs);
+}
+
+.pp-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-primary), var(--c-accent));
+  border-radius: var(--r-full);
+  transition: width var(--t-normal);
+}
+
+.pp-progress-fill[data-over="true"] {
+  background: linear-gradient(90deg, var(--c-error), var(--c-warning));
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
