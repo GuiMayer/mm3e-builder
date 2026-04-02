@@ -1,73 +1,39 @@
-# React + TypeScript + Vite
+# Mutants & Masterminds 3e Character Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um criador de fichas moderno, rápido e focado na facilidade de uso para o sistema de RPG Mutants & Masterminds 3ª Edição (M&M 3e). Construído para facilitar a montagem complexa de personagens, cálculo automático de Power Points (PP) e validação de Power Level (PL).
 
-Currently, two official plugins are available:
+## 🚀 Acesse o aplicativo
+Você pode usar a versão online atualizada e hospedada no GitHub Pages aqui:
+**[https://guimayer.github.io/mm3e-builder/](https://guimayer.github.io/mm3e-builder/)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 💡 Sobre o Projeto
+Este projeto foi idealizado para ser uma ferramenta ágil e altamente visual comparada com planilhas antigas. Suporta:
+- Cálculo automatizado do custo de Atributos, Perícias, Vantagens, Defesas e Poderes.
+- Motor matemático para modificadores de efeitos complexos e "Alternate Effects" (Arranjos).
+- Validações de limites impostas pelo Nível de Poder (Power Level Limits) em tempo real.
+- Exportação da ficha finalizada para planilha estilizada (`.xlsx`).
+- Localização i18n em tempo real (Português Brasileiro e Inglês já suportados).
 
-## React Compiler
+### 🤖 Termo de Responsabilidade e Criação
+**Disclaimer:** Eu fiz este projeto inteiramente usando a IDE **Antigravity** do Google, alimentada pelo modelo **Claude Opus 4.6 (e outros)**.
+O projeto **não possui intenção nenhuma de lucrar** ou de infringir os direitos autorais da Green Ronin Publishing, criadores do M&M 3e. Este é um projeto feito de fã para a comunidade de RPG.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🤝 Como Contribuir (Traduções e mais)
+Contribuições para expandir o ecossistema do app são extremamente bem-vindas, especialmente de traduções!
 
-## Expanding the ESLint configuration
+Leia nosso **[CONTRIBUTING.md](./CONTRIBUTING.md)** para saber como:
+1. Traduzir strings de UI modificando arquivos `translation.json`.
+2. Adicionar traduções (ou novos Poderes/Modificadores/Vantagens) diretamente nos dados base do jogo via a propriedade `i18n` nos arquivos JSON.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+A estrutura permite que você **rapidamente** contribua com novas localizações sem saber programar profundamente. Seus Pull Requests são bem-vindos!
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Stack Tecnológica
+- React (UI e Componentes)
+- TypeScript (Tipagem e domínio do jogo)
+- Vite (Build Tool e HMR)
+- Zustand (Gerenciamento de Estado)
+- React-i18next (Internacionalização da UI)
+- ExcelJS (Exportação avançada da ficha)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+Feito de fã para fã 🦸‍♂️
