@@ -183,7 +183,7 @@ function buildSummarySheet(
   char: ICharacter,
   labels: ExportLabels,
   gameData: GameDataRefs,
-  lang: string
+  _lang: string
 ) {
   const ws = wb.addWorksheet(labels.sheetSummary, { properties: { tabColor: { argb: '6C63FF' } } });
 

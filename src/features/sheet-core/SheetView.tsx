@@ -37,7 +37,7 @@ export function SheetView() {
       <DefensesPanel cost={pp.defensesCost} />
       <SkillsPanel cost={pp.skillsCost} />
       <AdvantagesPanel cost={pp.advantagesCost} />
-      <PowersList cost={pp.powersCost} />
+      <PowersList />
       <ComplicationsPanel />
 
       {/* PP Summary Footer */}
