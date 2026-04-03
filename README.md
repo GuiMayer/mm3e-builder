@@ -21,8 +21,12 @@ Este projeto foi idealizado para ser uma ferramenta ágil e altamente visual com
 - Exportação da ficha finalizada para planilha estilizada (`.xlsx`).
 - Localização i18n em tempo real (Português Brasileiro e Inglês já suportados).
 
-#### 🤖 Termo de Responsabilidade e Criação
-**Disclaimer:** Eu fiz este projeto inteiramente usando a IDE **Antigravity** do Google, alimentada pelo modelo **Claude Opus 4.6 (e outros)**.
+#### 🤖 Desenvolvimento Dirigido por IA
+
+Este projeto foi um experimento deliberado em **desenvolvimento dirigido por IA**. Atuei como arquiteto e QA — nenhuma linha de código foi escrita manualmente. Meu trabalho foi decompor um domínio de regras complexo em requisitos claros, definir as decisões arquiteturais (stack, gerenciamento de estado, estrutura de i18n, formato de exportação), revisar cada mudança gerada pela IA, e rejeitar ou corrigir qualquer desvio de boas práticas antes que virasse código de produção.
+
+O objetivo era validar se uma aplicação multi-feature de qualidade real poderia ser entregue em produção através de direção deliberada de IA — sem escrever uma linha sequer.
+
 O projeto **não possui intenção nenhuma de lucrar** ou de infringir os direitos autorais da Green Ronin Publishing, criadores do M&M 3e. Este é um projeto feito de fã para a comunidade de RPG.
 
 ### 🤝 Como Contribuir (Traduções e mais)
@@ -66,8 +70,12 @@ This project was envisioned as an agile and highly visual tool compared to outda
 - Exporting finished character sheets to a styled spreadsheet (`.xlsx`).
 - Real-time i18n localization (Brazilian Portuguese and English currently supported).
 
-#### 🤖 Creation & Disclaimer
-**Disclaimer:** I built this project entirely using Google's **Antigravity** IDE, powered by the **Claude Opus 4.6 (and others)** model.
+#### 🤖 AI-Directed Development
+
+This project was a deliberate experiment in **AI-directed development**. I acted as architect and QA — no lines of code were written manually. My work was to decompose a complex rules domain into clear requirements, define the architectural decisions (stack, state management, i18n structure, export format), review every AI-generated change, and reject or correct any drift from good practices before it reached production.
+
+The goal was to validate whether a real, multi-feature application could be shipped to production quality through deliberate AI direction alone — without writing a single line of code.
+
 This project has **absolutely no intention of making a profit** or infringing on the copyrights of Green Ronin Publishing, the creators of M&M 3e. This is purely a fan-made project for the TTRPG community.
 
 ### 🤝 How to Contribute (Translations and more)
