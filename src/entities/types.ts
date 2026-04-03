@@ -54,12 +54,18 @@ export interface IModifierDef {
   incompatibleWith: string[];
 }
 
+// ── Advantage Category Types ──
+export type AdvantageType = 'combat' | 'fortune' | 'general' | 'skill';
+
 // ── Advantage (from advantages.json) ──
 export interface IAdvantageDef {
   id: string;
   name: string;
+  advantageType: AdvantageType;
   ranked: boolean;
+  maxRank: number | null;
   description: string;
+  longDescription: string;
 }
 
 // ── Skill Definition (from skills.json) ──

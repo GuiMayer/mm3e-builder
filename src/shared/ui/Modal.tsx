@@ -6,10 +6,11 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  compact?: boolean;
   children: ReactNode;
 }
 
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export function Modal({ isOpen, onClose, title, compact, children }: ModalProps) {
   const { t } = useTranslation();
   useEffect(() => {
     if (isOpen) {
@@ -32,7 +33,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className={`modal-content ${compact ? 'modal-content--compact' : ''}`} onClick={(e) => e.stopPropagation()}>
         {title && (
           <div className="modal-header">
             <h2 className="modal-title">{title}</h2>
@@ -97,6 +98,14 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
           flex: 1;
           overflow-y: auto;
           padding: var(--s-lg);
+        }
+        .modal-content--compact {
+          width: auto;
+          height: auto;
+          max-width: 480px;
+          max-height: 80vh;
+          border-radius: var(--r-lg);
+          animation: slideUp 0.25s ease;
         }
       `}</style>
     </div>
