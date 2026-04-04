@@ -42,7 +42,7 @@ The few commits in this repo are not a sign of little work — they are evidence
 - Generated unit tests for `mathEngine`, `fileService`, and `validation`
 - Produced zero architectural surprises — because there was no room for improvisation
 
-> For the full engineering specification, see ARCHITECTURE.md.
+> For the full engineering specification, see **[ARCHITECTURE.md](./ARCHITECTURE.md)**.
 
 This project has **absolutely no intention of making a profit** or infringing on the copyrights of Green Ronin Publishing, the creators of M&M 3e. This is purely a fan-made project for the TTRPG community.
 
@@ -106,8 +106,8 @@ Os poucos commits deste repositório não são sinal de pouco trabalho — são 
 - Gerou testes unitários para `mathEngine`, `fileService` e `validation`
 - Produziu zero surpresas arquiteturais — porque não havia espaço para improvisação
 
-> Para a especificação de engenharia completa, veja ARCHITECTURE_PT.md.
-
+> Para a especificação de engenharia completa, veja **[ARCHITECTURE_PT.md](./ARCHITECTURE_PT.md)**.
+_
 O projeto **não possui intenção nenhuma de lucrar** ou de infringir os direitos autorais da Green Ronin Publishing, criadores do M&M 3e. Este é um projeto feito de fã para a comunidade de RPG.
 
 ### Como Contribuir (Traduções e mais)
