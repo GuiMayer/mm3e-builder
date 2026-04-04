@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Test and lint outputs
+lint-errors.txt
+test-results.txt
