@@ -563,10 +563,17 @@ function formatAlternates(
   if (power.alternateEffects.length === 0) return '—';
   return power.alternateEffects
     .map((alt) => {
-      const eDef = gameData.powerDefs.find((d) => d.id === alt.effectId);
-      const name = alt.name || (eDef ? locName(eDef, lang) : alt.effectId);
+      // v2 format: components[]
+      const effectNames = alt.components
+        .map((comp) => {
+          const eDef = gameData.powerDefs.find((d) => d.id === comp.effectId);
+          return eDef ? `${locName(eDef, lang)} R${comp.ranks}` : comp.effectId;
+        })
+        .filter(Boolean)
+        .join(' + ');
+      const name = alt.name || effectNames || '—';
       const dyn = alt.dynamic ? ` [${labels.dynamic}]` : '';
-      return `${name} (R${alt.ranks})${dyn}`;
+      return `${name}: ${effectNames}${dyn}`;
     })
     .join('\n');
 }

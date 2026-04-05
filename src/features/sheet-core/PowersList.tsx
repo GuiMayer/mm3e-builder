@@ -128,7 +128,17 @@ export function PowersList() {
 
               {power.alternateEffects.length > 0 && (
                 <div className="power-alt-info">
-                  <span>🔀 {power.alternateEffects.length} {t('powers.alternateEffects')}</span>
+                  {power.alternateEffects.map((ae) => {
+                    const aeEffects = ae.components
+                      .map((c) => powerDefs.find((d) => d.id === c.effectId)?.name)
+                      .filter(Boolean)
+                      .join(' + ');
+                    return (
+                      <span key={ae.id} className="power-alt-tag">
+                        ↪ {ae.name || aeEffects || 'AE'}{ae.dynamic ? ' ⚡' : ''}
+                      </span>
+                    );
+                  })}
                 </div>
               )}
 
@@ -191,7 +201,12 @@ export function PowersList() {
           font-size: 0.7rem; padding: 2px 8px; border-radius: var(--r-full);
           background: var(--c-primary-muted); color: var(--c-primary); font-weight: 500;
         }
-        .power-alt-info { font-size: 0.78rem; color: var(--c-accent); margin-top: var(--s-xs); }
+        .power-alt-info { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--s-xs); }
+        .power-alt-tag {
+          font-size: 0.7rem; padding: 2px 8px; border-radius: var(--r-full);
+          background: rgba(139,92,246,0.12); color: var(--c-accent); font-weight: 500;
+          border: 1px solid rgba(139,92,246,0.25);
+        }
         .power-card-notes { font-size: 0.78rem; color: var(--c-text-muted); font-style: italic; margin-top: var(--s-xs); }
 
         .power-card-actions {

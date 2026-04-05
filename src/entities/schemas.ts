@@ -14,22 +14,34 @@ const AppliedModifierSchema = z.object({
   option: z.string().optional(),
 });
 
-const AlternateEffectSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  effectId: z.string(),
-  ranks: z.number().int().min(0),
-  modifiers: z.array(AppliedModifierSchema),
-  dynamic: z.boolean(),
-  notes: z.string(),
-});
-
 const CharacterPowerComponentSchema = z.object({
   id: z.string(),
   effectId: z.string(),
   ranks: z.number().int().min(0),
   modifiers: z.array(AppliedModifierSchema),
 });
+
+// Accept both v2 (components[]) and v1 legacy (effectId + ranks) formats
+const AlternateEffectSchema = z.union([
+  // v2 — new format with components[] (Linked Powers support)
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    components: z.array(CharacterPowerComponentSchema),
+    dynamic: z.boolean(),
+    notes: z.string(),
+  }),
+  // v1 — legacy format, migrated at load time by migrateAlternateEffect()
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    effectId: z.string(),
+    ranks: z.number().int().min(0),
+    modifiers: z.array(AppliedModifierSchema),
+    dynamic: z.boolean(),
+    notes: z.string(),
+  }),
+]);
 
 // Accept both old (effectId at top level) and new (components[]) formats
 const CharacterPowerSchema = z.union([

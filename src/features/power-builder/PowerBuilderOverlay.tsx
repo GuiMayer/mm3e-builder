@@ -23,9 +23,12 @@ import modifierDefsRaw from '../../data/modifiers.json';
 import {
   calculateArrayCost,
   getComponentCostBreakdown,
+  calcAlternateEffectCost,
+  validateAECost,
 } from '../../shared/lib/mathEngine';
 import { EffectPalette } from './EffectPalette';
-import { X, Save, Plus, Trash2, Zap, Info, AlertTriangle } from 'lucide-react';
+import { AltEffectCard } from './AltEffectCard';
+import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
@@ -83,6 +86,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   const [effectFilter, setEffectFilter] = useState('');
   const [effectTypeFilter, setEffectTypeFilter] = useState<string>('all');
   const [effectModalPower, setEffectModalPower] = useState<IPowerEffect | null>(null);
+  // AE state: which AE card is expanded + which component within each AE is active
+  const [expandedAEId, setExpandedAEId] = useState<string | null>(null);
+  const [activeAEComponentId, setActiveAEComponentId] = useState<Record<string, string>>({});
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -90,28 +96,32 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   );
 
   // All modifier defs (general + power-specific merged for lookup)
+  // Includes extras/flaws from AE components so the palette is correct
+  // when editing an AE with a different effect than the main power.
   const allModDefs = useMemo(() => {
     const specificMods: IModifierDef[] = [];
+    // Main power components
     power.components.forEach((comp) => {
       const effect = powerDefs.find((d) => d.id === comp.effectId);
-      if (effect) {
-        specificMods.push(...(effect.extras || []), ...(effect.flaws || []));
-      }
+      if (effect) specificMods.push(...(effect.extras || []), ...(effect.flaws || []));
     });
-    // Deduplicate by id
+    // AE components (critical: different effects may have different specific mods)
+    power.alternateEffects.forEach((ae) => {
+      ae.components.forEach((comp) => {
+        const effect = powerDefs.find((d) => d.id === comp.effectId);
+        if (effect) specificMods.push(...(effect.extras || []), ...(effect.flaws || []));
+      });
+    });
     const seen = new Set<string>();
     return [...modifierDefs, ...specificMods].filter((m) => {
       if (seen.has(m.id)) return false;
       seen.add(m.id);
       return true;
     });
-  }, [modifierDefs, power.components, powerDefs]);
+  }, [modifierDefs, power.components, power.alternateEffects, powerDefs]);
 
-  // Currently selected effect for the active component
+  // Currently selected effect for the active component (used only in component cards)
   const activeComponent = power.components.find((c) => c.id === activeComponentId);
-  const selectedEffect = activeComponent
-    ? powerDefs.find((d) => d.id === activeComponent.effectId)
-    : undefined;
 
   // Calculate costs per component
   const componentCosts = useMemo(() => {
@@ -126,6 +136,32 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   const mainCost = componentCosts.reduce((sum, c) => sum + c.total, 0);
   const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
   const totalCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
+
+  // AE costs and cap validation
+  const aeCosts = useMemo(() =>
+    power.alternateEffects.map((ae) => calcAlternateEffectCost(ae, powerDefs, allModDefs))
+  , [power.alternateEffects, powerDefs, allModDefs]);
+  const aeValidations = aeCosts.map((cost) => validateAECost(cost, mainCost));
+
+  // Palette context: when an AE is expanded, palette serves that AE's active component
+  const paletteSelectedEffect = useMemo(() => {
+    if (expandedAEId !== null) {
+      const ae = power.alternateEffects.find((a) => a.id === expandedAEId);
+      const compId = activeAEComponentId[expandedAEId] ?? ae?.components[0]?.id;
+      const comp = ae?.components.find((c) => c.id === compId);
+      return comp ? powerDefs.find((d) => d.id === comp.effectId) : undefined;
+    }
+    return activeComponent ? powerDefs.find((d) => d.id === activeComponent.effectId) : undefined;
+  }, [expandedAEId, power.alternateEffects, activeAEComponentId, activeComponent, powerDefs]);
+
+  const paletteContextName = useMemo(() => {
+    if (expandedAEId === null) return null;
+    const ae = power.alternateEffects.find((a) => a.id === expandedAEId);
+    if (!ae) return null;
+    const compId = activeAEComponentId[expandedAEId] ?? ae.components[0]?.id;
+    const compIdx = ae.components.findIndex((c) => c.id === compId);
+    return `${ae.name || 'AE'} · Comp. ${compIdx + 1}`;
+  }, [expandedAEId, power.alternateEffects, activeAEComponentId]);
 
   // Filtered effect list
   const filteredEffects = useMemo(() => {
@@ -149,10 +185,19 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     if (!over) return;
 
     const overId = over.id as string;
+    const modId = active.id as string;
+
+    // AE dropzone uses '::' separator to avoid UUID hyphen fragmentation
+    if (overId.startsWith('dropzone-ae::')) {
+      const payload = overId.replace('dropzone-ae::', '');
+      const sep = payload.indexOf('::');
+      const aeId = payload.slice(0, sep);
+      const compId = payload.slice(sep + 2);
+      addModifierToAEComponent(aeId, compId, modId);
+      return;
+    }
     if (!overId.startsWith('dropzone-')) return;
     const targetComponentId = overId.replace('dropzone-', '');
-
-    const modId = active.id as string;
     addModifierToComponent(targetComponentId, modId);
   }
 
@@ -189,6 +234,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   );
 
   function handleAddModifierFromPalette(modId: string, isPowerSpecific?: boolean) {
+    // Palette serves the AE context when an AE card is expanded
+    if (expandedAEId !== null) {
+      const ae = power.alternateEffects.find((a) => a.id === expandedAEId);
+      const compId = activeAEComponentId[expandedAEId] ?? ae?.components[0]?.id;
+      if (!compId) return;
+      addModifierToAEComponent(expandedAEId, compId, modId, isPowerSpecific);
+      return;
+    }
     if (!activeComponentId) return;
     addModifierToComponent(activeComponentId, modId, isPowerSpecific);
   }
@@ -266,30 +319,128 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   }
 
   function addAlternateEffect() {
-    const alt: IAlternateEffect = {
+    const newAE: IAlternateEffect = {
       id: uuidv4(),
       name: '',
-      effectId: '',
-      ranks: 1,
-      modifiers: [],
+      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [] }],
       dynamic: false,
       notes: '',
     };
-    setPower((p) => ({ ...p, alternateEffects: [...p.alternateEffects, alt] }));
+    setPower((p) => ({ ...p, alternateEffects: [...p.alternateEffects, newAE] }));
+    setExpandedAEId(newAE.id);
   }
 
   function removeAlternateEffect(id: string) {
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.filter((a) => a.id !== id),
-    }));
+    setPower((p) => ({ ...p, alternateEffects: p.alternateEffects.filter((a) => a.id !== id) }));
+    if (expandedAEId === id) setExpandedAEId(null);
   }
 
   function updateAlternateEffect(id: string, update: Partial<IAlternateEffect>) {
     setPower((p) => ({
       ...p,
-      alternateEffects: p.alternateEffects.map((a) =>
-        a.id === id ? { ...a, ...update } : a
+      alternateEffects: p.alternateEffects.map((a) => a.id === id ? { ...a, ...update } : a),
+    }));
+  }
+
+  // ── AE Component CRUD ──
+  function addAEComponent(aeId: string) {
+    const newComp = { id: uuidv4(), effectId: '', ranks: 1, modifiers: [] };
+    setPower((p) => ({
+      ...p,
+      alternateEffects: p.alternateEffects.map((ae) =>
+        ae.id !== aeId ? ae : { ...ae, components: [...ae.components, newComp] }
+      ),
+    }));
+    setActiveAEComponentId((prev) => ({ ...prev, [aeId]: newComp.id }));
+  }
+
+  function removeAEComponent(aeId: string, compId: string) {
+    setPower((p) => ({
+      ...p,
+      alternateEffects: p.alternateEffects.map((ae) => {
+        if (ae.id !== aeId || ae.components.length <= 1) return ae;
+        return { ...ae, components: ae.components.filter((c) => c.id !== compId) };
+      }),
+    }));
+  }
+
+  function updateAEComponent(aeId: string, compId: string, update: Partial<{ effectId: string; ranks: number }>) {
+    setPower((p) => ({
+      ...p,
+      alternateEffects: p.alternateEffects.map((ae) =>
+        ae.id !== aeId ? ae : {
+          ...ae,
+          components: ae.components.map((c) => c.id !== compId ? c : { ...c, ...update }),
+        }
+      ),
+    }));
+  }
+
+  function addModifierToAEComponent(aeId: string, compId: string, modId: string, isPowerSpecific?: boolean) {
+    const allSpecific = powerDefs.flatMap((p) => [...(p.extras || []), ...(p.flaws || [])]);
+    const isSpecific = isPowerSpecific ?? allSpecific.some((m) => m.id === modId);
+    setPower((p) => ({
+      ...p,
+      alternateEffects: p.alternateEffects.map((ae) =>
+        ae.id !== aeId ? ae : {
+          ...ae,
+          components: ae.components.map((comp) => {
+            if (comp.id !== compId) return comp;
+            const already = comp.modifiers.find((m) => m.modifierId === modId);
+            if (already) {
+              return { ...comp, modifiers: comp.modifiers.map((m) => m.modifierId === modId ? { ...m, ranks: m.ranks + 1 } : m) };
+            }
+            return { ...comp, modifiers: [...comp.modifiers, { modifierId: modId, ranks: 1, isPowerSpecific: isSpecific }] };
+          }),
+        }
+      ),
+    }));
+  }
+
+  function removeModifierFromAEComponent(aeId: string, compId: string, modId: string) {
+    setPower((p) => ({
+      ...p,
+      alternateEffects: p.alternateEffects.map((ae) =>
+        ae.id !== aeId ? ae : {
+          ...ae,
+          components: ae.components.map((comp) =>
+            comp.id !== compId ? comp : { ...comp, modifiers: comp.modifiers.filter((m) => m.modifierId !== modId) }
+          ),
+        }
+      ),
+    }));
+  }
+
+  function updateAEModifierRanks(aeId: string, compId: string, modId: string, ranks: number) {
+    setPower((p) => ({
+      ...p,
+      alternateEffects: p.alternateEffects.map((ae) =>
+        ae.id !== aeId ? ae : {
+          ...ae,
+          components: ae.components.map((comp) =>
+            comp.id !== compId ? comp : {
+              ...comp,
+              modifiers: comp.modifiers.map((m) => m.modifierId === modId ? { ...m, ranks: Math.max(1, ranks) } : m),
+            }
+          ),
+        }
+      ),
+    }));
+  }
+
+  function updateAEModifierOption(aeId: string, compId: string, modId: string, option: string) {
+    setPower((p) => ({
+      ...p,
+      alternateEffects: p.alternateEffects.map((ae) =>
+        ae.id !== aeId ? ae : {
+          ...ae,
+          components: ae.components.map((comp) =>
+            comp.id !== compId ? comp : {
+              ...comp,
+              modifiers: comp.modifiers.map((m) => m.modifierId === modId ? { ...m, option } : m),
+            }
+          ),
+        }
       ),
     }));
   }
@@ -297,6 +448,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   function handleSave() {
     const hasEffect = power.components.some((c) => c.effectId !== '');
     if (!hasEffect) return;
+    const invalidAEs = aeValidations
+      .map((v, i) => ({ ...v, ae: power.alternateEffects[i] }))
+      .filter((v) => !v.valid && v.ae.components.some((c) => c.effectId !== ''));
+    if (invalidAEs.length > 0) {
+      const names = invalidAEs.map((v) => v.ae.name || 'sem nome').join(', ');
+      const confirmed = window.confirm(
+        `${invalidAEs.length} efeito(s) alternativo(s) excedem o limite de ${mainCost}PP: ${names}.\nSalvar mesmo assim?`
+      );
+      if (!confirmed) return;
+    }
     onSave(power);
   }
 
@@ -314,9 +475,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
             <Zap size={18} /> {t('builder.title')}
           </h2>
           <div className="builder-topbar-actions">
-            <button className="builder-action-btn" onClick={addAlternateEffect}>
-              <Plus size={14} /> {t('builder.addAlternate')}
-            </button>
             <button
               className="builder-action-btn builder-save-btn"
               onClick={handleSave}
@@ -335,10 +493,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
           <EffectPalette
             filter={paletteFilter}
             onFilterChange={setPaletteFilter}
-            selectedEffect={selectedEffect}
+            selectedEffect={paletteSelectedEffect}
             onAddModifier={handleAddModifierFromPalette}
             collapsed={paletteCollapsed}
             onToggleCollapse={() => setPaletteCollapsed((v) => !v)}
+            contextName={paletteContextName}
           />
 
           {/* Main: Build Workspace */}
@@ -564,58 +723,58 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
               />
             </div>
 
-            {/* Alternate Effects */}
-            {power.alternateEffects.length > 0 && (
-              <div className="build-section">
+            {/* Alternate Effects Section */}
+            <div className="build-section ae-section">
+              <div className="ae-section-header">
                 <label className="build-label">{t('builder.alternateEffects')}</label>
-                {power.alternateEffects.map((alt) => (
-                  <div key={alt.id} className="alt-effect-card">
-                    <div className="alt-effect-row">
-                      <input
-                        className="build-input build-input--sm"
-                        value={alt.name}
-                        onChange={(e) => updateAlternateEffect(alt.id, { name: e.target.value })}
-                        placeholder={t('builder.powerName')}
-                      />
-                      <select
-                        className="build-select build-select--sm"
-                        value={alt.effectId}
-                        onChange={(e) => updateAlternateEffect(alt.id, { effectId: e.target.value })}
-                      >
-                        <option value="">{t('common.select')}</option>
-                        {powerDefs.map((d) => (
-                          <option key={d.id} value={d.id}>{d.name}</option>
-                        ))}
-                      </select>
-                      <input
-                        type="number"
-                        min={1}
-                        className="build-input build-input--tiny"
-                        value={alt.ranks}
-                        onChange={(e) =>
-                          updateAlternateEffect(alt.id, {
-                            ranks: Math.max(1, Number(e.target.value) || 1),
-                          })
-                        }
-                      />
-                      <label className="alt-dynamic-label">
-                        <input
-                          type="checkbox"
-                          checked={alt.dynamic}
-                          onChange={(e) =>
-                            updateAlternateEffect(alt.id, { dynamic: e.target.checked })
-                          }
-                        />
-                        {t('builder.dynamic')}
-                      </label>
-                      <button className="alt-remove" onClick={() => removeAlternateEffect(alt.id)}>
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                {mainCost > 0 && (
+                  <span className="ae-cap-badge">Cap: {mainCost}pp</span>
+                )}
               </div>
-            )}
+              {mainCost > 0 && (
+                <div className="ae-rules-note">
+                  <Info size={11} /> {t('builder.altRuleNote')}
+                </div>
+              )}
+              {power.alternateEffects.map((ae, aeIdx) => (
+                <AltEffectCard
+                  key={ae.id}
+                  ae={ae}
+                  aeIdx={aeIdx}
+                  cost={aeCosts[aeIdx] ?? 0}
+                  validation={aeValidations[aeIdx] ?? { valid: true, overageBy: 0 }}
+                  isExpanded={expandedAEId === ae.id}
+                  onToggleExpand={() => setExpandedAEId((prev) => prev === ae.id ? null : ae.id)}
+                  activeCompId={activeAEComponentId[ae.id] ?? ae.components[0]?.id ?? ''}
+                  onSetActiveComp={(compId) => setActiveAEComponentId((prev) => ({ ...prev, [ae.id]: compId }))}
+                  powerDefs={powerDefs}
+                  filteredEffects={filteredEffects}
+                  allEffects={powerDefs}
+                  allModDefs={allModDefs}
+                  effectFilter={effectFilter}
+                  onFilterChange={setEffectFilter}
+                  typeFilter={effectTypeFilter}
+                  onTypeFilterChange={setEffectTypeFilter}
+                  effectTypes={effectTypes}
+                  activeId={activeId}
+                  onUpdateAE={(update) => updateAlternateEffect(ae.id, update)}
+                  onRemoveAE={() => removeAlternateEffect(ae.id)}
+                  onAddComponent={() => addAEComponent(ae.id)}
+                  onRemoveComponent={(cId) => removeAEComponent(ae.id, cId)}
+                  onUpdateComponent={(cId, upd) => updateAEComponent(ae.id, cId, upd)}
+                  onAddModifier={(cId, modId, sp) => addModifierToAEComponent(ae.id, cId, modId, sp)}
+                  onRemoveModifier={(cId, modId) => removeModifierFromAEComponent(ae.id, cId, modId)}
+                  onUpdateModifierRanks={(cId, modId, ranks) => updateAEModifierRanks(ae.id, cId, modId, ranks)}
+                  onUpdateModifierOption={(cId, modId, opt) => updateAEModifierOption(ae.id, cId, modId, opt)}
+                  onInfoClick={setEffectModalPower}
+                  EffectComboboxComponent={EffectCombobox}
+                  t={t}
+                />
+              ))}
+              <button className="ae-add-btn" onClick={addAlternateEffect}>
+                <Plus size={13} /> {t('builder.addAlternate')}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -633,11 +792,19 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                 </span>
               );
             })}
-            {power.alternateEffects.length > 0 && (
-              <span className="cost-comp-item">
-                <span className="cost-comp-name">{t('builder.alts', { count: power.alternateEffects.length })}</span>
-              </span>
-            )}
+            {power.alternateEffects.map((ae, aeIdx) => {
+              const cost = aeCosts[aeIdx] ?? 0;
+              const valid = aeValidations[aeIdx]?.valid ?? true;
+              if (!ae.components.some((c) => c.effectId)) return null;
+              return (
+                <span key={ae.id} className="cost-comp-item">
+                  <span className="cost-comp-name">↪ {ae.name || 'AE'}</span>
+                  <span className={`cost-comp-val ${valid ? '' : 'cost-comp-val--invalid'}`}>
+                    {cost}pp {valid ? '✅' : '⚠️'}
+                  </span>
+                </span>
+              );
+            })}
           </div>
           <div className="cost-total">
             <span className="cost-total-label">{t('builder.total')}:</span>
@@ -974,3 +1141,4 @@ function EffectCombobox({
     </div>
   );
 }
+

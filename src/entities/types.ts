@@ -150,12 +150,12 @@ export interface ICharacterPowerComponent {
 }
 
 // ── Alternate Effect (nested inside a power) ──
+// Uses the same components[] contract as ICharacterPower,
+// enabling Linked Powers within a single array slot (canonical MM3e technique).
 export interface IAlternateEffect {
   id: string;
   name: string;
-  effectId: string;
-  ranks: number;
-  modifiers: IAppliedModifier[];
+  components: ICharacterPowerComponent[];   // same format as ICharacterPower
   dynamic: boolean;
   notes: string;
 }

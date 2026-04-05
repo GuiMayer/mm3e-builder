@@ -16,6 +16,7 @@ interface Props {
   onAddModifier: (modId: string, isPowerSpecific?: boolean) => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
+  contextName?: string | null;   // badge shown when palette serves an AE component
 }
 
 export function EffectPalette({
@@ -25,6 +26,7 @@ export function EffectPalette({
   onAddModifier,
   collapsed,
   onToggleCollapse,
+  contextName,
 }: Props) {
   const { t } = useTranslation();
   const modifierDefs = useLocalizedData(modifierDefsRaw as Parameters<typeof useLocalizedData>[0]) as typeof modifierDefsRaw;
@@ -97,6 +99,11 @@ export function EffectPalette({
           <ChevronLeft size={16} />
         </button>
       </div>
+      {contextName && (
+        <div className="palette-context-badge">
+          ✏️ {contextName}
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="palette-tabs">
@@ -227,6 +234,11 @@ export function EffectPalette({
           transition: color var(--t-fast); flex-shrink: 0;
         }
         .palette-toggle-btn:hover { color: var(--c-primary); }
+        .palette-context-badge {
+          font-size: 0.7rem; font-weight: 600; padding: 4px var(--s-md);
+          background: rgba(245,158,11,0.12); border-bottom: 1px solid rgba(245,158,11,0.3);
+          color: #f59e0b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
 
         .palette-tabs {
           display: flex; border-bottom: 1px solid var(--c-border);

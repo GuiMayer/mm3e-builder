@@ -9,6 +9,7 @@ import type {
   IModifierDef,
   IDefenses,
   ICharacterPowerComponent,
+  IAlternateEffect,
   IPowerEffect,
 } from '../../entities/types';
 
@@ -136,6 +137,39 @@ export function calculateArrayCost(
 ): number {
   const staticAlts = alternateEffectCount - dynamicCount;
   return mainPowerCost + staticAlts * 1 + dynamicCount * 2;
+}
+
+/**
+ * Calculate the total PP cost of an Alternate Effect (sum of all its components).
+ * An AE can have multiple components (Linked Powers within a single array slot).
+ * Minimum cost: 1 PP.
+ */
+export function calcAlternateEffectCost(
+  ae: IAlternateEffect,
+  powerDefs: IPowerEffect[],
+  modifierDefs: IModifierDef[]
+): number {
+  const raw = ae.components.reduce((sum, comp) => {
+    const effectDef = powerDefs.find((d) => d.id === comp.effectId);
+    if (!effectDef) return sum;
+    return sum + calcComponentCost(comp, effectDef, modifierDefs);
+  }, 0);
+  return Math.max(1, raw);
+}
+
+/**
+ * Validate whether an Alternate Effect conforms to the array cap rule.
+ * Rule: An AE cannot cost more PP than the base power.
+ * Returns valid flag and how many PP over the cap (for precise user messaging).
+ */
+export function validateAECost(
+  aeCost: number,
+  mainCost: number
+): { valid: boolean; overageBy: number } {
+  return {
+    valid: aeCost <= mainCost,
+    overageBy: Math.max(0, aeCost - mainCost),
+  };
 }
 
 /**
