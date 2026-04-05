@@ -223,6 +223,15 @@
   "palette.noSpecificMods": "Nenhum modificador específico para este efeito.",
   "builder.aeOverageLabel": "+{{overageBy}}PP acima do limite",
 
+  "builder.removable.label": "Dispositivo",
+  "builder.removable.none": "Nenhum",
+  "builder.removable.removable": "Removível",
+  "builder.removable.easily_removable": "Facilmente Removível",
+  "builder.removable.none_hint": "O poder é permanente ou inato",
+  "builder.removable.removable_hint": "O poder está em um objeto que pode ser agarrado ou retirado (−1PP por 5PP)",
+  "builder.removable.easily_removable_hint": "O poder está em um objeto fácil de perder ou remover (−2PP por 5PP)",
+  "builder.removable.from": "desconto em",
+
   "offense.title": "Ataques",
   "offense.attack": "Ataque",
   "offense.bonus": "Bônus",

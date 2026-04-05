@@ -223,6 +223,15 @@
   "palette.noSpecificMods": "No specific modifiers for this effect.",
   "builder.aeOverageLabel": "+{{overageBy}}PP over cap",
 
+  "builder.removable.label": "Device",
+  "builder.removable.none": "None",
+  "builder.removable.removable": "Removable",
+  "builder.removable.easily_removable": "Easily Removable",
+  "builder.removable.none_hint": "Power is permanent or innate",
+  "builder.removable.removable_hint": "Power is in an object that can be grabbed or taken away (−1PP per 5PP)",
+  "builder.removable.easily_removable_hint": "Power is in an object easily lost or removed (−2PP per 5PP)",
+  "builder.removable.from": "discount on",
+
   "offense.title": "Offense",
   "offense.attack": "Attack",
   "offense.bonus": "Bonus",

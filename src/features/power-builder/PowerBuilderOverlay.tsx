@@ -23,6 +23,7 @@ import {
   getComponentCostBreakdown,
   calcAlternateEffectCost,
   validateAECost,
+  calcRemovableDiscount,
 } from '../../shared/lib/mathEngine';
 import { validateAttackEffect } from '../../shared/lib/validation';
 import { EffectPalette } from './EffectPalette';
@@ -142,7 +143,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
 
   const mainCost = componentCosts.reduce((sum, c) => sum + c.total, 0);
   const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
-  const totalCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
+  const arrayCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
+  const removableDiscount = calcRemovableDiscount(mainCost, power.removable);
+  const totalCost = Math.max(0, arrayCost - removableDiscount);
 
   // AE costs and cap validation
   const aeCosts = useMemo(() =>
@@ -412,15 +415,39 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
 
           {/* Main: Build Workspace */}
           <div className="builder-workspace">
-            {/* Power Name */}
+            {/* Power Name + Removable toggle */}
             <div className="build-section">
               <label className="build-label">{t('builder.powerName')}</label>
-              <input
-                className="build-input"
-                value={power.name}
-                onChange={(e) => setPower((p) => ({ ...p, name: e.target.value }))}
-                placeholder={t('builder.powerNamePlaceholder')}
-              />
+              <div className="build-name-row">
+                <input
+                  className="build-input"
+                  value={power.name}
+                  onChange={(e) => setPower((p) => ({ ...p, name: e.target.value }))}
+                  placeholder={t('builder.powerNamePlaceholder')}
+                />
+              </div>
+
+              {/* Removable toggle */}
+              <div className="build-removable-row">
+                <span className="build-label build-label--sm">{t('builder.removable.label')}</span>
+                <div className="build-removable-toggle">
+                  {(['none', 'removable', 'easily_removable'] as const).map((opt) => (
+                    <button
+                      key={opt}
+                      className={`build-removable-opt ${(power.removable ?? 'none') === opt ? 'build-removable-opt--active' : ''}`}
+                      onClick={() => setPower((p) => ({ ...p, removable: opt }))}
+                      title={t(`builder.removable.${opt}_hint`)}
+                    >
+                      {t(`builder.removable.${opt}`)}
+                    </button>
+                  ))}
+                </div>
+                {removableDiscount > 0 && (
+                  <span className="build-removable-discount">
+                    −{removableDiscount} PP {t('builder.removable.from')} {mainCost} PP
+                  </span>
+                )}
+              </div>
             </div>
 
             {/* Effect Components */}
@@ -814,6 +841,34 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
           transition: all var(--t-fast);
         }
         .build-add-comp-btn:hover { border-color: var(--c-primary); color: var(--c-primary); }
+
+        /* Removable toggle — F-06 */
+        .build-name-row { display: flex; }
+        .build-name-row .build-input { flex: 1; }
+        .build-label--sm { font-size: 0.68rem; color: var(--c-text-muted); margin-bottom: 0; }
+        .build-removable-row {
+          display: flex; align-items: center; gap: var(--s-md); flex-wrap: wrap;
+          padding: var(--s-xs) 0;
+        }
+        .build-removable-toggle {
+          display: flex; border: 1px solid var(--c-border); border-radius: var(--r-sm); overflow: hidden;
+        }
+        .build-removable-opt {
+          padding: 3px 10px; background: transparent;
+          border: none; border-right: 1px solid var(--c-border);
+          color: var(--c-text-muted); font-size: 0.75rem; cursor: pointer;
+          font-family: var(--f-body); transition: all var(--t-fast);
+        }
+        .build-removable-opt:last-child { border-right: none; }
+        .build-removable-opt:hover { background: var(--c-surface-elevated); color: var(--c-text); }
+        .build-removable-opt--active {
+          background: var(--c-primary); color: var(--c-bg); font-weight: 600;
+        }
+        .build-removable-discount {
+          font-size: 0.78rem; color: var(--c-success, #4ade80); font-weight: 600;
+          background: rgba(74, 222, 128, 0.1); padding: 2px 8px;
+          border-radius: var(--r-full); border: 1px solid rgba(74, 222, 128, 0.3);
+        }
 
         /* Component Cards */
         .component-card {

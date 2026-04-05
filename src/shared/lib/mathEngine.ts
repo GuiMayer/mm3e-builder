@@ -374,3 +374,22 @@ export function calcInitiativeBonus(
 
   return { total, breakdown };
 }
+
+/**
+ * Calculate the PP discount for Removable / Easily Removable powers.
+ *
+ * Official rule:
+ *   Removable:        −1 PP per 5 PP of main component cost (rounded down)
+ *   Easily Removable: −2 PP per 5 PP of main component cost (rounded down)
+ *
+ * Only mainCost is used (not AE additions), as per the rulebook.
+ * Returns 0 if removable is undefined or 'none'.
+ */
+export function calcRemovableDiscount(
+  mainCost: number,
+  removable: 'none' | 'removable' | 'easily_removable' | undefined
+): number {
+  if (!removable || removable === 'none') return 0;
+  const factor = removable === 'easily_removable' ? 2 : 1;
+  return Math.floor(mainCost / 5) * factor;
+}
