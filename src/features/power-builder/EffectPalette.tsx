@@ -69,6 +69,11 @@ export function EffectPalette({
         <button className="palette-toggle-btn" onClick={onToggleCollapse} title={t('builder.expandPalette')}>
           <ChevronRight size={16} />
         </button>
+        {contextName && (
+          <span className="palette-collapsed-context" title={contextName}>
+            {contextName}
+          </span>
+        )}
         <style>{`
           .palette--collapsed { width: 36px; min-width: 36px; align-items: center; padding-top: var(--s-sm); }
           .palette-toggle-btn {
@@ -77,6 +82,20 @@ export function EffectPalette({
             transition: color var(--t-fast);
           }
           .palette-toggle-btn:hover { color: var(--c-primary); }
+          .palette-collapsed-context {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 0.65rem;
+            color: var(--c-accent);
+            opacity: 0.85;
+            padding: var(--s-xs) 0;
+            max-height: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: default;
+            margin-top: var(--s-xs);
+          }
         `}</style>
       </aside>
     );

@@ -59,7 +59,7 @@ export function AltEffectCard({
   allEffects, allModDefs, effectTypes,
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
-  onAddModifier: _onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption,
+  onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption,
   onInfoClick, EffectComboboxComponent, t,
 }: AltEffectCardProps) {
   const { valid, overageBy } = validation;
@@ -262,6 +262,29 @@ export function AltEffectCard({
                         );
                       })}
                     </div>
+                    {/* Modifier fallback select — for touch/accessibility when DnD is unavailable */}
+                    {isActiveComp && (
+                      <select
+                        className="ae-mod-fallback-select"
+                        value=""
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            onAddModifier(comp.id, e.target.value);
+                            e.currentTarget.value = '';
+                          }
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <option value="">{t('builder.addModifier')} ▾</option>
+                        {allModDefs
+                          .filter((d) => !comp.modifiers.some((m) => m.modifierId === d.id))
+                          .map((d) => (
+                            <option key={d.id} value={d.id}>
+                              {d.name} ({d.costValue > 0 ? '+' : ''}{d.costValue} {d.costType === 'per_rank' ? '/rank' : 'pp'})
+                            </option>
+                          ))}
+                      </select>
+                    )}
                   </div>
                 </div>
               </AEDropzone>
@@ -326,6 +349,15 @@ export function AltEffectCard({
         }
         .ae-add-btn:hover { border-color: var(--c-primary); color: var(--c-primary); }
         .cost-comp-val--invalid { color: var(--c-error); }
+        .ae-mod-fallback-select {
+          width: 100%; padding: 4px 8px; border-radius: var(--r-sm);
+          border: 1px dashed var(--c-border); background: var(--c-surface);
+          color: var(--c-text-muted); font-size: 0.75rem; cursor: pointer;
+          font-family: var(--f-body); transition: border-color var(--t-fast), color var(--t-fast);
+          margin-top: 4px;
+        }
+        .ae-mod-fallback-select:hover { border-color: var(--c-accent); color: var(--c-accent); }
+        .ae-mod-fallback-select:focus { outline: none; border-color: var(--c-accent); }
       `}</style>
     </div>
   );

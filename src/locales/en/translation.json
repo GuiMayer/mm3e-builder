@@ -101,6 +101,7 @@
   "builder.altExceedsCap": "This AE exceeds the cap by {{overageBy}}PP \u2014 reduce ranks or remove modifiers",
   "builder.addLinkedEffect": "+ Linked Effect",
   "builder.altEffectCap": "Cap: \u2264 {{cap}}pp per AE",
+  "builder.addModifier": "Add modifier",
   "builder.paletteContextAE": "Editing: {{aeName}} \u00b7 {{comp}}",
   "builder.saveWithInvalidAEs": "{{count}} AE(s) exceed the cap: {{names}}. Save anyway?",
   "builder.linkedComponent": "Comp. {{n}}",
