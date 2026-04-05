@@ -68,12 +68,25 @@ export interface IAdvantageDef {
   longDescription: string;
 }
 
+// ── Skill Usage (sub-section within skill description) ──
+export interface ISkillUsage {
+  title: string;
+  description: string;
+}
+
 // ── Skill Definition (from skills.json) ──
 export interface ISkillDef {
   id: string;
   name: string;
   baseAbility: AbilityKey;
   subtyped: boolean;
+  trainedOnly: boolean;
+  interaction: boolean;
+  manipulation: boolean;
+  requiresTools: boolean;
+  description: string;
+  longDescription: string;
+  usages: ISkillUsage[];
 }
 
 // ── Character Abilities ──

@@ -1,18 +1,474 @@
 [
-  { "id": "acrobatics", "name": "Acrobatics", "baseAbility": "agl", "subtyped": false, "i18n": { "pt-BR": { "name": "Acrobacia" } } },
-  { "id": "athletics", "name": "Athletics", "baseAbility": "str", "subtyped": false, "i18n": { "pt-BR": { "name": "Atletismo" } } },
-  { "id": "close_combat", "name": "Close Combat", "baseAbility": "fgt", "subtyped": true, "i18n": { "pt-BR": { "name": "Combate Corpo-a-Corpo" } } },
-  { "id": "ranged_combat", "name": "Ranged Combat", "baseAbility": "dex", "subtyped": true, "i18n": { "pt-BR": { "name": "Combate à Distância" } } },
-  { "id": "deception", "name": "Deception", "baseAbility": "pre", "subtyped": false, "i18n": { "pt-BR": { "name": "Enganação" } } },
-  { "id": "expertise", "name": "Expertise", "baseAbility": "int", "subtyped": true, "i18n": { "pt-BR": { "name": "Especialidade" } } },
-  { "id": "stealth", "name": "Stealth", "baseAbility": "agl", "subtyped": false, "i18n": { "pt-BR": { "name": "Furtividade" } } },
-  { "id": "intimidation", "name": "Intimidation", "baseAbility": "pre", "subtyped": false, "i18n": { "pt-BR": { "name": "Intimidação" } } },
-  { "id": "investigation", "name": "Investigation", "baseAbility": "int", "subtyped": false, "i18n": { "pt-BR": { "name": "Investigação" } } },
-  { "id": "perception", "name": "Perception", "baseAbility": "awe", "subtyped": false, "i18n": { "pt-BR": { "name": "Percepção" } } },
-  { "id": "persuasion", "name": "Persuasion", "baseAbility": "pre", "subtyped": false, "i18n": { "pt-BR": { "name": "Persuasão" } } },
-  { "id": "sleight_of_hand", "name": "Sleight of Hand", "baseAbility": "dex", "subtyped": false, "i18n": { "pt-BR": { "name": "Prestidigitação" } } },
-  { "id": "technology", "name": "Technology", "baseAbility": "int", "subtyped": false, "i18n": { "pt-BR": { "name": "Tecnologia" } } },
-  { "id": "treatment", "name": "Treatment", "baseAbility": "int", "subtyped": false, "i18n": { "pt-BR": { "name": "Tratamento" } } },
-  { "id": "vehicles", "name": "Vehicles", "baseAbility": "dex", "subtyped": false, "i18n": { "pt-BR": { "name": "Veículos" } } },
-  { "id": "insight", "name": "Insight", "baseAbility": "awe", "subtyped": false, "i18n": { "pt-BR": { "name": "Intuição" } } }
+  {
+    "id": "acrobatics",
+    "name": "Acrobatics",
+    "baseAbility": "agl",
+    "subtyped": false,
+    "trainedOnly": true,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Flip, dive, roll, tumble, and keep balance under difficult circumstances.",
+    "longDescription": "Use Acrobatics to flip, dive, roll, tumble, and perform other acrobatic maneuvers, as well as keeping your balance under difficult circumstances.",
+    "usages": [
+      { "title": "Balancing", "description": "Move along a precarious surface at ground speed –1 rank. DC 0 (1+ yard wide), 5 (wide ledge 1–3 ft.), 10 (narrow ledge), 15 (balance beam), 20 (tightrope). You are vulnerable while balancing unless you accept +5 to the DC. 1 degree of failure = no movement; 2+ degrees = fall." },
+      { "title": "Maneuvering", "description": "Acrobatic stunts or maneuvers (DC 15): back flips, jumping over an opponent, flipping onto a ledge, tumbling through obstacles. The GM sets the DC. Success accomplishes the maneuver; 2+ degrees of failure generally leaves you prone." },
+      { "title": "Standing", "description": "Make a DC 20 Acrobatics check to stand up from prone as a free action instead of a move action. A failed check means you remain prone." },
+      { "title": "Tumbling", "description": "Make a DC 5 Acrobatics check to lessen damage from a fall, reducing the damage by 1 per degree of success. A fall reduced to rank 0 does no damage and you roll to your feet as a free action. Otherwise, you are prone at the end of a fall." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Acrobacia",
+        "description": "Rolar, mergulhar, saltar e manter equilíbrio em circunstâncias difíceis.",
+        "longDescription": "Use Acrobacia para dar cambalhotas, mergulhar, rolar, realizar manobras acrobáticas e manter equilíbrio em circunstâncias difíceis.",
+        "usages": [
+          { "title": "Equilíbrio", "description": "Mova-se por superfícies precárias à velocidade –1 rank. CD 0 (>1m de largura), 5 (saliência larga 30–90cm), 10 (saliência estreita), 15 (barra de equilíbrio), 20 (corda bamba). Vulnerável enquanto equilibra, a menos que aceite +5 na CD. 1 grau de falha = sem movimento; 2+ graus = cai." },
+          { "title": "Manobras", "description": "Manobras acrobáticas (CD 15): saltos mortais, pular sobre oponentes, subir em bordas, rolar por obstáculos. O Mestre define a CD. Sucesso realiza a manobra; 2+ graus de falha geralmente deixam você caído." },
+          { "title": "Levantar", "description": "Faça um teste de Acrobacia (CD 20) para ficar de pé a partir da posição caída como ação gratuita em vez de ação de movimento. Falha significa que você continua caído." },
+          { "title": "Amortecimento", "description": "Faça um teste de Acrobacia (CD 5) para reduzir o dano de uma queda em 1 por grau de sucesso. Queda reduzida a rank 0 não causa dano e você fica de pé como ação gratuita. Caso contrário, você fica caído ao final da queda." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "athletics",
+    "name": "Athletics",
+    "baseAbility": "str",
+    "subtyped": false,
+    "trainedOnly": false,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Climb, jump, run faster, and swim using raw physical strength.",
+    "longDescription": "Use Athletics for physical feats like climbing, jumping, and swimming. Unlike most skills, Athletics can be used untrained.",
+    "usages": [
+      { "title": "Climbing", "description": "Climb at ground speed –2 ranks with a successful check. DC 0 (ladder), 5 (knotted rope), 10 (rope), 15 (rock face), 20 (brick wall). Fail = no progress; 2+ degrees = fall. Vulnerable while climbing unless you accept +5 DC." },
+      { "title": "Jumping", "description": "Check result = running long-jump distance in feet. Standing jump ÷2, vertical jump ÷5, standing vertical ÷10. Your Athletics bonus +10 is your routine long-jump base." },
+      { "title": "Running", "description": "DC 15 to run faster as a free action; success = +1 ground speed rank for one round." },
+      { "title": "Swimming", "description": "DC 10 to swim at ground speed –2 ranks. Fail = no progress; 2+ degrees = go underwater. +5 DC for rough/choppy water, +10 for stormy/turbulent water." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Atletismo",
+        "description": "Escalar, saltar, correr mais rápido e nadar usando força física bruta.",
+        "longDescription": "Use Atletismo para façanhas físicas como escalar, saltar e nadar. Ao contrário da maioria das perícias, Atletismo pode ser usado sem treinamento.",
+        "usages": [
+          { "title": "Escalar", "description": "Escale à velocidade –2 ranks com um teste bem-sucedido. CD 0 (escada), 5 (corda com nós), 10 (corda), 15 (superfície rochosa), 20 (parede de tijolos). Falha = sem progresso; 2+ graus = cai. Vulnerável ao escalar, a menos que aceite +5 na CD." },
+          { "title": "Saltar", "description": "Resultado do teste = distância do salto em pé em metros. Salto parado ÷2, salto vertical ÷5, salto vertical parado ÷10. Seu bônus de Atletismo +10 é a sua base de salto em pé rotineiro." },
+          { "title": "Correr", "description": "CD 15 para correr mais rápido como ação gratuita; sucesso = +1 rank de velocidade terrestre por um turno." },
+          { "title": "Nadar", "description": "CD 10 para nadar à velocidade –2 ranks. Falha = sem progresso; 2+ graus = vai para baixo da água. +5 CD para água agitada, +10 para água tempestuosa." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "close_combat",
+    "name": "Close Combat",
+    "baseAbility": "fgt",
+    "subtyped": true,
+    "trainedOnly": false,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Training with a specific close attack type, adding your skill rank to attack checks.",
+    "longDescription": "You're trained with a particular type of close attack, giving you a bonus to your attack checks with it equal to your skill rank. Each close attack is a separate Close Combat skill with its own rank, encompassing a single weapon or power. The bonus applies only to attack checks, not defenses. Examples: Close Combat: Unarmed, Close Combat: Swords.",
+    "usages": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Combate Corpo-a-Corpo",
+        "description": "Treinamento com um tipo específico de ataque corpo-a-corpo, adicionando seu rank ao teste de ataque.",
+        "longDescription": "Você é treinado com um tipo específico de ataque corpo-a-corpo, recebendo um bônus igual ao seu rank no teste de ataque. Cada tipo de ataque é uma perícia separada com seus próprios ranks, abrangendo uma única arma ou poder. O bônus aplica-se apenas aos testes de ataque, não à defesa. Exemplos: Combate Corpo-a-Corpo: Desarmado, Combate Corpo-a-Corpo: Espadas.",
+        "usages": []
+      }
+    }
+  },
+  {
+    "id": "deception",
+    "name": "Deception",
+    "baseAbility": "pre",
+    "subtyped": false,
+    "trainedOnly": false,
+    "interaction": true,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Get others to believe what you want through acting, bluffing, trickery, and subterfuge.",
+    "longDescription": "Deception is the skill of getting others to believe what you want them to believe. It covers acting, bluffing, fast-talk, trickery, and subterfuge. Uses in action rounds are generally standard actions; you may attempt Deception as a move action at a –5 penalty.",
+    "usages": [
+      { "title": "Bluffing", "description": "Tell a believable lie or get someone to go along with you. Opposed by target's Deception or Insight. Circumstance modifiers on resistance: –5 (wants to believe), +0 (neutral), +5 (risky/a little hard), +10 (seriously risky), +20 (almost incredible)." },
+      { "title": "Disguise", "description": "Use makeup, costumes, and props to change your appearance. Your Deception check result is the DC of others' Perception checks to see through it. Disguise takes 10+ minutes. Associates get +2, friends +5, loved ones +10 bonus to Perception against impersonations." },
+      { "title": "Feinting", "description": "Standard action. Opposed by target's Deception or Insight. Success: target is vulnerable against your next attack until end of your next round." },
+      { "title": "Innuendo", "description": "Send covert messages using wordplay and double meanings. DC 10 (basic message), 15 (complex), 20 (new/detailed information). The recipient needs a successful Insight check at the same DC to understand the message." },
+      { "title": "Tricking", "description": "Mislead an opponent into a potentially unwise action. Opposed by Deception or Insight. Success: opponent is heedless of environmental danger (e.g., hitting a junction box, falling off a ledge). 2+ degrees of failure: you are vulnerable instead!" }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Enganação",
+        "description": "Faça outros acreditarem no que você quer por meio de atuação, blefe, truques e subterfúgio.",
+        "longDescription": "Enganação é a perícia de fazer outros acreditarem no que você quer. Abrange atuação, blefe, papo furado, truques e subterfúgio. Usos em turnos de ação são geralmente ações padrão; você pode tentar Enganação como ação de movimento com –5 de penalidade.",
+        "usages": [
+          { "title": "Blefar", "description": "Conte uma mentira crível ou faça alguém ir junto com você. Resistido pelo Enganação ou Intuição do alvo. Modificadores de circunstância na resistência: –5 (quer acreditar), +0 (neutro), +5 (arriscado/difícil), +10 (seriamente arriscado), +20 (quase inacreditável)." },
+          { "title": "Disfarce", "description": "Use maquiagem, fantasias e adereços para mudar sua aparência. O resultado do teste de Enganação é a CD dos testes de Percepção dos outros para ver através do disfarce. Leva 10+ minutos. Conhecidos +2, amigos +5, entes queridos +10 bônus na Percepção." },
+          { "title": "Fintar", "description": "Ação padrão. Resistido pelo Enganação ou Intuição do alvo. Sucesso: alvo fica vulnerável contra seu próximo ataque até o fim do seu próximo turno." },
+          { "title": "Código", "description": "Envie mensagens secretas usando jogos de palavras e duplos sentidos. CD 10 (mensagem básica), 15 (complexa), 20 (informação nova/detalhada). O destinatário precisa de um teste de Intuição bem-sucedido na mesma CD para entender." },
+          { "title": "Enganar", "description": "Induza um oponente a uma ação potencialmente imprudente. Resistido por Enganação ou Intuição. Sucesso: oponente é alheio a perigos ambientais. 2+ graus de falha: você fica vulnerável!" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "expertise",
+    "name": "Expertise",
+    "baseAbility": "int",
+    "subtyped": true,
+    "trainedOnly": true,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Knowledge and training in a specialized field — science, law, medicine, history, and more.",
+    "longDescription": "Expertise covers knowledge and training in a variety of specialized fields, professional disciplines, and scholarship. Each area is a separate skill. Trained characters can practice the profession, use its tools, supervise helpers, and handle common problems.",
+    "usages": [
+      { "title": "Professional Practice", "description": "Know the tools, daily tasks, and common problems of the field. Most job-related checks are routine. Examples of areas: Art, Business, Criminal, History, Journalism, Law, Medicine, Military, Music, Science, Streetwise, Technology." },
+      { "title": "Knowledge Checks", "description": "Answer questions related to the area of expertise. DC 10 (easy), 15 (basic), 20+ (difficult). The GM may make this check secretly. Characters are assumed to be licensed or certified to practice their expertise." },
+      { "title": "Untrained Use", "description": "The GM may allow basic knowledge checks untrained (DC 10–15 only). These checks cannot be routine and only cover broad general knowledge." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Especialidade",
+        "description": "Conhecimento e treinamento em uma área especializada — ciência, direito, medicina, história e mais.",
+        "longDescription": "Especialidade cobre conhecimento e treinamento em diversas áreas especializadas, disciplinas profissionais e acadêmicas. Cada área é uma perícia separada. Personagens treinados podem exercer a profissão, usar suas ferramentas e lidar com problemas comuns.",
+        "usages": [
+          { "title": "Prática Profissional", "description": "Conhece as ferramentas, tarefas diárias e problemas comuns da área. A maioria dos testes profissionais é rotineira. Exemplos de áreas: Arte, Negócios, Criminal, História, Jornalismo, Direito, Medicina, Militar, Música, Ciências, Rua." },
+          { "title": "Testes de Conhecimento", "description": "Responda perguntas relacionadas à área de especialidade. CD 10 (fácil), 15 (básica), 20+ (difícil). O Mestre pode fazer o teste secretamente. Personagens são assumidamente licenciados ou certificados para praticar sua especialidade." },
+          { "title": "Uso sem Treinamento", "description": "O Mestre pode permitir testes básicos de conhecimento sem treinamento (apenas CD 10–15). Esses testes não podem ser rotineiros e cobrem apenas conhecimento geral amplo." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "insight",
+    "name": "Insight",
+    "baseAbility": "awe",
+    "subtyped": false,
+    "trainedOnly": false,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Read people's true intentions and feelings through body language, inflection, and intuition.",
+    "longDescription": "You can tell someone's true intentions and feelings by paying attention to body language, inflection, and your own intuition. A successful Insight check allows you to resist the effects of some interaction skills.",
+    "usages": [
+      { "title": "Detect Illusion", "description": "The GM makes a secret Insight check (DC 10 + Illusion rank). Success means you pick up on a flaw in the illusion, sensing it is not real." },
+      { "title": "Detect Influence", "description": "DC 10 + rank of the effect affecting the subject. Success: notice the subject is not acting entirely of their own will. 3+ degrees: general idea of what (or who) is influencing them." },
+      { "title": "Evaluate", "description": "Opposed by Deception: tells if someone is trustworthy and honorable. DC 20 to evaluate a social situation and get a feel for overall mood and prevailing attitudes. 2+ degrees of failure = you misinterpret the signs." },
+      { "title": "Innuendo", "description": "Pick up on hidden messages sent via Deception's Innuendo use. Make an Insight check against the message's DC. Success: you notice a hidden message. 2+ degrees: you also understand it." },
+      { "title": "Resist Influence", "description": "Make an Insight check when called upon to resist interaction skills like Deception or Intimidation. If your result exceeds your opponent's, you are unaffected by their attempt to influence you." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Intuição",
+        "description": "Leia as verdadeiras intenções e sentimentos das pessoas por meio da linguagem corporal, entonação e intuição.",
+        "longDescription": "Você pode perceber as verdadeiras intenções e sentimentos de alguém prestando atenção à linguagem corporal, entonação e sua própria intuição. Um teste de Intuição bem-sucedido permite resistir aos efeitos de algumas perícias de interação.",
+        "usages": [
+          { "title": "Detectar Ilusão", "description": "O Mestre faz um teste secreto de Intuição (CD 10 + rank da Ilusão). Sucesso: você percebe uma falha na ilusão, sentindo que ela não é real." },
+          { "title": "Detectar Influência", "description": "CD 10 + rank do efeito que afeta o sujeito. Sucesso: percebe que o sujeito não está agindo completamente por sua própria vontade. 3+ graus: ideia geral do que (ou quem) o está influenciando." },
+          { "title": "Avaliar", "description": "Resistido por Enganação: diz se alguém é confiável e honrado. CD 20 para avaliar uma situação social e ter uma ideia do humor geral. 2+ graus de falha = você interpreta os sinais errado." },
+          { "title": "Código", "description": "Perceba mensagens ocultas enviadas pelo uso de Código de Enganação. Faça um teste de Intuição contra a CD da mensagem. Sucesso: percebe uma mensagem oculta. 2+ graus: você também a entende." },
+          { "title": "Resistir Influência", "description": "Faça um teste de Intuição para resistir a perícias de interação como Enganação ou Intimidação. Se seu resultado superar o do oponente, você não é afetado pela tentativa de influência." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "intimidation",
+    "name": "Intimidation",
+    "baseAbility": "pre",
+    "subtyped": false,
+    "trainedOnly": false,
+    "interaction": true,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Use threats — real and implied — to get others to do what you want.",
+    "longDescription": "You know how to use threats, both real and implied, to get others to do what you want. Uses in action rounds are generally standard actions; you may attempt Intimidation as a move action at a –5 penalty.",
+    "usages": [
+      { "title": "Coercing", "description": "Opposed by target's Insight or Will defense (highest). Success: treat target as friendly while in your presence — they cooperate but won't risk themselves. Succeed or fail, the target's true attitude generally becomes hostile afterward. 2+ degrees of failure: target may do the opposite of what you want!" },
+      { "title": "Demoralizing", "description": "Standard action in combat. Success: target is impaired (–2 circumstance penalty on checks) until end of your next round. 4+ degrees of success: target is disabled (–5 penalty) instead." },
+      { "title": "Intimidating Minions", "description": "Intimidate an entire group of minions with a single check. Compare your check against a single resistance check made by the GM for the group. The same effect must apply to every member of the group." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Intimidação",
+        "description": "Use ameaças — reais e implícitas — para fazer os outros fazerem o que você quer.",
+        "longDescription": "Você sabe como usar ameaças, reais e implícitas, para fazer os outros fazerem o que você quer. Usos em turnos de ação são geralmente ações padrão; você pode tentar Intimidação como ação de movimento com –5 de penalidade.",
+        "usages": [
+          { "title": "Coagir", "description": "Resistido pelo Intuição ou defesa de Vontade do alvo (o maior). Sucesso: trate o alvo como amigável enquanto em sua presença — ele coopera mas não arriscará a si mesmo. Succeed ou falhe, a verdadeira atitude do alvo geralmente se torna hostil. 2+ graus de falha: o alvo pode fazer o oposto do que você quer!" },
+          { "title": "Desmoralizar", "description": "Ação padrão em combate. Sucesso: alvo fica prejudicado (–2 de penalidade circunstancial nos testes) até o fim do seu próximo turno. 4+ graus de sucesso: alvo fica incapacitado (–5 de penalidade)." },
+          { "title": "Intimidar Capangas", "description": "Intimide um grupo inteiro de capangas com um único teste. Compare seu resultado com um único teste de resistência feito pelo Mestre para o grupo. O mesmo efeito deve se aplicar a todos os membros do grupo." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "investigation",
+    "name": "Investigation",
+    "baseAbility": "int",
+    "subtyped": false,
+    "trainedOnly": true,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Search for clues, gather information through interviews and surveillance, and analyze evidence.",
+    "longDescription": "You know how to search for and study clues, gather information through interviews and surveillance, and analyze evidence to help solve crimes. The GM may make Investigation checks for you in secret, so you do not know exactly what you have found.",
+    "usages": [
+      { "title": "Search", "description": "Search an area for clues, hidden items, or traps. DC 10 (ransack area), 20 (secret compartment or obscure clue), 25+ (well-hidden). DC is opposed by the Stealth or Sleight of Hand check of whoever hid the object." },
+      { "title": "Gather Evidence", "description": "DC 15 to collect evidence for analysis. Success: evidence is ready to analyze (2+ degrees = +2 bonus to later analysis). 2+ degrees of failure: evidence is ruined, no analysis possible." },
+      { "title": "Analyze Evidence", "description": "DC 15 (modified by time elapsed since evidence was left and scene disturbance). Success: extract useful information from evidence. 2+ degrees of failure: misleading or confusing evidence." },
+      { "title": "Gather Information", "description": "DC 10 (at least 1 hour) for a feel for major news and rumors. Degrees of success: 1=General, 2=Specific, 3=Restricted, 4=Protected information. Failure = waste time; extra degree of failure = you alert someone interested in your inquiries." },
+      { "title": "Surveillance", "description": "Set up surveillance of a particular area from a stationary location. The DC of the subject's Stealth check to evade your notice equals your Investigation check result." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Investigação",
+        "description": "Busque pistas, colete informações por entrevistas e vigilância, e analise evidências.",
+        "longDescription": "Você sabe como buscar e estudar pistas, coletar informações por entrevistas e vigilância, e analisar evidências para ajudar a resolver crimes. O Mestre pode fazer testes de Investigação por você secretamente.",
+        "usages": [
+          { "title": "Busca", "description": "Pesquise uma área em busca de pistas, itens ocultos ou armadilhas. CD 10 (vasculhar área), 20 (compartimento secreto ou pista obscura), 25+ (muito bem escondido). A CD é resistida pelo Furtividade ou Prestidigitação de quem escondeu o objeto." },
+          { "title": "Coletar Evidência", "description": "CD 15 para coletar evidência para análise. Sucesso: evidência pronta para analisar (2+ graus = +2 em análise posterior). 2+ graus de falha: evidência destruída, sem análise possível." },
+          { "title": "Analisar Evidência", "description": "CD 15 (modificada pelo tempo desde que a evidência foi deixada e perturbação da cena). Sucesso: extraia informações úteis da evidência. 2+ graus de falha: evidência enganosa ou confusa." },
+          { "title": "Coletar Informação", "description": "CD 10 (pelo menos 1 hora) para ter uma noção de notícias e rumores. Graus de sucesso: 1=Geral, 2=Específica, 3=Restrita, 4=Protegida. Falha = perde tempo; grau extra de falha = você alerta alguém interessado em suas investigações." },
+          { "title": "Vigilância", "description": "Configure vigilância de uma área a partir de um ponto fixo. A CD do teste de Furtividade do sujeito para escapar de sua atenção é igual ao resultado do seu teste de Investigação." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "perception",
+    "name": "Perception",
+    "baseAbility": "awe",
+    "subtyped": false,
+    "trainedOnly": false,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Notice things around you — sights, sounds, and other sensory details.",
+    "longDescription": "Use this skill to notice and pick up on things. Discerning details requires at least three degrees of success. You have a –1 circumstance penalty per 10 feet between you and what you're trying to perceive. The GM usually makes Perception checks secretly.",
+    "usages": [
+      { "title": "Hearing", "description": "DC based on noise level or opposed by Stealth. Normal conversation DC 0, soft noise DC 10. Listening through a door is +5 DC; through a solid wall +15 DC. Hearing something while asleep: +10 DC." },
+      { "title": "Seeing", "description": "DC based on visibility or opposed by Stealth. Something in plain sight DC 0; subtle or easily overlooked may be DC 5, 10, or more. Also used to detect someone in disguise (see Deception) or notice a concealed object (see Sleight of Hand)." },
+      { "title": "Other Senses", "description": "Noticing something obvious to a sense is DC 0. Less obvious things DC 10 or so, hidden things DC 20+. Discerning details requires at least 3 degrees of success, as usual." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Percepção",
+        "description": "Perceba coisas ao seu redor — visões, sons e outros detalhes sensoriais.",
+        "longDescription": "Use esta perícia para notar e perceber coisas. Discernir detalhes requer pelo menos três graus de sucesso. Você tem –1 de penalidade circunstancial a cada 10 pés entre você e o que está tentando perceber. O Mestre geralmente faz testes de Percepção secretamente.",
+        "usages": [
+          { "title": "Ouvir", "description": "CD baseada no nível de ruído ou resistida por Furtividade. Conversa normal CD 0, ruído suave CD 10. Ouvir através de uma porta +5 CD; parede sólida +15 CD. Ouvir algo enquanto dorme: +10 CD." },
+          { "title": "Ver", "description": "CD baseada na visibilidade ou resistida por Furtividade. Algo à vista plena CD 0; sutil ou fácil de ignorar pode ser CD 5, 10 ou mais. Também usado para detectar disfarces (veja Enganação) ou objetos escondidos (veja Prestidigitação)." },
+          { "title": "Outros Sentidos", "description": "Notar algo óbvio para um sentido é CD 0. Coisas menos óbvias CD 10, coisas ocultas CD 20+. Discernir detalhes requer pelo menos 3 graus de sucesso." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "persuasion",
+    "name": "Persuasion",
+    "baseAbility": "pre",
+    "subtyped": false,
+    "trainedOnly": false,
+    "interaction": true,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Deal with people through social graces and a way with words to win them over.",
+    "longDescription": "You're skilled in dealing with people — from etiquette and social graces to public speaking — helping you get your point across, make a good impression, and win people over. Persuading someone takes at least a standard action, usually longer.",
+    "usages": [
+      { "title": "Change Attitude", "description": "DC 15 to improve subject's attitude by 1 step; every 2 additional degrees of success = 1 more step. Failure = no change; 1+ degree of failure = attitude worsens by 1 step. Attitude scale: Hostile → Unfavorable → Indifferent → Favorable → Helpful. Once attitude worsens to Hostile, they may attack." },
+      { "title": "Negotiation", "description": "All participants roll Persuasion to see who gains the advantage. Opposed checks resolve cases where two advocates plead opposing cases before a third party. If a check fails, trying again is futile unless the situation changes." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Persuasão",
+        "description": "Lide com pessoas por meio de etiqueta social e jogo de palavras para convencê-las.",
+        "longDescription": "Você é habilidoso em lidar com pessoas — desde etiqueta e gracejos sociais até oratória — ajudando a transmitir seu ponto, causar boa impressão e conquistar aliados. Persuadir alguém leva pelo menos uma ação padrão, geralmente mais.",
+        "usages": [
+          { "title": "Mudar Atitude", "description": "CD 15 para melhorar a atitude do sujeito em 1 passo; a cada 2 graus adicionais de sucesso = mais 1 passo. Falha = sem mudança; 1+ grau de falha = atitude piora em 1 passo. Escala: Hostil → Desfavorável → Indiferente → Favorável → Prestativo. Se piorar para Hostil, podem atacar." },
+          { "title": "Negociação", "description": "Todos os participantes rolam Persuasão para ver quem ganha vantagem. Testes resistidos resolvem casos onde dois defensores apresentam casos opostos perante um terceiro. Se um teste falhar, tentar novamente é inútil a menos que a situação mude." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "ranged_combat",
+    "name": "Ranged Combat",
+    "baseAbility": "dex",
+    "subtyped": true,
+    "trainedOnly": false,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Training with a specific ranged attack type, adding your skill rank to attack checks.",
+    "longDescription": "You're trained with a particular type of ranged attack, giving you a bonus to your attack checks equal to your skill rank. Each ranged attack is a separate Ranged Combat skill. The bonus applies only to attack checks, not defenses. Examples: Ranged Combat: Guns, Ranged Combat: Fire Control, Ranged Combat: Throwing.",
+    "usages": [],
+    "i18n": {
+      "pt-BR": {
+        "name": "Combate à Distância",
+        "description": "Treinamento com um tipo específico de ataque à distância, adicionando seu rank ao teste de ataque.",
+        "longDescription": "Você é treinado com um tipo específico de ataque à distância, recebendo um bônus igual ao seu rank no teste de ataque. Cada tipo de ataque é uma perícia separada. O bônus aplica-se apenas aos testes de ataque, não à defesa. Exemplos: Combate à Distância: Armas de Fogo, Combate à Distância: Arremesso.",
+        "usages": []
+      }
+    }
+  },
+  {
+    "id": "sleight_of_hand",
+    "name": "Sleight of Hand",
+    "baseAbility": "dex",
+    "subtyped": false,
+    "trainedOnly": true,
+    "interaction": false,
+    "manipulation": true,
+    "requiresTools": false,
+    "description": "Dexterous feats: palm objects, pick pockets, slip restraints, and perform legerdemain.",
+    "longDescription": "You can perform dexterous feats of legerdemain such as palming small objects, picking pockets, slipping out of restraints, and so forth. Used by stage magicians and criminals alike.",
+    "usages": [
+      { "title": "Concealing", "description": "Conceal a small item on your person. Your check result is the DC of an Investigation or Perception check to find it." },
+      { "title": "Contorting", "description": "DC 30 to fit through a tight space wide enough for your head but too narrow for your shoulders, or to reach through an opening wide enough for your hand but too narrow for your arm." },
+      { "title": "Escaping", "description": "Slip out of restraints (at least 1 minute per check). DC 15 (ropes), 20 (handcuffs), 25 (straightjacket), 15 + rank (power effect)." },
+      { "title": "Legerdemain", "description": "Minor feats like making a coin or playing card 'vanish.' DC 10 unless an observer is focused on noticing. When performed under observation, opposed by the observer's Perception check." },
+      { "title": "Planting", "description": "Plant a small object on someone. DC 20 (regardless of opponent's check). The opponent notices the attempt if their Perception check beats yours, whether you succeed or not." },
+      { "title": "Stealing", "description": "Covertly take something from another person. DC 20. Target makes a Perception check and notices the attempt if their check result beats yours." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Prestidigitação",
+        "description": "Façanhas de destreza: esconder objetos, bater carteiras, escapar de amarras e fazer mágicas de palco.",
+        "longDescription": "Você pode realizar façanhas de prestidigitação como esconder pequenos objetos, bater carteiras, escapar de amarras e afins. Usada por mágicos de palco e criminosos.",
+        "usages": [
+          { "title": "Esconder", "description": "Esconda um pequeno item em sua pessoa. O resultado do seu teste é a CD do teste de Investigação ou Percepção para encontrá-lo." },
+          { "title": "Contorcer", "description": "CD 30 para caber em um espaço estreito largo o suficiente para sua cabeça mas não para seus ombros, ou alcançar por uma abertura larga o suficiente para sua mão mas não para seu braço." },
+          { "title": "Escapar", "description": "Solte-se de amarras (pelo menos 1 minuto por teste). CD 15 (cordas), 20 (algemas), 25 (camisa de força), 15 + rank (efeito de poder)." },
+          { "title": "Prestidigitação", "description": "Pequenas mágicas como fazer uma moeda ou carta 'desaparecer.' CD 10 a menos que um observador esteja focado em notar. Ao ser executada sob observação, resistida pelo teste de Percepção do observador." },
+          { "title": "Plantar", "description": "Plante um pequeno objeto em alguém. CD 20 (independente do teste do oponente). O oponente percebe a tentativa se o teste de Percepção dele superar o seu, quer você tenha sucesso ou não." },
+          { "title": "Roubar", "description": "Pegue algo de outra pessoa disfarçadamente. CD 20. O alvo faz um teste de Percepção e percebe a tentativa se o resultado superar o seu." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "stealth",
+    "name": "Stealth",
+    "baseAbility": "agl",
+    "subtyped": false,
+    "trainedOnly": false,
+    "interaction": false,
+    "manipulation": false,
+    "requiresTools": false,
+    "description": "Go unnoticed — hide, move silently, and tail subjects without being detected.",
+    "longDescription": "You're skilled in going unnoticed. While using Stealth, you can move at your speed rank minus 1 with no penalty. Faster than that, up to your full speed, you take a –5 circumstance penalty to your Stealth checks.",
+    "usages": [
+      { "title": "Hiding", "description": "With cover or concealment, make a Stealth check opposed by an observer's Perception to hide and go unnoticed. You can't hide in plain sight. You can't hide while others are aware of your presence, but a successful Deception or Intimidation check can give you the momentary distraction needed (–5 penalty to Stealth)." },
+      { "title": "Tailing", "description": "Follow someone at your normal speed using cover (crowds, shadows, fog). A suspicious target gets a Perception check (opposed by your Stealth) each time they change course. If spotted, make a Deception check opposed by Insight to pass it off as coincidence. Spotted a second time = target knows they're being followed." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Furtividade",
+        "description": "Passe despercebido — esconda-se, mova-se silenciosamente e siga alvos sem ser detectado.",
+        "longDescription": "Você é habilidoso em passar despercebido. Ao usar Furtividade, você pode se mover à velocidade –1 rank sem penalidade. Acima disso, até sua velocidade máxima, você sofre –5 de penalidade circunstancial.",
+        "usages": [
+          { "title": "Esconder-se", "description": "Com cobertura ou ocultação, faça um teste de Furtividade resistido pelo Percepção de um observador para se esconder. Você não pode se esconder à vista plena. Você não pode se esconder enquanto os outros estão cientes de sua presença, mas um teste bem-sucedido de Enganação ou Intimidação pode dar a distração momentânea necessária (–5 em Furtividade)." },
+          { "title": "Seguir", "description": "Siga alguém à sua velocidade normal usando cobertura (multidões, sombras, névoa). Um alvo desconfiado faz um teste de Percepção (resistido por sua Furtividade) toda vez que muda de direção. Se notar sua presença, faça um teste de Enganação resistido por Intuição para passar como coincidência. Notado pela segunda vez = alvo sabe que está sendo seguido." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "technology",
+    "name": "Technology",
+    "baseAbility": "int",
+    "subtyped": false,
+    "trainedOnly": true,
+    "interaction": false,
+    "manipulation": true,
+    "requiresTools": true,
+    "description": "Operate, build, repair, hack, and work with technological devices and equipment.",
+    "longDescription": "Technology covers operating, building, repairing, and generally working with technological devices and equipment. Without the proper tools, you take a –5 circumstance penalty to Technology checks.",
+    "usages": [
+      { "title": "Operating", "description": "Routine operation of known devices doesn't require a check. Using an unfamiliar device does. DC 10 (simple), up to DC 25+ (highly advanced)." },
+      { "title": "Building", "description": "Build an item from scratch. DC 15 / 10h (simple: timer, tripwire), DC 20 / 8h (moderate: radio finder, lock), DC 25 / 24h (complex: cell phone, engine), DC 30 / 4 days (advanced: computer, vehicle). Fail = wasted time and materials; 2+ degrees of failure = possible accident." },
+      { "title": "Repairing", "description": "Repair DC = Building DC –5; time rank –2. Jury-rigging: total DC –10, standard action, but repair lasts only until end of scene. Can reduce time rank by 1 at –5 to skill check." },
+      { "title": "Demolitions", "description": "Place explosives carefully to maximize damage. Requires 1+ minute and DC 10 check. Each 2 full degrees of success = +5 damage to structure. Fail = doesn't go off as planned; 2+ failure degrees = goes off while setting it." },
+      { "title": "Security", "description": "Disarm or sabotage locks, traps, and security sensors (at least 1 minute). DC 10 (simple lock/home alarm), 15 (quality lock), 20 (business security), 25 (high security), 30 (very high), 35 (maximum), 40 (super-max). +5 DC to prevent your tampering from being noticed." },
+      { "title": "Inventing", "description": "Requires the Inventor advantage. Create temporary devices called inventions. See the Inventing rules for details." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Tecnologia",
+        "description": "Opere, construa, repare, hackeie e trabalhe com dispositivos e equipamentos tecnológicos.",
+        "longDescription": "Tecnologia cobre operar, construir, reparar e geralmente trabalhar com dispositivos e equipamentos tecnológicos. Sem as ferramentas adequadas, você sofre –5 de penalidade circunstancial.",
+        "usages": [
+          { "title": "Operar", "description": "Operação rotineira de dispositivos conhecidos não requer teste. Usar um dispositivo desconhecido requer. CD 10 (simples), até CD 25+ (altamente avançado)." },
+          { "title": "Construir", "description": "Construa um item do zero. CD 15 / 10h (simples), CD 20 / 8h (moderado), CD 25 / 24h (complexo), CD 30 / 4 dias (avançado). Falha = tempo e materiais desperdiçados; 2+ graus de falha = possível acidente." },
+          { "title": "Reparar", "description": "CD de reparo = CD de construção –5; rank de tempo –2. Reparo emergencial: CD total –10, ação padrão, mas dura só até o fim da cena. Pode reduzir rank de tempo em 1 com –5 no teste." },
+          { "title": "Demolições", "description": "Posicione explosivos cuidadosamente para maximizar dano. Requer 1+ minuto e CD 10. Cada 2 graus de sucesso = +5 de dano à estrutura. Falha = não detona como planejado; 2+ graus de falha = explode enquanto você está armando." },
+          { "title": "Segurança", "description": "Desarme ou sabote fechaduras, armadilhas e sensores de segurança (mínimo 1 minuto). CD 10 (fechadura simples/alarme residencial), 15 (fechadura de qualidade), 20 (segurança empresarial), 25 (alta segurança), 30 (muito alta), 35 (máxima), 40 (super-máxima). +5 CD para não ser percebido." },
+          { "title": "Inventar", "description": "Requer a vantagem Inventor. Crie dispositivos temporários chamados invenções. Veja as regras de Invenção para detalhes." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "treatment",
+    "name": "Treatment",
+    "baseAbility": "int",
+    "subtyped": false,
+    "trainedOnly": true,
+    "interaction": false,
+    "manipulation": true,
+    "requiresTools": true,
+    "description": "Treat injuries, ailments, and conditions — diagnose, stabilize, revive, and provide care.",
+    "longDescription": "You're trained in treating injuries and ailments. Without appropriate medical equipment, you take a –5 circumstance penalty. You can use Treatment on yourself only to diagnose, provide care, or treat disease/poison, at a –5 penalty.",
+    "usages": [
+      { "title": "Diagnosis", "description": "DC 10, takes 1+ minute. A successful check provides +2 circumstance bonus to further Treatment checks on the patient." },
+      { "title": "Provide Care", "description": "DC 15. Treat an injured patient for a day or more; success reduces the patient's recovery time by 1 rank. You can provide care for up to your Treatment rank in patients at one time." },
+      { "title": "Revive", "description": "DC 15, standard action. Remove the dazed or stunned condition from a subject. Other conditions the patient may have remain. You can't awaken a dying character without stabilizing first." },
+      { "title": "Stabilize", "description": "DC 15, standard action. Stabilize a dying character. Must stabilize before reviving a dying character." },
+      { "title": "Treat Disease/Poison", "description": "DC 15. Each time the patient makes a resistance check against the ailment, also make a Treatment check. 1 degree of success = +2 circumstance bonus to the resistance check; 3+ degrees = +5 bonus." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Tratamento",
+        "description": "Trate ferimentos, enfermidades e condições — diagnostique, estabilize, reanime e preste cuidados.",
+        "longDescription": "Você é treinado em tratar ferimentos e enfermidades. Sem equipamento médico adequado, você sofre –5 de penalidade circunstancial. Você pode usar Tratamento em si mesmo apenas para diagnosticar, prestar cuidados ou tratar doenças/venenos, com –5 de penalidade.",
+        "usages": [
+          { "title": "Diagnóstico", "description": "CD 10, leva 1+ minuto. Um teste bem-sucedido oferece +2 de bônus circunstancial em testes de Tratamento posteriores no paciente." },
+          { "title": "Prover Cuidados", "description": "CD 15. Trate um paciente ferido por um dia ou mais; sucesso reduz o tempo de recuperação do paciente em 1 rank. Você pode tratar até um número de pacientes igual ao seu rank de Tratamento ao mesmo tempo." },
+          { "title": "Reanimar", "description": "CD 15, ação padrão. Remova a condição tonto ou atordoado de um sujeito. Outras condições do paciente permanecem. Você não pode despertar um personagem moribundo sem estabilizá-lo primeiro." },
+          { "title": "Estabilizar", "description": "CD 15, ação padrão. Estabilize um personagem moribundo. Deve estabilizar antes de reanimar um personagem moribundo." },
+          { "title": "Tratar Doença/Veneno", "description": "CD 15. Cada vez que o paciente faz um teste de resistência contra a enfermidade, faça também um teste de Tratamento. 1 grau de sucesso = +2 de bônus circunstancial no teste de resistência; 3+ graus = +5 de bônus." }
+        ]
+      }
+    }
+  },
+  {
+    "id": "vehicles",
+    "name": "Vehicles",
+    "baseAbility": "dex",
+    "subtyped": false,
+    "trainedOnly": true,
+    "interaction": false,
+    "manipulation": true,
+    "requiresTools": false,
+    "description": "Operate vehicles — cars, boats, planes, and more — especially in stressful situations.",
+    "longDescription": "Use this skill to operate vehicles from ground vehicles to boats, planes, or even spaceships. Routine operation of known vehicles doesn't require a check. Make a check when operating in stressful or dramatic situations: being chased, attacked, or racing to a destination.",
+    "usages": [
+      { "title": "Maneuvering", "description": "DC 5 (easy: low-speed turn), DC 10 (average: sudden reverse, dodging obstacles), DC 15 (difficult: tight turns), DC 20 (challenging: bootlegger reverse, loop, barrel roll), DC 25 (formidable: high-speed maneuvers, jumping or flying around obstacles). Note: riding animal mounts uses Expertise: Riding (Agility-based), not Vehicles." }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Veículos",
+        "description": "Opere veículos — carros, barcos, aviões e mais — especialmente em situações de estresse.",
+        "longDescription": "Use esta perícia para operar veículos, de veículos terrestres a barcos, aviões ou até naves espaciais. Operação rotineira de veículos conhecidos não requer teste. Faça um teste ao operar em situações estressantes ou dramáticas: sendo perseguido, atacado ou correndo para um destino.",
+        "usages": [
+          { "title": "Manobras", "description": "CD 5 (fácil: curva em baixa velocidade), CD 10 (médio: marcha a ré súbita, desviar de obstáculos), CD 15 (difícil: curvas fechadas), CD 20 (desafiador: marcha a ré em alta velocidade, looping, barril), CD 25 (formidável: manobras em alta velocidade, pular ou voar entre obstáculos). Nota: montar animais usa Especialidade: Equitação (baseada em Agilidade), não Veículos." }
+        ]
+      }
+    }
+  }
 ]
