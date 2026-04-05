@@ -13,7 +13,6 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import type {
   ICharacterPower,
-  IAlternateEffect,
   IModifierDef,
   ICharacterPowerComponent,
   IPowerEffect,
@@ -28,6 +27,8 @@ import {
 import { validateAttackEffect } from '../../shared/lib/validation';
 import { EffectPalette } from './EffectPalette';
 import { AltEffectCard } from './AltEffectCard';
+import { useAlternateEffects } from './hooks/useAlternateEffects';
+import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
@@ -334,132 +335,25 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     }));
   }
 
-  function addAlternateEffect() {
-    const newAE: IAlternateEffect = {
-      id: uuidv4(),
-      name: '',
-      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [] }],
-      dynamic: false,
-      notes: '',
-    };
-    setPower((p) => ({ ...p, alternateEffects: [...p.alternateEffects, newAE] }));
-    setExpandedAEId(newAE.id);
-  }
-
-  function removeAlternateEffect(id: string) {
-    setPower((p) => ({ ...p, alternateEffects: p.alternateEffects.filter((a) => a.id !== id) }));
-    if (expandedAEId === id) setExpandedAEId(null);
-  }
-
-  function updateAlternateEffect(id: string, update: Partial<IAlternateEffect>) {
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((a) => a.id === id ? { ...a, ...update } : a),
-    }));
-  }
-
-  // ── AE Component CRUD ──
-  function addAEComponent(aeId: string) {
-    const newComp = { id: uuidv4(), effectId: '', ranks: 1, modifiers: [] };
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((ae) =>
-        ae.id !== aeId ? ae : { ...ae, components: [...ae.components, newComp] }
-      ),
-    }));
-    setActiveAEComponentId((prev) => ({ ...prev, [aeId]: newComp.id }));
-  }
-
-  function removeAEComponent(aeId: string, compId: string) {
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((ae) => {
-        if (ae.id !== aeId || ae.components.length <= 1) return ae;
-        return { ...ae, components: ae.components.filter((c) => c.id !== compId) };
-      }),
-    }));
-  }
-
-  function updateAEComponent(aeId: string, compId: string, update: Partial<{ effectId: string; ranks: number }>) {
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((ae) =>
-        ae.id !== aeId ? ae : {
-          ...ae,
-          components: ae.components.map((c) => c.id !== compId ? c : { ...c, ...update }),
-        }
-      ),
-    }));
-  }
-
-  function addModifierToAEComponent(aeId: string, compId: string, modId: string, isPowerSpecific?: boolean) {
-    const allSpecific = powerDefs.flatMap((p) => [...(p.extras || []), ...(p.flaws || [])]);
-    const isSpecific = isPowerSpecific ?? allSpecific.some((m) => m.id === modId);
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((ae) =>
-        ae.id !== aeId ? ae : {
-          ...ae,
-          components: ae.components.map((comp) => {
-            if (comp.id !== compId) return comp;
-            const already = comp.modifiers.find((m) => m.modifierId === modId);
-            if (already) {
-              return { ...comp, modifiers: comp.modifiers.map((m) => m.modifierId === modId ? { ...m, ranks: m.ranks + 1 } : m) };
-            }
-            return { ...comp, modifiers: [...comp.modifiers, { modifierId: modId, ranks: 1, isPowerSpecific: isSpecific }] };
-          }),
-        }
-      ),
-    }));
-  }
-
-  function removeModifierFromAEComponent(aeId: string, compId: string, modId: string) {
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((ae) =>
-        ae.id !== aeId ? ae : {
-          ...ae,
-          components: ae.components.map((comp) =>
-            comp.id !== compId ? comp : { ...comp, modifiers: comp.modifiers.filter((m) => m.modifierId !== modId) }
-          ),
-        }
-      ),
-    }));
-  }
-
-  function updateAEModifierRanks(aeId: string, compId: string, modId: string, ranks: number) {
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((ae) =>
-        ae.id !== aeId ? ae : {
-          ...ae,
-          components: ae.components.map((comp) =>
-            comp.id !== compId ? comp : {
-              ...comp,
-              modifiers: comp.modifiers.map((m) => m.modifierId === modId ? { ...m, ranks: Math.max(1, ranks) } : m),
-            }
-          ),
-        }
-      ),
-    }));
-  }
-
-  function updateAEModifierOption(aeId: string, compId: string, modId: string, option: string) {
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((ae) =>
-        ae.id !== aeId ? ae : {
-          ...ae,
-          components: ae.components.map((comp) =>
-            comp.id !== compId ? comp : {
-              ...comp,
-              modifiers: comp.modifiers.map((m) => m.modifierId === modId ? { ...m, option } : m),
-            }
-          ),
-        }
-      ),
-    }));
-  }
+  // ── AE CRUD — delegado ao hook useAlternateEffects ──
+  const {
+    addAlternateEffect,
+    removeAlternateEffect,
+    updateAlternateEffect,
+    addAEComponent,
+    removeAEComponent,
+    updateAEComponent,
+    addModifierToAEComponent,
+    removeModifierFromAEComponent,
+    updateAEModifierRanks,
+    updateAEModifierOption,
+  } = useAlternateEffects({
+    setPower,
+    powerDefs,
+    expandedAEId,
+    setExpandedAEId,
+    setActiveAEComponentId,
+  });
 
   function handleSave() {
     const hasEffect = power.components.some((c) => c.effectId !== '');
@@ -763,7 +657,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   onToggleExpand={() => setExpandedAEId((prev) => prev === ae.id ? null : ae.id)}
                   activeCompId={activeAEComponentId[ae.id] ?? ae.components[0]?.id ?? ''}
                   onSetActiveComp={(compId) => setActiveAEComponentId((prev) => ({ ...prev, [ae.id]: compId }))}
-                  powerDefs={powerDefs}
                   allEffects={powerDefs}
                   allModDefs={allModDefs}
                   effectTypes={effectTypes}
@@ -778,7 +671,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   onUpdateModifierRanks={(cId, modId, ranks) => updateAEModifierRanks(ae.id, cId, modId, ranks)}
                   onUpdateModifierOption={(cId, modId, opt) => updateAEModifierOption(ae.id, cId, modId, opt)}
                   onInfoClick={setEffectModalPower}
-                  EffectComboboxComponent={EffectCombobox}
                   t={t}
                 />
               ))}
@@ -945,35 +837,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
           background: var(--c-surface-elevated); border-radius: var(--r-sm);
         }
 
-        /* Effect selector combobox */
-        .effect-combobox { display: flex; flex-direction: column; gap: var(--s-xs); }
-        .effect-combobox-controls { display: flex; gap: var(--s-xs); align-items: center; }
-        .effect-search-input {
-          flex: 1; background: var(--c-surface-elevated); border: 1px solid var(--c-border);
-          border-radius: var(--r-sm); padding: 6px 10px; color: var(--c-text);
-          font-family: var(--f-body); font-size: 0.85rem;
-        }
-        .effect-search-input:focus { outline: none; border-color: var(--c-primary); }
-        .effect-type-select {
-          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
-          border-radius: var(--r-sm); padding: 5px 6px; color: var(--c-text);
-          font-family: var(--f-body); font-size: 0.78rem; cursor: pointer;
-        }
-        .effect-selector-row { display: flex; gap: var(--s-xs); align-items: center; }
-        .effect-select {
-          flex: 1; background: var(--c-surface-elevated); border: 1px solid var(--c-border);
-          border-radius: var(--r-sm); padding: var(--s-sm) var(--s-md);
-          color: var(--c-text); font-family: var(--f-body); font-size: 0.9rem;
-        }
-        .effect-select:focus { outline: none; border-color: var(--c-primary); }
-        .effect-info-btn {
-          background: transparent; border: 1px solid var(--c-border); border-radius: var(--r-sm);
-          color: var(--c-text-muted); cursor: pointer; padding: 6px 8px;
-          display: flex; align-items: center; transition: all var(--t-fast);
-        }
-        .effect-info-btn:hover { border-color: var(--c-primary); color: var(--c-primary); }
-        .effect-info-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
         /* Effect info strip */
         .build-effect-info {
           display: flex; flex-wrap: wrap; gap: var(--s-sm); align-items: center;
@@ -1082,81 +945,4 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   );
 }
 
-// ── Effect Combobox ──
-function EffectCombobox({
-  value,
-  onChange,
-  effects,
-  allEffects,
-  filter,
-  onFilterChange,
-  typeFilter,
-  onTypeFilterChange,
-  effectTypes,
-  t,
-  onInfo,
-}: {
-  value: string;
-  onChange: (id: string) => void;
-  effects: IPowerEffect[];
-  allEffects: IPowerEffect[];
-  filter: string;
-  onFilterChange: (v: string) => void;
-  typeFilter: string;
-  onTypeFilterChange: (v: string) => void;
-  effectTypes: string[];
-  t: (key: string) => string;
-  onInfo: (e: IPowerEffect) => void;
-}) {
-  const selectedEff = allEffects.find((d) => d.id === value);
-
-  return (
-    <div className="effect-combobox">
-      <div className="effect-combobox-controls">
-        <input
-          className="effect-search-input"
-          value={filter}
-          onChange={(e) => onFilterChange(e.target.value)}
-          placeholder={t('builder.searchEffect')}
-          onClick={(e) => e.stopPropagation()}
-        />
-        <select
-          className="effect-type-select"
-          value={typeFilter}
-          onChange={(e) => { e.stopPropagation(); onTypeFilterChange(e.target.value); }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {effectTypes.map((type) => (
-            <option key={type} value={type}>
-              {t(`builder.filter${type.charAt(0).toUpperCase() + type.slice(1)}`)}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="effect-selector-row">
-        <select
-          className="effect-select"
-          value={value}
-          onChange={(e) => { e.stopPropagation(); onChange(e.target.value); }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <option value="">{t('builder.selectEffect')}</option>
-          {effects.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.name} ({d.baseCost} PP/rank)
-            </option>
-          ))}
-        </select>
-        <button
-          className="effect-info-btn"
-          disabled={!selectedEff}
-          onClick={(e) => { e.stopPropagation(); if (selectedEff) onInfo(selectedEff); }}
-          title={t('builder.viewEffect')}
-        >
-          <Info size={14} />
-        </button>
-      </div>
-    </div>
-  );
-}
 
