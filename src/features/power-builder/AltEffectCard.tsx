@@ -1,15 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { X, Plus, AlertTriangle } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
+import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import type {
   IAlternateEffect,
   IPowerEffect,
   IModifierDef,
 } from '../../entities/types';
-
-// EffectCombobox is defined at the bottom of PowerBuilderOverlay — pass it as a render prop
-// or re-export it. For simplicity we receive the necessary props and render inline selects here
-// using the same EffectCombobox imported via the barrel export from the overlay.
 
 interface AltEffectCardProps {
   ae: IAlternateEffect;
@@ -20,7 +17,6 @@ interface AltEffectCardProps {
   onToggleExpand: () => void;
   activeCompId: string;
   onSetActiveComp: (id: string) => void;
-  powerDefs: IPowerEffect[];
   allEffects: IPowerEffect[];
   allModDefs: IModifierDef[];
   effectTypes: string[];
@@ -35,22 +31,7 @@ interface AltEffectCardProps {
   onUpdateModifierRanks: (cId: string, modId: string, ranks: number) => void;
   onUpdateModifierOption: (cId: string, modId: string, opt: string) => void;
   onInfoClick: (e: IPowerEffect) => void;
-  EffectComboboxComponent: React.ComponentType<EffectComboboxProps>;
   t: (key: string, opts?: Record<string, unknown>) => string;
-}
-
-interface EffectComboboxProps {
-  value: string;
-  onChange: (id: string) => void;
-  effects: IPowerEffect[];
-  allEffects: IPowerEffect[];
-  filter: string;
-  onFilterChange: (v: string) => void;
-  typeFilter: string;
-  onTypeFilterChange: (v: string) => void;
-  effectTypes: string[];
-  t: (key: string) => string;
-  onInfo: (e: IPowerEffect) => void;
 }
 
 export function AltEffectCard({
@@ -60,7 +41,7 @@ export function AltEffectCard({
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
   onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption,
-  onInfoClick, EffectComboboxComponent, t,
+  onInfoClick, t,
 }: AltEffectCardProps) {
   const { valid, overageBy } = validation;
 
@@ -155,7 +136,7 @@ export function AltEffectCard({
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div className="build-section build-section--flex">
-                      <EffectComboboxComponent
+                      <EffectCombobox
                         value={comp.effectId}
                         onChange={(effectId) => onUpdateComponent(comp.id, { effectId })}
                         effects={localFilteredEffects}
