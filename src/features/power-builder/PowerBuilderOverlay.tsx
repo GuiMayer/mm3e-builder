@@ -18,20 +18,22 @@ import type {
   ICharacterPowerComponent,
   IPowerEffect,
 } from '../../entities/types';
-import powerDefsRaw from '../../data/powers.json';
-import modifierDefsRaw from '../../data/modifiers.json';
+import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import {
   calculateArrayCost,
   getComponentCostBreakdown,
   calcAlternateEffectCost,
   validateAECost,
 } from '../../shared/lib/mathEngine';
+import { validateAttackEffect } from '../../shared/lib/validation';
 import { EffectPalette } from './EffectPalette';
 import { AltEffectCard } from './AltEffectCard';
 import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
+import { useCharStore } from '../../store/charStore';
+import { useAppStore } from '../../store/appStore';
 
 // ── Droppable Zone per component ──
 function ModifierDropzone({
@@ -63,8 +65,12 @@ interface Props {
 
 export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   const { t } = useTranslation();
-  const powerDefs = useLocalizedData(powerDefsRaw) as IPowerEffect[];
-  const modifierDefs = useLocalizedData(modifierDefsRaw as Parameters<typeof useLocalizedData>[0]) as IModifierDef[];
+  const powerDefs = useLocalizedData(POWER_DEFS) as IPowerEffect[];
+  const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
+
+  // TD-5: Strict mode — read powerLevel and strictMode from stores
+  const powerLevel = useCharStore((s) => s.character.header.powerLevel);
+  const strictMode = useAppStore((s) => s.strictMode);
 
   // Build initial state — if existing power has legacy format, migration handles it at store level
   const [power, setPower] = useState<ICharacterPower>(
@@ -142,6 +148,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     power.alternateEffects.map((ae) => calcAlternateEffectCost(ae, powerDefs, allModDefs))
   , [power.alternateEffects, powerDefs, allModDefs]);
   const aeValidations = aeCosts.map((cost) => validateAECost(cost, mainCost));
+
+  // TD-5: Strict Mode PL violation check
+  // validateAttackEffect: attack + highest damage rank <= PL*2
+  const plViolation = useMemo(() => {
+    if (!strictMode) return null;
+    // Heuristic: check the highest-rank damage component against PL*2
+    const highestRank = power.components.reduce((max, c) => Math.max(max, c.ranks), 0);
+    const attackBonus = 0; // Power builder doesn't track attack bonus, defaulting to 0
+    return validateAttackEffect(attackBonus, highestRank, powerLevel);
+  }, [strictMode, powerLevel, power.components]);
 
   // Palette context: when an AE is expanded, palette serves that AE's active component
   const paletteSelectedEffect = useMemo(() => {
@@ -748,13 +764,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   activeCompId={activeAEComponentId[ae.id] ?? ae.components[0]?.id ?? ''}
                   onSetActiveComp={(compId) => setActiveAEComponentId((prev) => ({ ...prev, [ae.id]: compId }))}
                   powerDefs={powerDefs}
-                  filteredEffects={filteredEffects}
                   allEffects={powerDefs}
                   allModDefs={allModDefs}
-                  effectFilter={effectFilter}
-                  onFilterChange={setEffectFilter}
-                  typeFilter={effectTypeFilter}
-                  onTypeFilterChange={setEffectTypeFilter}
                   effectTypes={effectTypes}
                   activeId={activeId}
                   onUpdateAE={(update) => updateAlternateEffect(ae.id, update)}
@@ -810,6 +821,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
             <span className="cost-total-label">{t('builder.total')}:</span>
             <span className="cost-total-value">{totalCost} {t('common.pp')}</span>
           </div>
+          {plViolation && (
+            <div className="pl-violation-banner">
+              <AlertTriangle size={13} />
+              <span>{t('validation.attackDamage')} — {plViolation.formula} (max {plViolation.limit})</span>
+            </div>
+          )}
         </div>
 
         <DragOverlay>
@@ -1044,6 +1061,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
         .cost-total { display: flex; align-items: center; gap: var(--s-sm); }
         .cost-total-label { font-size: 0.9rem; font-weight: 600; }
         .cost-total-value { font-family: var(--f-heading); font-size: 1.4rem; font-weight: 800; color: var(--c-primary); }
+        .pl-violation-banner { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--c-error); background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3); border-radius: var(--r-sm); padding: 5px 10px; margin-top: 4px; width: 100%; }
 
         /* Drag ghost */
         .drag-ghost {

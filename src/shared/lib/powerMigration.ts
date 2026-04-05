@@ -2,33 +2,62 @@ import { v4 as uuidv4 } from 'uuid';
 import type { ICharacterPower, IAlternateEffect, IAppliedModifier } from '../../entities/types';
 
 /**
+ * Factory for a safe, empty AE fallback — used when input is malformed.
+ * Preserves the id if present so array slots remain stable.
+ */
+function safeFallbackAE(raw: unknown): IAlternateEffect {
+  const id = typeof raw === 'object' && raw !== null && 'id' in raw
+    ? String((raw as Record<string, unknown>).id)
+    : uuidv4();
+  const name = typeof raw === 'object' && raw !== null && 'name' in raw
+    ? String((raw as Record<string, unknown>).name)
+    : '';
+  return { id, name, dynamic: false, components: [], notes: '' };
+}
+
+/**
  * Migrate an Alternate Effect from legacy v1 format (effectId + ranks + modifiers)
  * to the new v2 format (components[]).
  *
- * This enables Linked Powers within a single array slot — a canonical MM3e technique
- * (e.g. "Taser Blade": Close Damage 5 + Affliction 5 linked in one AE slot).
+ * Safety guarantees:
+ * - Non-object inputs → safe empty AE
+ * - v2 (components[]) → pass through
+ * - v1 (effectId flat) → wrap in components[0]
+ * - Completely unknown shape → safe empty AE instead of phantom component
  */
-export function migrateAlternateEffect(raw: Record<string, unknown>): IAlternateEffect {
-  // Already in v2 format
-  if (Array.isArray(raw.components)) {
-    return raw as unknown as IAlternateEffect;
+export function migrateAlternateEffect(raw: unknown): IAlternateEffect {
+  // Guard: must be a plain object
+  if (typeof raw !== 'object' || raw === null) {
+    return safeFallbackAE(raw);
   }
 
-  // v1 format: effectId + ranks + modifiers → wrap in components[0]
-  return {
-    id: (raw.id as string) ?? uuidv4(),
-    name: (raw.name as string) ?? '',
-    components: [
-      {
-        id: uuidv4(),
-        effectId: (raw.effectId as string) ?? '',
-        ranks: (raw.ranks as number) ?? 1,
-        modifiers: (raw.modifiers as IAppliedModifier[]) ?? [],
-      },
-    ],
-    dynamic: (raw.dynamic as boolean) ?? false,
-    notes: (raw.notes as string) ?? '',
-  };
+  const obj = raw as Record<string, unknown>;
+
+  // v2 format: components[] present
+  if (Array.isArray(obj.components)) {
+    return obj as unknown as IAlternateEffect;
+  }
+
+  // v1 format: must have effectId to be a valid legacy AE
+  if (typeof obj.effectId === 'string' && obj.effectId.length > 0) {
+    return {
+      id: (obj.id as string) ?? uuidv4(),
+      name: (obj.name as string) ?? '',
+      components: [
+        {
+          id: uuidv4(),
+          effectId: obj.effectId,
+          ranks: (obj.ranks as number) ?? 1,
+          modifiers: (obj.modifiers as IAppliedModifier[]) ?? [],
+        },
+      ],
+      dynamic: (obj.dynamic as boolean) ?? false,
+      notes: (obj.notes as string) ?? '',
+    };
+  }
+
+  // Unknown shape → safe empty AE (no phantom component with empty effectId)
+  return safeFallbackAE(obj);
 }
 
 /**

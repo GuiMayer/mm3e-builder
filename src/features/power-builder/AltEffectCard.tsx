@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { X, Plus, AlertTriangle } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
 import type {
@@ -21,13 +21,8 @@ interface AltEffectCardProps {
   activeCompId: string;
   onSetActiveComp: (id: string) => void;
   powerDefs: IPowerEffect[];
-  filteredEffects: IPowerEffect[];
   allEffects: IPowerEffect[];
   allModDefs: IModifierDef[];
-  effectFilter: string;
-  onFilterChange: (v: string) => void;
-  typeFilter: string;
-  onTypeFilterChange: (v: string) => void;
   effectTypes: string[];
   activeId: string | null;
   onUpdateAE: (u: Partial<IAlternateEffect>) => void;
@@ -61,15 +56,25 @@ interface EffectComboboxProps {
 export function AltEffectCard({
   ae, aeIdx, cost, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
-  allEffects, allModDefs,
-  filteredEffects, effectFilter, onFilterChange,
-  typeFilter, onTypeFilterChange, effectTypes,
+  allEffects, allModDefs, effectTypes,
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
   onAddModifier: _onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption,
   onInfoClick, EffectComboboxComponent, t,
 }: AltEffectCardProps) {
   const { valid, overageBy } = validation;
+
+  // TD-9: Local filter state — isolated per AE card, doesn't affect main builder filter
+  const [localEffectFilter, setLocalEffectFilter] = useState('');
+  const [localTypeFilter, setLocalTypeFilter] = useState('');
+
+  const localFilteredEffects = useMemo(() =>
+    allEffects.filter((e) =>
+      e.name.toLowerCase().includes(localEffectFilter.toLowerCase()) &&
+      (localTypeFilter === '' || e.type === localTypeFilter)
+    ),
+    [allEffects, localEffectFilter, localTypeFilter]
+  );
 
   return (
     <div className={`ae-card ${isExpanded ? 'ae-card--expanded' : ''} ${!valid ? 'ae-card--invalid' : ''}`}>
@@ -153,12 +158,12 @@ export function AltEffectCard({
                       <EffectComboboxComponent
                         value={comp.effectId}
                         onChange={(effectId) => onUpdateComponent(comp.id, { effectId })}
-                        effects={filteredEffects}
+                        effects={localFilteredEffects}
                         allEffects={allEffects}
-                        filter={effectFilter}
-                        onFilterChange={onFilterChange}
-                        typeFilter={typeFilter}
-                        onTypeFilterChange={onTypeFilterChange}
+                        filter={localEffectFilter}
+                        onFilterChange={setLocalEffectFilter}
+                        typeFilter={localTypeFilter}
+                        onTypeFilterChange={setLocalTypeFilter}
                         effectTypes={effectTypes}
                         t={t}
                         onInfo={onInfoClick}

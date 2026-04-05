@@ -16,6 +16,7 @@ import type {
 } from '../entities/types';
 import {
   calcComponentCost,
+  calcAlternateEffectCost,
   calculateArrayCost,
   calculateAbilitiesCost,
   calculateDefensesCost,
@@ -221,7 +222,7 @@ function buildSummarySheet(
     const mainCost = p.components.reduce((csum, comp) => {
       const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
       if (!def) return csum;
-      return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], gameData.modifierDefs);
+      return csum + calcComponentCost(comp, def, gameData.modifierDefs);
     }, 0);
     const dynCount = p.alternateEffects.filter((a) => a.dynamic).length;
     return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynCount);
@@ -456,7 +457,7 @@ function buildPowersSheet(
     const mainCost = power.components.reduce((csum, comp) => {
       const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
       if (!def) return csum;
-      return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], gameData.modifierDefs);
+      return csum + calcComponentCost(comp, def, gameData.modifierDefs);
     }, 0);
     const dynCount = power.alternateEffects.filter((a) => a.dynamic).length;
     const totalCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynCount);
@@ -499,7 +500,7 @@ function buildPowersSheet(
     const mainCost = p.components.reduce((csum, comp) => {
       const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
       if (!def) return csum;
-      return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], gameData.modifierDefs);
+      return csum + calcComponentCost(comp, def, gameData.modifierDefs);
     }, 0);
     const dynCount = p.alternateEffects.filter((a) => a.dynamic).length;
     return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynCount);
@@ -572,8 +573,9 @@ function formatAlternates(
         .filter(Boolean)
         .join(' + ');
       const name = alt.name || effectNames || '—';
+      const cost = calcAlternateEffectCost(alt, gameData.powerDefs, gameData.modifierDefs);
       const dyn = alt.dynamic ? ` [${labels.dynamic}]` : '';
-      return `${name}: ${effectNames}${dyn}`;
+      return `${name}: ${effectNames} [${cost}PP]${dyn}`;
     })
     .join('\n');
 }

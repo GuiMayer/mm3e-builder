@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useCharStore } from '../../store/charStore';
-import type { ICharacterPower, IModifierDef } from '../../entities/types';
-import powerDefsRaw from '../../data/powers.json';
-import modifierDefsRaw from '../../data/modifiers.json';
+import type { ICharacterPower } from '../../entities/types';
+import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { calculateArrayCost, calcComponentCost } from '../../shared/lib/mathEngine';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
@@ -12,8 +11,8 @@ import { useTranslation } from 'react-i18next';
 
 export function PowersList() {
   const { t } = useTranslation();
-  const powerDefs = useLocalizedData(powerDefsRaw);
-  const modifierDefs = useLocalizedData(modifierDefsRaw);
+  const powerDefs = useLocalizedData(POWER_DEFS);
+  const modifierDefs = useLocalizedData(MODIFIER_DEFS);
   
   const powers = useCharStore((s) => s.character.powers);
   const [builderOpen, setBuilderOpen] = useState(false);
@@ -65,7 +64,7 @@ export function PowersList() {
     const mainCost = p.components.reduce((csum, comp) => {
       const def = powerDefs.find((d) => d.id === comp.effectId);
       if (!def) return csum;
-      return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], modifierDefs as unknown as IModifierDef[]);
+      return csum + calcComponentCost(comp, def, modifierDefs);
     }, 0);
     const dynamicCount = p.alternateEffects.filter((a) => a.dynamic).length;
     return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynamicCount);
@@ -87,7 +86,7 @@ export function PowersList() {
           const mainCost = power.components.reduce((csum, comp) => {
             const def = powerDefs.find((d) => d.id === comp.effectId);
             if (!def) return csum;
-            return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], modifierDefs as unknown as IModifierDef[]);
+            return csum + calcComponentCost(comp, def, modifierDefs);
           }, 0);
           const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
           const totalCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);

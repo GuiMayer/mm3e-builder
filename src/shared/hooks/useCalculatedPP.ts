@@ -8,9 +8,7 @@ import {
   calcComponentCost,
   calculateArrayCost,
 } from '../lib/mathEngine';
-import type { IModifierDef } from '../../entities/types';
-import powerDefs from '../../data/powers.json';
-import modifierDefs from '../../data/modifiers.json';
+import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 
 /**
  * Hook that reactively calculates total PP spent across all sections.
@@ -31,9 +29,9 @@ export function useCalculatedPP() {
     // Sum power costs using the math engine
     const powersCost = character.powers.reduce((sum, p) => {
       const mainCost = p.components.reduce((csum, comp) => {
-        const def = powerDefs.find((d) => d.id === comp.effectId);
+        const def = POWER_DEFS.find((d) => d.id === comp.effectId);
         if (!def) return csum;
-        return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], modifierDefs as IModifierDef[]);
+        return csum + calcComponentCost(comp, def, MODIFIER_DEFS);
       }, 0);
       const dynamicCount = p.alternateEffects.filter((a) => a.dynamic).length;
       return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynamicCount);

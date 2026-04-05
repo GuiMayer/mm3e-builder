@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import modifierDefsRaw from '../../data/modifiers.json';
+import { MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Search, ArrowUpCircle, ArrowDownCircle, Zap, ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,7 @@ export function EffectPalette({
   contextName,
 }: Props) {
   const { t } = useTranslation();
-  const modifierDefs = useLocalizedData(modifierDefsRaw as Parameters<typeof useLocalizedData>[0]) as typeof modifierDefsRaw;
+  const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
   const [activeTab, setActiveTab] = useState<PaletteTab>('extras');
   const [modalMod, setModalMod] = useState<IModifierDef | null>(null);
 
@@ -134,7 +134,7 @@ export function EffectPalette({
           generalExtras.map((mod) => (
             <DraggableModifier
               key={mod.id}
-              mod={mod as unknown as IModifierDef}
+              mod={mod}
               isPowerSpecific={false}
               onAdd={onAddModifier}
               onInfo={setModalMod}
@@ -144,7 +144,7 @@ export function EffectPalette({
           generalFlaws.map((mod) => (
             <DraggableModifier
               key={mod.id}
-              mod={mod as unknown as IModifierDef}
+              mod={mod}
               isPowerSpecific={false}
               onAdd={onAddModifier}
               onInfo={setModalMod}

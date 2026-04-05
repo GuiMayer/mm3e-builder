@@ -21,11 +21,21 @@ const THEMES = [
 ];
 import { useTranslation } from 'react-i18next';
 import { Globe } from 'lucide-react';
+import i18n from '../../locales';
 
-const LANGUAGES = [
-  { id: 'en', label: 'English' },
-  { id: 'pt-BR', label: 'Português (BR)' },
-];
+// Display labels for each registered language.
+// To add a new language: register it in src/locales/index.ts AND add a label here.
+const LANGUAGE_LABELS: Record<string, string> = {
+  en: 'English',
+  'pt-BR': 'Português (BR)',
+};
+
+// Automatically derived from the languages registered in i18n —
+// no manual LANGUAGES array to maintain.
+const LANGUAGES = Object.keys(i18n.options.resources ?? {}).map((id) => ({
+  id,
+  label: LANGUAGE_LABELS[id] ?? id, // fallback to language code if no label
+}));
 
 export function MenuBar() {
   const { t, i18n } = useTranslation();

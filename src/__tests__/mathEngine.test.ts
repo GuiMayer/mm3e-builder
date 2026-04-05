@@ -16,8 +16,8 @@ const MODS: IModifierDef[] = [
   { id: 'area', name: 'Area', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
   { id: 'tiring', name: 'Tiring', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
   { id: 'limited', name: 'Limited', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
-  { id: 'homing', name: 'Homing', category: 'extra', costType: 'flat', costValue: 1, description: '', incompatibleWith: [] },
-  { id: 'removable', name: 'Removable', category: 'flaw', costType: 'flat', costValue: -2, description: '', incompatibleWith: [] },
+  { id: 'homing', name: 'Homing', category: 'extra', costType: 'flat_ranked', costValue: 1, description: '', incompatibleWith: [] },
+  { id: 'removable', name: 'Removable', category: 'flaw', costType: 'flat_ranked', costValue: -2, description: '', incompatibleWith: [] },
 ];
 
 describe('mathEngine', () => {
@@ -78,19 +78,19 @@ describe('mathEngine', () => {
       expect(cost).toBe(5);
     });
 
-    it('includes flat modifiers', () => {
+    it('includes flat ranked modifiers', () => {
       const mods: IAppliedModifier[] = [{ modifierId: 'homing', ranks: 3 }];
-      // Base 1 per rank × 10 = 10 + 3 flat = 13
+      // flat_ranked: 1×3 = 3 flat bonus
       const cost = calculatePowerCost(1, 10, mods, MODS);
       expect(cost).toBe(13);
     });
 
-    it('minimum cost is 1 PP', () => {
-      const mods: IAppliedModifier[] = [{ modifierId: 'removable', ranks: 5 }];
-      // Base 1 × 1 rank = 1 + (-10 flat) = -9 → clamps to 1
-      const cost = calculatePowerCost(1, 1, mods, MODS);
-      expect(cost).toBe(1);
-    });
+  it('minimum cost is 1 PP', () => {
+    const mods: IAppliedModifier[] = [{ modifierId: 'removable', ranks: 5 }];
+    // flat_ranked: 1×rank, -2×5 = -10. Base 1×1 = 1. 1 + (-10) = -9 → clamped to 1
+    const cost = calculatePowerCost(1, 1, mods, MODS);
+    expect(cost).toBe(1);
+  });
   });
 
   describe('calculateArrayCost', () => {

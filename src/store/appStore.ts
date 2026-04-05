@@ -59,9 +59,11 @@ export const useAppStore = create<AppStoreState>((set) => ({
       return { strictMode: value };
     }),
     
-  setLanguage: (language) => 
+  setLanguage: (language) =>
     set(() => {
-      localStorage.setItem('mm3e-language', language);
+      try {
+        localStorage.setItem('mm3e-language', language);
+      } catch { /* ignore quota errors */ }
       return { language };
     }),
 }));

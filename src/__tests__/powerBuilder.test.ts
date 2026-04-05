@@ -21,16 +21,16 @@ const MODS: IModifierDef[] = [
   { id: 'area', name: 'Area', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
   { id: 'increased_range', name: 'Increased Range', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
   { id: 'selective', name: 'Selective', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
-  // Extras — flat
-  { id: 'accurate', name: 'Accurate', category: 'extra', costType: 'flat', costValue: 1, description: '', incompatibleWith: [] },
-  { id: 'homing', name: 'Homing', category: 'extra', costType: 'flat', costValue: 1, description: '', incompatibleWith: [] },
+  // Extras — flat_ranked (cost × ranks applied)
+  { id: 'accurate', name: 'Accurate', category: 'extra', costType: 'flat_ranked', costValue: 1, description: '', incompatibleWith: [] },
+  { id: 'homing', name: 'Homing', category: 'extra', costType: 'flat_ranked', costValue: 1, description: '', incompatibleWith: [] },
   // Flaws — per_rank
   { id: 'tiring', name: 'Tiring', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
   { id: 'limited', name: 'Limited', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
   { id: 'unreliable', name: 'Unreliable', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
   { id: 'diminished_range', name: 'Diminished Range', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
-  // Flaws — flat
-  { id: 'removable', name: 'Removable', category: 'flaw', costType: 'flat', costValue: -2, description: '', incompatibleWith: [] },
+  // Flaws — flat_ranked
+  { id: 'removable', name: 'Removable', category: 'flaw', costType: 'flat_ranked', costValue: -2, description: '', incompatibleWith: [] },
 ];
 
 // ══════════════════════════════════════════════════════
@@ -147,22 +147,22 @@ describe('calculateFlatCost', () => {
     expect(calculateFlatCost([], MODS)).toBe(0);
   });
 
-  it('sums positive flat modifiers (Accurate ×3 = +3)', () => {
+  it('sums flat_ranked modifiers (Accurate ×3 = +3)', () => {
     const mods: IAppliedModifier[] = [{ modifierId: 'accurate', ranks: 3 }];
-    expect(calculateFlatCost(mods, MODS)).toBe(3);
+    expect(calculateFlatCost(mods, MODS)).toBe(3); // flat_ranked: 1×3 = 3
   });
 
   it('sums negative flat modifiers (Removable ×2 = -4)', () => {
     const mods: IAppliedModifier[] = [{ modifierId: 'removable', ranks: 2 }];
-    expect(calculateFlatCost(mods, MODS)).toBe(-4);
+    expect(calculateFlatCost(mods, MODS)).toBe(-4); // flat: -2 (ignores ranks for flat type)
   });
 
-  it('mixes positive and negative flats (Homing ×2 + Removable ×1 = 0)', () => {
+  it('mixes flat_ranked and flat (Homing ×2 + Removable ×1 = 2-2 = 0)', () => {
     const mods: IAppliedModifier[] = [
       { modifierId: 'homing', ranks: 2 },
       { modifierId: 'removable', ranks: 1 },
     ];
-    expect(calculateFlatCost(mods, MODS)).toBe(0); // 2 + (-2) = 0
+    expect(calculateFlatCost(mods, MODS)).toBe(0); // 1×2 + (-2×1) = 0
   });
 
   it('ignores per_rank modifiers', () => {
@@ -171,7 +171,7 @@ describe('calculateFlatCost', () => {
       { modifierId: 'area', ranks: 1 },
       { modifierId: 'accurate', ranks: 2 },
     ];
-    expect(calculateFlatCost(mods, MODS)).toBe(2); // only Accurate counted
+    expect(calculateFlatCost(mods, MODS)).toBe(2); // flat_ranked: 1×2 = 2
   });
 });
 
@@ -320,12 +320,12 @@ describe('calculatePowerCost', () => {
 
   // ── Minimum cost (always at least 1 PP) ──
 
-  it('huge negative flat: Removable ×5 on Damage 1 → max(1, 1-10) = 1 PP', () => {
+  it('huge negative flat_ranked: Removable ×5 on Damage 1 → max(1, 1 + (-2×5)) = max(1,-9) = 1 PP', () => {
     const mods: IAppliedModifier[] = [{ modifierId: 'removable', ranks: 5 }];
     expect(calculatePowerCost(1, 1, mods, MODS)).toBe(1);
   });
 
-  it('fractional + negative flat: Damage 1 - Tiring + Removable ×1 → max(1, ceil(1/2) + (-2)) = max(1, -1) = 1 PP', () => {
+  it('fractional + negative flat_ranked: Damage 1 - Tiring + Removable×1 → max(1, ceil(1/2) + (-2)) = max(1,-1) = 1 PP', () => {
     const mods: IAppliedModifier[] = [
       { modifierId: 'tiring', ranks: 1 },
       { modifierId: 'removable', ranks: 1 },
