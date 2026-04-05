@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useCharStore } from '../../store/charStore';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
-import { User, MapPin, Shield, Star } from 'lucide-react';
+import { User, MapPin, Shield, Star, ChevronDown, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export function HeaderPanel() {
@@ -10,6 +11,9 @@ export function HeaderPanel() {
   const pp = useCalculatedPP();
   const isOver = pp.remaining < 0;
   const pct = pp.totalAvailable > 0 ? Math.min(100, (pp.totalSpent / pp.totalAvailable) * 100) : 0;
+
+  // F-07: accordion open state (collapsed by default)
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   return (
     <section className="header-panel">
@@ -36,13 +40,32 @@ export function HeaderPanel() {
                 placeholder={t('header.player')}
               />
             </div>
-            <div className="hero-meta-field">
+            {/* F-03: Identity + Secret/Public toggle */}
+            <div className="hero-meta-field hero-meta-field--identity">
               <label>{t('header.identity')}</label>
-              <input
-                value={header.identity}
-                onChange={(e) => updateHeader({ identity: e.target.value })}
-                placeholder={t('header.identity')}
-              />
+              <div className="hero-identity-row">
+                <input
+                  value={header.identity}
+                  onChange={(e) => updateHeader({ identity: e.target.value })}
+                  placeholder={t('header.identity')}
+                />
+                <div className="identity-type-toggle" title={t('header.identityTypeHint')}>
+                  {(['secret', 'public'] as const).map((opt) => (
+                    <button
+                      key={opt}
+                      className={`identity-type-opt ${(header.identityType ?? '') === opt ? 'identity-type-opt--active' : ''}`}
+                      onClick={() =>
+                        updateHeader({
+                          identityType: header.identityType === opt ? undefined : opt,
+                        })
+                      }
+                      title={t(`header.identityType.${opt}`)}
+                    >
+                      {opt === 'secret' ? '🔒' : '🌐'} {t(`header.identityType.${opt}`)}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className="hero-meta-field">
               <label><MapPin size={12} /> {t('header.base')}</label>
@@ -101,6 +124,105 @@ export function HeaderPanel() {
             />
           </div>
         </div>
+      </div>
+
+      {/* F-07: Character Details accordion */}
+      <div className="char-details-accordion">
+        <button
+          className="char-details-toggle"
+          onClick={() => setDetailsOpen((v) => !v)}
+          aria-expanded={detailsOpen}
+        >
+          {detailsOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          {t('header.characterDetails')}
+          {/* Show a subtle indicator when any field is filled */}
+          {(header.gender || header.age || header.height || header.weight ||
+            header.eyes || header.hair || header.groupAffiliation ||
+            header.series || header.gameMaster) && (
+            <span className="char-details-filled-dot" title={t('header.characterDetailsFilled')} />
+          )}
+        </button>
+
+        {detailsOpen && (
+          <div className="char-details-body">
+            <div className="char-details-grid">
+              <div className="hero-meta-field">
+                <label>{t('header.gender')}</label>
+                <input
+                  value={header.gender ?? ''}
+                  onChange={(e) => updateHeader({ gender: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+              <div className="hero-meta-field">
+                <label>{t('header.age')}</label>
+                <input
+                  value={header.age ?? ''}
+                  onChange={(e) => updateHeader({ age: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+              <div className="hero-meta-field">
+                <label>{t('header.height')}</label>
+                <input
+                  value={header.height ?? ''}
+                  onChange={(e) => updateHeader({ height: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+              <div className="hero-meta-field">
+                <label>{t('header.weight')}</label>
+                <input
+                  value={header.weight ?? ''}
+                  onChange={(e) => updateHeader({ weight: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+              <div className="hero-meta-field">
+                <label>{t('header.eyes')}</label>
+                <input
+                  value={header.eyes ?? ''}
+                  onChange={(e) => updateHeader({ eyes: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+              <div className="hero-meta-field">
+                <label>{t('header.hair')}</label>
+                <input
+                  value={header.hair ?? ''}
+                  onChange={(e) => updateHeader({ hair: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+            </div>
+            <div className="char-details-grid char-details-grid--wide">
+              <div className="hero-meta-field">
+                <label>{t('header.groupAffiliation')}</label>
+                <input
+                  value={header.groupAffiliation ?? ''}
+                  onChange={(e) => updateHeader({ groupAffiliation: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+              <div className="hero-meta-field">
+                <label>{t('header.series')}</label>
+                <input
+                  value={header.series ?? ''}
+                  onChange={(e) => updateHeader({ series: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+              <div className="hero-meta-field">
+                <label>{t('header.gameMaster')}</label>
+                <input
+                  value={header.gameMaster ?? ''}
+                  onChange={(e) => updateHeader({ gameMaster: e.target.value || undefined })}
+                  placeholder="—"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <style>{`
@@ -166,6 +288,53 @@ export function HeaderPanel() {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
           gap: var(--s-md);
+        }
+
+        /* F-03: Identity field gets wider to fit toggle */
+        .hero-meta-field--identity {
+          grid-column: span 2;
+        }
+        @media (max-width: 600px) {
+          .hero-meta-field--identity { grid-column: span 1; }
+        }
+
+        /* F-03: Identity row = input + toggle side by side */
+        .hero-identity-row {
+          display: flex;
+          gap: var(--s-sm);
+          align-items: center;
+          flex-wrap: wrap;
+        }
+        .hero-identity-row input {
+          flex: 1;
+          min-width: 100px;
+        }
+        .identity-type-toggle {
+          display: flex;
+          gap: 3px;
+          flex-shrink: 0;
+        }
+        .identity-type-opt {
+          padding: 3px 8px;
+          border-radius: var(--r-full);
+          border: 1px solid var(--c-border);
+          background: transparent;
+          font-size: 0.7rem;
+          cursor: pointer;
+          font-family: var(--f-body);
+          color: var(--c-text-muted);
+          transition: all var(--t-fast);
+          white-space: nowrap;
+        }
+        .identity-type-opt:hover {
+          border-color: var(--c-border-active);
+          color: var(--c-text);
+        }
+        .identity-type-opt--active {
+          background: var(--c-primary-muted);
+          border-color: var(--c-primary);
+          color: var(--c-primary);
+          font-weight: 600;
         }
 
         .hero-meta-field {
@@ -290,6 +459,51 @@ export function HeaderPanel() {
         }
         .hero-pp-bar-fill[data-over="true"] {
           background: linear-gradient(90deg, var(--c-error), var(--c-warning));
+        }
+
+        /* ── F-07: Character Details accordion ── */
+        .char-details-accordion {
+          border-top: 1px solid var(--c-border);
+          padding-top: var(--s-sm);
+        }
+        .char-details-toggle {
+          display: flex;
+          align-items: center;
+          gap: var(--s-xs);
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          color: var(--c-text-muted);
+          font-family: var(--f-body);
+          font-size: 0.72rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          padding: var(--s-xs) 0;
+          transition: color var(--t-fast);
+        }
+        .char-details-toggle:hover { color: var(--c-text); }
+        .char-details-filled-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: var(--c-primary);
+          flex-shrink: 0;
+        }
+        .char-details-body {
+          display: flex;
+          flex-direction: column;
+          gap: var(--s-md);
+          padding-top: var(--s-md);
+          animation: fadeIn 0.15s ease;
+        }
+        .char-details-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+          gap: var(--s-md);
+        }
+        .char-details-grid--wide {
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         }
       `}</style>
     </section>

@@ -271,7 +271,9 @@ export function calculateAdvantagesCost(advantages: { ranks: number }[]): number
  * Consolidates the duplicated two-level reduce that previously existed in
  * PowersList.tsx and useCalculatedPP.ts.
  *
- * Formula: calculateArrayCost(mainCost, altCount, dynamicCount)
+ * Formula: arrayCost − removableDiscount
+ *   arrayCost = calculateArrayCost(mainCost, altCount, dynamicCount)
+ *   removableDiscount = calcRemovableDiscount(mainCost, power.removable)
  */
 export function calcPowerTotalCost(
   power: ICharacterPower,
@@ -283,7 +285,9 @@ export function calcPowerTotalCost(
     return def ? sum + calcComponentCost(comp, def, modifierDefs) : sum;
   }, 0);
   const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
-  return calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
+  const arrayCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
+  const discount = calcRemovableDiscount(mainCost, power.removable);
+  return Math.max(0, arrayCost - discount);
 }
 
 // ── Derived Stats (pure — usable by PDF generator and React hooks alike) ────

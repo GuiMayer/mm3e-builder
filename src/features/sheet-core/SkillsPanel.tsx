@@ -53,6 +53,12 @@ export function SkillsPanel({ cost }: { cost: number }) {
     setSkills(next);
   }
 
+  function updateOtherBonus(index: number, val: number) {
+    const next = [...skills];
+    next[index] = { ...next[index], otherBonus: val === 0 ? undefined : val };
+    setSkills(next);
+  }
+
   function removeSkill(index: number) {
     setSkills(skills.filter((_, i) => i !== index));
   }
@@ -151,7 +157,16 @@ export function SkillsPanel({ cost }: { cost: number }) {
                 value={skill.ranks}
                 onChange={(e) => updateRanks(i, Number(e.target.value) || 0)}
               />
-              <span className="skill-total">= {total}</span>
+              {/* Other bonus — optional situational modifier (F-11) */}
+              <span className="skill-other-label">±</span>
+              <input
+                type="number"
+                className="skill-input skill-input--other"
+                value={skill.otherBonus ?? 0}
+                title={t('skills.otherBonus')}
+                onChange={(e) => updateOtherBonus(i, Number(e.target.value) || 0)}
+              />
+              <span className="skill-total">= {total + (skill.otherBonus ?? 0)}</span>
               <button className="skill-remove" onClick={() => removeSkill(i)} title={t('common.remove')}>
                 <Trash2 size={14} />
               </button>
@@ -365,6 +380,13 @@ export function SkillsPanel({ cost }: { cost: number }) {
           font-family: var(--f-body); font-size: 0.9rem; padding: var(--s-xs);
         }
         .skill-input:focus { outline: none; border-color: var(--c-primary); }
+        .skill-input--other {
+          width: 42px; background: transparent;
+          border-color: transparent; color: var(--c-text-muted);
+          font-size: 0.82rem;
+        }
+        .skill-input--other:focus { border-color: var(--c-border); background: var(--c-bg); color: var(--c-text); }
+        .skill-other-label { color: var(--c-text-muted); font-size: 0.8rem; opacity: 0.5; }
         .skill-total { font-weight: 700; font-size: 0.9rem; color: var(--c-primary); min-width: 35px; text-align: right; }
         .skill-remove {
           background: transparent; border: none; color: var(--c-text-muted);

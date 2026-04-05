@@ -191,9 +191,20 @@ export interface ICharacterHeader {
   name: string;
   player: string;
   identity: string;
+  identityType?: 'secret' | 'public';  // F-03: optional identity type toggle
   base: string;
   powerLevel: number;
   heroPoints: number;
+  // F-07: Physical description fields (all optional)
+  gender?: string;
+  age?: string;
+  height?: string;
+  weight?: string;
+  eyes?: string;
+  hair?: string;
+  groupAffiliation?: string;
+  series?: string;
+  gameMaster?: string;
 }
 
 // ── Full Character ──

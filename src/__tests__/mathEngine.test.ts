@@ -7,8 +7,10 @@ import {
   calculateDefensesCost,
   calculateSkillsCost,
   calculateAdvantagesCost,
+  calcRemovableDiscount,
+  calcPowerTotalCost,
 } from '../shared/lib/mathEngine';
-import type { IAppliedModifier, IModifierDef } from '../entities/types';
+import type { IAppliedModifier, IModifierDef, ICharacterPower } from '../entities/types';
 
 // ── Mock modifier definitions ──
 const MODS: IModifierDef[] = [
@@ -125,6 +127,68 @@ describe('mathEngine', () => {
   describe('calculateAdvantagesCost', () => {
     it('sums ranks', () => {
       expect(calculateAdvantagesCost([{ ranks: 2 }, { ranks: 1 }, { ranks: 3 }])).toBe(6);
+    });
+  });
+
+  // ── F-06: Removable / Easily Removable discount ──────────────────────────
+  describe('calcRemovableDiscount', () => {
+    it('returns 0 when removable is undefined or none', () => {
+      expect(calcRemovableDiscount(25, undefined)).toBe(0);
+      expect(calcRemovableDiscount(25, 'none')).toBe(0);
+    });
+
+    it('Removable: −1 PP per 5 PP, rounded down', () => {
+      // 25 PP → floor(25/5)*1 = 5 discount
+      expect(calcRemovableDiscount(25, 'removable')).toBe(5);
+      // 24 PP → floor(24/5)*1 = 4 discount
+      expect(calcRemovableDiscount(24, 'removable')).toBe(4);
+    });
+
+    it('Easily Removable: −2 PP per 5 PP, rounded down', () => {
+      // 25 PP → floor(25/5)*2 = 10 discount
+      expect(calcRemovableDiscount(25, 'easily_removable')).toBe(10);
+      // 30 PP → floor(30/5)*2 = 12 discount
+      expect(calcRemovableDiscount(30, 'easily_removable')).toBe(12);
+    });
+  });
+
+  describe('calcPowerTotalCost with Removable discount', () => {
+    const POWER_DEFS = [
+      { id: 'damage', name: 'Damage', baseCost: 1, type: 'attack',
+        action: 'standard', range: 'close', duration: 'instant',
+        description: '', variableCost: null, extras: [], flaws: [] },
+    ] as unknown as import('../entities/types').IPowerEffect[];
+
+    it('applies Removable discount to calcPowerTotalCost (25 PP power → -5 PP = 20 PP total)', () => {
+      const power: ICharacterPower = {
+        id: 'p1', name: 'Power Armor Fist',
+        components: [{ id: 'c1', effectId: 'damage', ranks: 25, modifiers: [] }],
+        notes: '', alternateEffects: [],
+        removable: 'removable', // −1 per 5 PP → floor(25/5)*1 = 5 discount
+      };
+      // array cost = 25 (no AEs); removable discount = 5; total = 20
+      expect(calcPowerTotalCost(power, POWER_DEFS, MODS)).toBe(20);
+    });
+
+    it('applies Easily Removable discount (25 PP → -10 PP = 15 PP total)', () => {
+      const power: ICharacterPower = {
+        id: 'p2', name: 'Gadget',
+        components: [{ id: 'c1', effectId: 'damage', ranks: 25, modifiers: [] }],
+        notes: '', alternateEffects: [],
+        removable: 'easily_removable', // floor(25/5)*2 = 10 discount
+      };
+      expect(calcPowerTotalCost(power, POWER_DEFS, MODS)).toBe(15);
+    });
+
+    it('total never goes below 0', () => {
+      const power: ICharacterPower = {
+        id: 'p3', name: 'Tiny Gadget',
+        components: [{ id: 'c1', effectId: 'damage', ranks: 1, modifiers: [] }],
+        notes: '', alternateEffects: [],
+        removable: 'easily_removable', // discount = floor(1/5)*2 = 0 (< 5PP)
+      };
+      // 1 PP, discount = 0 (floor(1/5)=0)
+      expect(calcPowerTotalCost(power, POWER_DEFS, MODS)).toBe(1);
     });
   });
 });

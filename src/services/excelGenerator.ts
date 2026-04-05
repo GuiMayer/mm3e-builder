@@ -15,9 +15,8 @@ import type {
   ICharacterPower,
 } from '../entities/types';
 import {
-  calcComponentCost,
   calcAlternateEffectCost,
-  calculateArrayCost,
+  calcPowerTotalCost,
   calculateAbilitiesCost,
   calculateDefensesCost,
   calculateSkillsCost,
@@ -36,14 +35,26 @@ export interface ExportLabels {
   sheetAdvantages: string;
   sheetPowers: string;
   sheetComplications: string;
+  sheetEquipment: string;
   // Headers
   heroName: string;
   player: string;
   identity: string;
+  identityTypeLabel: string;
   base: string;
   powerLevel: string;
   heroPoints: string;
   powerPoints: string;
+  // F-07 physical description labels
+  gender: string;
+  age: string;
+  height: string;
+  weight: string;
+  eyes: string;
+  hair: string;
+  groupAffiliation: string;
+  series: string;
+  gameMaster: string;
   // Ability names (already translated)
   abilityNames: Record<string, string>;
   // Defense names
@@ -59,6 +70,7 @@ export interface ExportLabels {
   colModifiers: string;
   colNotes: string;
   colTitle: string;
+  colType: string;
   colAlternateEffects: string;
   // Summary
   section: string;
@@ -166,6 +178,11 @@ export async function generateExcel(
   // ── 7. COMPLICATIONS SHEET ──
   buildComplicationsSheet(wb, character, labels);
 
+  // ── 8. EQUIPMENT NOTES SHEET ──
+  if (character.equipmentNotes?.trim()) {
+    buildEquipmentSheet(wb, character, labels);
+  }
+
   // ── Download ──
   const buffer = await wb.xlsx.writeBuffer();
   const blob = new Blob([buffer], {
@@ -197,19 +214,32 @@ function buildSummarySheet(
   ws.getRow(1).height = 30;
 
   // Character info
-  const info = [
-    [labels.heroName, char.header.name],
-    [labels.player, char.header.player],
-    [labels.identity, char.header.identity],
-    [labels.base, char.header.base],
-    [labels.powerLevel, char.header.powerLevel],
-    [labels.heroPoints, char.header.heroPoints],
+  const identityTypeStr = char.header.identityType
+    ? ` (${char.header.identityType === 'secret' ? labels.identityTypeLabel + ': Secret' : labels.identityTypeLabel + ': Public'})`
+    : '';
+  const info: [string, string | number | undefined][] = [
+    [labels.heroName,        char.header.name],
+    [labels.player,          char.header.player],
+    [labels.identity,        char.header.identity + identityTypeStr],
+    [labels.base,            char.header.base],
+    [labels.powerLevel,      char.header.powerLevel],
+    [labels.heroPoints,      char.header.heroPoints],
+    // F-07: only emit rows when the field has a value
+    ...(char.header.gender           ? [[labels.gender,           char.header.gender          ]] as [string, string][] : []),
+    ...(char.header.age              ? [[labels.age,              char.header.age             ]] as [string, string][] : []),
+    ...(char.header.height           ? [[labels.height,           char.header.height          ]] as [string, string][] : []),
+    ...(char.header.weight           ? [[labels.weight,           char.header.weight          ]] as [string, string][] : []),
+    ...(char.header.eyes             ? [[labels.eyes,             char.header.eyes            ]] as [string, string][] : []),
+    ...(char.header.hair             ? [[labels.hair,             char.header.hair            ]] as [string, string][] : []),
+    ...(char.header.groupAffiliation ? [[labels.groupAffiliation, char.header.groupAffiliation]] as [string, string][] : []),
+    ...(char.header.series           ? [[labels.series,           char.header.series          ]] as [string, string][] : []),
+    ...(char.header.gameMaster       ? [[labels.gameMaster,       char.header.gameMaster      ]] as [string, string][] : []),
   ];
   info.forEach(([label, val], i) => {
     const row = ws.getRow(i + 3);
-    row.getCell(1).value = label;
+    row.getCell(1).value = label as string;
     row.getCell(1).font = { bold: true, size: 10 };
-    row.getCell(2).value = val;
+    row.getCell(2).value = val as string | number;
   });
 
   // PP Summary
@@ -218,15 +248,10 @@ function buildSummarySheet(
   const totalSkillRanks = char.skills.reduce((s, sk) => s + sk.ranks, 0);
   const skCost = calculateSkillsCost(totalSkillRanks);
   const advCost = calculateAdvantagesCost(char.advantages);
-  const pwrCost = char.powers.reduce((sum, p) => {
-    const mainCost = p.components.reduce((csum, comp) => {
-      const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
-      if (!def) return csum;
-      return csum + calcComponentCost(comp, def, gameData.modifierDefs);
-    }, 0);
-    const dynCount = p.alternateEffects.filter((a) => a.dynamic).length;
-    return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynCount);
-  }, 0);
+  const pwrCost = char.powers.reduce(
+    (sum, p) => sum + calcPowerTotalCost(p, gameData.powerDefs, gameData.modifierDefs),
+    0
+  );
   const totalSpent = abCost + defCost + skCost + advCost + pwrCost;
   const totalAvailable = char.header.powerLevel * 15;
 
@@ -360,9 +385,9 @@ function buildSkillsSheet(
 ) {
   const ws = wb.addWorksheet(labels.sheetSkills);
 
-  const header = ws.getRow(1);
-  header.values = [labels.colName, labels.colAbility, labels.colRanks, labels.colTotal];
-  styleHeaderRow(header, 4);
+  const skillHeader = ws.getRow(1);
+  skillHeader.values = [labels.colName, labels.colAbility, labels.colRanks, 'Other', labels.colTotal];
+  styleHeaderRow(skillHeader, 5);
 
   char.skills.forEach((sk, i) => {
     const def = gameData.skillDefs.find((d) => d.id === sk.skillId);
@@ -370,14 +395,16 @@ function buildSkillsSheet(
     let name = def ? locName(def, lang) : sk.skillId;
     if (sk.subtype) name += `: ${sk.subtype}`;
     const abilityVal = def ? (char.abilities[def.baseAbility as keyof typeof char.abilities] ?? 0) : 0;
+    const other = sk.otherBonus ?? 0;
 
     row.getCell(1).value = name;
     row.getCell(2).value = def ? def.baseAbility.toUpperCase() : '';
     row.getCell(3).value = sk.ranks;
-    row.getCell(4).value = abilityVal + sk.ranks;
-    row.getCell(4).font = { bold: true };
+    row.getCell(4).value = other !== 0 ? other : null;
+    row.getCell(5).value = abilityVal + sk.ranks + other;
+    row.getCell(5).font = { bold: true };
     if (i % 2 === 1) {
-      for (let c = 1; c <= 4; c++) {
+      for (let c = 1; c <= 5; c++) {
         row.getCell(c).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: COLORS.altRowFill } };
       }
     }
@@ -388,8 +415,8 @@ function buildSkillsSheet(
   totalRow.getCell(1).value = 'Total';
   totalRow.getCell(1).font = { bold: true };
   totalRow.getCell(3).value = `${totalRanks} ranks`;
-  totalRow.getCell(4).value = `${calculateSkillsCost(totalRanks)} PP`;
-  totalRow.getCell(4).font = { bold: true };
+  totalRow.getCell(5).value = `${calculateSkillsCost(totalRanks)} PP`;
+  totalRow.getCell(5).font = { bold: true };
 
   autoWidth(ws);
 }
@@ -454,13 +481,7 @@ function buildPowersSheet(
   let rowIdx = 2;
 
   char.powers.forEach((power) => {
-    const mainCost = power.components.reduce((csum, comp) => {
-      const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
-      if (!def) return csum;
-      return csum + calcComponentCost(comp, def, gameData.modifierDefs);
-    }, 0);
-    const dynCount = power.alternateEffects.filter((a) => a.dynamic).length;
-    const totalCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynCount);
+    const totalCost = calcPowerTotalCost(power, gameData.powerDefs, gameData.modifierDefs);
 
     // Build effect display from all components
     const effectNames = power.components
@@ -496,15 +517,10 @@ function buildPowersSheet(
   const totalRow = ws.getRow(rowIdx);
   totalRow.getCell(1).value = 'Total';
   totalRow.getCell(1).font = { bold: true, size: 11 };
-  const totalPP = char.powers.reduce((sum, p) => {
-    const mainCost = p.components.reduce((csum, comp) => {
-      const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
-      if (!def) return csum;
-      return csum + calcComponentCost(comp, def, gameData.modifierDefs);
-    }, 0);
-    const dynCount = p.alternateEffects.filter((a) => a.dynamic).length;
-    return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynCount);
-  }, 0);
+  const totalPP = char.powers.reduce(
+    (sum, p) => sum + calcPowerTotalCost(p, gameData.powerDefs, gameData.modifierDefs),
+    0
+  );
   totalRow.getCell(7).value = totalPP;
   totalRow.getCell(7).font = { bold: true, size: 11 };
   totalRow.getCell(7).numFmt = '0 "PP"';
@@ -516,23 +532,44 @@ function buildComplicationsSheet(wb: ExcelJS.Workbook, char: ICharacter, labels:
   const ws = wb.addWorksheet(labels.sheetComplications);
 
   const header = ws.getRow(1);
-  header.values = [labels.colTitle, labels.colDescription];
-  styleHeaderRow(header, 2);
+  header.values = [labels.colType, labels.colTitle, labels.colDescription];
+  styleHeaderRow(header, 3);
 
   char.complications.forEach((comp, i) => {
     const row = ws.getRow(i + 2);
-    row.getCell(1).value = comp.title;
-    row.getCell(1).font = { bold: true };
-    row.getCell(2).value = comp.description;
-    row.getCell(2).alignment = { wrapText: true };
+    row.getCell(1).value = comp.type ?? '';
+    row.getCell(2).value = comp.title;
+    row.getCell(2).font = { bold: true };
+    row.getCell(3).value = comp.description;
+    row.getCell(3).alignment = { wrapText: true };
     if (i % 2 === 1) {
-      for (let c = 1; c <= 2; c++) {
+      for (let c = 1; c <= 3; c++) {
         row.getCell(c).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: COLORS.altRowFill } };
       }
     }
   });
 
   autoWidth(ws, 20, 60);
+}
+
+function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels) {
+  const ws = wb.addWorksheet(labels.sheetEquipment);
+
+  // Title row
+  ws.mergeCells('A1:A1');
+  const titleCell = ws.getCell('A1');
+  titleCell.value = labels.sheetEquipment;
+  titleCell.font = { bold: true, size: 13, color: { argb: COLORS.headerFill } };
+  ws.getRow(1).height = 22;
+
+  // Notes in a merged tall cell
+  const notesCell = ws.getCell('A2');
+  notesCell.value = char.equipmentNotes;
+  notesCell.alignment = { wrapText: true, vertical: 'top' };
+  notesCell.font = { size: 10 };
+  ws.getRow(2).height = 120;
+
+  ws.getColumn(1).width = 60;
 }
 
 // ── Helper: format modifier list as text ──

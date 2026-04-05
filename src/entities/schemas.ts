@@ -95,9 +95,20 @@ const CharacterHeaderSchema = z.object({
   name: z.string(),
   player: z.string(),
   identity: z.string(),
+  identityType: z.enum(['secret', 'public']).optional(),  // F-03
   base: z.string(),
   powerLevel: z.number().int().min(1),
   heroPoints: z.number().int().min(0),
+  // F-07: Physical description (all optional strings for backward compat)
+  gender: z.string().optional(),
+  age: z.string().optional(),
+  height: z.string().optional(),
+  weight: z.string().optional(),
+  eyes: z.string().optional(),
+  hair: z.string().optional(),
+  groupAffiliation: z.string().optional(),
+  series: z.string().optional(),
+  gameMaster: z.string().optional(),
 });
 
 const AbilitiesSchema = z.object({
