@@ -207,6 +207,16 @@ export interface ICharacterHeader {
   gameMaster?: string;
 }
 
+// ── Manual Offense Row (F-13 custom attack) ──
+export interface IManualOffenseRow {
+  id: string;
+  name: string;
+  bonus: number;                    // user-entered total bonus (positive or negative)
+  range: 'close' | 'ranged' | 'perception';
+  effect: string;                   // free text: "Damage 6", "Affliction 4", etc.
+  notes: string;
+}
+
 // ── PP Advancement Log Entry (F-17 Campaign Mode) ──
 export interface IPPLogEntry {
   id: string;       // uuid for keying
@@ -226,6 +236,8 @@ export interface ICharacter {
   powers: ICharacterPower[];
   complications: IComplication[];
   equipmentNotes: string;        // F-09: free-text equipment block (v1.0)
+  notes?: string;                // F-14: background & notes
+  manualOffenseRows?: IManualOffenseRow[]; // F-13: custom attack rows
   campaignMode?: boolean;        // F-17: opt-in PP advancement tracking (default: false)
   ppLog?: IPPLogEntry[];         // F-17: PP award log (only used when campaignMode = true)
 }

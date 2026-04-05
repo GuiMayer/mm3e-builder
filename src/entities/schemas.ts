@@ -129,6 +129,16 @@ const DefensesSchema = z.object({
   will: z.number().int().min(0),
 });
 
+// F-13: custom attack row
+const ManualOffenseRowSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  bonus: z.number().int(),
+  range: z.enum(['close', 'ranged', 'perception']),
+  effect: z.string(),
+  notes: z.string(),
+});
+
 // F-17: PP advancement log entry
 const PPLogEntrySchema = z.object({
   id: z.string(),
@@ -147,6 +157,8 @@ const CharacterSchema = z.object({
   powers: z.array(CharacterPowerSchema),
   complications: z.array(ComplicationSchema),
   equipmentNotes: z.string().default(''),  // F-09: optional in old files, defaults to ''
+  notes: z.string().optional(),            // F-14: background & notes
+  manualOffenseRows: z.array(ManualOffenseRowSchema).optional(), // F-13
   campaignMode: z.boolean().optional(),    // F-17: opt-in mode (default off)
   ppLog: z.array(PPLogEntrySchema).optional(), // F-17: PP award log
 });

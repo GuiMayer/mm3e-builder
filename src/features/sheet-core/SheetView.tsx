@@ -11,6 +11,8 @@ import { HeaderPanel } from './HeaderPanel';
 import { OffensePanel } from './OffensePanel';
 import { EquipmentNotesPanel } from './EquipmentNotesPanel';
 import { PPLogPanel } from './PPLogPanel';
+import { ConditionsPanel } from './ConditionsPanel';
+import { NotesPanel } from './NotesPanel';
 import { useTranslation } from 'react-i18next';
 
 export function SheetView() {
@@ -37,6 +39,7 @@ export function SheetView() {
 
       <HeaderPanel />
       <OffensePanel />
+      <ConditionsPanel />
       <AbilitiesPanel cost={pp.abilitiesCost} />
       <DefensesPanel cost={pp.defensesCost} />
       <SkillsPanel cost={pp.skillsCost} />
@@ -45,6 +48,7 @@ export function SheetView() {
       <ComplicationsPanel />
       <EquipmentNotesPanel />
       <PPLogPanel />
+      <NotesPanel />
 
       {/* PP Summary Footer */}
       <div className="pp-summary-footer">

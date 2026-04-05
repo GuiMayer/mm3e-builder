@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { ICharacter, AbilityKey, IPPLogEntry } from '../entities/types';
+import type { ICharacter, AbilityKey, IPPLogEntry, IManualOffenseRow } from '../entities/types';
 import { migratePowers } from '../shared/lib/powerMigration';
 
 /* ================================================
@@ -24,6 +24,7 @@ const DEFAULT_CHARACTER: ICharacter = {
   powers: [],
   complications: [],
   equipmentNotes: '',
+  manualOffenseRows: [],
   campaignMode: false,
   ppLog: [],
 };
@@ -52,6 +53,8 @@ interface CharStoreState {
   setPowers: (powers: ICharacter['powers']) => void;
   setComplications: (complications: ICharacter['complications']) => void;
   setEquipmentNotes: (notes: string) => void;
+  setNotes: (notes: string) => void;
+  setManualOffenseRows: (rows: IManualOffenseRow[]) => void;
 
   // F-17 Campaign Mode
   setCampaignMode: (enabled: boolean) => void;
@@ -164,6 +167,18 @@ export const useCharStore = create<CharStoreState>((set) => ({
   setEquipmentNotes: (equipmentNotes) =>
     set((state) => ({
       character: { ...state.character, equipmentNotes },
+      isDirty: true,
+    })),
+
+  setManualOffenseRows: (manualOffenseRows) =>
+    set((state) => ({
+      character: { ...state.character, manualOffenseRows },
+      isDirty: true,
+    })),
+
+  setNotes: (notes) =>
+    set((state) => ({
+      character: { ...state.character, notes },
       isDirty: true,
     })),
 

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import type { AppView } from '../../app/App';
 
 import { useAppStore } from '../../store/appStore';
 import { useCharStore } from '../../store/charStore';
@@ -11,7 +12,7 @@ import powerDefsJson from '../../data/powers.json';
 import modifierDefsJson from '../../data/modifiers.json';
 import advantageDefsJson from '../../data/advantages.json';
 import skillDefsJson from '../../data/skills.json';
-import { Settings, Download, Upload, FilePlus, Sun, Moon, Shield, ShieldOff, FileSpreadsheet, BookOpen } from 'lucide-react';
+import { Settings, Download, Upload, FilePlus, Sun, Moon, Shield, ShieldOff, FileSpreadsheet, BookOpen, Library } from 'lucide-react';
 
 const THEMES = [
   { id: 'dark-knight', label: 'Dark Knight' },
@@ -37,7 +38,7 @@ const LANGUAGES = Object.keys(i18n.options.resources ?? {}).map((id) => ({
   label: LANGUAGE_LABELS[id] ?? id, // fallback to language code if no label
 }));
 
-export function MenuBar() {
+export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onViewChange: (v: AppView) => void }) {
   const { t, i18n } = useTranslation();
   const theme = useAppStore((s) => s.theme);
   const setTheme = useAppStore((s) => s.setTheme);
@@ -181,6 +182,21 @@ export function MenuBar() {
     <header className="menubar">
       <div className="menubar-left">
         <h1 className="menubar-title">{t('app.title')}</h1>
+        <div className="menubar-tabs">
+          <button
+            className={`menubar-tab ${activeView === 'sheet' ? 'menubar-tab--active' : ''}`}
+            onClick={() => onViewChange('sheet')}
+          >
+            {t('nav.sheet', { defaultValue: 'Sheet' })}
+          </button>
+          <button
+            className={`menubar-tab ${activeView === 'references' ? 'menubar-tab--active' : ''}`}
+            onClick={() => onViewChange('references')}
+          >
+            <Library size={13} />
+            {t('nav.references', { defaultValue: 'References' })}
+          </button>
+        </div>
         <span className="menubar-pp" data-over={remaining < 0}>
           <strong>{totalSpent}</strong> / {totalAvailable} {t('common.pp')}
           {remaining < 0 && <span className="menubar-pp-warning"> ({remaining})</span>}
@@ -299,6 +315,37 @@ export function MenuBar() {
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
+        }
+        .menubar-tabs {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+          background: var(--c-bg);
+          border: 1px solid var(--c-border);
+          border-radius: var(--r-md);
+          padding: 2px;
+        }
+        .menubar-tab {
+          display: flex;
+          align-items: center;
+          gap: var(--s-xs);
+          padding: 4px var(--s-sm);
+          background: transparent;
+          border: none;
+          border-radius: var(--r-sm);
+          color: var(--c-text-muted);
+          font-family: var(--f-body);
+          font-size: 0.78rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all var(--t-fast);
+          white-space: nowrap;
+        }
+        .menubar-tab:hover { color: var(--c-text); background: var(--c-surface-elevated); }
+        .menubar-tab--active {
+          background: var(--c-surface-elevated);
+          color: var(--c-text);
+          font-weight: 600;
         }
         .menubar-pp {
           font-size: 0.85rem;

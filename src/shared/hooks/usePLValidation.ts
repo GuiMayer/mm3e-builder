@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { useCharStore } from '../../store/charStore';
 import { useAppStore } from '../../store/appStore';
-import { POWER_DEFS, SKILL_DEFS } from '../../entities/gameDataLoaders';
+import { POWER_DEFS, SKILL_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { calcToughnessBonus } from '../lib/mathEngine';
+import { calcAttackBonus } from '../lib/offenseSummary';
 import {
   validateDodgeToughness,
   validateParryToughness,
@@ -59,7 +60,6 @@ export function usePLValidation(): PLViolation[] {
     if (v3) violations.push(v3);
 
     // ── Attack-type power components ──────────────────────────────
-    // attackBonus = 0 is conservative — builder doesn't track per-power attack bonuses here
     for (const power of character.powers) {
       const attackComponents = power.components.filter((comp) => {
         const def = POWER_DEFS.find((d) => d.id === comp.effectId);
@@ -68,12 +68,39 @@ export function usePLValidation(): PLViolation[] {
 
       if (attackComponents.length === 0) continue;
 
-      const highestRank = attackComponents.reduce((max, c) => Math.max(max, c.ranks), 0);
-      const v = validateAttackEffect(0, highestRank, pl);
+      const primaryComp = attackComponents.reduce((a, b) => (a.ranks >= b.ranks ? a : b));
+      const primaryDef  = POWER_DEFS.find((d) => d.id === primaryComp.effectId)!;
+      const highestRank = primaryComp.ranks;
+
+      // F-12: use real derived attack bonus
+      const { value: attackBonus, isNoRoll } = calcAttackBonus(
+        primaryDef.range,
+        power.name,
+        primaryComp,
+        character,
+        SKILL_DEFS,
+        MODIFIER_DEFS
+      );
+
+      // No-roll attacks (perception/area) cap at PL (not 2×PL)
+      if (isNoRoll) {
+        if (highestRank > pl) {
+          violations.push({
+            rule: 'pl.attack',
+            formula: `${power.name || 'Power'} [no-roll]: rank ${highestRank} > PL ${pl}`,
+            actual: highestRank,
+            limit: pl,
+          });
+        }
+        continue;
+      }
+
+      const atkVal = attackBonus ?? 0;
+      const v = validateAttackEffect(atkVal, highestRank, pl);
       if (v) {
         violations.push({
           ...v,
-          formula: `${power.name || 'Power'}: 0 + ${highestRank} = ${highestRank} > ${pl * 2}`,
+          formula: `${power.name || 'Power'}: ${atkVal} + ${highestRank} = ${atkVal + highestRank} > ${pl * 2}`,
         });
       }
     }

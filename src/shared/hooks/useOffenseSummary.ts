@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useCharStore } from '../../store/charStore';
-import { POWER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
+import { POWER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import type { IOffenseEntry } from '../lib/offenseSummary';
 
@@ -15,7 +15,7 @@ export function useOffenseSummary(): IOffenseEntry[] {
   const character = useCharStore((s) => s.character);
 
   return useMemo(
-    () => buildOffenseSummary(character, POWER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS),
+    () => buildOffenseSummary(character, POWER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS, MODIFIER_DEFS),
     [character]
   );
 }
