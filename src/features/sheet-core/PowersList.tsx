@@ -3,7 +3,7 @@ import { useCharStore } from '../../store/charStore';
 import type { ICharacterPower } from '../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
-import { calculateArrayCost, calcComponentCost } from '../../shared/lib/mathEngine';
+import { calcPowerTotalCost } from '../../shared/lib/mathEngine';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Plus, Edit3, Trash2, Zap } from 'lucide-react';
@@ -59,16 +59,10 @@ export function PowersList() {
     setBuilderOpen(true);
   }
 
-  // Calculate total power cost using multi-component format
-  const totalPowersCost = powers.reduce((sum, p) => {
-    const mainCost = p.components.reduce((csum, comp) => {
-      const def = powerDefs.find((d) => d.id === comp.effectId);
-      if (!def) return csum;
-      return csum + calcComponentCost(comp, def, modifierDefs);
-    }, 0);
-    const dynamicCount = p.alternateEffects.filter((a) => a.dynamic).length;
-    return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynamicCount);
-  }, 0);
+  const totalPowersCost = powers.reduce(
+    (sum, p) => sum + calcPowerTotalCost(p, powerDefs, modifierDefs),
+    0
+  );
 
   return (
     <section className="panel">
@@ -83,13 +77,7 @@ export function PowersList() {
 
       <div className="powers-grid">
         {powers.map((power, i) => {
-          const mainCost = power.components.reduce((csum, comp) => {
-            const def = powerDefs.find((d) => d.id === comp.effectId);
-            if (!def) return csum;
-            return csum + calcComponentCost(comp, def, modifierDefs);
-          }, 0);
-          const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
-          const totalCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
+          const totalCost = calcPowerTotalCost(power, powerDefs, modifierDefs);
 
           // Build display info from components
           const effectNames = power.components

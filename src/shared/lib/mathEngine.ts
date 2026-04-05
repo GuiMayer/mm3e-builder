@@ -8,6 +8,7 @@ import type {
   IAppliedModifier,
   IModifierDef,
   IDefenses,
+  ICharacterPower,
   ICharacterPowerComponent,
   IAlternateEffect,
   IPowerEffect,
@@ -264,3 +265,24 @@ export function calculateSkillsCost(totalSkillRanks: number): number {
 export function calculateAdvantagesCost(advantages: { ranks: number }[]): number {
   return advantages.reduce((sum, a) => sum + a.ranks, 0);
 }
+
+/**
+ * Calculate total PP cost of a complete power (all components + alternate effects).
+ * Consolidates the duplicated two-level reduce that previously existed in
+ * PowersList.tsx and useCalculatedPP.ts.
+ *
+ * Formula: calculateArrayCost(mainCost, altCount, dynamicCount)
+ */
+export function calcPowerTotalCost(
+  power: ICharacterPower,
+  powerDefs: IPowerEffect[],
+  modifierDefs: IModifierDef[]
+): number {
+  const mainCost = power.components.reduce((sum, comp) => {
+    const def = powerDefs.find((d) => d.id === comp.effectId);
+    return def ? sum + calcComponentCost(comp, def, modifierDefs) : sum;
+  }, 0);
+  const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
+  return calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
+}
+

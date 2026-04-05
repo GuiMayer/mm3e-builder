@@ -5,8 +5,7 @@ import {
   calculateDefensesCost,
   calculateSkillsCost,
   calculateAdvantagesCost,
-  calcComponentCost,
-  calculateArrayCost,
+  calcPowerTotalCost,
 } from '../lib/mathEngine';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 
@@ -26,16 +25,10 @@ export function useCalculatedPP() {
     const skillsCost = calculateSkillsCost(totalSkillRanks);
     const advantagesCost = calculateAdvantagesCost(character.advantages);
 
-    // Sum power costs using the math engine
-    const powersCost = character.powers.reduce((sum, p) => {
-      const mainCost = p.components.reduce((csum, comp) => {
-        const def = POWER_DEFS.find((d) => d.id === comp.effectId);
-        if (!def) return csum;
-        return csum + calcComponentCost(comp, def, MODIFIER_DEFS);
-      }, 0);
-      const dynamicCount = p.alternateEffects.filter((a) => a.dynamic).length;
-      return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynamicCount);
-    }, 0);
+    const powersCost = character.powers.reduce(
+      (sum, p) => sum + calcPowerTotalCost(p, POWER_DEFS, MODIFIER_DEFS),
+      0
+    );
 
     const totalSpent = abilitiesCost + defensesCost + skillsCost + advantagesCost + powersCost;
     const totalAvailable = character.header.powerLevel * 15;
