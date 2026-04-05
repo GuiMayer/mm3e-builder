@@ -83,6 +83,8 @@
   "complications.noComplications": "No complications. Add motivations, weaknesses or secrets.",
   "complications.titlePlaceholder": "Title (e.g., Motivation)",
   "complications.descPlaceholder": "Description...",
+  "complications.typeLabel": "Type",
+  "complications.typeNone": "None",
 
   "builder.title": "Power Builder",
   "builder.baseEffect": "Base Effect",
