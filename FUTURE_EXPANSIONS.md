@@ -6,47 +6,34 @@ for the current code to remain compatible when the feature is eventually impleme
 
 ---
 
-## FX-01 · PDF Export — Character Sheet
+## ~~FX-01~~ · PDF Export — ✅ Implemented in v1.0
 
-**Original plan ID:** F-23
-**Priority when tackled:** High
-**Effort estimate:** ~24h (new service + document layout)
-**Dependency:** F-12 (attack bonus) should be implemented first so the Offense table in the PDF is accurate.
+**Original plan ID:** F-23  
+**Shipped:** v1.0 (2026-04)
 
-### Vision
-Generate a print-ready `.pdf` file of the full character sheet — text-selectable, styled for A4,
-suitable for use at the table without a laptop.
+### What was delivered
+The official M&M 3e fillable PDF (`MnM3_charsheet_color_fillable.pdf`) is now filled programmatically
+using `pdf-lib`. All 211 fields across 3 pages are covered:
 
-### UX
-- Button in the MenuBar Export group, alongside the existing JSON and Excel buttons.
-- Generates and downloads directly in the browser (no backend required).
-- Layout: clean, light background (print-optimized), regardless of active app theme.
-- Multi-page A4. Page breaks between major sections (abilities/defenses, skills, powers, equipment).
-- All sections visible: Offense panel, Initiative, Toughness breakdown, Equipment notes, Character Notes.
+- **Page 1:** Header (Hero, Player, Identity, Base, Group, PL, PP Earned/Spent/Total, Age, Gender,
+  Height, Weight, Eyes, Hair, Hero Points, Public/Secret checkboxes), Abilities (8 fields +
+  `fmtAbility()` for absent abilities), Defenses (Dodge, Parry, Fortitude, Will, Toughness,
+  Initiative), Offense table (Attack 1–4, Offense 1–4 with auto-calculated DC, Description 1–4),
+  compact Skills/Advantages/Powers text blocks, Notes and Conditions.
+- **Page 2:** Structured skill grid (13 fixed skills + Close Combat 1–3 + Ranged Combat 1–3 +
+  Expertise 1–4), Advantages 1–11, Equipment 1–10, Complications 1–11 (`[Type]: Description`
+  format), Notes 1–7 (character.notes + advantage overflow).
+- **Overflow modal:** When limits are exceeded (> 4 attacks, > 11 advantages, > 11 complications,
+  > 18 powers, > 3 CC/RC subtypes, > 4 Expertise subtypes), a modal warns the user and lists the
+  overflowing items with their destination field.
 
-### Technology decision
-`@react-pdf/renderer` with **dynamic import** (lazy-loaded on demand) — client-side, declarative
-Flexbox layout, produces text-selectable PDF. No Puppeteer (requires backend). No jsPDF
-(coordinate-based, hard to maintain).
+### Architecture delivered
+Highly modular: `pdfFillService.ts` is a pure orchestrator (< 145 lines) that delegates to
+10 independent section modules under `src/services/pdf/sections/`. Each module is a single
+pure function — testable without a real PDF. `overflowCollector.ts` and `helpers.ts` are
+fully isolated utilities with zero cross-module dependencies.
 
-### Architecture compatibility requirements (already enforced in current codebase)
-The following decisions made during the current implementation cycle **intentionally preserve**
-PDF compatibility:
-
-| Decision | Why it matters for PDF |
-|---|---|
-| All calculation logic in pure functions in `mathEngine.ts` | PDF generator can call the same functions without React hooks |
-| `ExportLabels` interface in `excelGenerator.ts` | PDF generator will reuse the same `PDFLabels` pattern (labels passed in, not fetched inside) |
-| `downloadBlob` supports any MIME type | Adding `.pdf` entry requires only 2 lines |
-| `gameDataLoaders.ts` as single import point | PDF generator imports game data from the same source |
-| `ICharacter` shape is stable and versioned | PDF generator receives one `ICharacter` object — no additional fetching |
-| `buildOffenseSummary()` is a pure function | PDF generator calls it directly — no hook wrapper needed |
-
-### Files to create when implemented
-- `src/services/pdfGenerator.tsx` — React-PDF document component
-- `src/locales/en/translation.json` + `pt-BR` — `"menu.exportPdf"`, `"pdf.title"` keys
-- `src/services/downloadHelper.ts` — add `pdf` entry to `FILE_TYPES`
-- `src/shared/ui/MenuBar.tsx` — add PDF button
+> See `src/services/pdf/` for the full implementation.
 
 ---
 
@@ -203,4 +190,4 @@ A new pure function `calcEquipmentBudget(advantages, advantageDefs)` will be add
 
 ---
 
-*Last updated: 2026-04-05*
+*Last updated: 2026-04-05 — v1.0 release*

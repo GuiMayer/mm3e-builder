@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder
+# Mutants & Masterminds 3e Character Builder — v1.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -51,6 +51,14 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 #### 📋 Powers List (Sheet View)
 - Cards display each power with component effects, applied modifier tags, and individual AE tags showing "↪ [Name] ⚡" for dynamic slots.
 - Edit button re-opens the Power Builder with the existing power pre-loaded.
+
+#### 📄 Export to PDF
+- **Fills the official M&M 3e fillable character sheet** (`MnM3_charsheet_color_fillable.pdf`) with all 211 fields using `pdf-lib` — 100% client-side, no backend.
+- Page 1: Header, Abilities, Defenses, Initiative, Offense table (Attack 1–4 with auto-calculated DCs), compact Skills/Advantages/Powers summaries, Notes & Conditions.
+- Page 2: Structured skills grid (Ab / Ra / Total per skill), Close Combat & Ranged Combat subtypes, Expertise subtypes, Advantages 1–11, Equipment 1–10, Complications 1–11, Notes 1–7.
+- **Overflow handling** — When a character exceeds the sheet's fixed limits (e.g. > 4 attacks, > 11 advantages), a detailed modal warns the user before export and redirects excess items to the Notes fields.
+- Text is **fully selectable** in any PDF reader — no screenshot or image-based rendering.
+- PDF template is pre-fetched in the background on app load for near-instant exports.
 
 #### 📤 Export to Excel
 - Full character sheet exported to a styled `.xlsx` workbook with 7 sections: Summary, Abilities, Defenses, Skills, Advantages, Powers, Complications.
@@ -106,6 +114,7 @@ The architecture allows you to quickly contribute new localizations without deep
 - **@dnd-kit** — Drag-and-Drop (modifiers palette)
 - **React-i18next** — UI Internationalization
 - **ExcelJS** — Advanced Sheet Exporting
+- **pdf-lib** — Official fillable PDF character sheet export
 - **Zod** — Runtime schema validation & versioned migrations
 
 ---
@@ -162,6 +171,14 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 - Cards exibem cada poder com efeitos dos componentes, tags dos modificadores aplicados e tags individuais de AE mostrando "↪ [Nome] ⚡" para slots dinâmicos.
 - Botão de edição reabre o Power Builder com o poder existente pré-carregado.
 
+#### 📄 Exportar como PDF
+- **Preenche a ficha oficial fillable do M&M 3e** (`MnM3_charsheet_color_fillable.pdf`) com todos os 211 campos usando `pdf-lib` — 100% no browser, sem backend.
+- Página 1: Cabeçalho, Atributos, Defesas, Iniciativa, tabela de Offense (Attack 1–4 com DCs calculados automaticamente), resumos compactos de Perícias/Vantagens/Poderes, Notes & Conditions.
+- Página 2: Grade estruturada de perícias (Hab / Ra / Total por perícia), subtypes de Combate Corpo-a-Corpo e à Distância, subtypes de Especialidade, Vantagens 1–11, Equipamento 1–10, Complicações 1–11, Notas 1–7.
+- **Tratamento de overflow** — Quando um personagem excede os limites fixos da ficha (ex: > 4 ataques, > 11 vantagens), um modal detalhado avisa o usuário antes de exportar e redireciona o excedente para os campos de Notas.
+- Texto **completamente selecionável** em qualquer leitor de PDF — sem screenshot ou renderização por imagem.
+- Template do PDF é pré-carregado em segundo plano ao iniciar o app para exports quase instantâneos.
+
 #### 📤 Exportar para Excel
 - Ficha completa exportada para um arquivo `.xlsx` estilizado com 7 abas: Resumo, Atributos, Defesas, Perícias, Vantagens, Poderes, Complicações.
 - Células coloridas, totais de PP e efeitos alternativos listados por poder.
@@ -214,6 +231,7 @@ Leia **[CONTRIBUTING.md](./CONTRIBUTING.md)** para saber como:
 - **@dnd-kit** — Drag-and-Drop (paleta de modificadores)
 - **React-i18next** — Internacionalização da UI
 - **ExcelJS** — Exportação avançada da ficha
+- **pdf-lib** — Exportação da ficha oficial fillable em PDF
 - **Zod** — Validação de schema em runtime e migrações versionadas
 
 ---

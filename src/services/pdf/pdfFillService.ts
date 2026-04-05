@@ -1,5 +1,5 @@
 /* ================================================
-   PDF Fill Service — Orchestrator (Phase 1)
+   PDF Fill Service — Orchestrator (Phase 3)
    Pure coordinator: no field-setting logic here.
    All field logic lives in the sections/ modules.
    ================================================ */
@@ -22,10 +22,15 @@ import { loadPDFTemplate } from './pdfTemplateLoader';
 import { sliceWithOverflow } from './helpers';
 import { PDF_LIMITS } from './overflowCollector';
 
-import { fillHeader }    from './sections/headerSection';
-import { fillAbilities } from './sections/abilitiesSection';
-import { fillDefenses }  from './sections/defensesSection';
-import { fillOffense }   from './sections/offenseSection';
+import { fillHeader }     from './sections/headerSection';
+import { fillAbilities }  from './sections/abilitiesSection';
+import { fillDefenses }   from './sections/defensesSection';
+import { fillOffense }    from './sections/offenseSection';
+import { fillSkills }     from './sections/skillsSection';
+import { fillAdvantages }    from './sections/advantagesSection';
+import { fillEquipment }     from './sections/equipmentSection';
+import { fillComplications } from './sections/complicationsSection';
+import { fillNotes }         from './sections/notesSection';
 
 // Re-export for MenuBar to use without importing from overflowCollector directly
 export { checkPDFOverflow } from './overflowCollector';
@@ -112,7 +117,17 @@ export async function fillAndDownloadPDF(character: ICharacter): Promise<void> {
 
   fillOffense(form, { offenseEntries, character, attackOverflow });
 
-  // Phases 2 & 3 will add: fillSkills, fillAdvantages, fillComplications, fillNotes
+  // ── Phase 2: Page 2 sections ──────────────────────────────
+  fillSkills(form, character, SKILL_DEFS);
+
+  const { overflowLines: advantageOverflow } = fillAdvantages(form, character, ADVANTAGE_DEFS);
+
+  fillEquipment(form, character);
+
+  // ── Phase 3: Complications, Notes ────────────────────────
+  fillComplications(form, character);
+
+  fillNotes(form, character, advantageOverflow);
 
   // ── 7. Serialise and download ─────────────────────────────────
   const pdfBytes = await pdfDoc.save();
