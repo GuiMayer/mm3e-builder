@@ -46,14 +46,23 @@ Edit the `translation.json` file for the target language. Keys are dot-separated
 **How to add a new language (e.g. Spanish):**
 
 1. Create `src/locales/es/translation.json` — copy all keys from `en/translation.json` and translate the values.
-2. Open `src/locales/index.ts` and add:
+2. Open `src/locales/index.ts` and register the new language:
    ```ts
    import es from './es/translation.json';
 
    // inside the resources object:
    es: { translation: es },
    ```
-3. Optionally add your language to the language-switcher UI in the app's menu.
+3. Open `src/shared/ui/MenuBar.tsx` and add an entry to the `LANGUAGES` array so the button appears in the menu:
+   ```ts
+   const LANGUAGES = [
+     { id: 'en', label: 'English' },
+     { id: 'pt-BR', label: 'Português (BR)' },
+     { id: 'es', label: 'Español' }, // ← add this
+   ];
+   ```
+
+> **Note:** The language switcher is **not automatic** — the display name in the menu must be added manually to `LANGUAGES`. The rest of the system (detection, fallback, game data resolution) handles itself.
 
 > **Tip:** Keep keys in English even in non-English `translation.json` files — only values are translated.
 
@@ -190,14 +199,23 @@ Edite o arquivo `translation.json` do idioma desejado. As chaves são namespaces
 **Como adicionar um novo idioma (ex: Espanhol):**
 
 1. Crie `src/locales/es/translation.json` — copie todas as chaves do `en/translation.json` e traduza os valores.
-2. Abra `src/locales/index.ts` e adicione:
+2. Abra `src/locales/index.ts` e registre o novo idioma:
    ```ts
    import es from './es/translation.json';
 
    // dentro do objeto resources:
    es: { translation: es },
    ```
-3. Opcionalmente adicione seu idioma ao seletor de idioma no menu do aplicativo.
+3. Abra `src/shared/ui/MenuBar.tsx` e adicione uma entrada ao array `LANGUAGES` para que o botão apareça no menu:
+   ```ts
+   const LANGUAGES = [
+     { id: 'en', label: 'English' },
+     { id: 'pt-BR', label: 'Português (BR)' },
+     { id: 'es', label: 'Español' }, // ← adicione aqui
+   ];
+   ```
+
+> **Observação:** O seletor de idioma **não é automático** — o nome de exibição no menu precisa ser adicionado manualmente ao array `LANGUAGES`. O restante do sistema (detecção, fallback, resolução de dados de jogo) funciona automaticamente.
 
 > **Dica:** Mantenha as chaves em inglês mesmo nos arquivos `translation.json` de outros idiomas — apenas os valores são traduzidos.
 
