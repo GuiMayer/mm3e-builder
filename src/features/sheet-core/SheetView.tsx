@@ -8,6 +8,7 @@ import { AdvantagesPanel } from './AdvantagesPanel';
 import { PowersList } from './PowersList';
 import { ComplicationsPanel } from './ComplicationsPanel';
 import { HeaderPanel } from './HeaderPanel';
+import { OffensePanel } from './OffensePanel';
 import { useTranslation } from 'react-i18next';
 
 export function SheetView() {
@@ -33,6 +34,7 @@ export function SheetView() {
       )}
 
       <HeaderPanel />
+      <OffensePanel />
       <AbilitiesPanel cost={pp.abilitiesCost} />
       <DefensesPanel cost={pp.defensesCost} />
       <SkillsPanel cost={pp.skillsCost} />

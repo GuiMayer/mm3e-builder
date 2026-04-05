@@ -38,6 +38,7 @@
   "defenses.will": "Vontade",
   "defenses.toughness": "Resistência",
   "defenses.initiative": "Iniciativa",
+  "defenses.toughnessBreakdown": "Composição da Resistência",
 
   "skills.title": "Perícias",
   "skills.addSkill": "Adicionar Perícia",
@@ -220,5 +221,17 @@
   "builder.saveInvalidAEsConfirm": "{{count}} Efeito(s) Alternativo(s) excedem o limite de {{cap}}PP: {{names}}.\nSalvar mesmo assim?",
   "palette.noSpecificEffect": "Selecione um efeito primeiro.",
   "palette.noSpecificMods": "Nenhum modificador específico para este efeito.",
-  "builder.aeOverageLabel": "+{{overageBy}}PP acima do limite"
+  "builder.aeOverageLabel": "+{{overageBy}}PP acima do limite",
+
+  "offense.title": "Ataques",
+  "offense.attack": "Ataque",
+  "offense.bonus": "Bônus",
+  "offense.range": "Alcance",
+  "offense.effect": "Efeito",
+  "offense.notes": "Notas",
+  "offense.noAttacks": "Nenhum poder de ataque adicionado.",
+  "offense.range_close": "Corpo a corpo",
+  "offense.range_ranged": "À distância",
+  "offense.range_perception": "Percepção",
+  "offense.range_personal": "Pessoal"
 }

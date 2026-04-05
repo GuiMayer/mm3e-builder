@@ -286,3 +286,91 @@ export function calcPowerTotalCost(
   return calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
 }
 
+// ── Derived Stats (pure — usable by PDF generator and React hooks alike) ────
+
+/**
+ * Calculate the bonus Toughness a character gains beyond STA.
+ * Sources:
+ *   - Protection power components (enhancesDefense === 'toughness') × ranks
+ *   - Defensive Roll advantage ranks (each rank = +1 active Toughness)
+ *
+ * Returns { bonus, breakdown } for display in tooltips.
+ */
+export function calcToughnessBonus(
+  powers: ICharacterPower[],
+  advantages: { advantageId: string; ranks: number }[],
+  powerDefs: IPowerEffect[]
+): { bonus: number; breakdown: string[] } {
+  const breakdown: string[] = [];
+  let bonus = 0;
+
+  // Protection (and any future effect with enhancesDefense === 'toughness')
+  for (const power of powers) {
+    for (const comp of power.components) {
+      const def = powerDefs.find((d) => d.id === comp.effectId);
+      if (def?.enhancesDefense === 'toughness') {
+        bonus += comp.ranks;
+        breakdown.push(`${power.name || def.name} ${comp.ranks}`);
+      }
+    }
+    // Also check AE components — AEs can have their own Protection
+    for (const ae of power.alternateEffects) {
+      for (const comp of ae.components) {
+        const def = powerDefs.find((d) => d.id === comp.effectId);
+        if (def?.enhancesDefense === 'toughness') {
+          bonus += comp.ranks;
+          breakdown.push(`${ae.name || def.name} ${comp.ranks} (AE)`);
+        }
+      }
+    }
+  }
+
+  // Defensive Roll advantage
+  const defRoll = advantages.find((a) => a.advantageId === 'defensive_roll');
+  if (defRoll && defRoll.ranks > 0) {
+    bonus += defRoll.ranks;
+    breakdown.push(`Defensive Roll ${defRoll.ranks}`);
+  }
+
+  return { bonus, breakdown };
+}
+
+/**
+ * Calculate the total Initiative bonus for a character.
+ * Sources:
+ *   - Base: AGL ability rank
+ *   - Improved Initiative advantage: +4 per rank
+ *   - Enhanced Initiative power effect: +rank
+ *
+ * Returns { total, breakdown }.
+ */
+export function calcInitiativeBonus(
+  agl: number,
+  advantages: { advantageId: string; ranks: number }[],
+  powers: ICharacterPower[],
+  powerDefs: IPowerEffect[]
+): { total: number; breakdown: string[] } {
+  const breakdown: string[] = [`AGL ${agl}`];
+  let total = agl;
+
+  // Improved Initiative advantage: +4 per rank
+  const improvedInit = advantages.find((a) => a.advantageId === 'improved_initiative');
+  if (improvedInit && improvedInit.ranks > 0) {
+    const bonus = improvedInit.ranks * 4;
+    total += bonus;
+    breakdown.push(`Improved Initiative ×${improvedInit.ranks} (+${bonus})`);
+  }
+
+  // Enhanced Initiative power effect (effectId === 'enhanced_initiative')
+  for (const power of powers) {
+    for (const comp of power.components) {
+      const def = powerDefs.find((d) => d.id === comp.effectId);
+      if (def?.id === 'enhanced_initiative') {
+        total += comp.ranks;
+        breakdown.push(`${power.name || 'Enhanced Initiative'} +${comp.ranks}`);
+      }
+    }
+  }
+
+  return { total, breakdown };
+}

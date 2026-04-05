@@ -38,6 +38,7 @@
   "defenses.will": "Will",
   "defenses.toughness": "Toughness",
   "defenses.initiative": "Initiative",
+  "defenses.toughnessBreakdown": "Toughness breakdown",
 
   "skills.title": "Skills",
   "skills.addSkill": "Add Skill",
@@ -220,5 +221,17 @@
   "builder.saveInvalidAEsConfirm": "{{count}} Alternate Effect(s) exceed the cap of {{cap}}PP: {{names}}.\nSave anyway?",
   "palette.noSpecificEffect": "Select an effect first.",
   "palette.noSpecificMods": "No specific modifiers for this effect.",
-  "builder.aeOverageLabel": "+{{overageBy}}PP over cap"
+  "builder.aeOverageLabel": "+{{overageBy}}PP over cap",
+
+  "offense.title": "Offense",
+  "offense.attack": "Attack",
+  "offense.bonus": "Bonus",
+  "offense.range": "Range",
+  "offense.effect": "Effect",
+  "offense.notes": "Notes",
+  "offense.noAttacks": "No attack powers added.",
+  "offense.range_close": "Close",
+  "offense.range_ranged": "Ranged",
+  "offense.range_perception": "Perception",
+  "offense.range_personal": "Personal"
 }
