@@ -43,6 +43,11 @@ interface CharStoreState {
   loadCharacter: (character: ICharacter) => void;
   resetCharacter: () => void;
 
+  // Collections
+  setSkills: (skills: ICharacter['skills']) => void;
+  setAdvantages: (advantages: ICharacter['advantages']) => void;
+  setPowers: (powers: ICharacter['powers']) => void;
+
   // Dirty flag
   markClean: () => void;
 }
@@ -120,6 +125,24 @@ export const useCharStore = create<CharStoreState>((set) => ({
       },
       isDirty: false,
     }),
+
+  setSkills: (skills) =>
+    set((state) => ({
+      character: { ...state.character, skills },
+      isDirty: true,
+    })),
+
+  setAdvantages: (advantages) =>
+    set((state) => ({
+      character: { ...state.character, advantages },
+      isDirty: true,
+    })),
+
+  setPowers: (powers) =>
+    set((state) => ({
+      character: { ...state.character, powers },
+      isDirty: true,
+    })),
 
   markClean: () => set({ isDirty: false }),
 }));

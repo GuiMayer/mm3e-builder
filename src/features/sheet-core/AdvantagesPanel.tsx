@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useCharStore } from '../../store/charStore';
-import type { ICharacterAdvantage, AdvantageType, IAdvantageDef } from '../../entities/types';
+import type { AdvantageType, IAdvantageDef } from '../../entities/types';
 import advantageDefsRaw from '../../data/advantages.json';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Tooltip } from '../../shared/ui/Tooltip';
@@ -14,6 +14,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const advantageDefs = useLocalizedData(advantageDefsRaw as unknown as IAdvantageDef[]);
   const advantages = useCharStore((s) => s.character.advantages);
+  const setAdvantages = useCharStore((s) => s.setAdvantages);
 
   const [showSelector, setShowSelector] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,12 +26,6 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
     if (showSelector && searchRef.current) searchRef.current.focus();
   }, [showSelector]);
 
-  function setAdvantages(next: ICharacterAdvantage[]) {
-    useCharStore.setState((s) => ({
-      character: { ...s.character, advantages: next },
-      isDirty: true,
-    }));
-  }
 
   function addAdvantage(defId: string) {
     const existing = advantages.findIndex((a) => a.advantageId === defId);

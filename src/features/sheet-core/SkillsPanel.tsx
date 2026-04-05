@@ -23,6 +23,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const skillDefs = useLocalizedData(skillDefsRaw as unknown as ISkillDef[]);
   const skills = useCharStore((s) => s.character.skills);
+  const setSkills = useCharStore((s) => s.setSkills);
   const abilities = useCharStore((s) => s.character.abilities);
 
   const [showSelector, setShowSelector]     = useState(false);
@@ -39,12 +40,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
   useEffect(() => { if (pendingSubtype) subtypeRef.current?.focus(); }, [pendingSubtype]);
   useEffect(() => { setAllUsagesOpen(false); }, [descTarget]);
 
-  function setSkills(newSkills: ICharacterSkill[]) {
-    useCharStore.setState((s) => ({
-      character: { ...s.character, skills: newSkills },
-      isDirty: true,
-    }));
-  }
+
 
   function addSkillDirect(skillId: string, subtype: string | null) {
     const entry: ICharacterSkill = { skillId, ranks: 1, subtype };

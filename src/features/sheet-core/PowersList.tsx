@@ -15,15 +15,11 @@ export function PowersList() {
   const modifierDefs = useLocalizedData(MODIFIER_DEFS);
   
   const powers = useCharStore((s) => s.character.powers);
+  const setPowers = useCharStore((s) => s.setPowers);
   const [builderOpen, setBuilderOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  function setPowers(next: ICharacterPower[]) {
-    useCharStore.setState((s) => ({
-      character: { ...s.character, powers: next },
-      isDirty: true,
-    }));
-  }
+
 
   function handleSavePower(power: ICharacterPower) {
     if (editIndex !== null) {
