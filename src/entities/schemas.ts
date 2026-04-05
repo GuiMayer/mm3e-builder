@@ -10,6 +10,8 @@ const AbilityKeySchema = z.enum(['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe'
 const AppliedModifierSchema = z.object({
   modifierId: z.string(),
   ranks: z.number().int().min(1),
+  isPowerSpecific: z.boolean().optional(),
+  option: z.string().optional(),
 });
 
 const AlternateEffectSchema = z.object({
@@ -22,15 +24,34 @@ const AlternateEffectSchema = z.object({
   notes: z.string(),
 });
 
-const CharacterPowerSchema = z.object({
+const CharacterPowerComponentSchema = z.object({
   id: z.string(),
-  name: z.string(),
   effectId: z.string(),
   ranks: z.number().int().min(0),
   modifiers: z.array(AppliedModifierSchema),
-  notes: z.string(),
-  alternateEffects: z.array(AlternateEffectSchema),
 });
+
+// Accept both old (effectId at top level) and new (components[]) formats
+const CharacterPowerSchema = z.union([
+  // New format
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    components: z.array(CharacterPowerComponentSchema),
+    notes: z.string(),
+    alternateEffects: z.array(AlternateEffectSchema),
+  }),
+  // Legacy format (will be migrated at load time)
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    effectId: z.string(),
+    ranks: z.number().int().min(0),
+    modifiers: z.array(AppliedModifierSchema),
+    notes: z.string(),
+    alternateEffects: z.array(AlternateEffectSchema),
+  }),
+]);
 
 const CharacterSkillSchema = z.object({
   skillId: z.string(),

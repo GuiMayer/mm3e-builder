@@ -5,7 +5,7 @@ import {
   calculateDefensesCost,
   calculateSkillsCost,
   calculateAdvantagesCost,
-  calculatePowerCost,
+  calcComponentCost,
   calculateArrayCost,
 } from '../lib/mathEngine';
 import type { IModifierDef } from '../../entities/types';
@@ -30,9 +30,11 @@ export function useCalculatedPP() {
 
     // Sum power costs using the math engine
     const powersCost = character.powers.reduce((sum, p) => {
-      const def = powerDefs.find((d) => d.id === p.effectId);
-      const baseCost = def?.baseCost ?? 1;
-      const mainCost = calculatePowerCost(baseCost, p.ranks, p.modifiers, modifierDefs as IModifierDef[]);
+      const mainCost = p.components.reduce((csum, comp) => {
+        const def = powerDefs.find((d) => d.id === comp.effectId);
+        if (!def) return csum;
+        return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], modifierDefs as IModifierDef[]);
+      }, 0);
       const dynamicCount = p.alternateEffects.filter((a) => a.dynamic).length;
       return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynamicCount);
     }, 0);

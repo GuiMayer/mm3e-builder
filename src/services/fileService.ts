@@ -1,6 +1,7 @@
 import { CharacterFileSchema } from '../entities/schemas';
 import type { ICharacter, ICharacterFile } from '../entities/types';
 import { downloadBlob } from './downloadHelper';
+import { migratePowers } from '../shared/lib/powerMigration';
 
 const CURRENT_SCHEMA_VERSION = '1.0.0';
 const DRAFT_KEY = 'mm3e-draft-character';
@@ -61,9 +62,11 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
     });
   }
 
-  // TODO: Schema migration logic (v1.0 -> v1.1, etc.)
-
-  return result.data.character;
+  const raw = result.data.character;
+  return {
+    ...raw,
+    powers: migratePowers(raw.powers as unknown[]),
+  };
 }
 
 /**
@@ -101,7 +104,11 @@ export function loadDraft(): ICharacter | null {
     const result = CharacterFileSchema.safeParse(parsed);
     if (!result.success) return null;
 
-    return result.data.character;
+    const raw = result.data.character;
+    return {
+      ...raw,
+      powers: migratePowers(raw.powers as unknown[]),
+    };
   } catch {
     return null;
   }

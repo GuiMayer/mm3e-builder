@@ -15,7 +15,7 @@ import type {
   ICharacterPower,
 } from '../entities/types';
 import {
-  calculatePowerCost,
+  calcComponentCost,
   calculateArrayCost,
   calculateAbilitiesCost,
   calculateDefensesCost,
@@ -122,7 +122,7 @@ function autoWidth(ws: ExcelJS.Worksheet, minWidth = 12, maxWidth = 50) {
 
 // ── Resolve localized name from game data with i18n field ──
 
-function locName(item: { name: string; i18n?: Record<string, { name: string }> }, lang: string): string {
+function locName(item: { name: string; i18n?: Record<string, { name?: string }> }, lang: string): string {
   return item.i18n?.[lang]?.name ?? item.name;
 }
 
@@ -218,11 +218,13 @@ function buildSummarySheet(
   const skCost = calculateSkillsCost(totalSkillRanks);
   const advCost = calculateAdvantagesCost(char.advantages);
   const pwrCost = char.powers.reduce((sum, p) => {
-    const def = gameData.powerDefs.find((d) => d.id === p.effectId);
-    const base = def?.baseCost ?? 1;
-    const main = calculatePowerCost(base, p.ranks, p.modifiers, gameData.modifierDefs);
+    const mainCost = p.components.reduce((csum, comp) => {
+      const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
+      if (!def) return csum;
+      return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], gameData.modifierDefs);
+    }, 0);
     const dynCount = p.alternateEffects.filter((a) => a.dynamic).length;
-    return sum + calculateArrayCost(main, p.alternateEffects.length, dynCount);
+    return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynCount);
   }, 0);
   const totalSpent = abCost + defCost + skCost + advCost + pwrCost;
   const totalAvailable = char.header.powerLevel * 15;
@@ -451,18 +453,32 @@ function buildPowersSheet(
   let rowIdx = 2;
 
   char.powers.forEach((power) => {
-    const effectDef = gameData.powerDefs.find((d) => d.id === power.effectId);
-    const baseCost = effectDef?.baseCost ?? 1;
-    const mainCost = calculatePowerCost(baseCost, power.ranks, power.modifiers, gameData.modifierDefs);
+    const mainCost = power.components.reduce((csum, comp) => {
+      const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
+      if (!def) return csum;
+      return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], gameData.modifierDefs);
+    }, 0);
     const dynCount = power.alternateEffects.filter((a) => a.dynamic).length;
     const totalCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynCount);
+
+    // Build effect display from all components
+    const effectNames = power.components
+      .map((c) => {
+        const def = gameData.powerDefs.find((d) => d.id === c.effectId);
+        return def ? `${locName(def, lang)} ${c.ranks}` : null;
+      })
+      .filter(Boolean)
+      .join(' + ');
+
+    // Collect all modifiers from all components
+    const allMods = power.components.flatMap((c) => c.modifiers);
 
     const row = ws.getRow(rowIdx);
     row.getCell(1).value = power.name || '—';
     row.getCell(1).font = { bold: true };
-    row.getCell(2).value = effectDef ? locName(effectDef, lang) : power.effectId;
-    row.getCell(3).value = power.ranks;
-    row.getCell(4).value = formatModifiers(power.modifiers, gameData.modifierDefs, lang);
+    row.getCell(2).value = effectNames || '—';
+    row.getCell(3).value = power.components.length > 1 ? `${power.components.length} effects` : (power.components[0]?.ranks ?? 0);
+    row.getCell(4).value = formatModifiers(allMods, gameData.modifierDefs, lang);
     row.getCell(4).alignment = { wrapText: true };
     row.getCell(5).value = formatAlternates(power, gameData, lang, labels);
     row.getCell(5).alignment = { wrapText: true };
@@ -480,11 +496,13 @@ function buildPowersSheet(
   totalRow.getCell(1).value = 'Total';
   totalRow.getCell(1).font = { bold: true, size: 11 };
   const totalPP = char.powers.reduce((sum, p) => {
-    const def = gameData.powerDefs.find((d) => d.id === p.effectId);
-    const base = def?.baseCost ?? 1;
-    const main = calculatePowerCost(base, p.ranks, p.modifiers, gameData.modifierDefs);
+    const mainCost = p.components.reduce((csum, comp) => {
+      const def = gameData.powerDefs.find((d) => d.id === comp.effectId);
+      if (!def) return csum;
+      return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], gameData.modifierDefs);
+    }, 0);
     const dynCount = p.alternateEffects.filter((a) => a.dynamic).length;
-    return sum + calculateArrayCost(main, p.alternateEffects.length, dynCount);
+    return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynCount);
   }, 0);
   totalRow.getCell(7).value = totalPP;
   totalRow.getCell(7).font = { bold: true, size: 11 };

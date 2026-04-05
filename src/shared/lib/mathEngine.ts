@@ -4,12 +4,29 @@
    Never imports stores directly — respects DIP.
    ================================================ */
 
-import type { IAppliedModifier, IModifierDef, IDefenses } from '../../entities/types';
+import type {
+  IAppliedModifier,
+  IModifierDef,
+  IDefenses,
+  ICharacterPowerComponent,
+  IPowerEffect,
+} from '../../entities/types';
 
 /**
- * Calculate the per-rank cost of a power effect.
- * Formula: baseCost + sumExtrasPerRank - sumFlawsPerRank
- * If result <= 0, returns a fractional representation.
+ * Calculate the cost contributed by a single applied modifier to one component.
+ * Returns the point amount (positive = extra, negative = flaw).
+ */
+export function calcModifierCost(applied: IAppliedModifier, def: IModifierDef): number {
+  if (def.costType === 'flat') return def.costValue;
+  if (def.costType === 'flat_ranked') return def.costValue * applied.ranks;
+  // per_rank: contributes to the per-rank total, not a fixed amount here
+  return 0;
+}
+
+/**
+ * Calculate the per-rank cost modifier sum for a component.
+ * Formula: baseCost + sum(per_rank extras) - sum(per_rank flaw absolute values)
+ * If result <= 0, returns fractional info.
  */
 export function calculateCostPerRank(
   baseCost: number,
@@ -34,7 +51,8 @@ export function calculateCostPerRank(
 }
 
 /**
- * Calculate the flat modifier cost sum.
+ * Calculate the flat modifier sum for a set of applied modifiers.
+ * Handles both 'flat' (fixed) and 'flat_ranked' (cost × modifier ranks).
  */
 export function calculateFlatCost(
   appliedModifiers: IAppliedModifier[],
@@ -44,16 +62,44 @@ export function calculateFlatCost(
 
   for (const applied of appliedModifiers) {
     const def = modifierDefs.find((m) => m.id === applied.modifierId);
-    if (!def || def.costType !== 'flat') continue;
-    flatSum += def.costValue * applied.ranks;
+    if (!def) continue;
+    if (def.costType === 'flat') flatSum += def.costValue;
+    else if (def.costType === 'flat_ranked') flatSum += def.costValue * applied.ranks;
   }
 
   return flatSum;
 }
 
 /**
- * Calculate total PP cost for a single power.
- * Total = (costPerRank × ranks / ranksPerPP) + flatCost, minimum 1.
+ * Calculate total PP cost for a single power component.
+ * Formula: ((baseCost + per_rank_extras − per_rank_flaws) × ranks) + flat_mods
+ * Minimum cost: 1 PP.
+ */
+export function calcComponentCost(
+  component: ICharacterPowerComponent,
+  effectDef: IPowerEffect,
+  modifierDefs: IModifierDef[]
+): number {
+  const { costPerRank, isFractional, ranksPerPP } = calculateCostPerRank(
+    effectDef.baseCost,
+    component.modifiers,
+    modifierDefs
+  );
+
+  let rankCost: number;
+  if (isFractional) {
+    rankCost = Math.ceil(component.ranks / ranksPerPP);
+  } else {
+    rankCost = costPerRank * component.ranks;
+  }
+
+  const flatCost = calculateFlatCost(component.modifiers, modifierDefs);
+  return Math.max(1, rankCost + flatCost);
+}
+
+/**
+ * Legacy compatibility wrapper.
+ * Use calcComponentCost for new code.
  */
 export function calculatePowerCost(
   baseCost: number,
@@ -79,8 +125,9 @@ export function calculatePowerCost(
 }
 
 /**
- * Calculate the total cost of a power including alternate effects.
- * Array cost = most expensive effect + sum of alt flat costs (+1 or +2 each).
+ * Calculate the total cost of a power array (components + alternate effects).
+ * Main cost = sum of all components.
+ * Array cost = main cost + 1 per static alt + 2 per dynamic alt.
  */
 export function calculateArrayCost(
   mainPowerCost: number,
@@ -92,8 +139,64 @@ export function calculateArrayCost(
 }
 
 /**
+ * Get a breakdown of a component's cost for display in the UI.
+ */
+export function getComponentCostBreakdown(
+  component: ICharacterPowerComponent,
+  effectDef: IPowerEffect,
+  modifierDefs: IModifierDef[]
+): {
+  base: number;
+  perRankExtras: number;
+  perRankFlaws: number;
+  costPerRank: number;
+  rankCost: number;
+  flatCost: number;
+  total: number;
+  isFractional: boolean;
+  ranksPerPP: number;
+} {
+  let perRankExtras = 0;
+  let perRankFlaws = 0;
+  let flatCost = 0;
+
+  for (const applied of component.modifiers) {
+    const def = modifierDefs.find((m) => m.id === applied.modifierId);
+    if (!def) continue;
+    if (def.costType === 'per_rank') {
+      if (def.costValue > 0) perRankExtras += def.costValue;
+      else perRankFlaws += Math.abs(def.costValue);
+    } else if (def.costType === 'flat') {
+      flatCost += def.costValue;
+    } else if (def.costType === 'flat_ranked') {
+      flatCost += def.costValue * applied.ranks;
+    }
+  }
+
+  const rawCostPerRank = effectDef.baseCost + perRankExtras - perRankFlaws;
+  const isFractional = rawCostPerRank < 1;
+  const ranksPerPP = isFractional ? 2 - rawCostPerRank : 1;
+  const costPerRank = Math.max(1, rawCostPerRank);
+  const rankCost = isFractional
+    ? Math.ceil(component.ranks / ranksPerPP)
+    : costPerRank * component.ranks;
+  const total = Math.max(1, rankCost + flatCost);
+
+  return {
+    base: effectDef.baseCost,
+    perRankExtras,
+    perRankFlaws,
+    costPerRank,
+    rankCost,
+    flatCost,
+    total,
+    isFractional,
+    ranksPerPP,
+  };
+}
+
+/**
  * Calculate total PP spent on abilities.
- * Each rank costs 2 PP. Absent abilities cost 0.
  */
 export function calculateAbilitiesCost(
   abilities: Record<string, number>,
@@ -109,26 +212,21 @@ export function calculateAbilitiesCost(
 
 /**
  * Calculate total PP spent on bought defense ranks.
- * Each rank costs 1 PP.
  */
 export function calculateDefensesCost(defenses: IDefenses): number {
   return defenses.dodge + defenses.parry + defenses.fortitude + defenses.will;
 }
 
 /**
- * Calculate total PP spent on skills.
- * 1 PP per 2 ranks (round up).
+ * Calculate total PP spent on skills. 1 PP per 2 ranks (round up).
  */
 export function calculateSkillsCost(totalSkillRanks: number): number {
   return Math.ceil(totalSkillRanks / 2);
 }
 
 /**
- * Calculate total PP spent on advantages.
- * 1 PP per rank.
+ * Calculate total PP spent on advantages. 1 PP per rank.
  */
-export function calculateAdvantagesCost(
-  advantages: { ranks: number }[]
-): number {
+export function calculateAdvantagesCost(advantages: { ranks: number }[]): number {
   return advantages.reduce((sum, a) => sum + a.ranks, 0);
 }

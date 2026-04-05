@@ -14,7 +14,98 @@
         "name": "Aflição",
         "description": "Impõe condições debilitantes ao alvo por meio de um ataque corpo a corpo. Escolha condições para cada grau de falha (1º: atordoado/fascinado/fatigado/impedido/prejudicado/vulnerável; 2º: compelido/indefeso/debilitado/exausto/imóvel/derrubado/aturdido; 3º: adormecido/controlado/incapacitado/paralisado/transformado/inconsciente). O alvo resiste com Fortitude ou Vontade (escolhido na aquisição). Graus maiores substituem os menores."
       }
-    }
+    },
+    "longDescription": "Affliction attacks a target with a close attack (ranged with Increased Range extra). The target resists with Fortitude or Will. Each degree of failure inflicts one of three conditions chosen at acquisition. 1st degree: Dazed, Entranced, Fatigued, Hindered, Impaired, or Vulnerable. 2nd degree: Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, or Stunned. 3rd degree: Asleep, Controlled, Incapacitated, Paralyzed, Transformed, or Unaware. Conditions replace each other (not stack) as degrees worsen. The conditions at each degree must form a logical progression.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "cumulative",
+        "name": "Cumulative",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Cumulative Affliction: failed saves stack. Each failure adds a degree even after full recovery.",
+        "longDescription": "In a Cumulative Affliction, multiple failed resistance checks result in additional degrees of the condition, regardless of previous recovery. The target does not recover from prior degrees before new ones are applied.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Cumulativo",
+            "description": "Aflição Cumulativa: falhas acumulam. Cada falha adiciona um grau mesmo após recuperação completa.",
+            "longDescription": "Numa Aflição Cumulativa, múltiplas falhas nos testes de resistência resultam em graus adicionais da condição, independentemente de recuperação anterior."
+          }
+        }
+      },
+      {
+        "id": "extra_condition",
+        "name": "Extra Condition",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Add an additional condition option at one degree of the Affliction.",
+        "longDescription": "Each rank adds one additional condition option at any one degree of the Affliction. The attacker chooses which condition applies when the effect succeeds.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Condição Extra",
+            "description": "Adiciona uma opção de condição extra em um grau da Aflição.",
+            "longDescription": "Cada rank adiciona uma opção de condição extra em qualquer grau da Aflição. O atacante escolhe qual condição aplicar."
+          }
+        }
+      },
+      {
+        "id": "progressive",
+        "name": "Progressive",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Target loses one degree per round even after initial resistance success.",
+        "longDescription": "A Progressive Affliction worsens over time. Even if the target succeeds on their initial resistance check, they still worsen by one degree at the end of each round until they succeed on a resistance check or reach the maximum degree.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Progressivo",
+            "description": "O alvo perde um grau por rodada mesmo após sucesso na resistência inicial.",
+            "longDescription": "Uma Aflição Progressiva piora com o tempo. Mesmo que o alvo tenha sucesso no teste inicial, ainda piora um grau ao fim de cada rodada até ter sucesso ou atingir o grau máximo."
+          }
+        }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "instant_recovery",
+        "name": "Instant Recovery",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Target recovers instantly after completing their resistance check.",
+        "longDescription": "The target of an Instant Recovery Affliction recovers from all conditions as soon as they succeed on a resistance check, rather than waiting for the normal recovery time.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Recuperação Instantânea",
+            "description": "O alvo se recupera instantaneamente após completar o teste de resistência.",
+            "longDescription": "O alvo de uma Aflição com Recuperação Instantânea se recupera de todas as condições assim que tiver sucesso no teste de resistência."
+          }
+        }
+      },
+      {
+        "id": "limited_degree",
+        "name": "Limited Degree",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "The Affliction only has one or two degrees instead of three.",
+        "longDescription": "A Limited Degree Affliction inflicts conditions from only one (-2/rank) or two (-1/rank) degrees rather than three. Choose which degrees at acquisition.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Graus Limitados",
+            "description": "A Aflição tem apenas um ou dois graus em vez de três.",
+            "longDescription": "Uma Aflição com Graus Limitados inflige condições de apenas um (-2/rank) ou dois (-1/rank) graus. Escolha quais graus na aquisição."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "burrowing",
@@ -31,7 +122,11 @@
         "name": "Escavação",
         "description": "Permite escavar pelo solo, deixando um túnel se desejar. Você se move através de terra e areia a uma velocidade igual ao rank de Escavação menos 5. Argila dura reduz a velocidade em um rank adicional; rocha sólida reduz em dois ranks adicionais."
       }
-    }
+    },
+    "longDescription": "You can burrow through the ground, leaving a tunnel behind if you choose. You move through soil and sand at a speed rank equal to your Burrowing rank minus 5. Hard clay reduces speed by an additional rank; solid rock reduces it by two additional ranks.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "communication",
@@ -48,7 +143,11 @@
         "name": "Comunicação",
         "description": "Permite comunicar-se à distância usando um meio diferente da voz. Escolha um tipo de sentido como meio (visual, auditivo, olfativo, tátil, rádio ou mental). O rank determina o alcance: 1 = perto (30 m), 2 = 1,5 km, 3 = estadual, 4 = mundial, 5 = ilimitado. A comunicação depende de idioma e é ponto a ponto."
       }
-    }
+    },
+    "longDescription": "You can communicate over a distance using a medium other than your voice. Choose a sense type as your medium (visual, auditory, olfactory, tactile, radio, or mental). Rank determines range: 1 = close (100 ft), 2 = 1 mile, 3 = statewide, 4 = worldwide, 5 = unlimited. Communication is language-dependent and point-to-point.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "comprehend",
@@ -65,7 +164,11 @@
         "name": "Compreensão",
         "description": "Permite compreender diferentes formas de comunicação. Cada rank permite uma opção: entender ou falar com animais (2 ranks para ambos), entender ou falar idiomas (2 para ambos, 3 para universal, +1 para ler), comunicar-se com máquinas (2 ranks), objetos (2 ranks), plantas (2 ranks), ou espíritos (1-2 ranks)."
       }
-    }
+    },
+    "longDescription": "You can comprehend different sorts of communication. Each rank allows one option: understand or speak to animals (2 ranks for both), understand or speak languages (2 for both, 3 for universal, +1 for reading), communicate with machines (2 ranks), objects (2 ranks), plants (2 ranks), or spirits (1-2 ranks).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "concealment",
@@ -82,7 +185,11 @@
         "name": "Camuflagem",
         "description": "Concede ocultação total de um sentido específico enquanto ativo. Cada rank adicional concede ocultação de outro sentido; dois ranks cobrem um tipo de sentido inteiro. Ocultação visual custa o dobro (2 ranks para um sentido visual, 4 para todos). Não é possível ocultar-se do tato (requer Insubstancial). Camuflagem 10 = ocultação total de todos os sentidos não-táteis."
       }
-    }
+    },
+    "longDescription": "You gain total concealment from a particular sense while active. Each additional rank gives concealment from another sense; two ranks cover an entire sense type. Visual concealment costs double (2 ranks for one visual sense, 4 for all visual). Cannot conceal from tactile senses (requires Insubstantial). Concealment 10 = total concealment from all non-tactile senses.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "create",
@@ -99,7 +206,11 @@
         "name": "Criação",
         "description": "Permite criar objetos sólidos do nada (energia solidificada, água endurecida, gelo, pedra, etc.). Crie formas geométricas simples ou objetos comuns. Volume máximo e Resistência iguais ao rank do efeito. Os objetos desaparecem quando você para de mantê-los. Pode prender alvos dentro de objetos ocos (requer teste de ataque vs. Esquiva e teste de resistência de Esquiva vs. rank)."
       }
-    }
+    },
+    "longDescription": "You can form solid objects out of nowhere (solidified energy, hardened water, ice, stone, etc.). Create simple geometric shapes or common objects. Maximum volume rank and Toughness equal to your effect rank. Objects vanish when you stop maintaining. Can trap targets inside hollow objects (requires attack check vs. Dodge and Dodge resistance check vs. rank).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "damage",
@@ -116,7 +227,11 @@
         "name": "Dano",
         "description": "Inflige dano ao alvo por meio de um ataque corpo a corpo. O alvo resiste com Resistência vs. CD [rank + 15]. Um grau: penalidade de -1 em testes de Resistência futuros. Dois graus: atordoado + penalidade -1. Três graus: cambaleante + penalidade -1. Quatro graus: incapacitado. Penalidades são cumulativas. Alvos incapacitados que falham novamente ficam morrendo, depois mortos. Pode ser baseado em Força para somar ranks de Força ao dano."
       }
-    }
+    },
+    "longDescription": "You inflict damage on a target via a close attack. Target resists with Toughness vs. DC [rank + 15]. One degree: -1 penalty to further Toughness checks. Two degrees: dazed + -1 penalty. Three degrees: staggered + -1 penalty. Four degrees: incapacitated. Penalties are cumulative. Incapacitated targets failing again become dying, then dead. Can be Strength-based to add Strength ranks to damage.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "deflect",
@@ -133,7 +248,11 @@
         "name": "Deflexão",
         "description": "Permite defender ativamente outros personagens defletindo ou desviando ataques à distância. Use seu rank de Deflexão no lugar de uma defesa ativa (mínimo de 11 em rolagens de 10 ou menos). -2 em alcance médio, -5 em alcance longo. Não funciona contra efeitos de área ou ataques de alcance percepção, nem ataques que visem defesas diferentes de Esquiva ou Aparar. Limitado pelo nível de poder."
       }
-    }
+    },
+    "longDescription": "You can actively defend others by deflecting or diverting attacks at a distance. Use your Deflect rank in place of an active defense (minimum roll of 11 on 10 or less). -2 at medium range, -5 at long range. Does not work against area effects or perception range attacks, nor attacks targeting defenses other than Dodge or Parry. Limited by power level.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "elongation",
@@ -150,7 +269,11 @@
         "name": "Alongamento",
         "description": "Permite alongar o corpo e os membros. Some o rank do efeito ao seu rank de tamanho normal para a distância de alongamento: 4,5 m no rank 1, 9 m no rank 2, até 1.600 km no rank 20. Pode fazer ataques corpo a corpo a distâncias maiores. Concede +1 nos testes de agarrar por rank (limitado pelo NP). Voltar ao normal é uma ação livre."
       }
-    }
+    },
+    "longDescription": "You can elongate your body and limbs. Add effect rank to your normal size rank to determine elongation distance: 15 feet at rank 1, 30 at rank 2, up to 1,000 miles at rank 20. Can make close attacks at greater distance. Grants +1 bonus to grab checks per rank (limited by PL). Snapping back is a free action.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "enhanced-trait",
@@ -167,7 +290,11 @@
         "name": "Traço Aprimorado",
         "description": "Permite melhorar temporariamente um de seus traços existentes pelo valor do rank enquanto ativo. O custo por rank é igual ao custo do traço base aprimorado. Traço Aprimorado é um efeito de poder (não um traço natural) e pode ser combinado com esforço extra. Sujeito aos limites de nível de poder: o rank base deve estar abaixo do limite pelo menos pelo valor do aprimoramento."
       }
-    }
+    },
+    "longDescription": "You can temporarily improve one of your existing traits by its rank while active. Cost per rank equals the cost of the base trait being enhanced. Enhanced Trait is a power effect (not a natural trait) and can be combined with extra effort. Subject to power level limits: unenhanced rank must be below the limit by at least the enhancement amount.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "environment",
@@ -184,7 +311,11 @@
         "name": "Controle Ambiental",
         "description": "Permite alterar o ambiente em uma área. Afeta um raio de 9 m no rank 1, aumentando um rank de distância por rank adicional. Opções (1-2 pp/rank cada): Frio (intenso/extremo), Calor (intenso/extremo), Impedir Movimento (reduz velocidade em 1-2 ranks), Luz (reduz/elimina ocultação por escuridão), Visibilidade (-2 ou -5 em Percepção). Múltiplos efeitos se somam ou usam o modificador Seletivo."
       }
-    }
+    },
+    "longDescription": "You can change the environment in an area. Affects a 30-foot radius at rank 1, increasing one distance rank per additional rank. Options (1-2 pts/rank each): Cold (intense/extreme), Heat (intense/extreme), Impede Movement (reduce speed by 1-2 ranks), Light (reduce/eliminate darkness concealment), Visibility (-2 or -5 to Perception). Multiple effects stack or use Selective modifier.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "extra-limbs",
@@ -201,7 +332,11 @@
         "name": "Membros Extras",
         "description": "Você possui membros manipulativos extras (braços, tentáculos, cabelo/cauda preênsil). Cada rank concede um membro extra. Fornece os benefícios de Agarrar Aprimorado (agarrar com alguns membros, deixando outros livres). Não concede ações extras. Usar todos os membros em um agarrar concede +1 de bônus circunstancial por rank (máx. +5). Todos os membros exceto o dominante são mão-inábil."
       }
-    }
+    },
+    "longDescription": "You have extra manipulative limbs (arms, tentacles, prehensile hair/tail). Each rank grants one extra limb. Provides benefits of Improved Grab (grab with some limbs, leave others free). Does not grant extra actions. Applying all limbs to a grab grants +1 circumstance bonus per rank (max +5). All limbs except dominant are off-hand.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "feature",
@@ -218,7 +353,11 @@
         "name": "Característica",
         "description": "Você possui uma ou mais características menores que concedem habilidades ocasionalmente úteis (uma por rank). Similar à vantagem Benefício, mas derivada de poderes. Exemplos: pelo isolante, compartimento interno, estômago de ferro, mimetismo (+10 em Enganação para sons), troca rápida, inércia temporal. O Mestre decide o que se qualifica."
       }
-    }
+    },
+    "longDescription": "You have one or more minor features granting occasionally useful abilities (one per rank). Similar to the Benefit advantage but derived from powers. Examples: insulating fur, internal compartment, iron stomach, mimicry (+10 to Deception for sounds), quick change, temporal inertia. GM decides what qualifies.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "flight",
@@ -235,7 +374,63 @@
         "name": "Voo",
         "description": "Permite voar pelos ares, incluindo pairar no lugar. Sua velocidade de voo é igual ao rank do efeito. Falhas comuns incluem Planar (limitado pela altura inicial), Levitação (apenas vertical), Plataforma (derrubado se falhar resistência), e Asas (não pode voar se imobilizado/contido/amarrado)."
       }
-    }
+    },
+    "longDescription": "Flight allows the character to move through the air at a speed rank equal to its rank. Rank 0 = hovering only. Rank 1 = 2 mph, Rank 5 = 30 mph, Rank 10 = 1000 mph (supersonic), Rank 15 = orbital velocity, Rank 20 = FTL. Unlike movement powers, Flight allows full 3D movement. Using Flight in combat uses the move action.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": [
+      {
+        "id": "gliding",
+        "name": "Gliding",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "You can only glide, not truly fly. You lose altitude each round unless soaring on a draft.",
+        "longDescription": "With Gliding, you can move horizontally but must lose altitude each round. In updrafts you may maintain altitude. You cannot hover or fly upward without a strong wind.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Planador",
+            "description": "Você só pode planar, não voar de verdade. Perde altitude por rodada.",
+            "longDescription": "Com Planador, você se move horizontalmente mas deve perder altitude por rodada. Não pode pairar ou subir sem vento."
+          }
+        }
+      },
+      {
+        "id": "levitation",
+        "name": "Levitation",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "You can only fly straight up or down, not move horizontally while airborne.",
+        "longDescription": "Levitation allows vertical movement only. You can rise and hover, but cannot move horizontally under your own power while in the air.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Levitação",
+            "description": "Você pode apenas voar para cima ou baixo, sem movimento horizontal no ar.",
+            "longDescription": "Levitação permite apenas movimento vertical. Você pode subir e pairar, mas não se mover horizontalmente."
+          }
+        }
+      },
+      {
+        "id": "wings",
+        "name": "Wings",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Flight requires functional wings. They take up your off-hand slot and can be damaged.",
+        "longDescription": "Your flight requires wings. If the wings are grabbed, damaged, or you are in a space too small for them, you cannot fly. Wings are noticeable and take up the equivalent of an extra limb.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Asas",
+            "description": "O voo exige asas funcionais. Elas podem ser agarradas ou danificadas.",
+            "longDescription": "Seu voo exige asas. Se as asas forem agarradas, danificadas ou você estiver num espaço pequeno, não pode voar."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "growth",
@@ -252,7 +447,11 @@
         "name": "Crescimento",
         "description": "Permite aumentar temporariamente seu tamanho. Cada rank adiciona +1 Força e +1 Vigor, +1 rank de massa. A cada 2 ranks: +1 Intimidação. A cada 8 ranks: +1 Velocidade. Cada rank: -1 Furtividade. A cada 2 ranks: -1 Esquiva e Aparar. A cada 4 ranks: +1 rank de tamanho. Modificadores de Crescimento são restritos pelos limites de nível de poder."
       }
-    }
+    },
+    "longDescription": "You can temporarily increase your size. Each rank adds +1 Strength and +1 Stamina, +1 mass rank. Every 2 ranks: +1 Intimidation. Every 8 ranks: +1 Speed. Each rank: -1 Stealth. Every 2 ranks: -1 Dodge and Parry. Every 4 ranks: +1 size rank. Growth modifiers are restricted by power level limits.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "healing",
@@ -269,7 +468,63 @@
         "name": "Cura",
         "description": "Permite curar condições de Dano por toque com um teste de Cura CD 10. Cada grau de sucesso cura uma condição, começando pela pior. Se o alvo estiver morrendo, o grau mais alto o estabiliza. Teste falho: deve esperar 1 minuto ou usar esforço extra. Também concede bônus igual ao rank em testes de resistência contra doenças/venenos. Não funciona em alvos sem Vigor."
       }
-    }
+    },
+    "longDescription": "Healing restores lost damage and removes conditions. Each rank allows healing one damage condition (bruised, hurt, injured, wounded, staggered, incapacitated) or one non-lethal condition removed. Healing requires touch and a standard action. You can also restore incapacitated targets or remove lasting conditions. Healing does not work on yourself unless combined with Affects Others or a separate self-healing power.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "persistent",
+        "name": "Persistent",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Healing works even on healthy subjects, granting temporary resistance bonuses.",
+        "longDescription": "A Persistent Healing effect can be used on subjects who are not incapacitated. It grants a temporary bonus to Toughness or other resistance equal to rank for the scene.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Persistente",
+            "description": "A Cura funciona em personagens saudáveis, concedendo bônus de resistência temporários.",
+            "longDescription": "Um efeito de Cura Persistente pode ser usado em alvos não-incapacitados, concedendo bônus temporário de Resistência igual ao rank pela cena."
+          }
+        }
+      },
+      {
+        "id": "restorative",
+        "name": "Restorative",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Can heal ability damage and restore lost abilities.",
+        "longDescription": "Restorative Healing can undo ability damage and restore abilities lost or nullified by powers, removing conditions like Weakened on trait scores.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Restaurativo",
+            "description": "Pode curar dano de atributo e restaurar atributos perdidos.",
+            "longDescription": "Cura Restaurativa pode desfazer dano de atributo e restaurar atributos perdidos ou anulados por poderes."
+          }
+        }
+      },
+      {
+        "id": "stabilize",
+        "name": "Stabilize",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Can automatically stabilize a dying character without a skill check.",
+        "longDescription": "With Stabilize, you can automatically prevent a dying character from slipping further toward death without requiring a Treatment check, though this still requires the normal healing action.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Estabilizar",
+            "description": "Pode estabilizar automaticamente um personagem morrendo sem teste de perícia.",
+            "longDescription": "Com Estabilizar, você pode automaticamente evitar que um personagem morra sem exigir teste de Tratamento."
+          }
+        }
+      }
+    ],
+    "flaws": []
   },
   {
     "id": "illusion",
@@ -282,11 +537,26 @@
     "description": "You can create false sensory impressions. Cost varies: 1 pt/rank for one sense type, 2 for two, 3 for three, 4 for four, 5 for all (visual counts as two). Your rank determines DC for Insight resistance check (DC 10 + rank). Illusion volume rank equals effect rank. Illusions have no substance. Maintaining an active illusion is a standard action; static is a free action.",
     "variableCost": {
       "options": [
-        { "name": "One sense type", "cost": 1 },
-        { "name": "Two sense types", "cost": 2 },
-        { "name": "Three sense types", "cost": 3 },
-        { "name": "Four sense types", "cost": 4 },
-        { "name": "All sense types", "cost": 5 }
+        {
+          "name": "One sense type",
+          "cost": 1
+        },
+        {
+          "name": "Two sense types",
+          "cost": 2
+        },
+        {
+          "name": "Three sense types",
+          "cost": 3
+        },
+        {
+          "name": "Four sense types",
+          "cost": 4
+        },
+        {
+          "name": "All sense types",
+          "cost": 5
+        }
       ]
     },
     "i18n": {
@@ -294,7 +564,47 @@
         "name": "Ilusão",
         "description": "Permite criar falsas impressões sensoriais. Custo varia: 1 pp/rank para um tipo de sentido, 2 para dois, 3 para três, 4 para quatro, 5 para todos (visual conta como dois). Seu rank determina a CD do teste de resistência de Intuição (CD 10 + rank). Volume da ilusão igual ao rank do efeito. Ilusões não têm substância. Manter uma ilusão ativa é ação padrão; estática é ação livre."
       }
-    }
+    },
+    "longDescription": "Illusion creates sensory phenomena that are not real. Each rank covers one sense. You choose which senses at acquisition. The observer suspects the illusion and makes a Will check (DC 10 + rank). Success means they recognize it as fake; failure means they believe it. Illusions have no substance—physical interaction reveals them unless Believable is applied. Visual illusions (sight) cost double ranks.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "believable",
+        "name": "Believable",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Illusory constructs can physically interact with the world.",
+        "longDescription": "A Believable Illusion is tangible: it can be touched, has weight, and leaves traces. Physical investigations (touching the illusion) do not automatically reveal it. Resistance checks are required even for physical interaction.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Crível",
+            "description": "Construções ilusórias podem interagir fisicamente com o mundo.",
+            "longDescription": "Uma Ilusão Crível é tangível: pode ser tocada, tem peso e deixa rastros. Interações físicas não revelam automaticamente a ilusão."
+          }
+        }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "phantasm",
+        "name": "Phantasm",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "The illusion only exists in the mind of one target.",
+        "longDescription": "A Phantasm only exists in the mind of a single target chosen at use. It is invisible to everyone else. The target resists with Will vs. DC 10 + rank; failure means they fully believe the illusion.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Fantasma",
+            "description": "A ilusão só existe na mente de um único alvo.",
+            "longDescription": "Um Fantasma existe apenas na mente de um único alvo. É invisível para todos os outros. O alvo resiste com Vontade vs. CD 10 + rank."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "immortality",
@@ -311,7 +621,11 @@
         "name": "Imortalidade",
         "description": "Permite se recuperar da morte. Subtraia seu rank de Imortalidade do rank de tempo 19 (um mês) para determinar o tempo de recuperação. Rank 11 = 30 minutos, rank 20 = início de cada rodada de ação. Ao se recuperar, todas as condições de dano são removidas, mas você perde todos os pontos de herói acumulados."
       }
-    }
+    },
+    "longDescription": "You can recover from death. Subtract your Immortality rank from time rank 19 (one month) to determine recovery time. So rank 11 = 30 minutes, rank 20 = start of each action round. When you recover, all damage conditions are removed, but you lose all accumulated hero points.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "immunity",
@@ -324,13 +638,34 @@
     "description": "You are immune to certain effects, automatically succeeding on resistance checks. Assign ranks to effects: 1 rank (aging, disease, poison, one environment, etc.), 2 ranks (critical hits, suffocation), 5 ranks (alteration, sensory Affliction, a Damage descriptor), 10 ranks (common descriptor, life support), 20 ranks (very common descriptor), 30 ranks (all Fortitude/Will effects), 80 ranks (all Toughness effects).",
     "variableCost": {
       "options": [
-        { "name": "Aging / Disease / Poison / One environment", "cost": 1 },
-        { "name": "Critical hits / Suffocation (all)", "cost": 2 },
-        { "name": "Alteration / Sensory Affliction / One Damage descriptor", "cost": 5 },
-        { "name": "Common descriptor / Life support", "cost": 10 },
-        { "name": "Very common descriptor (bludgeoning, energy)", "cost": 20 },
-        { "name": "All effects resisted by Fortitude or Will", "cost": 30 },
-        { "name": "All effects resisted by Toughness", "cost": 80 }
+        {
+          "name": "Aging / Disease / Poison / One environment",
+          "cost": 1
+        },
+        {
+          "name": "Critical hits / Suffocation (all)",
+          "cost": 2
+        },
+        {
+          "name": "Alteration / Sensory Affliction / One Damage descriptor",
+          "cost": 5
+        },
+        {
+          "name": "Common descriptor / Life support",
+          "cost": 10
+        },
+        {
+          "name": "Very common descriptor (bludgeoning, energy)",
+          "cost": 20
+        },
+        {
+          "name": "All effects resisted by Fortitude or Will",
+          "cost": 30
+        },
+        {
+          "name": "All effects resisted by Toughness",
+          "cost": 80
+        }
       ]
     },
     "i18n": {
@@ -338,7 +673,29 @@
         "name": "Imunidade",
         "description": "Torna-se imune a certos efeitos, tendo sucesso automático em testes de resistência. Atribua ranks: 1 rank (envelhecimento, doença, veneno, um ambiente, etc.), 2 ranks (acertos críticos, sufocação), 5 ranks (alteração, Aflição sensorial, um descritor de Dano), 10 ranks (descritor comum, suporte vital), 20 ranks (descritor muito comum), 30 ranks (todos os efeitos de Fortitude/Vontade), 80 ranks (todos os efeitos de Resistência)."
       }
-    }
+    },
+    "longDescription": "Immunity provides complete protection against a specific hazard or effect. The cost is 1 rank per hazard if the immunity is broad: Immunity 1 = one specific effect; Immunity 5 = a category; Immunity 10 = all effects of a broad type; Immunity 80 = all environmental hazards. Common examples: Immunity 1 (disease), Immunity 10 (fire effects), Immunity 30 (Fortitude effects).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": [
+      {
+        "id": "half_effect",
+        "name": "Half Effect",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Immunity provides only half protection (resistance rather than immunity).",
+        "longDescription": "With Half Effect, the Immunity only reduces the effect rather than granting complete protection. For damage, this means -half the rank in Toughness bonus; for conditions, a +5 bonus to resistance checks.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Metade do Efeito",
+            "description": "A Imunidade fornece apenas metade da proteção (resistência em vez de imunidade).",
+            "longDescription": "Com Metade do Efeito, a Imunidade apenas reduz o efeito. Para dano, bônus de Resistência = metade do rank; para condições, +5 nos testes de resistência."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "insubstantial",
@@ -355,7 +712,11 @@
         "name": "Insubstancial",
         "description": "Permite assumir uma forma menos sólida. Rank 1 (Fluido): flui por aberturas não estanques, exerce Força normal. Rank 2 (Gasoso): sem Força, imune a Dano físico, flui por aberturas não herméticas. Rank 3 (Energia): sem Força, imune a Dano físico, atravessa objetos permeáveis a energia. Rank 4 (Incorpóreo): atravessa matéria sólida, imune a Dano físico e energético."
       }
-    }
+    },
+    "longDescription": "You can assume a less solid form. Rank 1 (Fluid): flow through any non-watertight opening, exert normal Strength. Rank 2 (Gaseous): no Strength, immune to physical Damage, flow through non-airtight openings. Rank 3 (Energy): no Strength, immune to physical Damage, pass through energy-permeable objects. Rank 4 (Incorporeal): pass through solid matter, immune to physical and energy Damage.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "leaping",
@@ -372,7 +733,11 @@
         "name": "Salto",
         "description": "Permite dar saltos prodigiosos. Seu rank de Salto menos 2 é o rank de distância coberta em um salto parado: 4,5 m no rank 1, 9 m no rank 2, até 1.600 km no rank 20. Não sofre dano ao aterrissar dentro da distância máxima. A velocidade do salto tem máximo no rank 7 (~400 km/h)."
       }
-    }
+    },
+    "longDescription": "You can make prodigious leaps. Your Leaping rank minus 2 is the distance rank covered in a single standing jump: 15 feet at rank 1, 30 at rank 2, up to 1,000 miles at rank 20. You suffer no damage from landing within your maximum distance. Leap speed maxes out at rank 7 (~250 mph).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "luck-control",
@@ -389,7 +754,11 @@
         "name": "Controle da Sorte",
         "description": "Permite usar pontos de herói ou Sorte para afetar outros. Cada rank fornece uma opção: gastar um ponto de herói em benefício de outro, conceder pontos de herói a outros, negar o uso de ponto de herói/Sorte/complicação de alguém, ou forçar uma nova rolagem ficando com o pior resultado. O alvo pode gastar um ponto de herói para evitar a nova rolagem."
       }
-    }
+    },
+    "longDescription": "You can use hero points or Luck to affect others. Each rank provides one option: spend a hero point on another's behalf, bestow hero points to others, negate someone else's hero point/Luck/complication use, or force a re-roll taking the worse result. Target may spend a hero point to avoid the re-roll.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "mind-reading",
@@ -406,7 +775,11 @@
         "name": "Leitura Mental",
         "description": "Permite ler a mente de outro personagem. Faça um teste de efeito oposto vs. Vontade do alvo. Graus de sucesso: 1 = pensamentos superficiais (transcende idioma), 2 = pensamentos pessoais (faça uma pergunta), 3 = memórias (uma por rodada), 4 = subconsciente (memórias reprimidas, personalidades ocultas). O alvo faz um novo teste de Vontade (CD 10 + rank) a cada turno para bloquear."
       }
-    }
+    },
+    "longDescription": "You can read another character's mind. Make an opposed effect check vs. target's Will. Degrees of success: 1 = surface thoughts (transcends language), 2 = personal thoughts (ask one question), 3 = memories (one per round), 4 = subconscious (repressed memories, hidden personalities). Target gets a new Will check (DC 10 + rank) each turn to shut you out.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "morph",
@@ -423,7 +796,11 @@
         "name": "Metamorfose",
         "description": "Permite alterar sua aparência (mudança cosmética apenas, sem alteração de traços). Concede +20 em testes de Enganação para disfarce. Rank 1: uma única outra aparência. Rank 2: grupo restrito (pessoas do seu tamanho/gênero, um tipo de animal). Rank 3: grupo amplo (humanoides, animais, máquinas). Rank 4: qualquer forma da mesma massa."
       }
-    }
+    },
+    "longDescription": "You can alter your appearance (cosmetic change only, no trait changes). Grants +20 to Deception checks for disguise. Rank 1: single other appearance. Rank 2: narrow group (people of your size/gender, one animal type). Rank 3: broad group (humanoids, animals, machines). Rank 4: any form of same mass.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "move-object",
@@ -440,7 +817,11 @@
         "name": "Mover Objetos",
         "description": "Permite mover objetos à distância sem tocá-los. Força efetiva igual ao seu rank. Concentre-se (ação de movimento) para +1 FOR. Não tem ação/reação. Não pode fazer manipulação fina sem o modificador Preciso. Objetos arremessados como ataques usam o rank do poder como Força para dano. Pode fazer ataques de desarmar, agarrar e derrubar."
       }
-    }
+    },
+    "longDescription": "You can move objects at a distance without touching them. Effective Strength equals your rank. Concentrate (move action) for +1 STR. Has no action/reaction. Cannot perform fine manipulation without Precise modifier. Objects thrown as attacks use power rank as Strength for damage. Can make disarm, grab, and trip attacks.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "movement",
@@ -457,7 +838,11 @@
         "name": "Movimento",
         "description": "Possui uma forma especial de movimento. Cada rank fornece uma opção: Viagem Dimensional (1-3 ranks), Adaptação Ambiental, Permear (1-3 ranks), Queda Segura, Deslizar, Viagem Espacial (1-3 ranks), Pé Firme, Balançar, Viagem no Tempo (1-3 ranks), Sem Rastro, Escalar Paredes (1-2 ranks), ou Andar sobre a Água (1-2 ranks)."
       }
-    }
+    },
+    "longDescription": "You have a special form of movement. Each rank provides one option: Dimension Travel (1-3 ranks), Environmental Adaptation, Permeate (1-3 ranks), Safe Fall, Slithering, Space Travel (1-3 ranks), Sure-Footed, Swinging, Time Travel (1-3 ranks), Trackless, Wall-Crawling (1-2 ranks), or Water-Walking (1-2 ranks).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "nullify",
@@ -474,7 +859,46 @@
         "name": "Anulação",
         "description": "Permite anular efeitos de um descritor específico (fogo, magia, mental, etc.). Faça teste de ataque à distância, depois teste oposto de rank de Anulação vs. rank do efeito ou Vontade do alvo (o maior). Sucesso: efeito alvo é desativado (pode ser reativado). Dois+ graus de falha: esforço extra necessário para tentar novamente na cena. Não pode anular efeitos inatos."
       }
-    }
+    },
+    "longDescription": "Nullify temporarily cancels powers with the chosen descriptor. It is a ranged attack requiring an attack check. The target resists with Will vs. DC [10 + rank]. If successful, the described powers within rank points of the Nullify rank are cancelled until the target succeeds on a Will check (free action each turn, DC = Nullify rank + 10 − margin of failure). Nullify only affects powers matching the chosen descriptor.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "broad",
+        "name": "Broad",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Nullify affects a broad category of powers rather than a single descriptor.",
+        "longDescription": "Broad Nullify affects all powers with any descriptor within a wide category (e.g., all mental powers, all elemental powers, all technology) rather than one specific descriptor.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Amplo",
+            "description": "Anular afeta uma categoria ampla de poderes em vez de um único descritor.",
+            "longDescription": "Anular Amplo afeta todos os poderes com qualquer descritor dentro de uma categoria larga (ex: todos os poderes mentais) em vez de um específico."
+          }
+        }
+      },
+      {
+        "id": "simultaneous",
+        "name": "Simultaneous",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Affect multiple targets in range with one use.",
+        "longDescription": "Each rank of Simultaneous allows Nullify to affect one additional target within range on the same action, though a separate attack check must be made for each.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Simultâneo",
+            "description": "Afeta múltiplos alvos no alcance com um único uso.",
+            "longDescription": "Cada rank de Simultâneo permite que Anular afete um alvo adicional no alcance na mesma ação, com um teste de ataque separado para cada."
+          }
+        }
+      }
+    ],
+    "flaws": []
   },
   {
     "id": "protection",
@@ -491,7 +915,11 @@
         "name": "Proteção",
         "description": "Protege contra dano, concedendo +1 à defesa de Resistência por rank. Proteção 4 concede +4 de Resistência. Pode ser Sustentado (campo de força ativável) ou Impenetrável (imune a Dano abaixo de um limiar)."
       }
-    }
+    },
+    "longDescription": "Protection is a flat bonus to Toughness equal to its rank. Unlike armored heroes, Protection is usually an internal power (force field, body armor, toughened skin, etc.). Each rank of Protection improves Toughness by 1. Protection can be stacked with other Toughness bonuses (like natural Stamina). Note: stacked Protection above PL limits is subject to GM approval.",
+    "enhancesDefense": "toughness",
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "quickness",
@@ -508,7 +936,11 @@
         "name": "Rapidez",
         "description": "Permite realizar tarefas rotineiras rapidamente. Subtraia seu rank do efeito do rank de tempo normal. Rapidez 7 transforma uma tarefa de 1 hora (rank de tempo 9) em 30 segundos (rank de tempo 2). Não afeta testes não-rotineiros nem velocidade de movimento. Tarefas realizadas em menos de 1 segundo podem ser tratadas como ações livres."
       }
-    }
+    },
+    "longDescription": "You can perform routine tasks fast. Subtract your effect rank from the normal time rank. So Quickness 7 turns a task normally taking 1 hour (time rank 9) into 30 seconds (time rank 2). Does not affect non-routine checks or movement speed. Tasks performed in less than 1 second may be treated as free actions.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "regeneration",
@@ -525,7 +957,11 @@
         "name": "Regeneração",
         "description": "Recupera-se rapidamente de dano. Remove penalidades de testes de Resistência iguais ao seu rank a cada minuto, depois recupera outras condições de dano iguais ao rank a cada minuto (distribuídas em 10 rodadas). Regeneração 5: remove -1 a cada 2 rodadas. Regeneração 10: a cada rodada. Personagens sem Vigor precisam de ao menos 1 rank para se recuperar normalmente."
       }
-    }
+    },
+    "longDescription": "You recover quickly from damage. Remove Toughness check penalties equal to your rank each minute, then recover other damage conditions equal to rank each minute (spread evenly over 10 rounds). Regeneration 5: remove -1 penalty every other round. Regeneration 10: every round. Characters with no Stamina need at least 1 rank to recover at normal rate.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "remote-sensing",
@@ -538,11 +974,26 @@
     "description": "You can displace one or more senses over a distance. Rank 1 = 60 feet, increasing one distance rank per rank. Overrides normal senses while active; you are vulnerable. Subjects feel it with Insight check (DC 10 + rank). Cost: 1 pt/rank for one sense type, 2 for two, 3 for three, 4 for four, 5 for all (visual = 2 types).",
     "variableCost": {
       "options": [
-        { "name": "One sense type", "cost": 1 },
-        { "name": "Two sense types (or Visual)", "cost": 2 },
-        { "name": "Three sense types", "cost": 3 },
-        { "name": "Four sense types", "cost": 4 },
-        { "name": "All sense types", "cost": 5 }
+        {
+          "name": "One sense type",
+          "cost": 1
+        },
+        {
+          "name": "Two sense types (or Visual)",
+          "cost": 2
+        },
+        {
+          "name": "Three sense types",
+          "cost": 3
+        },
+        {
+          "name": "Four sense types",
+          "cost": 4
+        },
+        {
+          "name": "All sense types",
+          "cost": 5
+        }
       ]
     },
     "i18n": {
@@ -550,7 +1001,11 @@
         "name": "Sensoriamento Remoto",
         "description": "Permite deslocar um ou mais sentidos à distância. Rank 1 = 18 m, aumentando um rank de distância por rank. Substitui os sentidos normais enquanto ativo; você fica vulnerável. Alvos sentem com teste de Intuição (CD 10 + rank). Custo: 1 pp/rank para um tipo de sentido, 2 para dois, 3 para três, 4 para quatro, 5 para todos (visual = 2 tipos)."
       }
-    }
+    },
+    "longDescription": "You can displace one or more senses over a distance. Rank 1 = 60 feet, increasing one distance rank per rank. Overrides normal senses while active; you are vulnerable. Subjects feel it with Insight check (DC 10 + rank). Cost: 1 pt/rank for one sense type, 2 for two, 3 for three, 4 for four, 5 for all (visual = 2 types).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "senses",
@@ -567,7 +1022,11 @@
         "name": "Sentidos",
         "description": "Um ou mais de seus sentidos são aprimorados ou você possui habilidades sensoriais adicionais. Aloque ranks em: Preciso (2/4), Agudo (1/2), Analítico (1/2), Consciência (1), Elo de Comunicação (1), Anula Camuflagem (2/5), Anula Ilusão (2), Senso de Perigo (1), Visão no Escuro (2), Detectar (1/2), Senso de Direção (1), Senso de Distância (1), Estendido (1+), Infravisão (1), Visão em Luz Baixa (1), Visão Microscópica (1-4), Penetra Ocultação (4), Pós-cognição (4), Precognição (4), Rádio (1), Raio (1/2), Distância (1), Rápido (1+), Senso de Tempo (1), Rastreamento (1/2), Ultra-Audição (1), Ultravisão (1)."
       }
-    }
+    },
+    "longDescription": "One or more of your senses are improved or you have additional sensory abilities. Allocate ranks to: Accurate (2/4), Acute (1/2), Analytical (1/2), Awareness (1), Communication Link (1), Counters Concealment (2/5), Counters Illusion (2), Danger Sense (1), Darkvision (2), Detect (1/2), Direction Sense (1), Distance Sense (1), Extended (1+), Infravision (1), Low-Light Vision (1), Microscopic Vision (1-4), Penetrates Concealment (4), Postcognition (4), Precognition (4), Radio (1), Radius (1/2), Ranged (1), Rapid (1+), Time Sense (1), Tracking (1/2), Ultra-Hearing (1), Ultravision (1).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "shrinking",
@@ -584,7 +1043,11 @@
         "name": "Encolhimento",
         "description": "Permite diminuir temporariamente seu tamanho. A cada 4 ranks, reduz o rank de tamanho em 1 (humanos normais são -2). Cada redução de tamanho: -1 Força, a cada 2 reduções: -1 velocidade. Adicione metade do rank (arredondado para baixo) às defesas ativas. Adicione o rank inteiro à Furtividade. Aplique metade do rank como penalidade em Intimidação. Limitado pelo nível de poder."
       }
-    }
+    },
+    "longDescription": "You can temporarily decrease your size. Every 4 ranks reduces size rank by 1 (normal humans are -2). Each size rank reduction: -1 Strength, every 2 reductions: -1 speed. Add half rank (rounded down) to active defenses. Add full rank to Stealth. Apply half rank as Intimidation penalty. Shrinking modifiers restricted by power level.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "speed",
@@ -601,7 +1064,11 @@
         "name": "Velocidade",
         "description": "Permite mover-se mais rápido que o normal. Você possui um rank de velocidade terrestre igual ao rank do efeito. Isso também melhora todas as formas de movimento baseadas em velocidade terrestre."
       }
-    }
+    },
+    "longDescription": "You can move faster than normal. You have a ground speed rank equal to your effect rank. This also improves all forms of movement based on ground speed.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "summon",
@@ -618,7 +1085,46 @@
         "name": "Invocar",
         "description": "Permite convocar uma criatura (lacaio) para auxiliá-lo. Criada com (rank x 15) pontos de poder, limitada ao nível de poder do rank de Invocar. Invoque automaticamente como ação padrão; aparece ao seu lado. Lacaios ficam atordoados (apenas ação padrão). Dirigir um lacaio é uma ação de movimento. Lacaios incapacitados desaparecem e devem se recuperar totalmente antes de reinvocação. Sempre o mesmo lacaio, exceto com Tipo Variável."
       }
-    }
+    },
+    "longDescription": "Summon creates or calls a controlled minion whose power total equals 15 × rank. The summoned creature is a separate character sheet NPCs with its own traits. It acts on your turn and follows your orders (free action to command). If the creature is incapacitated or you lose concentration, it disappears. The minion cannot act against your wishes. Flaw: the summoned creature has its own agenda (Uncontrolled variant).",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "heroic",
+        "name": "Heroic",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "The summoned creature can use hero points.",
+        "longDescription": "With Heroic, your summoned creature has a hero point pool of its own and can spend hero points on its actions, making it more capable and reliable in a pinch.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Heroico",
+            "description": "A criatura convocada pode usar pontos de herói.",
+            "longDescription": "Com Heroico, sua criatura convocada tem seus próprios pontos de herói e pode usá-los em suas ações."
+          }
+        }
+      },
+      {
+        "id": "multiple_minions",
+        "name": "Multiple Minions",
+        "category": "extra",
+        "costType": "flat_ranked",
+        "costValue": 1,
+        "description": "Each rank doubles the number of minions you can summon at once.",
+        "longDescription": "Each rank of Multiple Minions doubles the number of simultaneous minions: 1 rank = 2 minions, 2 ranks = 4, 3 ranks = 8, etc. Each minion has the same point total.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Múltiplos Servos",
+            "description": "Cada rank dobra o número de servos que você pode convocar simultaneamente.",
+            "longDescription": "Cada rank de Múltiplos Servos dobra o número de servos: 1 rank = 2, 2 = 4, 3 = 8, etc. Cada servo tem o mesmo total de pontos."
+          }
+        }
+      }
+    ],
+    "flaws": []
   },
   {
     "id": "swimming",
@@ -635,7 +1141,11 @@
         "name": "Natação",
         "description": "Permite nadar rapidamente. Velocidade aquática igual ao rank de Natação menos 2. Pode fazer testes de Atletismo para nadar como testes rotineiros. Não permite respirar debaixo d'água (requer Imunidade)."
       }
-    }
+    },
+    "longDescription": "You can swim fast. You have a water speed equal to your Swimming rank minus 2. You can make Athletics checks to swim as routine checks. Does not allow you to breathe underwater (requires Immunity).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "teleport",
@@ -652,7 +1162,64 @@
         "name": "Teleporte",
         "description": "Permite mover-se instantaneamente de um lugar para outro. Teleporte a si mesmo e até 22 kg de massa adicional uma distância igual ao rank do efeito como ação de movimento. Passageiros involuntários fazem teste de resistência de Esquiva. Só pode teleportar para lugares que pode perceber com precisão ou conhece bem. Mantém posição e velocidade relativa."
       }
-    }
+    },
+    "longDescription": "Teleport allows instant movement from one location to another at range, limited by rank. Rank 1 = 100 ft, Rank 5 = 5 miles, Rank 10 = worldwide, Rank 15 = interplanetary, Rank 20 = anywhere. Teleport requires a free action to a known location, or a standard action if uncertain. You can carry others with you (up to normal carrying capacity). Targeting a location with Teleport is not an attack.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "accurate_teleport",
+        "name": "Accurate",
+        "category": "extra",
+        "costType": "flat_ranked",
+        "costValue": 1,
+        "description": "Increases Teleport accuracy by +2 per rank, reducing the chance of mishap in unfamiliar locations.",
+        "longDescription": "Each rank of Accurate on Teleport reduces the penalty for teleporting to unfamiliar locations by 2, making risky jumps safer.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Preciso",
+            "description": "+2 por rank na precisão do Teleporte, reduzindo chances de acidente.",
+            "longDescription": "Cada rank de Preciso no Teleporte reduz a penalidade por teleportar para locais desconhecidos em 2."
+          }
+        }
+      },
+      {
+        "id": "portal",
+        "name": "Portal",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Creates a two-way portal others can use for the duration.",
+        "longDescription": "Instead of simply teleporting yourself, you create a two-way portal that remains open (sustained). Others can pass through in either direction. Useful for team tactics.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Portal",
+            "description": "Cria um portal bidirecional que outros podem usar pela duração.",
+            "longDescription": "Em vez de teleportar-se, você cria um portal bidirecional que permanece aberto (sustentado). Outros podem passar em qualquer direção."
+          }
+        }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "medium",
+        "name": "Medium",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Teleport requires passing through a specific medium (mirrors, shadows, etc.).",
+        "longDescription": "Your Teleport only works through a specific medium that must be present at both origin and destination. Examples: mirrors, shadows, water, electrical conduits.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Meio",
+            "description": "Teleporte exige passagem por meio específico (espelhos, sombras, etc.).",
+            "longDescription": "Seu Teleporte só funciona através de um meio específico que deve estar presente na origem e no destino. Exemplos: espelhos, sombras, água, condutores elétricos."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "transform",
@@ -665,10 +1232,22 @@
     "description": "You can change objects into other objects. Requires touch (close attack if held/worn). Cost varies: 2 pts/rank (one thing into one other), 3 (broad group to single, or single to broad), 4 (broad to broad), 5 (anything to anything). Can affect mass rank (rank - 6). Inanimate objects transform automatically. Sustained: reverts when not maintained. Continuous: irreversible except by another Transform.",
     "variableCost": {
       "options": [
-        { "name": "One to one (e.g. metal to wood)", "cost": 2 },
-        { "name": "Broad to single / Single to broad", "cost": 3 },
-        { "name": "Broad to broad (e.g. solids to solids)", "cost": 4 },
-        { "name": "Anything to anything", "cost": 5 }
+        {
+          "name": "One to one (e.g. metal to wood)",
+          "cost": 2
+        },
+        {
+          "name": "Broad to single / Single to broad",
+          "cost": 3
+        },
+        {
+          "name": "Broad to broad (e.g. solids to solids)",
+          "cost": 4
+        },
+        {
+          "name": "Anything to anything",
+          "cost": 5
+        }
       ]
     },
     "i18n": {
@@ -676,7 +1255,11 @@
         "name": "Transformação",
         "description": "Permite transformar objetos em outros objetos. Requer toque (ataque corpo a corpo se segurado/vestido). Custo varia: 2 pp/rank (um em outro), 3 (grupo amplo em único, ou único em amplo), 4 (amplo em amplo), 5 (qualquer coisa). Pode afetar massa rank (rank - 6). Objetos inanimados transformam automaticamente. Sustentado: reverte quando não mantido. Contínuo: irreversível exceto por outro Transformação."
       }
-    }
+    },
+    "longDescription": "You can change objects into other objects. Requires touch (close attack if held/worn). Cost varies: 2 pts/rank (one thing into one other), 3 (broad group to single, or single to broad), 4 (broad to broad), 5 (anything to anything). Can affect mass rank (rank - 6). Inanimate objects transform automatically. Sustained: reverts when not maintained. Continuous: irreversible except by another Transform.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "variable",
@@ -693,7 +1276,11 @@
         "name": "Variável",
         "description": "Permite obter potencialmente qualquer efeito do tipo e descritor apropriados. Fornece (rank x 5) pontos de poder para alocar em diferentes efeitos como ação padrão. Sujeito a limites de nível de poder e série. Deve ter descritores que limitem o escopo. Se parar de manter, os pontos alocados voltam ao estado nulo. Não pode ser permanente. É um 'último recurso' no design de poderes."
       }
-    }
+    },
+    "longDescription": "You can gain potentially any effect of the appropriate type and descriptor. Provides (rank x 5) power points to allocate to different effects as a standard action. Subject to power level and series limits. Must have descriptors limiting scope. If you stop maintaining, allocated points reset to null. Cannot be permanent. A 'last resort' in power design.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   },
   {
     "id": "weaken",
@@ -710,6 +1297,10 @@
         "name": "Enfraquecer",
         "description": "Permite reduzir temporariamente um dos traços de um alvo (escolhido na aquisição) por ataque corpo a corpo. O alvo resiste com Fortitude ou Vontade vs. CD [10 + rank]. Falha: o alvo perde pontos de poder do traço igual à diferença (máx. = rank). Múltiplas falhas são cumulativas até o rank. Pontos perdidos retornam a 1 por rodada. Habilidades enfraquecidas abaixo de -5 ficam debilitadas."
       }
-    }
+    },
+    "longDescription": "You can temporarily lower one of a target's traits (chosen at acquisition) via a close attack. Target resists with Fortitude or Will vs. DC [10 + rank]. Failure: target loses power points from the trait equal to the difference (max = rank). Multiple failures are cumulative up to rank. Lost points return at 1 per round. Abilities weakened below -5 become debilitated.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
   }
 ]

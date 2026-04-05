@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { ICharacter, AbilityKey } from '../entities/types';
+import { migratePowers } from '../shared/lib/powerMigration';
 
 /* ================================================
    Character Store — Single Source of Truth
@@ -97,7 +98,13 @@ export const useCharStore = create<CharStoreState>((set) => ({
     })),
 
   loadCharacter: (character) =>
-    set({ character, isDirty: false }),
+    set({
+      character: {
+        ...character,
+        powers: migratePowers(character.powers as unknown[]),
+      },
+      isDirty: false,
+    }),
 
   resetCharacter: () =>
     set({

@@ -7,7 +7,10 @@
 export type AbilityKey = 'str' | 'sta' | 'agl' | 'dex' | 'fgt' | 'int' | 'awe' | 'pre';
 
 // ── Cost Types for Modifiers ──
-export type CostType = 'per_rank' | 'flat';
+// per_rank:    costValue × rank_of_POWER  (e.g. Area: +1 per rank of the power)
+// flat:        fixed cost added once to total  (e.g. Innate: always +1pp)
+// flat_ranked: costValue × ranks_of_MODIFIER  (e.g. Accurate 3: +3pp regardless of power rank)
+export type CostType = 'per_rank' | 'flat' | 'flat_ranked';
 
 // ── Modifier Category ──
 export type ModifierCategory = 'extra' | 'flaw';
@@ -30,6 +33,25 @@ export interface IVariableCostOption {
   cost: number;
 }
 
+// ── Modifier Definition (from modifiers.json or powers.json extras/flaws) ──
+export interface IModifierDef {
+  id: string;
+  name: string;
+  category: ModifierCategory;
+  costType: CostType;
+  costValue: number;
+  maxRanks?: number;             // max ranks purchasable (e.g. Indirect=4, Accurate=PL)
+  description: string;
+  longDescription?: string;      // full rulebook text
+  options?: { label: string; notes: string }[];  // sub-options (e.g. Area shapes)
+  incompatibleWith: string[];
+  i18n?: Record<string, {
+    name?: string;
+    description?: string;
+    longDescription?: string;
+  }>;
+}
+
 // ── Power Effect (from powers.json) ──
 export interface IPowerEffect {
   id: string;
@@ -40,18 +62,16 @@ export interface IPowerEffect {
   range: RangeType;
   duration: DurationType;
   description: string;
+  longDescription?: string;
+  enhancesDefense?: string;      // technical debt flag: effect boosts a defense/resistance
   variableCost: { options: IVariableCostOption[] } | null;
-}
-
-// ── Modifier (from modifiers.json) ──
-export interface IModifierDef {
-  id: string;
-  name: string;
-  category: ModifierCategory;
-  costType: CostType;
-  costValue: number;
-  description: string;
-  incompatibleWith: string[];
+  extras: IModifierDef[];        // power-specific extras
+  flaws: IModifierDef[];         // power-specific flaws
+  i18n?: Record<string, {
+    name?: string;
+    description?: string;
+    longDescription?: string;
+  }>;
 }
 
 // ── Advantage Category Types ──
@@ -113,10 +133,20 @@ export interface ICharacterAdvantage {
   ranks: number;
 }
 
-// ── Applied Modifier (on a character's power) ──
+// ── Applied Modifier (on a power component) ──
 export interface IAppliedModifier {
   modifierId: string;
+  ranks: number;                 // flat_ranked: ranks of the MODIFIER; per_rank: always 1
+  isPowerSpecific?: boolean;     // modifier comes from power's own extras/flaws list
+  option?: string;               // selected sub-option (e.g. "Burst" for Area)
+}
+
+// ── Power Component (a single effect within a power) ──
+export interface ICharacterPowerComponent {
+  id: string;                    // uuid for keying
+  effectId: string;
   ranks: number;
+  modifiers: IAppliedModifier[];
 }
 
 // ── Alternate Effect (nested inside a power) ──
@@ -131,12 +161,12 @@ export interface IAlternateEffect {
 }
 
 // ── Character Power ──
+// IMPORTANT: components[] replaces the old effectId + ranks + modifiers fields.
+// The migration utility (powerMigration.ts) handles backward compatibility.
 export interface ICharacterPower {
   id: string;
   name: string;
-  effectId: string;
-  ranks: number;
-  modifiers: IAppliedModifier[];
+  components: ICharacterPowerComponent[];
   notes: string;
   alternateEffects: IAlternateEffect[];
 }

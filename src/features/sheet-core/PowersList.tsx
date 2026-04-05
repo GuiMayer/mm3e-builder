@@ -4,7 +4,7 @@ import type { ICharacterPower, IModifierDef } from '../../entities/types';
 import powerDefsRaw from '../../data/powers.json';
 import modifierDefsRaw from '../../data/modifiers.json';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
-import { calculatePowerCost, calculateArrayCost } from '../../shared/lib/mathEngine';
+import { calculateArrayCost, calcComponentCost } from '../../shared/lib/mathEngine';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Plus, Edit3, Trash2, Zap } from 'lucide-react';
@@ -60,11 +60,13 @@ export function PowersList() {
     setBuilderOpen(true);
   }
 
-  // Calculate total power cost
+  // Calculate total power cost using multi-component format
   const totalPowersCost = powers.reduce((sum, p) => {
-    const def = powerDefs.find((d) => d.id === p.effectId);
-    const baseCost = def?.baseCost ?? 1;
-    const mainCost = calculatePowerCost(baseCost, p.ranks, p.modifiers, modifierDefs as unknown as IModifierDef[]);
+    const mainCost = p.components.reduce((csum, comp) => {
+      const def = powerDefs.find((d) => d.id === comp.effectId);
+      if (!def) return csum;
+      return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], modifierDefs as unknown as IModifierDef[]);
+    }, 0);
     const dynamicCount = p.alternateEffects.filter((a) => a.dynamic).length;
     return sum + calculateArrayCost(mainCost, p.alternateEffects.length, dynamicCount);
   }, 0);
@@ -82,16 +84,26 @@ export function PowersList() {
 
       <div className="powers-grid">
         {powers.map((power, i) => {
-          const effectDef = powerDefs.find((d) => d.id === power.effectId);
-          const baseCost = effectDef?.baseCost ?? 1;
-          const mainCost = calculatePowerCost(baseCost, power.ranks, power.modifiers, modifierDefs as unknown as IModifierDef[]);
+          const mainCost = power.components.reduce((csum, comp) => {
+            const def = powerDefs.find((d) => d.id === comp.effectId);
+            if (!def) return csum;
+            return csum + calcComponentCost(comp, def as unknown as Parameters<typeof calcComponentCost>[1], modifierDefs as unknown as IModifierDef[]);
+          }, 0);
           const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
           const totalCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
 
-          const appliedModNames = power.modifiers.map((m) => {
-            const md = modifierDefs.find((d) => d.id === m.modifierId);
-            return md ? md.name : m.modifierId;
-          });
+          // Build display info from components
+          const effectNames = power.components
+            .map((c) => powerDefs.find((d) => d.id === c.effectId))
+            .filter(Boolean)
+            .map((d) => `${d!.name} ${power.components.find((c) => c.effectId === d!.id)?.ranks ?? ''}`);
+
+          const appliedModNames = power.components.flatMap((comp) =>
+            comp.modifiers.map((m) => {
+              const md = modifierDefs.find((d) => d.id === m.modifierId);
+              return md ? md.name : m.modifierId;
+            })
+          );
 
           return (
             <div key={power.id} className="power-card-item">
@@ -101,7 +113,7 @@ export function PowersList() {
                 </div>
                 <div className="power-card-info">
                   <span className="power-card-name">{power.name || t('powers.unnamed')}</span>
-                  <span className="power-card-effect">{effectDef?.name || power.effectId} {power.ranks}</span>
+                  <span className="power-card-effect">{effectNames.join(' + ')}</span>
                 </div>
                 <span className="power-card-cost">{totalCost} {t('common.pp')}</span>
               </div>
