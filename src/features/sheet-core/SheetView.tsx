@@ -9,6 +9,7 @@ import { PowersList } from './PowersList';
 import { ComplicationsPanel } from './ComplicationsPanel';
 import { HeaderPanel } from './HeaderPanel';
 import { OffensePanel } from './OffensePanel';
+import { EquipmentNotesPanel } from './EquipmentNotesPanel';
 import { useTranslation } from 'react-i18next';
 
 export function SheetView() {
@@ -41,6 +42,7 @@ export function SheetView() {
       <AdvantagesPanel cost={pp.advantagesCost} />
       <PowersList />
       <ComplicationsPanel />
+      <EquipmentNotesPanel />
 
       {/* PP Summary Footer */}
       <div className="pp-summary-footer">

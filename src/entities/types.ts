@@ -125,6 +125,7 @@ export interface ICharacterSkill {
   skillId: string;
   ranks: number;
   subtype: string | null;
+  otherBonus?: number;           // F-11: optional situational modifier column
 }
 
 // ── Character Advantage Entry ──
@@ -169,12 +170,20 @@ export interface ICharacterPower {
   components: ICharacterPowerComponent[];
   notes: string;
   alternateEffects: IAlternateEffect[];
+  removable?: 'none' | 'removable' | 'easily_removable'; // F-06: device discount
 }
+
+// ── Complication Type ──
+export type ComplicationType =
+  | 'motivation' | 'enemy' | 'identity' | 'relationship'
+  | 'responsibility' | 'secret' | 'weakness' | 'accident'
+  | 'social' | 'disability' | 'power_loss';
 
 // ── Complication ──
 export interface IComplication {
   title: string;
   description: string;
+  type?: ComplicationType;       // F-08: optional structured type badge
 }
 
 // ── Character Header ──
@@ -197,6 +206,7 @@ export interface ICharacter {
   advantages: ICharacterAdvantage[];
   powers: ICharacterPower[];
   complications: IComplication[];
+  equipmentNotes: string;        // F-09: free-text equipment block (v1.0)
 }
 
 // ── Exported File Schema ──

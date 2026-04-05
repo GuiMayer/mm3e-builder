@@ -52,6 +52,7 @@ const CharacterPowerSchema = z.union([
     components: z.array(CharacterPowerComponentSchema),
     notes: z.string(),
     alternateEffects: z.array(AlternateEffectSchema),
+    removable: z.enum(['none', 'removable', 'easily_removable']).optional(),
   }),
   // Legacy format (will be migrated at load time)
   z.object({
@@ -62,6 +63,7 @@ const CharacterPowerSchema = z.union([
     modifiers: z.array(AppliedModifierSchema),
     notes: z.string(),
     alternateEffects: z.array(AlternateEffectSchema),
+    removable: z.enum(['none', 'removable', 'easily_removable']).optional(),
   }),
 ]);
 
@@ -69,6 +71,7 @@ const CharacterSkillSchema = z.object({
   skillId: z.string(),
   ranks: z.number().int().min(0),
   subtype: z.string().nullable(),
+  otherBonus: z.number().int().optional(), // F-11
 });
 
 const CharacterAdvantageSchema = z.object({
@@ -76,9 +79,16 @@ const CharacterAdvantageSchema = z.object({
   ranks: z.number().int().min(1),
 });
 
+const ComplicationTypeSchema = z.enum([
+  'motivation', 'enemy', 'identity', 'relationship',
+  'responsibility', 'secret', 'weakness', 'accident',
+  'social', 'disability', 'power_loss',
+]);
+
 const ComplicationSchema = z.object({
   title: z.string(),
   description: z.string(),
+  type: ComplicationTypeSchema.optional(), // F-08
 });
 
 const CharacterHeaderSchema = z.object({
@@ -117,6 +127,7 @@ const CharacterSchema = z.object({
   advantages: z.array(CharacterAdvantageSchema),
   powers: z.array(CharacterPowerSchema),
   complications: z.array(ComplicationSchema),
+  equipmentNotes: z.string().default(''),  // F-09: optional in old files, defaults to ''
 });
 
 export const CharacterFileSchema = z.object({

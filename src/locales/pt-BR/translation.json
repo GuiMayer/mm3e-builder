@@ -233,5 +233,21 @@
   "offense.range_close": "Corpo a corpo",
   "offense.range_ranged": "À distância",
   "offense.range_perception": "Percepção",
-  "offense.range_personal": "Pessoal"
+  "offense.range_personal": "Pessoal",
+
+  "equipment.title": "Equipamentos",
+  "equipment.hint": "Pontos de Equipamento da vantagem Equipamento (ranks × 5 PE)",
+  "equipment.placeholder": "Liste seus equipamentos aqui...\nExemplo:\nCinto de Utilidades (Equipamento 4 = 20 PE):\n  Granada de Flash: Ofuscação em Área 3 — 12 PE\n  Garra de Escalada: Movimento 1 (Balanço) — 2 PE",
+
+  "complications.type.motivation": "Motivação",
+  "complications.type.enemy": "Inimigo",
+  "complications.type.identity": "Identidade",
+  "complications.type.relationship": "Relacionamento",
+  "complications.type.responsibility": "Responsabilidade",
+  "complications.type.secret": "Segredo",
+  "complications.type.weakness": "Fraqueza",
+  "complications.type.accident": "Acidente",
+  "complications.type.social": "Social",
+  "complications.type.disability": "Deficiência",
+  "complications.type.power_loss": "Perda de Poder"
 }

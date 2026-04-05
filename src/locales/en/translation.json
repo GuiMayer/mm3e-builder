@@ -233,5 +233,21 @@
   "offense.range_close": "Close",
   "offense.range_ranged": "Ranged",
   "offense.range_perception": "Perception",
-  "offense.range_personal": "Personal"
+  "offense.range_personal": "Personal",
+
+  "equipment.title": "Equipment",
+  "equipment.hint": "Equipment Points from the Equipment advantage (ranks × 5 EP)",
+  "equipment.placeholder": "List your equipment here...\nExample:\nUtility Belt (Equipment 4 = 20 EP):\n  Flash-Bangs: Burst Area Dazzle 3 — 12 EP\n  Grapple Gun: Movement 1 (Swinging) — 2 EP",
+
+  "complications.type.motivation": "Motivation",
+  "complications.type.enemy": "Enemy",
+  "complications.type.identity": "Identity",
+  "complications.type.relationship": "Relationship",
+  "complications.type.responsibility": "Responsibility",
+  "complications.type.secret": "Secret",
+  "complications.type.weakness": "Weakness",
+  "complications.type.accident": "Accident",
+  "complications.type.social": "Social",
+  "complications.type.disability": "Disability",
+  "complications.type.power_loss": "Power Loss"
 }
