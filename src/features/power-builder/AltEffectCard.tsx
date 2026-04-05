@@ -311,7 +311,14 @@ export function AltEffectCard({
         .ae-comp-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--c-text-muted); flex: 1; }
         .ae-add-comp-btn { display: flex; align-items: center; gap: 4px; padding: 4px 10px; background: transparent; border: 1px dashed var(--c-border); border-radius: var(--r-sm); color: var(--c-text-muted); font-size: 0.75rem; cursor: pointer; transition: all var(--t-fast); width: 100%; justify-content: center; }
         .ae-add-comp-btn:hover { border-color: var(--c-accent); color: var(--c-accent); }
-        .ae-add-btn { display: flex; align-items: center; gap: 6px; padding: 6px 14px; background: var(--c-surface-elevated); border: 1px dashed var(--c-border); border-radius: var(--r-md); color: var(--c-text-secondary); font-size: 0.8rem; cursor: pointer; transition: all var(--t-fast); align-self: flex-start; }
+        .ae-add-btn {
+          display: flex; align-items: center; gap: 4px;
+          padding: var(--s-xs) var(--s-sm);
+          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
+          border-radius: var(--r-sm); color: var(--c-text-secondary);
+          font-family: var(--f-body); font-size: 0.8rem; cursor: pointer;
+          transition: all var(--t-fast);
+        }
         .ae-add-btn:hover { border-color: var(--c-primary); color: var(--c-primary); }
         .cost-comp-val--invalid { color: var(--c-error); }
       `}</style>
