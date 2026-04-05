@@ -20,8 +20,10 @@ export function useLocalizedData<T extends I18nData>(items: T[]): T[] {
       const localized = item.i18n?.[lang];
       return {
         ...item,
-        name: localized?.name ?? item.name,
-        description: localized?.description ?? item.description,
+        name:            localized?.name            ?? item.name,
+        description:     localized?.description     ?? item.description,
+        longDescription: localized?.longDescription ?? (item as any).longDescription,
+        usages:          localized?.usages          ?? (item as any).usages,
       };
     }),
     [items, lang]

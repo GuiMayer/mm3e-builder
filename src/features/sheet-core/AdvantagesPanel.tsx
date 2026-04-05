@@ -5,7 +5,7 @@ import advantageDefsRaw from '../../data/advantages.json';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Modal } from '../../shared/ui/Modal';
-import { Plus, Trash2, Search, Info } from 'lucide-react';
+import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const ADVANTAGE_TYPES: AdvantageType[] = ['combat', 'fortune', 'general', 'skill'];
@@ -204,10 +204,10 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
           {/* Footer */}
           <div className="adv-selector-footer">
             <button
-              className="skill-cancel-btn"
+              className="sel-close-btn"
               onClick={() => { setShowSelector(false); setSearchTerm(''); setActiveFilters(new Set()); }}
             >
-              {t('advantages.closeSelector')}
+              <X size={14} /> {t('advantages.closeSelector')}
             </button>
           </div>
         </div>
@@ -327,6 +327,15 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
           display: flex; justify-content: flex-end;
           padding-top: var(--s-sm); border-top: 1px solid var(--c-border); margin-top: var(--s-sm);
         }
+        .sel-close-btn {
+          display: flex; align-items: center; gap: 4px;
+          padding: var(--s-xs) var(--s-sm);
+          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
+          border-radius: var(--r-sm); color: var(--c-text-secondary);
+          font-family: var(--f-body); font-size: 0.8rem; cursor: pointer;
+          transition: all var(--t-fast);
+        }
+        .sel-close-btn:hover { border-color: var(--c-error); color: var(--c-error); }
 
         /* Description Modal content */
         .adv-desc-meta { display: flex; gap: var(--s-sm); flex-wrap: wrap; margin-bottom: var(--s-md); }

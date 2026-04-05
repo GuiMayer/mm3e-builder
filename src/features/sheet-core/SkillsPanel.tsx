@@ -4,7 +4,7 @@ import type { ICharacterSkill, AbilityKey, ISkillDef } from '../../entities/type
 import skillDefsRaw from '../../data/skills.json';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Modal } from '../../shared/ui/Modal';
-import { Plus, Trash2, Search, Info } from 'lucide-react';
+import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 // Colour palette for ability badges (list + modal)
@@ -145,7 +145,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
                 {displayName}
               </button>
               <span className="skill-base" style={abilityBadgeStyle(def.baseAbility)}>
-                {def.baseAbility.toUpperCase()} {abilityVal}
+                {t(`abilities.${def.baseAbility}`).toUpperCase()} {abilityVal}
               </span>
               <span className="skill-plus">+</span>
               <input
@@ -211,7 +211,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
                   )}
 
                   <span className="sk-result-ability" style={abilityBadgeStyle(def.baseAbility)}>
-                    {def.baseAbility.toUpperCase()}
+                    {t(`abilities.${def.baseAbility}`).toUpperCase()}
                   </span>
 
                   <button
@@ -252,8 +252,8 @@ export function SkillsPanel({ cost }: { cost: number }) {
 
           {/* Footer */}
           <div className="adv-selector-footer">
-            <button className="skill-cancel-btn" onClick={closeSelector}>
-              {t('skills.closeSelector')}
+            <button className="sel-close-btn" onClick={closeSelector}>
+              <X size={14} /> {t('skills.closeSelector')}
             </button>
           </div>
         </div>
@@ -273,7 +273,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
               className="sk-desc-badge"
               style={abilityBadgeStyle(descTarget.baseAbility)}
             >
-              {descTarget.baseAbility.toUpperCase()}
+              {t(`abilities.${descTarget.baseAbility}`).toUpperCase()}
             </span>
             {descTarget.trainedOnly && (
               <span className="sk-desc-badge sk-desc-badge--trained">
@@ -387,6 +387,15 @@ export function SkillsPanel({ cost }: { cost: number }) {
           transition: all var(--t-fast); width: 100%; justify-content: center;
         }
         .skill-add-btn:hover { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-muted); }
+        .sel-close-btn {
+          display: flex; align-items: center; gap: 4px;
+          padding: var(--s-xs) var(--s-sm);
+          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
+          border-radius: var(--r-sm); color: var(--c-text-secondary);
+          font-family: var(--f-body); font-size: 0.8rem; cursor: pointer;
+          transition: all var(--t-fast);
+        }
+        .sel-close-btn:hover { border-color: var(--c-error); color: var(--c-error); }
 
         /* ── Selector ── */
         .sk-selector {
