@@ -211,4 +211,5 @@ export interface ICharacterFile {
 export interface IAppPreferences {
   theme: string;
   strictMode: boolean;
+  language: string;
 }
