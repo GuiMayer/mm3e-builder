@@ -248,7 +248,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
 
           {/* Footer */}
           <div className="adv-selector-footer">
-            <button className="sel-close-btn" onClick={closeSelector}>
+            <button className="sk-sel-close-btn" onClick={closeSelector}>
               <X size={14} /> {t('skills.closeSelector')}
             </button>
           </div>
@@ -383,7 +383,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
           transition: all var(--t-fast); width: 100%; justify-content: center;
         }
         .skill-add-btn:hover { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-muted); }
-        .sel-close-btn {
+        .sk-sel-close-btn {
           display: flex; align-items: center; gap: 4px;
           padding: var(--s-xs) var(--s-sm);
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
@@ -391,7 +391,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
           font-family: var(--f-body); font-size: 0.8rem; cursor: pointer;
           transition: all var(--t-fast);
         }
-        .sel-close-btn:hover { border-color: var(--c-error); color: var(--c-error); }
+        .sk-sel-close-btn:hover { border-color: var(--c-error); color: var(--c-error); }
 
         /* ── Selector ── */
         .sk-selector {
