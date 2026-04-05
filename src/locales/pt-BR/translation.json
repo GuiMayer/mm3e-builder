@@ -358,5 +358,13 @@
   "ref.col.components": "= Componentes",
   "ref.col.description": "Efeito",
 
-  "validation.noRoll": "Poder Sem Rolagem"
+  "validation.noRoll": "Poder Sem Rolagem",
+
+  "menu.exportPdf": "PDF",
+  "pdf.generating": "Gerando PDF...",
+  "pdf.overflowTitle": "Limite de campos do PDF excedido",
+  "pdf.overflowBody": "Algumas seções têm mais itens do que a ficha oficial suporta. Os itens excedentes serão escritos nos campos de Notas:",
+  "pdf.overflowDestination": "→ {{dest}}",
+  "pdf.overflowConfirm": "Exportar PDF mesmo assim",
+  "pdf.overflowCancel": "Cancelar"
 }

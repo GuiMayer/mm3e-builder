@@ -358,5 +358,13 @@
   "ref.col.components": "= Components",
   "ref.col.description": "Effect",
 
-  "validation.noRoll": "No-Roll Power"
+  "validation.noRoll": "No-Roll Power",
+
+  "menu.exportPdf": "PDF",
+  "pdf.generating": "Generating PDF...",
+  "pdf.overflowTitle": "PDF field limit exceeded",
+  "pdf.overflowBody": "Some sections have more items than the official sheet supports. Overflow items will be written to the Notes fields:",
+  "pdf.overflowDestination": "→ {{dest}}",
+  "pdf.overflowConfirm": "Export PDF anyway",
+  "pdf.overflowCancel": "Cancel"
 }

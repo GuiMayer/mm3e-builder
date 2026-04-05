@@ -49,6 +49,10 @@ const FILE_TYPES: Record<string, FileTypeConfig> = {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
     },
   },
+  pdf: {
+    description: 'PDF Document',
+    accept: { 'application/pdf': ['.pdf'] },
+  },
 };
 
 /**

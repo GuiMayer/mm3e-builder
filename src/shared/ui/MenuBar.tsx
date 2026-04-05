@@ -12,7 +12,13 @@ import powerDefsJson from '../../data/powers.json';
 import modifierDefsJson from '../../data/modifiers.json';
 import advantageDefsJson from '../../data/advantages.json';
 import skillDefsJson from '../../data/skills.json';
-import { Settings, Download, Upload, FilePlus, Sun, Moon, Shield, ShieldOff, FileSpreadsheet, BookOpen, Library } from 'lucide-react';
+import { fillAndDownloadPDF, checkPDFOverflow } from '../../services/pdf/pdfFillService';
+import type { PDFOverflowReport } from '../../services/pdf/pdfFillService';
+import { buildOffenseSummary } from '../lib/offenseSummary';
+import { prefetchPDFTemplate } from '../../services/pdf/pdfTemplateLoader';
+import { PDFOverflowModal } from '../../features/sheet-core/PDFOverflowModal';
+import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
+import { Settings, Download, Upload, FilePlus, Sun, Moon, Shield, ShieldOff, FileSpreadsheet, BookOpen, Library, FileText, Loader2 } from 'lucide-react';
 
 const THEMES = [
   { id: 'dark-knight', label: 'Dark Knight' },
@@ -62,8 +68,15 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   const { totalSpent, totalAvailable, remaining } = useCalculatedPP();
 
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfOverflow, setPdfOverflow] = useState<PDFOverflowReport[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Pre-fetch template in background on first render
+  useEffect(() => {
+    prefetchPDFTemplate();
+  }, []);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -92,6 +105,34 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
     e.target.value = '';
   }
   
+  async function handleExportPDF() {
+    const offenseEntries = buildOffenseSummary(
+      character,
+      POWER_DEFS,
+      SKILL_DEFS,
+      ADVANTAGE_DEFS,
+      MODIFIER_DEFS
+    );
+    const overflowReport = checkPDFOverflow(character, offenseEntries);
+    if (overflowReport.length > 0) {
+      setPdfOverflow(overflowReport);
+      return;
+    }
+    await doPdfExport();
+  }
+
+  async function doPdfExport() {
+    setPdfLoading(true);
+    setPdfOverflow([]);
+    try {
+      await fillAndDownloadPDF(character);
+    } catch (e) {
+      alert(t('errors.importError') + '\n' + String(e));
+    } finally {
+      setPdfLoading(false);
+    }
+  }
+
   function handleLanguageChange(lang: string) {
     setLanguage(lang);
     i18n.changeLanguage(lang);
@@ -213,6 +254,18 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         <button className="menubar-btn menubar-btn--excel" onClick={handleExportExcel} title={t('menu.exportExcel')}>
           <FileSpreadsheet size={18} /> <span>{t('menu.exportExcel')}</span>
         </button>
+        <button
+          id="btn-export-pdf"
+          className={`menubar-btn menubar-btn--pdf ${pdfLoading ? 'menubar-btn--loading' : ''}`}
+          onClick={handleExportPDF}
+          disabled={pdfLoading}
+          title={t('menu.exportPdf')}
+        >
+          {pdfLoading
+            ? <Loader2 size={18} className="spin" />
+            : <FileText size={18} />}
+          <span>{pdfLoading ? t('pdf.generating') : t('menu.exportPdf')}</span>
+        </button>
         <button className="menubar-btn" onClick={() => fileInputRef.current?.click()} title={t('menu.import')}>
           <Upload size={18} /> <span>{t('menu.import')}</span>
         </button>
@@ -288,6 +341,14 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
           )}
         </div>
       </nav>
+
+      {pdfOverflow.length > 0 && (
+        <PDFOverflowModal
+          report={pdfOverflow}
+          onConfirm={doPdfExport}
+          onCancel={() => setPdfOverflow([])}
+        />
+      )}
 
       <style>{`
         .menubar {
@@ -390,6 +451,29 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
           background: rgba(34, 197, 94, 0.12);
           color: #16a34a;
           border-color: rgba(34, 197, 94, 0.3);
+        }
+        .menubar-btn--pdf {
+          color: #e07b39;
+        }
+        .menubar-btn--pdf:hover {
+          background: rgba(224, 123, 57, 0.12);
+          color: #c9622a;
+          border-color: rgba(224, 123, 57, 0.3);
+        }
+        .menubar-btn--loading {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+        .menubar-btn--loading:hover {
+          background: transparent;
+          border-color: transparent;
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+        .spin {
+          animation: spin 0.8s linear infinite;
         }
         .menubar-dropdown-wrapper {
           position: relative;
