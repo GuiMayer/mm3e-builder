@@ -12,7 +12,7 @@ const ADVANTAGE_TYPES: AdvantageType[] = ['combat', 'fortune', 'general', 'skill
 
 export function AdvantagesPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const advantageDefs = useLocalizedData(advantageDefsRaw as any) as IAdvantageDef[];
+  const advantageDefs = useLocalizedData(advantageDefsRaw as unknown as IAdvantageDef[]);
   const advantages = useCharStore((s) => s.character.advantages);
 
   const [showSelector, setShowSelector] = useState(false);

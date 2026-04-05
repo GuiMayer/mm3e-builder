@@ -21,7 +21,7 @@ const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: st
 
 export function SkillsPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const skillDefs = useLocalizedData(skillDefsRaw as any) as ISkillDef[];
+  const skillDefs = useLocalizedData(skillDefsRaw as unknown as ISkillDef[]);
   const skills = useCharStore((s) => s.character.skills);
   const abilities = useCharStore((s) => s.character.abilities);
 

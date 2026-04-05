@@ -1,10 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 
+interface LocalizedFields {
+  name?: string;
+  description?: string;
+  longDescription?: string;
+  usages?: unknown[];
+}
+
 interface I18nData {
   name: string;
   description?: string;
-  i18n?: Record<string, any>;
+  longDescription?: string;
+  usages?: unknown[];
+  i18n?: Record<string, LocalizedFields>;
 }
 
 /**
@@ -22,8 +31,8 @@ export function useLocalizedData<T extends I18nData>(items: T[]): T[] {
         ...item,
         name:            localized?.name            ?? item.name,
         description:     localized?.description     ?? item.description,
-        longDescription: localized?.longDescription ?? (item as any).longDescription,
-        usages:          localized?.usages          ?? (item as any).usages,
+        longDescription: localized?.longDescription ?? item.longDescription,
+        usages:          localized?.usages          ?? item.usages,
       };
     }),
     [items, lang]
