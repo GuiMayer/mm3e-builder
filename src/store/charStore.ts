@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { ICharacter, AbilityKey } from '../entities/types';
+import type { ICharacter, AbilityKey, IPPLogEntry } from '../entities/types';
 import { migratePowers } from '../shared/lib/powerMigration';
 
 /* ================================================
@@ -24,6 +24,8 @@ const DEFAULT_CHARACTER: ICharacter = {
   powers: [],
   complications: [],
   equipmentNotes: '',
+  campaignMode: false,
+  ppLog: [],
 };
 
 interface CharStoreState {
@@ -50,6 +52,11 @@ interface CharStoreState {
   setPowers: (powers: ICharacter['powers']) => void;
   setComplications: (complications: ICharacter['complications']) => void;
   setEquipmentNotes: (notes: string) => void;
+
+  // F-17 Campaign Mode
+  setCampaignMode: (enabled: boolean) => void;
+  addPPLogEntry: (entry: Omit<IPPLogEntry, 'id'>) => void;
+  removePPLogEntry: (id: string) => void;
 
   // Dirty flag
   markClean: () => void;
@@ -157,6 +164,38 @@ export const useCharStore = create<CharStoreState>((set) => ({
   setEquipmentNotes: (equipmentNotes) =>
     set((state) => ({
       character: { ...state.character, equipmentNotes },
+      isDirty: true,
+    })),
+
+  // F-17: Campaign Mode
+  setCampaignMode: (enabled) =>
+    set((state) => ({
+      character: {
+        ...state.character,
+        campaignMode: enabled,
+        ppLog: enabled ? (state.character.ppLog ?? []) : [],
+      },
+      isDirty: true,
+    })),
+
+  addPPLogEntry: (entry) =>
+    set((state) => ({
+      character: {
+        ...state.character,
+        ppLog: [
+          ...(state.character.ppLog ?? []),
+          { ...entry, id: crypto.randomUUID() },
+        ],
+      },
+      isDirty: true,
+    })),
+
+  removePPLogEntry: (id) =>
+    set((state) => ({
+      character: {
+        ...state.character,
+        ppLog: (state.character.ppLog ?? []).filter((e) => e.id !== id),
+      },
       isDirty: true,
     })),
 

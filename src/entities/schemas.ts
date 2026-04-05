@@ -129,6 +129,14 @@ const DefensesSchema = z.object({
   will: z.number().int().min(0),
 });
 
+// F-17: PP advancement log entry
+const PPLogEntrySchema = z.object({
+  id: z.string(),
+  date: z.string(),
+  amount: z.number().int(),
+  note: z.string(),
+});
+
 const CharacterSchema = z.object({
   header: CharacterHeaderSchema,
   abilities: AbilitiesSchema,
@@ -139,6 +147,8 @@ const CharacterSchema = z.object({
   powers: z.array(CharacterPowerSchema),
   complications: z.array(ComplicationSchema),
   equipmentNotes: z.string().default(''),  // F-09: optional in old files, defaults to ''
+  campaignMode: z.boolean().optional(),    // F-17: opt-in mode (default off)
+  ppLog: z.array(PPLogEntrySchema).optional(), // F-17: PP award log
 });
 
 export const CharacterFileSchema = z.object({

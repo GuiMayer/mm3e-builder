@@ -10,6 +10,7 @@ import { ComplicationsPanel } from './ComplicationsPanel';
 import { HeaderPanel } from './HeaderPanel';
 import { OffensePanel } from './OffensePanel';
 import { EquipmentNotesPanel } from './EquipmentNotesPanel';
+import { PPLogPanel } from './PPLogPanel';
 import { useTranslation } from 'react-i18next';
 
 export function SheetView() {
@@ -43,6 +44,7 @@ export function SheetView() {
       <PowersList />
       <ComplicationsPanel />
       <EquipmentNotesPanel />
+      <PPLogPanel />
 
       {/* PP Summary Footer */}
       <div className="pp-summary-footer">

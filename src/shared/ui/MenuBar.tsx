@@ -11,7 +11,7 @@ import powerDefsJson from '../../data/powers.json';
 import modifierDefsJson from '../../data/modifiers.json';
 import advantageDefsJson from '../../data/advantages.json';
 import skillDefsJson from '../../data/skills.json';
-import { Settings, Download, Upload, FilePlus, Sun, Moon, Shield, ShieldOff, FileSpreadsheet } from 'lucide-react';
+import { Settings, Download, Upload, FilePlus, Sun, Moon, Shield, ShieldOff, FileSpreadsheet, BookOpen } from 'lucide-react';
 
 const THEMES = [
   { id: 'dark-knight', label: 'Dark Knight' },
@@ -54,6 +54,8 @@ export function MenuBar() {
   const strictMode = useAppStore((s) => s.strictMode);
   const toggleStrictMode = useAppStore((s) => s.toggleStrictMode);
   const character = useCharStore((s) => s.character);
+  const campaignMode = character.campaignMode ?? false;
+  const setCampaignMode = useCharStore((s) => s.setCampaignMode);
   const loadCharacter = useCharStore((s) => s.loadCharacter);
   const resetCharacter = useCharStore((s) => s.resetCharacter);
   const { totalSpent, totalAvailable, remaining } = useCalculatedPP();
@@ -241,6 +243,19 @@ export function MenuBar() {
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">
+                <span className="dropdown-label">{t('menu.campaignMode')}</span>
+                <button
+                  className={`dropdown-item ${campaignMode ? 'active' : ''}`}
+                  onClick={() => setCampaignMode(!campaignMode)}
+                  title={t('menu.campaignMode.hint')}
+                >
+                  <BookOpen size={14} />
+                  {t('menu.campaignMode')}: <strong>{campaignMode ? t('menu.campaignMode.active') : t('menu.campaignMode.disabled')}</strong>
+                </button>
+                <span className="dropdown-hint">{t('menu.campaignMode.hint')}</span>
+              </div>
+              <div className="dropdown-divider" />
+              <div className="dropdown-section">
                 <span className="dropdown-label">{t('menu.language')}</span>
                 {LANGUAGES.map((l) => (
                   <button
@@ -386,6 +401,13 @@ export function MenuBar() {
           height: 1px;
           background: var(--c-border);
           margin: var(--s-sm) 0;
+        }
+        .dropdown-hint {
+          font-size: 0.68rem;
+          color: var(--c-text-muted);
+          padding: 0 var(--s-sm) var(--s-xs);
+          line-height: 1.4;
+          display: block;
         }
       `}</style>
     </header>

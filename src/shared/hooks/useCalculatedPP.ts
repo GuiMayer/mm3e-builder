@@ -31,7 +31,11 @@ export function useCalculatedPP() {
     );
 
     const totalSpent = abilitiesCost + defensesCost + skillsCost + advantagesCost + powersCost;
-    const totalAvailable = character.header.powerLevel * 15;
+    // F-17: when campaign mode is on, add PP earned from the log
+    const ppEarned = character.campaignMode
+      ? (character.ppLog ?? []).reduce((s, e) => s + e.amount, 0)
+      : 0;
+    const totalAvailable = character.header.powerLevel * 15 + ppEarned;
     const remaining = totalAvailable - totalSpent;
 
     return {

@@ -207,6 +207,14 @@ export interface ICharacterHeader {
   gameMaster?: string;
 }
 
+// ── PP Advancement Log Entry (F-17 Campaign Mode) ──
+export interface IPPLogEntry {
+  id: string;       // uuid for keying
+  date: string;     // ISO date: YYYY-MM-DD
+  amount: number;   // positive = award, negative = deduction
+  note: string;
+}
+
 // ── Full Character ──
 export interface ICharacter {
   header: ICharacterHeader;
@@ -218,6 +226,8 @@ export interface ICharacter {
   powers: ICharacterPower[];
   complications: IComplication[];
   equipmentNotes: string;        // F-09: free-text equipment block (v1.0)
+  campaignMode?: boolean;        // F-17: opt-in PP advancement tracking (default: false)
+  ppLog?: IPPLogEntry[];         // F-17: PP award log (only used when campaignMode = true)
 }
 
 // ── Exported File Schema ──

@@ -8,8 +8,10 @@ for the current code to remain compatible when the feature is eventually impleme
 
 ## FX-01 · PDF Export — Character Sheet
 
+**Original plan ID:** F-23
 **Priority when tackled:** High
 **Effort estimate:** ~24h (new service + document layout)
+**Dependency:** F-12 (attack bonus) should be implemented first so the Offense table in the PDF is accurate.
 
 ### Vision
 Generate a print-ready `.pdf` file of the full character sheet — text-selectable, styled for A4,
@@ -20,11 +22,12 @@ suitable for use at the table without a laptop.
 - Generates and downloads directly in the browser (no backend required).
 - Layout: clean, light background (print-optimized), regardless of active app theme.
 - Multi-page A4. Page breaks between major sections (abilities/defenses, skills, powers, equipment).
-- All sections visible: Offense panel, Initiative, Toughness breakdown, Equipment notes.
+- All sections visible: Offense panel, Initiative, Toughness breakdown, Equipment notes, Character Notes.
 
 ### Technology decision
-`@react-pdf/renderer` — client-side, declarative Flexbox layout, produces text-selectable PDF.
-No Puppeteer (requires backend). No jsPDF (screenshot-based, non-selectable text).
+`@react-pdf/renderer` with **dynamic import** (lazy-loaded on demand) — client-side, declarative
+Flexbox layout, produces text-selectable PDF. No Puppeteer (requires backend). No jsPDF
+(coordinate-based, hard to maintain).
 
 ### Architecture compatibility requirements (already enforced in current codebase)
 The following decisions made during the current implementation cycle **intentionally preserve**
@@ -37,6 +40,7 @@ PDF compatibility:
 | `downloadBlob` supports any MIME type | Adding `.pdf` entry requires only 2 lines |
 | `gameDataLoaders.ts` as single import point | PDF generator imports game data from the same source |
 | `ICharacter` shape is stable and versioned | PDF generator receives one `ICharacter` object — no additional fetching |
+| `buildOffenseSummary()` is a pure function | PDF generator calls it directly — no hook wrapper needed |
 
 ### Files to create when implemented
 - `src/services/pdfGenerator.tsx` — React-PDF document component
@@ -46,33 +50,39 @@ PDF compatibility:
 
 ---
 
-## FX-02 · Character Notes & Illustration
+## FX-02 · Character Illustration
 
+**Original plan ID:** F-18
 **Priority when tackled:** Low
-**Effort estimate:** ~4h
+**Effort estimate:** ~3h
 
 ### Vision
-- **Notes:** A free-form `<textarea>` panel at the bottom of the sheet (after Complications),
-  labelled "Notes & Background". Stores character background, GM notes, session history.
-  Field: `character.notes: string`.
+An avatar/image area in `HeaderPanel` (the existing `<User>` icon placeholder).
+Strategy: **URL-based first** — user pastes an image link (`header.imageUrl?: string`).
+Base64 in-save encoding is v2.0+ only (file size concerns).
 
-- **Character Illustration:** An avatar/image area in `HeaderPanel` (the existing `<User>` icon placeholder).
-  Strategy: **URL-based first** (`header.imageUrl?: string` — user pastes an image link).
-  Base64 in-save encoding is v1.2+ only (file size concerns).
-  When set, the URL renders as a 64×64 thumbnail in the header with a click-to-expand modal.
+When set:
+- The `<User>` icon is replaced by the thumbnail (64×64, `object-fit: contain`).
+- Clicking the thumbnail opens a popover with a URL input field and a "clear" button.
+- A click-to-expand modal shows the full image.
+- Graceful fallback: if URL fails to load (broken link), falls back to `<User>` icon silently.
 
 ### Architecture note
-`ICharacter` will gain `notes?: string`.
-`ICharacterHeader` will gain `imageUrl?: string`.
-Both fields are **optional with `?`** so existing save files remain valid (no migration needed).
-The PDF generator will render `notes` in an appendix page and `imageUrl` as a header image if present.
+`ICharacterHeader` gains `imageUrl?: string` — optional, backward compatible.
+The PDF generator (FX-01) will render `imageUrl` in the header of page 1 if present.
+
+### Files to create when implemented
+- `src/entities/types.ts` — `imageUrl?` on `ICharacterHeader`
+- `src/entities/schemas.ts` — `z.string().url().optional()`
+- `src/features/sheet-core/HeaderPanel.tsx` — avatar popover + image render
 
 ---
 
-## FX-03 · Full Equipment System (Vehicles & Headquarters)
+## FX-03 · Full Equipment System (EP Tracker, Vehicles & HQ)
 
+**Original plan IDs:** F-15 (EP tracker), F-21 (Vehicles), F-22 (HQ)
 **Priority when tackled:** Medium (post-v1.0)
-**Effort estimate:** ~20h
+**Effort estimate:** ~24h total (all three implemented together in a single `EquipmentPanel` refactor)
 
 ### Current implementation (v1.0)
 Equipment is implemented as a single **free-text block** (`character.equipmentNotes: string`),
@@ -81,82 +91,115 @@ See current `EquipmentNotesPanel` component.
 
 ### Full vision (v1.1+)
 
-**Equipment Items:**
-Structured list of items purchased with Equipment Points (EP), derived from the Equipment advantage
-(`EP budget = ranks × 5`). Each item has `name`, `description`, `epCost`.
+**Tab layout:** `[Items] [Vehicles] [HQ] [Notes]` within a single expanded `EquipmentPanel`.
 
-**Vehicles:**
-Standard M&M 3e vehicle stat block: Size, Strength, Speed, Defense, Toughness.
-Each vehicle has its own sub-sheet similar to a character sheet section.
+---
 
-**Headquarters:**
-M&M 3e HQ schema: Size, Toughness, EP-based feature checklist
-(Communications, Computer, Defense System, Dock, Garage, Gym, Hangar, Infirmary, Laboratory,
-Living Space, Personnel, Pool, Power System, Security System, Workshop).
+**Equipment Items (F-15):**
+Structured list of items purchased with Equipment Points (EP).
 
-**Tab layout:** `[Items] [Vehicles] [Headquarters]` within a single `EquipmentPanel`.
+- EP budget auto-calculated: `calcEquipmentBudget(advantages, advantageDefs)` → finds Equipment advantage ranks × 5.
+- Budget bar: always-visible `EP used / EP budget` display + progress bar (green → red as limit approached).
+- Item list: `[Name] [EP cost] [×]` inline rows. "Add item" as an inline form row at the bottom.
+- Inline EP cost visible at a glance — no detail modal needed for simple items.
+
+```typescript
+interface IEquipmentItem {
+  id: string;
+  name: string;
+  epCost: number;
+  description?: string;
+}
+// ICharacter gains: equipment?: IEquipmentItem[]
+```
+
+---
+
+**Vehicles (F-21):**
+Standard M&M 3e vehicle stat block within the Vehicles tab.
+
+Each vehicle has: Name, Size, Strength, Speed rank, Defense, Toughness.
+Stat inputs use the same stepper UI as Abilities/Defenses for consistency.
+
+```typescript
+interface IVehicle {
+  id: string;
+  name: string;
+  size: number;         // −2 to +8 (colossal)
+  strength: number;
+  speedRank: number;
+  defense: number;
+  toughness: number;
+  notes?: string;
+}
+// ICharacter gains: vehicles?: IVehicle[]
+```
+
+---
+
+**Headquarters (F-22):**
+M&M 3e HQ schema within the HQ tab.
+
+- HQ: Size, Toughness + EP-purchased feature checklist.
+- Feature list (each costs 1 EP): Communications, Computer, Defense System, Dock, Garage,
+  Gym, Hangar, Infirmary, Laboratory, Living Space, Personnel, Pool, Power System,
+  Security System, Workshop.
+
+```typescript
+interface IHeadquarters {
+  id: string;
+  name: string;
+  size: number;
+  toughness: number;
+  features: string[];   // list of selected feature IDs
+  notes?: string;
+}
+// ICharacter gains: headquarters?: IHeadquarters[]
+```
+
+---
 
 ### Architecture compatibility (current code)
-The current `equipmentNotes: string` field is **preserved** and displayed in the expanded structured view,
-allowing players to migrate their free-text content manually. The field is not removed — it becomes
-an optional `legacyNotes` string when the full system is added.
+The current `equipmentNotes: string` field is **preserved** and displayed as the "Notes" tab in the
+new panel, allowing players to migrate their free-text content manually. It is not removed —
+it becomes the legacy notes tab when the full system is added.
 
 ```typescript
 // v1.0 shape (current)
 ICharacter.equipmentNotes: string
 
 // v1.1 shape (future — backward compatible)
-ICharacter.equipmentNotes?: string          // legacy free text, kept for migration
-ICharacter.equipment: IEquipmentItem[]      // structured items
-ICharacter.vehicles: IVehicle[]
-ICharacter.headquarters: IHeadquarters[]
+ICharacter.equipmentNotes: string            // now displayed in the "Notes" tab
+ICharacter.equipment?: IEquipmentItem[]
+ICharacter.vehicles?: IVehicle[]
+ICharacter.headquarters?: IHeadquarters[]
 ```
 
 The `charStore.ts` will gain `setEquipment`, `setVehicles`, `setHeadquarters` actions
 following the same encapsulation pattern as `setSkills`, `setPowers`, `setAdvantages`.
 
----
-
-## FX-04 · PP Advancement Tracking
-
-**Priority when tackled:** Low (post-v1.0)
-**Effort estimate:** ~8h
-
-### Vision
-Track PP earned through play as a log visible in the header area:
-```
-PP: 162 total (150 creation + 12 earned) | Spent: 155 | Remaining: 7
-```
-
-Log entries:
-```
-[ + Award PP ]  Date: ___  Amount: ___  Note: ________________  [Add]
-─────────────────────────────────────────────────────────────────────
-2026-03-15:  +5 PP  — Session 12: defeated the Collective
-2026-03-22:  +2 PP  — Character milestone: identity revealed
-```
-
-### Architecture note
-`ICharacter` gains `ppLog: IPPLogEntry[]` where `IPPLogEntry = { date: string, amount: number, note: string }`.
-The total PP available becomes `PL × 15 + ppLog.reduce(sum)`, replacing the current hardcoded formula.
-The header PP display gains a second line.
-This is backward compatible: `ppLog` defaults to `[]`, preserving the `PL × 15` result for all existing saves.
+A new pure function `calcEquipmentBudget(advantages, advantageDefs)` will be added to
+`mathEngine.ts` for PDF and Excel compatibility.
 
 ---
 
-## FX-05 · Active Conditions Tracker
+## FX-04 · Character Notes & Background
 
-**Priority when tackled:** Low (would make the builder also a session-play companion)
-**Effort estimate:** ~6h
+**Original plan ID:** F-14 (notes portion), FX-02 (illustration — see above)
+**Status:** F-14 (text notes) is **actively being implemented in Tier 4** — only the illustration portion is deferred.
 
-### Vision
-An in-play panel showing a checklist of active conditions (Dazed, Stunned, Staggered, etc.)
-derived from the official conditions reference. Conditions persist during a session but are
-cleared on new session. Not exported to JSON as persistent data.
+> The general notes field (`character.notes?: string`) is part of the active Tier 4 plan under F-14.
+> It will be a collapsible "Background & Notes" panel at the bottom of the sheet.
 
-### Architecture note
-This is **session state**, not character state. It would live in `appStore` or a dedicated
-`sessionStore`, never in `charStore` or the save file. Zero impact on existing architecture.
+---
+
+## FX-05 · PP Advancement Tracking
+
+**Original plan ID:** F-17
+**Status:** F-17 is **actively being implemented in Tier 4** as an **opt-in "Campaign Mode" toggle**.
+
+> When Campaign Mode is OFF (default), PP = PL × 15 as today — zero visual impact.
+> When ON, a PP log accordion expands with award entries. PP = PL × 15 + Σ ppLog.
 
 ---
 
