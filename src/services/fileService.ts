@@ -2,8 +2,7 @@ import { CharacterFileSchema } from '../entities/schemas';
 import type { ICharacter, ICharacterFile } from '../entities/types';
 import { downloadBlob } from './downloadHelper';
 import { migratePowers } from '../shared/lib/powerMigration';
-
-const CURRENT_SCHEMA_VERSION = '1.0.0';
+import { SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS } from '../entities/constants';
 const DRAFT_KEY = 'mm3e-draft-character';
 
 /**
@@ -27,7 +26,7 @@ export class I18nError extends Error {
  */
 export async function exportCharacterJSON(character: ICharacter, language: string = 'en', filename?: string): Promise<void> {
   const file: ICharacterFile = {
-    schemaVersion: CURRENT_SCHEMA_VERSION,
+    schemaVersion: SCHEMA_VERSION,
     exportedAt: new Date().toISOString(),
     language,
     character,
@@ -62,6 +61,15 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
     });
   }
 
+  // Warn when the file's schema version is not in the supported list
+  const fileVersion = (parsed as Record<string, unknown>)?.schemaVersion as string | undefined;
+  if (fileVersion && !SUPPORTED_SCHEMA_VERSIONS.includes(fileVersion)) {
+    console.warn(
+      `[fileService] Importing file with unknown schema version "${fileVersion}". ` +
+      `Supported: ${SUPPORTED_SCHEMA_VERSIONS.join(', ')}`
+    );
+  }
+
   const raw = result.data.character;
   return {
     ...raw,
@@ -76,7 +84,7 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
 export function saveDraft(character: ICharacter): boolean {
   try {
     const file: ICharacterFile = {
-      schemaVersion: CURRENT_SCHEMA_VERSION,
+      schemaVersion: SCHEMA_VERSION,
       exportedAt: new Date().toISOString(),
       character,
     };
