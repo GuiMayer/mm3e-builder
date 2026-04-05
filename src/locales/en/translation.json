@@ -214,5 +214,11 @@
   "excel.absent": "Absent",
   "excel.dynamic": "Dynamic",
   "excel.yes": "Yes",
-  "excel.no": "No"
+  "excel.no": "No",
+  "builder.mainEffect": "Main Effect",
+  "builder.effectN": "Effect {{n}}",
+  "builder.saveInvalidAEsConfirm": "{{count}} Alternate Effect(s) exceed the cap of {{cap}}PP: {{names}}.\nSave anyway?",
+  "palette.noSpecificEffect": "Select an effect first.",
+  "palette.noSpecificMods": "No specific modifiers for this effect.",
+  "builder.aeOverageLabel": "+{{overageBy}}PP over cap"
 }

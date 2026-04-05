@@ -446,7 +446,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                     {/* Component header */}
                     <div className="component-header">
                       <span className="component-label">
-                        {idx === 0 ? 'Efeito Principal' : `Efeito ${idx + 1}`}
+                        {idx === 0 ? t('builder.mainEffect') : t('builder.effectN', { n: idx + 1 })}
                       </span>
                       {costInfo.total > 0 && (
                         <span className="component-cost">{costInfo.total} PP</span>

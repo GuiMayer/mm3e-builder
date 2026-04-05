@@ -71,7 +71,7 @@ export function AltEffectCard({
         />
         <span className={`ae-cost-badge ${valid ? 'ae-cost-badge--ok' : 'ae-cost-badge--over'}`}>
           {valid ? '✅' : '⚠️'} {cost}pp
-          {!valid && <span className="ae-overage"> +{overageBy}PP acima</span>}
+          {!valid && <span className="ae-overage"> {t('builder.aeOverageLabel', { overageBy })}</span>}
         </span>
         <label
           className="ae-dynamic-label"

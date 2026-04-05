@@ -141,7 +141,7 @@ export function EffectPalette({
         <button
           className={`palette-tab ${activeTab === 'specific' ? 'palette-tab--active palette-tab--specific' : ''} ${!selectedEffect ? 'palette-tab--disabled' : ''}`}
           onClick={() => selectedEffect && setActiveTab('specific')}
-          title={!selectedEffect ? 'Selecione um efeito primeiro' : undefined}
+          title={!selectedEffect ? t('palette.noSpecificEffect') : undefined}
         >
           <Zap size={12} /> {t('palette.specific')} ({specificCount})
         </button>
@@ -170,12 +170,12 @@ export function EffectPalette({
             />
           ))}
         {activeTab === 'specific' && !selectedEffect && (
-          <p className="palette-empty">{t('builder.selectEffect')}</p>
+          <p className="palette-empty">{t('palette.noSpecificEffect')}</p>
         )}
         {activeTab === 'specific' &&
           selectedEffect &&
           specificMods.length === 0 && (
-            <p className="palette-empty">Nenhum modificador específico para este efeito.</p>
+            <p className="palette-empty">{t('palette.noSpecificMods')}</p>
           )}
         {activeTab === 'specific' &&
           specificMods.map((mod) => (
