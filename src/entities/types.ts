@@ -33,6 +33,14 @@ export interface IVariableCostOption {
   cost: number;
 }
 
+// ── Modifier Subtype (for modifiers with variable cost per chosen option) ──
+// e.g. Alternate Resistance: Will (+1/rank), Fortitude (+2/rank), Dodge (+1/rank)
+export interface IModifierSubtype {
+  id: string;
+  label: string;
+  costValue: number;   // overrides the parent modifier's costValue
+}
+
 // ── Modifier Definition (from modifiers.json or powers.json extras/flaws) ──
 export interface IModifierDef {
   id: string;
@@ -44,6 +52,7 @@ export interface IModifierDef {
   description: string;
   longDescription?: string;      // full rulebook text
   options?: { label: string; notes: string }[];  // sub-options (e.g. Area shapes)
+  subtypes?: IModifierSubtype[];  // variable-cost sub-choices (e.g. Alternate Resistance)
   incompatibleWith: string[];
   i18n?: Record<string, {
     name?: string;
@@ -140,7 +149,7 @@ export interface IAppliedModifier {
   ranks: number;                 // flat_ranked: ranks of the MODIFIER; per_rank: always 1
   isPowerSpecific?: boolean;     // modifier comes from power's own extras/flaws list
   option?: string;               // selected sub-option (e.g. "Burst" for Area)
-  options?: Record<string, boolean | number>; // flexible flags for edge cases
+  options?: Record<string, boolean | number | string>; // flexible flags; string used for subtypeId
 }
 
 // ── Power Component (a single effect within a power) ──

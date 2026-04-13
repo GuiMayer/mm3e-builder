@@ -173,6 +173,30 @@ export function useAlternateEffects({
     }));
   }
 
+  function updateAEModifierOptions(
+    aeId: string,
+    compId: string,
+    modId: string,
+    options: Record<string, boolean | number | string>
+  ) {
+    setPower((p) => ({
+      ...p,
+      alternateEffects: p.alternateEffects.map((ae) =>
+        ae.id !== aeId ? ae : {
+          ...ae,
+          components: ae.components.map((comp) =>
+            comp.id !== compId ? comp : {
+              ...comp,
+              modifiers: comp.modifiers.map((m) =>
+                m.modifierId === modId ? { ...m, options } : m
+              ),
+            }
+          ),
+        }
+      ),
+    }));
+  }
+
   return {
     addAlternateEffect,
     removeAlternateEffect,
@@ -184,5 +208,6 @@ export function useAlternateEffects({
     removeModifierFromAEComponent,
     updateAEModifierRanks,
     updateAEModifierOption,
+    updateAEModifierOptions,
   };
 }

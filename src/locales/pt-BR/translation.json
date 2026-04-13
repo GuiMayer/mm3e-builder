@@ -201,6 +201,8 @@
   "builder.plWarning": "Excede o limite de Nível de Poder",
   "builder.searchEffect": "Buscar efeitos...",
   "builder.noEffectsFound": "Nenhum efeito encontrado",
+  "builder.subtypeLabel": "Escolha a resistência",
+  "builder.subtypeNone": "— escolha a resistência —",
   "builder.affectsOnlyObjects": "Afeta Apenas Objetos",
   "builder.filterAll": "Todos",
   "builder.filterAttack": "Ataque",

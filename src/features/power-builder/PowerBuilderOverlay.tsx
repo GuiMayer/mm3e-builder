@@ -299,7 +299,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     }));
   }
 
-  function updateModifierOptions(componentId: string, modId: string, options: Record<string, boolean | number>) {
+  function updateModifierOptions(componentId: string, modId: string, options: Record<string, boolean | number | string>) {
     setPower((p) => ({
       ...p,
       components: p.components.map((comp) =>
@@ -356,6 +356,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     removeModifierFromAEComponent,
     updateAEModifierRanks,
     updateAEModifierOption,
+    updateAEModifierOptions,
   } = useAlternateEffects({
     setPower,
     powerDefs,
@@ -617,13 +618,47 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                                   {t('builder.affectsOnlyObjects')}
                                 </label>
                               )}
+                              {/* Subtype selector for modifiers with variable cost (e.g. Alternate Resistance) */}
+                              {def.subtypes && def.subtypes.length > 0 && (
+                                <select
+                                  className="applied-mod-subtype"
+                                  value={(applied.options?.subtypeId as string) ?? ''}
+                                  onChange={(e) => {
+                                    updateModifierOptions(comp.id, applied.modifierId, {
+                                      ...applied.options,
+                                      subtypeId: e.target.value,
+                                    });
+                                  }}
+                                  title={t('builder.subtypeLabel')}
+                                >
+                                  <option value="">{t('builder.subtypeNone')}</option>
+                                  {def.subtypes.map((sub) => (
+                                    <option key={sub.id} value={sub.id}>
+                                      {sub.label} (+{sub.costValue}/rank)
+                                    </option>
+                                  ))}
+                                </select>
+                              )}
                               <span className="applied-mod-cost">
-                                {def.costValue > 0 ? '+' : ''}
-                                {def.costType === 'per_rank'
-                                  ? `${def.costValue}/rank`
-                                  : modCostPP !== null
-                                  ? `${modCostPP > 0 ? '+' : ''}${modCostPP}pp`
-                                  : ''}
+                                {(() => {
+                                  // Show effective cost, accounting for active subtype
+                                  if (def.costType === 'per_rank') {
+                                    let effectiveCost = def.costValue;
+                                    if (def.subtypes && def.subtypes.length > 0) {
+                                      const sid = applied.options?.subtypeId as string | undefined;
+                                      const sub = sid ? def.subtypes.find((s) => s.id === sid) : undefined;
+                                      if (sub) effectiveCost = sub.costValue;
+                                    }
+                                    if (def.id === 'affects_objects') {
+                                      effectiveCost = applied.options?.affectsOnlyObjects === true ? 0 : 1;
+                                    }
+                                    return `${effectiveCost >= 0 ? '+' : ''}${effectiveCost}/rank`;
+                                  }
+                                  if (modCostPP !== null) {
+                                    return `${modCostPP > 0 ? '+' : ''}${modCostPP}pp`;
+                                  }
+                                  return '';
+                                })()}
                               </span>
                               {overPL && (
                                 <span className="applied-mod-overlimit" title={t('builder.plWarning')}>
@@ -714,6 +749,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   onRemoveModifier={(cId, modId) => removeModifierFromAEComponent(ae.id, cId, modId)}
                   onUpdateModifierRanks={(cId, modId, ranks) => updateAEModifierRanks(ae.id, cId, modId, ranks)}
                   onUpdateModifierOption={(cId, modId, opt) => updateAEModifierOption(ae.id, cId, modId, opt)}
+                  onUpdateModifierOptions={(cId, modId, opts) => updateAEModifierOptions(ae.id, cId, modId, opts)}
                   onInfoClick={setEffectModalPower}
                   t={t}
                 />
@@ -958,6 +994,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
           border-radius: var(--r-sm); color: var(--c-text);
           font-size: 0.72rem; padding: 1px 4px; cursor: pointer;
           max-width: 90px;
+        }
+        .applied-mod-subtype {
+          background: var(--c-bg); border: 1px solid var(--c-primary);
+          border-radius: var(--r-sm); color: var(--c-text);
+          font-size: 0.72rem; padding: 1px 4px; cursor: pointer;
+          max-width: 140px;
         }
         .applied-mod-cost { font-size: 0.68rem; color: var(--c-text-muted); }
         .applied-mod-overlimit { font-size: 0.72rem; cursor: help; }

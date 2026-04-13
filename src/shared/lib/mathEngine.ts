@@ -27,17 +27,31 @@ export function calcModifierCost(applied: IAppliedModifier, def: IModifierDef): 
 
 /**
  * Calculate the cost contribution for a single per-rank modifier with conditional logic.
- * Handles edge cases like "Affects Objects" (+1/rank) vs "Affects Only Objects" (+0/rank).
+ * Handles edge cases like:
+ *   - "Affects Objects" (+1/rank both; +0/rank only objects)
+ *   - "Alternate Resistance" — cost depends on chosen defense subtype
  */
 function getPerRankModifierCost(applied: IAppliedModifier, def: IModifierDef): number {
-  // Handle specific modifier edge cases
+  // ── Affects Objects ────────────────────────────────────────────────────────
   if (def.id === 'affects_objects') {
-    // Rule: +1/rank if affects both characters and objects
-    // +0/rank if affects ONLY objects (Affects Only Objects)
+    // +1/rank if affects both characters and objects (default)
+    // +0/rank if affects ONLY objects
     const isOnlyObjects = applied.options?.affectsOnlyObjects === true;
     return isOnlyObjects ? 0 : 1;
   }
-  
+
+  // ── Modifiers with subtypes (e.g. Alternate Resistance) ────────────────────
+  // If def has subtypes and the user chose one, use that subtype's costValue.
+  if (def.subtypes && def.subtypes.length > 0) {
+    const subtypeId = applied.options?.subtypeId as string | undefined;
+    if (subtypeId) {
+      const sub = def.subtypes.find((s) => s.id === subtypeId);
+      if (sub) return sub.costValue;
+    }
+    // No subtype chosen yet → fall back to def.costValue (0 for alternate_resistance)
+    return def.costValue;
+  }
+
   // Default behavior
   return def.costValue;
 }

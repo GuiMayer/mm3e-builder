@@ -109,14 +109,20 @@
     "category": "extra",
     "costType": "per_rank",
     "costValue": 0,
-    "description": "The effect is resisted by a different defense than normal.",
-    "longDescription": "+0/rank if the alternate resistance is equally easy to overcome; +1/rank if it's harder. For example, changing an Affliction from Fortitude to Will might be +0 or +1 depending on context.",
+    "description": "The effect is resisted by a different defense than normal. Choose which defense from the list below.",
+    "longDescription": "+0/rank if the alternate resistance is equally easy to overcome; +1/rank if it's harder (e.g. Will instead of Fortitude); +2/rank for Fortitude instead of Toughness.",
+    "subtypes": [
+      { "id": "will",      "label": "Will",      "costValue": 1 },
+      { "id": "fortitude", "label": "Fortitude", "costValue": 2 },
+      { "id": "dodge",     "label": "Dodge",     "costValue": 1 },
+      { "id": "parry",     "label": "Parry",     "costValue": 1 }
+    ],
     "incompatibleWith": [],
     "i18n": {
       "pt-BR": {
         "name": "Resistência Alternativa",
-        "description": "O efeito é resistido por uma defesa diferente do normal.",
-        "longDescription": "+0/rank se a resistência alternativa é igualmente fácil; +1/rank se for mais difícil de superar."
+        "description": "O efeito é resistido por uma defesa diferente do normal. Escolha a defesa na lista abaixo.",
+        "longDescription": "+0/rank se a resistência alternativa é igualmente fácil; +1/rank se for mais difícil (ex: Vontade no lugar de Fortitude); +2/rank para Fortitude no lugar de Resistência."
       }
     }
   },

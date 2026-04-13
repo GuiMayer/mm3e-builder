@@ -30,6 +30,7 @@ interface AltEffectCardProps {
   onRemoveModifier: (cId: string, modId: string) => void;
   onUpdateModifierRanks: (cId: string, modId: string, ranks: number) => void;
   onUpdateModifierOption: (cId: string, modId: string, opt: string) => void;
+  onUpdateModifierOptions: (cId: string, modId: string, opts: Record<string, boolean | number | string>) => void;
   onInfoClick: (e: IPowerEffect) => void;
   t: (key: string, opts?: Record<string, unknown>) => string;
 }
@@ -40,7 +41,7 @@ export function AltEffectCard({
   allEffects, allModDefs,
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
-  onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption,
+  onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption, onUpdateModifierOptions,
   onInfoClick, t,
 }: AltEffectCardProps) {
   const { valid, overageBy } = validation;
@@ -210,13 +211,43 @@ export function AltEffectCard({
                                 ))}
                               </select>
                             )}
+                            {/* Subtype selector (e.g. Alternate Resistance) */}
+                            {def.subtypes && def.subtypes.length > 0 && (
+                              <select
+                                className="applied-mod-subtype"
+                                value={(applied.options?.subtypeId as string) ?? ''}
+                                onChange={(e) => {
+                                  onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                    ...applied.options,
+                                    subtypeId: e.target.value,
+                                  });
+                                }}
+                                title={t('builder.subtypeLabel')}
+                              >
+                                <option value="">{t('builder.subtypeNone')}</option>
+                                {def.subtypes.map((sub) => (
+                                  <option key={sub.id} value={sub.id}>
+                                    {sub.label} (+{sub.costValue}/rank)
+                                  </option>
+                                ))}
+                              </select>
+                            )}
                             <span className="applied-mod-cost">
-                              {def.costValue > 0 ? '+' : ''}
-                              {def.costType === 'per_rank'
-                                ? `${def.costValue}/rank`
-                                : modCostPP !== null
-                                ? `${modCostPP > 0 ? '+' : ''}${modCostPP}pp`
-                                : ''}
+                              {(() => {
+                                if (def.costType === 'per_rank') {
+                                  let effectiveCost = def.costValue;
+                                  if (def.subtypes && def.subtypes.length > 0) {
+                                    const sid = applied.options?.subtypeId as string | undefined;
+                                    const sub = sid ? def.subtypes.find((s) => s.id === sid) : undefined;
+                                    if (sub) effectiveCost = sub.costValue;
+                                  }
+                                  return `${effectiveCost >= 0 ? '+' : ''}${effectiveCost}/rank`;
+                                }
+                                if (modCostPP !== null) {
+                                  return `${modCostPP > 0 ? '+' : ''}${modCostPP}pp`;
+                                }
+                                return '';
+                              })()}
                             </span>
                             <button
                               className="applied-mod-remove"

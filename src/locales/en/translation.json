@@ -201,6 +201,8 @@
   "builder.plWarning": "Exceeds Power Level limit",
   "builder.searchEffect": "Search effects...",
   "builder.noEffectsFound": "No effects found",
+  "builder.subtypeLabel": "Choose resistance",
+  "builder.subtypeNone": "— choose resistance —",
   "builder.affectsOnlyObjects": "Affects Only Objects",
   "builder.filterAll": "All",
   "builder.filterAttack": "Attack",
