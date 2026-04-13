@@ -309,6 +309,22 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     }));
   }
 
+  function updateModifierOptions(componentId: string, modId: string, options: Record<string, boolean | number>) {
+    setPower((p) => ({
+      ...p,
+      components: p.components.map((comp) =>
+        comp.id !== componentId
+          ? comp
+          : {
+              ...comp,
+              modifiers: comp.modifiers.map((m) =>
+                m.modifierId === modId ? { ...m, options } : m
+              ),
+            }
+      ),
+    }));
+  }
+
   function addComponent() {
     const newComp: ICharacterPowerComponent = {
       id: uuidv4(),
@@ -599,6 +615,23 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                                     </option>
                                   ))}
                                 </select>
+                              )}
+                              {/* Conditional checkbox for Affects Objects */}
+                              {def.id === 'affects_objects' && (
+                                <label className="applied-mod-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    checked={applied.options?.affectsOnlyObjects === true}
+                                    onChange={(e) => {
+                                      const newOptions = {
+                                        ...applied.options,
+                                        affectsOnlyObjects: e.target.checked,
+                                      };
+                                      updateModifierOptions(comp.id, applied.modifierId, newOptions);
+                                    }}
+                                  />
+                                  {t('builder.affectsOnlyObjects')}
+                                </label>
                               )}
                               <span className="applied-mod-cost">
                                 {def.costValue > 0 ? '+' : ''}

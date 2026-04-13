@@ -140,6 +140,7 @@ export interface IAppliedModifier {
   ranks: number;                 // flat_ranked: ranks of the MODIFIER; per_rank: always 1
   isPowerSpecific?: boolean;     // modifier comes from power's own extras/flaws list
   option?: string;               // selected sub-option (e.g. "Burst" for Area)
+  options?: Record<string, boolean | number>; // flexible flags for edge cases
 }
 
 // ── Power Component (a single effect within a power) ──

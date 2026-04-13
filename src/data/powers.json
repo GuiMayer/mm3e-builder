@@ -125,8 +125,40 @@
     },
     "longDescription": "You can burrow through the ground, leaving a tunnel behind if you choose. You move through soil and sand at a speed rank equal to your Burrowing rank minus 5. Hard clay reduces speed by an additional rank; solid rock reduces it by two additional ranks.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "penetrating",
+        "name": "Penetrating",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Dig through super-hard materials.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Penetrante", "description": "Escava através de materiais super-duros." } }
+      },
+      {
+        "id": "ranged",
+        "name": "Ranged",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Create tunnels at a distance or grant to others at range.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "À Distância", "description": "Cria túneis à distância ou concede o efeito a outros." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "limited",
+        "name": "Limited",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Limited to specific materials (e.g., loose sand, snow).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Limitado", "description": "Limitado a materiais específicos." } }
+      }
+    ]
   },
   {
     "id": "communication",
@@ -146,8 +178,71 @@
     },
     "longDescription": "You can communicate over a distance using a medium other than your voice. Choose a sense type as your medium (visual, auditory, olfactory, tactile, radio, or mental). Rank determines range: 1 = close (100 ft), 2 = 1 mile, 3 = statewide, 4 = worldwide, 5 = unlimited. Communication is language-dependent and point-to-point.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "area",
+        "name": "Area",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Broadcast omni-directionally to all receivers in range.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Área", "description": "Transmissão omnidirecional para todos no alcance." } }
+      },
+      {
+        "id": "dimensional",
+        "name": "Dimensional",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Communicate across dimensional barriers.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Dimensional", "description": "Comunica-se através de barreiras dimensionais." } }
+      },
+      {
+        "id": "rapid",
+        "name": "Rapid",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Communication is 10x faster per rank.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Rápido", "description": "Comunicação 10x mais rápida por rank." } }
+      },
+      {
+        "id": "selective",
+        "name": "Selective",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Choose specific receivers within an Area Communication.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Seletivo", "description": "Escolhe receptores específicos em uma Comunicação de Área." } }
+      },
+      {
+        "id": "subtle",
+        "name": "Subtle",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Encrypted (1 rank) or undetectable (2 ranks).",
+        "maxRanks": 2,
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Sutil", "description": "Criptografado ou indetectável." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "limited",
+        "name": "Limited",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Only members of a particular group.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Limitado", "description": "Apenas membros de um grupo específico." } }
+      }
+    ]
   },
   {
     "id": "comprehend",
@@ -168,7 +263,18 @@
     "longDescription": "You can comprehend different sorts of communication. Each rank allows one option: understand or speak to animals (2 ranks for both), understand or speak languages (2 for both, 3 for universal, +1 for reading), communicate with machines (2 ranks), objects (2 ranks), plants (2 ranks), or spirits (1-2 ranks).",
     "enhancesDefense": null,
     "extras": [],
-    "flaws": []
+    "flaws": [
+      {
+        "id": "type",
+        "name": "Type",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Limited to a broad (-1) or narrow (-2) type of subject.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Tipo", "description": "Limitado a um tipo amplo ou restrito de alvo." } }
+      }
+    ]
   },
   {
     "id": "concealment",
@@ -188,8 +294,100 @@
     },
     "longDescription": "You gain total concealment from a particular sense while active. Each additional rank gives concealment from another sense; two ranks cover an entire sense type. Visual concealment costs double (2 ranks for one visual sense, 4 for all visual). Cannot conceal from tactile senses (requires Insubstantial). Concealment 10 = total concealment from all non-tactile senses.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "affects_others",
+        "name": "Affects Others",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Grant Concealment to others via touch.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Afeta Outros", "description": "Concede Camuflagem a outros por toque." } }
+      },
+      {
+        "id": "area",
+        "name": "Area",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Affects everything in the area.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Área", "description": "Afeta tudo na área." } }
+      },
+      {
+        "id": "attack",
+        "name": "Attack",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Impose Concealment on others.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Ataque", "description": "Impõe Camuflagem a outros." } }
+      },
+      {
+        "id": "precise",
+        "name": "Precise",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Vary Concealment from total to partial at will.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Preciso", "description": "Varia Camuflagem de total a parcial à vontade." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "blending",
+        "name": "Blending",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Only functions while moving slowly.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Mesclar", "description": "Funciona apenas se movendo devagar." } }
+      },
+      {
+        "id": "limited",
+        "name": "Limited",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Works only under certain conditions (e.g., in shadows).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Limitado", "description": "Funciona apenas sob certas condições." } }
+      },
+      {
+        "id": "partial",
+        "name": "Partial",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Provides partial concealment (-2 to Perception).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Parcial", "description": "Concede camuflagem parcial." } }
+      },
+      {
+        "id": "passive",
+        "name": "Passive",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Ends if you make an attack or effect check.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Passivo", "description": "Acaba se você fizer um ataque ou teste de efeito." } }
+      },
+      {
+        "id": "resistible",
+        "name": "Resistible",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Offers a resistance check for anyone looking for you.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Resistível", "description": "Oferece teste de resistência a quem procurar." } }
+      }
+    ]
   },
   {
     "id": "create",
@@ -209,8 +407,131 @@
     },
     "longDescription": "You can form solid objects out of nowhere (solidified energy, hardened water, ice, stone, etc.). Create simple geometric shapes or common objects. Maximum volume rank and Toughness equal to your effect rank. Objects vanish when you stop maintaining. Can trap targets inside hollow objects (requires attack check vs. Dodge and Dodge resistance check vs. rank).",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "continuous",
+        "name": "Continuous",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Objects remain until destroyed, nullified, or dismissed.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Contínuo", "description": "Objetos permanecem até serem destruídos ou desfeitos." } }
+      },
+      {
+        "id": "impervious",
+        "name": "Impervious",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "The object's Toughness is Impervious.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Impenetrável", "description": "A Resistência do objeto é Impenetrável." } }
+      },
+      {
+        "id": "innate",
+        "name": "Innate",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Objects are real and cannot be nullified.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Inato", "description": "Objetos são reais e não podem ser anulados." } }
+      },
+      {
+        "id": "movable",
+        "name": "Movable",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can move your created objects (as Move Object).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Móvel", "description": "Você pode mover os objetos criados." } }
+      },
+      {
+        "id": "precise",
+        "name": "Precise",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Create detailed objects and moving parts.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Preciso", "description": "Cria objetos detalhados e com partes móveis." } }
+      },
+      {
+        "id": "selective",
+        "name": "Selective",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can make objects selectively transparent to attacks or solid to some creatures.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Seletivo", "description": "Permite tornar objetos seletivamente sólidos ou transparentes." } }
+      },
+      {
+        "id": "stationary",
+        "name": "Stationary",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Objects hang immobile in the air.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Estacionário", "description": "Objetos ficam suspensos no ar." } }
+      },
+      {
+        "id": "subtle",
+        "name": "Subtle",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Objects look like real objects (1 rank) or are invisible (2 ranks).",
+        "maxRanks": 2,
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Sutil", "description": "Objetos parecem reais ou são invisíveis." } }
+      },
+      {
+        "id": "tether",
+        "name": "Tether",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "You can exert your own Strength to move the objects.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Conexão", "description": "Permite usar sua própria Força para mover objetos." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "feedback",
+        "name": "Feedback",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "You suffer damage when your objects are damaged.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Retroalimentação", "description": "Você sofre dano quando os objetos são danificados." } }
+      },
+      {
+        "id": "permanent",
+        "name": "Permanent",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Objects cannot be dismissed or repaired.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Permanente", "description": "Objetos não podem ser desfeitos ou reparados." } }
+      },
+      {
+        "id": "proportional",
+        "name": "Proportional",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Volume rank + Toughness rank = Create rank.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Proporcional", "description": "Rank de Volume + Resistência = Rank do efeito." } }
+      }
+    ]
   },
   {
     "id": "damage",
@@ -778,8 +1099,60 @@
     },
     "longDescription": "You can read another character's mind. Make an opposed effect check vs. target's Will. Degrees of success: 1 = surface thoughts (transcends language), 2 = personal thoughts (ask one question), 3 = memories (one per round), 4 = subconscious (repressed memories, hidden personalities). Target gets a new Will check (DC 10 + rank) each turn to shut you out.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "cumulative",
+        "name": "Cumulative",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Attempts are cumulative.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Cumulativo", "description": "Tentativas são cumulativas." } }
+      },
+      {
+        "id": "effortless",
+        "name": "Effortless",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Retrying after failure doesn't require extra effort.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Sem Esforço", "description": "Tentar novamente após falha não exige esforço extra." } }
+      },
+      {
+        "id": "sensory_link",
+        "name": "Sensory Link",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Perceive through the target's senses.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Elo Sensorial", "description": "Perceba através dos sentidos do alvo." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "feedback",
+        "name": "Feedback",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Suffer damage when the target resists with a natural 20.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Retroalimentação", "description": "Sofra dano quando o alvo resiste com um 20 natural." } }
+      },
+      {
+        "id": "limited_to_surface",
+        "name": "Limited to Surface Thoughts",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Only read surface thoughts.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Limitado a Pensamentos Superficiais", "description": "Lê apenas pensamentos superficiais." } }
+      }
+    ]
   },
   {
     "id": "morph",
@@ -799,7 +1172,18 @@
     },
     "longDescription": "You can alter your appearance (cosmetic change only, no trait changes). Grants +20 to Deception checks for disguise. Rank 1: single other appearance. Rank 2: narrow group (people of your size/gender, one animal type). Rank 3: broad group (humanoids, animals, machines). Rank 4: any form of same mass.",
     "enhancesDefense": null,
-    "extras": [],
+    "extras": [
+      {
+        "id": "metamorph",
+        "name": "Metamorph",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Gain a different set of traits for the form.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Metamorfo", "description": "Ganha um conjunto diferente de traços para a forma." } }
+      }
+    ],
     "flaws": []
   },
   {
@@ -820,8 +1204,40 @@
     },
     "longDescription": "You can move objects at a distance without touching them. Effective Strength equals your rank. Concentrate (move action) for +1 STR. Has no action/reaction. Cannot perform fine manipulation without Precise modifier. Objects thrown as attacks use power rank as Strength for damage. Can make disarm, grab, and trip attacks.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "damaging",
+        "name": "Damaging",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Use Move Object to inflict damage.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Causar Dano", "description": "Usa Mover Objetos para infligir dano." } }
+      },
+      {
+        "id": "perception",
+        "name": "Perception",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Move anything you can see.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Percepção", "description": "Move qualquer coisa que possa ver." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "limited_direction",
+        "name": "Limited Direction",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Only move in one direction.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Direção Limitada", "description": "Move apenas em uma direção." } }
+      }
+    ]
   },
   {
     "id": "movement",
@@ -918,7 +1334,28 @@
     },
     "longDescription": "Protection is a flat bonus to Toughness equal to its rank. Unlike armored heroes, Protection is usually an internal power (force field, body armor, toughened skin, etc.). Each rank of Protection improves Toughness by 1. Protection can be stacked with other Toughness bonuses (like natural Stamina). Note: stacked Protection above PL limits is subject to GM approval.",
     "enhancesDefense": "toughness",
-    "extras": [],
+    "extras": [
+      {
+        "id": "sustained",
+        "name": "Sustained",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Makes Protection sustained (force field).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Sustentado", "description": "Torna a Proteção sustentada (campo de força)." } }
+      },
+      {
+        "id": "impervious",
+        "name": "Impervious",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Toughness is Impervious.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Impenetrável", "description": "A Resistência é Impenetrável." } }
+      }
+    ],
     "flaws": []
   },
   {
@@ -974,26 +1411,525 @@
     "description": "You can displace one or more senses over a distance. Rank 1 = 60 feet, increasing one distance rank per rank. Overrides normal senses while active; you are vulnerable. Subjects feel it with Insight check (DC 10 + rank). Cost: 1 pt/rank for one sense type, 2 for two, 3 for three, 4 for four, 5 for all (visual = 2 types).",
     "variableCost": {
       "options": [
-        {
-          "name": "One sense type",
-          "cost": 1
-        },
-        {
-          "name": "Two sense types (or Visual)",
-          "cost": 2
-        },
-        {
-          "name": "Three sense types",
-          "cost": 3
-        },
-        {
-          "name": "Four sense types",
-          "cost": 4
-        },
-        {
-          "name": "All sense types",
-          "cost": 5
-        }
+        { "name": "One sense type", "cost": 1 },
+        { "name": "Two sense types (or Visual)", "cost": 2 },
+        { "name": "Three sense types", "cost": 3 },
+        { "name": "Four sense types", "cost": 4 },
+        { "name": "All sense types", "cost": 5 }
+      ]
+    },
+    "i18n": {
+      "pt-BR": {
+        "name": "Sensoriamento Remoto",
+        "description": "Permite deslocar um ou mais sentidos à distância. Rank 1 = 18 m, aumentando um rank de distância por rank. Substitui os sentidos normais enquanto ativo; você fica vulnerável. Alvos sentem com teste de Intuição (CD 10 + rank). Custo: 1 pp/rank para um tipo de sentido, 2 para dois, 3 para três, 4 para quatro, 5 para todos (visual = 2 tipos)."
+      }
+    },
+    "longDescription": "You can displace one or more senses over a distance. Rank 1 = 60 feet, increasing one distance rank per rank. Overrides normal senses while active; you are vulnerable. Subjects feel it with Insight check (DC 10 + rank). Cost: 1 pt/rank for one sense type, 2 for two, 3 for three, 4 for four, 5 for all (visual = 2 types).",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "dimensional",
+        "name": "Dimensional",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Sense into other dimensions.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Dimensional", "description": "Percebe em outras dimensões." } }
+      },
+      {
+        "id": "simultaneous",
+        "name": "Simultaneous",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Use normal senses and Remote Sensing at the same time.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Simultâneo", "description": "Usa sentidos normais e remotos ao mesmo tempo." } }
+      },
+      {
+        "id": "subtle",
+        "name": "Subtle",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Harder to notice (1 rank) or undetectable (2 ranks).",
+        "maxRanks": 2,
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Sutil", "description": "Mais difícil de notar ou indetectável." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "feedback",
+        "name": "Feedback",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Damaging attacks at the remote location can affect you.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Retroalimentação", "description": "Ataques no local remoto podem te afetar." } }
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Requires a medium (e.g., mirrors, water).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Meio", "description": "Exige um meio (ex: espelhos, água)." } }
+      },
+      {
+        "id": "noticeable",
+        "name": "Noticeable",
+        "category": "flaw",
+        "costType": "flat",
+        "costValue": -1,
+        "description": "Has a noticeable manifestation (e.g., glowing eyes).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Perceptível", "description": "Possui uma manifestação visível." } }
+      }
+    ]
+  },
+  {
+    "id": "senses",
+    "name": "Senses",
+    "type": "sensory",
+    "baseCost": 1,
+    "action": "none",
+    "range": "personal",
+    "duration": "permanent",
+    "description": "One or more of your senses are improved or you have additional sensory abilities. Allocate ranks to: Accurate (2/4), Acute (1/2), Analytical (1/2), Awareness (1), Communication Link (1), Counters Concealment (2/5), Counters Illusion (2), Danger Sense (1), Darkvision (2), Detect (1/2), Direction Sense (1), Distance Sense (1), Extended (1+), Infravision (1), Low-Light Vision (1), Microscopic Vision (1-4), Penetrates Concealment (4), Postcognition (4), Precognition (4), Radio (1), Radius (1/2), Ranged (1), Rapid (1+), Time Sense (1), Tracking (1/2), Ultra-Hearing (1), Ultravision (1).",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Sentidos",
+        "description": "Um ou mais de seus sentidos são aprimorados ou você possui habilidades sensoriais adicionais. Aloque ranks em: Preciso (2/4), Agudo (1/2), Analítico (1/2), Consciência (1), Elo de Comunicação (1), Anula Camuflagem (2/5), Anula Ilusão (2), Senso de Perigo (1), Visão no Escuro (2), Detectar (1/2), Senso de Direção (1), Senso de Distância (1), Estendido (1+), Infravisão (1), Visão em Luz Baixa (1), Visão Microscópica (1-4), Penetra Ocultação (4), Pós-cognição (4), Precognição (4), Rádio (1), Raio (1/2), Distância (1), Rápido (1+), Senso de Tempo (1), Rastreamento (1/2), Ultra-Audição (1), Ultravisão (1)."
+      }
+    },
+    "longDescription": "One or more of your senses are improved or you have additional sensory abilities. Allocate ranks to: Accurate (2/4), Acute (1/2), Analytical (1/2), Awareness (1), Communication Link (1), Counters Concealment (2/5), Counters Illusion (2), Danger Sense (1), Darkvision (2), Detect (1/2), Direction Sense (1), Distance Sense (1), Extended (1+), Infravision (1), Low-Light Vision (1), Microscopic Vision (1-4), Penetrates Concealment (4), Postcognition (4), Precognition (4), Radio (1), Radius (1/2), Ranged (1), Rapid (1+), Time Sense (1), Tracking (1/2), Ultra-Hearing (1), Ultravision (1).",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "affects_others",
+        "name": "Affects Others",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Grant the sense to another character.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Afeta Outros", "description": "Concede o sentido a outro personagem." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "noticeable",
+        "name": "Noticeable",
+        "category": "flaw",
+        "costType": "flat",
+        "costValue": -1,
+        "description": "The sense has a noticeable manifestation.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Perceptível", "description": "O sentido possui uma manifestação visível." } }
+      }
+    ]
+  },
+  {
+    "id": "shrinking",
+    "name": "Shrinking",
+    "type": "general",
+    "baseCost": 2,
+    "action": "free",
+    "range": "personal",
+    "duration": "sustained",
+    "description": "You can temporarily decrease your size. Every 4 ranks reduces size rank by 1 (normal humans are -2). Each size rank reduction: -1 Strength, every 2 reductions: -1 speed. Add half rank (rounded down) to active defenses. Add full rank to Stealth. Apply half rank as Intimidation penalty. Shrinking modifiers restricted by power level.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Encolhimento",
+        "description": "Permite diminuir temporariamente seu tamanho. A cada 4 ranks, reduz o rank de tamanho em 1 (humanos normais são -2). Cada redução de tamanho: -1 Força, a cada 2 reduções: -1 velocidade. Adicione metade do rank (arredondado para baixo) às defesas ativas. Adicione o rank inteiro à Furtividade. Aplique metade do rank como penalidade em Intimidação. Limitado pelo nível de poder."
+      }
+    },
+    "longDescription": "You can temporarily decrease your size. Every 4 ranks reduces size rank by 1 (normal humans are -2). Each size rank reduction: -1 Strength, every 2 reductions: -1 speed. Add half rank (rounded down) to active defenses. Add full rank to Stealth. Apply half rank as Intimidation penalty. Shrinking modifiers restricted by power level.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "atomic",
+        "name": "Atomic",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Shrink to atomic level and pass through solid objects (at rank 20).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Atômico", "description": "Encolhe ao nível atômico e atravessa objetos (no rank 20)." } }
+      },
+      {
+        "id": "normal_strength",
+        "name": "Normal Strength",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Retain full Strength, Speed, and Intimidation while shrunk.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Força Normal", "description": "Mantém Força, Velocidade e Intimidação normais enquanto encolhido." } }
+      }
+    ],
+    "flaws": []
+  },
+  {
+    "id": "speed",
+    "name": "Speed",
+    "type": "movement",
+    "baseCost": 1,
+    "action": "free",
+    "range": "personal",
+    "duration": "sustained",
+    "description": "You can move faster than normal. You have a ground speed rank equal to your effect rank. This also improves all forms of movement based on ground speed.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Velocidade",
+        "description": "Permite mover-se mais rápido que o normal. Você possui um rank de velocidade terrestre igual ao rank do efeito. Isso também melhora todas as formas de movimento baseadas em velocidade terrestre."
+      }
+    },
+    "longDescription": "You can move faster than normal. You have a ground speed rank equal to your effect rank. This also improves all forms of movement based on ground speed.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
+  },
+  {
+    "id": "summon",
+    "name": "Summon",
+    "type": "control",
+    "baseCost": 2,
+    "action": "standard",
+    "range": "close",
+    "duration": "sustained",
+    "description": "You can call upon a creature (minion) to aid you. Created with (rank x 15) power points, limited to your Summon rank power level. Summon automatically as standard action; appears beside you. Minions are dazed (standard action only). Directing a minion is a move action. Incapacitated minions disappear and must fully recover before re-summoning. Always the same minion unless Variable Type.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Invocar",
+        "description": "Permite convocar uma criatura (lacaio) para auxiliá-lo. Criada com (rank x 15) pontos de poder, limitada ao nível de poder do rank de Invocar. Invoque automaticamente como ação padrão; aparece ao seu lado. Lacaios ficam atordoados (apenas ação padrão). Dirigir um lacaio é uma ação de movimento. Lacaios incapacitados desaparecem e devem se recuperar totalmente antes de reinvocação. Sempre o mesmo lacaio, exceto com Tipo Variável."
+      }
+    },
+    "longDescription": "Summon creates or calls a controlled minion whose power total equals 15 × rank. The summoned creature is a separate character sheet NPCs with its own traits. It acts on your turn and follows your orders (free action to command). If the creature is incapacitated or you lose concentration, it disappears. The minion cannot act against your wishes. Flaw: the summoned creature has its own agenda (Uncontrolled variant).",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "active",
+        "name": "Active",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Minions are not dazed and have a full set of actions.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Ativo", "description": "Lacaios não ficam pasmos e têm todas as ações." } }
+      },
+      {
+        "id": "controlled",
+        "name": "Controlled",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Minions are completely under your direction.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Controlado", "description": "Lacaios estão sob sua direção completa." } }
+      },
+      {
+        "id": "heroic",
+        "name": "Heroic",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 2,
+        "description": "The summoned creature is a normal NPC, not a minion.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Heroico", "description": "A criatura é um NPC normal, não um lacaio." } }
+      },
+      {
+        "id": "horde",
+        "name": "Horde",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Summon all minions at once as a standard action.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Horda", "description": "Invoca todos os lacaios de uma vez." } }
+      },
+      {
+        "id": "multiple_minions",
+        "name": "Multiple Minions",
+        "category": "extra",
+        "costType": "flat_ranked",
+        "costValue": 2,
+        "description": "Each rank doubles the number of minions summoned.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Múltiplos Servos", "description": "Cada rank dobra o número de servos invocados." } }
+      },
+      {
+        "id": "sacrifice",
+        "name": "Sacrifice",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Shift a resistance check to one of your minions.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Sacrifício", "description": "Transfere um teste de resistência para um lacaio." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "resistible",
+        "name": "Resistible",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Minions get a resistance check to avoid being summoned.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Resistível", "description": "Lacaios fazem teste para evitar a invocação." } }
+      }
+    ]
+  },
+  {
+    "id": "swimming",
+    "name": "Swimming",
+    "type": "movement",
+    "baseCost": 1,
+    "action": "free",
+    "range": "personal",
+    "duration": "sustained",
+    "description": "You can swim fast. You have a water speed equal to your Swimming rank minus 2. You can make Athletics checks to swim as routine checks. Does not allow you to breathe underwater (requires Immunity).",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Natação",
+        "description": "Permite nadar rapidamente. Velocidade aquática igual ao rank de Natação menos 2. Pode fazer testes de Atletismo para nadar como testes rotineiros. Não permite respirar debaixo d'água (requer Imunidade)."
+      }
+    },
+    "longDescription": "You can swim fast. You have a water speed equal to your Swimming rank minus 2. You can make Athletics checks to swim as routine checks. Does not allow you to breathe underwater (requires Immunity).",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
+  },
+  {
+    "id": "teleport",
+    "name": "Teleport",
+    "type": "movement",
+    "baseCost": 2,
+    "action": "move",
+    "range": "ranged",
+    "duration": "instant",
+    "description": "You can move instantly from place to place. Teleport yourself and up to 50 lbs. of additional mass a distance rank equal to your effect rank as a move action. Unwilling passengers get Dodge resistance. Can only teleport to places you can accurately sense or know well. You retain position and relative velocity.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Teleporte",
+        "description": "Permite mover-se instantaneamente de um lugar para outro. Teleporte a si mesmo e até 22 kg de massa adicional uma distância igual ao rank do efeito como ação de movimento. Passageiros involuntários fazem teste de resistência de Esquiva. Só pode teleportar para lugares que pode perceber com precisão ou conhece bem. Mantém posição e velocidade relativa."
+      }
+    },
+    "longDescription": "Teleport allows instant movement from one location to another at range, limited by rank. Rank 1 = 100 ft, Rank 5 = 5 miles, Rank 10 = worldwide, Rank 15 = interplanetary, Rank 20 = anywhere. Teleport requires a free action to a known location, or a standard action if uncertain. You can carry others with you (up to normal carrying capacity). Targeting a location with Teleport is not an attack.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "accurate_teleport",
+        "name": "Accurate",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "No need to know the destination to teleport there.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Preciso", "description": "Não precisa conhecer o destino para teleportar." } }
+      },
+      {
+        "id": "change_direction",
+        "name": "Change Direction",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Change orientation after teleporting.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Mudar Direção", "description": "Muda a orientação após o teleporte." } }
+      },
+      {
+        "id": "change_velocity",
+        "name": "Change Velocity",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Teleport 'at rest' to your destination.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Mudar Velocidade", "description": "Teleporta em repouso ao destino." } }
+      },
+      {
+        "id": "portal",
+        "name": "Portal",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 2,
+        "description": "Creates a two-way portal others can use.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Portal", "description": "Cria um portal bidirecional que outros podem usar." } }
+      },
+      {
+        "id": "turnabout",
+        "name": "Turnabout",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Teleport, act, and teleport back in one round.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Retorno", "description": "Teleporta, age e volta no mesmo turno." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "medium",
+        "name": "Medium",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Teleport requires passing through a specific medium (mirrors, shadows, etc.).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Meio", "description": "Teleporte exige passagem por meio específico (espelhos, sombras, etc.)." } }
+      }
+    ]
+  },
+  {
+    "id": "transform",
+    "name": "Transform",
+    "type": "control",
+    "baseCost": 2,
+    "action": "standard",
+    "range": "close",
+    "duration": "sustained",
+    "description": "You can change objects into other objects. Requires touch (close attack if held/worn). Cost varies: 2 pts/rank (one thing into one other), 3 (broad group to single, or single to broad), 4 (broad to broad), 5 (anything to anything). Can affect mass rank (rank - 6). Inanimate objects transform automatically. Sustained: reverts when not maintained. Continuous: irreversible except by another Transform.",
+    "variableCost": {
+      "options": [
+        { "name": "One to one (e.g. metal to wood)", "cost": 2 },
+        { "name": "Broad to single / Single to broad", "cost": 3 },
+        { "name": "Broad to broad (e.g. solids to solids)", "cost": 4 },
+        { "name": "Anything to anything", "cost": 5 }
+      ]
+    },
+    "i18n": {
+      "pt-BR": {
+        "name": "Transformação",
+        "description": "Permite transformar objetos em outros objetos. Requer toque (ataque corpo a corpo se segurado/vestido). Custo varia: 2 pp/rank (um em outro), 3 (grupo amplo em único, ou único em amplo), 4 (amplo em amplo), 5 (qualquer coisa). Pode afetar massa rank (rank - 6). Objetos inanimados transformam automaticamente. Sustentado: reverte quando não mantido. Contínuo: irreversível exceto por outro Transformação."
+      }
+    },
+    "longDescription": "You can change objects into other objects. Requires touch (close attack if held/worn). Cost varies: 2 pts/rank (one thing into one other), 3 (broad group to single, or single to broad), 4 (broad to broad), 5 (anything to anything). Can affect mass rank (rank - 6). Inanimate objects transform automatically. Sustained: reverts when not maintained. Continuous: irreversible except by another Transform.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "continuous",
+        "name": "Continuous",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Transformation is irreversible.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Contínuo", "description": "A transformação é irreversível." } }
+      }
+    ],
+    "flaws": []
+  },
+  {
+    "id": "variable",
+    "name": "Variable",
+    "type": "general",
+    "baseCost": 7,
+    "action": "standard",
+    "range": "personal",
+    "duration": "sustained",
+    "description": "You can gain potentially any effect of the appropriate type and descriptor. Provides (rank x 5) power points to allocate to different effects as a standard action. Subject to power level and series limits. Must have descriptors limiting scope. If you stop maintaining, allocated points reset to null. Cannot be permanent. A 'last resort' in power design.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Variável",
+        "description": "Permite obter potencialmente qualquer efeito do tipo e descritor apropriados. Fornece (rank x 5) pontos de poder para alocar em diferentes efeitos como ação padrão. Sujeito a limites de nível de poder e série. Deve ter descritores que limitem o escopo. Se parar de manter, os pontos alocados voltam ao estado nulo. Não pode ser permanente. É um 'último recurso' no design de poderes."
+      }
+    },
+    "longDescription": "You can gain potentially any effect of the appropriate type and descriptor. Provides (rank x 5) power points to allocate to different effects as a standard action. Subject to power level and series limits. Must have descriptors limiting scope. If you stop maintaining, allocated points reset to null. Cannot be permanent. A 'last resort' in power design.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "action_variable",
+        "name": "Action",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Change configuration faster (Move +1, Free +2, Reaction +3).",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Ação", "description": "Muda a configuração mais rápido." } }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "slow",
+        "name": "Slow",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Can only reconfigure outside of action time.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Lento", "description": "Só pode reconfigurar fora de combate." } }
+      }
+    ]
+  },
+  {
+    "id": "weaken",
+    "name": "Weaken",
+    "type": "attack",
+    "baseCost": 1,
+    "action": "standard",
+    "range": "close",
+    "duration": "instant",
+    "description": "You can temporarily lower one of a target's traits (chosen at acquisition) via a close attack. Target resists with Fortitude or Will vs. DC [10 + rank]. Failure: target loses power points from the trait equal to the difference (max = rank). Multiple failures are cumulative up to rank. Lost points return at 1 per round. Abilities weakened below -5 become debilitated.",
+    "variableCost": null,
+    "i18n": {
+      "pt-BR": {
+        "name": "Enfraquecer",
+        "description": "Permite reduzir temporariamente um dos traços de um alvo (escolhido na aquisição) por ataque corpo a corpo. O alvo resiste com Fortitude ou Vontade vs. CD [10 + rank]. Falha: o alvo perde pontos de poder do traço igual à diferença (máx. = rank). Múltiplas falhas são cumulativas até o rank. Pontos perdidos retornam a 1 por rodada. Habilidades enfraquecidas abaixo de -5 ficam debilitadas."
+      }
+    },
+    "longDescription": "You can temporarily lower one of a target's traits (chosen at acquisition) via a close attack. Target resists with Fortitude or Will vs. DC [10 + rank]. Failure: target loses power points from the trait equal to the difference (max = rank). Multiple failures are cumulative up to rank. Lost points return at 1 per round. Abilities weakened below -5 become debilitated.",
+    "enhancesDefense": null,
+    "extras": [
+      {
+        "id": "broad",
+        "name": "Broad",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Weaken any of a broad set of traits.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Amplo", "description": "Enfraquece qualquer um de um conjunto de traços." } }
+      },
+      {
+        "id": "progressive",
+        "name": "Progressive",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 2,
+        "description": "Target continues to weaken each round until they resist.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Progressivo", "description": "O alvo continua a enfraquecer a cada rodada até resistir." } }
+      },
+      {
+        "id": "simultaneous",
+        "name": "Simultaneous",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Weaken all traits in a Broad set at once.",
+        "incompatibleWith": [],
+        "i18n": { "pt-BR": { "name": "Simultâneo", "description": "Enfraquece todos os traços de um conjunto de uma vez." } }
+      }
+    ],
+    "flaws": []
+  }
+]
       ]
     },
     "i18n": {

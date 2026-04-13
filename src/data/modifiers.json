@@ -357,6 +357,7 @@
     "category": "extra",
     "costType": "per_rank",
     "costValue": 1,
+    "maxRanks": 2,
     "description": "Moves range up one step: close→ranged→perception.",
     "longDescription": "Each rank of Increased Range moves the effect's range up one step: close→ranged→perception. Cost is +1/rank of the power for each step.",
     "incompatibleWith": [

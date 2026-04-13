@@ -26,6 +26,23 @@ export function calcModifierCost(applied: IAppliedModifier, def: IModifierDef): 
 }
 
 /**
+ * Calculate the cost contribution for a single per-rank modifier with conditional logic.
+ * Handles edge cases like "Affects Objects" (+1/rank) vs "Affects Only Objects" (+0/rank).
+ */
+function getPerRankModifierCost(applied: IAppliedModifier, def: IModifierDef): number {
+  // Handle specific modifier edge cases
+  if (def.id === 'affects_objects') {
+    // Rule: +1/rank if affects both characters and objects
+    // +0/rank if affects ONLY objects (Affects Only Objects)
+    const isOnlyObjects = applied.options?.affectsOnlyObjects === true;
+    return isOnlyObjects ? 0 : 1;
+  }
+  
+  // Default behavior
+  return def.costValue;
+}
+
+/**
  * Calculate the per-rank cost modifier sum for a component.
  * Formula: baseCost + sum(per_rank extras) - sum(per_rank flaw absolute values)
  * If result <= 0, returns fractional info.
@@ -40,7 +57,7 @@ export function calculateCostPerRank(
   for (const applied of appliedModifiers) {
     const def = modifierDefs.find((m) => m.id === applied.modifierId);
     if (!def || def.costType !== 'per_rank') continue;
-    perRankSum += def.costValue;
+    perRankSum += getPerRankModifierCost(applied, def);
   }
 
   if (perRankSum >= 1) {

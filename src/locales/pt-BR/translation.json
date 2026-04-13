@@ -200,6 +200,7 @@
   "builder.defenseWarning": "Este efeito modifica defesas — ajuste a seção de Defesas manualmente.",
   "builder.plWarning": "Excede o limite de Nível de Poder",
   "builder.searchEffect": "Buscar efeitos...",
+  "builder.affectsOnlyObjects": "Afeta Apenas Objetos",
   "builder.filterAll": "Todos",
   "builder.filterAttack": "Ataque",
   "builder.filterDefense": "Defesa",

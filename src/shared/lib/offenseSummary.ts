@@ -33,6 +33,46 @@ export interface IOffenseEntry {
   parentId?: string;        // parent power id when isAE = true
 }
 
+/**
+ * Calculate the effective range of a component, accounting for modifiers.
+ * Rules: Increased Range moves range up one step per rank: close → ranged → perception.
+ */
+function getEffectiveRange(
+  baseRange: string,
+  comp: ICharacterPowerComponent,
+  modifierDefs: IModifierDef[]
+): string {
+  let effectiveRange = baseRange;
+
+  // 1. Affects Others changes Personal to Close
+  if (effectiveRange === 'personal' && hasAffectOthers(comp, modifierDefs)) {
+    effectiveRange = 'close';
+  }
+
+  // 2. Find Increased Range or Reduced Range modifiers
+  let rangeShift = 0;
+  for (const m of comp.modifiers) {
+    const def = modifierDefs.find((d) => d.id === m.modifierId);
+    if (def?.id === 'increased_range') rangeShift += m.ranks;
+    if (def?.id === 'reduced_range')   rangeShift -= m.ranks;
+  }
+
+  if (rangeShift === 0) {
+    return effectiveRange;
+  }
+
+  const rangeSteps = ['close', 'ranged', 'perception'];
+  const currentIndex = rangeSteps.indexOf(effectiveRange);
+
+  if (currentIndex === -1) {
+    // Other ranges (like Personal) not affected by Range modifiers
+    return effectiveRange;
+  }
+
+  const newIndex = Math.max(0, Math.min(currentIndex + rangeShift, rangeSteps.length - 1));
+  return rangeSteps[newIndex];
+}
+
 /** Check if a component has the Area extra (any variant) — makes it no-roll. */
 function hasAreaExtra(
   comp: ICharacterPowerComponent,
@@ -87,8 +127,11 @@ export function calcAttackBonus(
 ): { value: number | null; breakdown: string; isNoRoll: boolean } {
   const { abilities, skills, advantages } = character;
 
+  // Calculate effective range (accounting for Increased Range modifier)
+  const effectiveRange = getEffectiveRange(effectRange, component, modifierDefs);
+
   // ── Perception or personal range → no attack check ──
-  if (effectRange === 'perception' || effectRange === 'personal') {
+  if (effectiveRange === 'perception' || effectiveRange === 'personal') {
     return { value: null, breakdown: '—', isNoRoll: true };
   }
 
@@ -100,7 +143,7 @@ export function calcAttackBonus(
   const accurate = getAccurateBonus(component, modifierDefs);
   const parts: string[] = [];
 
-  if (effectRange === 'close') {
+  if (effectiveRange === 'close') {
     const base = abilities.fgt;
     parts.push(`FGT ${base}`);
 
@@ -241,6 +284,9 @@ export function buildOffenseSummary(
       modifierDefs
     );
 
+    // Calculate effective range for display (calcAttackBonus already uses it internally)
+    const effectiveRange = getEffectiveRange(primaryDef.range, primaryComp, modifierDefs);
+
     const effectStr = attackComps
       .map((comp) => {
         const def = powerDefs.find((d) => d.id === comp.effectId);
@@ -249,7 +295,7 @@ export function buildOffenseSummary(
       .filter(Boolean)
       .join(' + ');
 
-    const resistedNote = isNoRoll && primaryDef.range === 'perception' ? 'Resisted by Will' : '';
+    const resistedNote = isNoRoll && effectiveRange === 'perception' ? 'Resisted by Will' : '';
 
     entries.push({
       id: power.id,
@@ -257,7 +303,7 @@ export function buildOffenseSummary(
       bonus: bonusValue === null ? '—' : `+${bonusValue}`,
       bonusValue,
       bonusBreakdown: breakdown,
-      range: primaryDef.range,
+      range: effectiveRange, // Use effective range for display
       effect: effectStr,
       notes: [extractNotes(primaryComp), resistedNote].filter(Boolean).join(', '),
       isAE: false,
@@ -285,6 +331,9 @@ export function buildOffenseSummary(
         modifierDefs
       );
 
+      // Calculate effective range for AE display
+      const aeEffectiveRange = getEffectiveRange(aePrimaryDef.range, aePrimary, modifierDefs);
+
       const aeEffect = aeAttackComps
         .map((comp) => {
           const def = powerDefs.find((d) => d.id === comp.effectId);
@@ -299,7 +348,7 @@ export function buildOffenseSummary(
         bonus: aeBonus === null ? '—' : `+${aeBonus}`,
         bonusValue: aeBonus,
         bonusBreakdown: aeBreakdown,
-        range: aePrimaryDef.range,
+        range: aeEffectiveRange,
         effect: aeEffect,
         notes: extractNotes(aePrimary),
         isAE: true,

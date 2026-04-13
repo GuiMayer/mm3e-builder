@@ -20,6 +20,7 @@ const MODS: IModifierDef[] = [
   { id: 'limited', name: 'Limited', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
   { id: 'homing', name: 'Homing', category: 'extra', costType: 'flat_ranked', costValue: 1, description: '', incompatibleWith: [] },
   { id: 'removable', name: 'Removable', category: 'flaw', costType: 'flat_ranked', costValue: -2, description: '', incompatibleWith: [] },
+  { id: 'affects_objects', name: 'Affects Objects', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
 ];
 
 describe('mathEngine', () => {
@@ -53,6 +54,20 @@ describe('mathEngine', () => {
       // 1 - 1 - 1 = -1 → ranksPerPP = 2 - (-1) = 3
       expect(result.isFractional).toBe(true);
       expect(result.ranksPerPP).toBe(3);
+    });
+
+    it('handles affects_objects with affectsOnlyObjects flag', () => {
+      const mods: IAppliedModifier[] = [{ modifierId: 'affects_objects', ranks: 1, options: { affectsOnlyObjects: true } }];
+      const result = calculateCostPerRank(1, mods, MODS);
+      // Base 1 + 0 = 1 costPerRank
+      expect(result.costPerRank).toBe(1);
+    });
+
+    it('handles affects_objects without flag (default cost +1)', () => {
+      const mods: IAppliedModifier[] = [{ modifierId: 'affects_objects', ranks: 1 }];
+      const result = calculateCostPerRank(1, mods, MODS);
+      // Base 1 + 1 = 2 costPerRank
+      expect(result.costPerRank).toBe(2);
     });
   });
 
