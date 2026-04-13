@@ -12,7 +12,7 @@ const AppliedModifierSchema = z.object({
   ranks: z.number().int().min(1),
   isPowerSpecific: z.boolean().optional(),
   option: z.string().optional(),
-  options: z.record(z.any()).optional(),
+  options: z.record(z.string(), z.any()).optional(),
 });
 
 const CharacterPowerComponentSchema = z.object({
