@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { X, Plus, AlertTriangle } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
@@ -19,7 +19,7 @@ interface AltEffectCardProps {
   onSetActiveComp: (id: string) => void;
   allEffects: IPowerEffect[];
   allModDefs: IModifierDef[];
-  effectTypes: string[];
+
   activeId: string | null;
   onUpdateAE: (u: Partial<IAlternateEffect>) => void;
   onRemoveAE: () => void;
@@ -37,7 +37,7 @@ interface AltEffectCardProps {
 export function AltEffectCard({
   ae, aeIdx, cost, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
-  allEffects, allModDefs, effectTypes,
+  allEffects, allModDefs,
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
   onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption,
@@ -45,17 +45,8 @@ export function AltEffectCard({
 }: AltEffectCardProps) {
   const { valid, overageBy } = validation;
 
-  // TD-9: Local filter state — isolated per AE card, doesn't affect main builder filter
-  const [localEffectFilter, setLocalEffectFilter] = useState('');
-  const [localTypeFilter, setLocalTypeFilter] = useState('');
 
-  const localFilteredEffects = useMemo(() =>
-    allEffects.filter((e) =>
-      e.name.toLowerCase().includes(localEffectFilter.toLowerCase()) &&
-      (localTypeFilter === '' || e.type === localTypeFilter)
-    ),
-    [allEffects, localEffectFilter, localTypeFilter]
-  );
+
 
   return (
     <div className={`ae-card ${isExpanded ? 'ae-card--expanded' : ''} ${!valid ? 'ae-card--invalid' : ''}`}>
@@ -139,13 +130,7 @@ export function AltEffectCard({
                       <EffectCombobox
                         value={comp.effectId}
                         onChange={(effectId) => onUpdateComponent(comp.id, { effectId })}
-                        effects={localFilteredEffects}
                         allEffects={allEffects}
-                        filter={localEffectFilter}
-                        onFilterChange={setLocalEffectFilter}
-                        typeFilter={localTypeFilter}
-                        onTypeFilterChange={setLocalTypeFilter}
-                        effectTypes={effectTypes}
                         t={t}
                         onInfo={onInfoClick}
                       />

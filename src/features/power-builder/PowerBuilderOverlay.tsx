@@ -91,8 +91,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   const [activeComponentId, setActiveComponentId] = useState<string>(
     power.components[0]?.id ?? ''
   );
-  const [effectFilter, setEffectFilter] = useState('');
-  const [effectTypeFilter, setEffectTypeFilter] = useState<string>('all');
+
   const [effectModalPower, setEffectModalPower] = useState<IPowerEffect | null>(null);
   // AE state: which AE card is expanded + which component within each AE is active
   const [expandedAEId, setExpandedAEId] = useState<string | null>(null);
@@ -183,16 +182,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     return `${ae.name || 'AE'} · Comp. ${compIdx + 1}`;
   }, [expandedAEId, power.alternateEffects, activeAEComponentId]);
 
-  // Filtered effect list
-  const filteredEffects = useMemo(() => {
-    return powerDefs.filter((d) => {
-      const matchSearch =
-        d.name.toLowerCase().includes(effectFilter.toLowerCase()) ||
-        d.description.toLowerCase().includes(effectFilter.toLowerCase());
-      const matchType = effectTypeFilter === 'all' || d.type === effectTypeFilter;
-      return matchSearch && matchType;
-    });
-  }, [powerDefs, effectFilter, effectTypeFilter]);
+
 
   // Drag handlers
   function handleDragStart(event: DragStartEvent) {
@@ -393,7 +383,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   const activeMod = activeId ? allModDefs.find((m) => m.id === activeId) : null;
   const hasEffect = power.components.some((c) => c.effectId !== '');
 
-  const effectTypes = ['all', 'attack', 'defense', 'movement', 'sensory', 'general', 'control'];
+
 
   return (
     <div className="builder-overlay">
@@ -511,13 +501,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                         <EffectCombobox
                           value={comp.effectId}
                           onChange={(effectId) => updateComponent(comp.id, { effectId })}
-                          effects={filteredEffects}
                           allEffects={powerDefs}
-                          filter={effectFilter}
-                          onFilterChange={setEffectFilter}
-                          typeFilter={effectTypeFilter}
-                          onTypeFilterChange={setEffectTypeFilter}
-                          effectTypes={effectTypes}
                           t={t}
                           onInfo={(e) => setEffectModalPower(e)}
                         />
@@ -719,7 +703,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   onSetActiveComp={(compId) => setActiveAEComponentId((prev) => ({ ...prev, [ae.id]: compId }))}
                   allEffects={powerDefs}
                   allModDefs={allModDefs}
-                  effectTypes={effectTypes}
+
                   activeId={activeId}
                   onUpdateAE={(update) => updateAlternateEffect(ae.id, update)}
                   onRemoveAE={() => removeAlternateEffect(ae.id)}

@@ -200,6 +200,7 @@
   "builder.defenseWarning": "This effect modifies defenses — adjust the Defenses section manually.",
   "builder.plWarning": "Exceeds Power Level limit",
   "builder.searchEffect": "Search effects...",
+  "builder.noEffectsFound": "No effects found",
   "builder.affectsOnlyObjects": "Affects Only Objects",
   "builder.filterAll": "All",
   "builder.filterAttack": "Attack",
