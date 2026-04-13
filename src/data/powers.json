@@ -2310,26 +2310,5 @@
       }
     ],
     "flaws": []
-  },
-  {
-    "id": "remote_sensing",
-    "name": "Remote Sensing",
-    "type": "sensory",
-    "baseCost": 1,
-    "action": "free",
-    "range": "ranged",
-    "duration": "sustained",
-    "description": "You can displace one or more senses over a distance. Rank 1 = 60 feet, increasing one distance rank per rank. Overrides normal senses while active; you are vulnerable. Subjects feel it with Insight check (DC 10 + rank). Cost: 1 pt/rank for one sense type, 2 for two, 3 for three, 4 for four, 5 for all (visual = 2 types).",
-    "variableCost": null,
-    "i18n": {
-      "pt-BR": {
-        "name": "Sensoriamento Remoto",
-        "description": "Permite deslocar um ou mais sentidos à distância. Rank 1 = 18 m, aumentando um rank de distância por rank. Substitui os sentidos normais enquanto ativo; você fica vulnerável. Alvos sentem com teste de Intuição (CD 10 + rank). Custo: 1 pp/rank para um tipo de sentido, 2 para dois, 3 para três, 4 para quatro, 5 para todos (visual = 2 tipos)."
-      }
-    },
-    "longDescription": "You can displace one or more senses over a distance. Rank 1 = 60 feet, increasing one distance rank per rank. Overrides normal senses while active; you are vulnerable. Subjects feel it with Insight check (DC 10 + rank). Cost: 1 pt/rank for one sense type, 2 for two, 3 for three, 4 for four, 5 for all (visual = 2 types).",
-    "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
   }
 ]
