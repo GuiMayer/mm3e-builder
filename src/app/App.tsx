@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { MenuBar } from '../shared/ui/MenuBar'
 import { SheetView } from '../features/sheet-core/SheetView'
 import { ReferencesView } from '../features/references/ReferencesView'
+import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
+import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 
 export type AppView = 'sheet' | 'references';
 
@@ -17,11 +19,26 @@ export function App() {
   }, [i18n.language, t])
 
   return (
-    <div className="app-root">
-      <MenuBar activeView={activeView} onViewChange={setActiveView} />
-      <main className="app-main">
-        {activeView === 'sheet' ? <SheetView /> : <ReferencesView />}
-      </main>
-    </div>
+    <ErrorBoundary
+      fallback={(error, errorInfo) => <ErrorFallback error={error} />}
+      onError={(error, errorInfo) => {
+        // Log errors in development
+        if (process.env.NODE_ENV === 'development') {
+          console.error('App Error Boundary caught:', error, errorInfo);
+        }
+      }}
+    >
+      <div className="app-root">
+        <MenuBar activeView={activeView} onViewChange={setActiveView} />
+        <ErrorBoundary
+          fallback={(error) => <ErrorFallback error={error} />}
+          resetKeys={[activeView]}
+        >
+          <main className="app-main">
+            {activeView === 'sheet' ? <SheetView /> : <ReferencesView />}
+          </main>
+        </ErrorBoundary>
+      </div>
+    </ErrorBoundary>
   )
 }
