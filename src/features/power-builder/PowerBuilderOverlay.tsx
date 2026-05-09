@@ -1,15 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import {
-  DndContext,
-  DragOverlay,
-  useDroppable,
-  useSensor,
-  useSensors,
-  PointerSensor,
-  KeyboardSensor,
-  type DragStartEvent,
-  type DragEndEvent,
-} from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { v4 as uuidv4 } from 'uuid';
 import type {
   ICharacterPower,
@@ -18,46 +8,18 @@ import type {
   IPowerEffect,
 } from '../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
-import {
-  calculateArrayCost,
-  getComponentCostBreakdown,
-  calcAlternateEffectCost,
-  validateAECost,
-  calcRemovableDiscount,
-} from '../../shared/lib/mathEngine';
-import { validateAttackEffect } from '../../shared/lib/validation';
 import { EffectPalette } from './EffectPalette';
 import { AltEffectCard } from './AltEffectCard';
 import { useAlternateEffects } from './hooks/useAlternateEffects';
-import { EffectCombobox } from '../../shared/ui/EffectCombobox';
-import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
+import { usePowerDragAndDrop } from './hooks/usePowerDragAndDrop';
+import { usePowerCostCalculation } from './hooks/usePowerCostCalculation';
+import { PowerComponentEditor } from './components/PowerComponentEditor';
+import { X, Save, Plus, Zap, Info } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
 import { useCharStore } from '../../store/charStore';
 import { useAppStore } from '../../store/appStore';
-
-// ── Droppable Zone per component ──
-function ModifierDropzone({
-  componentId,
-  activeId,
-  children,
-}: {
-  componentId: string;
-  activeId: string | null;
-  children: React.ReactNode;
-}) {
-  const droppableId = `dropzone-${componentId}`;
-  const { setNodeRef, isOver } = useDroppable({ id: droppableId });
-  return (
-    <div
-      ref={setNodeRef}
-      className={`build-dropzone ${isOver || activeId ? 'build-dropzone--active' : ''}`}
-    >
-      {children}
-    </div>
-  );
-}
 
 interface Props {
   existingPower?: ICharacterPower;
@@ -87,7 +49,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
 
   const [paletteFilter, setPaletteFilter] = useState('');
   const [paletteCollapsed, setPaletteCollapsed] = useState(false);
-  const [activeId, setActiveId] = useState<string | null>(null);
   const [activeComponentId, setActiveComponentId] = useState<string>(
     power.components[0]?.id ?? ''
   );
@@ -96,11 +57,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   // AE state: which AE card is expanded + which component within each AE is active
   const [expandedAEId, setExpandedAEId] = useState<string | null>(null);
   const [activeAEComponentId, setActiveAEComponentId] = useState<Record<string, string>>({});
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(KeyboardSensor)
-  );
 
   // All modifier defs (general + power-specific merged for lookup)
   // Includes extras/flaws from AE components so the palette is correct
@@ -130,37 +86,23 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   // Currently selected effect for the active component (used only in component cards)
   const activeComponent = power.components.find((c) => c.id === activeComponentId);
 
-  // Calculate costs per component
-  const componentCosts = useMemo(() => {
-    return power.components.map((comp) => {
-      const effectDef = powerDefs.find((d) => d.id === comp.effectId);
-      if (!effectDef) return { total: 0, breakdown: null };
-      const breakdown = getComponentCostBreakdown(comp, effectDef, allModDefs);
-      return { total: breakdown.total, breakdown };
-    });
-  }, [power.components, powerDefs, allModDefs]);
-
-  const mainCost = componentCosts.reduce((sum, c) => sum + c.total, 0);
-  const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
-  const arrayCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
-  const removableDiscount = calcRemovableDiscount(mainCost, power.removable);
-  const totalCost = Math.max(0, arrayCost - removableDiscount);
-
-  // AE costs and cap validation
-  const aeCosts = useMemo(() =>
-    power.alternateEffects.map((ae) => calcAlternateEffectCost(ae, powerDefs, allModDefs))
-  , [power.alternateEffects, powerDefs, allModDefs]);
-  const aeValidations = aeCosts.map((cost) => validateAECost(cost, mainCost));
-
-  // TD-5: Strict Mode PL violation check
-  // validateAttackEffect: attack + highest damage rank <= PL*2
-  const plViolation = useMemo(() => {
-    if (!strictMode) return null;
-    // Heuristic: check the highest-rank damage component against PL*2
-    const highestRank = power.components.reduce((max, c) => Math.max(max, c.ranks), 0);
-    const attackBonus = 0; // Power builder doesn't track attack bonus, defaulting to 0
-    return validateAttackEffect(attackBonus, highestRank, powerLevel);
-  }, [strictMode, powerLevel, power.components]);
+  // Use cost calculation hook
+  const {
+    componentCosts,
+    mainCost,
+    arrayCost,
+    removableDiscount,
+    totalCost,
+    aeCosts,
+    aeValidations,
+    plViolation,
+  } = usePowerCostCalculation({
+    power,
+    powerDefs,
+    allModDefs,
+    powerLevel,
+    strictMode,
+  });
 
   // Palette context: when an AE is expanded, palette serves that AE's active component
   const paletteSelectedEffect = useMemo(() => {
@@ -182,34 +124,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     return `${ae.name || 'AE'} · Comp. ${compIdx + 1}`;
   }, [expandedAEId, power.alternateEffects, activeAEComponentId]);
 
-
-
-  // Drag handlers
-  function handleDragStart(event: DragStartEvent) {
-    setActiveId(event.active.id as string);
-  }
-
-  function handleDragEnd(event: DragEndEvent) {
-    setActiveId(null);
-    const { active, over } = event;
-    if (!over) return;
-
-    const overId = over.id as string;
-    const modId = active.id as string;
-
-    // AE dropzone uses '::' separator to avoid UUID hyphen fragmentation
-    if (overId.startsWith('dropzone-ae::')) {
-      const payload = overId.replace('dropzone-ae::', '');
-      const sep = payload.indexOf('::');
-      const aeId = payload.slice(0, sep);
-      const compId = payload.slice(sep + 2);
-      addModifierToAEComponent(aeId, compId, modId);
-      return;
-    }
-    if (!overId.startsWith('dropzone-')) return;
-    const targetComponentId = overId.replace('dropzone-', '');
-    addModifierToComponent(targetComponentId, modId);
-  }
+  // Use drag-and-drop hook
+  const { sensors, activeId, handleDragStart, handleDragEnd } = usePowerDragAndDrop({
+    onDropToComponent: addModifierToComponent,
+    onDropToAEComponent: addModifierToAEComponent,
+  });
 
   const addModifierToComponent = useCallback(
     (componentId: string, modId: string, isPowerSpecific?: boolean) => {
