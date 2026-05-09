@@ -24,7 +24,7 @@ export const useAppStore = create<AppStoreState>()(
         language: 'en',
 
         setTheme: (theme) =>
-          set((state) => {
+          set(() => {
             document.documentElement.setAttribute('data-theme', theme);
             return { theme };
           }),
@@ -47,7 +47,7 @@ export const useAppStore = create<AppStoreState>()(
       {
         name: 'mm3e-app-preferences',
         // Migrate from old separate language key if needed
-        migrate: (persistedState: any, version: number) => {
+        migrate: (persistedState: any) => {
           if (persistedState && !persistedState.language) {
             const oldLang = localStorage.getItem('mm3e-language');
             if (oldLang) {
