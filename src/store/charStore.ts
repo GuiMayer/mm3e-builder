@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 import type { ICharacter, AbilityKey, IPPLogEntry, IManualOffenseRow } from '../entities/types';
 import { migratePowers } from '../shared/lib/powerMigration';
 
@@ -65,9 +66,11 @@ interface CharStoreState {
   markClean: () => void;
 }
 
-export const useCharStore = create<CharStoreState>((set) => ({
-  character: { ...DEFAULT_CHARACTER },
-  isDirty: false,
+export const useCharStore = create<CharStoreState>()(
+  devtools(
+    (set) => ({
+      character: { ...DEFAULT_CHARACTER },
+      isDirty: false,
 
   updateHeader: (partial) =>
     set((state) => ({
@@ -215,4 +218,7 @@ export const useCharStore = create<CharStoreState>((set) => ({
     })),
 
   markClean: () => set({ isDirty: false }),
-}));
+    }),
+    { name: 'CharStore' }
+  )
+);

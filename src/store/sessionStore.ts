@@ -3,6 +3,7 @@
    Session state: persists in sessionStorage, never in save files.
    ================================================ */
 import { create } from 'zustand';
+import { persist, devtools } from 'zustand/middleware';
 
 interface SessionStoreState {
   activeConditions: Set<string>;
@@ -10,40 +11,54 @@ interface SessionStoreState {
   clearConditions: () => void;
 }
 
-function loadFromSession(): Set<string> {
-  try {
-    const stored = sessionStorage.getItem('mm3e-active-conditions');
-    if (stored) {
-      const arr = JSON.parse(stored) as string[];
-      return new Set(arr);
-    }
-  } catch { /* ignore */ }
-  return new Set();
-}
+export const useSessionStore = create<SessionStoreState>()(
+  devtools(
+    persist(
+      (set) => ({
+        activeConditions: new Set<string>(),
 
-function saveToSession(conditions: Set<string>) {
-  try {
-    sessionStorage.setItem('mm3e-active-conditions', JSON.stringify([...conditions]));
-  } catch { /* ignore quota errors */ }
-}
+        toggleCondition: (id) =>
+          set((state) => {
+            const next = new Set(state.activeConditions);
+            if (next.has(id)) {
+              next.delete(id);
+            } else {
+              next.add(id);
+            }
+            return { activeConditions: next };
+          }),
 
-export const useSessionStore = create<SessionStoreState>((set) => ({
-  activeConditions: loadFromSession(),
-
-  toggleCondition: (id) =>
-    set((state) => {
-      const next = new Set(state.activeConditions);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
+        clearConditions: () =>
+          set({ activeConditions: new Set() }),
+      }),
+      {
+        name: 'mm3e-active-conditions',
+        storage: {
+          getItem: (name) => {
+            const str = sessionStorage.getItem(name);
+            if (!str) return null;
+            const parsed = JSON.parse(str);
+            // Reconstruct Set from array
+            if (parsed.state?.activeConditions) {
+              parsed.state.activeConditions = new Set(parsed.state.activeConditions);
+            }
+            return parsed;
+          },
+          setItem: (name, value) => {
+            // Convert Set to array for serialization
+            const toStore = {
+              ...value,
+              state: {
+                ...value.state,
+                activeConditions: [...value.state.activeConditions],
+              },
+            };
+            sessionStorage.setItem(name, JSON.stringify(toStore));
+          },
+          removeItem: (name) => sessionStorage.removeItem(name),
+        },
       }
-      saveToSession(next);
-      return { activeConditions: next };
-    }),
-
-  clearConditions: () => {
-    saveToSession(new Set());
-    return set({ activeConditions: new Set() });
-  },
-}));
+    ),
+    { name: 'SessionStore' }
+  )
+);
