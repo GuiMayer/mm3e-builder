@@ -370,5 +370,12 @@
   "pdf.overflowBody": "Some sections have more items than the official sheet supports. Overflow items will be written to the Notes fields:",
   "pdf.overflowDestination": "→ {{dest}}",
   "pdf.overflowConfirm": "Export PDF anyway",
-  "pdf.overflowCancel": "Cancel"
+  "pdf.overflowCancel": "Cancel",
+
+  "error.boundary.title": "Something went wrong",
+  "error.boundary.message": "An unexpected error occurred. Please try again.",
+  "error.boundary.details": "Error details",
+  "error.boundary.tryAgain": "Try again",
+  "error.boundary.reload": "Reload page",
+  "error.boundary.goHome": "Go home"
 }

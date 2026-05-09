@@ -370,5 +370,12 @@
   "pdf.overflowBody": "Algumas seções têm mais itens do que a ficha oficial suporta. Os itens excedentes serão escritos nos campos de Notas:",
   "pdf.overflowDestination": "→ {{dest}}",
   "pdf.overflowConfirm": "Exportar PDF mesmo assim",
-  "pdf.overflowCancel": "Cancelar"
+  "pdf.overflowCancel": "Cancelar",
+
+  "error.boundary.title": "Algo deu errado",
+  "error.boundary.message": "Ocorreu um erro inesperado. Por favor, tente novamente.",
+  "error.boundary.details": "Detalhes do erro",
+  "error.boundary.tryAgain": "Tentar novamente",
+  "error.boundary.reload": "Recarregar página",
+  "error.boundary.goHome": "Ir para início"
 }
