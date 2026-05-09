@@ -1,19 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { AppView } from '../../app/App';
 
 import { useAppStore } from '../../store/appStore';
 import { useCharStore } from '../../store/charStore';
 import { useCalculatedPP } from '../hooks/useCalculatedPP';
-import { exportCharacterJSON, importCharacterJSON, I18nError } from '../../services/fileService';
-import { generateExcel } from '../../services/excelGenerator';
-import type { ExportLabels, GameDataRefs } from '../../services/excelGenerator';
-import { fillAndDownloadPDF, checkPDFOverflow } from '../../services/pdf/pdfFillService';
-import type { PDFOverflowReport } from '../../services/pdf/pdfFillService';
-import { buildOffenseSummary } from '../lib/offenseSummary';
+import { useFileOperations } from '../hooks/useFileOperations';
+import { usePDFExport } from '../hooks/usePDFExport';
+import { useExcelExport } from '../hooks/useExcelExport';
 import { prefetchPDFTemplate } from '../../services/pdf/pdfTemplateLoader';
 import { PDFOverflowModal } from '../../features/sheet-core/PDFOverflowModal';
-import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
-import { Settings, Download, Upload, FilePlus, Sun, Moon, Shield, ShieldOff, FileSpreadsheet, BookOpen, Library, FileText, Loader2 } from 'lucide-react';
+import { ThemeSelector } from './ThemeSelector';
+import { LanguageSelector } from './LanguageSelector';
+import { ViewTabs } from './ViewTabs';
+import { Settings, Download, Upload, FilePlus, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2 } from 'lucide-react';
+import i18n from '../../locales';
 
 const THEMES = [
   { id: 'dark-knight', label: 'Dark Knight' },
@@ -21,9 +22,6 @@ const THEMES = [
   { id: 'cyberpunk', label: 'Cyberpunk' },
   { id: 'light-print', label: 'Light Print' },
 ];
-import { useTranslation } from 'react-i18next';
-import { Globe } from 'lucide-react';
-import i18n from '../../locales';
 
 // Display labels for each registered language.
 // To add a new language: register it in src/locales/index.ts AND add a label here.
@@ -40,35 +38,38 @@ const LANGUAGES = Object.keys(i18n.options.resources ?? {}).map((id) => ({
 }));
 
 export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onViewChange: (v: AppView) => void }) {
-  const { t, i18n } = useTranslation();
+  const { t, i18n: i18nInstance } = useTranslation();
+  
+  // Store
   const theme = useAppStore((s) => s.theme);
   const setTheme = useAppStore((s) => s.setTheme);
   const language = useAppStore((s) => s.language);
   const setLanguage = useAppStore((s) => s.setLanguage);
-  
-  // ensure i18n is synced with store on mount
-  useEffect(() => {
-    if (i18n.language !== language) {
-      i18n.changeLanguage(language);
-    }
-  }, [language, i18n]);
-
   const strictMode = useAppStore((s) => s.strictMode);
   const toggleStrictMode = useAppStore((s) => s.toggleStrictMode);
   const character = useCharStore((s) => s.character);
   const campaignMode = character.campaignMode ?? false;
   const setCampaignMode = useCharStore((s) => s.setCampaignMode);
-  const loadCharacter = useCharStore((s) => s.loadCharacter);
   const resetCharacter = useCharStore((s) => s.resetCharacter);
+  
+  // Hooks
   const { totalSpent, totalAvailable, remaining } = useCalculatedPP();
+  const { exportCharacter, handleFileInput, fileInputRef } = useFileOperations();
+  const { exportPDF, confirmAndExportPDF, clearOverflow, pdfOverflow, isPdfLoading } = usePDFExport();
+  const { exportExcel } = useExcelExport();
 
+  // Local state
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [pdfLoading, setPdfLoading] = useState(false);
-  const [pdfOverflow, setPdfOverflow] = useState<PDFOverflowReport[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Pre-fetch template in background on first render
+  // Ensure i18n is synced with store on mount
+  useEffect(() => {
+    if (i18nInstance.language !== language) {
+      i18nInstance.changeLanguage(language);
+    }
+  }, [language, i18nInstance]);
+
+  // Pre-fetch PDF template in background on first render
   useEffect(() => {
     prefetchPDFTemplate();
   }, []);
@@ -84,155 +85,16 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      const char = await importCharacterJSON(file);
-      loadCharacter(char);
-    } catch (err) {
-      if (err instanceof I18nError) {
-        alert(t(err.i18nKey, err.i18nParams));
-      } else {
-        alert(t('errors.importError'));
-      }
-    }
-    e.target.value = '';
-  }
-  
-  async function handleExportPDF() {
-    const offenseEntries = buildOffenseSummary(
-      character,
-      POWER_DEFS,
-      SKILL_DEFS,
-      ADVANTAGE_DEFS,
-      MODIFIER_DEFS
-    );
-    const overflowReport = checkPDFOverflow(character, offenseEntries);
-    if (overflowReport.length > 0) {
-      setPdfOverflow(overflowReport);
-      return;
-    }
-    await doPdfExport();
-  }
-
-  async function doPdfExport() {
-    setPdfLoading(true);
-    setPdfOverflow([]);
-    try {
-      await fillAndDownloadPDF(character);
-    } catch (e) {
-      alert(t('errors.importError') + '\n' + String(e));
-    } finally {
-      setPdfLoading(false);
-    }
-  }
-
   function handleLanguageChange(lang: string) {
     setLanguage(lang);
-    i18n.changeLanguage(lang);
-  }
-
-  async function handleExportExcel() {
-    const lang = i18n.language;
-    const labels: ExportLabels = {
-      sheetSummary: t('excel.sheetSummary'),
-      sheetAbilities: t('excel.sheetAbilities'),
-      sheetDefenses: t('excel.sheetDefenses'),
-      sheetSkills: t('excel.sheetSkills'),
-      sheetAdvantages: t('excel.sheetAdvantages'),
-      sheetPowers: t('excel.sheetPowers'),
-      sheetComplications: t('excel.sheetComplications'),
-      sheetEquipment: t('excel.sheetEquipment'),
-      heroName: t('header.heroName'),
-      player: t('header.player'),
-      identity: t('header.identity'),
-      identityTypeLabel: t('header.identityType.secret').split(' ')[0], // just 'Secret'/'Secreta' prefix
-      base: t('header.base'),
-      powerLevel: t('header.powerLevel'),
-      heroPoints: t('header.heroPoints'),
-      powerPoints: t('header.powerPoints'),
-      gender: t('header.gender'),
-      age: t('header.age'),
-      height: t('header.height'),
-      weight: t('header.weight'),
-      eyes: t('header.eyes'),
-      hair: t('header.hair'),
-      groupAffiliation: t('header.groupAffiliation'),
-      series: t('header.series'),
-      gameMaster: t('header.gameMaster'),
-      abilityNames: {
-        str: t('abilities.str'),
-        sta: t('abilities.sta'),
-        agl: t('abilities.agl'),
-        dex: t('abilities.dex'),
-        fgt: t('abilities.fgt'),
-        int: t('abilities.int'),
-        awe: t('abilities.awe'),
-        pre: t('abilities.pre'),
-      },
-      defenseNames: {
-        dodge: t('defenses.dodge'),
-        parry: t('defenses.parry'),
-        fortitude: t('defenses.fortitude'),
-        will: t('defenses.will'),
-      },
-      colName: t('excel.colName'),
-      colRanks: t('excel.colRanks'),
-      colAbility: t('excel.colAbility'),
-      colTotal: t('excel.colTotal'),
-      colCost: t('excel.colCost'),
-      colDescription: t('excel.colDescription'),
-      colEffect: t('excel.colEffect'),
-      colModifiers: t('excel.colModifiers'),
-      colNotes: t('excel.colNotes'),
-      colTitle: t('excel.colTitle'),
-      colType: t('excel.colType'),
-      colAlternateEffects: t('excel.colAlternateEffects'),
-      section: t('excel.section'),
-      spent: t('excel.spent'),
-      remaining: t('excel.remaining'),
-      totalSpent: t('excel.totalSpent'),
-      absent: t('excel.absent'),
-      dynamic: t('excel.dynamic'),
-      yes: t('excel.yes'),
-      no: t('excel.no'),
-    };
-
-    const gameData: GameDataRefs = {
-      powerDefs: POWER_DEFS,
-      modifierDefs: MODIFIER_DEFS,
-      advantageDefs: ADVANTAGE_DEFS,
-      skillDefs: SKILL_DEFS,
-    };
-
-    try {
-      await generateExcel(character, labels, gameData, lang);
-    } catch (err) {
-      console.error('Excel export failed:', err);
-      alert(t('errors.importError'));
-    }
+    i18nInstance.changeLanguage(lang);
   }
 
   return (
     <header className="menubar">
       <div className="menubar-left">
         <h1 className="menubar-title">{t('app.title')}</h1>
-        <div className="menubar-tabs">
-          <button
-            className={`menubar-tab ${activeView === 'sheet' ? 'menubar-tab--active' : ''}`}
-            onClick={() => onViewChange('sheet')}
-          >
-            {t('nav.sheet', { defaultValue: 'Sheet' })}
-          </button>
-          <button
-            className={`menubar-tab ${activeView === 'references' ? 'menubar-tab--active' : ''}`}
-            onClick={() => onViewChange('references')}
-          >
-            <Library size={13} />
-            {t('nav.references', { defaultValue: 'References' })}
-          </button>
-        </div>
+        <ViewTabs activeView={activeView} onViewChange={onViewChange} />
         <span className="menubar-pp" data-over={remaining < 0}>
           <strong>{totalSpent}</strong> / {totalAvailable} {t('common.pp')}
           {remaining < 0 && <span className="menubar-pp-warning"> ({remaining})</span>}
@@ -243,23 +105,23 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         <button className="menubar-btn" onClick={resetCharacter} title={t('menu.new')}>
           <FilePlus size={18} /> <span>{t('menu.new')}</span>
         </button>
-        <button className="menubar-btn" onClick={() => exportCharacterJSON(character, i18n.language)} title={t('menu.export')}>
+        <button className="menubar-btn" onClick={exportCharacter} title={t('menu.export')}>
           <Download size={18} /> <span>{t('menu.export')}</span>
         </button>
-        <button className="menubar-btn menubar-btn--excel" onClick={handleExportExcel} title={t('menu.exportExcel')}>
+        <button className="menubar-btn menubar-btn--excel" onClick={exportExcel} title={t('menu.exportExcel')}>
           <FileSpreadsheet size={18} /> <span>{t('menu.exportExcel')}</span>
         </button>
         <button
           id="btn-export-pdf"
-          className={`menubar-btn menubar-btn--pdf ${pdfLoading ? 'menubar-btn--loading' : ''}`}
-          onClick={handleExportPDF}
-          disabled={pdfLoading}
+          className={`menubar-btn menubar-btn--pdf ${isPdfLoading ? 'menubar-btn--loading' : ''}`}
+          onClick={exportPDF}
+          disabled={isPdfLoading}
           title={t('menu.exportPdf')}
         >
-          {pdfLoading
+          {isPdfLoading
             ? <Loader2 size={18} className="spin" />
             : <FileText size={18} />}
-          <span>{pdfLoading ? t('pdf.generating') : t('menu.exportPdf')}</span>
+          <span>{isPdfLoading ? t('pdf.generating') : t('menu.exportPdf')}</span>
         </button>
         <button className="menubar-btn" onClick={() => fileInputRef.current?.click()} title={t('menu.import')}>
           <Upload size={18} /> <span>{t('menu.import')}</span>
@@ -268,7 +130,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
           ref={fileInputRef}
           type="file"
           accept=".json"
-          onChange={handleImport}
+          onChange={handleFileInput}
           style={{ display: 'none' }}
         />
 
@@ -286,16 +148,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
             <div className="menubar-dropdown">
               <div className="dropdown-section">
                 <span className="dropdown-label">{t('menu.theme')}</span>
-                {THEMES.map((tItem) => (
-                  <button
-                    key={tItem.id}
-                    className={`dropdown-item ${theme === tItem.id ? 'active' : ''}`}
-                    onClick={() => setTheme(tItem.id)}
-                  >
-                    {tItem.id.includes('light') ? <Sun size={14} /> : <Moon size={14} />}
-                    {tItem.label}
-                  </button>
-                ))}
+                <ThemeSelector theme={theme} onThemeChange={setTheme} themes={THEMES} />
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">
@@ -321,16 +174,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
               <div className="dropdown-divider" />
               <div className="dropdown-section">
                 <span className="dropdown-label">{t('menu.language')}</span>
-                {LANGUAGES.map((l) => (
-                  <button
-                    key={l.id}
-                    className={`dropdown-item ${language === l.id ? 'active' : ''}`}
-                    onClick={() => handleLanguageChange(l.id)}
-                  >
-                    <Globe size={14} />
-                    {l.label}
-                  </button>
-                ))}
+                <LanguageSelector language={language} onLanguageChange={handleLanguageChange} languages={LANGUAGES} />
               </div>
             </div>
           )}
@@ -340,8 +184,8 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
       {pdfOverflow.length > 0 && (
         <PDFOverflowModal
           report={pdfOverflow}
-          onConfirm={doPdfExport}
-          onCancel={() => setPdfOverflow([])}
+          onConfirm={confirmAndExportPDF}
+          onCancel={clearOverflow}
         />
       )}
 
@@ -437,83 +281,65 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         .menubar-btn:hover {
           background: var(--c-primary-muted);
           color: var(--c-text);
-          border-color: var(--c-border);
+          border-color: var(--c-primary);
         }
-        .menubar-btn--excel {
-          color: #22c55e;
-        }
-        .menubar-btn--excel:hover {
-          background: rgba(34, 197, 94, 0.12);
-          color: #16a34a;
-          border-color: rgba(34, 197, 94, 0.3);
-        }
-        .menubar-btn--pdf {
-          color: #e07b39;
-        }
-        .menubar-btn--pdf:hover {
-          background: rgba(224, 123, 57, 0.12);
-          color: #c9622a;
-          border-color: rgba(224, 123, 57, 0.3);
-        }
-        .menubar-btn--loading {
-          opacity: 0.7;
+        .menubar-btn:disabled {
+          opacity: 0.5;
           cursor: not-allowed;
         }
-        .menubar-btn--loading:hover {
-          background: transparent;
-          border-color: transparent;
+        .menubar-btn--excel:hover {
+          background: var(--c-success-muted);
+          border-color: var(--c-success);
         }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
+        .menubar-btn--pdf:hover {
+          background: var(--c-error-muted);
+          border-color: var(--c-error);
         }
-        .spin {
-          animation: spin 0.8s linear infinite;
+        .menubar-btn--loading {
+          pointer-events: none;
         }
         .menubar-dropdown-wrapper {
           position: relative;
         }
         .menubar-dropdown {
           position: absolute;
-          right: 0;
           top: calc(100% + var(--s-xs));
+          right: 0;
           min-width: 220px;
           background: var(--c-surface-elevated);
           border: 1px solid var(--c-border);
           border-radius: var(--r-md);
           box-shadow: var(--shadow-lg);
-          padding: var(--s-sm);
-          animation: fadeIn 0.15s ease;
-          z-index: 200;
+          padding: var(--s-xs);
+          z-index: 1000;
         }
         .dropdown-section {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
+          padding: var(--s-xs);
         }
         .dropdown-label {
+          display: block;
           font-size: 0.7rem;
           font-weight: 600;
+          color: var(--c-text-muted);
           text-transform: uppercase;
           letter-spacing: 0.05em;
-          color: var(--c-text-muted);
-          padding: var(--s-xs) var(--s-sm);
+          margin-bottom: var(--s-xs);
         }
         .dropdown-item {
           display: flex;
           align-items: center;
-          gap: var(--s-sm);
+          gap: var(--s-xs);
+          width: 100%;
           padding: var(--s-xs) var(--s-sm);
           background: transparent;
           border: none;
           border-radius: var(--r-sm);
           color: var(--c-text);
           font-family: var(--f-body);
-          font-size: 0.82rem;
-          cursor: pointer;
-          transition: background var(--t-fast);
-          width: 100%;
+          font-size: 0.8rem;
           text-align: left;
+          cursor: pointer;
+          transition: all var(--t-fast);
         }
         .dropdown-item:hover {
           background: var(--c-primary-muted);
@@ -521,19 +347,51 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         .dropdown-item.active {
           background: var(--c-primary-muted);
           color: var(--c-primary);
-          font-weight: 600;
+        }
+        .dropdown-hint {
+          display: block;
+          font-size: 0.7rem;
+          color: var(--c-text-muted);
+          margin-top: var(--s-xs);
+          line-height: 1.3;
         }
         .dropdown-divider {
           height: 1px;
           background: var(--c-border);
-          margin: var(--s-sm) 0;
+          margin: var(--s-xs) 0;
         }
-        .dropdown-hint {
-          font-size: 0.68rem;
-          color: var(--c-text-muted);
-          padding: 0 var(--s-sm) var(--s-xs);
-          line-height: 1.4;
-          display: block;
+        .menubar-setting {
+          width: 100%;
+        }
+        .menubar-setting label {
+          display: flex;
+          align-items: center;
+          gap: var(--s-xs);
+          width: 100%;
+          padding: var(--s-xs) var(--s-sm);
+          color: var(--c-text);
+          font-size: 0.8rem;
+        }
+        .menubar-setting select {
+          flex: 1;
+          background: var(--c-bg);
+          border: 1px solid var(--c-border);
+          border-radius: var(--r-sm);
+          color: var(--c-text);
+          font-family: var(--f-body);
+          font-size: 0.8rem;
+          padding: 2px var(--s-xs);
+          cursor: pointer;
+        }
+        .menubar-setting select:hover {
+          border-color: var(--c-primary);
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .spin {
+          animation: spin 1s linear infinite;
         }
       `}</style>
     </header>
