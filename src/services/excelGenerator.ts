@@ -158,7 +158,7 @@ export async function generateExcel(
   wb.created = new Date();
 
   // ── 1. SUMMARY SHEET ──
-  buildSummarySheet(wb, character, labels, gameData, language);
+  buildSummarySheet(wb, character, labels, gameData);
 
   // ── 2. ABILITIES SHEET ──
   buildAbilitiesSheet(wb, character, labels);
@@ -200,8 +200,7 @@ function buildSummarySheet(
   wb: ExcelJS.Workbook,
   char: ICharacter,
   labels: ExportLabels,
-  gameData: GameDataRefs,
-  _lang: string
+  gameData: GameDataRefs
 ) {
   const ws = wb.addWorksheet(labels.sheetSummary, { properties: { tabColor: { argb: '6C63FF' } } });
 

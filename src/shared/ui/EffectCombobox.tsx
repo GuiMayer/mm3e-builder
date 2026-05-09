@@ -36,11 +36,6 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
       )
     : allEffects;
 
-  // Re-clamp highlight when filtered list changes
-  useEffect(() => {
-    setHighlightIdx(0);
-  }, [query]);
-
   // Close on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -87,6 +82,7 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);
+    setHighlightIdx(0);
     setOpen(true);
     // Clear selection when user clears input or types something new
     if (e.target.value === '') onChange('');
@@ -99,13 +95,17 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
   }
 
   // When a value is passed externally (e.g. existing power loaded),
-  // sync the visible text without triggering a re-search.
+  // sync the visible text. This is a legitimate use of setState in effect
+  // because we're synchronizing with an external prop change.
   const prevValueRef = useRef(value);
   useEffect(() => {
     if (value !== prevValueRef.current) {
       prevValueRef.current = value;
       const eff = allEffects.find((e) => e.id === value);
-      setQuery(eff?.name ?? '');
+      const newQuery = eff?.name ?? '';
+      // Only update if different to avoid unnecessary re-renders
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setQuery(prev => prev === newQuery ? prev : newQuery);
     }
   }, [value, allEffects]);
 

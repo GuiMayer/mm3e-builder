@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useCharStore } from '../../store/charStore';
-import type { AdvantageType, IAdvantageDef } from '../../entities/types';
-import advantageDefsRaw from '../../data/advantages.json';
+import type { AdvantageType } from '../../entities/types';
+import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Modal } from '../../shared/ui/Modal';
@@ -12,7 +12,7 @@ const ADVANTAGE_TYPES: AdvantageType[] = ['combat', 'fortune', 'general', 'skill
 
 export function AdvantagesPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const advantageDefs = useLocalizedData(advantageDefsRaw as unknown as IAdvantageDef[]);
+  const advantageDefs = useLocalizedData(ADVANTAGE_DEFS);
   const advantages = useCharStore((s) => s.character.advantages);
   const setAdvantages = useCharStore((s) => s.setAdvantages);
 

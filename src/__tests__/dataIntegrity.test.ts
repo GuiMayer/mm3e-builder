@@ -18,6 +18,16 @@ import advantagesRaw from '../data/advantages.json';
 import skillsRaw from '../data/skills.json';
 import type { IModifierDef, IPowerEffect } from '../entities/types';
 
+// Type helpers for test assertions
+type ModifierWithSubtypes = IModifierDef & {
+  subtypes?: Array<{ id: string; costValue: number }>;
+};
+
+type PowerWithModifiers = IPowerEffect & {
+  extras?: string[];
+  flaws?: string[];
+};
+
 const modifiers = modifiersRaw as IModifierDef[];
 const powers = powersRaw as IPowerEffect[];
 
@@ -74,7 +84,8 @@ describe('modifiers.json — RAW semantic rules', () => {
 
   it('all extras with subtypes have subtypes where every costValue >= 0', () => {
     for (const mod of modifiers) {
-      const subtypes = (mod as any).subtypes as Array<{ id: string; costValue: number }> | undefined;
+      const modWithSubtypes = mod as ModifierWithSubtypes;
+      const subtypes = modWithSubtypes.subtypes;
       if (!subtypes) continue;
       for (const sub of subtypes) {
         expect(
@@ -94,16 +105,18 @@ describe('modifiers.json — RAW semantic rules', () => {
   it('Alternate Resistance has exactly 4 subtypes (Will, Fortitude, Dodge, Parry)', () => {
     const altRes = modifiers.find((m) => m.id === 'alternate_resistance');
     expect(altRes, 'alternate_resistance modifier not found').toBeDefined();
-    const subtypes = (altRes as any).subtypes as Array<{ id: string }>;
+    const altResWithSubtypes = altRes as ModifierWithSubtypes;
+    const subtypes = altResWithSubtypes.subtypes;
     expect(subtypes).toBeDefined();
-    expect(subtypes.length).toBe(4);
-    const ids = subtypes.map((s) => s.id).sort();
+    expect(subtypes!.length).toBe(4);
+    const ids = subtypes!.map((s) => s.id).sort();
     expect(ids).toEqual(['dodge', 'fortitude', 'parry', 'will']);
   });
 
   it('Alternate Resistance subtype costs match RAW (Will+1, Fortitude+2, Dodge+1, Parry+1)', () => {
     const altRes = modifiers.find((m) => m.id === 'alternate_resistance');
-    const subtypes = (altRes as any).subtypes as Array<{ id: string; costValue: number }>;
+    const altResWithSubtypes = altRes as ModifierWithSubtypes;
+    const subtypes = altResWithSubtypes.subtypes!;
     const byId = Object.fromEntries(subtypes.map((s) => [s.id, s.costValue]));
     expect(byId['will']).toBe(1);
     expect(byId['fortitude']).toBe(2);
@@ -145,9 +158,10 @@ describe('powers.json — structural integrity', () => {
     const VALID_COST_TYPES = new Set(['per_rank', 'flat', 'flat_ranked']);
     const VALID_CATEGORIES = new Set(['extra', 'flaw', 'special']);
     for (const power of powers) {
+      const powerWithMods = power as PowerWithModifiers;
       const allMods = [
-        ...((power as any).extras ?? []),
-        ...((power as any).flaws ?? []),
+        ...(powerWithMods.extras ?? []),
+        ...(powerWithMods.flaws ?? []),
       ] as Array<{ id: string; costType: string; costValue: number; category: string }>;
       for (const mod of allMods) {
         expect(mod.id, `power "${power.id}" inline mod missing id`).toBeTruthy();

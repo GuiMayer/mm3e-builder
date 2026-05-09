@@ -9,6 +9,7 @@ export default defineConfig([
   globalIgnores(['dist']),
   {
     files: ['**/*.{ts,tsx}'],
+    ignores: ['**/entities/gameDataLoaders.ts', '**/__tests__/**'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -18,6 +19,14 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+    },
+    rules: {
+      'no-restricted-imports': ['error', {
+        patterns: [{
+          group: ['**/data/*.json'],
+          message: 'Direct JSON imports from data/ are not allowed. Use gameDataLoaders instead.',
+        }],
+      }],
     },
   },
 ])

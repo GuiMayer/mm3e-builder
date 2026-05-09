@@ -7,11 +7,6 @@ import { useCalculatedPP } from '../hooks/useCalculatedPP';
 import { exportCharacterJSON, importCharacterJSON, I18nError } from '../../services/fileService';
 import { generateExcel } from '../../services/excelGenerator';
 import type { ExportLabels, GameDataRefs } from '../../services/excelGenerator';
-import type { IPowerEffect, IModifierDef, IAdvantageDef, ISkillDef } from '../../entities/types';
-import powerDefsJson from '../../data/powers.json';
-import modifierDefsJson from '../../data/modifiers.json';
-import advantageDefsJson from '../../data/advantages.json';
-import skillDefsJson from '../../data/skills.json';
 import { fillAndDownloadPDF, checkPDFOverflow } from '../../services/pdf/pdfFillService';
 import type { PDFOverflowReport } from '../../services/pdf/pdfFillService';
 import { buildOffenseSummary } from '../lib/offenseSummary';
@@ -205,10 +200,10 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
     };
 
     const gameData: GameDataRefs = {
-      powerDefs: powerDefsJson as IPowerEffect[],
-      modifierDefs: modifierDefsJson as IModifierDef[],
-      advantageDefs: advantageDefsJson as IAdvantageDef[],
-      skillDefs: skillDefsJson as ISkillDef[],
+      powerDefs: POWER_DEFS,
+      modifierDefs: MODIFIER_DEFS,
+      advantageDefs: ADVANTAGE_DEFS,
+      skillDefs: SKILL_DEFS,
     };
 
     try {
@@ -295,7 +290,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
                   <button
                     key={tItem.id}
                     className={`dropdown-item ${theme === tItem.id ? 'active' : ''}`}
-                    onClick={() => setTheme(tItem.id as any)}
+                    onClick={() => setTheme(tItem.id)}
                   >
                     {tItem.id.includes('light') ? <Sun size={14} /> : <Moon size={14} />}
                     {tItem.label}

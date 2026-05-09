@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useCharStore } from '../../store/charStore';
 import type { ICharacterSkill, AbilityKey, ISkillDef } from '../../entities/types';
-import skillDefsRaw from '../../data/skills.json';
+import { SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Modal } from '../../shared/ui/Modal';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
@@ -21,7 +21,7 @@ const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: st
 
 export function SkillsPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const skillDefs = useLocalizedData(skillDefsRaw as unknown as ISkillDef[]);
+  const skillDefs = useLocalizedData(SKILL_DEFS);
   const skills = useCharStore((s) => s.character.skills);
   const setSkills = useCharStore((s) => s.setSkills);
   const abilities = useCharStore((s) => s.character.abilities);
@@ -38,7 +38,6 @@ export function SkillsPanel({ cost }: { cost: number }) {
 
   useEffect(() => { if (showSelector) searchRef.current?.focus(); }, [showSelector]);
   useEffect(() => { if (pendingSubtype) subtypeRef.current?.focus(); }, [pendingSubtype]);
-  useEffect(() => { setAllUsagesOpen(false); }, [descTarget]);
 
 
 
@@ -141,7 +140,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
             <div key={`${skill.skillId}-${skill.subtype}-${i}`} className="skill-row">
               <button
                 className="skill-name skill-name--clickable"
-                onClick={() => setDescTarget(def)}
+                onClick={() => { setDescTarget(def); setAllUsagesOpen(false); }}
                 title={t('skills.viewDescription')}
               >
                 {displayName}
@@ -227,7 +226,7 @@ export function SkillsPanel({ cost }: { cost: number }) {
 
                   <button
                     className="adv-result-info"
-                    onClick={(e) => { e.stopPropagation(); setDescTarget(def); }}
+                    onClick={(e) => { e.stopPropagation(); setDescTarget(def); setAllUsagesOpen(false); }}
                     title={t('skills.viewDescription')}
                   >
                     <Info size={14} />

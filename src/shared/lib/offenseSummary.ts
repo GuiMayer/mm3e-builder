@@ -234,7 +234,7 @@ export function buildOffenseSummary(
 
   // ── 1. Unarmed attack (always first) ───────────────────────────
   {
-    let base = abilities.fgt;
+    const base = abilities.fgt;
     const closeAttackAdv = character.advantages.find((a) => a.advantageId === 'close_attack');
     const closeAdvRanks = closeAttackAdv?.ranks ?? 0;
 
