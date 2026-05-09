@@ -20,10 +20,10 @@ export function App() {
 
   return (
     <ErrorBoundary
-      fallback={(error, errorInfo) => <ErrorFallback error={error} />}
+      fallback={(error) => <ErrorFallback error={error} />}
       onError={(error, errorInfo) => {
         // Log errors in development
-        if (process.env.NODE_ENV === 'development') {
+        if (import.meta.env.DEV) {
           console.error('App Error Boundary caught:', error, errorInfo);
         }
       }}
