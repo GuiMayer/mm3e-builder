@@ -267,6 +267,7 @@ export interface IValidationRules {
   enforceIncompatibleModifiers: boolean;      // Prevent incompatible modifier combinations
   enforceModifierMaxRanks: boolean;           // Enforce maxRanks limits on modifiers
   enforceAccuratePLCap: boolean;              // Accurate modifier capped at PL
+  enforcePowerSpecificModifiers: boolean;     // Only allow modifiers valid for the power
   
   // Power validations
   enforceAfflictionProgression: boolean;      // Validate Affliction condition degrees

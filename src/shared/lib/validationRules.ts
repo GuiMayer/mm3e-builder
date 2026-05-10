@@ -15,6 +15,7 @@ export const DEFAULT_VALIDATION_RULES: IValidationRules = {
   enforceIncompatibleModifiers: true,      // Prevent incompatible combinations (e.g., Ranged + Close)
   enforceModifierMaxRanks: true,           // Enforce maxRanks limits (e.g., Accurate max 5)
   enforceAccuratePLCap: true,              // Accurate capped at PL (attack+effect ≤ 2×PL)
+  enforcePowerSpecificModifiers: false,    // Only allow modifiers valid for the power (optional - Phase 3)
   
   // Power validations
   enforceAfflictionProgression: false,     // Validate Affliction condition degrees (optional - GM discretion)
@@ -36,6 +37,7 @@ export const PERMISSIVE_VALIDATION_RULES: IValidationRules = {
   enforceIncompatibleModifiers: false,
   enforceModifierMaxRanks: false,
   enforceAccuratePLCap: false,
+  enforcePowerSpecificModifiers: false,
   enforceAfflictionProgression: false,
   enforceAbsentAbilityRestrictions: false,
   plTradeOffsAsErrors: false,              // PL violations as warnings only
@@ -51,6 +53,7 @@ export const STRICT_VALIDATION_RULES: IValidationRules = {
   enforceIncompatibleModifiers: true,
   enforceModifierMaxRanks: true,
   enforceAccuratePLCap: true,
+  enforcePowerSpecificModifiers: true,
   enforceAfflictionProgression: true,
   enforceAbsentAbilityRestrictions: true,
   plTradeOffsAsErrors: true,
@@ -107,6 +110,14 @@ export const VALIDATION_RULE_METADATA: ValidationRuleMetadata[] = [
     category: 'modifier',
     recommendedFor: 'all',
     disableWhen: 'Never - this is a core PL balance rule',
+  },
+  {
+    id: 'enforcePowerSpecificModifiers',
+    name: 'Power-Specific Modifiers',
+    description: 'Only allows modifiers that are valid for the specific power (universal or power-specific)',
+    category: 'modifier',
+    recommendedFor: 'optional',
+    disableWhen: 'Using house rules with custom modifiers or allowing creative modifier applications',
   },
   {
     id: 'enforceAfflictionProgression',

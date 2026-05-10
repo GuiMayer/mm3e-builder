@@ -13,7 +13,7 @@ import type {
 import type { IValidationRules } from '../../entities/types';
 
 export interface ModifierViolation {
-  type: 'incompatible' | 'max_ranks' | 'accurate_pl_cap';
+  type: 'incompatible' | 'max_ranks' | 'accurate_pl_cap' | 'power_specific';
   modifierId: string;
   message: string;
   severity: 'error' | 'warning';
@@ -126,6 +126,53 @@ export function validateAccuratePLCap(
 }
 
 /**
+ * Validate that applied modifiers are valid for the specific power effect.
+ * Checks if modifiers are either universal OR power-specific for this effect.
+ * 
+ * Reference: Each power's extras/flaws arrays in powers.json
+ */
+export function validatePowerSpecificModifiers(
+  component: ICharacterPowerComponent,
+  effectDef: IPowerEffect,
+  universalModifierDefs: IModifierDef[]
+): ModifierViolation[] {
+  const violations: ModifierViolation[] = [];
+
+  // Build set of valid modifier IDs for this power
+  const validModifierIds = new Set<string>();
+
+  // Add all universal modifiers
+  universalModifierDefs.forEach((mod) => validModifierIds.add(mod.id));
+
+  // Add power-specific modifiers
+  if (effectDef.extras) {
+    effectDef.extras.forEach((extra) => validModifierIds.add(extra.id));
+  }
+  if (effectDef.flaws) {
+    effectDef.flaws.forEach((flaw) => validModifierIds.add(flaw.id));
+  }
+
+  // Check each applied modifier
+  for (const applied of component.modifiers) {
+    if (!validModifierIds.has(applied.modifierId)) {
+      // Find the modifier definition to get its name
+      const modDef = universalModifierDefs.find((m) => m.id === applied.modifierId);
+      const modName = modDef?.name || applied.modifierId;
+
+      violations.push({
+        type: 'power_specific',
+        modifierId: applied.modifierId,
+        message: `${modName} is not valid for ${effectDef.name}. This modifier is not in the power's extras/flaws list.`,
+        severity: 'warning',
+        reference: 'Hero\'s Handbook Powers chapter',
+      });
+    }
+  }
+
+  return violations;
+}
+
+/**
  * Validate all modifier rules for a component.
  * Returns violations based on active validation rules.
  */
@@ -154,6 +201,11 @@ export function validateComponentModifiers(
     violations.push(
       ...validateAccuratePLCap(component, effectDef, baseAttackBonus, powerLevel, modifierDefs)
     );
+  }
+
+  // Check power-specific modifiers
+  if (validationRules.enforcePowerSpecificModifiers) {
+    violations.push(...validatePowerSpecificModifiers(component, effectDef, modifierDefs));
   }
 
   return violations;
