@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
+import { useValidModifiers } from './hooks/useValidModifiers';
 import { Search, ArrowUpCircle, ArrowDownCircle, Zap, ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { IPowerEffect, IModifierDef } from '../../entities/types';
@@ -32,6 +33,10 @@ export function EffectPalette({
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
   const [activeTab, setActiveTab] = useState<PaletteTab>('extras');
   const [modalMod, setModalMod] = useState<IModifierDef | null>(null);
+
+  // Phase 4: Use valid modifiers hook to check power-specific availability
+  const { powerSpecificModifiers } = useValidModifiers(selectedEffect, modifierDefs);
+  const powerSpecificIds = new Set(powerSpecificModifiers.map((m) => m.id));
 
   const lowerFilter = filter.toLowerCase();
 
@@ -155,6 +160,8 @@ export function EffectPalette({
               key={mod.id}
               mod={mod}
               isPowerSpecific={false}
+              hasPowerSpecificVersion={powerSpecificIds.has(mod.id)}
+              selectedEffectName={selectedEffect?.name}
               onAdd={onAddModifier}
               onInfo={setModalMod}
             />
@@ -165,6 +172,8 @@ export function EffectPalette({
               key={mod.id}
               mod={mod}
               isPowerSpecific={false}
+              hasPowerSpecificVersion={powerSpecificIds.has(mod.id)}
+              selectedEffectName={selectedEffect?.name}
               onAdd={onAddModifier}
               onInfo={setModalMod}
             />
@@ -308,11 +317,15 @@ export function EffectPalette({
 function DraggableModifier({
   mod,
   isPowerSpecific,
+  hasPowerSpecificVersion,
+  selectedEffectName,
   onAdd,
   onInfo,
 }: {
   mod: IModifierDef;
   isPowerSpecific: boolean;
+  hasPowerSpecificVersion?: boolean;
+  selectedEffectName?: string;
   onAdd: (id: string, isPowerSpecific?: boolean) => void;
   onInfo: (mod: IModifierDef) => void;
 }) {
@@ -333,15 +346,24 @@ function DraggableModifier({
     ? 'palette-item'
     : 'palette-item palette-item--flaw';
 
+  // Phase 4: Show tooltip when power-specific version exists
+  const tooltipText = hasPowerSpecificVersion && selectedEffectName
+    ? `${mod.name} - Power-specific version available for ${selectedEffectName} in "Specific" tab`
+    : `${mod.category === 'extra' ? 'Extra' : 'Flaw'}: ${mod.name}, cost ${costLabel}`;
+
   return (
     <div
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      className={`${itemClass} ${isDragging ? 'palette-item--dragging' : ''}`}
-      aria-label={`${mod.category === 'extra' ? 'Extra' : 'Flaw'}: ${mod.name}, cost ${costLabel}`}
+      className={`${itemClass} ${isDragging ? 'palette-item--dragging' : ''} ${hasPowerSpecificVersion ? 'palette-item--has-specific' : ''}`}
+      aria-label={tooltipText}
+      title={hasPowerSpecificVersion ? tooltipText : undefined}
     >
-      <span className="palette-item-name">{mod.name}</span>
+      <span className="palette-item-name">
+        {mod.name}
+        {hasPowerSpecificVersion && <span className="palette-item-specific-indicator" title="Power-specific version available">⚡</span>}
+      </span>
       <div className="palette-item-actions">
         <span className="palette-item-cost">{costLabel}</span>
         <button
@@ -372,8 +394,17 @@ function DraggableModifier({
         .palette-item--flaw:hover { border-color: var(--c-error); background: rgba(248,113,113,0.08); }
         .palette-item--specific { border-color: rgba(245,158,11,0.3); }
         .palette-item--specific:hover { border-color: #f59e0b; background: rgba(245,158,11,0.08); }
+        .palette-item--has-specific { border-left: 3px solid rgba(245,158,11,0.5); }
         .palette-item--dragging { opacity: 0.4; cursor: grabbing; }
-        .palette-item-name { font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .palette-item-name { font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+        .palette-item-specific-indicator { 
+          font-size: 0.7rem; color: #f59e0b; flex-shrink: 0;
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 1; }
+        }
         .palette-item-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
         .palette-item-cost { font-size: 0.68rem; color: var(--c-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
         .palette-item-info, .palette-item-add {
