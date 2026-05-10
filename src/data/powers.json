@@ -1567,7 +1567,83 @@
     },
     "longDescription": "Immunity provides complete protection against a specific hazard or effect. The cost is 1 rank per hazard if the immunity is broad: Immunity 1 = one specific effect; Immunity 5 = a category; Immunity 10 = all effects of a broad type; Immunity 80 = all environmental hazards. Common examples: Immunity 1 (disease), Immunity 10 (fire effects), Immunity 30 (Fortitude effects).",
     "enhancesDefense": null,
-    "extras": [],
+    "extras": [
+      {
+        "id": "affects_others",
+        "name": "Affects Others",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "This extra allows you to grant the benefits of your Immunity to others by touch. It's most commonly used with life support, such as the power to maintain a life support 'bubble' around you.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Afeta Outros",
+            "description": "Este extra permite conceder os benefícios da sua Imunidade a outros por toque. É mais comumente usado com suporte vital, como o poder de manter uma 'bolha' de suporte vital ao seu redor."
+          }
+        }
+      },
+      {
+        "id": "sustained_immunity",
+        "name": "Sustained",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Sustained duration Immunity may be suitable for certain types of powers, particularly force fields or similar protective abilities requiring a modicum of concentration. It is a net +0 modifier from Immunity's base permanent duration.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Sustentado",
+            "description": "Imunidade de duração Sustentada pode ser adequada para certos tipos de poderes, particularmente campos de força ou habilidades protetoras similares que requerem um mínimo de concentração. É um modificador +0 da duração permanente base da Imunidade."
+          }
+        }
+      },
+      {
+        "id": "ranged_immunity",
+        "name": "Ranged",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Affects Others Immunity may have this extra, allowing it to grant its benefits at range.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "À Distância",
+            "description": "Imunidade Afeta Outros pode ter este extra, permitindo conceder seus benefícios à distância."
+          }
+        }
+      },
+      {
+        "id": "reflect_immunity",
+        "name": "Reflect",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can reflect attacks to which you are immune back at the attacker as a free action. Make a normal attack check using your own attack modifier to hit with the reflected attack. It has its normal effect if it hits.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Refletir",
+            "description": "Pode refletir ataques aos quais é imune de volta ao atacante como uma ação livre. Faça um teste de ataque normal usando seu próprio modificador de ataque para acertar com o ataque refletido. Tem seu efeito normal se acertar."
+          }
+        }
+      },
+      {
+        "id": "redirect_immunity",
+        "name": "Redirect",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can redirect attacks to which are you are immune at any other target within the attack's normal range, as Reflect, above. You must have the Reflect extra to take this one.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Redirecionar",
+            "description": "Pode redirecionar ataques aos quais é imune para qualquer outro alvo dentro do alcance normal do ataque, como Refletir. Deve ter o extra Refletir para usar este."
+          }
+        }
+      }
+    ],
     "flaws": [
       {
         "id": "half_effect",
@@ -1772,8 +1848,117 @@
     },
     "longDescription": "You can use hero points or Luck to affect others. Each rank provides one option: spend a hero point on another's behalf, bestow hero points to others, negate someone else's hero point/Luck/complication use, or force a re-roll taking the worse result. Target may spend a hero point to avoid the re-roll.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "area_luck",
+        "name": "Area",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Your Luck Control effect works equally on all targets in the affected area. You spend only one hero point, but the subjects are each affected individually. You must apply the same effect to all subjects at once.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Área",
+            "description": "Seu efeito de Controle da Sorte funciona igualmente em todos os alvos na área afetada. Você gasta apenas um ponto de herói, mas os alvos são afetados individualmente. Deve aplicar o mesmo efeito a todos os alvos de uma vez."
+          }
+        }
+      },
+      {
+        "id": "luck_advantage",
+        "name": "Luck",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Each rank in this extra gives you the benefit of a rank in the Luck advantage. It is subject to the same limits as the Luck advantage set by the GM.",
+        "longDescription": "Each rank in this extra gives you the benefit of a rank in the Luck advantage. It is subject to the same limits as the Luck advantage set by the GM. Flat +1 point per rank of Luck.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Sorte",
+            "description": "Cada rank neste extra concede o benefício de um rank na vantagem Sorte. Está sujeito aos mesmos limites da vantagem Sorte definidos pelo Mestre."
+          }
+        }
+      },
+      {
+        "id": "selective_luck",
+        "name": "Selective",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "This extra, applied to Area Luck Control, allows you to choose who in the area is or is not affected by it.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Seletivo",
+            "description": "Este extra, aplicado a Controle da Sorte em Área, permite escolher quem na área é ou não afetado por ele."
+          }
+        }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "action_luck",
+        "name": "Action",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "If the action required for Luck Control is increased beyond a reaction, it is only usable during your turn each round, which limits its usefulness in responding to the actions of others.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Ação",
+            "description": "Se a ação necessária para Controle da Sorte for aumentada além de uma reação, só é utilizável durante seu turno a cada rodada, o que limita sua utilidade em responder às ações de outros."
+          }
+        }
+      },
+      {
+        "id": "ranged_luck",
+        "name": "Ranged",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Luck Control normally requires no attack check; if Ranged, it does.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "À Distância",
+            "description": "Controle da Sorte normalmente não requer teste de ataque; se À Distância, requer."
+          }
+        }
+      },
+      {
+        "id": "resistible",
+        "name": "Resistible",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Targets of your Luck Control get a resistance check—usually Dodge or Will—to avoid its effects.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Resistível",
+            "description": "Alvos do seu Controle da Sorte fazem um teste de resistência—geralmente Esquiva ou Vontade—para evitar seus efeitos."
+          }
+        }
+      },
+      {
+        "id": "side_effect_luck",
+        "name": "Side Effect",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "As a particular side effect of Luck Control, if your effort to alter luck fails, you suffer a setback without earning a hero point. Effectively the GM gains a 'free' complication against you.",
+        "longDescription": "As a particular side effect of Luck Control, if your effort to alter luck fails, you suffer a setback without earning a hero point. Effectively the GM gains a 'free' complication against you. -1 or -2 cost per rank.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Efeito Colateral",
+            "description": "Como um efeito colateral específico do Controle da Sorte, se seu esforço para alterar a sorte falhar, você sofre um revés sem ganhar um ponto de herói. Efetivamente o Mestre ganha uma complicação 'gratuita' contra você."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "mind-reading",
@@ -1830,29 +2015,104 @@
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
-        "description": "Perceive through the target's senses.",
+        "description": "You can perceive through the target's senses while reading the target's mind. This is essentially a Remote Sensing effect linked to your Mind Reading.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Elo Sensorial",
-            "description": "Perceba através dos sentidos do alvo."
+            "description": "Pode perceber através dos sentidos do alvo enquanto lê a mente do alvo. Isso é essencialmente um efeito de Sensoriamento Remoto vinculado à sua Leitura Mental."
+          }
+        }
+      },
+      {
+        "id": "subtle_mind_reading",
+        "name": "Subtle",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Your Mind Reading is subtle and difficult to detect. With 2 ranks, it is completely undetectable.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Sutil",
+            "description": "Sua Leitura Mental é sutil e difícil de detectar. Com 2 ranks, é completamente indetectável."
           }
         }
       }
     ],
     "flaws": [
       {
+        "id": "close_mind_reading",
+        "name": "Close",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Your Mind Reading requires physical contact with the target.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Próximo",
+            "description": "Sua Leitura Mental requer contato físico com o alvo."
+          }
+        }
+      },
+      {
         "id": "feedback",
         "name": "Feedback",
         "category": "flaw",
         "costType": "per_rank",
         "costValue": -1,
-        "description": "Suffer damage when the target resists with a natural 20.",
+        "description": "If the target of your Mind Reading succeeds on a resistance check against it with a natural 20, you suffer a mental backlash. You are dazed until the start of your next turn. If you are using the Sensory Link extra, you may also suffer other effects, such as being blinded or deafened, at the GM's discretion.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Retroalimentação",
-            "description": "Sofra dano quando o alvo resiste com um 20 natural."
+            "description": "Se o alvo da sua Leitura Mental tiver sucesso em um teste de resistência contra ela com um 20 natural, você sofre um contragolpe mental. Você fica atordoado até o início do seu próximo turno."
+          }
+        }
+      },
+      {
+        "id": "limited_by_language",
+        "name": "Limited by Language",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Your Mind Reading is limited by language; you can only read the thoughts of subjects whose language you understand.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado por Idioma",
+            "description": "Sua Leitura Mental é limitada por idioma; você só pode ler os pensamentos de alvos cujo idioma você entende."
+          }
+        }
+      },
+      {
+        "id": "limited_to_emotions",
+        "name": "Limited to Emotions",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -2,
+        "description": "You can only sense the target's emotions, not actual thoughts. This is sometimes called 'empathy' and is more limited than true Mind Reading.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado a Emoções",
+            "description": "Você só pode sentir as emoções do alvo, não pensamentos reais. Isso às vezes é chamado de 'empatia' e é mais limitado que Leitura Mental verdadeira."
+          }
+        }
+      },
+      {
+        "id": "limited_to_sensory_link",
+        "name": "Limited to Sensory Link",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Your Mind Reading only provides the Sensory Link extra; you cannot read thoughts, only perceive through the target's senses.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado a Elo Sensorial",
+            "description": "Sua Leitura Mental fornece apenas o extra Elo Sensorial; você não pode ler pensamentos, apenas perceber através dos sentidos do alvo."
           }
         }
       },
@@ -1862,12 +2122,42 @@
         "category": "flaw",
         "costType": "per_rank",
         "costValue": -1,
-        "description": "Only read surface thoughts.",
+        "description": "You can only read surface thoughts, not deeper memories or subconscious information.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Limitado a Pensamentos Superficiais",
-            "description": "Lê apenas pensamentos superficiais."
+            "description": "Você só pode ler pensamentos superficiais, não memórias mais profundas ou informações subconscientes."
+          }
+        }
+      },
+      {
+        "id": "ranged_mind_reading",
+        "name": "Ranged",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Your Mind Reading requires a ranged attack check to use, rather than automatically affecting the target at perception range.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "À Distância",
+            "description": "Sua Leitura Mental requer um teste de ataque à distância para usar, ao invés de afetar automaticamente o alvo em alcance de percepção."
+          }
+        }
+      },
+      {
+        "id": "sense_dependent_mind_reading",
+        "name": "Sense-Dependent",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Your Mind Reading requires a particular sense to work. If that sense is blocked or unavailable, you cannot use Mind Reading.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Dependente de Sentido",
+            "description": "Sua Leitura Mental requer um sentido específico para funcionar. Se esse sentido for bloqueado ou indisponível, você não pode usar Leitura Mental."
           }
         }
       }
