@@ -332,19 +332,24 @@
     "extras": [],
     "flaws": [
       {
-        "id": "type",
-        "name": "Type",
+        "id": "type_broad",
+        "name": "Type (Broad)",
         "category": "flaw",
         "costType": "per_rank",
         "costValue": -1,
-        "description": "Limited to a broad (-1) or narrow (-2) type of subject.",
+        "description": "You can only comprehend a broad type of subject (only elves, canines, avians, or sea creatures, for example).",
         "incompatibleWith": [],
-        "i18n": {
-          "pt-BR": {
-            "name": "Tipo",
-            "description": "Limitado a um tipo amplo ou restrito de alvo."
-          }
-        }
+        "i18n": {}
+      },
+      {
+        "id": "type_narrow",
+        "name": "Type (Narrow)",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -2,
+        "description": "You can only comprehend a narrow type of subject (dogs, falcons, or dolphins, for example).",
+        "incompatibleWith": [],
+        "i18n": {}
       }
     ]
   },
@@ -824,19 +829,7 @@
     },
     "longDescription": "You can temporarily improve one of your existing traits by its rank while active. Cost per rank equals the cost of the base trait being enhanced. Enhanced Trait is a power effect (not a natural trait) and can be combined with extra effort. Subject to power level limits: unenhanced rank must be below the limit by at least the enhancement amount.",
     "enhancesDefense": null,
-    "extras": [
-      {
-        "id": "limited_enhanced_trait",
-        "name": "Limited",
-        "category": "extra",
-        "costType": "per_rank",
-        "costValue": 0,
-        "description": "Enhanced Trait only works under certain conditions (Nighttime Only, While Angry, Underwater, etc.).",
-        "longDescription": "Your Enhanced Trait only works under certain conditions, such as Nighttime (or Daytime) Only, While Angry (or in another emotional state), Underwater (or in some other environment), and so forth. A limit that rarely comes into play—like losing your Enhanced Trait during a new moon—can be handled as a power loss complication.",
-        "incompatibleWith": [],
-        "i18n": {}
-      }
-    ],
+    "extras": [],
     "flaws": [
       {
         "id": "limited_enhanced_trait_flaw",
@@ -891,7 +884,23 @@
     },
     "longDescription": "You can change the environment in an area. Affects a 30-foot radius at rank 1, increasing one distance rank per additional rank. Options (1-2 pts/rank each): Cold (intense/extreme), Heat (intense/extreme), Impede Movement (reduce speed by 1-2 ranks), Light (reduce/eliminate darkness concealment), Visibility (-2 or -5 to Perception). Multiple effects stack or use Selective modifier.",
     "enhancesDefense": null,
-    "extras": [],
+    "extras": [
+      {
+        "id": "selective",
+        "name": "Selective",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "With this extra you can vary the environment within your affected area, affecting some while not affecting others, or even mixing and matching different environments (making part of the area cold and another hot, for example).",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Seletivo",
+            "description": "Com este extra você pode variar o ambiente dentro da área afetada, afetando alguns enquanto não afeta outros, ou até misturando diferentes ambientes (tornando parte da área fria e outra quente, por exemplo)."
+          }
+        }
+      }
+    ],
     "flaws": []
   },
   {
@@ -919,10 +928,14 @@
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
-        "description": "Your Extra Limbs are continuous duration, always present.",
-        "longDescription": "Your Extra Limbs have continuous duration, meaning they are always present and do not require concentration to maintain.",
+        "description": "Continuous Extra Limbs are a power effect you can turn on and off at will, but that remain until you choose to deactivate them, even if you are stunned or incapacitated.",
         "incompatibleWith": [],
-        "i18n": {}
+        "i18n": {
+          "pt-BR": {
+            "name": "Contínuo",
+            "description": "Membros Extras Contínuos são um efeito de poder que você pode ativar e desativar à vontade, mas que permanecem até você escolher desativá-los, mesmo se estiver atordoado ou incapacitado."
+          }
+        }
       },
       {
         "id": "projection_extra_limbs",
@@ -930,10 +943,14 @@
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
-        "description": "Your Extra Limbs can be projected at range.",
-        "longDescription": "Your Extra Limbs can be projected at range, allowing you to manipulate objects or attack from a distance.",
+        "description": "Your Extra Limbs are merely a projection of your power rather than an extension of your body. Therefore, any harm directed specifically against your Extra Limb(s) has no effect. So, for example, one of your additional limbs could reach into a container of acid or a blast furnace to pull out an object without any harm to you.",
         "incompatibleWith": [],
-        "i18n": {}
+        "i18n": {
+          "pt-BR": {
+            "name": "Projeção",
+            "description": "Seus Membros Extras são apenas uma projeção de seu poder em vez de uma extensão de seu corpo. Portanto, qualquer dano direcionado especificamente contra seus Membros Extras não tem efeito."
+          }
+        }
       },
       {
         "id": "sustained_extra_limbs",
@@ -941,10 +958,14 @@
         "category": "extra",
         "costType": "per_rank",
         "costValue": 0,
-        "description": "Your Extra Limbs require sustained concentration to maintain.",
-        "longDescription": "Your Extra Limbs require sustained concentration to maintain. This is the default duration for Extra Limbs.",
+        "description": "Sustained Extra Limbs can be turned on or off (growing or forming the additional limbs and then making them disappear just as easily), but the limbs disappear or stop working if you are unable to continue the effect.",
         "incompatibleWith": [],
-        "i18n": {}
+        "i18n": {
+          "pt-BR": {
+            "name": "Sustentado",
+            "description": "Membros Extras Sustentados podem ser ativados ou desativados (crescendo ou formando os membros adicionais e então fazendo-os desaparecer facilmente), mas os membros desaparecem ou param de funcionar se você não puder continuar o efeito."
+          }
+        }
       }
     ],
     "flaws": [
@@ -1516,7 +1537,23 @@
     "longDescription": "You can recover from death. Subtract your Immortality rank from time rank 19 (one month) to determine recovery time. So rank 11 = 30 minutes, rank 20 = start of each action round. When you recover, all damage conditions are removed, but you lose all accumulated hero points.",
     "enhancesDefense": null,
     "extras": [],
-    "flaws": []
+    "flaws": [
+      {
+        "id": "limited_immortality",
+        "name": "Limited",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "You must specify a reasonably common effect (or set of uncommon effects) that keeps you from recovering from death, such as beheading, cremation, a stake through the heart, and so forth. Even then, if the effect is somehow removed or reversed (e.g., the stake is removed from your corpse) you may still be able to come back.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado",
+            "description": "Você deve especificar um efeito razoavelmente comum (ou conjunto de efeitos incomuns) que impede você de se recuperar da morte, como decapitação, cremação, uma estaca no coração, etc. Mesmo assim, se o efeito for removido ou revertido, você ainda pode voltar."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "immunity",
@@ -1827,8 +1864,55 @@
     },
     "longDescription": "You can make prodigious leaps. Your Leaping rank minus 2 is the distance rank covered in a single standing jump: 15 feet at rank 1, 30 at rank 2, up to 1,000 miles at rank 20. You suffer no damage from landing within your maximum distance. Leap speed maxes out at rank 7 (~250 mph).",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "affects_others_leaping",
+        "name": "Affects Others",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "You can give someone you are touching the ability to leap like you do while the effect lasts. You do not need this extra to simply carry someone while you leap; you can carry what your Strength normally allows.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Afeta Outros",
+            "description": "Você pode dar a alguém que está tocando a habilidade de saltar como você enquanto o efeito durar. Você não precisa deste extra para simplesmente carregar alguém enquanto salta."
+          }
+        }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "acrobatics_check_required",
+        "name": "Acrobatics Check Required",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "In order to use Leaping, you must make an Acrobatics skill check (DC 10). Each point your check total exceeds the DC allows you to use 1 rank of Leaping, up to your total rank.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Teste de Acrobacia Necessário",
+            "description": "Para usar Salto, você deve fazer um teste de Acrobacia (CD 10). Cada ponto que seu total exceder a CD permite usar 1 rank de Salto, até seu rank total."
+          }
+        }
+      },
+      {
+        "id": "full_power_leaping",
+        "name": "Full Power",
+        "category": "flaw",
+        "costType": "flat",
+        "costValue": -1,
+        "description": "You can only leap your maximum distance; you can make shorter leaps only by not using your Leaping effect at all, just the normal jumping distance for your Strength. This may suit uncontrollable 'leaping' effects like rocket boosters and the like.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Poder Total",
+            "description": "Você só pode saltar sua distância máxima; você pode fazer saltos menores apenas não usando seu efeito de Salto, apenas a distância normal de salto para sua Força."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "luck-control",
@@ -2220,12 +2304,24 @@
     "enhancesDefense": null,
     "extras": [
       {
+        "id": "continuous_move_object",
+        "name": "Continuous",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Move Object is not disrupted when you are unable to maintain it, but still requires conscious attention.",
+        "longDescription": "Move Object generally cannot have a continuous duration, since it is an active effect and requires at least a modicum of attention to maintain. The GM may allow Continuous Move Object as a variation that is not disrupted when you are unable to maintain it, but that still requires your conscious attention to do anything other than have the affected object hang in midair. There's no change in the cost of the extra, this is just a limitation of the Move Object effect.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
         "id": "damaging",
         "name": "Damaging",
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
-        "description": "Use Move Object to inflict damage.",
+        "description": "Your effect can inflict damage, like an application of normal Strength with damage equal to its rank.",
+        "longDescription": "Your effect can inflict damage, like an application of normal Strength with damage equal to its rank. This includes damaging targets in grabs and making ranged \"strike\" attacks.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
@@ -2235,12 +2331,24 @@
         }
       },
       {
-        "id": "perception",
+        "id": "improvised_weapon_move_object",
+        "name": "Improvised Weapon or Throwing Mastery",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "You are particularly adept at using objects as weapons with your power. Each rank increases damage by 1.",
+        "longDescription": "You are particularly adept at using objects as weapons with your power. Each rank of either advantage increases the damage of objects wielded or thrown using Move Object by 1.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "perception_move_object",
         "name": "Perception",
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
-        "description": "Move anything you can see.",
+        "description": "Perception Ranged Move Object can affect any object you can accurately perceive, with no need for an attack check.",
+        "longDescription": "Perception Ranged Move Object can affect any object you can accurately perceive, with no need for an attack check.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
@@ -2248,16 +2356,61 @@
             "description": "Move qualquer coisa que possa ver."
           }
         }
+      },
+      {
+        "id": "precise_move_object",
+        "name": "Precise",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Move Object with this modifier can be used for tasks involving fine manipulation.",
+        "longDescription": "Move Object with this modifier can be used for tasks involving fine manipulation.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "subtle_move_object",
+        "name": "Subtle",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "A less noticeable Move Object effect, such as invisible psychokinesis.",
+        "longDescription": "The default version of Move Object involves some noticeable manifestation like a \"tractor beam,\" a glow around your head or hands (along with a corresponding glow around the affected object), big glowing hands, blazing \"energy talons,\" a lasso, whip, or the like. Apply the Subtle modifier for a less noticeable Move Object effect, such as invisible \"psychokinesis\" (which is generally also Perception Range).",
+        "incompatibleWith": [],
+        "i18n": {}
       }
     ],
     "flaws": [
+      {
+        "id": "close_move_object",
+        "name": "Close",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Move Object is reduced to close range. May represent \"tactile telekinesis\" or supernatural influence over touched objects.",
+        "longDescription": "Since Move Object works on things at a distance by definition, it cannot generally be reduced to close ranged. At the GM's discretion, a Close Ranged Move Object effect may represent \"tactile telekinesis\" or a supernatural influence over objects you are able to touch, but such things are usually better represented by the Enhanced Strength effect.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "concentration_move_object",
+        "name": "Concentration",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Concentration Move Object requires more attention to maintain. You cannot concentrate to increase lifting capacity or grab/move another object while holding the first.",
+        "longDescription": "Concentration Move Object requires more attention to maintain. You cannot concentrate to increase your lifting capacity or to grab or move another object while you are still \"holding\" your first.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
       {
         "id": "limited_direction",
         "name": "Limited Direction",
         "category": "flaw",
         "costType": "per_rank",
         "costValue": -1,
-        "description": "Only move in one direction.",
+        "description": "You can only move objects in a particular direction or path, such as only up and down, or only towards/away from you.",
+        "longDescription": "You can only move objects in a particular direction or path, such as only up and down (towards and away from the ground), only directly towards or away from you (attraction and repulsion), and so forth. This is useful for \"gravitic\" or \"magnetic\" versions of the effect.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
@@ -2265,6 +2418,17 @@
             "description": "Move apenas em uma direção."
           }
         }
+      },
+      {
+        "id": "limited_material",
+        "name": "Limited Material",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "You can only move a particular type of object or material, such as only metals, plants, rock, water, etc.",
+        "longDescription": "You can only move a particular type of object or material, such as only metals, plants, rock, water, and so forth. The GM may allow a –2 cost per rank flaw for a particularly limited type of material, such as only precious metals, leaves, sand, or petroleum.",
+        "incompatibleWith": [],
+        "i18n": {}
       }
     ]
   },
@@ -2599,8 +2763,40 @@
     },
     "longDescription": "You recover quickly from damage. Remove Toughness check penalties equal to your rank each minute, then recover other damage conditions equal to rank each minute (spread evenly over 10 rounds). Regeneration 5: remove -1 penalty every other round. Regeneration 10: every round. Characters with no Stamina need at least 1 rank to recover at normal rate.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "persistent",
+        "name": "Persistent",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can regenerate even Incurable damage conditions (see the Incurable modifier).",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Persistente",
+            "description": "Você pode regenerar até condições de dano Incuráveis (veja o modificador Incurável)."
+          }
+        }
+      }
+    ],
+    "flaws": [
+      {
+        "id": "source",
+        "name": "Source",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Your Regeneration only works when you have access to a particular source to replenish yourself, such as blood, electricity, sand, scrap metal, sunlight, and so forth.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Fonte",
+            "description": "Sua Regeneração só funciona quando você tem acesso a uma fonte específica para se repor, como sangue, eletricidade, areia, sucata, luz solar, etc."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "remote-sensing",
@@ -2658,6 +2854,17 @@
             "description": "Percebe em outras dimensões."
           }
         }
+      },
+      {
+        "id": "no_conduit",
+        "name": "No Conduit",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Sensory effects targeted where you have displaced your senses do not affect you, but neither can you use perception ranged effects via your Remote Sensing.",
+        "longDescription": "Sensory effects targeted where you have displaced your senses do not affect you, but neither can you use perception ranged effects via your Remote Sensing. Despite the built-in limitation, this is an extra, since it allows you to use your Remote Sensing to observe subjects in relative safety.",
+        "incompatibleWith": [],
+        "i18n": {}
       },
       {
         "id": "simultaneous",
@@ -2945,6 +3152,16 @@
         }
       },
       {
+        "id": "mental_link",
+        "name": "Mental Link",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "You have a mental link with your minions, allowing you to communicate with them and issue orders telepathically like the Communication Link effect.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
         "id": "multiple_minions",
         "name": "Multiple Minions",
         "category": "extra",
@@ -2973,9 +3190,49 @@
             "description": "Transfere um teste de resistência para um lacaio."
           }
         }
+      },
+      {
+        "id": "variable_type_general",
+        "name": "Variable Type (General)",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can summon different minions of a general type (like elementals, birds, fish, etc.).",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "variable_type_broad",
+        "name": "Variable Type (Broad)",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 2,
+        "description": "You can summon different minions of a broad type (like animals, demons, humanoids, etc.).",
+        "incompatibleWith": [],
+        "i18n": {}
       }
     ],
     "flaws": [
+      {
+        "id": "attitude_indifferent",
+        "name": "Attitude (Indifferent)",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Your summoned minions are indifferent. You can use interaction skills and other effects to get your summoned minions to cooperate, but success is by no means assured.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "attitude_unfriendly",
+        "name": "Attitude (Unfriendly)",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -2,
+        "description": "Your summoned minions are unfriendly. You can use interaction skills and other effects to get your summoned minions to cooperate, but success is by no means assured.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
       {
         "id": "resistible",
         "name": "Resistible",
