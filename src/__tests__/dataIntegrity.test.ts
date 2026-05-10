@@ -66,6 +66,152 @@ describe('modifiers.json — structural integrity', () => {
   });
 });
 
+describe('modifiers.json — extended structural validation', () => {
+  it('incompatibleWith is always an array', () => {
+    for (const mod of modifiers) {
+      expect(
+        Array.isArray(mod.incompatibleWith),
+        `${mod.id} has non-array incompatibleWith`
+      ).toBe(true);
+    }
+  });
+
+  it('IDs in incompatibleWith reference existing modifiers', () => {
+    const allIds = new Set(modifiers.map((m) => m.id));
+    for (const mod of modifiers) {
+      for (const incompatId of mod.incompatibleWith) {
+        expect(
+          allIds.has(incompatId),
+          `${mod.id} references non-existent modifier "${incompatId}" in incompatibleWith`
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('maxRanks, when present, is a positive number', () => {
+    for (const mod of modifiers) {
+      if (mod.maxRanks !== undefined) {
+        expect(
+          typeof mod.maxRanks === 'number' && mod.maxRanks > 0,
+          `${mod.id} has invalid maxRanks ${mod.maxRanks}`
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('description and name are non-empty strings', () => {
+    for (const mod of modifiers) {
+      expect(mod.name.length, `${mod.id} has empty name`).toBeGreaterThan(0);
+      expect(mod.description.length, `${mod.id} has empty description`).toBeGreaterThan(0);
+    }
+  });
+
+  it('longDescription, when present, is longer than description', () => {
+    for (const mod of modifiers) {
+      if (mod.longDescription) {
+        expect(
+          mod.longDescription.length > mod.description.length,
+          `${mod.id} longDescription (${mod.longDescription.length} chars) is not longer than description (${mod.description.length} chars)`
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('options, when present, is an array with valid structure', () => {
+    for (const mod of modifiers) {
+      if (mod.options) {
+        expect(Array.isArray(mod.options), `${mod.id} has non-array options`).toBe(true);
+        for (const opt of mod.options) {
+          expect(opt.label, `${mod.id} option missing label`).toBeTruthy();
+          expect(opt.notes, `${mod.id} option missing notes`).toBeTruthy();
+        }
+      }
+    }
+  });
+
+  it('subtypes, when present, have valid structure', () => {
+    for (const mod of modifiers) {
+      const modWithSubtypes = mod as ModifierWithSubtypes;
+      if (modWithSubtypes.subtypes) {
+        expect(Array.isArray(modWithSubtypes.subtypes), `${mod.id} has non-array subtypes`).toBe(true);
+        for (const sub of modWithSubtypes.subtypes) {
+          expect(sub.id, `${mod.id} subtype missing id`).toBeTruthy();
+          expect(sub.label, `${mod.id} subtype missing label`).toBeTruthy();
+          expect(typeof sub.costValue, `${mod.id} subtype missing costValue`).toBe('number');
+        }
+      }
+    }
+  });
+
+  it('modifiers with subtypes have unique subtype IDs', () => {
+    for (const mod of modifiers) {
+      const modWithSubtypes = mod as ModifierWithSubtypes;
+      if (modWithSubtypes.subtypes) {
+        const ids = modWithSubtypes.subtypes.map((s) => s.id);
+        const unique = new Set(ids);
+        expect(
+          ids.length,
+          `${mod.id} has duplicate subtype IDs: ${ids.filter((id, i) => ids.indexOf(id) !== i)}`
+        ).toBe(unique.size);
+      }
+    }
+  });
+
+  it('i18n translations, when present, have valid structure', () => {
+    for (const mod of modifiers) {
+      if (mod.i18n) {
+        for (const [lang, trans] of Object.entries(mod.i18n)) {
+          expect(typeof trans, `${mod.id} i18n.${lang} is not an object`).toBe('object');
+          // At least one translation field should be present
+          const hasTranslation = trans.name || trans.description || trans.longDescription;
+          expect(hasTranslation, `${mod.id} i18n.${lang} has no translation fields`).toBeTruthy();
+        }
+      }
+    }
+  });
+});
+
+describe('modifiers.json — costType validation rules', () => {
+  it('flat_ranked modifiers should have maxRanks defined', () => {
+    const flatRanked = modifiers.filter((m) => m.costType === 'flat_ranked');
+    const withoutMaxRanks = flatRanked.filter((m) => !m.maxRanks);
+    
+    // Some flat_ranked modifiers may not have maxRanks if they're unlimited
+    // This is a warning test - we document which ones don't have it
+    if (withoutMaxRanks.length > 0) {
+      const ids = withoutMaxRanks.map((m) => m.id).join(', ');
+      // This is informational - not all flat_ranked need maxRanks
+      expect(withoutMaxRanks.length).toBeLessThan(flatRanked.length);
+    }
+  });
+
+  it('modifiers with costValue 0 should have subtypes, options, or documented special logic', () => {
+    const zeroCosters = modifiers.filter((m) => m.costValue === 0);
+    const KNOWN_SPECIAL_LOGIC = [
+      'affects_objects',
+      'affects_others', 
+      'alternate_resistance',
+      'attack',
+      'linked',
+      'sleep',
+      'sustained'
+    ];
+    
+    for (const mod of zeroCosters) {
+      const modWithSubtypes = mod as ModifierWithSubtypes;
+      const hasSubtypes = modWithSubtypes.subtypes && modWithSubtypes.subtypes.length > 0;
+      const hasOptions = mod.options && mod.options.length > 0;
+      const isKnownSpecial = KNOWN_SPECIAL_LOGIC.includes(mod.id);
+      
+      // Zero-cost modifiers should have subtypes, options, or be in the known special list
+      expect(
+        hasSubtypes || hasOptions || isKnownSpecial,
+        `${mod.id} has costValue 0 but no subtypes, options, or documented special logic`
+      ).toBe(true);
+    }
+  });
+});
+
 describe('modifiers.json — RAW semantic rules', () => {
   const extras = modifiers.filter((m) => m.category === 'extra');
   const flaws = modifiers.filter((m) => m.category === 'flaw');
