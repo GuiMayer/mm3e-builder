@@ -13,13 +13,14 @@ import { AltEffectCard } from './AltEffectCard';
 import { useAlternateEffects } from './hooks/useAlternateEffects';
 import { usePowerDragAndDrop } from './hooks/usePowerDragAndDrop';
 import { usePowerCostCalculation } from './hooks/usePowerCostCalculation';
-import { PowerComponentEditor } from './components/PowerComponentEditor';
-import { X, Save, Plus, Zap, Info } from 'lucide-react';
+import { ModifierDropzone } from './components/ModifierDropzone';
+import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
 import { useCharStore } from '../../store/charStore';
 import { useAppStore } from '../../store/appStore';
+import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 
 interface Props {
   existingPower?: ICharacterPower;
@@ -90,7 +91,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   const {
     componentCosts,
     mainCost,
-    arrayCost,
     removableDiscount,
     totalCost,
     aeCosts,
@@ -124,12 +124,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     return `${ae.name || 'AE'} · Comp. ${compIdx + 1}`;
   }, [expandedAEId, power.alternateEffects, activeAEComponentId]);
 
-  // Use drag-and-drop hook
-  const { sensors, activeId, handleDragStart, handleDragEnd } = usePowerDragAndDrop({
-    onDropToComponent: addModifierToComponent,
-    onDropToAEComponent: addModifierToAEComponent,
-  });
-
+  // Define addModifierToComponent before using it in hooks
   const addModifierToComponent = useCallback(
     (componentId: string, modId: string, isPowerSpecific?: boolean) => {
       // Check if it comes from the power's specific modifiers
@@ -161,6 +156,33 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     },
     [powerDefs]
   );
+
+  // ── AE CRUD — delegado ao hook useAlternateEffects ──
+  const {
+    addAlternateEffect,
+    removeAlternateEffect,
+    updateAlternateEffect,
+    addAEComponent,
+    removeAEComponent,
+    updateAEComponent,
+    addModifierToAEComponent,
+    removeModifierFromAEComponent,
+    updateAEModifierRanks,
+    updateAEModifierOption,
+    updateAEModifierOptions,
+  } = useAlternateEffects({
+    setPower,
+    powerDefs,
+    expandedAEId,
+    setExpandedAEId,
+    setActiveAEComponentId,
+  });
+
+  // Use drag-and-drop hook
+  const { sensors, activeId, handleDragStart, handleDragEnd } = usePowerDragAndDrop({
+    onDropToComponent: addModifierToComponent,
+    onDropToAEComponent: addModifierToAEComponent,
+  });
 
   function handleAddModifierFromPalette(modId: string, isPowerSpecific?: boolean) {
     // Palette serves the AE context when an AE card is expanded
@@ -262,27 +284,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
       ),
     }));
   }
-
-  // ── AE CRUD — delegado ao hook useAlternateEffects ──
-  const {
-    addAlternateEffect,
-    removeAlternateEffect,
-    updateAlternateEffect,
-    addAEComponent,
-    removeAEComponent,
-    updateAEComponent,
-    addModifierToAEComponent,
-    removeModifierFromAEComponent,
-    updateAEModifierRanks,
-    updateAEModifierOption,
-    updateAEModifierOptions,
-  } = useAlternateEffects({
-    setPower,
-    powerDefs,
-    expandedAEId,
-    setExpandedAEId,
-    setActiveAEComponentId,
-  });
 
   function handleSave() {
     const hasEffect = power.components.some((c) => c.effectId !== '');
