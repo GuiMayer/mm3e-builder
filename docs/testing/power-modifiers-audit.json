@@ -1,0 +1,417 @@
+{
+  "generated": "2026-05-10T17:35:34.055Z",
+  "summary": {
+    "totalPowers": 12,
+    "complete": 2,
+    "partial": 5,
+    "empty": 3,
+    "averageCoverage": 45
+  },
+  "powers": [
+    {
+      "power": "healing",
+      "powerName": "Healing",
+      "status": "partial",
+      "currentExtras": [
+        "Persistent",
+        "Restorative",
+        "Stabilize"
+      ],
+      "currentFlaws": [],
+      "handbookExtras": [
+        "Action",
+        "Affects Objects",
+        "Area",
+        "Energizing",
+        "Perception",
+        "Persistent",
+        "Ranged",
+        "Restorative",
+        "Resurrection",
+        "Selective",
+        "Stabilize"
+      ],
+      "handbookFlaws": [
+        "Empathic",
+        "Limited",
+        "Temporary"
+      ],
+      "missingExtras": [
+        "Action",
+        "Affects Objects",
+        "Area",
+        "Energizing",
+        "Perception",
+        "Ranged",
+        "Resurrection",
+        "Selective"
+      ],
+      "missingFlaws": [
+        "Empathic",
+        "Limited",
+        "Temporary"
+      ],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 21,
+      "priority": "high",
+      "pageReference": "p.1286-1378 (lines 1285-1384)"
+    },
+    {
+      "power": "insubstantial",
+      "powerName": "Insubstantial",
+      "status": "empty",
+      "currentExtras": [],
+      "currentFlaws": [],
+      "handbookExtras": [
+        "Affects Corporeal",
+        "Affects Others",
+        "Attack",
+        "Continuous",
+        "Innate",
+        "Precise",
+        "Progressive",
+        "Reaction",
+        "Subtle"
+      ],
+      "handbookFlaws": [
+        "Absent Strength",
+        "Permanent"
+      ],
+      "missingExtras": [
+        "Affects Corporeal",
+        "Affects Others",
+        "Attack",
+        "Continuous",
+        "Innate",
+        "Precise",
+        "Progressive",
+        "Reaction",
+        "Subtle"
+      ],
+      "missingFlaws": [
+        "Absent Strength",
+        "Permanent"
+      ],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 0,
+      "priority": "high",
+      "pageReference": "p.1523-1650",
+      "notes": "Currently has empty arrays in powers.json"
+    },
+    {
+      "power": "flight",
+      "powerName": "Flight",
+      "status": "partial",
+      "currentExtras": [],
+      "currentFlaws": [
+        "Gliding",
+        "Levitation",
+        "Wings"
+      ],
+      "handbookExtras": [
+        "Aquatic",
+        "Continuous",
+        "Subtle"
+      ],
+      "handbookFlaws": [
+        "Concentration",
+        "Distracting",
+        "Gliding",
+        "Levitation",
+        "Platform",
+        "Wings"
+      ],
+      "missingExtras": [
+        "Aquatic",
+        "Continuous",
+        "Subtle"
+      ],
+      "missingFlaws": [
+        "Concentration",
+        "Distracting",
+        "Platform"
+      ],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 33,
+      "priority": "high",
+      "pageReference": "p.1161-1255 (lines 1160-1259)"
+    },
+    {
+      "power": "illusion",
+      "powerName": "Illusion",
+      "status": "partial",
+      "currentExtras": [
+        "Believable"
+      ],
+      "currentFlaws": [
+        "Phantasm"
+      ],
+      "handbookExtras": [
+        "Believable",
+        "Independent",
+        "Selective"
+      ],
+      "handbookFlaws": [
+        "Feedback",
+        "Limited to One Subject",
+        "Phantasm",
+        "Ranged",
+        "Resistible"
+      ],
+      "missingExtras": [
+        "Independent",
+        "Selective"
+      ],
+      "missingFlaws": [
+        "Feedback",
+        "Limited to One Subject",
+        "Ranged",
+        "Resistible"
+      ],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 25,
+      "priority": "high",
+      "pageReference": "p.1379-1522"
+    },
+    {
+      "power": "enhanced_trait",
+      "powerName": "enhanced_trait",
+      "status": "not_found",
+      "currentExtras": [],
+      "currentFlaws": [],
+      "handbookExtras": [
+        "Limited"
+      ],
+      "handbookFlaws": [
+        "Limited",
+        "Permanent",
+        "Reduced Trait"
+      ],
+      "missingExtras": [
+        "Limited"
+      ],
+      "missingFlaws": [
+        "Limited",
+        "Permanent",
+        "Reduced Trait"
+      ],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 0,
+      "priority": "high",
+      "pageReference": "p.900-1000",
+      "notes": "Currently has empty arrays in powers.json"
+    },
+    {
+      "power": "extra_limbs",
+      "powerName": "extra_limbs",
+      "status": "not_found",
+      "currentExtras": [],
+      "currentFlaws": [],
+      "handbookExtras": [
+        "Continuous",
+        "Projection",
+        "Sustained"
+      ],
+      "handbookFlaws": [
+        "Distracting"
+      ],
+      "missingExtras": [
+        "Continuous",
+        "Projection",
+        "Sustained"
+      ],
+      "missingFlaws": [
+        "Distracting"
+      ],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 0,
+      "priority": "high",
+      "pageReference": "p.1100-1159",
+      "notes": "Currently has empty arrays in powers.json"
+    },
+    {
+      "power": "affliction",
+      "powerName": "Affliction",
+      "status": "partial",
+      "currentExtras": [
+        "Cumulative",
+        "Extra Condition",
+        "Progressive"
+      ],
+      "currentFlaws": [
+        "Instant Recovery",
+        "Limited Degree"
+      ],
+      "handbookExtras": [
+        "Alternate Resistance",
+        "Concentration",
+        "Cumulative",
+        "Extra Condition",
+        "Progressive"
+      ],
+      "handbookFlaws": [
+        "Instant Recovery",
+        "Limited Degree"
+      ],
+      "missingExtras": [
+        "Alternate Resistance",
+        "Concentration"
+      ],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 71,
+      "priority": "low",
+      "pageReference": "p.3-36 (lines 3-180)"
+    },
+    {
+      "power": "communication",
+      "powerName": "Communication",
+      "status": "partial",
+      "currentExtras": [
+        "Area",
+        "Dimensional",
+        "Rapid",
+        "Selective",
+        "Subtle"
+      ],
+      "currentFlaws": [
+        "Limited"
+      ],
+      "handbookExtras": [
+        "Area",
+        "Dimensional",
+        "Rapid",
+        "Selective",
+        "Subtle"
+      ],
+      "handbookFlaws": [
+        "Limited",
+        "Sense-Dependent"
+      ],
+      "missingExtras": [],
+      "missingFlaws": [
+        "Sense-Dependent"
+      ],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 86,
+      "priority": "low",
+      "pageReference": "p.218-333"
+    },
+    {
+      "power": "growth",
+      "powerName": "Growth",
+      "status": "empty",
+      "currentExtras": [],
+      "currentFlaws": [],
+      "handbookExtras": [
+        "Permanent"
+      ],
+      "handbookFlaws": [],
+      "missingExtras": [
+        "Permanent"
+      ],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 0,
+      "priority": "low",
+      "pageReference": "p.1256-1285",
+      "notes": "Currently has empty arrays in powers.json"
+    },
+    {
+      "power": "burrowing",
+      "powerName": "Burrowing",
+      "status": "complete",
+      "currentExtras": [
+        "Penetrating",
+        "Ranged"
+      ],
+      "currentFlaws": [
+        "Limited"
+      ],
+      "handbookExtras": [
+        "Penetrating",
+        "Ranged"
+      ],
+      "handbookFlaws": [
+        "Limited"
+      ],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.181-216"
+    },
+    {
+      "power": "create",
+      "powerName": "Create",
+      "status": "complete",
+      "currentExtras": [
+        "Continuous",
+        "Impervious",
+        "Innate",
+        "Movable",
+        "Precise",
+        "Selective",
+        "Stationary",
+        "Subtle",
+        "Tether"
+      ],
+      "currentFlaws": [
+        "Feedback",
+        "Permanent",
+        "Proportional"
+      ],
+      "handbookExtras": [
+        "Continuous",
+        "Impervious",
+        "Innate",
+        "Movable",
+        "Precise",
+        "Selective",
+        "Stationary",
+        "Subtle",
+        "Tether"
+      ],
+      "handbookFlaws": [
+        "Feedback",
+        "Permanent",
+        "Proportional"
+      ],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.494-620"
+    },
+    {
+      "power": "damage",
+      "powerName": "Damage",
+      "status": "empty",
+      "currentExtras": [],
+      "currentFlaws": [],
+      "handbookExtras": [],
+      "handbookFlaws": [],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.649-806",
+      "notes": "No power-specific modifiers in handbook"
+    }
+  ]
+}
