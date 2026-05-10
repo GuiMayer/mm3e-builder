@@ -57,7 +57,7 @@
         "name": "Progressive",
         "category": "extra",
         "costType": "per_rank",
-        "costValue": 1,
+        "costValue": 2,
         "description": "Target loses one degree per round even after initial resistance success.",
         "longDescription": "A Progressive Affliction worsens over time. Even if the target succeeds on their initial resistance check, they still worsen by one degree at the end of each round until they succeed on a resistance check or reach the maximum degree.",
         "incompatibleWith": [],
