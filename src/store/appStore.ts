@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
-import type { IAppPreferences } from '../entities/types';
+import type { IAppPreferences, IValidationRules } from '../entities/types';
+import { DEFAULT_VALIDATION_RULES } from '../shared/lib/validationRules';
 
 /* ================================================
    App Store — Global Preferences
@@ -13,6 +14,8 @@ interface AppStoreState extends IAppPreferences {
   toggleStrictMode: () => void;
   setStrictMode: (value: boolean) => void;
   setLanguage: (lang: string) => void;
+  setValidationRules: (rules: Partial<IValidationRules>) => void;
+  resetValidationRules: () => void;
 }
 
 export const useAppStore = create<AppStoreState>()(
@@ -22,6 +25,7 @@ export const useAppStore = create<AppStoreState>()(
         theme: 'dark-knight',
         strictMode: true,
         language: 'en',
+        validationRules: DEFAULT_VALIDATION_RULES,
 
         setTheme: (theme) =>
           set(() => {
@@ -42,6 +46,19 @@ export const useAppStore = create<AppStoreState>()(
         setLanguage: (language) =>
           set({
             language,
+          }),
+
+        setValidationRules: (rules) =>
+          set((state) => ({
+            validationRules: {
+              ...state.validationRules,
+              ...rules,
+            },
+          })),
+
+        resetValidationRules: () =>
+          set({
+            validationRules: DEFAULT_VALIDATION_RULES,
           }),
       }),
       {

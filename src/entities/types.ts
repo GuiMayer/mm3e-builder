@@ -260,9 +260,30 @@ export interface ICharacterFile {
   character: ICharacter;
 }
 
+// ── Validation Rule Configuration ──
+// Allows GMs and players to toggle specific rules on/off
+export interface IValidationRules {
+  // Modifier restrictions
+  enforceIncompatibleModifiers: boolean;      // Prevent incompatible modifier combinations
+  enforceModifierMaxRanks: boolean;           // Enforce maxRanks limits on modifiers
+  enforceAccuratePLCap: boolean;              // Accurate modifier capped at PL
+  
+  // Power validations
+  enforceAfflictionProgression: boolean;      // Validate Affliction condition degrees
+  enforceAbsentAbilityRestrictions: boolean;  // Warn about powers requiring absent abilities
+  
+  // PL trade-offs (always enforced in strict mode, but can be warnings)
+  plTradeOffsAsErrors: boolean;               // true = errors, false = warnings
+  
+  // Skill validations
+  enforceTrainedOnlySkills: boolean;          // Prevent untrained use of trained-only skills
+  enforceSkillAbilityRequirements: boolean;   // Warn about skills with absent base abilities
+}
+
 // ── App Preferences ──
 export interface IAppPreferences {
   theme: string;
   strictMode: boolean;
   language: string;
+  validationRules?: IValidationRules;         // Optional validation rule overrides
 }
