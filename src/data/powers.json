@@ -2041,19 +2041,163 @@
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
-        "description": "Affect multiple targets in range with one use.",
-        "longDescription": "Each rank of Simultaneous allows Nullify to affect one additional target within range on the same action, though a separate attack check must be made for each.",
+        "description": "Simultaneous Nullify can counter all effects of a particular descriptor (such as fire or magic) at once.",
+        "longDescription": "Simultaneous Nullify can counter all effects of a particular descriptor (such as fire or magic) at once.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Simultâneo",
-            "description": "Afeta múltiplos alvos no alcance com um único uso.",
-            "longDescription": "Cada rank de Simultâneo permite que Anular afete um alvo adicional no alcance na mesma ação, com um teste de ataque separado para cada."
+            "description": "Anular Simultâneo pode anular todos os efeitos de um descritor específico (como fogo ou magia) de uma vez."
+          }
+        }
+      },
+      {
+        "id": "alternate_resistance",
+        "name": "Alternate Resistance",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Nullify may require a Fortitude rather than a Will check to represent an effect resisted by health and stamina rather than strength of will.",
+        "longDescription": "Nullify may require a Fortitude rather than a Will check to represent an effect resisted by health and stamina rather than strength of will.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Resistência Alternativa",
+            "description": "Anular pode exigir um teste de Fortitude ao invés de Vontade para representar um efeito resistido por saúde e vigor ao invés de força de vontade."
+          }
+        }
+      },
+      {
+        "id": "area_nullify",
+        "name": "Area",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "An Area Nullify effect works on all targets in the area. Make a single power check and compare the result against the opposed checks of the targets. Targets lacking effects you can nullify are, naturally, unaffected.",
+        "longDescription": "An Area Nullify effect works on all targets in the area. Make a single power check and compare the result against the opposed checks of the targets. Targets lacking effects you can nullify are, naturally, unaffected. If your Area Nullify has a duration longer than instant, choose whether or not the effect remains in the chosen area (affecting anyone entering or leaving it) or moves with the targets hit with the initial effect.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Área",
+            "description": "Anular em Área funciona em todos os alvos na área. Faça um único teste de poder e compare o resultado contra os testes opostos dos alvos. Alvos sem efeitos que você possa anular não são afetados."
+          }
+        }
+      },
+      {
+        "id": "concentration_nullify",
+        "name": "Concentration",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Any countered effect is suppressed and cannot be re-activated while you concentrate. The user of the countered effect may use extra effort to gain another opposed Nullify check. If successful, the effect can be re-activated.",
+        "longDescription": "Any countered effect is suppressed and cannot be re-activated while you concentrate. The user of the countered effect may use extra effort to gain another opposed Nullify check. If successful, the effect can be re-activated.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Concentração",
+            "description": "Qualquer efeito anulado é suprimido e não pode ser reativado enquanto você se concentra. O usuário do efeito anulado pode usar esforço extra para obter outro teste oposto de Anular."
+          }
+        }
+      },
+      {
+        "id": "effortless_nullify",
+        "name": "Effortless",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Trying again after two or more degrees of failure does not require extra effort for you. You can retry a Nullify attempt an unlimited number of times.",
+        "longDescription": "Trying again after two or more degrees of failure does not require extra effort for you. You can retry a Nullify attempt an unlimited number of times.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Sem Esforço",
+            "description": "Tentar novamente após dois ou mais graus de falha não requer esforço extra. Você pode tentar Anular um número ilimitado de vezes."
+          }
+        }
+      },
+      {
+        "id": "precise_nullify",
+        "name": "Precise",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "If you can Nullify multiple effects, this modifier allows you to choose which are nullified and which are not.",
+        "longDescription": "If you can Nullify multiple effects, this modifier allows you to choose which are nullified and which are not.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Preciso",
+            "description": "Se você pode Anular múltiplos efeitos, este modificador permite escolher quais são anulados e quais não são."
+          }
+        }
+      },
+      {
+        "id": "randomize",
+        "name": "Randomize",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Rather than being countered, the effect(s) targeted by your Nullify acquire the Uncontrolled flaw and go out of control (as dictated by the GM).",
+        "longDescription": "Rather than being countered, the effect(s) targeted by your Nullify acquire the Uncontrolled flaw and go out of control (as dictated by the GM).",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Aleatorizar",
+            "description": "Ao invés de ser anulado, o(s) efeito(s) alvo do seu Anular adquirem a falha Descontrolado e saem de controle (conforme ditado pelo Mestre)."
+          }
+        }
+      },
+      {
+        "id": "selective_nullify",
+        "name": "Selective",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "If you have an Area Nullify effect, this extra allows you to choose who in the area is affected, nullifying some targets and not others.",
+        "longDescription": "If you have an Area Nullify effect, this extra allows you to choose who in the area is affected, nullifying some targets and not others.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Seletivo",
+            "description": "Se você tem um efeito Anular em Área, este extra permite escolher quem na área é afetado, anulando alguns alvos e não outros."
+          }
+        }
+      },
+      {
+        "id": "sustained_nullify",
+        "name": "Sustained",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "If this modifier is applied to Concentration Nullify, keeping the countered effect(s) suppressed is only a free action for you each turn.",
+        "longDescription": "If this modifier is applied to Concentration Nullify, keeping the countered effect(s) suppressed is only a free action for you each turn.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Sustentado",
+            "description": "Se este modificador for aplicado a Anular com Concentração, manter o(s) efeito(s) anulado(s) suprimido(s) é apenas uma ação livre para você a cada turno."
           }
         }
       }
     ],
-    "flaws": []
+    "flaws": [
+      {
+        "id": "side_effect_nullify",
+        "name": "Side Effect",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "If you fail to nullify an effect, you might suffer some kind of 'backlash' or similar side effect.",
+        "longDescription": "If you fail to nullify an effect, you might suffer some kind of 'backlash' or similar side effect.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Efeito Colateral",
+            "description": "Se você falhar em anular um efeito, pode sofrer algum tipo de 'contragolpe' ou efeito colateral similar."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "protection",
@@ -2857,12 +3001,92 @@
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
-        "description": "Weaken all traits in a Broad set at once.",
+        "description": "If applied to a Broad Weaken, this extra allows it to affect all of the traits in its set at the same time. Each trait loses the difference between the resistance check result and the DC in power points on a failed check. The effect must be Broad to apply this modifier.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Simultâneo",
-            "description": "Enfraquece todos os traços de um conjunto de uma vez."
+            "description": "Se aplicado a um Enfraquecer Amplo, este extra permite afetar todos os traços do conjunto ao mesmo tempo. Cada traço perde a diferença entre o resultado do teste de resistência e a CD em pontos de poder em uma falha. O efeito deve ser Amplo para aplicar este modificador."
+          }
+        }
+      },
+      {
+        "id": "affects_objects",
+        "name": "Affects Objects",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Weaken with this modifier works on inanimate objects, although the effect can still only affect traits the objects possess. This is most often applied to Weaken Toughness for an effect that can weaken both creatures and objects.",
+        "longDescription": "Weaken with this modifier works on inanimate objects, although the effect can still only affect traits the objects possess. This is most often applied to Weaken Toughness for an effect that can weaken both creatures and objects. +1 cost per rank, +0 for Affects Only Objects.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Afeta Objetos",
+            "description": "Enfraquecer com este modificador funciona em objetos inanimados, embora o efeito ainda possa afetar apenas traços que os objetos possuem. Mais frequentemente aplicado a Enfraquecer Resistência para um efeito que pode enfraquecer criaturas e objetos."
+          }
+        }
+      },
+      {
+        "id": "concentration_weaken",
+        "name": "Concentration",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Once you have hit with a Concentration Weaken, so long as you continue to take a standard action each turn to maintain the effect, the target must make a new resistance check against it, with no attack check required.",
+        "longDescription": "Once you have hit with a Concentration Weaken, so long as you continue to take a standard action each turn to maintain the effect, the target must make a new resistance check against it, with no attack check required.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Concentração",
+            "description": "Uma vez que você acertou com um Enfraquecer de Concentração, enquanto continuar a usar uma ação padrão a cada turno para manter o efeito, o alvo deve fazer um novo teste de resistência contra ele, sem necessidade de teste de ataque."
+          }
+        }
+      },
+      {
+        "id": "incurable",
+        "name": "Incurable",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Weaken with this modifier cannot have its effects countered by another power (such as Restorative Healing) without the Persistent modifier; the target must recover from the Weaken normally.",
+        "longDescription": "Weaken with this modifier cannot have its effects countered by another power (such as Restorative Healing) without the Persistent modifier; the target must recover from the Weaken normally.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Incurável",
+            "description": "Enfraquecer com este modificador não pode ter seus efeitos anulados por outro poder (como Cura Restauradora) sem o modificador Persistente; o alvo deve se recuperar do Enfraquecer normalmente."
+          }
+        }
+      },
+      {
+        "id": "precise_weaken",
+        "name": "Precise",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "A Weaken effect capable of reducing more than one trait at once can have this modifier, allowing you to choose which traits are affected, while not affecting others. Note this differs from the Selective extra.",
+        "longDescription": "A Weaken effect capable of reducing more than one trait at once can have this modifier, allowing you to choose which traits are affected, while not affecting others. Note this differs from the Selective extra.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Preciso",
+            "description": "Um efeito Enfraquecer capaz de reduzir mais de um traço de uma vez pode ter este modificador, permitindo escolher quais traços são afetados, sem afetar outros. Note que isso difere do extra Seletivo."
+          }
+        }
+      },
+      {
+        "id": "selective_weaken",
+        "name": "Selective",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "This extra is applied to an Area Weaken so it only affects some targets and not others. Combined with Precise, you can use an Area Weaken to selectively affect only certain traits of certain targets.",
+        "longDescription": "This extra is applied to an Area Weaken so it only affects some targets and not others. Combined with Precise, you can use an Area Weaken to selectively affect only certain traits of certain targets.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Seletivo",
+            "description": "Este extra é aplicado a um Enfraquecer em Área para que afete apenas alguns alvos e não outros. Combinado com Preciso, você pode usar um Enfraquecer em Área para afetar seletivamente apenas certos traços de certos alvos."
           }
         }
       }
