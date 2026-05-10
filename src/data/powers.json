@@ -2945,9 +2945,84 @@
             "description": "Concede o sentido a outro personagem."
           }
         }
+      },
+      {
+        "id": "area_senses",
+        "name": "Area",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "The Area modifier only applies to Senses that Affect Others, extending their benefits to everyone in an area.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Área",
+            "description": "O modificador Área só se aplica a Sentidos que Afetam Outros, estendendo seus benefícios a todos em uma área."
+          }
+        }
+      },
+      {
+        "id": "dimensional_senses",
+        "name": "Dimensional",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "This modifier allows you to extend your senses into other dimensions. It's assumed to apply to all your senses, allowing you to sense your proximate location in the other dimension(s).",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Dimensional",
+            "description": "Este modificador permite estender seus sentidos para outras dimensões. Assume-se que se aplica a todos os seus sentidos, permitindo sentir sua localização próxima na(s) outra(s) dimensão(ões)."
+          }
+        }
+      },
+      {
+        "id": "innate_senses",
+        "name": "Innate",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Senses, particularly those of aliens or constructs like robots, may be Innate, although this does not prevent sensory effects like Concealment or Dazzle from disabling them.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Inato",
+            "description": "Sentidos, particularmente de alienígenas ou construtos como robôs, podem ser Inatos, embora isso não impeça efeitos sensoriais como Camuflagem ou Ofuscamento de desabilitá-los."
+          }
+        }
+      },
+      {
+        "id": "ranged_senses",
+        "name": "Ranged",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "The Ranged extra only applies to Senses that Affect Others, extending the distance at which you can grant their benefits.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "À Distância",
+            "description": "O extra À Distância só se aplica a Sentidos que Afetam Outros, estendendo a distância na qual você pode conceder seus benefícios."
+          }
+        }
       }
     ],
     "flaws": [
+      {
+        "id": "limited_senses",
+        "name": "Limited",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Some Senses may be Limited to only sensing certain things or only under certain circumstances. The sense must lose about half its utility to qualify for this flaw.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado",
+            "description": "Alguns Sentidos podem ser Limitados a apenas sentir certas coisas ou apenas sob certas circunstâncias. O sentido deve perder cerca de metade de sua utilidade para se qualificar para esta falha."
+          }
+        }
+      },
       {
         "id": "noticeable",
         "name": "Noticeable",
@@ -2960,6 +3035,21 @@
           "pt-BR": {
             "name": "Perceptível",
             "description": "O sentido possui uma manifestação visível."
+          }
+        }
+      },
+      {
+        "id": "unreliable",
+        "name": "Unreliable",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Some Senses may be unreliable; the GM makes checks for reliability when the sense is used. When it doesn't work, the character perceives nothing with that sense, or gets wrong information.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Não Confiável",
+            "description": "Alguns Sentidos podem ser não confiáveis; o Mestre faz testes de confiabilidade quando o sentido é usado. Quando não funciona, o personagem não percebe nada com aquele sentido, ou recebe informações erradas."
           }
         }
       }
