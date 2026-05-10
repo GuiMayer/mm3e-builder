@@ -2233,6 +2233,21 @@
     "enhancesDefense": null,
     "extras": [
       {
+        "id": "attack_morph",
+        "name": "Attack",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "A Morph Attack imposes a different appearance on the target creature. Unlike an Affliction that imposes the transformed condition, a Morph Attack is entirely cosmetic: you can't change the target's traits other than appearance.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Ataque",
+            "description": "Um Ataque de Metamorfose impõe uma aparência diferente na criatura alvo. Diferente de uma Aflição que impõe a condição transformado, um Ataque de Metamorfose é inteiramente cosmético: você não pode mudar os traços do alvo além da aparência."
+          }
+        }
+      },
+      {
         "id": "metamorph",
         "name": "Metamorph",
         "category": "extra",
@@ -2248,7 +2263,23 @@
         }
       }
     ],
-    "flaws": []
+    "flaws": [
+      {
+        "id": "resistible_morph",
+        "name": "Resistible",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "A Morph effect Resistible by Will is most likely a mental illusion of some sort. Observers who succeed on the Will resistance check see you as you truly are rather than in your Morph guise. This is in addition to the usual Perception check to penetrate your disguise.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Resistível",
+            "description": "Um efeito de Metamorfose Resistível por Vontade é provavelmente uma ilusão mental de algum tipo. Observadores que têm sucesso no teste de resistência de Vontade veem você como realmente é, em vez de em seu disfarce de Metamorfose. Isso é além do teste de Percepção usual para penetrar seu disfarce."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "move-object",
