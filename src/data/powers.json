@@ -1415,23 +1415,6 @@
     "enhancesDefense": null,
     "extras": [
       {
-        "id": "believable",
-        "name": "Believable",
-        "category": "extra",
-        "costType": "per_rank",
-        "costValue": 1,
-        "description": "Illusory constructs can physically interact with the world.",
-        "longDescription": "A Believable Illusion is tangible: it can be touched, has weight, and leaves traces. Physical investigations (touching the illusion) do not automatically reveal it. Resistance checks are required even for physical interaction.",
-        "incompatibleWith": [],
-        "i18n": {
-          "pt-BR": {
-            "name": "Crível",
-            "description": "Construções ilusórias podem interagir fisicamente com o mundo.",
-            "longDescription": "Uma Ilusão Crível é tangível: pode ser tocada, tem peso e deixa rastros. Interações físicas não revelam automaticamente a ilusão."
-          }
-        }
-      },
-      {
         "id": "independent_illusion",
         "name": "Independent",
         "category": "extra",
@@ -1455,23 +1438,6 @@
       }
     ],
     "flaws": [
-      {
-        "id": "phantasm",
-        "name": "Phantasm",
-        "category": "flaw",
-        "costType": "per_rank",
-        "costValue": -1,
-        "description": "The illusion only exists in the mind of one target.",
-        "longDescription": "A Phantasm only exists in the mind of a single target chosen at use. It is invisible to everyone else. The target resists with Will vs. DC 10 + rank; failure means they fully believe the illusion.",
-        "incompatibleWith": [],
-        "i18n": {
-          "pt-BR": {
-            "name": "Fantasma",
-            "description": "A ilusão só existe na mente de um único alvo.",
-            "longDescription": "Um Fantasma existe apenas na mente de um único alvo. É invisível para todos os outros. O alvo resiste com Vontade vs. CD 10 + rank."
-          }
-        }
-      },
       {
         "id": "feedback_illusion",
         "name": "Feedback",
@@ -3364,6 +3330,51 @@
             "description": "Teleporta, age e volta no mesmo turno."
           }
         }
+      },
+      {
+        "id": "easy",
+        "name": "Easy",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You are not dazed or vulnerable when making extended teleports.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Fácil",
+            "description": "Você não fica atordoado ou vulnerável ao fazer teleportes estendidos."
+          }
+        }
+      },
+      {
+        "id": "extended",
+        "name": "Extended",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can take two move actions to make an extended teleport with a distance rank equal to your effect rank +8. You are dazed and vulnerable for one round after an extended teleport.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Estendido",
+            "description": "Você pode usar duas ações de movimento para fazer um teleporte estendido com rank de distância igual ao rank do efeito +8. Você fica atordoado e vulnerável por uma rodada após um teleporte estendido."
+          }
+        }
+      },
+      {
+        "id": "increased_mass",
+        "name": "Increased Mass",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "You can carry additional mass when you teleport equal to your rank in this extra.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Massa Aumentada",
+            "description": "Você pode carregar massa adicional ao teleportar igual ao seu rank neste extra."
+          }
+        }
       }
     ],
     "flaws": [
@@ -3379,6 +3390,21 @@
           "pt-BR": {
             "name": "Meio",
             "description": "Teleporte exige passagem por meio específico (espelhos, sombras, etc.)."
+          }
+        }
+      },
+      {
+        "id": "limited_to_extended",
+        "name": "Limited to Extended",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "You can only make extended teleports. You must have the Extended extra, and this flaw effectively makes it a +0 modifier.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado a Estendido",
+            "description": "Você só pode fazer teleportes estendidos. Você deve ter o extra Estendido, e esta falha efetivamente o torna um modificador +0."
           }
         }
       }
@@ -3473,6 +3499,51 @@
             "description": "Muda a configuração mais rápido."
           }
         }
+      },
+      {
+        "id": "affects_others_variable",
+        "name": "Affects Others",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can grant effects to someone else. Affects Others Only: +0 cost per rank. Affects Others or yourself: +1 cost per rank.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Afeta Outros",
+            "description": "Você pode conceder efeitos a outra pessoa. Apenas Afeta Outros: +0 custo por rank. Afeta Outros ou você mesmo: +1 custo por rank."
+          }
+        }
+      },
+      {
+        "id": "perception_variable",
+        "name": "Perception",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Applied to a Ranged Affects Others Variable, this extra allows you to grant the benefits of the effect to any target you can accurately perceive.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Percepção",
+            "description": "Aplicado a um Variável Afeta Outros com Alcance, este extra permite conceder os benefícios do efeito a qualquer alvo que você possa perceber com precisão."
+          }
+        }
+      },
+      {
+        "id": "ranged_variable",
+        "name": "Ranged",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "A Variable effect with Affects Others may have the Ranged extra to improve the range at which you can grant the effect to another.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Alcance",
+            "description": "Um efeito Variável com Afeta Outros pode ter o extra Alcance para melhorar a distância na qual você pode conceder o efeito a outro."
+          }
+        }
       }
     ],
     "flaws": [
@@ -3488,6 +3559,21 @@
           "pt-BR": {
             "name": "Lento",
             "description": "Só pode reconfigurar fora de combate."
+          }
+        }
+      },
+      {
+        "id": "limited_variable",
+        "name": "Limited",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Variable effect must be even more limited than the default descriptor requirement. This is highly situational and left to the GM's judgment.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado",
+            "description": "O efeito Variável deve ser ainda mais limitado do que o requisito de descritor padrão. Isso é altamente situacional e fica a critério do Mestre."
           }
         }
       }
