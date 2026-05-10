@@ -749,7 +749,40 @@
     },
     "longDescription": "You can actively defend others by deflecting or diverting attacks at a distance. Use your Deflect rank in place of an active defense (minimum roll of 11 on 10 or less). -2 at medium range, -5 at long range. Does not work against area effects or perception range attacks, nor attacks targeting defenses other than Dodge or Parry. Limited by power level.",
     "enhancesDefense": null,
-    "extras": [],
+    "extras": [
+      {
+        "id": "reflect",
+        "name": "Reflect",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can reflect attacks back at the attacker as a free action. First, you must successfully deflect the attack, then make a normal attack check using your own attack modifier to hit with the reflected attack. It has its normal effect if it hits.",
+        "longDescription": "You can reflect attacks back at the attacker as a free action. First, you must successfully deflect the attack, then make a normal attack check using your own attack modifier to hit with the reflected attack. It has its normal effect if it hits.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Refletir",
+            "description": "Pode refletir ataques de volta ao atacante como uma ação livre. Primeiro, deve defletir o ataque com sucesso, depois fazer um teste de ataque normal usando seu próprio modificador de ataque para acertar com o ataque refletido. Tem seu efeito normal se acertar."
+          }
+        }
+      },
+      {
+        "id": "redirect",
+        "name": "Redirect",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "You can redirect attacks you successfully deflect at any target within the attack's normal range, as Reflect. You must have the Reflect extra to take this one.",
+        "longDescription": "You can redirect attacks you successfully deflect at any target within the attack's normal range, as Reflect. You must have the Reflect extra to take this one.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Redirecionar",
+            "description": "Pode redirecionar ataques que defletir com sucesso para qualquer alvo dentro do alcance normal do ataque, como Refletir. Deve ter o extra Refletir para usar este."
+          }
+        }
+      }
+    ],
     "flaws": []
   },
   {
@@ -2040,39 +2073,25 @@
     },
     "longDescription": "Protection is a flat bonus to Toughness equal to its rank. Unlike armored heroes, Protection is usually an internal power (force field, body armor, toughened skin, etc.). Each rank of Protection improves Toughness by 1. Protection can be stacked with other Toughness bonuses (like natural Stamina). Note: stacked Protection above PL limits is subject to GM approval.",
     "enhancesDefense": "toughness",
-    "extras": [
+    "extras": [],
+    "flaws": [
       {
-        "id": "sustained",
+        "id": "sustained_protection",
         "name": "Sustained",
-        "category": "extra",
+        "category": "flaw",
         "costType": "per_rank",
         "costValue": 0,
-        "description": "Makes Protection sustained (force field).",
+        "description": "Your Protection is a sustained effect, rather than permanent. The effect can be turned on and off and can be improved using extra effort, including using it to perform stunts. Sustained Protection might be a power like a personal force field, or the ability to consciously harden your skin and turn it into armor.",
+        "longDescription": "Sustained Protection changes the duration from permanent to sustained. It is a net +0 modifier from Protection's base permanent duration. This allows the effect to be turned on and off, improved with extra effort, and used for power stunts.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Sustentado",
-            "description": "Torna a Proteção sustentada (campo de força)."
-          }
-        }
-      },
-      {
-        "id": "impervious",
-        "name": "Impervious",
-        "category": "extra",
-        "costType": "per_rank",
-        "costValue": 1,
-        "description": "Toughness is Impervious.",
-        "incompatibleWith": [],
-        "i18n": {
-          "pt-BR": {
-            "name": "Impenetrável",
-            "description": "A Resistência é Impenetrável."
+            "description": "Sua Proteção é um efeito sustentado, ao invés de permanente. O efeito pode ser ligado e desligado e pode ser melhorado usando esforço extra, incluindo usá-lo para realizar truques. Proteção Sustentada pode ser um poder como um campo de força pessoal, ou a habilidade de conscientemente endurecer sua pele e transformá-la em armadura."
           }
         }
       }
-    ],
-    "flaws": []
+    ]
   },
   {
     "id": "quickness",
@@ -2093,7 +2112,40 @@
     "longDescription": "You can perform routine tasks fast. Subtract your effect rank from the normal time rank. So Quickness 7 turns a task normally taking 1 hour (time rank 9) into 30 seconds (time rank 2). Does not affect non-routine checks or movement speed. Tasks performed in less than 1 second may be treated as free actions.",
     "enhancesDefense": null,
     "extras": [],
-    "flaws": []
+    "flaws": [
+      {
+        "id": "limited_to_one_type",
+        "name": "Limited to One Type",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Your Quickness applies to only physical or mental tasks, not both.",
+        "longDescription": "Your Quickness applies to only physical or mental tasks, not both. This limits the versatility of the effect significantly.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado a Um Tipo",
+            "description": "Sua Rapidez se aplica apenas a tarefas físicas ou mentais, não ambas."
+          }
+        }
+      },
+      {
+        "id": "limited_to_one_task",
+        "name": "Limited to One Task",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -2,
+        "description": "Your Quickness applies to only one particular task, such as reading, mathematical calculations, and so forth.",
+        "longDescription": "Your Quickness applies to only one particular task, such as reading, mathematical calculations, and so forth. This severely limits the effect to a very narrow application.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Limitado a Uma Tarefa",
+            "description": "Sua Rapidez se aplica apenas a uma tarefa específica, como leitura, cálculos matemáticos, etc."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "regeneration",
