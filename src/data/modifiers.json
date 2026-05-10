@@ -1,1112 +1,1241 @@
 [
-  {
-    "id": "accurate",
-    "name": "Accurate",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "maxRanks": 5,
-    "description": "+2 to attack checks per rank of this modifier.",
-    "longDescription": "Each rank of Accurate gives you a +2 bonus to attack checks made with that effect. Since Accurate is a flat modifier, its cost is 1 point per rank of the modifier itself, regardless of the power's rank. Your total attack bonus is still limited by Power Level.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Preciso",
-        "description": "+2 nos testes de ataque por rank deste modificador.",
-        "longDescription": "Cada rank de Preciso concede +2 no teste de ataque com o efeito. Custo fixo: 1 pp por rank do modificador, independente do rank do poder. O bônus total ainda é limitado pelo Nível de Poder."
-      }
+    {
+        "id":  "accurate",
+        "name":  "Accurate",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "maxRanks":  5,
+        "description":  "+2 to attack checks per rank of this modifier.",
+        "longDescription":  "Each rank of Accurate gives you a +2 bonus to attack checks made with that effect. Since Accurate is a flat modifier, its cost is 1 point per rank of the modifier itself, regardless of the power\u0027s rank. Your total attack bonus is still limited by Power Level.",
+        "incompatibleWith":  [
+                                 "inaccurate"
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Preciso",
+                                   "description":  "+2 nos testes de ataque por rank deste modificador.",
+                                   "longDescription":  "Cada rank de Preciso concede +2 no teste de ataque com o efeito. Custo fixo: 1 pp por rank do modificador, independente do rank do poder. O bônus total ainda é limitado pelo Nível de Poder."
+                               }
+                 }
+    },
+    {
+        "id":  "affects_corporeal",
+        "name":  "Affects Corporeal",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "An insubstantial effect can affect corporeal targets.",
+        "longDescription":  "This modifier allows an effect that only works on insubstantial targets (or an Insubstantial character\u0027s effects) to also affect corporeal (solid) targets. Rank 1: half effect on corporeal targets. Rank 2: full effect.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Afeta Corpóreos",
+                                   "description":  "Efeito insubstancial pode afetar alvos corpóreos.",
+                                   "longDescription":  "Permite que um efeito que só funciona em alvos insubstanciais também afete alvos corpóreos. Rank 1: metade do efeito. Rank 2: efeito completo."
+                               }
+                 }
+    },
+    {
+        "id":  "affects_insubstantial",
+        "name":  "Affects Insubstantial",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "maxRanks":  2,
+        "description":  "Effect works on insubstantial targets. Rank 1: half effect; rank 2: full effect.",
+        "longDescription":  "Normally, physical effects don\u0027t affect insubstantial targets. This modifier lets the effect work on them. Rank 1: half the normal effect. Rank 2: full normal effect.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Afeta Insubstanciais",
+                                   "description":  "O efeito funciona em alvos insubstanciais. Rank 1: metade; rank 2: total.",
+                                   "longDescription":  "Normalmente efeitos físicos não afetam alvos insubstanciais. Rank 1: metade do efeito. Rank 2: efeito completo."
+                               }
+                 }
+    },
+    {
+        "id":  "affects_objects",
+        "name":  "Affects Objects",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  0,
+        "description":  "Effect works on objects as well as (or instead of) people.",
+        "longDescription":  "A +0 modifier if the effect works on both characters and objects. A +1/rank modifier if it works only on objects (replacing the normal subjects). Useful for effects like Weaken used to corrode metal.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Afeta Objetos",
+                                   "description":  "O efeito funciona em objetos além de (ou ao invés de) pessoas.",
+                                   "longDescription":  "+0 se o efeito funciona em personagens e objetos. +1/rank se funciona apenas em objetos. Útil para efeitos como Enfraquecer para corroer metal."
+                               }
+                 }
+    },
+    {
+        "id":  "affects_others",
+        "name":  "Affects Others",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  0,
+        "description":  "A personal effect can also be used on a touched target.",
+        "longDescription":  "+0/rank if the effect still works on you as well; +1/rank if it only works on others. Range becomes touch (close) rather than personal.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Afeta Outros",
+                                   "description":  "Efeito pessoal pode ser usado em outro alvo por toque.",
+                                   "longDescription":  "+0/rank se ainda funciona em você; +1/rank se funciona somente em outros. Alcance passa a ser toque (perto) em vez de pessoal."
+                               }
+                 }
+    },
+    {
+        "id":  "alternate_effect",
+        "name":  "Alternate Effect",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "description":  "Add an alternate version of the effect to a power array. +2 if Dynamic.",
+        "longDescription":  "One additional effect can be substituted for the main effect. The total cost of the array is the most expensive effect plus 1 per alternate (2 if Dynamic). Only one effect can be active at a time (or two simultaneously if both are Dynamic).",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Efeito Alternativo",
+                                   "description":  "Adiciona uma versão alternativa do efeito à matriz. +2 se Dinâmico.",
+                                   "longDescription":  "Um efeito adicional pode ser substituído pelo principal. O custo total é o efeito mais caro + 1 por alternativo (2 se Dinâmico). Apenas um ativo por vez."
+                               }
+                 }
+    },
+    {
+        "id":  "alternate_resistance",
+        "name":  "Alternate Resistance",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  0,
+        "description":  "The effect is resisted by a different defense than normal. Choose which defense from the list below.",
+        "longDescription":  "+0/rank if the alternate resistance is equally easy to overcome; +1/rank if it\u0027s harder (e.g. Will instead of Fortitude); +2/rank for Fortitude instead of Toughness.",
+        "subtypes":  [
+                         {
+                             "id":  "will",
+                             "label":  "Will",
+                             "costValue":  1
+                         },
+                         {
+                             "id":  "fortitude",
+                             "label":  "Fortitude",
+                             "costValue":  2
+                         },
+                         {
+                             "id":  "dodge",
+                             "label":  "Dodge",
+                             "costValue":  1
+                         },
+                         {
+                             "id":  "parry",
+                             "label":  "Parry",
+                             "costValue":  1
+                         }
+                     ],
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Resistência Alternativa",
+                                   "description":  "O efeito é resistido por uma defesa diferente do normal. Escolha a defesa na lista abaixo.",
+                                   "longDescription":  "+0/rank se a resistência alternativa é igualmente fácil; +1/rank se for mais difícil (ex: Vontade no lugar de Fortitude); +2/rank para Fortitude no lugar de Resistência."
+                               }
+                 }
+    },
+    {
+        "id":  "area",
+        "name":  "Area",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  1,
+        "description":  "The effect covers an area. Choose shape; targets resist with Dodge.",
+        "longDescription":  "The effect covers an area rather than a single target. Targets in the area make a Dodge resistance check (DC 10 + rank) to avoid half effect (or no effect on success, GM\u0027s choice). Choose a shape: Burst (sphere), Cloud (lingering), Cone, Cylinder, Line, Perception (affects all perceiving targets), or Shapeable.",
+        "options":  [
+                        {
+                            "label":  "Burst",
+                            "notes":  "30-ft radius sphere at rank 1"
+                        },
+                        {
+                            "label":  "Cloud",
+                            "notes":  "Lingers for 1 round after use"
+                        },
+                        {
+                            "label":  "Cone",
+                            "notes":  "60-ft cone from you"
+                        },
+                        {
+                            "label":  "Cylinder",
+                            "notes":  "Radius + height = rank"
+                        },
+                        {
+                            "label":  "Line",
+                            "notes":  "5-ft wide, length = rank"
+                        },
+                        {
+                            "label":  "Perception",
+                            "notes":  "Affects all who perceive the effect"
+                        },
+                        {
+                            "label":  "Shapeable",
+                            "notes":  "Any shape, volume rank = effect rank"
+                        }
+                    ],
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Área",
+                                   "description":  "O efeito cobre uma área. Escolha o formato; alvos resistem com Esquiva.",
+                                   "longDescription":  "O efeito cobre uma área em vez de um único alvo. Alvos na área fazem teste de Esquiva (CD 10 + rank) para evitar metade do efeito. Escolha o formato: Explosão, Nuvem, Cone, Cilindro, Linha, Percepção ou Configurável.",
+                                   "options":  [
+                                                   {
+                                                       "label":  "Explosão",
+                                                       "notes":  "Esfera de 9m de raio no rank 1"
+                                                   },
+                                                   {
+                                                       "label":  "Nuvem",
+                                                       "notes":  "Persiste por 1 rodada após o uso"
+                                                   },
+                                                   {
+                                                       "label":  "Cone",
+                                                       "notes":  "Cone de 18m a partir de você"
+                                                   },
+                                                   {
+                                                       "label":  "Cilindro",
+                                                       "notes":  "Raio + altura = rank"
+                                                   },
+                                                   {
+                                                       "label":  "Linha",
+                                                       "notes":  "1,5m de largura, comprimento = rank"
+                                                   },
+                                                   {
+                                                       "label":  "Percepção",
+                                                       "notes":  "Afeta todos que percebem o efeito"
+                                                   },
+                                                   {
+                                                       "label":  "Configurável",
+                                                       "notes":  "Qualquer formato, volume = rank do efeito"
+                                                   }
+                                               ]
+                               }
+                 }
+    },
+    {
+        "id":  "attack",
+        "name":  "Attack",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  0,
+        "description":  "Converts a non-attack effect into an attack requiring an attack check.",
+        "longDescription":  "This modifier turns a personal or area effect into one requiring an attack check, allowing it to be combined with other attack effects. Cost is +0/rank since it also adds a chance of missing.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Ataque",
+                                   "description":  "Converte efeito não-ataque em ataque que exige teste de ataque.",
+                                   "longDescription":  "Transforma um efeito pessoal ou de área em um que exige teste de ataque. Custo +0/rank pois também adiciona chance de falha."
+                               }
+                 }
+    },
+    {
+        "id":  "contagious",
+        "name":  "Contagious",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  1,
+        "description":  "Effect spreads from initial targets to others they contact.",
+        "longDescription":  "Anyone who comes into contact with a Contagious effect\u0027s subject also becomes affected. The DC of the original effect applies to the secondary targets. Instant effects only spread once; sustained effects may continue to spread each round at GM discretion.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Contagioso",
+                                   "description":  "O efeito se espalha dos alvos iniciais para outros que entrem em contato.",
+                                   "longDescription":  "Quem entrar em contato com o alvo de um efeito Contagioso também é afetado. CD igual ao efeito original. Efeitos instantâneos se espalham uma vez; efeitos sustentados podem continuar se espalhando."
+                               }
+                 }
+    },
+    {
+        "id":  "dimensional",
+        "name":  "Dimensional",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "maxRanks":  3,
+        "description":  "Effect works across dimensions. Rank 1: one other; 2: group; 3: any.",
+        "longDescription":  "The effect works across dimensional barriers. Rank 1: one specific other dimension. Rank 2: a group of related dimensions. Rank 3: any dimension. Cost is flat (1-3 points total, not per rank of the power).",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Dimensional",
+                                   "description":  "O efeito funciona entre dimensões. Rank 1: uma; 2: grupo; 3: qualquer.",
+                                   "longDescription":  "O efeito funciona através de barreiras dimensionais. Rank 1: uma dimensão específica. Rank 2: grupo de dimensões relacionadas. Rank 3: qualquer dimensão. Custo fixo (1-3 pontos no total)."
+                               }
+                 }
+    },
+    {
+        "id":  "extended_range",
+        "name":  "Extended Range",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "Each rank doubles the effect\u0027s short, medium, and long ranges.",
+        "longDescription":  "Each rank of Extended Range doubles the effect\u0027s range increments. So a Ranged effect normally has short/medium/long ranges of (rank×25 ft)/(rank×50 ft)/(rank×100 ft). With Extended Range 1, these become double. Extended Range 2 doubles again, etc.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Alcance Estendido",
+                                   "description":  "Cada rank dobra os alcances curto, médio e longo do efeito.",
+                                   "longDescription":  "Cada rank dobra os incrementos de alcance. Com Alcance Estendido 1, os alcances dobram. Com 2, dobram novamente."
+                               }
+                 }
+    },
+    {
+        "id":  "feature",
+        "name":  "Feature",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "Minor extra capability added to the effect, worth 1 flat point per feature.",
+        "longDescription":  "A minor addition to the effect\u0027s capabilities, each worth 1 point. Similar to the Feature power effect but applied as a modifier. The GM decides what qualifies. Examples: concealed compartment in a created object, minor environmental control in an area effect.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Característica",
+                                   "description":  "Capacidade extra menor adicionada ao efeito, 1 ponto fixo por característica.",
+                                   "longDescription":  "Adição menor às capacidades do efeito, 1 ponto cada. O Mestre decide o que se qualifica. Exemplos: compartimento oculto num objeto criado, controle ambiental menor num efeito de área."
+                               }
+                 }
+    },
+    {
+        "id":  "homing",
+        "name":  "Homing",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "If the attack misses, it gets additional attack chances (1 per rank).",
+        "longDescription":  "If a Homing attack misses, it makes additional attack checks at the end of subsequent rounds, one per rank of this modifier, until it either hits or exhausts all attempts. The target can evade using their action on subsequent rounds.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Teleguiado",
+                                   "description":  "Se o ataque errar, tem tentativas adicionais de ataque (1 por rank).",
+                                   "longDescription":  "Se um ataque Teleguiado errar, faz testes de ataque adicionais no final de rodadas subsequentes, um por rank deste modificador, até acertar ou esgotar as tentativas."
+                               }
+                 }
+    },
+    {
+        "id":  "impervious",
+        "name":  "Impervious",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  1,
+        "description":  "Defense ignores effects with resistance DC less than half this rank.",
+        "longDescription":  "When applied to a defense (usually Toughness via Protection), attacks with a resistance DC less than half the Impervious rank (rounded up) are automatically ignored—no resistance check needed. Penetrating modifier bypasses Impervious.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Impenetrável",
+                                   "description":  "A defesa ignora efeitos com CD de resistência menor que metade deste rank.",
+                                   "longDescription":  "Aplicado a uma defesa (normalmente Resistência via Proteção), ataques com CD menor que metade do rank Impenetrável são ignorados automaticamente. O modificador Penetrante anula Impenetrável."
+                               }
+                 }
+    },
+    {
+        "id":  "increased_duration",
+        "name":  "Increased Duration",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  1,
+        "description":  "Moves duration up one step: instant→concentration→sustained→continuous.",
+        "longDescription":  "Each rank moves the effect\u0027s duration up one step: instant→concentration→sustained→continuous. +1/rank for each step. An effect made continuous with this modifier cannot be turned off voluntarily unless Reversible is also applied.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Duração Aumentada",
+                                   "description":  "Move a duração um passo: instante→concentração→sustentado→contínuo.",
+                                   "longDescription":  "+1/rank por passo: instante→concentração→sustentado→contínuo. Efeito tornado contínuo não pode ser desligado voluntariamente sem Reversível."
+                               }
+                 }
+    },
+    {
+        "id":  "increased_mass",
+        "name":  "Increased Mass",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "Each rank doubles the mass the effect can carry or affect.",
+        "longDescription":  "Each rank of Increased Mass doubles the mass the effect can transport, carry, or otherwise affect beyond its normal limits. Commonly applied to Teleport to bring more passengers.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Massa Aumentada",
+                                   "description":  "Cada rank dobra a massa que o efeito pode carregar ou afetar.",
+                                   "longDescription":  "Cada rank dobra a massa que o efeito pode transportar ou afetar. Comumente aplicado a Teleporte para trazer mais passageiros."
+                               }
+                 }
+    },
+    {
+        "id":  "increased_range",
+        "name":  "Increased Range",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  1,
+        "maxRanks":  2,
+        "description":  "Moves range up one step: close→ranged→perception.",
+        "longDescription":  "Each rank of Increased Range moves the effect\u0027s range up one step: close→ranged→perception. Cost is +1/rank of the power for each step.",
+        "incompatibleWith":  [
+                                 "reduced_range",
+                                 "diminished_range"
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Alcance Aumentado",
+                                   "description":  "Move o alcance um passo: perto→distância→percepção.",
+                                   "longDescription":  "Cada rank sobe o alcance um passo: perto→distância→percepção. Custo +1/rank do poder por passo."
+                               }
+                 }
+    },
+    {
+        "id":  "incurable",
+        "name":  "Incurable",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "maxRanks":  1,
+        "description":  "Conditions from this effect cannot be removed by Healing effects.",
+        "longDescription":  "Conditions imposed by this effect cannot be cured by the Healing effect or similar restorative effects. They can still be recovered naturally over time. A flat 1-point bonus.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Incurável",
+                                   "description":  "Condições deste efeito não podem ser removidas por efeitos de Cura.",
+                                   "longDescription":  "Condições impostas por este efeito não podem ser curadas por Cura ou efeitos restauradores. Ainda recuperam naturalmente com o tempo. Bônus fixo de 1 ponto."
+                               }
+                 }
+    },
+    {
+        "id":  "indirect",
+        "name":  "Indirect",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "maxRanks":  4,
+        "description":  "Attack can originate from directions other than from you.",
+        "longDescription":  "Rank 1: fixed point away from you, directed away. Rank 2: any point OR fixed point any direction. Rank 3: any point fixed direction OR fixed point any direction. Rank 4: any point, any direction. Only applies to ranged effects.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Indireto",
+                                   "description":  "O ataque pode originar de direções diferentes de você.",
+                                   "longDescription":  "Rank 1: ponto fixo longe de você. Rank 2: qualquer ponto OU ponto fixo. Rank 3: qualquer ponto direção fixa OU ponto fixo qualquer direção. Rank 4: qualquer ponto, qualquer direção. Apenas para efeitos à distância."
+                               }
+                 }
+    },
+    {
+        "id":  "innate",
+        "name":  "Innate",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "maxRanks":  1,
+        "description":  "Effect cannot be detected or countered as a power (it\u0027s natural).",
+        "longDescription":  "An Innate effect is treated as a natural trait rather than a power for purposes of Nullify, power detection, and similar effects. It cannot be nullified, detected as a power, or analyzed as such.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Inato",
+                                   "description":  "O efeito não pode ser detectado ou anulado como poder (é natural).",
+                                   "longDescription":  "Um efeito Inato é tratado como traço natural e não como poder para fins de Anulação e detecção de poderes."
+                               }
+                 }
+    },
+    {
+        "id":  "insidious",
+        "name":  "Insidious",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "maxRanks":  1,
+        "description":  "The target is unaware the effect is working on them.",
+        "longDescription":  "The target of an Insidious effect doesn\u0027t realize the effect is working. They aren\u0027t told the resistance check result and may not notice any changes. They can still attempt to detect it with Insight checks.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Insidioso",
+                                   "description":  "O alvo não sabe que o efeito está agindo sobre ele.",
+                                   "longDescription":  "O alvo de um efeito Insidioso não percebe que o efeito está funcionando. Não é informado sobre o resultado do teste de resistência."
+                               }
+                 }
+    },
+    {
+        "id":  "linked",
+        "name":  "Linked",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  0,
+        "maxRanks":  1,
+        "description":  "Two effects are linked; both activate together as one action.",
+        "longDescription":  "Two effects with Linked activate together using the same action. Both effects apply simultaneously. Both effects must be activated together; neither can be used without the other. A +0 modifier since it also restricts usage.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Vinculado",
+                                   "description":  "Dois efeitos são vinculados; ambos ativam juntos como uma ação.",
+                                   "longDescription":  "Efeitos com Vinculado ativam juntos usando a mesma ação. Ambos se aplicam simultaneamente e nenhum pode ser usado sem o outro."
+                               }
+                 }
+    },
+    {
+        "id":  "multiattack",
+        "name":  "Multiattack",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  1,
+        "description":  "Lets you attack multiple targets in one action.",
+        "longDescription":  "You can attack multiple targets simultaneously. Make one attack check; compare it against each target\u0027s defense. You can affect up to (1 + effect rank) targets (GM\u0027s discretion on spread). You take a cumulative –2 penalty per additional target beyond the first.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Ataque Múltiplo",
+                                   "description":  "Permite atacar múltiplos alvos em uma ação.",
+                                   "longDescription":  "Você pode atacar múltiplos alvos simultaneamente. Um teste de ataque é comparado à defesa de cada alvo. Penalidade cumulativa de -2 por alvo adicional além do primeiro."
+                               }
+                 }
+    },
+    {
+        "id":  "penetrating",
+        "name":  "Penetrating",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "Bypasses Impervious Toughness up to this modifier\u0027s rank.",
+        "longDescription":  "A Penetrating attack bypasses Impervious Toughness up to the rank of this modifier. If your Penetrating rank equals or exceeds the target\u0027s Impervious rank, the attack is not ignored. Cost is 1 flat point per rank of the modifier (not per rank of the power).",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Penetrante",
+                                   "description":  "Ignora Resistência Impenetrável até o rank deste modificador.",
+                                   "longDescription":  "Um ataque Penetrante ignora Resistência Impenetrável até o rank deste modificador. Custo: 1 ponto fixo por rank do modificador (não do poder)."
+                               }
+                 }
+    },
+    {
+        "id":  "precise",
+        "name":  "Precise",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "maxRanks":  1,
+        "description":  "Effect can be used with fine control (e.g. picking locks with Move Object).",
+        "longDescription":  "A Precise effect allows fine-grained control that normally wouldn\u0027t be possible. For example, Precise Move Object lets you pick locks, perform surgery, or thread a needle at a distance.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Preciso",
+                                   "description":  "O efeito pode ser usado com controle minucioso (ex: abrir fechaduras com Mover Objetos).",
+                                   "longDescription":  "Um efeito Preciso permite controle fino que normalmente não seria possível. Ex: Mover Objetos Preciso permite abrir fechaduras ou realizar cirurgias à distância."
+                               }
+                 }
+    },
+    {
+        "id":  "reach",
+        "name":  "Reach",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "Extends the range of a close effect by 5 feet per rank.",
+        "longDescription":  "Each rank of Reach extends the range of a close effect by 5 feet (1.5 m). So a close attack with Reach 2 can hit targets up to 10 feet away. This does not change the effect\u0027s range category (it\u0027s still \u0027close\u0027).",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Alcance de Luta",
+                                   "description":  "Estende o alcance de efeito perto em 1,5m por rank.",
+                                   "longDescription":  "Cada rank de Alcance de Luta estende o alcance de um efeito perto em 1,5m. Não muda a categoria de alcance do efeito."
+                               }
+                 }
+    },
+    {
+        "id":  "reaction",
+        "name":  "Reaction",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  3,
+        "description":  "Effect activates automatically in reaction to a trigger (+3/rank for actions normally requiring standard, +1 for free).",
+        "longDescription":  "The effect can be used as a reaction to a specific trigger (defined at acquisition), instead of requiring a separate action. Cost varies: +1/rank if the normal action is free, +3/rank if it\u0027s a standard action. Reaction effects don\u0027t require you to spend an action.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Reação",
+                                   "description":  "O efeito ativa automaticamente em reação a um gatilho.",
+                                   "longDescription":  "O efeito pode ser usado como reação a um gatilho específico. Custo: +1/rank se a ação normal é livre, +3/rank se é padrão."
+                               }
+                 }
+    },
+    {
+        "id":  "reversible",
+        "name":  "Reversible",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "maxRanks":  1,
+        "description":  "You can remove conditions caused by the effect at will as a free action.",
+        "longDescription":  "You can remove conditions caused by a Reversible effect as a free action, so long as the subject is within range. For example, you can restore Damage conditions from a Reversible Damage effect, or remove an Affliction instantly.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Reversível",
+                                   "description":  "Você pode remover condições causadas pelo efeito como ação livre.",
+                                   "longDescription":  "Você pode remover condições causadas pelo efeito como ação livre, desde que o alvo esteja dentro do alcance. Ex: restaurar condições de Dano ou remover uma Aflição instantaneamente."
+                               }
+                 }
+    },
+    {
+        "id":  "ricochet",
+        "name":  "Ricochet",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "Each rank lets the attack bounce once off a surface before hitting.",
+        "longDescription":  "You can bounce your attack off solid surfaces to change its direction, allowing you to attack around corners or overcome cover. Each rank allows one additional bounce. The path must follow a straight line between ricochets.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Ricochete",
+                                   "description":  "Cada rank permite que o ataque ricocheteie uma vez antes de acertar.",
+                                   "longDescription":  "Você pode ricocheteiar seu ataque em superfícies sólidas para mudar sua direção, permitindo atacar por trás de cobertura. Cada rank permite uma quicada adicional."
+                               }
+                 }
+    },
+    {
+        "id":  "secondary_effect",
+        "name":  "Secondary Effect",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  1,
+        "description":  "The effect acts on the target once now and once again next round.",
+        "longDescription":  "An instant effect with this modifier affects the target immediately and then once again at the end of the attacker\u0027s next turn. The target gets a normal resistance check against the secondary effect. Secondary Effects don\u0027t stack.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Efeito Secundário",
+                                   "description":  "O efeito age no alvo agora e novamente na próxima rodada.",
+                                   "longDescription":  "Um efeito instantâneo com este modificador afeta o alvo imediatamente e novamente no final do próximo turno do atacante. O alvo faz teste de resistência normal contra o efeito secundário."
+                               }
+                 }
+    },
+    {
+        "id":  "selective",
+        "name":  "Selective",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  1,
+        "description":  "You choose which targets in an area are affected.",
+        "longDescription":  "A Selective effect allows you to exclude targets from an area effect. You must be able to accurately perceive a target to decide whether to affect it. Most useful combined with the Area extra.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Seletivo",
+                                   "description":  "Você escolhe quais alvos na área são afetados.",
+                                   "longDescription":  "Um efeito Seletivo permite excluir alvos de um efeito de área. Você deve perceber com precisão o alvo para decidir. Mais útil combinado com o extra Área."
+                               }
+                 }
+    },
+    {
+        "id":  "sleep",
+        "name":  "Sleep",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  0,
+        "description":  "When the effect causes incapacitated, target is asleep instead.",
+        "longDescription":  "When this modifier is applied to an effect that can cause the incapacitated condition, the target is left asleep whenever the effect would render them incapacitated. A +0 modifier since sleep is generally a worse condition for the attacker (sleeping targets can be awakened).",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Sono",
+                                   "description":  "Quando o efeito causa incapacitado, o alvo dorme em vez disso.",
+                                   "longDescription":  "Quando aplicado a um efeito que pode causar incapacitado, o alvo dorme em vez de ficar incapacitado. Modificador +0 pois alvos dormindo podem ser despertados."
+                               }
+                 }
+    },
+    {
+        "id":  "split",
+        "name":  "Split",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "Split the effect between multiple targets; each rank adds one more target.",
+        "longDescription":  "The effect can be split between two targets (one additional target per rank beyond the first). You choose how many ranks to apply to each target up to the total. Make one attack check and compare against each target\u0027s defense.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Dividir",
+                                   "description":  "Divide o efeito entre múltiplos alvos; cada rank adiciona mais um alvo.",
+                                   "longDescription":  "O efeito pode ser dividido entre alvos (um alvo adicional por rank). Você escolhe quantos ranks aplicar a cada alvo. Um único teste de ataque comparado à defesa de cada alvo."
+                               }
+                 }
+    },
+    {
+        "id":  "subtle",
+        "name":  "Subtle",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "maxRanks":  2,
+        "description":  "Rank 1: hard to notice (DC 20 Perception). Rank 2: completely undetectable.",
+        "longDescription":  "Rank 1: The effect is difficult to notice; a DC 20 Perception check is required, or only detectable by exotic senses. Rank 2: The effect is completely undetectable by any normal means.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Sutil",
+                                   "description":  "Rank 1: difícil de notar (CD 20 Percepção). Rank 2: completamente indetectável.",
+                                   "longDescription":  "Rank 1: Efeito difícil de notar; CD 20 em Percepção. Rank 2: completamente indetectável por meios normais."
+                               }
+                 }
+    },
+    {
+        "id":  "sustained",
+        "name":  "Sustained",
+        "category":  "extra",
+        "costType":  "per_rank",
+        "costValue":  0,
+        "description":  "Makes a permanent effect sustained: can be turned off and used for power stunts.",
+        "longDescription":  "Applied to a permanent effect, this makes it sustained duration instead. The effect can now be turned on and off, improved with extra effort, and used for power stunts. It requires a free action each turn to maintain.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Sustentado",
+                                   "description":  "Torna um efeito permanente sustentado: pode ser desligado e usado para acrobacias de poder.",
+                                   "longDescription":  "Aplicado a um efeito permanente, torna-o sustentado. Pode ser ligado/desligado, melhorado com esforço extra, usado para acrobacias. Exige ação livre por turno para manter."
+                               }
+                 }
+    },
+    {
+        "id":  "triggered",
+        "name":  "Triggered",
+        "category":  "extra",
+        "costType":  "flat_ranked",
+        "costValue":  1,
+        "description":  "Set the effect to activate under specific conditions. Each rank = one use.",
+        "longDescription":  "You can \u0027set\u0027 an instant effect to activate under specific conditions (defined at acquisition). Setting requires the normal action. A Triggered effect lying in wait can be detected (DC 10 + rank) or disarmed. Each rank provides one use. An additional rank gives a Variable Trigger.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Gatilho",
+                                   "description":  "Programa o efeito para ativar em condições específicas. Cada rank = um uso.",
+                                   "longDescription":  "Você programa um efeito instantâneo para ativar sob condições específicas (definidas na aquisição). Um Gatilho pode ser detectado (CD 10 + rank) ou desarmado. Cada rank fornece um uso."
+                               }
+                 }
+    },
+    {
+        "id":  "variable_descriptor",
+        "name":  "Variable Descriptor",
+        "category":  "extra",
+        "costType":  "flat",
+        "costValue":  1,
+        "maxRanks":  2,
+        "description":  "Change the effect\u0027s descriptors as a free action. Rank 1: related group; rank 2: broad group.",
+        "longDescription":  "Rank 1: change among a closely related group of descriptors (e.g. weather, electromagnetic, temperature) as a free action once per round. Rank 2: any descriptor from a broad group (e.g. any mental, magical, or technological descriptor).",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Descritor Variável",
+                                   "description":  "Muda os descritores do efeito como ação livre. Rank 1: grupo relacionado; rank 2: grupo amplo.",
+                                   "longDescription":  "Rank 1: mudar entre descritores relacionados (ex: clima, eletromagnético) como ação livre uma vez por rodada. Rank 2: qualquer descritor de um grupo amplo (ex: mental, mágico, tecnológico)."
+                               }
+                 }
+    },
+    {
+        "id":  "activation",
+        "name":  "Activation",
+        "category":  "flaw",
+        "costType":  "flat",
+        "costValue":  -1,
+        "maxRanks":  2,
+        "description":  "Power requires an action to activate before use. -1 (move action) or -2 (standard action).",
+        "longDescription":  "The power requires an action to prepare before any of its effects can be used. Move action = -1 point. Standard action = -2 points. Activation applies to the entire power. Effects still require their normal actions after activation.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Ativação",
+                                   "description":  "O poder requer uma ação de preparação antes de usar. -1 (movimento) ou -2 (padrão).",
+                                   "longDescription":  "O poder exige uma ação para ser preparado antes de qualquer efeito funcionar. Ação de movimento = -1 ponto. Ação padrão = -2 pontos. Aplica-se ao poder inteiro."
+                               }
+                 }
+    },
+    {
+        "id":  "check_required",
+        "name":  "Check Required",
+        "category":  "flaw",
+        "costType":  "flat_ranked",
+        "costValue":  -1,
+        "description":  "Must succeed on a skill check (DC 10 + ranks) to use the effect.",
+        "longDescription":  "Using the effect requires a successful check (usually a skill). Base DC is 10, +1 per additional rank in Check Required. Success grants 1 rank of the effect per point exceeding DC. Natural 1 always fails. The check is part of the action to use the effect.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Teste Necessário",
+                                   "description":  "Deve ter sucesso num teste (CD 10 + ranks) para usar o efeito.",
+                                   "longDescription":  "Usar o efeito requer um teste bem-sucedido (geralmente perícia). CD base 10, +1 por rank adicional. Sucesso concede 1 rank por ponto acima da CD. 1 natural sempre falha."
+                               }
+                 }
+    },
+    {
+        "id":  "concentration",
+        "name":  "Concentration",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Sustained effect becomes concentration: requires standard action each turn to maintain.",
+        "longDescription":  "Applied to a sustained effect, this makes it concentration duration. Instead of a free action to maintain, it requires a standard action each round. Being hit or distracted may cause you to lose concentration and the effect.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Concentração",
+                                   "description":  "Efeito sustentado vira concentração: exige ação padrão por turno para manter.",
+                                   "longDescription":  "Aplicado a efeito sustentado, torna-o de concentração. Em vez de ação livre, exige ação padrão para manter. Ser atingido pode fazer você perder concentração."
+                               }
+                 }
+    },
+    {
+        "id":  "diminished_range",
+        "name":  "Diminished Range",
+        "category":  "flaw",
+        "costType":  "flat_ranked",
+        "costValue":  -1,
+        "maxRanks":  3,
+        "description":  "Each rank reduces the effect\u0027s short, medium, and long ranges.",
+        "longDescription":  "Each rank reduces the range multipliers. Rank 1: short×10ft, medium×25ft, long×50ft. Rank 2: ×5/×10/×25. Rank 3 (max): ×2/×5/×10. Maximum 3 ranks.",
+        "incompatibleWith":  [
+                                 "increased_range"
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Alcance Reduzido",
+                                   "description":  "Cada rank reduz os alcances curto, médio e longo do efeito.",
+                                   "longDescription":  "Cada rank reduz os multiplicadores de alcance. Rank 1: ×3m/×7.5m/×15m. Rank 2: ×1.5m/×3m/×7.5m. Rank 3 (máx): ×0.6m/×1.5m/×3m."
+                               }
+                 }
+    },
+    {
+        "id":  "distracting",
+        "name":  "Distracting",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Using the effect makes you vulnerable until the start of your next turn.",
+        "longDescription":  "Using a Distracting effect requires more concentration than usual, causing the Vulnerable condition (halved active defenses) until the start of your next turn. This represents the effort of using a particularly demanding ability.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Perturbador",
+                                   "description":  "Usar o efeito deixa você vulnerável até o início do seu próximo turno.",
+                                   "longDescription":  "Usar um efeito Perturbador causa a condição Vulnerável (defesas ativas reduzidas à metade) até o início do seu próximo turno."
+                               }
+                 }
+    },
+    {
+        "id":  "fades",
+        "name":  "Fades",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Each use reduces the effect\u0027s rank by 1. Recovers with rest.",
+        "longDescription":  "Each time you use the effect, it loses 1 rank of effectiveness. For sustained/continuous effects, each round counts as one use. Once it reaches 0 ranks it stops working. Recovery requires rest outside of combat (at least an hour) or spending a hero point.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Desgaste",
+                                   "description":  "Cada uso reduz o rank do efeito em 1. Recupera com descanso.",
+                                   "longDescription":  "Cada uso do efeito reduz seu rank em 1. Para efeitos sustentados, cada rodada conta como uso. Ao chegar em 0 para de funcionar. Recupera com descanso (pelo menos 1 hora) ou ponto de herói."
+                               }
+                 }
+    },
+    {
+        "id":  "feedback",
+        "name":  "Feedback",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "You suffer damage when the effect\u0027s manifestation is damaged.",
+        "longDescription":  "When a physical manifestation of your effect (e.g. a created object, illusion, or summoned creature) is damaged, you must make a resistance check against the attack\u0027s damage rank, using your effect rank as the bonus instead of Toughness.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Retroalimentação",
+                                   "description":  "Você sofre dano quando a manifestação do efeito é danificada.",
+                                   "longDescription":  "Quando uma manifestação física do seu efeito é danificada, você faz um teste de resistência contra o rank do ataque, usando o rank do efeito como bônus em vez de Resistência."
+                               }
+                 }
+    },
+    {
+        "id":  "grab_based",
+        "name":  "Grab-Based",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Must successfully grab target before using this effect.",
+        "longDescription":  "The effect requires you to first successfully grab the target. If the grab succeeds, the effect occurs automatically as a reaction. Most useful for close-range effects. If the effect\u0027s default range is not close, apply the Close modifier as well.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Baseado em Agarrar",
+                                   "description":  "Deve agarrar com sucesso antes de usar este efeito.",
+                                   "longDescription":  "O efeito exige que você primeiro agarrar o alvo com sucesso. Se o agarrar funcionar, o efeito ocorre automaticamente como reação."
+                               }
+                 }
+    },
+    {
+        "id":  "inaccurate",
+        "name":  "Inaccurate",
+        "category":  "flaw",
+        "costType":  "flat_ranked",
+        "costValue":  -1,
+        "description":  "Each rank gives -2 to attack checks with this effect.",
+        "longDescription":  "Each rank of Inaccurate gives you a -2 penalty to attack checks made with this effect. Cost is -1 flat point per rank of the modifier. This is the opposite of the Accurate extra.",
+        "incompatibleWith":  [
+                                 "accurate"
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Impreciso",
+                                   "description":  "Cada rank concede -2 nos testes de ataque com este efeito.",
+                                   "longDescription":  "Cada rank de Impreciso concede -2 nos testes de ataque. Custo: -1 ponto fixo por rank. Oposto de Preciso."
+                               }
+                 }
+    },
+    {
+        "id":  "increased_action",
+        "name":  "Increased Action",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Using the effect requires a longer action than normal (-1/rank per step up).",
+        "longDescription":  "Each step up in action type (free→move→standard→full round) is -1/rank. For example, changing a free action effect to a standard action is -2/rank (-1 for move, -1 more for standard). Full round is -3/rank from free.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Ação Aumentada",
+                                   "description":  "Usar o efeito exige uma ação mais longa que o normal (-1/rank por passo).",
+                                   "longDescription":  "Cada passo de aumento na ação (livre→movimento→padrão→rodada completa) custa -1/rank. Mudar de livre para padrão = -2/rank."
+                               }
+                 }
+    },
+    {
+        "id":  "limited",
+        "name":  "Limited",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "The effect only works in specific situations (about half the time).",
+        "longDescription":  "The effect is not effective all the time—either only usable in certain situations or only on certain things. As a general rule, the effect must lose about half its usefulness. Examples: Only While Singing, Only Against Fire, Only on Men.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Limitado",
+                                   "description":  "O efeito só funciona em situações específicas (cerca de metade das vezes).",
+                                   "longDescription":  "O efeito não funciona todo o tempo — apenas em certas situações ou em certos alvos. Regra geral: deve perder metade da utilidade. Ex: Apenas Cantando, Apenas Contra Fogo, Apenas em Homens."
+                               }
+                 }
+    },
+    {
+        "id":  "noticeable",
+        "name":  "Noticeable",
+        "category":  "flaw",
+        "costType":  "flat",
+        "costValue":  -1,
+        "maxRanks":  1,
+        "description":  "A continuous/permanent effect has a noticeable physical manifestation.",
+        "longDescription":  "A continuous or permanent effect with this flaw is obviously noticeable in some way. Examples: armored plates for a Protection effect, glowing eyes for a Senses effect. Others can immediately tell the character has some form of power.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Perceptível",
+                                   "description":  "Um efeito contínuo/permanente tem manifestação física notável.",
+                                   "longDescription":  "Efeito contínuo ou permanente é obviamente notável. Ex: placas de armadura para Proteção, olhos brilhantes para Sentidos."
+                               }
+                 }
+    },
+    {
+        "id":  "permanent_flaw",
+        "name":  "Permanent",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "A continuous effect becomes permanent: always on, cannot be improved with extra effort.",
+        "longDescription":  "A continuous effect becomes permanent in duration. It cannot be turned off voluntarily and always remains active. If an outside force (like Nullify) turns it off, it reactivates at the earliest opportunity. Cannot be improved with extra effort.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Permanente (Defeito)",
+                                   "description":  "Efeito contínuo vira permanente: sempre ativo, não pode ser melhorado com esforço extra.",
+                                   "longDescription":  "Efeito contínuo vira permanente. Não pode ser desligado voluntariamente. Se anulado por força externa, reativa na primeira oportunidade. Não pode ser melhorado com esforço extra."
+                               }
+                 }
+    },
+    {
+        "id":  "quirk",
+        "name":  "Quirk",
+        "category":  "flaw",
+        "costType":  "flat_ranked",
+        "costValue":  -1,
+        "description":  "A minor nuisance attached to the effect. The opposite of Feature.",
+        "longDescription":  "A Quirk is some minor nuisance attached to an effect—the reverse of the Feature extra. Worth at most 2-3 points, often just 1. Must be a genuine flaw, not just a descriptor. Examples: a shapeshifter who can\u0027t change color, a telepath who can\u0027t lie while using Mental Communication.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Peculiaridade",
+                                   "description":  "Uma inconveniência menor ligada ao efeito. Oposto de Característica.",
+                                   "longDescription":  "Uma inconveniência menor — o reverso do extra Característica. Vale no máximo 2-3 pontos. Exemplos: metamorfo que não muda de cor, telépata que não pode mentir usando Comunicação Mental."
+                               }
+                 }
+    },
+    {
+        "id":  "reduced_range",
+        "name":  "Reduced Range",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Drops the effect\u0027s range one step per rank (perception→ranged→close).",
+        "longDescription":  "Each rank reduces range by one step: perception→ranged, ranged→close. Cost is -1/rank of the power per step down. Effects already at close range cannot reduce further with this flaw.",
+        "incompatibleWith":  [
+                                 "increased_range"
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Alcance Reduzido",
+                                   "description":  "Reduz o alcance do efeito um passo por rank (percepção→distância→perto).",
+                                   "longDescription":  "Cada rank reduz o alcance um passo. Custo -1/rank do poder por passo. Efeitos já em alcance perto não podem reduzir mais."
+                               }
+                 }
+    },
+    {
+        "id":  "removable",
+        "name":  "Removable",
+        "category":  "flaw",
+        "costType":  "flat_ranked",
+        "costValue":  -2,
+        "description":  "The power device can be taken away. -1/5pp (Removable) or -2/5pp (Easily Removable).",
+        "longDescription":  "Applies to the power as a whole (usually a device). Removable (-1 per 5pp): can only be taken when stunned and defenseless. Easily Removable (-2 per 5pp): can be taken with a disarm or grab action. The temporary loss of the power does not count as a complication.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Removível",
+                                   "description":  "O dispositivo pode ser retirado. -1/5pp (Removível) ou -2/5pp (Facilmente Removível).",
+                                   "longDescription":  "Aplica-se ao poder como um todo (geralmente um dispositivo). Removível (-1 por 5pp): só pode ser retirado quando atordoado e indefeso. Facilmente Removível (-2 por 5pp): pode ser retirado com ação de desarmar ou agarrar."
+                               }
+                 }
+    },
+    {
+        "id":  "resistible",
+        "name":  "Resistible",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Adds an additional resistance check to an effect that doesn\u0027t normally have one.",
+        "longDescription":  "When applied to a personal or environmental effect, this gives targets a resistance check to avoid the effect. When applied to an effect that already allows resistance, it adds a second check—targets use the better result.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Resistível",
+                                   "description":  "Adiciona um teste de resistência extra a um efeito que normalmente não tem.",
+                                   "longDescription":  "Aplicado a efeito pessoal ou ambiental, dá aos alvos um teste de resistência. Aplicado a efeito que já permite resistência, adiciona um segundo — alvos usam o melhor resultado."
+                               }
+                 }
+    },
+    {
+        "id":  "sense_dependent",
+        "name":  "Sense-Dependent",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Target must be able to perceive the effect for it to work.",
+        "longDescription":  "The target must perceive the effect for it to work. They get a Dodge resistance check—success means they blocked the sense (eyes shut, ears covered, etc.) and the effect fails. Opponents aware of the effect and deliberately blocking the sense get +10 to resistance.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Dependente de Sentido",
+                                   "description":  "O alvo deve perceber o efeito para que ele funcione.",
+                                   "longDescription":  "O alvo deve perceber o efeito. Faz teste de Esquiva — sucesso significa que bloqueou o sentido e o efeito falha. Oponentes que bloqueiam deliberadamente recebem +10 na resistência."
+                               }
+                 }
+    },
+    {
+        "id":  "side_effect",
+        "name":  "Side Effect",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Failing to use the effect causes a harmful secondary effect on you.",
+        "longDescription":  "-1/rank if it only occurs on failure. -2/rank if it always occurs. The side effect should be worth roughly the same as the power. Typical examples: Affliction, Damage, or Weaken rebounding on you. You get a resistance check against your own side effect.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Efeito Colateral",
+                                   "description":  "Falhar em usar o efeito causa um efeito secundário prejudicial em você.",
+                                   "longDescription":  "-1/rank se ocorre apenas na falha. -2/rank se sempre ocorre. O efeito colateral deve valer aproximadamente o mesmo que o poder. Exemplos: Aflição, Dano ou Enfraquecer ricocheteando em você."
+                               }
+                 }
+    },
+    {
+        "id":  "tiring",
+        "name":  "Tiring",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Using the effect causes a level of fatigue.",
+        "longDescription":  "Using a Tiring effect causes a level of fatigue, as if you had used extra effort. You recover normally and can spend hero points to overcome it. Useful for creating an effect that only works with extra effort. If combined with actual extra effort, fatigue stacks.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Cansativo",
+                                   "description":  "Usar o efeito causa um nível de fadiga.",
+                                   "longDescription":  "Usar um efeito Cansativo causa fadiga, como esforço extra. Recupera normalmente. Útil para criar efeito que só funciona com esforço extra. Combinado com esforço extra real, a fadiga acumula."
+                               }
+                 }
+    },
+    {
+        "id":  "uncontrolled",
+        "name":  "Uncontrolled",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "The GM decides when and how the effect works.",
+        "longDescription":  "You have no control over the effect—the Gamemaster decides when and how it works, essentially making it a plot device. Best suited to mysterious powers outside the character\u0027s direct control.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Incontrolável",
+                                   "description":  "O Mestre decide quando e como o efeito funciona.",
+                                   "longDescription":  "Você não tem controle sobre o efeito — o Mestre decide quando e como funciona, tornando-o essencialmente um dispositivo de enredo."
+                               }
+                 }
+    },
+    {
+        "id":  "unreliable",
+        "name":  "Unreliable",
+        "category":  "flaw",
+        "costType":  "per_rank",
+        "costValue":  -1,
+        "description":  "Roll each round; on 10 or less, the effect doesn\u0027t work. Or: 5 uses per scene.",
+        "longDescription":  "Roll a die each round before using or maintaining the effect. On 10 or less, it doesn\u0027t work that round and the action is still spent. Alternatively: 5 uses where it works normally, then stops until recovered. Hero points can ensure success or immediate recovery.",
+        "incompatibleWith":  [
+
+                             ],
+        "i18n":  {
+                     "pt-BR":  {
+                                   "name":  "Falho",
+                                   "description":  "Role a cada rodada; em 10 ou menos, o efeito não funciona. Ou: 5 usos por cena.",
+                                   "longDescription":  "Role a cada rodada antes de usar ou manter o efeito. Em 10 ou menos não funciona e a ação é gasta. Alternativamente: 5 usos normais, depois para até recuperar. Pontos de herói garantem sucesso ou recuperação imediata."
+                               }
+                 }
     }
-  },
-  {
-    "id": "affects_corporeal",
-    "name": "Affects Corporeal",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "An insubstantial effect can affect corporeal targets.",
-    "longDescription": "This modifier allows an effect that only works on insubstantial targets (or an Insubstantial character's effects) to also affect corporeal (solid) targets. Rank 1: half effect on corporeal targets. Rank 2: full effect.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Afeta Corpóreos",
-        "description": "Efeito insubstancial pode afetar alvos corpóreos.",
-        "longDescription": "Permite que um efeito que só funciona em alvos insubstanciais também afete alvos corpóreos. Rank 1: metade do efeito. Rank 2: efeito completo."
-      }
-    }
-  },
-  {
-    "id": "affects_insubstantial",
-    "name": "Affects Insubstantial",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "maxRanks": 2,
-    "description": "Effect works on insubstantial targets. Rank 1: half effect; rank 2: full effect.",
-    "longDescription": "Normally, physical effects don't affect insubstantial targets. This modifier lets the effect work on them. Rank 1: half the normal effect. Rank 2: full normal effect.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Afeta Insubstanciais",
-        "description": "O efeito funciona em alvos insubstanciais. Rank 1: metade; rank 2: total.",
-        "longDescription": "Normalmente efeitos físicos não afetam alvos insubstanciais. Rank 1: metade do efeito. Rank 2: efeito completo."
-      }
-    }
-  },
-  {
-    "id": "affects_objects",
-    "name": "Affects Objects",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 0,
-    "description": "Effect works on objects as well as (or instead of) people.",
-    "longDescription": "A +0 modifier if the effect works on both characters and objects. A +1/rank modifier if it works only on objects (replacing the normal subjects). Useful for effects like Weaken used to corrode metal.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Afeta Objetos",
-        "description": "O efeito funciona em objetos além de (ou ao invés de) pessoas.",
-        "longDescription": "+0 se o efeito funciona em personagens e objetos. +1/rank se funciona apenas em objetos. Útil para efeitos como Enfraquecer para corroer metal."
-      }
-    }
-  },
-  {
-    "id": "affects_others",
-    "name": "Affects Others",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 0,
-    "description": "A personal effect can also be used on a touched target.",
-    "longDescription": "+0/rank if the effect still works on you as well; +1/rank if it only works on others. Range becomes touch (close) rather than personal.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Afeta Outros",
-        "description": "Efeito pessoal pode ser usado em outro alvo por toque.",
-        "longDescription": "+0/rank se ainda funciona em você; +1/rank se funciona somente em outros. Alcance passa a ser toque (perto) em vez de pessoal."
-      }
-    }
-  },
-  {
-    "id": "alternate_effect",
-    "name": "Alternate Effect",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "description": "Add an alternate version of the effect to a power array. +2 if Dynamic.",
-    "longDescription": "One additional effect can be substituted for the main effect. The total cost of the array is the most expensive effect plus 1 per alternate (2 if Dynamic). Only one effect can be active at a time (or two simultaneously if both are Dynamic).",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Efeito Alternativo",
-        "description": "Adiciona uma versão alternativa do efeito à matriz. +2 se Dinâmico.",
-        "longDescription": "Um efeito adicional pode ser substituído pelo principal. O custo total é o efeito mais caro + 1 por alternativo (2 se Dinâmico). Apenas um ativo por vez."
-      }
-    }
-  },
-  {
-    "id": "alternate_resistance",
-    "name": "Alternate Resistance",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 0,
-    "description": "The effect is resisted by a different defense than normal. Choose which defense from the list below.",
-    "longDescription": "+0/rank if the alternate resistance is equally easy to overcome; +1/rank if it's harder (e.g. Will instead of Fortitude); +2/rank for Fortitude instead of Toughness.",
-    "subtypes": [
-      { "id": "will",      "label": "Will",      "costValue": 1 },
-      { "id": "fortitude", "label": "Fortitude", "costValue": 2 },
-      { "id": "dodge",     "label": "Dodge",     "costValue": 1 },
-      { "id": "parry",     "label": "Parry",     "costValue": 1 }
-    ],
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Resistência Alternativa",
-        "description": "O efeito é resistido por uma defesa diferente do normal. Escolha a defesa na lista abaixo.",
-        "longDescription": "+0/rank se a resistência alternativa é igualmente fácil; +1/rank se for mais difícil (ex: Vontade no lugar de Fortitude); +2/rank para Fortitude no lugar de Resistência."
-      }
-    }
-  },
-  {
-    "id": "area",
-    "name": "Area",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 1,
-    "description": "The effect covers an area. Choose shape; targets resist with Dodge.",
-    "longDescription": "The effect covers an area rather than a single target. Targets in the area make a Dodge resistance check (DC 10 + rank) to avoid half effect (or no effect on success, GM's choice). Choose a shape: Burst (sphere), Cloud (lingering), Cone, Cylinder, Line, Perception (affects all perceiving targets), or Shapeable.",
-    "options": [
-      {
-        "label": "Burst",
-        "notes": "30-ft radius sphere at rank 1"
-      },
-      {
-        "label": "Cloud",
-        "notes": "Lingers for 1 round after use"
-      },
-      {
-        "label": "Cone",
-        "notes": "60-ft cone from you"
-      },
-      {
-        "label": "Cylinder",
-        "notes": "Radius + height = rank"
-      },
-      {
-        "label": "Line",
-        "notes": "5-ft wide, length = rank"
-      },
-      {
-        "label": "Perception",
-        "notes": "Affects all who perceive the effect"
-      },
-      {
-        "label": "Shapeable",
-        "notes": "Any shape, volume rank = effect rank"
-      }
-    ],
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Área",
-        "description": "O efeito cobre uma área. Escolha o formato; alvos resistem com Esquiva.",
-        "longDescription": "O efeito cobre uma área em vez de um único alvo. Alvos na área fazem teste de Esquiva (CD 10 + rank) para evitar metade do efeito. Escolha o formato: Explosão, Nuvem, Cone, Cilindro, Linha, Percepção ou Configurável.",
-        "options": [
-          {
-            "label": "Explosão",
-            "notes": "Esfera de 9m de raio no rank 1"
-          },
-          {
-            "label": "Nuvem",
-            "notes": "Persiste por 1 rodada após o uso"
-          },
-          {
-            "label": "Cone",
-            "notes": "Cone de 18m a partir de você"
-          },
-          {
-            "label": "Cilindro",
-            "notes": "Raio + altura = rank"
-          },
-          {
-            "label": "Linha",
-            "notes": "1,5m de largura, comprimento = rank"
-          },
-          {
-            "label": "Percepção",
-            "notes": "Afeta todos que percebem o efeito"
-          },
-          {
-            "label": "Configurável",
-            "notes": "Qualquer formato, volume = rank do efeito"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "id": "attack",
-    "name": "Attack",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 0,
-    "description": "Converts a non-attack effect into an attack requiring an attack check.",
-    "longDescription": "This modifier turns a personal or area effect into one requiring an attack check, allowing it to be combined with other attack effects. Cost is +0/rank since it also adds a chance of missing.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Ataque",
-        "description": "Converte efeito não-ataque em ataque que exige teste de ataque.",
-        "longDescription": "Transforma um efeito pessoal ou de área em um que exige teste de ataque. Custo +0/rank pois também adiciona chance de falha."
-      }
-    }
-  },
-  {
-    "id": "contagious",
-    "name": "Contagious",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 1,
-    "description": "Effect spreads from initial targets to others they contact.",
-    "longDescription": "Anyone who comes into contact with a Contagious effect's subject also becomes affected. The DC of the original effect applies to the secondary targets. Instant effects only spread once; sustained effects may continue to spread each round at GM discretion.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Contagioso",
-        "description": "O efeito se espalha dos alvos iniciais para outros que entrem em contato.",
-        "longDescription": "Quem entrar em contato com o alvo de um efeito Contagioso também é afetado. CD igual ao efeito original. Efeitos instantâneos se espalham uma vez; efeitos sustentados podem continuar se espalhando."
-      }
-    }
-  },
-  {
-    "id": "dimensional",
-    "name": "Dimensional",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "maxRanks": 3,
-    "description": "Effect works across dimensions. Rank 1: one other; 2: group; 3: any.",
-    "longDescription": "The effect works across dimensional barriers. Rank 1: one specific other dimension. Rank 2: a group of related dimensions. Rank 3: any dimension. Cost is flat (1-3 points total, not per rank of the power).",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Dimensional",
-        "description": "O efeito funciona entre dimensões. Rank 1: uma; 2: grupo; 3: qualquer.",
-        "longDescription": "O efeito funciona através de barreiras dimensionais. Rank 1: uma dimensão específica. Rank 2: grupo de dimensões relacionadas. Rank 3: qualquer dimensão. Custo fixo (1-3 pontos no total)."
-      }
-    }
-  },
-  {
-    "id": "extended_range",
-    "name": "Extended Range",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "Each rank doubles the effect's short, medium, and long ranges.",
-    "longDescription": "Each rank of Extended Range doubles the effect's range increments. So a Ranged effect normally has short/medium/long ranges of (rank×25 ft)/(rank×50 ft)/(rank×100 ft). With Extended Range 1, these become double. Extended Range 2 doubles again, etc.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Alcance Estendido",
-        "description": "Cada rank dobra os alcances curto, médio e longo do efeito.",
-        "longDescription": "Cada rank dobra os incrementos de alcance. Com Alcance Estendido 1, os alcances dobram. Com 2, dobram novamente."
-      }
-    }
-  },
-  {
-    "id": "feature",
-    "name": "Feature",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "Minor extra capability added to the effect, worth 1 flat point per feature.",
-    "longDescription": "A minor addition to the effect's capabilities, each worth 1 point. Similar to the Feature power effect but applied as a modifier. The GM decides what qualifies. Examples: concealed compartment in a created object, minor environmental control in an area effect.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Característica",
-        "description": "Capacidade extra menor adicionada ao efeito, 1 ponto fixo por característica.",
-        "longDescription": "Adição menor às capacidades do efeito, 1 ponto cada. O Mestre decide o que se qualifica. Exemplos: compartimento oculto num objeto criado, controle ambiental menor num efeito de área."
-      }
-    }
-  },
-  {
-    "id": "homing",
-    "name": "Homing",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "If the attack misses, it gets additional attack chances (1 per rank).",
-    "longDescription": "If a Homing attack misses, it makes additional attack checks at the end of subsequent rounds, one per rank of this modifier, until it either hits or exhausts all attempts. The target can evade using their action on subsequent rounds.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Teleguiado",
-        "description": "Se o ataque errar, tem tentativas adicionais de ataque (1 por rank).",
-        "longDescription": "Se um ataque Teleguiado errar, faz testes de ataque adicionais no final de rodadas subsequentes, um por rank deste modificador, até acertar ou esgotar as tentativas."
-      }
-    }
-  },
-  {
-    "id": "impervious",
-    "name": "Impervious",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 1,
-    "description": "Defense ignores effects with resistance DC less than half this rank.",
-    "longDescription": "When applied to a defense (usually Toughness via Protection), attacks with a resistance DC less than half the Impervious rank (rounded up) are automatically ignored—no resistance check needed. Penetrating modifier bypasses Impervious.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Impenetrável",
-        "description": "A defesa ignora efeitos com CD de resistência menor que metade deste rank.",
-        "longDescription": "Aplicado a uma defesa (normalmente Resistência via Proteção), ataques com CD menor que metade do rank Impenetrável são ignorados automaticamente. O modificador Penetrante anula Impenetrável."
-      }
-    }
-  },
-  {
-    "id": "increased_duration",
-    "name": "Increased Duration",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 1,
-    "description": "Moves duration up one step: instant→concentration→sustained→continuous.",
-    "longDescription": "Each rank moves the effect's duration up one step: instant→concentration→sustained→continuous. +1/rank for each step. An effect made continuous with this modifier cannot be turned off voluntarily unless Reversible is also applied.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Duração Aumentada",
-        "description": "Move a duração um passo: instante→concentração→sustentado→contínuo.",
-        "longDescription": "+1/rank por passo: instante→concentração→sustentado→contínuo. Efeito tornado contínuo não pode ser desligado voluntariamente sem Reversível."
-      }
-    }
-  },
-  {
-    "id": "increased_mass",
-    "name": "Increased Mass",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "Each rank doubles the mass the effect can carry or affect.",
-    "longDescription": "Each rank of Increased Mass doubles the mass the effect can transport, carry, or otherwise affect beyond its normal limits. Commonly applied to Teleport to bring more passengers.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Massa Aumentada",
-        "description": "Cada rank dobra a massa que o efeito pode carregar ou afetar.",
-        "longDescription": "Cada rank dobra a massa que o efeito pode transportar ou afetar. Comumente aplicado a Teleporte para trazer mais passageiros."
-      }
-    }
-  },
-  {
-    "id": "increased_range",
-    "name": "Increased Range",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 1,
-    "maxRanks": 2,
-    "description": "Moves range up one step: close→ranged→perception.",
-    "longDescription": "Each rank of Increased Range moves the effect's range up one step: close→ranged→perception. Cost is +1/rank of the power for each step.",
-    "incompatibleWith": [
-      "diminished_range"
-    ],
-    "i18n": {
-      "pt-BR": {
-        "name": "Alcance Aumentado",
-        "description": "Move o alcance um passo: perto→distância→percepção.",
-        "longDescription": "Cada rank sobe o alcance um passo: perto→distância→percepção. Custo +1/rank do poder por passo."
-      }
-    }
-  },
-  {
-    "id": "incurable",
-    "name": "Incurable",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "maxRanks": 1,
-    "description": "Conditions from this effect cannot be removed by Healing effects.",
-    "longDescription": "Conditions imposed by this effect cannot be cured by the Healing effect or similar restorative effects. They can still be recovered naturally over time. A flat 1-point bonus.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Incurável",
-        "description": "Condições deste efeito não podem ser removidas por efeitos de Cura.",
-        "longDescription": "Condições impostas por este efeito não podem ser curadas por Cura ou efeitos restauradores. Ainda recuperam naturalmente com o tempo. Bônus fixo de 1 ponto."
-      }
-    }
-  },
-  {
-    "id": "indirect",
-    "name": "Indirect",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "maxRanks": 4,
-    "description": "Attack can originate from directions other than from you.",
-    "longDescription": "Rank 1: fixed point away from you, directed away. Rank 2: any point OR fixed point any direction. Rank 3: any point fixed direction OR fixed point any direction. Rank 4: any point, any direction. Only applies to ranged effects.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Indireto",
-        "description": "O ataque pode originar de direções diferentes de você.",
-        "longDescription": "Rank 1: ponto fixo longe de você. Rank 2: qualquer ponto OU ponto fixo. Rank 3: qualquer ponto direção fixa OU ponto fixo qualquer direção. Rank 4: qualquer ponto, qualquer direção. Apenas para efeitos à distância."
-      }
-    }
-  },
-  {
-    "id": "innate",
-    "name": "Innate",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "maxRanks": 1,
-    "description": "Effect cannot be detected or countered as a power (it's natural).",
-    "longDescription": "An Innate effect is treated as a natural trait rather than a power for purposes of Nullify, power detection, and similar effects. It cannot be nullified, detected as a power, or analyzed as such.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Inato",
-        "description": "O efeito não pode ser detectado ou anulado como poder (é natural).",
-        "longDescription": "Um efeito Inato é tratado como traço natural e não como poder para fins de Anulação e detecção de poderes."
-      }
-    }
-  },
-  {
-    "id": "insidious",
-    "name": "Insidious",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "maxRanks": 1,
-    "description": "The target is unaware the effect is working on them.",
-    "longDescription": "The target of an Insidious effect doesn't realize the effect is working. They aren't told the resistance check result and may not notice any changes. They can still attempt to detect it with Insight checks.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Insidioso",
-        "description": "O alvo não sabe que o efeito está agindo sobre ele.",
-        "longDescription": "O alvo de um efeito Insidioso não percebe que o efeito está funcionando. Não é informado sobre o resultado do teste de resistência."
-      }
-    }
-  },
-  {
-    "id": "linked",
-    "name": "Linked",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 0,
-    "maxRanks": 1,
-    "description": "Two effects are linked; both activate together as one action.",
-    "longDescription": "Two effects with Linked activate together using the same action. Both effects apply simultaneously. Both effects must be activated together; neither can be used without the other. A +0 modifier since it also restricts usage.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Vinculado",
-        "description": "Dois efeitos são vinculados; ambos ativam juntos como uma ação.",
-        "longDescription": "Efeitos com Vinculado ativam juntos usando a mesma ação. Ambos se aplicam simultaneamente e nenhum pode ser usado sem o outro."
-      }
-    }
-  },
-  {
-    "id": "multiattack",
-    "name": "Multiattack",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 1,
-    "description": "Lets you attack multiple targets in one action.",
-    "longDescription": "You can attack multiple targets simultaneously. Make one attack check; compare it against each target's defense. You can affect up to (1 + effect rank) targets (GM's discretion on spread). You take a cumulative –2 penalty per additional target beyond the first.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Ataque Múltiplo",
-        "description": "Permite atacar múltiplos alvos em uma ação.",
-        "longDescription": "Você pode atacar múltiplos alvos simultaneamente. Um teste de ataque é comparado à defesa de cada alvo. Penalidade cumulativa de -2 por alvo adicional além do primeiro."
-      }
-    }
-  },
-  {
-    "id": "penetrating",
-    "name": "Penetrating",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "Bypasses Impervious Toughness up to this modifier's rank.",
-    "longDescription": "A Penetrating attack bypasses Impervious Toughness up to the rank of this modifier. If your Penetrating rank equals or exceeds the target's Impervious rank, the attack is not ignored. Cost is 1 flat point per rank of the modifier (not per rank of the power).",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Penetrante",
-        "description": "Ignora Resistência Impenetrável até o rank deste modificador.",
-        "longDescription": "Um ataque Penetrante ignora Resistência Impenetrável até o rank deste modificador. Custo: 1 ponto fixo por rank do modificador (não do poder)."
-      }
-    }
-  },
-  {
-    "id": "precise",
-    "name": "Precise",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "maxRanks": 1,
-    "description": "Effect can be used with fine control (e.g. picking locks with Move Object).",
-    "longDescription": "A Precise effect allows fine-grained control that normally wouldn't be possible. For example, Precise Move Object lets you pick locks, perform surgery, or thread a needle at a distance.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Preciso",
-        "description": "O efeito pode ser usado com controle minucioso (ex: abrir fechaduras com Mover Objetos).",
-        "longDescription": "Um efeito Preciso permite controle fino que normalmente não seria possível. Ex: Mover Objetos Preciso permite abrir fechaduras ou realizar cirurgias à distância."
-      }
-    }
-  },
-  {
-    "id": "reach",
-    "name": "Reach",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "Extends the range of a close effect by 5 feet per rank.",
-    "longDescription": "Each rank of Reach extends the range of a close effect by 5 feet (1.5 m). So a close attack with Reach 2 can hit targets up to 10 feet away. This does not change the effect's range category (it's still 'close').",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Alcance de Luta",
-        "description": "Estende o alcance de efeito perto em 1,5m por rank.",
-        "longDescription": "Cada rank de Alcance de Luta estende o alcance de um efeito perto em 1,5m. Não muda a categoria de alcance do efeito."
-      }
-    }
-  },
-  {
-    "id": "reaction",
-    "name": "Reaction",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 3,
-    "description": "Effect activates automatically in reaction to a trigger (+3/rank for actions normally requiring standard, +1 for free).",
-    "longDescription": "The effect can be used as a reaction to a specific trigger (defined at acquisition), instead of requiring a separate action. Cost varies: +1/rank if the normal action is free, +3/rank if it's a standard action. Reaction effects don't require you to spend an action.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Reação",
-        "description": "O efeito ativa automaticamente em reação a um gatilho.",
-        "longDescription": "O efeito pode ser usado como reação a um gatilho específico. Custo: +1/rank se a ação normal é livre, +3/rank se é padrão."
-      }
-    }
-  },
-  {
-    "id": "reversible",
-    "name": "Reversible",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "maxRanks": 1,
-    "description": "You can remove conditions caused by the effect at will as a free action.",
-    "longDescription": "You can remove conditions caused by a Reversible effect as a free action, so long as the subject is within range. For example, you can restore Damage conditions from a Reversible Damage effect, or remove an Affliction instantly.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Reversível",
-        "description": "Você pode remover condições causadas pelo efeito como ação livre.",
-        "longDescription": "Você pode remover condições causadas pelo efeito como ação livre, desde que o alvo esteja dentro do alcance. Ex: restaurar condições de Dano ou remover uma Aflição instantaneamente."
-      }
-    }
-  },
-  {
-    "id": "ricochet",
-    "name": "Ricochet",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "Each rank lets the attack bounce once off a surface before hitting.",
-    "longDescription": "You can bounce your attack off solid surfaces to change its direction, allowing you to attack around corners or overcome cover. Each rank allows one additional bounce. The path must follow a straight line between ricochets.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Ricochete",
-        "description": "Cada rank permite que o ataque ricocheteie uma vez antes de acertar.",
-        "longDescription": "Você pode ricocheteiar seu ataque em superfícies sólidas para mudar sua direção, permitindo atacar por trás de cobertura. Cada rank permite uma quicada adicional."
-      }
-    }
-  },
-  {
-    "id": "secondary_effect",
-    "name": "Secondary Effect",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 1,
-    "description": "The effect acts on the target once now and once again next round.",
-    "longDescription": "An instant effect with this modifier affects the target immediately and then once again at the end of the attacker's next turn. The target gets a normal resistance check against the secondary effect. Secondary Effects don't stack.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Efeito Secundário",
-        "description": "O efeito age no alvo agora e novamente na próxima rodada.",
-        "longDescription": "Um efeito instantâneo com este modificador afeta o alvo imediatamente e novamente no final do próximo turno do atacante. O alvo faz teste de resistência normal contra o efeito secundário."
-      }
-    }
-  },
-  {
-    "id": "selective",
-    "name": "Selective",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 1,
-    "description": "You choose which targets in an area are affected.",
-    "longDescription": "A Selective effect allows you to exclude targets from an area effect. You must be able to accurately perceive a target to decide whether to affect it. Most useful combined with the Area extra.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Seletivo",
-        "description": "Você escolhe quais alvos na área são afetados.",
-        "longDescription": "Um efeito Seletivo permite excluir alvos de um efeito de área. Você deve perceber com precisão o alvo para decidir. Mais útil combinado com o extra Área."
-      }
-    }
-  },
-  {
-    "id": "sleep",
-    "name": "Sleep",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 0,
-    "description": "When the effect causes incapacitated, target is asleep instead.",
-    "longDescription": "When this modifier is applied to an effect that can cause the incapacitated condition, the target is left asleep whenever the effect would render them incapacitated. A +0 modifier since sleep is generally a worse condition for the attacker (sleeping targets can be awakened).",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Sono",
-        "description": "Quando o efeito causa incapacitado, o alvo dorme em vez disso.",
-        "longDescription": "Quando aplicado a um efeito que pode causar incapacitado, o alvo dorme em vez de ficar incapacitado. Modificador +0 pois alvos dormindo podem ser despertados."
-      }
-    }
-  },
-  {
-    "id": "split",
-    "name": "Split",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "Split the effect between multiple targets; each rank adds one more target.",
-    "longDescription": "The effect can be split between two targets (one additional target per rank beyond the first). You choose how many ranks to apply to each target up to the total. Make one attack check and compare against each target's defense.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Dividir",
-        "description": "Divide o efeito entre múltiplos alvos; cada rank adiciona mais um alvo.",
-        "longDescription": "O efeito pode ser dividido entre alvos (um alvo adicional por rank). Você escolhe quantos ranks aplicar a cada alvo. Um único teste de ataque comparado à defesa de cada alvo."
-      }
-    }
-  },
-  {
-    "id": "subtle",
-    "name": "Subtle",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "maxRanks": 2,
-    "description": "Rank 1: hard to notice (DC 20 Perception). Rank 2: completely undetectable.",
-    "longDescription": "Rank 1: The effect is difficult to notice; a DC 20 Perception check is required, or only detectable by exotic senses. Rank 2: The effect is completely undetectable by any normal means.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Sutil",
-        "description": "Rank 1: difícil de notar (CD 20 Percepção). Rank 2: completamente indetectável.",
-        "longDescription": "Rank 1: Efeito difícil de notar; CD 20 em Percepção. Rank 2: completamente indetectável por meios normais."
-      }
-    }
-  },
-  {
-    "id": "sustained",
-    "name": "Sustained",
-    "category": "extra",
-    "costType": "per_rank",
-    "costValue": 0,
-    "description": "Makes a permanent effect sustained: can be turned off and used for power stunts.",
-    "longDescription": "Applied to a permanent effect, this makes it sustained duration instead. The effect can now be turned on and off, improved with extra effort, and used for power stunts. It requires a free action each turn to maintain.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Sustentado",
-        "description": "Torna um efeito permanente sustentado: pode ser desligado e usado para acrobacias de poder.",
-        "longDescription": "Aplicado a um efeito permanente, torna-o sustentado. Pode ser ligado/desligado, melhorado com esforço extra, usado para acrobacias. Exige ação livre por turno para manter."
-      }
-    }
-  },
-  {
-    "id": "triggered",
-    "name": "Triggered",
-    "category": "extra",
-    "costType": "flat_ranked",
-    "costValue": 1,
-    "description": "Set the effect to activate under specific conditions. Each rank = one use.",
-    "longDescription": "You can 'set' an instant effect to activate under specific conditions (defined at acquisition). Setting requires the normal action. A Triggered effect lying in wait can be detected (DC 10 + rank) or disarmed. Each rank provides one use. An additional rank gives a Variable Trigger.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Gatilho",
-        "description": "Programa o efeito para ativar em condições específicas. Cada rank = um uso.",
-        "longDescription": "Você programa um efeito instantâneo para ativar sob condições específicas (definidas na aquisição). Um Gatilho pode ser detectado (CD 10 + rank) ou desarmado. Cada rank fornece um uso."
-      }
-    }
-  },
-  {
-    "id": "variable_descriptor",
-    "name": "Variable Descriptor",
-    "category": "extra",
-    "costType": "flat",
-    "costValue": 1,
-    "maxRanks": 2,
-    "description": "Change the effect's descriptors as a free action. Rank 1: related group; rank 2: broad group.",
-    "longDescription": "Rank 1: change among a closely related group of descriptors (e.g. weather, electromagnetic, temperature) as a free action once per round. Rank 2: any descriptor from a broad group (e.g. any mental, magical, or technological descriptor).",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Descritor Variável",
-        "description": "Muda os descritores do efeito como ação livre. Rank 1: grupo relacionado; rank 2: grupo amplo.",
-        "longDescription": "Rank 1: mudar entre descritores relacionados (ex: clima, eletromagnético) como ação livre uma vez por rodada. Rank 2: qualquer descritor de um grupo amplo (ex: mental, mágico, tecnológico)."
-      }
-    }
-  },
-  {
-    "id": "activation",
-    "name": "Activation",
-    "category": "flaw",
-    "costType": "flat",
-    "costValue": -1,
-    "maxRanks": 2,
-    "description": "Power requires an action to activate before use. -1 (move action) or -2 (standard action).",
-    "longDescription": "The power requires an action to prepare before any of its effects can be used. Move action = -1 point. Standard action = -2 points. Activation applies to the entire power. Effects still require their normal actions after activation.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Ativação",
-        "description": "O poder requer uma ação de preparação antes de usar. -1 (movimento) ou -2 (padrão).",
-        "longDescription": "O poder exige uma ação para ser preparado antes de qualquer efeito funcionar. Ação de movimento = -1 ponto. Ação padrão = -2 pontos. Aplica-se ao poder inteiro."
-      }
-    }
-  },
-  {
-    "id": "check_required",
-    "name": "Check Required",
-    "category": "flaw",
-    "costType": "flat_ranked",
-    "costValue": -1,
-    "description": "Must succeed on a skill check (DC 10 + ranks) to use the effect.",
-    "longDescription": "Using the effect requires a successful check (usually a skill). Base DC is 10, +1 per additional rank in Check Required. Success grants 1 rank of the effect per point exceeding DC. Natural 1 always fails. The check is part of the action to use the effect.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Teste Necessário",
-        "description": "Deve ter sucesso num teste (CD 10 + ranks) para usar o efeito.",
-        "longDescription": "Usar o efeito requer um teste bem-sucedido (geralmente perícia). CD base 10, +1 por rank adicional. Sucesso concede 1 rank por ponto acima da CD. 1 natural sempre falha."
-      }
-    }
-  },
-  {
-    "id": "concentration",
-    "name": "Concentration",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Sustained effect becomes concentration: requires standard action each turn to maintain.",
-    "longDescription": "Applied to a sustained effect, this makes it concentration duration. Instead of a free action to maintain, it requires a standard action each round. Being hit or distracted may cause you to lose concentration and the effect.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Concentração",
-        "description": "Efeito sustentado vira concentração: exige ação padrão por turno para manter.",
-        "longDescription": "Aplicado a efeito sustentado, torna-o de concentração. Em vez de ação livre, exige ação padrão para manter. Ser atingido pode fazer você perder concentração."
-      }
-    }
-  },
-  {
-    "id": "diminished_range",
-    "name": "Diminished Range",
-    "category": "flaw",
-    "costType": "flat_ranked",
-    "costValue": -1,
-    "maxRanks": 3,
-    "description": "Each rank reduces the effect's short, medium, and long ranges.",
-    "longDescription": "Each rank reduces the range multipliers. Rank 1: short×10ft, medium×25ft, long×50ft. Rank 2: ×5/×10/×25. Rank 3 (max): ×2/×5/×10. Maximum 3 ranks.",
-    "incompatibleWith": [
-      "increased_range"
-    ],
-    "i18n": {
-      "pt-BR": {
-        "name": "Alcance Reduzido",
-        "description": "Cada rank reduz os alcances curto, médio e longo do efeito.",
-        "longDescription": "Cada rank reduz os multiplicadores de alcance. Rank 1: ×3m/×7.5m/×15m. Rank 2: ×1.5m/×3m/×7.5m. Rank 3 (máx): ×0.6m/×1.5m/×3m."
-      }
-    }
-  },
-  {
-    "id": "distracting",
-    "name": "Distracting",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Using the effect makes you vulnerable until the start of your next turn.",
-    "longDescription": "Using a Distracting effect requires more concentration than usual, causing the Vulnerable condition (halved active defenses) until the start of your next turn. This represents the effort of using a particularly demanding ability.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Perturbador",
-        "description": "Usar o efeito deixa você vulnerável até o início do seu próximo turno.",
-        "longDescription": "Usar um efeito Perturbador causa a condição Vulnerável (defesas ativas reduzidas à metade) até o início do seu próximo turno."
-      }
-    }
-  },
-  {
-    "id": "fades",
-    "name": "Fades",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Each use reduces the effect's rank by 1. Recovers with rest.",
-    "longDescription": "Each time you use the effect, it loses 1 rank of effectiveness. For sustained/continuous effects, each round counts as one use. Once it reaches 0 ranks it stops working. Recovery requires rest outside of combat (at least an hour) or spending a hero point.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Desgaste",
-        "description": "Cada uso reduz o rank do efeito em 1. Recupera com descanso.",
-        "longDescription": "Cada uso do efeito reduz seu rank em 1. Para efeitos sustentados, cada rodada conta como uso. Ao chegar em 0 para de funcionar. Recupera com descanso (pelo menos 1 hora) ou ponto de herói."
-      }
-    }
-  },
-  {
-    "id": "feedback",
-    "name": "Feedback",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "You suffer damage when the effect's manifestation is damaged.",
-    "longDescription": "When a physical manifestation of your effect (e.g. a created object, illusion, or summoned creature) is damaged, you must make a resistance check against the attack's damage rank, using your effect rank as the bonus instead of Toughness.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Retroalimentação",
-        "description": "Você sofre dano quando a manifestação do efeito é danificada.",
-        "longDescription": "Quando uma manifestação física do seu efeito é danificada, você faz um teste de resistência contra o rank do ataque, usando o rank do efeito como bônus em vez de Resistência."
-      }
-    }
-  },
-  {
-    "id": "grab_based",
-    "name": "Grab-Based",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Must successfully grab target before using this effect.",
-    "longDescription": "The effect requires you to first successfully grab the target. If the grab succeeds, the effect occurs automatically as a reaction. Most useful for close-range effects. If the effect's default range is not close, apply the Close modifier as well.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Baseado em Agarrar",
-        "description": "Deve agarrar com sucesso antes de usar este efeito.",
-        "longDescription": "O efeito exige que você primeiro agarrar o alvo com sucesso. Se o agarrar funcionar, o efeito ocorre automaticamente como reação."
-      }
-    }
-  },
-  {
-    "id": "inaccurate",
-    "name": "Inaccurate",
-    "category": "flaw",
-    "costType": "flat_ranked",
-    "costValue": -1,
-    "description": "Each rank gives -2 to attack checks with this effect.",
-    "longDescription": "Each rank of Inaccurate gives you a -2 penalty to attack checks made with this effect. Cost is -1 flat point per rank of the modifier. This is the opposite of the Accurate extra.",
-    "incompatibleWith": [
-      "accurate"
-    ],
-    "i18n": {
-      "pt-BR": {
-        "name": "Impreciso",
-        "description": "Cada rank concede -2 nos testes de ataque com este efeito.",
-        "longDescription": "Cada rank de Impreciso concede -2 nos testes de ataque. Custo: -1 ponto fixo por rank. Oposto de Preciso."
-      }
-    }
-  },
-  {
-    "id": "increased_action",
-    "name": "Increased Action",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Using the effect requires a longer action than normal (-1/rank per step up).",
-    "longDescription": "Each step up in action type (free→move→standard→full round) is -1/rank. For example, changing a free action effect to a standard action is -2/rank (-1 for move, -1 more for standard). Full round is -3/rank from free.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Ação Aumentada",
-        "description": "Usar o efeito exige uma ação mais longa que o normal (-1/rank por passo).",
-        "longDescription": "Cada passo de aumento na ação (livre→movimento→padrão→rodada completa) custa -1/rank. Mudar de livre para padrão = -2/rank."
-      }
-    }
-  },
-  {
-    "id": "limited",
-    "name": "Limited",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "The effect only works in specific situations (about half the time).",
-    "longDescription": "The effect is not effective all the time—either only usable in certain situations or only on certain things. As a general rule, the effect must lose about half its usefulness. Examples: Only While Singing, Only Against Fire, Only on Men.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Limitado",
-        "description": "O efeito só funciona em situações específicas (cerca de metade das vezes).",
-        "longDescription": "O efeito não funciona todo o tempo — apenas em certas situações ou em certos alvos. Regra geral: deve perder metade da utilidade. Ex: Apenas Cantando, Apenas Contra Fogo, Apenas em Homens."
-      }
-    }
-  },
-  {
-    "id": "noticeable",
-    "name": "Noticeable",
-    "category": "flaw",
-    "costType": "flat",
-    "costValue": -1,
-    "maxRanks": 1,
-    "description": "A continuous/permanent effect has a noticeable physical manifestation.",
-    "longDescription": "A continuous or permanent effect with this flaw is obviously noticeable in some way. Examples: armored plates for a Protection effect, glowing eyes for a Senses effect. Others can immediately tell the character has some form of power.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Perceptível",
-        "description": "Um efeito contínuo/permanente tem manifestação física notável.",
-        "longDescription": "Efeito contínuo ou permanente é obviamente notável. Ex: placas de armadura para Proteção, olhos brilhantes para Sentidos."
-      }
-    }
-  },
-  {
-    "id": "permanent_flaw",
-    "name": "Permanent",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "A continuous effect becomes permanent: always on, cannot be improved with extra effort.",
-    "longDescription": "A continuous effect becomes permanent in duration. It cannot be turned off voluntarily and always remains active. If an outside force (like Nullify) turns it off, it reactivates at the earliest opportunity. Cannot be improved with extra effort.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Permanente (Defeito)",
-        "description": "Efeito contínuo vira permanente: sempre ativo, não pode ser melhorado com esforço extra.",
-        "longDescription": "Efeito contínuo vira permanente. Não pode ser desligado voluntariamente. Se anulado por força externa, reativa na primeira oportunidade. Não pode ser melhorado com esforço extra."
-      }
-    }
-  },
-  {
-    "id": "quirk",
-    "name": "Quirk",
-    "category": "flaw",
-    "costType": "flat_ranked",
-    "costValue": -1,
-    "description": "A minor nuisance attached to the effect. The opposite of Feature.",
-    "longDescription": "A Quirk is some minor nuisance attached to an effect—the reverse of the Feature extra. Worth at most 2-3 points, often just 1. Must be a genuine flaw, not just a descriptor. Examples: a shapeshifter who can't change color, a telepath who can't lie while using Mental Communication.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Peculiaridade",
-        "description": "Uma inconveniência menor ligada ao efeito. Oposto de Característica.",
-        "longDescription": "Uma inconveniência menor — o reverso do extra Característica. Vale no máximo 2-3 pontos. Exemplos: metamorfo que não muda de cor, telépata que não pode mentir usando Comunicação Mental."
-      }
-    }
-  },
-  {
-    "id": "reduced_range",
-    "name": "Reduced Range",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Drops the effect's range one step per rank (perception→ranged→close).",
-    "longDescription": "Each rank reduces range by one step: perception→ranged, ranged→close. Cost is -1/rank of the power per step down. Effects already at close range cannot reduce further with this flaw.",
-    "incompatibleWith": [
-      "increased_range"
-    ],
-    "i18n": {
-      "pt-BR": {
-        "name": "Alcance Reduzido",
-        "description": "Reduz o alcance do efeito um passo por rank (percepção→distância→perto).",
-        "longDescription": "Cada rank reduz o alcance um passo. Custo -1/rank do poder por passo. Efeitos já em alcance perto não podem reduzir mais."
-      }
-    }
-  },
-  {
-    "id": "removable",
-    "name": "Removable",
-    "category": "flaw",
-    "costType": "flat_ranked",
-    "costValue": -2,
-    "description": "The power device can be taken away. -1/5pp (Removable) or -2/5pp (Easily Removable).",
-    "longDescription": "Applies to the power as a whole (usually a device). Removable (-1 per 5pp): can only be taken when stunned and defenseless. Easily Removable (-2 per 5pp): can be taken with a disarm or grab action. The temporary loss of the power does not count as a complication.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Removível",
-        "description": "O dispositivo pode ser retirado. -1/5pp (Removível) ou -2/5pp (Facilmente Removível).",
-        "longDescription": "Aplica-se ao poder como um todo (geralmente um dispositivo). Removível (-1 por 5pp): só pode ser retirado quando atordoado e indefeso. Facilmente Removível (-2 por 5pp): pode ser retirado com ação de desarmar ou agarrar."
-      }
-    }
-  },
-  {
-    "id": "resistible",
-    "name": "Resistible",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Adds an additional resistance check to an effect that doesn't normally have one.",
-    "longDescription": "When applied to a personal or environmental effect, this gives targets a resistance check to avoid the effect. When applied to an effect that already allows resistance, it adds a second check—targets use the better result.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Resistível",
-        "description": "Adiciona um teste de resistência extra a um efeito que normalmente não tem.",
-        "longDescription": "Aplicado a efeito pessoal ou ambiental, dá aos alvos um teste de resistência. Aplicado a efeito que já permite resistência, adiciona um segundo — alvos usam o melhor resultado."
-      }
-    }
-  },
-  {
-    "id": "sense_dependent",
-    "name": "Sense-Dependent",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Target must be able to perceive the effect for it to work.",
-    "longDescription": "The target must perceive the effect for it to work. They get a Dodge resistance check—success means they blocked the sense (eyes shut, ears covered, etc.) and the effect fails. Opponents aware of the effect and deliberately blocking the sense get +10 to resistance.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Dependente de Sentido",
-        "description": "O alvo deve perceber o efeito para que ele funcione.",
-        "longDescription": "O alvo deve perceber o efeito. Faz teste de Esquiva — sucesso significa que bloqueou o sentido e o efeito falha. Oponentes que bloqueiam deliberadamente recebem +10 na resistência."
-      }
-    }
-  },
-  {
-    "id": "side_effect",
-    "name": "Side Effect",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Failing to use the effect causes a harmful secondary effect on you.",
-    "longDescription": "-1/rank if it only occurs on failure. -2/rank if it always occurs. The side effect should be worth roughly the same as the power. Typical examples: Affliction, Damage, or Weaken rebounding on you. You get a resistance check against your own side effect.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Efeito Colateral",
-        "description": "Falhar em usar o efeito causa um efeito secundário prejudicial em você.",
-        "longDescription": "-1/rank se ocorre apenas na falha. -2/rank se sempre ocorre. O efeito colateral deve valer aproximadamente o mesmo que o poder. Exemplos: Aflição, Dano ou Enfraquecer ricocheteando em você."
-      }
-    }
-  },
-  {
-    "id": "tiring",
-    "name": "Tiring",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Using the effect causes a level of fatigue.",
-    "longDescription": "Using a Tiring effect causes a level of fatigue, as if you had used extra effort. You recover normally and can spend hero points to overcome it. Useful for creating an effect that only works with extra effort. If combined with actual extra effort, fatigue stacks.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Cansativo",
-        "description": "Usar o efeito causa um nível de fadiga.",
-        "longDescription": "Usar um efeito Cansativo causa fadiga, como esforço extra. Recupera normalmente. Útil para criar efeito que só funciona com esforço extra. Combinado com esforço extra real, a fadiga acumula."
-      }
-    }
-  },
-  {
-    "id": "uncontrolled",
-    "name": "Uncontrolled",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "The GM decides when and how the effect works.",
-    "longDescription": "You have no control over the effect—the Gamemaster decides when and how it works, essentially making it a plot device. Best suited to mysterious powers outside the character's direct control.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Incontrolável",
-        "description": "O Mestre decide quando e como o efeito funciona.",
-        "longDescription": "Você não tem controle sobre o efeito — o Mestre decide quando e como funciona, tornando-o essencialmente um dispositivo de enredo."
-      }
-    }
-  },
-  {
-    "id": "unreliable",
-    "name": "Unreliable",
-    "category": "flaw",
-    "costType": "per_rank",
-    "costValue": -1,
-    "description": "Roll each round; on 10 or less, the effect doesn't work. Or: 5 uses per scene.",
-    "longDescription": "Roll a die each round before using or maintaining the effect. On 10 or less, it doesn't work that round and the action is still spent. Alternatively: 5 uses where it works normally, then stops until recovered. Hero points can ensure success or immediate recovery.",
-    "incompatibleWith": [],
-    "i18n": {
-      "pt-BR": {
-        "name": "Falho",
-        "description": "Role a cada rodada; em 10 ou menos, o efeito não funciona. Ou: 5 usos por cena.",
-        "longDescription": "Role a cada rodada antes de usar ou manter o efeito. Em 10 ou menos não funciona e a ação é gasta. Alternativamente: 5 usos normais, depois para até recuperar. Pontos de herói garantem sucesso ou recuperação imediata."
-      }
-    }
-  }
 ]
