@@ -1,62 +1,13 @@
 {
-  "generated": "2026-05-10T17:35:34.055Z",
+  "generated": "2026-05-10T17:38:22.993Z",
   "summary": {
     "totalPowers": 12,
-    "complete": 2,
-    "partial": 5,
+    "complete": 6,
+    "partial": 1,
     "empty": 3,
-    "averageCoverage": 45
+    "averageCoverage": 66
   },
   "powers": [
-    {
-      "power": "healing",
-      "powerName": "Healing",
-      "status": "partial",
-      "currentExtras": [
-        "Persistent",
-        "Restorative",
-        "Stabilize"
-      ],
-      "currentFlaws": [],
-      "handbookExtras": [
-        "Action",
-        "Affects Objects",
-        "Area",
-        "Energizing",
-        "Perception",
-        "Persistent",
-        "Ranged",
-        "Restorative",
-        "Resurrection",
-        "Selective",
-        "Stabilize"
-      ],
-      "handbookFlaws": [
-        "Empathic",
-        "Limited",
-        "Temporary"
-      ],
-      "missingExtras": [
-        "Action",
-        "Affects Objects",
-        "Area",
-        "Energizing",
-        "Perception",
-        "Ranged",
-        "Resurrection",
-        "Selective"
-      ],
-      "missingFlaws": [
-        "Empathic",
-        "Limited",
-        "Temporary"
-      ],
-      "extraExtras": [],
-      "extraFlaws": [],
-      "coverage": 21,
-      "priority": "high",
-      "pageReference": "p.1286-1378 (lines 1285-1384)"
-    },
     {
       "power": "insubstantial",
       "powerName": "Insubstantial",
@@ -99,83 +50,6 @@
       "priority": "high",
       "pageReference": "p.1523-1650",
       "notes": "Currently has empty arrays in powers.json"
-    },
-    {
-      "power": "flight",
-      "powerName": "Flight",
-      "status": "partial",
-      "currentExtras": [],
-      "currentFlaws": [
-        "Gliding",
-        "Levitation",
-        "Wings"
-      ],
-      "handbookExtras": [
-        "Aquatic",
-        "Continuous",
-        "Subtle"
-      ],
-      "handbookFlaws": [
-        "Concentration",
-        "Distracting",
-        "Gliding",
-        "Levitation",
-        "Platform",
-        "Wings"
-      ],
-      "missingExtras": [
-        "Aquatic",
-        "Continuous",
-        "Subtle"
-      ],
-      "missingFlaws": [
-        "Concentration",
-        "Distracting",
-        "Platform"
-      ],
-      "extraExtras": [],
-      "extraFlaws": [],
-      "coverage": 33,
-      "priority": "high",
-      "pageReference": "p.1161-1255 (lines 1160-1259)"
-    },
-    {
-      "power": "illusion",
-      "powerName": "Illusion",
-      "status": "partial",
-      "currentExtras": [
-        "Believable"
-      ],
-      "currentFlaws": [
-        "Phantasm"
-      ],
-      "handbookExtras": [
-        "Believable",
-        "Independent",
-        "Selective"
-      ],
-      "handbookFlaws": [
-        "Feedback",
-        "Limited to One Subject",
-        "Phantasm",
-        "Ranged",
-        "Resistible"
-      ],
-      "missingExtras": [
-        "Independent",
-        "Selective"
-      ],
-      "missingFlaws": [
-        "Feedback",
-        "Limited to One Subject",
-        "Ranged",
-        "Resistible"
-      ],
-      "extraExtras": [],
-      "extraFlaws": [],
-      "coverage": 25,
-      "priority": "high",
-      "pageReference": "p.1379-1522"
     },
     {
       "power": "enhanced_trait",
@@ -236,41 +110,6 @@
       "notes": "Currently has empty arrays in powers.json"
     },
     {
-      "power": "affliction",
-      "powerName": "Affliction",
-      "status": "partial",
-      "currentExtras": [
-        "Cumulative",
-        "Extra Condition",
-        "Progressive"
-      ],
-      "currentFlaws": [
-        "Instant Recovery",
-        "Limited Degree"
-      ],
-      "handbookExtras": [
-        "Alternate Resistance",
-        "Concentration",
-        "Cumulative",
-        "Extra Condition",
-        "Progressive"
-      ],
-      "handbookFlaws": [
-        "Instant Recovery",
-        "Limited Degree"
-      ],
-      "missingExtras": [
-        "Alternate Resistance",
-        "Concentration"
-      ],
-      "missingFlaws": [],
-      "extraExtras": [],
-      "extraFlaws": [],
-      "coverage": 71,
-      "priority": "low",
-      "pageReference": "p.3-36 (lines 3-180)"
-    },
-    {
       "power": "communication",
       "powerName": "Communication",
       "status": "partial",
@@ -325,6 +164,40 @@
       "priority": "low",
       "pageReference": "p.1256-1285",
       "notes": "Currently has empty arrays in powers.json"
+    },
+    {
+      "power": "affliction",
+      "powerName": "Affliction",
+      "status": "complete",
+      "currentExtras": [
+        "Cumulative",
+        "Extra Condition",
+        "Progressive",
+        "Alternate Resistance",
+        "Concentration"
+      ],
+      "currentFlaws": [
+        "Instant Recovery",
+        "Limited Degree"
+      ],
+      "handbookExtras": [
+        "Alternate Resistance",
+        "Concentration",
+        "Cumulative",
+        "Extra Condition",
+        "Progressive"
+      ],
+      "handbookFlaws": [
+        "Instant Recovery",
+        "Limited Degree"
+      ],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.3-36 (lines 3-180)"
     },
     {
       "power": "burrowing",
@@ -412,6 +285,128 @@
       "priority": "low",
       "pageReference": "p.649-806",
       "notes": "No power-specific modifiers in handbook"
+    },
+    {
+      "power": "flight",
+      "powerName": "Flight",
+      "status": "complete",
+      "currentExtras": [
+        "Aquatic",
+        "Continuous",
+        "Subtle"
+      ],
+      "currentFlaws": [
+        "Gliding",
+        "Levitation",
+        "Wings",
+        "Concentration",
+        "Distracting",
+        "Platform"
+      ],
+      "handbookExtras": [
+        "Aquatic",
+        "Continuous",
+        "Subtle"
+      ],
+      "handbookFlaws": [
+        "Concentration",
+        "Distracting",
+        "Gliding",
+        "Levitation",
+        "Platform",
+        "Wings"
+      ],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.1161-1255 (lines 1160-1259)"
+    },
+    {
+      "power": "healing",
+      "powerName": "Healing",
+      "status": "complete",
+      "currentExtras": [
+        "Persistent",
+        "Restorative",
+        "Stabilize",
+        "Action",
+        "Affects Objects",
+        "Area",
+        "Energizing",
+        "Perception",
+        "Ranged",
+        "Resurrection",
+        "Selective"
+      ],
+      "currentFlaws": [
+        "Empathic",
+        "Limited",
+        "Temporary"
+      ],
+      "handbookExtras": [
+        "Action",
+        "Affects Objects",
+        "Area",
+        "Energizing",
+        "Perception",
+        "Persistent",
+        "Ranged",
+        "Restorative",
+        "Resurrection",
+        "Selective",
+        "Stabilize"
+      ],
+      "handbookFlaws": [
+        "Empathic",
+        "Limited",
+        "Temporary"
+      ],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.1286-1378 (lines 1285-1384)"
+    },
+    {
+      "power": "illusion",
+      "powerName": "Illusion",
+      "status": "complete",
+      "currentExtras": [
+        "Believable",
+        "Independent",
+        "Selective"
+      ],
+      "currentFlaws": [
+        "Phantasm",
+        "Feedback",
+        "Limited to One Subject",
+        "Ranged",
+        "Resistible"
+      ],
+      "handbookExtras": [
+        "Believable",
+        "Independent",
+        "Selective"
+      ],
+      "handbookFlaws": [
+        "Feedback",
+        "Limited to One Subject",
+        "Phantasm",
+        "Ranged",
+        "Resistible"
+      ],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.1379-1522"
     }
   ]
 }
