@@ -791,8 +791,54 @@
     },
     "longDescription": "You can temporarily improve one of your existing traits by its rank while active. Cost per rank equals the cost of the base trait being enhanced. Enhanced Trait is a power effect (not a natural trait) and can be combined with extra effort. Subject to power level limits: unenhanced rank must be below the limit by at least the enhancement amount.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "limited_enhanced_trait",
+        "name": "Limited",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Enhanced Trait only works under certain conditions (Nighttime Only, While Angry, Underwater, etc.).",
+        "longDescription": "Your Enhanced Trait only works under certain conditions, such as Nighttime (or Daytime) Only, While Angry (or in another emotional state), Underwater (or in some other environment), and so forth. A limit that rarely comes into play—like losing your Enhanced Trait during a new moon—can be handled as a power loss complication.",
+        "incompatibleWith": [],
+        "i18n": {}
+      }
+    ],
+    "flaws": [
+      {
+        "id": "limited_enhanced_trait_flaw",
+        "name": "Limited",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Enhanced Trait only works under certain conditions (Nighttime Only, While Angry, Underwater, etc.).",
+        "longDescription": "Your Enhanced Trait only works under certain conditions, such as Nighttime (or Daytime) Only, While Angry (or in another emotional state), Underwater (or in some other environment), and so forth. A limit that rarely comes into play—like losing your Enhanced Trait during a new moon—can be handled as a power loss complication.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "permanent_enhanced_trait",
+        "name": "Permanent",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Your Enhanced Trait is a permanent improvement. Cannot be turned on/off or improved by extra effort.",
+        "longDescription": "At no change in cost, your Enhanced Trait may be a permanent improvement, rather than a sustained effect. The primary difference is that your permanent enhancement cannot be turned on and off and cannot be improved by extra effort, including using it to perform power stunts. There is no action to use a Permanent Enhanced Trait, as it is always active.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "reduced_trait",
+        "name": "Reduced Trait",
+        "category": "flaw",
+        "costType": "flat",
+        "costValue": -1,
+        "description": "One or more of your traits is lowered while others are enhanced.",
+        "longDescription": "One or more of your traits is lowered while others are enhanced. This flaw is worth as many points as the reduction in the affected trait(s). So, for example, if you lose Intellect while you gain in Strength, treat the value of the lost Intellect ranks as the value of the flaw. As with all flaws, the effect must still cost at least 1 power point.",
+        "incompatibleWith": [],
+        "i18n": {}
+      }
+    ]
   },
   {
     "id": "environment",
@@ -833,8 +879,54 @@
     },
     "longDescription": "You have extra manipulative limbs (arms, tentacles, prehensile hair/tail). Each rank grants one extra limb. Provides benefits of Improved Grab (grab with some limbs, leave others free). Does not grant extra actions. Applying all limbs to a grab grants +1 circumstance bonus per rank (max +5). All limbs except dominant are off-hand.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "continuous_extra_limbs",
+        "name": "Continuous",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Your Extra Limbs are continuous duration, always present.",
+        "longDescription": "Your Extra Limbs have continuous duration, meaning they are always present and do not require concentration to maintain.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "projection_extra_limbs",
+        "name": "Projection",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Your Extra Limbs can be projected at range.",
+        "longDescription": "Your Extra Limbs can be projected at range, allowing you to manipulate objects or attack from a distance.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "sustained_extra_limbs",
+        "name": "Sustained",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Your Extra Limbs require sustained concentration to maintain.",
+        "longDescription": "Your Extra Limbs require sustained concentration to maintain. This is the default duration for Extra Limbs.",
+        "incompatibleWith": [],
+        "i18n": {}
+      }
+    ],
+    "flaws": [
+      {
+        "id": "distracting_extra_limbs",
+        "name": "Distracting",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Using your Extra Limbs is distracting, making you vulnerable.",
+        "longDescription": "Using your Extra Limbs is distracting, making you vulnerable (see the Vulnerable condition) while using them.",
+        "incompatibleWith": [],
+        "i18n": {}
+      }
+    ]
   },
   {
     "id": "feature",
@@ -1016,7 +1108,19 @@
     },
     "longDescription": "You can temporarily increase your size. Each rank adds +1 Strength and +1 Stamina, +1 mass rank. Every 2 ranks: +1 Intimidation. Every 8 ranks: +1 Speed. Each rank: -1 Stealth. Every 2 ranks: -1 Dodge and Parry. Every 4 ranks: +1 size rank. Growth modifiers are restricted by power level limits.",
     "enhancesDefense": null,
-    "extras": [],
+    "extras": [
+      {
+        "id": "permanent_growth",
+        "name": "Permanent",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Your Growth is permanent. You are always at your increased size.",
+        "longDescription": "Your Growth is permanent. You are always at your increased size and cannot return to normal size, although the effect can still be Nullified unless it is also Innate.",
+        "incompatibleWith": [],
+        "i18n": {}
+      }
+    ],
     "flaws": []
   },
   {
@@ -1469,8 +1573,132 @@
     },
     "longDescription": "You can assume a less solid form. Rank 1 (Fluid): flow through any non-watertight opening, exert normal Strength. Rank 2 (Gaseous): no Strength, immune to physical Damage, flow through non-airtight openings. Rank 3 (Energy): no Strength, immune to physical Damage, pass through energy-permeable objects. Rank 4 (Incorporeal): pass through solid matter, immune to physical and energy Damage.",
     "enhancesDefense": null,
-    "extras": [],
-    "flaws": []
+    "extras": [
+      {
+        "id": "affects_corporeal",
+        "name": "Affects Corporeal",
+        "category": "extra",
+        "costType": "flat_ranked",
+        "costValue": 1,
+        "description": "Required for any effect that works on corporeal targets while you are incorporeal.",
+        "longDescription": "This extra is required for any effect that works on corporeal targets while you are incorporeal. See the Affects Corporeal extra description for details and cost.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "affects_others_insubstantial",
+        "name": "Affects Others",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Allows you to extend your Insubstantial effect to another character by touch.",
+        "longDescription": "This modifier allows you to extend your Insubstantial effect to another character by touch, taking them Insubstantial with you. If you ever withdraw the effect while someone is inside a solid object, see the effect's description for the unpleasant results.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "attack_insubstantial",
+        "name": "Attack",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "Makes Insubstantial into a close range effect able to turn targets Insubstantial.",
+        "longDescription": "Applied to Insubstantial, this extra makes it into a close range effect able to turn targets Insubstantial. You must be able to physically touch the target to make an Insubstantial Attack, meaning it must have the Affects Corporeal modifier to use it while you are incorporeal. This modifier is most effective for ranks 2 through 4, since the victim loses some or all ability to interact with the physical world. The default resistance for an Insubstantial Attack is Dodge, although it can be Fortitude or Will, as best suits the effect's descriptors.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "continuous_insubstantial",
+        "name": "Continuous",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Allows you to remain Insubstantial until you choose to return to corporeal form.",
+        "longDescription": "Extending the effect's duration to continuous allows you to remain Insubstantial until you choose to return to your corporeal form.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "innate_insubstantial",
+        "name": "Innate",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Your character's form is naturally or innately Insubstantial, particularly if the effect is permanent.",
+        "longDescription": "Use this modifier if your character's form is naturally or innately Insubstantial, particularly if the effect is permanent in duration.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "precise_insubstantial",
+        "name": "Precise",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Allows you to selectively make some portions of your body insubstantial while keeping others substantial.",
+        "longDescription": "This modifier allows you to selectively make some portions of your body insubstantial while keeping others substantial (or vice versa). This allows you to do things like reach through a wall, solidify your hand to pick up an object or tap someone on the shoulder (or punch them in the face), and become incorporeal again to withdraw it on the following round.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "progressive_insubstantial",
+        "name": "Progressive",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "You can assume lower ranked forms of Insubstantial, but must progress through them in order.",
+        "longDescription": "You can assume lower ranked forms of Insubstantial, but you must progress through them in order to reach the higher-ranked ones. For example if you have Progressive Insubstantial 3, you can assume fluid, gaseous, or energy forms, but to assume energy form, you must first progress through fluid and gaseous, becoming less and less substantial. Since you can only activate the effect once per turn, it takes you three turns to get there.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "reaction_insubstantial",
+        "name": "Reaction",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Allows you to switch forms \"reflexively\" in response to hazards, even if it is not your turn.",
+        "longDescription": "Becoming Insubstantial is normally a free action, meaning you can't switch to an Insubstantial form when surprised or otherwise unable to take action. At the GM's option, applying the Action extra to use Insubstantial as a reaction allows you to switch forms \"reflexively\" in response to such hazards, even if it is not your turn.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "subtle_insubstantial",
+        "name": "Subtle",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Makes your Insubstantial nature less noticeable to observers.",
+        "longDescription": "This extra makes your Insubstantial nature less noticeable to observers. Rank 1 requires a Perception check (DC 20) to detect that you are Insubstantial, while 2 ranks mean you look entirely normal in Insubstantial form (which may cause opponents to waste effort on you, not knowing you are immune to their attacks, for example).",
+        "incompatibleWith": [],
+        "maxRanks": 2,
+        "i18n": {}
+      }
+    ],
+    "flaws": [
+      {
+        "id": "absent_strength",
+        "name": "Absent Strength",
+        "category": "flaw",
+        "costType": "flat",
+        "costValue": -1,
+        "description": "Applies only to rank 1 Insubstantial. Removes your effective Strength while in that form.",
+        "longDescription": "This flaw applies only to rank 1 Insubstantial and removes your effective Strength while in that form, leaving you with limited ability to affect the physical world like the higher ranks of the effect.",
+        "incompatibleWith": [],
+        "i18n": {}
+      },
+      {
+        "id": "permanent_insubstantial",
+        "name": "Permanent",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": 0,
+        "description": "You are always Insubstantial; you cannot assume solid form.",
+        "longDescription": "You are always Insubstantial; you cannot assume solid form, although your Insubstantial effect can still be Nullified unless it is also Innate.",
+        "incompatibleWith": [],
+        "i18n": {}
+      }
+    ]
   },
   {
     "id": "leaping",

@@ -1,49 +1,24 @@
 # Power-Specific Modifiers Audit Report
 
-**Generated:** 2026-05-10T17:38:22.991Z
+**Generated:** 2026-05-10T17:41:33.782Z
 
 ## Executive Summary
 
 - **Total Powers Audited:** 12
-- **Complete:** 6 (50%)
+- **Complete:** 8 (67%)
 - **Partial:** 1 (8%)
-- **Empty:** 3 (25%)
-- **Average Coverage:** 66%
+- **Empty:** 1 (8%)
+- **Average Coverage:** 82%
 
 ### Priority Breakdown
 
-- **High Priority:** 3 powers (19 missing modifiers)
+- **High Priority:** 2 powers (8 missing modifiers)
 - **Medium Priority:** 0 powers (0 missing modifiers)
-- **Low Priority:** 9 powers (2 missing modifiers)
+- **Low Priority:** 10 powers (1 missing modifiers)
 
 ---
 
 ## 🔴 High Priority Powers (6+ Missing Modifiers)
-
-### Insubstantial
-
-- **Status:** EMPTY
-- **Coverage:** 0%
-- **Reference:** p.1523-1650
-- **Notes:** Currently has empty arrays in powers.json
-- **Missing:** 11 modifiers
-
-**Missing Extras (9):**
-- [ ] Affects Corporeal
-- [ ] Affects Others
-- [ ] Attack
-- [ ] Continuous
-- [ ] Innate
-- [ ] Precise
-- [ ] Progressive
-- [ ] Reaction
-- [ ] Subtle
-
-**Missing Flaws (2):**
-- [ ] Absent Strength
-- [ ] Permanent
-
----
 
 ### enhanced_trait
 
@@ -96,19 +71,6 @@
 **Current Extras:** Area, Dimensional, Rapid, Selective, Subtle
 
 **Current Flaws:** Limited
-
----
-
-### Growth
-
-- **Status:** EMPTY
-- **Coverage:** 0%
-- **Reference:** p.1256-1285
-- **Notes:** Currently has empty arrays in powers.json
-- **Missing:** 1 modifiers
-
-**Missing Extras (1):**
-- [ ] Permanent
 
 ---
 
@@ -200,6 +162,32 @@
 
 ---
 
+### Insubstantial
+
+- **Status:** COMPLETE
+- **Coverage:** 100%
+- **Reference:** p.1523-1650
+- **Notes:** Currently has empty arrays in powers.json
+- **Missing:** 0 modifiers
+
+**Current Extras:** Affects Corporeal, Affects Others, Attack, Continuous, Innate, Precise, Progressive, Reaction, Subtle
+
+**Current Flaws:** Absent Strength, Permanent
+
+---
+
+### Growth
+
+- **Status:** COMPLETE
+- **Coverage:** 100%
+- **Reference:** p.1256-1285
+- **Notes:** Currently has empty arrays in powers.json
+- **Missing:** 0 modifiers
+
+**Current Extras:** Permanent
+
+---
+
 ## ✅ Complete Powers
 
 ### Affliction
@@ -237,4 +225,16 @@
 - **Reference:** p.1379-1522
 - **Extras:** Believable, Independent, Selective
 - **Flaws:** Phantasm, Feedback, Limited to One Subject, Ranged, Resistible
+
+### Insubstantial
+- **Coverage:** 100%
+- **Reference:** p.1523-1650
+- **Extras:** Affects Corporeal, Affects Others, Attack, Continuous, Innate, Precise, Progressive, Reaction, Subtle
+- **Flaws:** Absent Strength, Permanent
+
+### Growth
+- **Coverage:** 100%
+- **Reference:** p.1256-1285
+- **Extras:** Permanent
+- **Flaws:** None
 

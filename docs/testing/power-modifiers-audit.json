@@ -1,56 +1,13 @@
 {
-  "generated": "2026-05-10T17:38:22.993Z",
+  "generated": "2026-05-10T17:41:33.784Z",
   "summary": {
     "totalPowers": 12,
-    "complete": 6,
+    "complete": 8,
     "partial": 1,
-    "empty": 3,
-    "averageCoverage": 66
+    "empty": 1,
+    "averageCoverage": 82
   },
   "powers": [
-    {
-      "power": "insubstantial",
-      "powerName": "Insubstantial",
-      "status": "empty",
-      "currentExtras": [],
-      "currentFlaws": [],
-      "handbookExtras": [
-        "Affects Corporeal",
-        "Affects Others",
-        "Attack",
-        "Continuous",
-        "Innate",
-        "Precise",
-        "Progressive",
-        "Reaction",
-        "Subtle"
-      ],
-      "handbookFlaws": [
-        "Absent Strength",
-        "Permanent"
-      ],
-      "missingExtras": [
-        "Affects Corporeal",
-        "Affects Others",
-        "Attack",
-        "Continuous",
-        "Innate",
-        "Precise",
-        "Progressive",
-        "Reaction",
-        "Subtle"
-      ],
-      "missingFlaws": [
-        "Absent Strength",
-        "Permanent"
-      ],
-      "extraExtras": [],
-      "extraFlaws": [],
-      "coverage": 0,
-      "priority": "high",
-      "pageReference": "p.1523-1650",
-      "notes": "Currently has empty arrays in powers.json"
-    },
     {
       "power": "enhanced_trait",
       "powerName": "enhanced_trait",
@@ -143,27 +100,6 @@
       "coverage": 86,
       "priority": "low",
       "pageReference": "p.218-333"
-    },
-    {
-      "power": "growth",
-      "powerName": "Growth",
-      "status": "empty",
-      "currentExtras": [],
-      "currentFlaws": [],
-      "handbookExtras": [
-        "Permanent"
-      ],
-      "handbookFlaws": [],
-      "missingExtras": [
-        "Permanent"
-      ],
-      "missingFlaws": [],
-      "extraExtras": [],
-      "extraFlaws": [],
-      "coverage": 0,
-      "priority": "low",
-      "pageReference": "p.1256-1285",
-      "notes": "Currently has empty arrays in powers.json"
     },
     {
       "power": "affliction",
@@ -407,6 +343,70 @@
       "coverage": 100,
       "priority": "low",
       "pageReference": "p.1379-1522"
+    },
+    {
+      "power": "insubstantial",
+      "powerName": "Insubstantial",
+      "status": "complete",
+      "currentExtras": [
+        "Affects Corporeal",
+        "Affects Others",
+        "Attack",
+        "Continuous",
+        "Innate",
+        "Precise",
+        "Progressive",
+        "Reaction",
+        "Subtle"
+      ],
+      "currentFlaws": [
+        "Absent Strength",
+        "Permanent"
+      ],
+      "handbookExtras": [
+        "Affects Corporeal",
+        "Affects Others",
+        "Attack",
+        "Continuous",
+        "Innate",
+        "Precise",
+        "Progressive",
+        "Reaction",
+        "Subtle"
+      ],
+      "handbookFlaws": [
+        "Absent Strength",
+        "Permanent"
+      ],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.1523-1650",
+      "notes": "Currently has empty arrays in powers.json"
+    },
+    {
+      "power": "growth",
+      "powerName": "Growth",
+      "status": "complete",
+      "currentExtras": [
+        "Permanent"
+      ],
+      "currentFlaws": [],
+      "handbookExtras": [
+        "Permanent"
+      ],
+      "handbookFlaws": [],
+      "missingExtras": [],
+      "missingFlaws": [],
+      "extraExtras": [],
+      "extraFlaws": [],
+      "coverage": 100,
+      "priority": "low",
+      "pageReference": "p.1256-1285",
+      "notes": "Currently has empty arrays in powers.json"
     }
   ]
 }
