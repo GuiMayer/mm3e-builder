@@ -61,8 +61,13 @@ export function NumberInput({
   };
 
   // Hold functionality: 300ms initial delay, then 100ms interval
-  const startHold = (action: () => void) => {
+  const startHold = (action: () => void, e?: React.TouchEvent | React.MouseEvent) => {
     if (disabled) return;
+    
+    // Prevent touch events from triggering mouse events (fixes double-increment on mobile)
+    if (e && 'touches' in e) {
+      e.preventDefault();
+    }
     
     // Execute once immediately
     action();
@@ -77,7 +82,12 @@ export function NumberInput({
     }, 300);
   };
 
-  const stopHold = () => {
+  const stopHold = (e?: React.TouchEvent | React.MouseEvent) => {
+    // Prevent touch events from triggering mouse events
+    if (e && 'touches' in e) {
+      e.preventDefault();
+    }
+    
     if (holdTimeoutRef.current) {
       clearTimeout(holdTimeoutRef.current);
       holdTimeoutRef.current = null;
@@ -96,11 +106,11 @@ export function NumberInput({
       <button
         type="button"
         className="number-input-btn number-input-btn--decrement"
-        onMouseDown={() => startHold(handleDecrement)}
-        onMouseUp={stopHold}
-        onMouseLeave={stopHold}
-        onTouchStart={() => startHold(handleDecrement)}
-        onTouchEnd={stopHold}
+        onMouseDown={(e) => startHold(handleDecrement, e)}
+        onMouseUp={(e) => stopHold(e)}
+        onMouseLeave={(e) => stopHold(e)}
+        onTouchStart={(e) => startHold(handleDecrement, e)}
+        onTouchEnd={(e) => stopHold(e)}
         disabled={disabled || (min !== undefined && value <= min)}
         aria-label="Decrement"
       >
@@ -122,11 +132,11 @@ export function NumberInput({
       <button
         type="button"
         className="number-input-btn number-input-btn--increment"
-        onMouseDown={() => startHold(handleIncrement)}
-        onMouseUp={stopHold}
-        onMouseLeave={stopHold}
-        onTouchStart={() => startHold(handleIncrement)}
-        onTouchEnd={stopHold}
+        onMouseDown={(e) => startHold(handleIncrement, e)}
+        onMouseUp={(e) => stopHold(e)}
+        onMouseLeave={(e) => stopHold(e)}
+        onTouchStart={(e) => startHold(handleIncrement, e)}
+        onTouchEnd={(e) => stopHold(e)}
         disabled={disabled || (max !== undefined && value >= max)}
         aria-label="Increment"
       >
