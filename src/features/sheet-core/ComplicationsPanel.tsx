@@ -3,6 +3,7 @@ import { useCharStore } from '../../store/charStore';
 import type { IComplication, ComplicationType } from '../../entities/types';
 import { Plus, Trash2, Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Button } from '../../shared/ui/Button';
 
 // Emoji/icon per complication type for quick visual scanning
 const TYPE_ICONS: Record<ComplicationType, string> = {
@@ -130,9 +131,9 @@ export function ComplicationsPanel() {
       </div>
 
       {!showAdd ? (
-        <button className="skill-add-btn" onClick={() => setShowAdd(true)}>
+        <Button variant="ghost" size="md" onClick={() => setShowAdd(true)}>
           <Plus size={16} /> {t('complications.add')}
-        </button>
+        </Button>
       ) : (
         <div className="comp-add-form">
           {/* Type picker in add form */}
@@ -170,12 +171,12 @@ export function ComplicationsPanel() {
             rows={2}
           />
           <div className="comp-add-actions">
-            <button className="skill-confirm-btn" onClick={addComplication} disabled={!newTitle.trim()}>
+            <Button variant="primary" size="sm" onClick={addComplication} disabled={!newTitle.trim()}>
               {t('common.add')}
-            </button>
-            <button className="skill-cancel-btn" onClick={() => { setShowAdd(false); setNewTitle(''); setNewDesc(''); setNewType(undefined); }}>
+            </Button>
+            <Button variant="secondary" size="sm" onClick={() => { setShowAdd(false); setNewTitle(''); setNewDesc(''); setNewType(undefined); }}>
               {t('common.cancel')}
-            </button>
+            </Button>
           </div>
         </div>
       )}

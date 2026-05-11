@@ -5,6 +5,7 @@ import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Modal } from '../../shared/ui/Modal';
+import { Button } from '../../shared/ui/Button';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -134,9 +135,9 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
       </div>
 
       {!showSelector ? (
-        <button className="skill-add-btn" onClick={() => setShowSelector(true)}>
+        <Button variant="ghost" size="md" onClick={() => setShowSelector(true)}>
           <Plus size={16} /> {t('advantages.addAdvantage')}
-        </button>
+        </Button>
       ) : (
         <div className="adv-selector">
           {/* Search */}

@@ -18,6 +18,7 @@ import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
+import { Button } from '../../shared/ui/Button';
 import { useCharStore } from '../../store/charStore';
 import { useAppStore } from '../../store/appStore';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
@@ -674,9 +675,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   t={t}
                 />
               ))}
-              <button className="ae-add-btn" onClick={addAlternateEffect}>
+              <Button variant="secondary" size="sm" onClick={addAlternateEffect}>
                 <Plus size={13} /> {t('builder.addAlternate')}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

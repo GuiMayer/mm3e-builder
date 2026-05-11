@@ -4,6 +4,7 @@ import type { ICharacterSkill, AbilityKey, ISkillDef } from '../../entities/type
 import { SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Modal } from '../../shared/ui/Modal';
+import { Button } from '../../shared/ui/Button';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -176,9 +177,9 @@ export function SkillsPanel({ cost }: { cost: number }) {
 
       {/* Selector */}
       {!showSelector ? (
-        <button className="skill-add-btn" onClick={() => setShowSelector(true)}>
+        <Button variant="ghost" size="md" onClick={() => setShowSelector(true)}>
           <Plus size={16} /> {t('skills.addSkill')}
-        </button>
+        </Button>
       ) : (
         <div className="sk-selector">
           {/* Search */}
@@ -395,15 +396,6 @@ export function SkillsPanel({ cost }: { cost: number }) {
         .skill-row:hover .skill-remove { opacity: 1; }
         .skill-remove:hover { color: var(--c-error); }
 
-        .skill-add-btn {
-          display: flex; align-items: center; gap: var(--s-xs);
-          margin-top: var(--s-sm); padding: var(--s-sm) var(--s-md);
-          background: transparent; border: 1px dashed var(--c-border);
-          border-radius: var(--r-sm); color: var(--c-text-secondary);
-          font-family: var(--f-body); font-size: 0.82rem; cursor: pointer;
-          transition: all var(--t-fast); width: 100%; justify-content: center;
-        }
-        .skill-add-btn:hover { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-muted); }
         .sk-sel-close-btn {
           display: flex; align-items: center; gap: 4px;
           padding: var(--s-xs) var(--s-sm);
