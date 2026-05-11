@@ -459,5 +459,10 @@
   "error.boundary.details": "Detalhes do erro",
   "error.boundary.tryAgain": "Tentar novamente",
   "error.boundary.reload": "Recarregar página",
-  "error.boundary.goHome": "Ir para início"
+  "error.boundary.goHome": "Ir para início",
+
+  "draftNotification.title": "Continuar de onde parou?",
+  "draftNotification.unnamedCharacter": "Personagem Sem Nome",
+  "draftNotification.continue": "Continuar",
+  "draftNotification.startNew": "Começar Novo"
 }

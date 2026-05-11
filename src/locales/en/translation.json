@@ -459,5 +459,10 @@
   "error.boundary.details": "Error details",
   "error.boundary.tryAgain": "Try again",
   "error.boundary.reload": "Reload page",
-  "error.boundary.goHome": "Go home"
+  "error.boundary.goHome": "Go home",
+
+  "draftNotification.title": "Continue where you left off?",
+  "draftNotification.unnamedCharacter": "Unnamed Character",
+  "draftNotification.continue": "Continue",
+  "draftNotification.startNew": "Start New"
 }
