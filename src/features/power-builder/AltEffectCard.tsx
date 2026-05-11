@@ -8,6 +8,7 @@ import type {
   IPowerEffect,
   IModifierDef,
 } from '../../entities/types';
+import { NumberInput } from '../../shared/ui/NumberInput';
 
 interface AltEffectCardProps {
   ae: IAlternateEffect;
@@ -139,15 +140,15 @@ export function AltEffectCard({
                     </div>
                     <div className="build-section">
                       <label className="build-label">{t('builder.ranks')}</label>
-                      <input
-                        type="number"
-                        min={1}
+                      <NumberInput
+                        variant="small"
                         className="build-input build-input--small"
                         value={comp.ranks}
-                        onChange={(e) =>
-                          onUpdateComponent(comp.id, { ranks: Math.max(1, Number(e.target.value) || 1) })
+                        onChange={(value) =>
+                          onUpdateComponent(comp.id, { ranks: Math.max(1, value) })
                         }
                         onClick={(e) => e.stopPropagation()}
+                        min={1}
                       />
                     </div>
                   </div>
@@ -185,15 +186,15 @@ export function AltEffectCard({
                           >
                             <span className="applied-mod-name">{def.name}</span>
                             {def.costType !== 'per_rank' && (
-                              <input
-                                type="number"
-                                min={1}
-                                max={def.maxRanks ?? undefined}
+                              <NumberInput
+                                variant="small"
                                 className="applied-mod-ranks"
                                 value={applied.ranks}
-                                onChange={(e) =>
-                                  onUpdateModifierRanks(comp.id, applied.modifierId, Number(e.target.value) || 1)
+                                onChange={(value) =>
+                                  onUpdateModifierRanks(comp.id, applied.modifierId, value)
                                 }
+                                min={1}
+                                max={def.maxRanks ?? undefined}
                               />
                             )}
                             {def.options && def.options.length > 0 && (

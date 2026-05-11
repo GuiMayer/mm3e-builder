@@ -18,6 +18,7 @@ import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
+import { NumberInput } from '../../shared/ui/NumberInput';
 import { Button } from '../../shared/ui/Button';
 import { useCharStore } from '../../store/charStore';
 import { useAppStore } from '../../store/appStore';
@@ -34,9 +35,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   const powerDefs = useLocalizedData(POWER_DEFS) as IPowerEffect[];
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
 
-  // TD-5: Strict mode — read powerLevel and strictMode from stores
+  // Read powerLevel and validation rules from stores
   const powerLevel = useCharStore((s) => s.character.header.powerLevel);
-  const strictMode = useAppStore((s) => s.strictMode);
   const validationRules = useAppStore((s) => s.validationRules);
 
   // Build initial state — if existing power has legacy format, migration handles it at store level
@@ -103,7 +103,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     powerDefs,
     allModDefs,
     powerLevel,
-    strictMode,
     validationRules,
   });
 
@@ -432,17 +431,17 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                       </div>
                       <div className="build-section">
                         <label className="build-label">{t('builder.ranks')}</label>
-                        <input
-                          type="number"
-                          min={1}
+                        <NumberInput
+                          variant="small"
                           className="build-input build-input--small"
                           value={comp.ranks}
-                          onChange={(e) =>
+                          onChange={(value) =>
                             updateComponent(comp.id, {
-                              ranks: Math.max(1, Number(e.target.value) || 1),
+                              ranks: Math.max(1, value),
                             })
                           }
                           onClick={(e) => e.stopPropagation()}
+                          min={1}
                         />
                       </div>
                     </div>
@@ -492,19 +491,19 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                             >
                               <span className="applied-mod-name">{def.name}</span>
                               {def.costType !== 'per_rank' && (
-                                <input
-                                  type="number"
-                                  min={1}
-                                  max={def.maxRanks ?? undefined}
+                                <NumberInput
+                                  variant="small"
                                   className="applied-mod-ranks"
                                   value={applied.ranks}
-                                  onChange={(e) =>
+                                  onChange={(value) =>
                                     updateModifierRanks(
                                       comp.id,
                                       applied.modifierId,
-                                      Number(e.target.value) || 1
+                                      value
                                     )
                                   }
+                                  min={1}
+                                  max={def.maxRanks ?? undefined}
                                 />
                               )}
                               {/* Sub-option dropdown */}

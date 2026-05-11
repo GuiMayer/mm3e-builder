@@ -7,6 +7,7 @@ import { EffectCombobox } from '../../../shared/ui/EffectCombobox';
 import { ModifierDropzone } from './ModifierDropzone';
 import { X, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { NumberInput } from '../../../shared/ui/NumberInput';
 
 /* ================================================
    PowerComponentEditor Component
@@ -92,17 +93,17 @@ export function PowerComponentEditor({
         </div>
         <div className="build-section">
           <label className="build-label">{t('builder.ranks')}</label>
-          <input
-            type="number"
-            min={1}
+          <NumberInput
+            variant="small"
             className="build-input build-input--small"
             value={component.ranks}
-            onChange={(e) =>
+            onChange={(value) =>
               onUpdateComponent({
-                ranks: Math.max(1, Number(e.target.value) || 1),
+                ranks: Math.max(1, value),
               })
             }
             onClick={(e) => e.stopPropagation()}
+            min={1}
           />
         </div>
       </div>
@@ -152,18 +153,18 @@ export function PowerComponentEditor({
               >
                 <span className="applied-mod-name">{def.name}</span>
                 {def.costType !== 'per_rank' && (
-                  <input
-                    type="number"
-                    min={1}
-                    max={def.maxRanks ?? undefined}
+                  <NumberInput
+                    variant="small"
                     className="applied-mod-ranks"
                     value={applied.ranks}
-                    onChange={(e) =>
+                    onChange={(value) =>
                       onUpdateModifierRanks(
                         applied.modifierId,
-                        Number(e.target.value) || 1
+                        value
                       )
                     }
+                    min={1}
+                    max={def.maxRanks ?? undefined}
                   />
                 )}
                 {/* Sub-option dropdown */}

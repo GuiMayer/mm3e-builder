@@ -8,6 +8,7 @@ import { Modal } from '../../shared/ui/Modal';
 import { Button } from '../../shared/ui/Button';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { NumberInput } from '../../shared/ui/NumberInput';
 
 const ADVANTAGE_TYPES: AdvantageType[] = ['combat', 'fortune', 'general', 'skill'];
 
@@ -108,11 +109,13 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
               </Tooltip>
               {def.ranked && (
                 <>
-                  <input
-                    type="number" min={1} max={def.maxRank ?? undefined}
+                  <NumberInput
+                    variant="small"
                     className="adv-rank-input"
                     value={adv.ranks}
-                    onChange={(e) => updateRanks(i, Number(e.target.value) || 1)}
+                    onChange={(value) => updateRanks(i, value)}
+                    min={1}
+                    max={def.maxRank ?? undefined}
                   />
                   {def.maxRank && (
                     <span className="adv-rank-max">/ {def.maxRank}</span>

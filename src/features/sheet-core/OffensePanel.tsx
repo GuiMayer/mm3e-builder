@@ -4,6 +4,7 @@ import { useCharStore } from '../../store/charStore';
 import { useTranslation } from 'react-i18next';
 import { Zap, Plus, Trash2, Pencil, Check, X } from 'lucide-react';
 import type { IManualOffenseRow } from '../../entities/types';
+import { NumberInput } from '../../shared/ui/NumberInput';
 
 export function OffensePanel() {
   const { t } = useTranslation();
@@ -109,11 +110,11 @@ export function OffensePanel() {
                 placeholder={t('offense.custom.name')}
                 autoFocus
               />
-              <input
+              <NumberInput
+                variant="medium"
                 className="offense-input offense-col--bonus"
-                type="number"
                 value={draft.bonus}
-                onChange={(e) => setDraft({ ...draft, bonus: Number(e.target.value) })}
+                onChange={(value) => setDraft({ ...draft, bonus: value })}
               />
               <select
                 className="offense-select offense-col--range"
@@ -171,11 +172,11 @@ export function OffensePanel() {
               placeholder={t('offense.custom.name')}
               autoFocus
             />
-            <input
+            <NumberInput
+              variant="medium"
               className="offense-input offense-col--bonus"
-              type="number"
               value={draft.bonus}
-              onChange={(e) => setDraft({ ...draft, bonus: Number(e.target.value) })}
+              onChange={(value) => setDraft({ ...draft, bonus: value })}
             />
             <select
               className="offense-select offense-col--range"
