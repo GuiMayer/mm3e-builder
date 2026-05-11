@@ -14,7 +14,7 @@ export function PPLogPanel() {
   const character = useCharStore((s) => s.character);
   const addPPLogEntry = useCharStore((s) => s.addPPLogEntry);
   const removePPLogEntry = useCharStore((s) => s.removePPLogEntry);
-  const { totalAvailable, remaining } = useCalculatedPP();
+  const { totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
 
   const [open, setOpen] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
@@ -76,12 +76,12 @@ export function PPLogPanel() {
             <div className="pplog-summary-divider" />
             <div className="pplog-summary-row pplog-summary-row--total">
               <span className="pplog-summary-label">{t('ppLog.total')}</span>
-              <span className="pplog-summary-value pplog-summary-value--total">{totalAvailable}</span>
+              <span className="pplog-summary-value pplog-summary-value--total">{isBudgetEnforced ? totalAvailable : <span className="infinity-symbol">∞</span>}</span>
             </div>
             <div className="pplog-summary-row">
               <span className="pplog-summary-label">{t('summary.remaining')}</span>
               <span className={`pplog-summary-value ${remaining < 0 ? 'pplog-summary-value--over' : 'pplog-summary-value--ok'}`}>
-                {remaining}
+                {isBudgetEnforced ? remaining : <span className="infinity-symbol">∞</span>}
               </span>
             </div>
           </div>
@@ -367,6 +367,16 @@ export function PPLogPanel() {
         .pplog-btn--cancel:hover {
           background: var(--c-surface-elevated);
           color: var(--c-text);
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.8; text-shadow: 0 0 8px rgba(var(--c-primary-rgb), 0.4); }
+          50% { opacity: 1; text-shadow: 0 0 16px rgba(var(--c-primary-rgb), 0.8); }
+        }
+        .infinity-symbol {
+          display: inline-block;
+          animation: pulse-glow 2s ease-in-out infinite;
+          color: var(--c-primary);
+          font-weight: bold;
         }
       `}</style>
     </section>

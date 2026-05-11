@@ -216,6 +216,21 @@ export function NumberInput({
         .number-input-wrapper--large .number-input-btn {
           width: 36px;
         }
+
+        /* Mobile touch targets - WCAG 2.1 AA compliant (44x44px minimum) */
+        @media (max-width: 768px) {
+          .number-input-wrapper--small .number-input-btn {
+            width: 44px;
+          }
+
+          .number-input-wrapper--medium .number-input-btn {
+            width: 48px;
+          }
+
+          .number-input-wrapper--large .number-input-btn {
+            width: 52px;
+          }
+        }
       `}</style>
     </div>
   );

@@ -291,7 +291,6 @@ export interface IValidationRules {
 // ── App Preferences ──
 export interface IAppPreferences {
   theme: string;
-  strictMode: boolean;
   language: string;
   validationRules?: IValidationRules;         // Optional validation rule overrides
 }

@@ -1,4 +1,4 @@
-import { AlertTriangle, Info } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 /* ================================================
@@ -10,14 +10,12 @@ interface PowerValidationWarningsProps {
   plViolation: string | null;
   aeValidations: Array<{ valid: boolean; message?: string }>;
   aeNames: string[];
-  strictMode: boolean;
 }
 
 export function PowerValidationWarnings({
   plViolation,
   aeValidations,
   aeNames,
-  strictMode,
 }: PowerValidationWarningsProps) {
   const { t } = useTranslation();
 
@@ -28,7 +26,7 @@ export function PowerValidationWarnings({
   return (
     <div className="builder-warnings">
       {/* PL Violation Warning */}
-      {plViolation && strictMode && (
+      {plViolation && (
         <div className="validation-warning validation-warning--error">
           <AlertTriangle size={16} />
           <div className="validation-warning-content">
@@ -57,16 +55,6 @@ export function PowerValidationWarnings({
           </div>
         );
       })}
-
-      {/* Info about strict mode if disabled */}
-      {!strictMode && plViolation && (
-        <div className="validation-warning validation-warning--info">
-          <Info size={16} />
-          <div className="validation-warning-content">
-            <p>{t('builder.strictModeDisabled')}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

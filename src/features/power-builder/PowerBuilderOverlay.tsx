@@ -976,6 +976,25 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
         .effect-modal-content { display: flex; flex-direction: column; gap: var(--s-md); }
         .effect-modal-meta { display: flex; gap: var(--s-xs); flex-wrap: wrap; align-items: center; }
         .effect-modal-desc { font-size: 0.88rem; line-height: 1.6; color: var(--c-text); }
+
+        /* Mobile touch targets */
+        @media (max-width: 768px) {
+          .builder-action-btn {
+            min-height: var(--touch-target-min);
+            padding: var(--s-sm) var(--s-md);
+          }
+          .build-add-comp-btn {
+            min-height: var(--touch-target-min);
+            padding: var(--s-sm) var(--s-md);
+          }
+          .component-card-remove,
+          .applied-mod-remove,
+          .alt-remove {
+            min-width: var(--touch-target-min);
+            min-height: var(--touch-target-min);
+            padding: var(--s-sm);
+          }
+        }
       `}</style>
     </div>
   );

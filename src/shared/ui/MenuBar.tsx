@@ -473,6 +473,18 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
           color: var(--c-primary);
           font-weight: bold;
         }
+
+        /* Mobile touch targets */
+        @media (max-width: 768px) {
+          .menubar-btn {
+            min-height: var(--touch-target-min);
+            padding: var(--s-sm) var(--s-md);
+          }
+          .dropdown-item {
+            min-height: var(--touch-target-min);
+            padding: var(--s-sm) var(--s-md);
+          }
+        }
       `}</style>
     </header>
   );

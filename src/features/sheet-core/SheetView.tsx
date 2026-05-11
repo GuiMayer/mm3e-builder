@@ -81,15 +81,15 @@ export function SheetView() {
         <div className="pp-summary-item">
           <span className="pp-summary-label">{t('summary.remaining')}</span>
           <span className={`pp-summary-value ${isOver ? 'pp-summary-value--error' : 'pp-summary-value--success'}`}>
-            {pp.remaining}
+            {pp.isBudgetEnforced ? pp.remaining : <span className="infinity-symbol">∞</span>}
           </span>
         </div>
       </div>
 
       <div className="pp-progress-bar">
         <div
-          className="pp-progress-fill"
-          style={{ width: `${Math.min(100, pct)}%` }}
+          className={`pp-progress-fill ${!pp.isBudgetEnforced ? 'pp-progress-fill--limitless' : ''}`}
+          style={{ width: pp.isBudgetEnforced ? `${Math.min(100, pct)}%` : '100%' }}
           data-over={isOver}
         />
       </div>
@@ -116,6 +116,23 @@ export function SheetView() {
           color: var(--c-error);
           font-weight: 500;
           animation: shake 0.3s ease;
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.8; text-shadow: 0 0 8px rgba(var(--c-primary-rgb), 0.4); }
+          50% { opacity: 1; text-shadow: 0 0 16px rgba(var(--c-primary-rgb), 0.8); }
+        }
+        .infinity-symbol {
+          display: inline-block;
+          animation: pulse-glow 2s ease-in-out infinite;
+          color: var(--c-primary);
+          font-weight: bold;
+        }
+        .pp-progress-fill--limitless {
+          animation: pulse-glow-bar 2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow-bar {
+          0%, 100% { opacity: 0.8; }
+          50% { opacity: 1; }
         }
       `}</style>
     </div>

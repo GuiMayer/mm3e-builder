@@ -16,7 +16,7 @@ import { getActiveValidationRules } from '../lib/validationRules';
 
 /**
  * Hook that returns current PL violations in real time.
- * Empty array when Strict Mode is OFF or enforcePLLimits is disabled.
+ * Empty array when enforcePLLimits is disabled.
  *
  * Validates:
  * - Dodge + Toughness <= PL×2   (real Toughness: STA + Protection + Defensive Roll)
@@ -27,12 +27,9 @@ import { getActiveValidationRules } from '../lib/validationRules';
  */
 export function usePLValidation(): PLViolation[] {
   const character  = useCharStore((s) => s.character);
-  const strictMode = useAppStore((s) => s.strictMode);
   const validationRules = useAppStore((s) => s.validationRules);
 
   return useMemo(() => {
-    if (!strictMode) return [];
-    
     // Check if PL limits are enforced
     const activeRules = getActiveValidationRules(validationRules);
     if (!activeRules.enforcePLLimits) return [];
@@ -134,5 +131,5 @@ export function usePLValidation(): PLViolation[] {
     }
 
     return violations;
-  }, [character, strictMode, validationRules]);
+  }, [character, validationRules]);
 }

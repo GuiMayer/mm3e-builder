@@ -5,14 +5,12 @@ import { DEFAULT_VALIDATION_RULES } from '../shared/lib/validationRules';
 
 /* ================================================
    App Store — Global Preferences
-   Theme selection, strict mode toggle, language and other flags.
+   Theme selection, language and validation rules.
    All preferences are persisted automatically via Zustand middleware.
    ================================================ */
 
 interface AppStoreState extends IAppPreferences {
   setTheme: (theme: string) => void;
-  toggleStrictMode: () => void;
-  setStrictMode: (value: boolean) => void;
   setLanguage: (lang: string) => void;
   setValidationRules: (rules: Partial<IValidationRules>) => void;
   resetValidationRules: () => void;
@@ -23,7 +21,6 @@ export const useAppStore = create<AppStoreState>()(
     persist(
       (set) => ({
         theme: 'dark-knight',
-        strictMode: true,
         language: 'en',
         validationRules: DEFAULT_VALIDATION_RULES,
 
@@ -31,16 +28,6 @@ export const useAppStore = create<AppStoreState>()(
           set(() => {
             document.documentElement.setAttribute('data-theme', theme);
             return { theme };
-          }),
-
-        toggleStrictMode: () =>
-          set((state) => ({
-            strictMode: !state.strictMode,
-          })),
-
-        setStrictMode: (value) =>
-          set({
-            strictMode: value,
           }),
 
         setLanguage: (language) =>
@@ -63,15 +50,27 @@ export const useAppStore = create<AppStoreState>()(
       }),
       {
         name: 'mm3e-app-preferences',
-        // Migrate from old separate language key if needed
         migrate: (persistedState: any) => {
-          if (persistedState && !persistedState.language) {
+          if (!persistedState) return persistedState;
+          
+          // Migrate from old separate language key if needed
+          if (!persistedState.language) {
             const oldLang = localStorage.getItem('mm3e-language');
             if (oldLang) {
               persistedState.language = oldLang;
               localStorage.removeItem('mm3e-language');
             }
           }
+          
+          // Migrate strictMode to enforcePLLimits
+          if (persistedState.strictMode === false) {
+            if (!persistedState.validationRules) {
+              persistedState.validationRules = { ...DEFAULT_VALIDATION_RULES };
+            }
+            persistedState.validationRules.enforcePLLimits = false;
+          }
+          delete persistedState.strictMode;
+          
           return persistedState;
         },
       }
