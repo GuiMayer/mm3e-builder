@@ -977,7 +977,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
         .effect-modal-meta { display: flex; gap: var(--s-xs); flex-wrap: wrap; align-items: center; }
         .effect-modal-desc { font-size: 0.88rem; line-height: 1.6; color: var(--c-text); }
 
-        /* Mobile touch targets */
+        /* Mobile touch targets and layout */
         @media (max-width: 768px) {
           .builder-action-btn {
             min-height: var(--touch-target-min);
@@ -993,6 +993,39 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
             min-width: var(--touch-target-min);
             min-height: var(--touch-target-min);
             padding: var(--s-sm);
+          }
+
+          /* Mobile layout optimizations */
+          .builder-body {
+            flex-direction: column;
+          }
+          .builder-palette {
+            width: 100%;
+            max-height: 40vh;
+            border-right: none;
+            border-bottom: 1px solid var(--c-border);
+          }
+          .builder-main {
+            width: 100%;
+          }
+          .builder-topbar {
+            padding: var(--s-sm) var(--s-md);
+          }
+          .builder-topbar-title {
+            font-size: 0.9rem;
+          }
+          .builder-footer {
+            flex-direction: column;
+            gap: var(--s-sm);
+            align-items: flex-start;
+          }
+          .cost-breakdown {
+            width: 100%;
+            flex-wrap: wrap;
+          }
+          .cost-total {
+            width: 100%;
+            justify-content: space-between;
           }
         }
       `}</style>
