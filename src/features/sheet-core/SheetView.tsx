@@ -134,6 +134,22 @@ export function SheetView() {
           0%, 100% { opacity: 0.8; }
           50% { opacity: 1; }
         }
+
+        /* Mobile responsive layout */
+        @media (max-width: 768px) {
+          .sheet {
+            gap: var(--s-md);
+            padding-bottom: var(--s-2xl);
+          }
+          .pp-summary-footer {
+            flex-wrap: wrap;
+            gap: var(--s-xs);
+          }
+          .pp-summary-item {
+            flex: 1 1 calc(50% - var(--s-xs));
+            min-width: 120px;
+          }
+        }
       `}</style>
     </div>
   );
