@@ -22,7 +22,7 @@ import {
   calculateSkillsCost,
   calculateAdvantagesCost,
 } from '../shared/lib/mathEngine';
-import { downloadBlob } from './downloadHelper';
+import { downloadBlob, sanitizeFileName } from './downloadHelper';
 
 // ── Types for pre-localized labels ──
 
@@ -188,7 +188,7 @@ export async function generateExcel(
   const blob = new Blob([buffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
-  const fileName = `${character.header.name || 'character'}.xlsx`;
+  const fileName = `${sanitizeFileName(character.header.name)}.xlsx`;
   await downloadBlob(blob, fileName);
 }
 

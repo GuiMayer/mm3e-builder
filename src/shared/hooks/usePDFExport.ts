@@ -48,7 +48,7 @@ export function usePDFExport() {
     try {
       await fillAndDownloadPDF(character);
     } catch (e) {
-      alert(t('errors.importError') + '\n' + String(e));
+      alert(t('errors.exportError') + '\n' + String(e));
     } finally {
       setIsPdfLoading(false);
     }

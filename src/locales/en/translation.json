@@ -188,6 +188,7 @@
   "errors.invalidJson": "Invalid JSON file: could not parse the content.",
   "errors.validationError": "Validation error in field \"{{field}}\": {{message}}",
   "errors.importError": "Error importing file.",
+  "errors.exportError": "Error exporting file.",
 
   "builder.base": "Base",
   "builder.mods": "{{count}} mod(s)",

@@ -56,6 +56,21 @@ const FILE_TYPES: Record<string, FileTypeConfig> = {
 };
 
 /**
+ * Sanitize a file name by removing characters invalid in most file systems.
+ * Replaces invalid characters with underscores and ensures a non-empty result.
+ * 
+ * @param name - The raw file name (without extension)
+ * @returns A sanitized file name safe for all major file systems
+ */
+export function sanitizeFileName(name: string): string {
+  if (!name || !name.trim()) {
+    return 'character';
+  }
+  // Remove characters invalid in Windows, macOS, and Linux file systems
+  return name.replace(/[/\\:*?"<>|]/g, '_').trim() || 'character';
+}
+
+/**
  * Download a Blob as a file, showing a native Save dialog when possible.
  *
  * @param blob      - The file content as a Blob

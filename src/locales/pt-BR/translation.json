@@ -188,6 +188,7 @@
   "errors.invalidJson": "Arquivo JSON inválido: não foi possível interpretar o conteúdo.",
   "errors.validationError": "Erro de validação no campo \"{{field}}\": {{message}}",
   "errors.importError": "Erro ao importar arquivo.",
+  "errors.exportError": "Erro ao exportar arquivo.",
 
   "builder.base": "Base",
   "builder.mods": "{{count}} mod(s)",

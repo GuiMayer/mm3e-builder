@@ -111,7 +111,7 @@ export function useExcelExport() {
       await generateExcel(character, labels, gameData, lang);
     } catch (err) {
       console.error('Excel export failed:', err);
-      const errorMsg = t('errors.importError');
+      const errorMsg = t('errors.exportError');
       setExcelError(errorMsg);
       alert(errorMsg);
     } finally {

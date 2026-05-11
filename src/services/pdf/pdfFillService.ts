@@ -21,6 +21,7 @@ import {
 import { loadPDFTemplate } from './pdfTemplateLoader';
 import { sliceWithOverflow } from './helpers';
 import { PDF_LIMITS } from './overflowCollector';
+import { sanitizeFileName } from '../downloadHelper';
 
 import { fillHeader }     from './sections/headerSection';
 import { fillAbilities }  from './sections/abilitiesSection';
@@ -35,11 +36,6 @@ import { fillNotes }         from './sections/notesSection';
 // Re-export for MenuBar to use without importing from overflowCollector directly
 export { checkPDFOverflow } from './overflowCollector';
 export type { PDFOverflowReport } from './overflowCollector';
-
-// Sanitise file name: removes characters invalid in most file systems
-function sanitizeFileName(name: string): string {
-  return name.replace(/[/\\:*?"<>|]/g, '_').trim() || 'character';
-}
 
 /**
  * Fill the official M&M 3e PDF character sheet and trigger a browser download.
