@@ -362,6 +362,33 @@
   "ref.col.components": "= Componentes",
   "ref.col.description": "Efeito",
 
+  "ref.subtitle": "Regras de acesso rápido para Mutants & Masterminds 3e",
+
+  "ref.actions.aid": "Ajudar",
+  "ref.actions.aim": "Mirar",
+  "ref.actions.charge": "Investida",
+  "ref.actions.defend": "Defender",
+  "ref.actions.disarm": "Desarmar",
+  "ref.actions.escape": "Escapar",
+  "ref.actions.grab": "Agarrar",
+  "ref.actions.recover": "Recuperar",
+  "ref.actions.smash": "Esmagar",
+  "ref.actions.trip": "Derrubar",
+
+  "ref.actionTypes.standard": "Padrão",
+  "ref.actionTypes.move": "Movimento",
+
+  "ref.actionEffects.aid": "+2 (ou +5 com 2+ graus) na jogada de um aliado no próximo turno do personagem",
+  "ref.actionEffects.aim": "+2 de bônus circunstancial na próxima jogada de ataque à distância (preparada)",
+  "ref.actionEffects.charge": "Mova-se em linha reta e faça um ataque corpo a corpo no final",
+  "ref.actionEffects.defend": "Teste oposto; trate rolagens de 10 ou menos como 10 para defesas ativas até o próximo turno",
+  "ref.actionEffects.disarm": "-2 no teste de ataque; alvo faz teste de FOR vs. resultado do ataque para manter a arma",
+  "ref.actionEffects.escape": "Teste oposto de FOR ou Acrobacia para escapar de um Agarrão ou restrição",
+  "ref.actionEffects.grab": "Teste de ataque; alvo resiste com FOR ou Esquiva; se pego, alvo fica impedido e vulnerável",
+  "ref.actionEffects.recover": "Remove a condição ativa mais alta do personagem; uma vez por encontro de combate",
+  "ref.actionEffects.smash": "-5 no teste de ataque contra objetos segurados ou estacionários; ignora limite de Resistência",
+  "ref.actionEffects.trip": "-2 no teste de ataque; alvo resiste com FOR ou Acrobacia; em falha, alvo fica prostrado",
+
   "validation.noRoll": "Poder Sem Rolagem",
 
   "menu.exportPdf": "PDF",

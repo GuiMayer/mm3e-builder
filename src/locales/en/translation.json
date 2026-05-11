@@ -362,6 +362,33 @@
   "ref.col.components": "= Components",
   "ref.col.description": "Effect",
 
+  "ref.subtitle": "Quick-access rules for Mutants & Masterminds 3e",
+
+  "ref.actions.aid": "Aid",
+  "ref.actions.aim": "Aim",
+  "ref.actions.charge": "Charge",
+  "ref.actions.defend": "Defend",
+  "ref.actions.disarm": "Disarm",
+  "ref.actions.escape": "Escape",
+  "ref.actions.grab": "Grab",
+  "ref.actions.recover": "Recover",
+  "ref.actions.smash": "Smash",
+  "ref.actions.trip": "Trip",
+
+  "ref.actionTypes.standard": "Standard",
+  "ref.actionTypes.move": "Move",
+
+  "ref.actionEffects.aid": "+2 (or +5 on 2+ degrees) to an ally's check on the character's next turn",
+  "ref.actionEffects.aim": "+2 circumstance bonus to the next ranged attack check (readied)",
+  "ref.actionEffects.charge": "Move in a straight line then make a close attack at the end",
+  "ref.actionEffects.defend": "Opposed check; treat rolls of 10 or less as 10 for active defenses until next turn",
+  "ref.actionEffects.disarm": "-2 attack check; target makes STR check vs. attack result to retain weapon",
+  "ref.actionEffects.escape": "Opposed STR or Acrobatics check to break a Grab or restraint",
+  "ref.actionEffects.grab": "Attack check; target resists with STR or Dodge; if caught, target is hindered and vulnerable",
+  "ref.actionEffects.recover": "Remove the character's highest active condition; once per combat encounter",
+  "ref.actionEffects.smash": "-5 attack check against held or stationary objects; ignores Toughness cap",
+  "ref.actionEffects.trip": "-2 attack check; target resists with STR or Acrobatics; on failure, target goes prone",
+
   "validation.noRoll": "No-Roll Power",
 
   "menu.exportPdf": "PDF",

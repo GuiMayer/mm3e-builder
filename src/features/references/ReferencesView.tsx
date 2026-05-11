@@ -6,6 +6,7 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 /* -- Static combat reference data ---------------------------------------- */
 
 interface CombatAction {
+  id: string;
   action: string;
   type: string;
   effect: string;
@@ -19,16 +20,16 @@ interface CombatManeuver {
 }
 
 const COMBAT_ACTIONS: CombatAction[] = [
-  { action: 'Aid',     type: 'Standard', effect: "+2 (or +5 on 2+ degrees) to an ally's check on the character's next turn" },
-  { action: 'Aim',     type: 'Standard', effect: '+2 circumstance bonus to the next ranged attack check (readied)' },
-  { action: 'Charge',  type: 'Standard', effect: 'Move in a straight line then make a close attack at the end' },
-  { action: 'Defend',  type: 'Standard', effect: "Opposed check; treat rolls of 10 or less as 10 for active defenses until next turn" },
-  { action: 'Disarm',  type: 'Standard', effect: '-2 attack check; target makes STR check vs. attack result to retain weapon' },
-  { action: 'Escape',  type: 'Move',     effect: 'Opposed STR or Acrobatics check to break a Grab or restraint' },
-  { action: 'Grab',    type: 'Standard', effect: 'Attack check; target resists with STR or Dodge; if caught, target is hindered and vulnerable' },
-  { action: 'Recover', type: 'Standard', effect: "Remove the character's highest active condition; once per combat encounter" },
-  { action: 'Smash',   type: 'Standard', effect: '-5 attack check against held or stationary objects; ignores Toughness cap' },
-  { action: 'Trip',    type: 'Standard', effect: '-2 attack check; target resists with STR or Acrobatics; on failure, target goes prone' },
+  { id: 'aid',     action: 'Aid',     type: 'standard', effect: "+2 (or +5 on 2+ degrees) to an ally's check on the character's next turn" },
+  { id: 'aim',     action: 'Aim',     type: 'standard', effect: '+2 circumstance bonus to the next ranged attack check (readied)' },
+  { id: 'charge',  action: 'Charge',  type: 'standard', effect: 'Move in a straight line then make a close attack at the end' },
+  { id: 'defend',  action: 'Defend',  type: 'standard', effect: "Opposed check; treat rolls of 10 or less as 10 for active defenses until next turn" },
+  { id: 'disarm',  action: 'Disarm',  type: 'standard', effect: '-2 attack check; target makes STR check vs. attack result to retain weapon' },
+  { id: 'escape',  action: 'Escape',  type: 'move',     effect: 'Opposed STR or Acrobatics check to break a Grab or restraint' },
+  { id: 'grab',    action: 'Grab',    type: 'standard', effect: 'Attack check; target resists with STR or Dodge; if caught, target is hindered and vulnerable' },
+  { id: 'recover', action: 'Recover', type: 'standard', effect: "Remove the character's highest active condition; once per combat encounter" },
+  { id: 'smash',   action: 'Smash',   type: 'standard', effect: '-5 attack check against held or stationary objects; ignores Toughness cap' },
+  { id: 'trip',    action: 'Trip',    type: 'standard', effect: '-2 attack check; target resists with STR or Acrobatics; on failure, target goes prone' },
 ];
 
 const COMBAT_MANEUVERS: CombatManeuver[] = [
@@ -64,7 +65,7 @@ export function ReferencesView() {
     <div className="references-view">
       <div className="ref-header">
         <h1 className="ref-title">{t('ref.title')}</h1>
-        <p className="ref-subtitle">Quick-access rules for Mutants &amp; Masterminds 3e</p>
+        <p className="ref-subtitle">{t('ref.subtitle')}</p>
       </div>
 
       <div className="ref-grid">
@@ -82,9 +83,9 @@ export function ReferencesView() {
               <tbody>
                 {COMBAT_ACTIONS.map((row, i) => (
                   <tr key={i}>
-                    <td className="ref-td--name">{row.action}</td>
-                    <td className="ref-td--type">{row.type}</td>
-                    <td>{row.effect}</td>
+                    <td className="ref-td--name">{t(`ref.actions.${row.id}`)}</td>
+                    <td className="ref-td--type">{t(`ref.actionTypes.${row.type}`)}</td>
+                    <td>{t(`ref.actionEffects.${row.id}`)}</td>
                   </tr>
                 ))}
               </tbody>
