@@ -5,12 +5,16 @@ import { SheetView } from '../features/sheet-core/SheetView'
 import { ReferencesView } from '../features/references/ReferencesView'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
+import { useAutoLoadDraft } from '../shared/hooks/useAutoLoadDraft'
 
 export type AppView = 'sheet' | 'references';
 
 export function App() {
   const { t, i18n } = useTranslation()
   const [activeView, setActiveView] = useState<AppView>('sheet');
+  
+  // Auto-load draft from localStorage on mount
+  useAutoLoadDraft();
 
   // Sync <html lang> and <title> with the active i18n language
   useEffect(() => {
