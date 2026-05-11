@@ -464,5 +464,11 @@
   "draftNotification.title": "Continuar de onde parou?",
   "draftNotification.unnamedCharacter": "Personagem Sem Nome",
   "draftNotification.continue": "Continuar",
-  "draftNotification.startNew": "Começar Novo"
+  "draftNotification.startNew": "Começar Novo",
+
+  "menu.clearDraft.label": "Gerenciamento de Rascunho",
+  "menu.clearDraft.action": "Limpar Rascunho",
+  "menu.clearDraft.hint": "Remover rascunho salvo do armazenamento do navegador",
+  "menu.clearDraft.confirm": "Tem certeza que deseja limpar o rascunho de '{{name}}'? Esta ação não pode ser desfeita.",
+  "menu.clearDraft.success": "Rascunho limpo com sucesso"
 }

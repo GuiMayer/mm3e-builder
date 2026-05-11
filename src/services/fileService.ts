@@ -80,6 +80,7 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
 /**
  * Save draft to localStorage (auto-save).
  * Returns false if QuotaExceededError occurs.
+ * Includes metadata: timestamp and character name for better UX.
  */
 export function saveDraft(character: ICharacter): boolean {
   try {
@@ -89,6 +90,15 @@ export function saveDraft(character: ICharacter): boolean {
       character,
     };
     localStorage.setItem(DRAFT_KEY, JSON.stringify(file));
+    
+    // Store metadata separately for quick access without parsing full character
+    const metadata = {
+      timestamp: new Date().toISOString(),
+      characterName: character.header.name || 'Unnamed Character',
+      powerLevel: character.header.powerLevel,
+    };
+    localStorage.setItem(DRAFT_KEY + '-metadata', JSON.stringify(metadata));
+    
     return true;
   } catch (e) {
     if (e instanceof DOMException && e.name === 'QuotaExceededError') {
@@ -127,4 +137,19 @@ export function loadDraft(): ICharacter | null {
  */
 export function clearDraft(): void {
   localStorage.removeItem(DRAFT_KEY);
+  localStorage.removeItem(DRAFT_KEY + '-metadata');
+}
+
+/**
+ * Get draft metadata without loading the full character.
+ * Useful for showing draft info in UI without parsing the entire character.
+ */
+export function getDraftMetadata(): { timestamp: string; characterName: string; powerLevel: number } | null {
+  try {
+    const stored = localStorage.getItem(DRAFT_KEY + '-metadata');
+    if (!stored) return null;
+    return JSON.parse(stored);
+  } catch {
+    return null;
+  }
 }

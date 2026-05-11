@@ -13,8 +13,9 @@ import { PDFOverflowModal } from '../../features/sheet-core/PDFOverflowModal';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
-import { Settings, Download, Upload, FilePlus, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2 } from 'lucide-react';
+import { Settings, Download, Upload, FilePlus, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2 } from 'lucide-react';
 import i18n from '../../locales';
+import { clearDraft, getDraftMetadata } from '../../services/fileService';
 
 const THEMES = [
   { id: 'dark-knight', label: 'Dark Knight' },
@@ -45,8 +46,6 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   const setTheme = useAppStore((s) => s.setTheme);
   const language = useAppStore((s) => s.language);
   const setLanguage = useAppStore((s) => s.setLanguage);
-  const strictMode = useAppStore((s) => s.strictMode);
-  const toggleStrictMode = useAppStore((s) => s.toggleStrictMode);
   const validationRules = useAppStore((s) => s.validationRules);
   const setValidationRules = useAppStore((s) => s.setValidationRules);
   const character = useCharStore((s) => s.character);
@@ -56,7 +55,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   const resetCharacter = useCharStore((s) => s.resetCharacter);
   
   // Hooks
-  const { totalSpent, totalAvailable, remaining } = useCalculatedPP();
+  const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
   const { exportCharacter, handleFileInput, fileInputRef } = useFileOperations();
   const { exportPDF, confirmAndExportPDF, clearOverflow, pdfOverflow, isPdfLoading } = usePDFExport();
   const { exportExcel } = useExcelExport();
@@ -102,14 +101,24 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
     setCampaignMode(!campaignMode);
   }
 
+  function handleClearDraft() {
+    const metadata = getDraftMetadata();
+    const characterName = metadata?.characterName || t('draftNotification.unnamedCharacter');
+    const confirmed = window.confirm(t('menu.clearDraft.confirm', { name: characterName }));
+    if (confirmed) {
+      clearDraft();
+      alert(t('menu.clearDraft.success'));
+    }
+  }
+
   return (
     <header className="menubar">
       <div className="menubar-left">
         <h1 className="menubar-title">{t('app.title')}</h1>
         <ViewTabs activeView={activeView} onViewChange={onViewChange} />
         <span className="menubar-pp" data-over={remaining < 0}>
-          <strong>{totalSpent}</strong> / {totalAvailable} {t('common.pp')}
-          {remaining < 0 && <span className="menubar-pp-warning"> ({remaining})</span>}
+          <strong>{totalSpent}</strong> / {isBudgetEnforced ? totalAvailable : <span className="infinity-symbol">∞</span>} {t('common.pp')}
+          {remaining < 0 && isBudgetEnforced && <span className="menubar-pp-warning"> ({remaining})</span>}
         </span>
       </div>
 
@@ -164,14 +173,6 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">
-                <span className="dropdown-label">{t('menu.strictMode')}</span>
-                <button className="dropdown-item" onClick={toggleStrictMode}>
-                  {strictMode ? <Shield size={14} /> : <ShieldOff size={14} />}
-                  {t('menu.strictMode')}: <strong>{strictMode ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
-                </button>
-              </div>
-              <div className="dropdown-divider" />
-              <div className="dropdown-section">
                 <span className="dropdown-label">{t('menu.campaignMode')}</span>
                 <button
                   className={`dropdown-item ${campaignMode ? 'active' : ''} ${hasLogEntries && campaignMode ? 'disabled' : ''}`}
@@ -186,6 +187,21 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
                   {hasLogEntries && campaignMode 
                     ? t('menu.campaignMode.clearLogFirst')
                     : t('menu.campaignMode.hint')}
+                </span>
+              </div>
+              <div className="dropdown-divider" />
+              <div className="dropdown-section">
+                <span className="dropdown-label">{t('menu.clearDraft.label')}</span>
+                <button
+                  className="dropdown-item dropdown-item--danger"
+                  onClick={handleClearDraft}
+                  title={t('menu.clearDraft.hint')}
+                >
+                  <Trash2 size={14} />
+                  {t('menu.clearDraft.action')}
+                </button>
+                <span className="dropdown-hint">
+                  {t('menu.clearDraft.hint')}
                 </span>
               </div>
               <div className="dropdown-divider" />
@@ -396,6 +412,12 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         .dropdown-item.disabled:hover {
           background: transparent;
         }
+        .dropdown-item--danger {
+          color: var(--c-error);
+        }
+        .dropdown-item--danger:hover {
+          background: var(--c-error-muted);
+        }
         .dropdown-hint {
           display: block;
           font-size: 0.7rem;
@@ -440,6 +462,16 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         }
         .spin {
           animation: spin 1s linear infinite;
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.8; text-shadow: 0 0 8px rgba(var(--c-primary-rgb), 0.4); }
+          50% { opacity: 1; text-shadow: 0 0 16px rgba(var(--c-primary-rgb), 0.8); }
+        }
+        .infinity-symbol {
+          display: inline-block;
+          animation: pulse-glow 2s ease-in-out infinite;
+          color: var(--c-primary);
+          font-weight: bold;
         }
       `}</style>
     </header>

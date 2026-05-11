@@ -464,5 +464,11 @@
   "draftNotification.title": "Continue where you left off?",
   "draftNotification.unnamedCharacter": "Unnamed Character",
   "draftNotification.continue": "Continue",
-  "draftNotification.startNew": "Start New"
+  "draftNotification.startNew": "Start New",
+
+  "menu.clearDraft.label": "Draft Management",
+  "menu.clearDraft.action": "Clear Draft",
+  "menu.clearDraft.hint": "Remove saved draft from browser storage",
+  "menu.clearDraft.confirm": "Are you sure you want to clear the draft for '{{name}}'? This action cannot be undone.",
+  "menu.clearDraft.success": "Draft cleared successfully"
 }
