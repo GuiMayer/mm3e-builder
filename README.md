@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.0
+# Mutants & Masterminds 3e Character Builder — v1.4.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -23,12 +23,20 @@ A modern, fast, and user-friendly character builder for the Mutants & Mastermind
 - **Advantages** — Searchable and filterable advantage selector with 49 advantages, ranked/flat type display, and description modal.
 - **Complications** — Free-form title + description fields for Motivation, Enemy, Secret, etc.
 
+#### 📖 Campaign Mode & PP Advancement Log
+- **Campaign Mode toggle** — Switch between campaign mode (PP earned during play) and standard mode (PL × 15 flat).
+- **PP Log Panel** — Track PP awards and deductions with date, amount, and notes for each entry.
+- **Automatic PP calculation** — Base PP (PL × 15) + earned PP from log = total available PP.
+- **Data protection** — Confirmation dialogs when disabling Campaign Mode or removing log entries to prevent accidental data loss.
+- **Smart validation** — Campaign Mode toggle is disabled when log has entries, requiring cleanup before mode switch to maintain PP budget consistency.
+
 #### ⚡ Power Builder (v2)
 The Power Builder is the most feature-rich section, built for full M&M 3e rules compliance:
 
 - **Multi-component Powers** — A single power can have multiple simultaneous effects (Linked Powers). Each component has its own effect, ranks, and modifier set.
 - **Searchable Effect Selector** — Combobox with live search + type filter (Attack, Defense, Movement, Sense, etc.) and inline ⓘ info button to view full effect description, cost, and tags.
 - **Drag-and-Drop Modifier Palette** — Collapsible sidebar with Extras, Flaws, and power-specific modifiers. Modifiers can be dragged directly onto each component's dropzone or added via click.
+- **Power-Specific Modifiers** — 45+ power-specific modifiers (Accurate, Affects Corporeal, Alternate Resistance, etc.) with automatic UI filtering to show only relevant modifiers per power. Verified against official M&M 3e Hero's Handbook with 92.5% accuracy rate.
 - **Per-modifier rank control** — Modifiers with ranked costs (e.g. Burst Area) have a rank spinner. Options-based modifiers (e.g. Affects Corporeal shape) have an inline dropdown.
 - **Real-time cost display** — Footer shows cost breakdown per component and a running total for the entire array (base + alternates).
 - **Power name and notes** — Free-form fields for flavor text, descriptors (Fire, Magic, etc.), and GM notes.
@@ -52,16 +60,36 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 - Cards display each power with component effects, applied modifier tags, and individual AE tags showing "↪ [Name] ⚡" for dynamic slots.
 - Edit button re-opens the Power Builder with the existing power pre-loaded.
 
+#### ✅ Validation System
+- **Modular validation engine** — 8-phase validation system covering all M&M 3e core rules.
+- **PL limits enforcement** — Validates Attack + Damage ≤ 2×PL and Dodge + Toughness ≤ 2×PL per official rules.
+- **Skill rank caps** — Enforces maximum skill ranks of PL + 10 for trained skills.
+- **PP budget enforcement** — Validates total spent PP against available PP (PL × 15 or Campaign Mode total).
+- **Absent abilities validation** — Ensures absent abilities follow official rules and cost structure.
+- **Alternate Effect cap validation** — Verifies each AE does not exceed the base power's PP cost.
+- **Minimum ability score validation** — Enforces minimum ability scores based on character type.
+- **Official builds tested** — Validated against official M&M 3e character builds (Daredevil, Battlesuit, Powerhouse, Paragon).
+
+#### 📚 References Tab
+- **Combat Actions** — Quick reference for Standard, Move, and Free actions with full descriptions and translations.
+- **Combat Maneuvers** — Reference for Grab, Trip, Disarm, and other maneuvers with mechanics and translations.
+- **Conditions** — Complete list of all M&M 3e conditions (Dazed, Stunned, Incapacitated, etc.) with effects and translations.
+- **Instant access** — No need to flip through rulebooks during character creation or gameplay.
+
 #### 📄 Export to PDF
 - **Fills the official M&M 3e fillable character sheet** (`MnM3_charsheet_color_fillable.pdf`) with all 211 fields using `pdf-lib` — 100% client-side, no backend.
 - Page 1: Header, Abilities, Defenses, Initiative, Offense table (Attack 1–4 with auto-calculated DCs), compact Skills/Advantages/Powers summaries, Notes & Conditions.
 - Page 2: Structured skills grid (Ab / Ra / Total per skill), Close Combat & Ranged Combat subtypes, Expertise subtypes, Advantages 1–11, Equipment 1–10, Complications 1–11, Notes 1–7.
+- **Campaign Mode support** — Correctly calculates PP totals including PP Log adjustments when in Campaign Mode.
+- **Accurate stat calculations** — Toughness (STA + ranks) and Initiative (AGL bonus) calculated correctly.
 - **Overflow handling** — When a character exceeds the sheet's fixed limits (e.g. > 4 attacks, > 11 advantages), a detailed modal warns the user before export and redirects excess items to the Notes fields.
 - Text is **fully selectable** in any PDF reader — no screenshot or image-based rendering.
 - PDF template is pre-fetched in the background on app load for near-instant exports.
 
 #### 📤 Export to Excel
-- Full character sheet exported to a styled `.xlsx` workbook with 7 sections: Summary, Abilities, Defenses, Skills, Advantages, Powers, Complications.
+- Full character sheet exported to a styled `.xlsx` workbook with 8 sections: Summary, Abilities, Defenses, Skills, Advantages, Powers, Complications, and PP Log (when in Campaign Mode).
+- **PP Log sheet** — When in Campaign Mode, includes a dedicated sheet showing full award/deduction history with running totals and color-coded positive/negative adjustments.
+- **Accurate calculations** — Total PP includes PP Log adjustments, Toughness and Initiative stats included in Defenses sheet.
 - Color-coded cells, PP totals, and alternate effects listed per power.
 
 #### 🌐 Internationalization (i18n)
@@ -72,6 +100,35 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 #### 💾 Save / Load
 - Characters saved to `localStorage` automatically.
 - Import/Export via JSON file — character schema is versioned with automatic migration for older saves.
+
+---
+
+### 📋 Version History
+
+For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
+
+#### v1.4.1 (2026-05-11)
+- Fixed PP calculation in campaign mode to include PP Log adjustments
+- Added missing Toughness and Initiative stats to exports
+- Added PP Log sheet in Excel export with running totals
+- Comprehensive test coverage for export corrections
+
+#### v1.4.0 (2026-05-10)
+- Complete Powers Modifiers Audit: 209 modifiers verified across 40 powers (92.5% accuracy)
+- 45+ power-specific modifiers with automatic UI filtering
+- Automated validation scripts for continuous compliance
+- Fixed multiple power-specific modifier issues
+
+#### v1.3.0 (2026-04-28)
+- Complete M&M 3e Rules Validation System with 8 validation phases
+- PL limits enforcement, skill rank caps, PP budget validation
+- Official builds tests (Daredevil, Battlesuit, Powerhouse, Paragon)
+- 50+ test cases covering all validation rules
+
+#### v1.2.0 (2026-04-15)
+- Power Builder v2 with multi-component architecture
+- Alternate Effects v2 with full multi-component support
+- SCHEMA_VERSION 2.0.0 with automatic migration
 
 ---
 
@@ -142,12 +199,20 @@ Um criador de fichas moderno, rápido e focado na facilidade de uso para o siste
 - **Vantagens** — Seletor pesquisável e filtrável com 49 vantagens, exibição de tipo (ranqueada/flat) e modal de descrição.
 - **Complicações** — Campos livres de título e descrição para Motivação, Inimigo, Segredo, etc.
 
+#### 📖 Modo Campanha & Registro de Avanço de PP
+- **Toggle de Modo Campanha** — Alterne entre modo campanha (PP ganhos durante o jogo) e modo padrão (NP × 15 fixo).
+- **Painel de Registro de PP** — Rastreie concessões e deduções de PP com data, quantidade e notas para cada entrada.
+- **Cálculo automático de PP** — PP base (NP × 15) + PP ganhos do registro = PP total disponível.
+- **Proteção de dados** — Diálogos de confirmação ao desativar Modo Campanha ou remover entradas do registro para prevenir perda acidental de dados.
+- **Validação inteligente** — Toggle de Modo Campanha é desabilitado quando há entradas no registro, exigindo limpeza antes da troca de modo para manter consistência do orçamento de PP.
+
 #### ⚡ Power Builder (v2)
 O Power Builder é a seção mais completa, construído para máxima conformidade com as regras do M&M 3e:
 
 - **Poderes multi-componente** — Um único poder pode ter múltiplos efeitos simultâneos (Poderes Vinculados). Cada componente tem seu próprio efeito, ranks e conjunto de modificadores.
 - **Seletor de efeito pesquisável** — Combobox com busca em tempo real + filtro por tipo (Ataque, Defesa, Movimento, Sentido, etc.) e botão ⓘ embutido para ver descrição completa do efeito, custo e tags.
 - **Paleta de Modificadores via Drag-and-Drop** — Barra lateral recolhível com Extras, Falhas e modificadores específicos do efeito. Modificadores podem ser arrastados diretamente para a dropzone de cada componente ou adicionados com um clique.
+- **Modificadores Específicos de Poder** — 45+ modificadores específicos de poder (Preciso, Afeta Incorpóreo, Resistência Alternativa, etc.) com filtragem automática na UI para mostrar apenas modificadores relevantes por poder. Verificado contra o Hero's Handbook oficial do M&M 3e com taxa de precisão de 92,5%.
 - **Controle de rank por modificador** — Modificadores com custo ranqueado (ex: Área em Rajada) possuem um controle de ranks. Modificadores com opções (ex: Afeta Incorpóreo) têm dropdown embutido.
 - **Custo em tempo real** — Rodapé exibe custo por componente e total da array completa (base + alternativos).
 - **Nome e notas do poder** — Campos livres para flavor text, descritores (Fogo, Magia, etc.) e anotações de mestre.
@@ -171,16 +236,36 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 - Cards exibem cada poder com efeitos dos componentes, tags dos modificadores aplicados e tags individuais de AE mostrando "↪ [Nome] ⚡" para slots dinâmicos.
 - Botão de edição reabre o Power Builder com o poder existente pré-carregado.
 
+#### ✅ Sistema de Validação
+- **Motor de validação modular** — Sistema de validação em 8 fases cobrindo todas as regras principais do M&M 3e.
+- **Aplicação de limites de NP** — Valida Ataque + Dano ≤ 2×NP e Esquiva + Resistência ≤ 2×NP conforme regras oficiais.
+- **Limites de ranks de perícias** — Aplica máximo de ranks de perícias de NP + 10 para perícias treinadas.
+- **Aplicação de orçamento de PP** — Valida PP total gasto contra PP disponível (NP × 15 ou total do Modo Campanha).
+- **Validação de atributos ausentes** — Garante que atributos ausentes sigam regras oficiais e estrutura de custo.
+- **Validação de cap de Efeitos Alternativos** — Verifica que cada AE não excede o custo em PP do poder base.
+- **Validação de pontuação mínima de atributos** — Aplica pontuações mínimas de atributos baseadas no tipo de personagem.
+- **Testado com builds oficiais** — Validado contra builds oficiais de personagens do M&M 3e (Daredevil, Battlesuit, Powerhouse, Paragon).
+
+#### 📚 Aba de Referências
+- **Ações de Combate** — Referência rápida para ações Padrão, Movimento e Livres com descrições completas e traduções.
+- **Manobras de Combate** — Referência para Agarrar, Derrubar, Desarmar e outras manobras com mecânicas e traduções.
+- **Condições** — Lista completa de todas as condições do M&M 3e (Atordoado, Atônito, Incapacitado, etc.) com efeitos e traduções.
+- **Acesso instantâneo** — Não é necessário folhear livros de regras durante criação de personagem ou jogo.
+
 #### 📄 Exportar como PDF
 - **Preenche a ficha oficial fillable do M&M 3e** (`MnM3_charsheet_color_fillable.pdf`) com todos os 211 campos usando `pdf-lib` — 100% no browser, sem backend.
 - Página 1: Cabeçalho, Atributos, Defesas, Iniciativa, tabela de Offense (Attack 1–4 com DCs calculados automaticamente), resumos compactos de Perícias/Vantagens/Poderes, Notes & Conditions.
 - Página 2: Grade estruturada de perícias (Hab / Ra / Total por perícia), subtypes de Combate Corpo-a-Corpo e à Distância, subtypes de Especialidade, Vantagens 1–11, Equipamento 1–10, Complicações 1–11, Notas 1–7.
+- **Suporte a Modo Campanha** — Calcula corretamente totais de PP incluindo ajustes do Registro de PP quando em Modo Campanha.
+- **Cálculos precisos de stats** — Resistência (VIG + ranks) e Iniciativa (bônus de AGL) calculados corretamente.
 - **Tratamento de overflow** — Quando um personagem excede os limites fixos da ficha (ex: > 4 ataques, > 11 vantagens), um modal detalhado avisa o usuário antes de exportar e redireciona o excedente para os campos de Notas.
 - Texto **completamente selecionável** em qualquer leitor de PDF — sem screenshot ou renderização por imagem.
 - Template do PDF é pré-carregado em segundo plano ao iniciar o app para exports quase instantâneos.
 
 #### 📤 Exportar para Excel
-- Ficha completa exportada para um arquivo `.xlsx` estilizado com 7 abas: Resumo, Atributos, Defesas, Perícias, Vantagens, Poderes, Complicações.
+- Ficha completa exportada para um arquivo `.xlsx` estilizado com 8 abas: Resumo, Atributos, Defesas, Perícias, Vantagens, Poderes, Complicações e Registro de PP (quando em Modo Campanha).
+- **Aba de Registro de PP** — Quando em Modo Campanha, inclui uma aba dedicada mostrando histórico completo de concessões/deduções com totais acumulados e ajustes positivos/negativos coloridos.
+- **Cálculos precisos** — PP total inclui ajustes do Registro de PP, stats de Resistência e Iniciativa incluídos na aba de Defesas.
 - Células coloridas, totais de PP e efeitos alternativos listados por poder.
 
 #### 🌐 Internacionalização (i18n)
@@ -191,6 +276,35 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 #### 💾 Salvar / Carregar
 - Personagens salvos automaticamente no `localStorage`.
 - Import/Export via arquivo JSON — o schema do personagem é versionado com migração automática para saves antigos.
+
+---
+
+### 📋 Histórico de Versões
+
+Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
+
+#### v1.4.1 (2026-05-11)
+- Corrigido cálculo de PP em modo campanha para incluir ajustes do Registro de PP
+- Adicionados stats de Resistência e Iniciativa faltantes nas exportações
+- Adicionada aba de Registro de PP na exportação Excel com totais acumulados
+- Cobertura abrangente de testes para correções de exportação
+
+#### v1.4.0 (2026-05-10)
+- Auditoria Completa de Modificadores de Poderes: 209 modificadores verificados em 40 poderes (92,5% de precisão)
+- 45+ modificadores específicos de poder com filtragem automática na UI
+- Scripts de validação automatizada para conformidade contínua
+- Corrigidos múltiplos problemas de modificadores específicos de poder
+
+#### v1.3.0 (2026-04-28)
+- Sistema Completo de Validação de Regras do M&M 3e com 8 fases de validação
+- Aplicação de limites de NP, caps de ranks de perícias, validação de orçamento de PP
+- Testes com builds oficiais (Daredevil, Battlesuit, Powerhouse, Paragon)
+- 50+ casos de teste cobrindo todas as regras de validação
+
+#### v1.2.0 (2026-04-15)
+- Power Builder v2 com arquitetura multi-componente
+- Efeitos Alternativos v2 com suporte completo a multi-componente
+- SCHEMA_VERSION 2.0.0 com migração automática
 
 ---
 
