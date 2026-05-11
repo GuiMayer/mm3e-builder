@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { saveDraft, loadDraft, clearDraft, getDraftMetadata } from '../services/fileService';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { saveDraft, clearDraft, getDraftMetadata } from '../services/fileService';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -12,7 +12,7 @@ const localStorageMock = (() => {
   };
 })();
 
-Object.defineProperty(global, 'localStorage', { value: localStorageMock });
+Object.defineProperty(globalThis, 'localStorage', { value: localStorageMock });
 
 describe('fileService - Draft Metadata', () => {
   beforeEach(() => {
@@ -29,6 +29,7 @@ describe('fileService - Draft Metadata', () => {
       advantages: [],
       powers: [],
       complications: [],
+      equipmentNotes: '',
     };
 
     const result = saveDraft(character);
