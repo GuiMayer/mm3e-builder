@@ -12,6 +12,7 @@
   "menu.campaignMode": "Campaign Mode",
   "menu.campaignMode.hint": "Tracks PP earned during play. When off, available PP = PL × 15.",
   "menu.campaignMode.clearLogFirst": "Clear all PP log entries before disabling Campaign Mode.",
+  "menu.campaignMode.confirmDisable": "Are you sure you want to disable Campaign Mode? This will reset available PP to PL × 15.",
   "menu.campaignMode.active": "ON",
   "menu.campaignMode.disabled": "OFF",
   "menu.validationRules": "Validation Rules",

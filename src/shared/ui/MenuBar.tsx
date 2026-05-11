@@ -93,6 +93,15 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
     i18nInstance.changeLanguage(lang);
   }
 
+  function handleCampaignModeToggle() {
+    // If trying to disable Campaign Mode, ask for confirmation
+    if (campaignMode && !hasLogEntries) {
+      const confirmed = window.confirm(t('menu.campaignMode.confirmDisable'));
+      if (!confirmed) return;
+    }
+    setCampaignMode(!campaignMode);
+  }
+
   return (
     <header className="menubar">
       <div className="menubar-left">
@@ -166,10 +175,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
                 <span className="dropdown-label">{t('menu.campaignMode')}</span>
                 <button
                   className={`dropdown-item ${campaignMode ? 'active' : ''} ${hasLogEntries && campaignMode ? 'disabled' : ''}`}
-                  onClick={() => {
-                    if (hasLogEntries && campaignMode) return;
-                    setCampaignMode(!campaignMode);
-                  }}
+                  onClick={handleCampaignModeToggle}
                   title={hasLogEntries && campaignMode ? t('menu.campaignMode.clearLogFirst') : t('menu.campaignMode.hint')}
                   disabled={hasLogEntries && campaignMode}
                 >
