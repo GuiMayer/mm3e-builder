@@ -11,6 +11,13 @@ import type { IValidationRules } from '../../entities/types';
  * These are the recommended settings for standard M&M 3e play.
  */
 export const DEFAULT_VALIDATION_RULES: IValidationRules = {
+  // Core limits (NEW - fundamental rules that can be disabled)
+  enforcePLLimits: true,                   // Enforce ALL PL trade-off limits
+  enforcePPBudget: true,                   // Enforce PP spending limit
+  enforceMinimumAbilityScore: true,        // Enforce minimum ability score of -5
+  enforceAlternateEffectCap: true,         // Alternate Effects cannot exceed base power cost
+  enforceEquipmentPPLimit: true,           // Equipment limited to 5 PP per Equipment advantage rank
+  
   // Modifier restrictions
   enforceIncompatibleModifiers: true,      // Prevent incompatible combinations (e.g., Ranged + Close)
   enforceModifierMaxRanks: true,           // Enforce maxRanks limits (e.g., Accurate max 5)
@@ -34,6 +41,13 @@ export const DEFAULT_VALIDATION_RULES: IValidationRules = {
  * Disables most optional restrictions.
  */
 export const PERMISSIVE_VALIDATION_RULES: IValidationRules = {
+  // Core limits - keep PL and PP budget, but relax others
+  enforcePLLimits: true,                   // Keep PL limits even in permissive mode
+  enforcePPBudget: true,                   // Keep PP budget even in permissive mode
+  enforceMinimumAbilityScore: false,       // Allow abilities below -5
+  enforceAlternateEffectCap: false,        // Allow AEs stronger than base
+  enforceEquipmentPPLimit: false,          // Allow unlimited equipment
+  
   enforceIncompatibleModifiers: false,
   enforceModifierMaxRanks: false,
   enforceAccuratePLCap: false,
@@ -50,6 +64,13 @@ export const PERMISSIVE_VALIDATION_RULES: IValidationRules = {
  * Enforces all rules strictly.
  */
 export const STRICT_VALIDATION_RULES: IValidationRules = {
+  // Core limits - all enforced
+  enforcePLLimits: true,
+  enforcePPBudget: true,
+  enforceMinimumAbilityScore: true,
+  enforceAlternateEffectCap: true,
+  enforceEquipmentPPLimit: true,
+  
   enforceIncompatibleModifiers: true,
   enforceModifierMaxRanks: true,
   enforceAccuratePLCap: true,
@@ -59,6 +80,29 @@ export const STRICT_VALIDATION_RULES: IValidationRules = {
   plTradeOffsAsErrors: true,
   enforceTrainedOnlySkills: true,
   enforceSkillAbilityRequirements: true,
+};
+
+/**
+ * Sandbox validation rules for testing and experimentation.
+ * Disables ALL restrictions - no limits whatsoever.
+ */
+export const SANDBOX_VALIDATION_RULES: IValidationRules = {
+  // Core limits - all disabled for sandbox mode
+  enforcePLLimits: false,
+  enforcePPBudget: false,
+  enforceMinimumAbilityScore: false,
+  enforceAlternateEffectCap: false,
+  enforceEquipmentPPLimit: false,
+  
+  enforceIncompatibleModifiers: false,
+  enforceModifierMaxRanks: false,
+  enforceAccuratePLCap: false,
+  enforcePowerSpecificModifiers: false,
+  enforceAfflictionProgression: false,
+  enforceAbsentAbilityRestrictions: false,
+  plTradeOffsAsErrors: false,
+  enforceTrainedOnlySkills: false,
+  enforceSkillAbilityRequirements: false,
 };
 
 /**
@@ -87,6 +131,47 @@ export interface ValidationRuleMetadata {
 }
 
 export const VALIDATION_RULE_METADATA: ValidationRuleMetadata[] = [
+  // Core limits (NEW)
+  {
+    id: 'enforcePLLimits',
+    name: 'PL Trade-off Limits',
+    description: 'Enforces ALL PL trade-off limits (attack+damage, dodge+toughness, parry+toughness, fortitude+will ≤ 2×PL)',
+    category: 'pl',
+    recommendedFor: 'all',
+    disableWhen: 'Epic campaigns, characters above PL, or house rules that ignore PL balance',
+  },
+  {
+    id: 'enforcePPBudget',
+    name: 'PP Budget Limit',
+    description: 'Prevents spending more PP than available (PL × 15 + campaign adjustments)',
+    category: 'pl',
+    recommendedFor: 'all',
+    disableWhen: 'Sandbox mode, testing builds, or campaigns without PP restrictions',
+  },
+  {
+    id: 'enforceMinimumAbilityScore',
+    name: 'Minimum Ability Score',
+    description: 'Enforces minimum ability score of -5 (official M&M 3e rule)',
+    category: 'pl',
+    recommendedFor: 'all',
+    disableWhen: 'Extremely debilitated characters or special constructs',
+  },
+  {
+    id: 'enforceAlternateEffectCap',
+    name: 'Alternate Effect Cost Cap',
+    description: 'Alternate Effects cannot exceed the base power cost (array cap rule)',
+    category: 'power',
+    recommendedFor: 'all',
+    disableWhen: 'House rules allowing stronger AEs than base power',
+  },
+  {
+    id: 'enforceEquipmentPPLimit',
+    name: 'Equipment PP Limit',
+    description: 'Equipment limited to 5 PP per rank of Equipment advantage',
+    category: 'power',
+    recommendedFor: 'all',
+    disableWhen: 'Campaigns with free equipment or custom equipment rules',
+  },
   {
     id: 'enforceIncompatibleModifiers',
     name: 'Incompatible Modifiers',

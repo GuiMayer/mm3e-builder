@@ -263,6 +263,13 @@ export interface ICharacterFile {
 // ── Validation Rule Configuration ──
 // Allows GMs and players to toggle specific rules on/off
 export interface IValidationRules {
+  // Core limits (NEW - can disable fundamental rules)
+  enforcePLLimits: boolean;                   // Enforce ALL PL trade-off limits (attack+damage, dodge+toughness, etc.)
+  enforcePPBudget: boolean;                   // Enforce PP spending limit (prevent overspending)
+  enforceMinimumAbilityScore: boolean;        // Enforce minimum ability score of -5
+  enforceAlternateEffectCap: boolean;         // Alternate Effects cannot exceed base power cost
+  enforceEquipmentPPLimit: boolean;           // Equipment limited to 5 PP per Equipment advantage rank
+  
   // Modifier restrictions
   enforceIncompatibleModifiers: boolean;      // Prevent incompatible modifier combinations
   enforceModifierMaxRanks: boolean;           // Enforce maxRanks limits on modifiers
