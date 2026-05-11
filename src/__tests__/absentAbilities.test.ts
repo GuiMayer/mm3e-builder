@@ -4,7 +4,7 @@ import {
   calcToughnessBonus,
   calcInitiativeBonus,
 } from '../shared/lib/mathEngine';
-import type { IAbilities } from '../entities/types';
+import type { Abilities } from '../entities/types';
 
 /**
  * Absent Abilities Validation Tests
@@ -18,7 +18,7 @@ import type { IAbilities } from '../entities/types';
 
 describe('Absent Abilities - Cost Calculation', () => {
   it('absent STA costs 0 PP (not 2×0 = 0)', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 0, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta']);
@@ -27,7 +27,7 @@ describe('Absent Abilities - Cost Calculation', () => {
   });
 
   it('absent STA with other abilities: STR 5, STA absent → 10 PP', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 5, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta']);
@@ -36,7 +36,7 @@ describe('Absent Abilities - Cost Calculation', () => {
   });
 
   it('absent PRE costs 0 PP (constructs, mindless)', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 0, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['pre']);
@@ -44,7 +44,7 @@ describe('Absent Abilities - Cost Calculation', () => {
   });
 
   it('multiple absent abilities: STA and PRE absent, STR 8 → 16 PP', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 8, sta: 0, agl: 2, dex: 2, fgt: 6, int: 4, awe: 2, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'pre']);
@@ -53,7 +53,7 @@ describe('Absent Abilities - Cost Calculation', () => {
   });
 
   it('all abilities absent → 0 PP (edge case)', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 10, sta: 10, agl: 10, dex: 10, fgt: 10, int: 10, awe: 10, pre: 10,
     };
     const cost = calculateAbilitiesCost(abilities, ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre']);
@@ -164,7 +164,7 @@ describe('Absent Abilities - Derived Stats', () => {
 
 describe('Absent Abilities - Real Character Examples', () => {
   it('Robot (absent STA, PRE): correct cost calculation', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 8, sta: 0, agl: 2, dex: 2, fgt: 6, int: 4, awe: 2, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'pre']);
@@ -173,7 +173,7 @@ describe('Absent Abilities - Real Character Examples', () => {
   });
 
   it('Construct (absent STA, INT, AWE, PRE): correct cost calculation', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 10, sta: 0, agl: 0, dex: 0, fgt: 8, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'int', 'awe', 'pre']);
@@ -182,7 +182,7 @@ describe('Absent Abilities - Real Character Examples', () => {
   });
 
   it('Undead (absent STA, PRE): correct cost calculation', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 6, sta: 0, agl: 3, dex: 3, fgt: 5, int: 2, awe: 2, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'pre']);
@@ -191,7 +191,7 @@ describe('Absent Abilities - Real Character Examples', () => {
   });
 
   it('Energy Being (absent STR, STA): correct cost calculation', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 0, sta: 0, agl: 5, dex: 5, fgt: 4, int: 3, awe: 4, pre: 3,
     };
     const cost = calculateAbilitiesCost(abilities, ['str', 'sta']);
@@ -202,7 +202,7 @@ describe('Absent Abilities - Real Character Examples', () => {
 
 describe('Absent Abilities - Edge Cases', () => {
   it('negative ability with absent flag: should cost 0 (absent overrides negative)', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: -2, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['str']);
@@ -211,7 +211,7 @@ describe('Absent Abilities - Edge Cases', () => {
   });
 
   it('absent ability with high value: should cost 0 (absent overrides value)', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 10, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['str']);
@@ -220,7 +220,7 @@ describe('Absent Abilities - Edge Cases', () => {
   });
 
   it('mixed positive and negative with absent: correct calculation', () => {
-    const abilities: IAbilities = {
+    const abilities: Abilities = {
       str: 8, sta: 0, agl: -2, dex: 3, fgt: 5, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'int', 'awe', 'pre']);

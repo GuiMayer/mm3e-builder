@@ -179,7 +179,7 @@ describe('modifiers.json — costType validation rules', () => {
     // Some flat_ranked modifiers may not have maxRanks if they're unlimited
     // This is a warning test - we document which ones don't have it
     if (withoutMaxRanks.length > 0) {
-      const ids = withoutMaxRanks.map((m) => m.id).join(', ');
+      // const ids = withoutMaxRanks.map((m) => m.id).join(', ');
       // This is informational - not all flat_ranked need maxRanks
       expect(withoutMaxRanks.length).toBeLessThan(flatRanked.length);
     }

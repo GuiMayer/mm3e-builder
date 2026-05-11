@@ -92,7 +92,7 @@ export function validateAccuratePLCap(
   effectDef: IPowerEffect,
   baseAttackBonus: number,
   powerLevel: number,
-  modifierDefs: IModifierDef[]
+  _modifierDefs: IModifierDef[]
 ): ModifierViolation[] {
   const violations: ModifierViolation[] = [];
 

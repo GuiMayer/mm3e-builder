@@ -53,7 +53,7 @@ export const useAppStore = create<AppStoreState>()(
             validationRules: {
               ...state.validationRules,
               ...rules,
-            },
+            } as IValidationRules,
           })),
 
         resetValidationRules: () =>

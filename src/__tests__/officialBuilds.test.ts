@@ -4,14 +4,14 @@ import {
   calculateDefensesCost,
   calculateSkillsCost,
   calculateAdvantagesCost,
-  calcPowerTotalCost,
+  // calcPowerTotalCost,
 } from '../shared/lib/mathEngine';
-import type {
-  ICharacter,
-  ICharacterPower,
-  IPowerEffect,
-  IModifierDef,
-} from '../entities/types';
+// import type {
+//   ICharacter,
+//   ICharacterPower,
+//   IPowerEffect,
+//   IModifierDef,
+// } from '../entities/types';
 
 /* ================================================
    Official M&M 3e Archetype Builds
@@ -22,23 +22,23 @@ import type {
    ================================================ */
 
 // Mock data for testing (simplified versions of actual game data)
-const MOCK_POWER_DEFS: IPowerEffect[] = [
-  { id: 'protection', name: 'Protection', type: 'defense', baseCost: 1, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
-  { id: 'flight', name: 'Flight', type: 'movement', baseCost: 2, action: 'free', range: 'personal', duration: 'sustained', description: '', variableCost: null, extras: [], flaws: [] },
-  { id: 'damage', name: 'Damage', type: 'attack', baseCost: 1, action: 'standard', range: 'close', duration: 'instant', description: '', variableCost: null, extras: [], flaws: [] },
-  { id: 'enhanced_strength', name: 'Enhanced Strength', type: 'general', baseCost: 2, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
-  { id: 'enhanced_fighting', name: 'Enhanced Fighting', type: 'general', baseCost: 2, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
-  { id: 'enhanced_dodge', name: 'Enhanced Dodge', type: 'general', baseCost: 1, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
-  { id: 'immunity', name: 'Immunity', type: 'defense', baseCost: 1, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
-  { id: 'senses', name: 'Senses', type: 'sensory', baseCost: 1, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
-  { id: 'communication', name: 'Communication', type: 'sensory', baseCost: 4, action: 'free', range: 'personal', duration: 'sustained', description: '', variableCost: null, extras: [], flaws: [] },
-];
+// const MOCK_POWER_DEFS: IPowerEffect[] = [
+//   { id: 'protection', name: 'Protection', type: 'defense', baseCost: 1, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
+//   { id: 'flight', name: 'Flight', type: 'movement', baseCost: 2, action: 'free', range: 'personal', duration: 'sustained', description: '', variableCost: null, extras: [], flaws: [] },
+//   { id: 'damage', name: 'Damage', type: 'attack', baseCost: 1, action: 'standard', range: 'close', duration: 'instant', description: '', variableCost: null, extras: [], flaws: [] },
+//   { id: 'enhanced_strength', name: 'Enhanced Strength', type: 'general', baseCost: 2, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
+//   { id: 'enhanced_fighting', name: 'Enhanced Fighting', type: 'general', baseCost: 2, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
+//   { id: 'enhanced_dodge', name: 'Enhanced Dodge', type: 'general', baseCost: 1, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
+//   { id: 'immunity', name: 'Immunity', type: 'defense', baseCost: 1, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
+//   { id: 'senses', name: 'Senses', type: 'sensory', baseCost: 1, action: 'none', range: 'personal', duration: 'permanent', description: '', variableCost: null, extras: [], flaws: [] },
+//   { id: 'communication', name: 'Communication', type: 'sensory', baseCost: 4, action: 'free', range: 'personal', duration: 'sustained', description: '', variableCost: null, extras: [], flaws: [] },
+// ];
 
-const MOCK_MODIFIERS: IModifierDef[] = [
-  { id: 'ranged', name: 'Ranged', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
-  { id: 'impervious', name: 'Impervious', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
-  { id: 'removable', name: 'Removable', category: 'flaw', costType: 'flat', costValue: -1, description: '', incompatibleWith: [] },
-];
+// const MOCK_MODIFIERS: IModifierDef[] = [
+//   { id: 'ranged', name: 'Ranged', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
+//   { id: 'impervious', name: 'Impervious', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
+//   { id: 'removable', name: 'Removable', category: 'flaw', costType: 'flat', costValue: -1, description: '', incompatibleWith: [] },
+// ];
 
 // ══════════════════════════════════════════════════════
 //  BATTLESUIT (Hero's Handbook p.34)
@@ -206,7 +206,7 @@ describe('Official Archetype: Crime Fighter (PL 10)', () => {
     // Max: 10 attack + 5 damage (within PL × 2 = 20)
     
     const maxAttack = 12;
-    const baseDamage = 3;
+    // const baseDamage = 3;
     
     // Can trade down to stay within PL limits
     expect(maxAttack).toBeGreaterThan(10); // Has flexibility to trade

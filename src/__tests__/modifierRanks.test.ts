@@ -100,9 +100,9 @@ describe('modifiers.json — modifiers without maxRanks can have unlimited ranks
   });
 
   it('flat_ranked modifiers without maxRanks can be taken multiple times', () => {
-    const unlimitedFlatRanked = modifiers.filter(
-      (m) => m.costType === 'flat_ranked' && !m.maxRanks
-    );
+    // const unlimitedFlatRanked = modifiers.filter(
+    //   (m) => m.costType === 'flat_ranked' && !m.maxRanks
+    // );
     
     // Some flat_ranked modifiers don't have hard limits
     // Examples: Extended Range, Homing, Penetrating

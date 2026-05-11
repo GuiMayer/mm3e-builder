@@ -54,7 +54,7 @@ export function validateAfflictionCondition(
 ): AfflictionViolation | null {
   const validConditions = AFFLICTION_CONDITIONS[`degree${degree}` as keyof typeof AFFLICTION_CONDITIONS];
   
-  if (!validConditions.includes(condition as any)) {
+  if (!(validConditions as readonly string[]).includes(condition)) {
     return {
       type: 'invalid_condition',
       degree,
