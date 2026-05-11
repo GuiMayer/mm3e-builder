@@ -37,6 +37,21 @@
   --t-fast: 150ms ease;
   --t-normal: 250ms ease;
   --t-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Breakpoints (mobile-first) */
+  --bp-mobile: 320px;
+  --bp-mobile-lg: 480px;
+  --bp-tablet: 768px;
+  --bp-tablet-lg: 1024px;
+  --bp-desktop: 1280px;
+
+  /* Touch Targets */
+  --touch-target-min: 44px;
+  --touch-target-comfortable: 48px;
+  --touch-spacing: 8px;
+
+  /* Responsive spacing */
+  --container-padding: var(--s-lg);
 }
 
 /* ── Theme: Dark Knight (Default) ── */
@@ -401,5 +416,43 @@ h1, h2, h3, h4, h5, h6 {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Mobile Responsive Overrides ── */
+@media (max-width: 768px) {
+  :root {
+    --container-padding: var(--s-md);
+    --s-xs: 6px;
+    --s-sm: 10px;
+    --s-md: 18px;
+    --s-lg: 28px;
+  }
+
+  html {
+    font-size: 16px; /* Prevent iOS zoom on input focus */
+  }
+
+  body {
+    line-height: 1.7; /* Better readability on small screens */
+  }
+
+  /* Utility classes for mobile */
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+
+  .mobile-full-width {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+
+  /* Prevent iOS zoom on input focus */
+  input, select, textarea {
+    font-size: 16px !important;
   }
 }
