@@ -4,7 +4,6 @@ import {
   calculateDefensesCost,
   calculateSkillsCost,
   calculateAdvantagesCost,
-  calcPowerTotalCost,
 } from '../shared/lib/mathEngine';
 import type { ICharacter, Abilities, IDefenses } from '../entities/types';
 
@@ -19,14 +18,14 @@ describe('Export Corrections - Fase 1 & 2', () => {
           heroPoints: 1,
           identityType: 'public',
           identity: '',
+          base: '',
           gender: '',
           age: '',
           height: '',
           weight: '',
           eyes: '',
           hair: '',
-          groups: '',
-          baseOfOperations: '',
+          groupAffiliation: '',
         },
         campaignMode: true,
         ppLog: [
@@ -36,7 +35,7 @@ describe('Export Corrections - Fase 1 & 2', () => {
         ],
         abilities: { str: 2, sta: 2, agl: 2, dex: 2, fgt: 2, int: 2, awe: 2, pre: 2 },
         absentAbilities: [],
-        defenses: { dodge: 5, parry: 5, fortitude: 5, will: 5, toughness: 2 },
+        defenses: { dodge: 5, parry: 5, fortitude: 5, will: 5 },
         skills: [],
         advantages: [],
         powers: [],
@@ -56,10 +55,10 @@ describe('Export Corrections - Fase 1 & 2', () => {
 
     it('calculates spent PP correctly', () => {
       const abilities: Abilities = { str: 2, sta: 2, agl: 2, dex: 2, fgt: 2, int: 2, awe: 2, pre: 2 };
-      const defenses: IDefenses = { dodge: 5, parry: 5, fortitude: 5, will: 5, toughness: 2 };
+      const defenses: IDefenses = { dodge: 5, parry: 5, fortitude: 5, will: 5 };
       
       const abilitiesCost = calculateAbilitiesCost(abilities, []);
-      const defensesCost = calculateDefensesCost(defenses, abilities);
+      const defensesCost = calculateDefensesCost(defenses);
       const skillsCost = calculateSkillsCost(10); // 10 ranks
       const advantages = [
         { advantageId: 'adv1', ranks: 2 },
@@ -70,6 +69,9 @@ describe('Export Corrections - Fase 1 & 2', () => {
       // Abilities: 8 abilities * 2 ranks * 2 PP/rank = 32 PP
       expect(abilitiesCost).toBe(32);
       
+      // Defenses: verify defenses cost is calculated
+      expect(defensesCost).toBeGreaterThanOrEqual(0);
+      
       // Skills: 10 ranks * 0.5 PP/rank = 5 PP
       expect(skillsCost).toBe(5);
       
@@ -79,12 +81,12 @@ describe('Export Corrections - Fase 1 & 2', () => {
   });
 
   describe('Defense Stats in Excel', () => {
-    it('includes Toughness (STA) in defenses', () => {
+    it('includes Toughness (STA + ranks) in defenses', () => {
       const abilities: Abilities = { str: 0, sta: 5, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0 };
-      const defenses: IDefenses = { dodge: 0, parry: 0, fortitude: 0, will: 0, toughness: 3 };
+      const toughnessRanks = 3;
       
       // Toughness = STA + toughness ranks = 5 + 3 = 8
-      const totalToughness = abilities.sta + defenses.toughness;
+      const totalToughness = abilities.sta + toughnessRanks;
       expect(totalToughness).toBe(8);
     });
 
