@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.1] - 2026-05-11
+
+### Fixed
+- **Excel Export Corrections**:
+  - Fixed PP calculation in campaign mode to include PP Log adjustments
+  - Added missing Toughness stat to Defenses sheet
+  - Added missing Initiative stat to Defenses sheet
+  - Corrected total PP calculation to use actual spent PP instead of PL-based estimate
+- **PDF Export Corrections**:
+  - Fixed Toughness calculation to include both STA and purchased ranks
+  - Fixed Initiative display to show AGL bonus correctly
+
+### Added
+- **Campaign Mode Enhancements**:
+  - New PP Log sheet in Excel export showing full award/deduction history
+  - Running total display for PP tracking
+  - Color-coded positive/negative PP adjustments
+- **Test Coverage**:
+  - Added comprehensive tests for export corrections
+  - Validates PP calculations in campaign mode
+  - Tests defense stats inclusion (Toughness, Initiative)
+  - Validates skill formatting with/without subtypes
+
+---
+
 ## [1.4.0] - 2026-05-10
 
 ### Added
