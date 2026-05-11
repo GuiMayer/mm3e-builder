@@ -389,6 +389,20 @@
   "ref.actionEffects.smash": "-5 no teste de ataque contra objetos segurados ou estacionários; ignora limite de Resistência",
   "ref.actionEffects.trip": "-2 no teste de ataque; alvo resiste com FOR ou Acrobacia; em falha, alvo fica prostrado",
 
+  "ref.maneuvers.accurate_attack": "Ataque Preciso",
+  "ref.maneuvers.allout_attack": "Ataque Total",
+  "ref.maneuvers.defensive_attack": "Ataque Defensivo",
+  "ref.maneuvers.power_attack": "Ataque Poderoso",
+  "ref.maneuvers.slam_attack": "Ataque de Impacto",
+  "ref.maneuvers.team_attack": "Ataque em Equipe",
+
+  "ref.maneuverEffects.accurate_attack": "-1 ou -2 no rank do efeito",
+  "ref.maneuverEffects.allout_attack": "--",
+  "ref.maneuverEffects.defensive_attack": "--",
+  "ref.maneuverEffects.power_attack": "+1 ou +2 no rank do efeito",
+  "ref.maneuverEffects.slam_attack": "Variante de Investida; atacante sofre metade do dano de Resistência em um acerto",
+  "ref.maneuverEffects.team_attack": "Múltiplos atacantes acertam simultaneamente vs. um alvo; use o maior resultado + 2 por extra",
+
   "validation.noRoll": "Poder Sem Rolagem",
 
   "menu.exportPdf": "PDF",

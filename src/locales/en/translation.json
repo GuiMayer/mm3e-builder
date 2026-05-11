@@ -389,6 +389,20 @@
   "ref.actionEffects.smash": "-5 attack check against held or stationary objects; ignores Toughness cap",
   "ref.actionEffects.trip": "-2 attack check; target resists with STR or Acrobatics; on failure, target goes prone",
 
+  "ref.maneuvers.accurate_attack": "Accurate Attack",
+  "ref.maneuvers.allout_attack": "All-out Attack",
+  "ref.maneuvers.defensive_attack": "Defensive Attack",
+  "ref.maneuvers.power_attack": "Power Attack",
+  "ref.maneuvers.slam_attack": "Slam Attack",
+  "ref.maneuvers.team_attack": "Team Attack",
+
+  "ref.maneuverEffects.accurate_attack": "-1 or -2 to effect rank",
+  "ref.maneuverEffects.allout_attack": "--",
+  "ref.maneuverEffects.defensive_attack": "--",
+  "ref.maneuverEffects.power_attack": "+1 or +2 to effect rank",
+  "ref.maneuverEffects.slam_attack": "Charge variant; attacker takes half Toughness damage on a hit",
+  "ref.maneuverEffects.team_attack": "Multiple attackers hit simultaneously vs. one target; use highest result + 2 per extra",
+
   "validation.noRoll": "No-Roll Power",
 
   "menu.exportPdf": "PDF",

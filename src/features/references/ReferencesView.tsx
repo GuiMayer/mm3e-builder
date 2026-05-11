@@ -13,6 +13,7 @@ interface CombatAction {
 }
 
 interface CombatManeuver {
+  id: string;
   name: string;
   atkMod: string;
   defMod: string;
@@ -33,12 +34,12 @@ const COMBAT_ACTIONS: CombatAction[] = [
 ];
 
 const COMBAT_MANEUVERS: CombatManeuver[] = [
-  { name: 'Accurate Attack',  atkMod: '+1 or +2', defMod: '--',       effect: '-1 or -2 to effect rank' },
-  { name: 'All-out Attack',   atkMod: '+1 or +2', defMod: '-1 or -2', effect: '--' },
-  { name: 'Defensive Attack', atkMod: '-1 or -2', defMod: '+1 or +2', effect: '--' },
-  { name: 'Power Attack',     atkMod: '-1 or -2', defMod: '--',       effect: '+1 or +2 to effect rank' },
-  { name: 'Slam Attack',      atkMod: '-1 or -2', defMod: '+1 or +2', effect: "Charge variant; attacker takes half Toughness damage on a hit" },
-  { name: 'Team Attack',      atkMod: '--',        defMod: '--',       effect: 'Multiple attackers hit simultaneously vs. one target; use highest result + 2 per extra' },
+  { id: 'accurate_attack',  name: 'Accurate Attack',  atkMod: '+1 or +2', defMod: '--',       effect: '-1 or -2 to effect rank' },
+  { id: 'allout_attack',    name: 'All-out Attack',   atkMod: '+1 or +2', defMod: '-1 or -2', effect: '--' },
+  { id: 'defensive_attack', name: 'Defensive Attack', atkMod: '-1 or -2', defMod: '+1 or +2', effect: '--' },
+  { id: 'power_attack',     name: 'Power Attack',     atkMod: '-1 or -2', defMod: '--',       effect: '+1 or +2 to effect rank' },
+  { id: 'slam_attack',      name: 'Slam Attack',      atkMod: '-1 or -2', defMod: '+1 or +2', effect: "Charge variant; attacker takes half Toughness damage on a hit" },
+  { id: 'team_attack',      name: 'Team Attack',      atkMod: '--',        defMod: '--',       effect: 'Multiple attackers hit simultaneously vs. one target; use highest result + 2 per extra' },
 ];
 
 /* -- Accordion helper ------------------------------------------------------- */
@@ -108,10 +109,10 @@ export function ReferencesView() {
               <tbody>
                 {COMBAT_MANEUVERS.map((row, i) => (
                   <tr key={i}>
-                    <td className="ref-td--name">{row.name}</td>
+                    <td className="ref-td--name">{t(`ref.maneuvers.${row.id}`)}</td>
                     <td className="ref-td--type">{row.atkMod}</td>
                     <td className="ref-td--type">{row.defMod}</td>
-                    <td>{row.effect}</td>
+                    <td>{t(`ref.maneuverEffects.${row.id}`)}</td>
                   </tr>
                 ))}
               </tbody>
