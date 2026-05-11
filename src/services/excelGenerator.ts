@@ -183,6 +183,11 @@ export async function generateExcel(
     buildEquipmentSheet(wb, character, labels);
   }
 
+  // ── 9. PP LOG SHEET (Campaign Mode only) ──
+  if (character.campaignMode && character.ppLog && character.ppLog.length > 0) {
+    buildPPLogSheet(wb, character);
+  }
+
   // ── Download ──
   const buffer = await wb.xlsx.writeBuffer();
   const blob = new Blob([buffer], {
@@ -598,6 +603,39 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
   ws.getRow(2).height = 120;
 
   ws.getColumn(1).width = 60;
+}
+
+function buildPPLogSheet(wb: ExcelJS.Workbook, char: ICharacter) {
+  const ws = wb.addWorksheet('PP Log');
+
+  const header = ws.getRow(1);
+  header.values = ['Date', 'Description', 'Amount', 'Running Total'];
+  styleHeaderRow(header, 4);
+
+  let runningTotal = char.header.powerLevel * 15;
+  
+  (char.ppLog ?? []).forEach((entry, i) => {
+    runningTotal += entry.amount;
+    const row = ws.getRow(i + 2);
+    row.getCell(1).value = entry.date || '—';
+    row.getCell(2).value = entry.note || '—';
+    row.getCell(3).value = entry.amount;
+    row.getCell(3).numFmt = '+0;-0;0';
+    row.getCell(3).font = { 
+      bold: true,
+      color: { argb: entry.amount >= 0 ? COLORS.costPositive : COLORS.costNegative }
+    };
+    row.getCell(4).value = runningTotal;
+    row.getCell(4).font = { bold: true };
+    
+    if (i % 2 === 1) {
+      for (let c = 1; c <= 4; c++) {
+        row.getCell(c).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: COLORS.altRowFill } };
+      }
+    }
+  });
+
+  autoWidth(ws);
 }
 
 // ── Helper: format modifier list as text ──
