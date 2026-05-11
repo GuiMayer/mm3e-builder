@@ -40,6 +40,13 @@ export function PPLogPanel() {
     setFormOpen(false);
   }
 
+  function handleRemove(entryId: string) {
+    const confirmed = window.confirm(t('ppLog.confirmRemove'));
+    if (confirmed) {
+      removePPLogEntry(entryId);
+    }
+  }
+
   return (
     <section className="pplog-panel">
       {/* Header */}
@@ -93,7 +100,7 @@ export function PPLogPanel() {
                 <span className="pplog-entry-note">{entry.note}</span>
                 <button
                   className="pplog-entry-remove"
-                  onClick={() => removePPLogEntry(entry.id)}
+                  onClick={() => handleRemove(entry.id)}
                   title={t('ppLog.remove')}
                 >
                   <Trash2 size={12} />

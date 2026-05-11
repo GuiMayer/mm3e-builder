@@ -29,6 +29,7 @@
   "ppLog.note": "Nota",
   "ppLog.add": "Adicionar",
   "ppLog.remove": "Remover",
+  "ppLog.confirmRemove": "Tem certeza que deseja remover esta entrada do registro de PP? Esta ação não pode ser desfeita.",
   "ppLog.empty": "Nenhum PP concedido ainda.",
   "ppLog.earned": "{{amount}} PP ganhos",
   "ppLog.base": "Base (NP × 15)",
