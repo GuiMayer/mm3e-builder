@@ -88,10 +88,14 @@ export function usePowerCostCalculation({
   );
 
   // Validate AE costs against main cost cap
-  const aeValidations = useMemo(
-    () => aeCosts.map((cost) => validateAECost(cost, mainCost)),
-    [aeCosts, mainCost]
-  );
+  const aeValidations = useMemo(() => {
+    const activeRules = getActiveValidationRules(validationRules);
+    if (!activeRules.enforceAlternateEffectCap) {
+      // When AE cap is disabled, all AEs are considered valid
+      return aeCosts.map(() => ({ valid: true, overageBy: 0 }));
+    }
+    return aeCosts.map((cost) => validateAECost(cost, mainCost));
+  }, [aeCosts, mainCost, validationRules]);
 
   // TD-5: Strict Mode PL violation check
   // validateAttackEffect: attack + highest damage rank <= PL*2

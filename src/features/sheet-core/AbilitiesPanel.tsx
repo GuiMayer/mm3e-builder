@@ -1,6 +1,8 @@
 import { useCharStore } from '../../store/charStore';
+import { useAppStore } from '../../store/appStore';
 import type { AbilityKey } from '../../entities/types';
 import { useTranslation } from 'react-i18next';
+import { getActiveValidationRules } from '../../shared/lib/validationRules';
 
 const ABILITY_KEYS: AbilityKey[] = ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre'];
 
@@ -10,6 +12,15 @@ export function AbilitiesPanel({ cost }: { cost: number }) {
   const absentAbilities = useCharStore((s) => s.character.absentAbilities);
   const setAbility = useCharStore((s) => s.setAbility);
   const toggleAbsentAbility = useCharStore((s) => s.toggleAbsentAbility);
+  const validationRules = useAppStore((s) => s.validationRules);
+  
+  const activeRules = getActiveValidationRules(validationRules);
+  const minAbilityScore = activeRules.enforceMinimumAbilityScore ? -5 : -Infinity;
+  
+  const handleAbilityChange = (key: AbilityKey, value: number) => {
+    const clampedValue = Math.max(minAbilityScore, value);
+    setAbility(key, clampedValue);
+  };
 
   return (
     <section className="panel">
@@ -31,7 +42,8 @@ export function AbilitiesPanel({ cost }: { cost: number }) {
                   type="number"
                   className="ability-input"
                   value={abilities[key]}
-                  onChange={(e) => setAbility(key, Number(e.target.value) || 0)}
+                  onChange={(e) => handleAbilityChange(key, Number(e.target.value) || 0)}
+                  min={minAbilityScore !== -Infinity ? minAbilityScore : undefined}
                 />
               )}
               <button
