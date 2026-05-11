@@ -3,13 +3,14 @@ import { useCharStore } from '../../store/charStore';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { User, MapPin, Shield, Star, ChevronDown, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { NumberInput } from '../../shared/ui/NumberInput';
 
 export function HeaderPanel() {
   const { t } = useTranslation();
   const header = useCharStore((s) => s.character.header);
   const updateHeader = useCharStore((s) => s.updateHeader);
   const pp = useCalculatedPP();
-  const isOver = pp.remaining < 0;
+  const isOver = pp.isOverBudget;
   const pct = pp.totalAvailable > 0 ? Math.min(100, (pp.totalSpent / pp.totalAvailable) * 100) : 0;
 
   // F-07: accordion open state (collapsed by default)
@@ -85,12 +86,12 @@ export function HeaderPanel() {
           <Shield size={16} />
           <div className="hero-stat-info">
             <span className="hero-stat-label">{t('header.powerLevel')}</span>
-            <input
-              type="number"
-              min={1}
+            <NumberInput
+              variant="large"
               className="hero-stat-input"
               value={header.powerLevel}
-              onChange={(e) => updateHeader({ powerLevel: Math.max(1, Number(e.target.value) || 1) })}
+              onChange={(value) => updateHeader({ powerLevel: Math.max(1, value) })}
+              min={1}
             />
           </div>
         </div>
@@ -98,12 +99,12 @@ export function HeaderPanel() {
           <Star size={16} />
           <div className="hero-stat-info">
             <span className="hero-stat-label">{t('header.heroPoints')}</span>
-            <input
-              type="number"
-              min={0}
+            <NumberInput
+              variant="large"
               className="hero-stat-input"
               value={header.heroPoints}
-              onChange={(e) => updateHeader({ heroPoints: Math.max(0, Number(e.target.value) || 0) })}
+              onChange={(value) => updateHeader({ heroPoints: Math.max(0, value) })}
+              min={0}
             />
           </div>
         </div>
@@ -113,13 +114,13 @@ export function HeaderPanel() {
             <span className={`hero-pp-display ${isOver ? 'hero-pp-display--over' : ''}`}>
               <strong>{pp.totalSpent}</strong>
               <span className="hero-pp-sep">/</span>
-              <span>{pp.totalAvailable}</span>
+              <span>{pp.isBudgetEnforced ? pp.totalAvailable : <span className="infinity-symbol">∞</span>}</span>
             </span>
           </div>
           <div className="hero-pp-bar">
             <div
-              className="hero-pp-bar-fill"
-              style={{ width: `${pct}%` }}
+              className={`hero-pp-bar-fill ${!pp.isBudgetEnforced ? 'hero-pp-bar-fill--limitless' : ''}`}
+              style={{ width: pp.isBudgetEnforced ? `${pct}%` : '100%' }}
               data-over={isOver}
             />
           </div>
@@ -459,6 +460,23 @@ export function HeaderPanel() {
         }
         .hero-pp-bar-fill[data-over="true"] {
           background: linear-gradient(90deg, var(--c-error), var(--c-warning));
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.8; text-shadow: 0 0 8px rgba(var(--c-primary-rgb), 0.4); }
+          50% { opacity: 1; text-shadow: 0 0 16px rgba(var(--c-primary-rgb), 0.8); }
+        }
+        .infinity-symbol {
+          display: inline-block;
+          animation: pulse-glow 2s ease-in-out infinite;
+          color: var(--c-primary);
+          font-weight: bold;
+        }
+        .hero-pp-bar-fill--limitless {
+          animation: pulse-glow-bar 2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow-bar {
+          0%, 100% { opacity: 0.8; }
+          50% { opacity: 1; }
         }
 
         /* ── F-07: Character Details accordion ── */

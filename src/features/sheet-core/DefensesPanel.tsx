@@ -3,6 +3,7 @@ import { useCharStore } from '../../store/charStore';
 import { useTranslation } from 'react-i18next';
 import { useDerivedDefenses } from '../../shared/hooks/useDerivedDefenses';
 import { Info } from 'lucide-react';
+import { NumberInput } from '../../shared/ui/NumberInput';
 
 export function DefensesPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
@@ -63,11 +64,12 @@ export function DefensesPanel({ cost }: { cost: number }) {
             <span className="defense-name">{t(`defenses.${r.key}`)}</span>
             <span className="defense-base">{r.baseLabel} {r.base}</span>
             <span className="defense-plus">+</span>
-            <input
-              type="number" min={0}
+            <NumberInput
+              variant="medium"
               className="defense-input"
               value={defenses[r.key]}
-              onChange={(e) => setDefense(r.key, Math.max(0, Number(e.target.value) || 0))}
+              onChange={(value) => setDefense(r.key, Math.max(0, value))}
+              min={0}
             />
             <span className="defense-total">{r.base + defenses[r.key]}</span>
           </div>

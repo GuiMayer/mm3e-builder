@@ -7,6 +7,7 @@ import { Modal } from '../../shared/ui/Modal';
 import { Button } from '../../shared/ui/Button';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { NumberInput } from '../../shared/ui/NumberInput';
 
 // Colour palette for ability badges (list + modal)
 const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: string }> = {
@@ -150,21 +151,21 @@ export function SkillsPanel({ cost }: { cost: number }) {
                 {t(`abilities.${def.baseAbility}`).toUpperCase()} {abilityVal}
               </span>
               <span className="skill-plus">+</span>
-              <input
-                type="number"
-                min={0}
+              <NumberInput
+                variant="medium"
                 className="skill-input"
                 value={skill.ranks}
-                onChange={(e) => updateRanks(i, Number(e.target.value) || 0)}
+                onChange={(value) => updateRanks(i, value)}
+                min={0}
               />
               {/* Other bonus — optional situational modifier (F-11) */}
               <span className="skill-other-label">±</span>
-              <input
-                type="number"
+              <NumberInput
+                variant="small"
                 className="skill-input skill-input--other"
                 value={skill.otherBonus ?? 0}
+                onChange={(value) => updateOtherBonus(i, value)}
                 title={t('skills.otherBonus')}
-                onChange={(e) => updateOtherBonus(i, Number(e.target.value) || 0)}
               />
               <span className="skill-total">= {total + (skill.otherBonus ?? 0)}</span>
               <button className="skill-remove" onClick={() => removeSkill(i)} title={t('common.remove')}>

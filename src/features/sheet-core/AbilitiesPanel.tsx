@@ -3,6 +3,7 @@ import { useAppStore } from '../../store/appStore';
 import type { AbilityKey } from '../../entities/types';
 import { useTranslation } from 'react-i18next';
 import { getActiveValidationRules } from '../../shared/lib/validationRules';
+import { NumberInput } from '../../shared/ui/NumberInput';
 
 const ABILITY_KEYS: AbilityKey[] = ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre'];
 
@@ -38,11 +39,11 @@ export function AbilitiesPanel({ cost }: { cost: number }) {
               {isAbsent ? (
                 <span className="ability-value">--</span>
               ) : (
-                <input
-                  type="number"
+                <NumberInput
+                  variant="large"
                   className="ability-input"
                   value={abilities[key]}
-                  onChange={(e) => handleAbilityChange(key, Number(e.target.value) || 0)}
+                  onChange={(value) => handleAbilityChange(key, value)}
                   min={minAbilityScore !== -Infinity ? minAbilityScore : undefined}
                 />
               )}
