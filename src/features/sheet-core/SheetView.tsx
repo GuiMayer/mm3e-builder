@@ -23,7 +23,7 @@ export function SheetView() {
 
 
   const pct = pp.totalAvailable > 0 ? Math.min(100, (pp.totalSpent / pp.totalAvailable) * 100) : 0;
-  const isOver = pp.remaining < 0;
+  const isOver = pp.isOverBudget;
 
   return (
     <div className="sheet">

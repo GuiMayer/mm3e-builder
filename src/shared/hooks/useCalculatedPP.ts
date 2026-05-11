@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useCharStore } from '../../store/charStore';
+import { useAppStore } from '../../store/appStore';
 import {
   calculateAbilitiesCost,
   calculateDefensesCost,
@@ -8,12 +9,15 @@ import {
   calcPowerTotalCost,
 } from '../lib/mathEngine';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
+import { getActiveValidationRules } from '../lib/validationRules';
 
 /**
  * Hook that reactively calculates total PP spent across all sections.
+ * When enforcePPBudget is disabled, isOverBudget will always be false.
  */
 export function useCalculatedPP() {
   const character = useCharStore((s) => s.character);
+  const validationRules = useAppStore((s) => s.validationRules);
 
   return useMemo(() => {
     const abilitiesCost = calculateAbilitiesCost(
@@ -37,6 +41,10 @@ export function useCalculatedPP() {
       : 0;
     const totalAvailable = character.header.powerLevel * 15 + ppEarned;
     const remaining = totalAvailable - totalSpent;
+    
+    // Check if PP budget enforcement is enabled
+    const activeRules = getActiveValidationRules(validationRules);
+    const isOverBudget = activeRules.enforcePPBudget && remaining < 0;
 
     return {
       abilitiesCost,
@@ -47,6 +55,7 @@ export function useCalculatedPP() {
       totalSpent,
       totalAvailable,
       remaining,
+      isOverBudget,
     };
-  }, [character]);
+  }, [character, validationRules]);
 }
