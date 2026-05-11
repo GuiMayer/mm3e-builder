@@ -25,7 +25,6 @@ interface UsePowerCostCalculationProps {
   powerDefs: IPowerEffect[];
   allModDefs: IModifierDef[];
   powerLevel: number;
-  strictMode: boolean;
   validationRules?: Partial<IValidationRules>;
 }
 
@@ -39,7 +38,6 @@ export function usePowerCostCalculation({
   powerDefs,
   allModDefs,
   powerLevel,
-  strictMode,
   validationRules,
 }: UsePowerCostCalculationProps) {
   // Calculate costs per component
@@ -97,11 +95,9 @@ export function usePowerCostCalculation({
     return aeCosts.map((cost) => validateAECost(cost, mainCost));
   }, [aeCosts, mainCost, validationRules]);
 
-  // TD-5: Strict Mode PL violation check
+  // PL violation check
   // validateAttackEffect: attack + highest damage rank <= PL*2
   const plViolation = useMemo(() => {
-    if (!strictMode) return null;
-    
     // Check if PL limits are enforced
     const activeRules = getActiveValidationRules(validationRules);
     if (!activeRules.enforcePLLimits) return null;
@@ -110,7 +106,7 @@ export function usePowerCostCalculation({
     const highestRank = power.components.reduce((max, c) => Math.max(max, c.ranks), 0);
     const attackBonus = 0; // Power builder doesn't track attack bonus, defaulting to 0
     return validateAttackEffect(attackBonus, highestRank, powerLevel);
-  }, [strictMode, powerLevel, power.components, validationRules]);
+  }, [powerLevel, power.components, validationRules]);
 
   return {
     componentCosts,

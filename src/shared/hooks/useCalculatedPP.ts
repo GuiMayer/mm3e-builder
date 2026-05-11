@@ -45,6 +45,7 @@ export function useCalculatedPP() {
     // Check if PP budget enforcement is enabled
     const activeRules = getActiveValidationRules(validationRules);
     const isOverBudget = activeRules.enforcePPBudget && remaining < 0;
+    const isBudgetEnforced = activeRules.enforcePPBudget;
 
     return {
       abilitiesCost,
@@ -56,6 +57,7 @@ export function useCalculatedPP() {
       totalAvailable,
       remaining,
       isOverBudget,
+      isBudgetEnforced,
     };
   }, [character, validationRules]);
 }
