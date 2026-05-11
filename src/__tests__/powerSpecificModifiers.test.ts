@@ -161,6 +161,11 @@ describe('validateComponentModifiers with enforcePowerSpecificModifiers', () => 
     plTradeOffsAsErrors: false,
     enforceTrainedOnlySkills: false,
     enforceSkillAbilityRequirements: false,
+    enforcePLLimits: true,
+    enforcePPBudget: true,
+    enforceMinimumAbilityScore: true,
+    enforceAlternateEffectCap: true,
+    enforceEquipmentPPLimit: true,
   };
 
   const validationRulesDisabled: IValidationRules = {
@@ -204,6 +209,11 @@ describe('validateComponentModifiers with enforcePowerSpecificModifiers', () => 
       plTradeOffsAsErrors: false,
       enforceTrainedOnlySkills: false,
       enforceSkillAbilityRequirements: false,
+      enforcePLLimits: true,
+      enforcePPBudget: true,
+      enforceMinimumAbilityScore: true,
+      enforceAlternateEffectCap: true,
+      enforceEquipmentPPLimit: true,
     };
 
     // Component with: invalid power-specific modifier + exceeds maxRanks

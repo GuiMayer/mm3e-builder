@@ -11,6 +11,7 @@
   "menu.strictMode.disabled": "DESATIVADO",
   "menu.campaignMode": "Modo Campanha",
   "menu.campaignMode.hint": "Rastreia PP ganhos durante o jogo. Desativado: PP disponível = NP × 15.",
+  "menu.campaignMode.clearLogFirst": "Limpe todas as entradas do registro de PP antes de desativar o Modo Campanha.",
   "menu.campaignMode.active": "LIGADO",
   "menu.campaignMode.disabled": "DESLIGADO",
   "menu.validationRules": "Regras de Validação",

@@ -47,9 +47,12 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   const setLanguage = useAppStore((s) => s.setLanguage);
   const strictMode = useAppStore((s) => s.strictMode);
   const toggleStrictMode = useAppStore((s) => s.toggleStrictMode);
+  const validationRules = useAppStore((s) => s.validationRules);
+  const setValidationRules = useAppStore((s) => s.setValidationRules);
   const character = useCharStore((s) => s.character);
   const campaignMode = character.campaignMode ?? false;
   const setCampaignMode = useCharStore((s) => s.setCampaignMode);
+  const hasLogEntries = (character.ppLog ?? []).length > 0;
   const resetCharacter = useCharStore((s) => s.resetCharacter);
   
   // Hooks
@@ -162,14 +165,46 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
               <div className="dropdown-section">
                 <span className="dropdown-label">{t('menu.campaignMode')}</span>
                 <button
-                  className={`dropdown-item ${campaignMode ? 'active' : ''}`}
-                  onClick={() => setCampaignMode(!campaignMode)}
-                  title={t('menu.campaignMode.hint')}
+                  className={`dropdown-item ${campaignMode ? 'active' : ''} ${hasLogEntries && campaignMode ? 'disabled' : ''}`}
+                  onClick={() => {
+                    if (hasLogEntries && campaignMode) return;
+                    setCampaignMode(!campaignMode);
+                  }}
+                  title={hasLogEntries && campaignMode ? t('menu.campaignMode.clearLogFirst') : t('menu.campaignMode.hint')}
+                  disabled={hasLogEntries && campaignMode}
                 >
                   <BookOpen size={14} />
                   {t('menu.campaignMode')}: <strong>{campaignMode ? t('menu.campaignMode.active') : t('menu.campaignMode.disabled')}</strong>
                 </button>
-                <span className="dropdown-hint">{t('menu.campaignMode.hint')}</span>
+                <span className="dropdown-hint">
+                  {hasLogEntries && campaignMode 
+                    ? t('menu.campaignMode.clearLogFirst')
+                    : t('menu.campaignMode.hint')}
+                </span>
+              </div>
+              <div className="dropdown-divider" />
+              <div className="dropdown-section">
+                <span className="dropdown-label">{t('menu.validationRules')}</span>
+                <button className="dropdown-item" onClick={() => setValidationRules({ enforcePLLimits: !(validationRules?.enforcePLLimits ?? true) })}>
+                  {(validationRules?.enforcePLLimits ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.validationRules.enforcePLLimits')}: <strong>{(validationRules?.enforcePLLimits ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+                </button>
+                <button className="dropdown-item" onClick={() => setValidationRules({ enforcePPBudget: !(validationRules?.enforcePPBudget ?? true) })}>
+                  {(validationRules?.enforcePPBudget ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.validationRules.enforcePPBudget')}: <strong>{(validationRules?.enforcePPBudget ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+                </button>
+                <button className="dropdown-item" onClick={() => setValidationRules({ enforceMinimumAbilityScore: !(validationRules?.enforceMinimumAbilityScore ?? true) })}>
+                  {(validationRules?.enforceMinimumAbilityScore ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.validationRules.enforceMinimumAbilityScore')}: <strong>{(validationRules?.enforceMinimumAbilityScore ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+                </button>
+                <button className="dropdown-item" onClick={() => setValidationRules({ enforceAlternateEffectCap: !(validationRules?.enforceAlternateEffectCap ?? true) })}>
+                  {(validationRules?.enforceAlternateEffectCap ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.validationRules.enforceAlternateEffectCap')}: <strong>{(validationRules?.enforceAlternateEffectCap ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+                </button>
+                <button className="dropdown-item" onClick={() => setValidationRules({ enforceEquipmentPPLimit: !(validationRules?.enforceEquipmentPPLimit ?? true) })}>
+                  {(validationRules?.enforceEquipmentPPLimit ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.validationRules.enforceEquipmentPPLimit')}: <strong>{(validationRules?.enforceEquipmentPPLimit ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+                </button>
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">
@@ -347,6 +382,13 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         .dropdown-item.active {
           background: var(--c-primary-muted);
           color: var(--c-primary);
+        }
+        .dropdown-item.disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        .dropdown-item.disabled:hover {
+          background: transparent;
         }
         .dropdown-hint {
           display: block;
