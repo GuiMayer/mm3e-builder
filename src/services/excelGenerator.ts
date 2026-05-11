@@ -252,7 +252,11 @@ function buildSummarySheet(
     0
   );
   const totalSpent = abCost + defCost + skCost + advCost + pwrCost;
-  const totalAvailable = char.header.powerLevel * 15;
+  // Include PP earned in campaign mode
+  const ppEarned = char.campaignMode
+    ? (char.ppLog ?? []).reduce((s, e) => s + e.amount, 0)
+    : 0;
+  const totalAvailable = char.header.powerLevel * 15 + ppEarned;
 
   const summaryStart = 11;
   const headerRow = ws.getRow(summaryStart);
@@ -371,6 +375,31 @@ function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expo
   totalRow.getCell(5).value = calculateDefensesCost(char.defenses);
   totalRow.getCell(5).font = { bold: true };
   totalRow.getCell(5).numFmt = '0 "PP"';
+
+  // Add derived stats section
+  const derivedHeaderRow = ws.getRow(8);
+  derivedHeaderRow.getCell(1).value = 'Derived Stats';
+  derivedHeaderRow.getCell(1).font = { bold: true, size: 12 };
+  
+  // Toughness = STA + equipment bonus (we don't track equipment bonus, so just STA)
+  const toughnessRow = ws.getRow(9);
+  const staAbsent = char.absentAbilities.includes('sta');
+  const toughness = staAbsent ? 0 : char.abilities.sta;
+  toughnessRow.getCell(1).value = 'Toughness';
+  toughnessRow.getCell(1).font = { bold: true };
+  toughnessRow.getCell(2).value = staAbsent ? '–' : `STA ${char.abilities.sta}`;
+  toughnessRow.getCell(4).value = toughness;
+  toughnessRow.getCell(4).font = { bold: true };
+  
+  // Initiative = AGL
+  const initiativeRow = ws.getRow(10);
+  const aglAbsent = char.absentAbilities.includes('agl');
+  const initiative = aglAbsent ? 0 : char.abilities.agl;
+  initiativeRow.getCell(1).value = 'Initiative';
+  initiativeRow.getCell(1).font = { bold: true };
+  initiativeRow.getCell(2).value = aglAbsent ? '–' : `AGL ${char.abilities.agl}`;
+  initiativeRow.getCell(4).value = initiative > 0 ? `+${initiative}` : String(initiative);
+  initiativeRow.getCell(4).font = { bold: true };
 
   autoWidth(ws);
 }
