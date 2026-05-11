@@ -190,6 +190,20 @@ export function DefensesPanel({ cost }: { cost: number }) {
           font-weight: 700;
           color: var(--c-primary);
         }
+
+        /* Mobile responsive layout */
+        @media (max-width: 768px) {
+          .defense-row {
+            flex-wrap: wrap;
+            gap: var(--s-xs);
+          }
+          .defense-name {
+            min-width: 80px;
+          }
+          .defense-base {
+            min-width: 50px;
+          }
+        }
       `}</style>
     </section>
   );

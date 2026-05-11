@@ -86,6 +86,16 @@ export function AbilitiesPanel({ cost }: { cost: number }) {
           cursor: pointer; font-size: 0.65rem; opacity: 0; transition: opacity var(--t-fast);
         }
         .ability-card:hover .ability-toggle { opacity: 1; }
+
+        /* Mobile responsive layout */
+        @media (max-width: 768px) {
+          .abilities-grid {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          }
+          .ability-toggle {
+            opacity: 1;
+          }
+        }
       `}</style>
     </section>
   );

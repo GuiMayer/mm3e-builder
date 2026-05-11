@@ -523,6 +523,27 @@ export function HeaderPanel() {
         .char-details-grid--wide {
           grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         }
+
+        /* Mobile responsive layout */
+        @media (max-width: 768px) {
+          .hero-identity {
+            flex-direction: column;
+            gap: var(--s-md);
+          }
+          .hero-avatar {
+            width: 80px;
+            height: 80px;
+          }
+          .hero-fields {
+            width: 100%;
+          }
+          .char-details-grid {
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+          }
+          .char-details-grid--wide {
+            grid-template-columns: 1fr;
+          }
+        }
       `}</style>
     </section>
   );
