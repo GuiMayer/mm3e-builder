@@ -134,7 +134,7 @@ export function ReferencesView() {
                 {BASIC_CONDITIONS.map((cond) => (
                   <tr key={cond.id}>
                     <td className="ref-td--name">{t(`conditions.${cond.id}`, { defaultValue: cond.name })}</td>
-                    <td className="ref-td--desc">{cond.description}</td>
+                    <td className="ref-td--desc">{t(`conditions.desc.${cond.id}`, { defaultValue: cond.description })}</td>
                   </tr>
                 ))}
               </tbody>
@@ -162,7 +162,7 @@ export function ReferencesView() {
                         .map((id) => CONDITIONS.find((c) => c.id === id)?.name ?? id)
                         .join(' + ')}
                     </td>
-                    <td className="ref-td--desc">{cond.description}</td>
+                    <td className="ref-td--desc">{t(`conditions.desc.${cond.id}`, { defaultValue: cond.description })}</td>
                   </tr>
                 ))}
               </tbody>
