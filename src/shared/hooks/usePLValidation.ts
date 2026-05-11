@@ -12,10 +12,11 @@ import {
   validateSkillCap,
   type PLViolation,
 } from '../lib/validation';
+import { getActiveValidationRules } from '../lib/validationRules';
 
 /**
  * Hook that returns current PL violations in real time.
- * Empty array when Strict Mode is OFF.
+ * Empty array when Strict Mode is OFF or enforcePLLimits is disabled.
  *
  * Validates:
  * - Dodge + Toughness <= PL×2   (real Toughness: STA + Protection + Defensive Roll)
@@ -27,9 +28,14 @@ import {
 export function usePLValidation(): PLViolation[] {
   const character  = useCharStore((s) => s.character);
   const strictMode = useAppStore((s) => s.strictMode);
+  const validationRules = useAppStore((s) => s.validationRules);
 
   return useMemo(() => {
     if (!strictMode) return [];
+    
+    // Check if PL limits are enforced
+    const activeRules = getActiveValidationRules(validationRules);
+    if (!activeRules.enforcePLLimits) return [];
 
     const pl        = character.header.powerLevel;
     const abilities = character.abilities;
@@ -128,5 +134,5 @@ export function usePLValidation(): PLViolation[] {
     }
 
     return violations;
-  }, [character, strictMode]);
+  }, [character, strictMode, validationRules]);
 }

@@ -37,6 +37,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   // TD-5: Strict mode — read powerLevel and strictMode from stores
   const powerLevel = useCharStore((s) => s.character.header.powerLevel);
   const strictMode = useAppStore((s) => s.strictMode);
+  const validationRules = useAppStore((s) => s.validationRules);
 
   // Build initial state — if existing power has legacy format, migration handles it at store level
   const [power, setPower] = useState<ICharacterPower>(
@@ -103,6 +104,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     allModDefs,
     powerLevel,
     strictMode,
+    validationRules,
   });
 
   // Palette context: when an AE is expanded, palette serves that AE's active component

@@ -3,6 +3,7 @@ import type {
   ICharacterPower,
   IPowerEffect,
   IModifierDef,
+  IValidationRules,
 } from '../../../entities/types';
 import {
   calculateArrayCost,
@@ -12,6 +13,7 @@ import {
   calcRemovableDiscount,
 } from '../../../shared/lib/mathEngine';
 import { validateAttackEffect } from '../../../shared/lib/validation';
+import { getActiveValidationRules } from '../../../shared/lib/validationRules';
 
 /* ================================================
    usePowerCostCalculation Hook
@@ -24,6 +26,7 @@ interface UsePowerCostCalculationProps {
   allModDefs: IModifierDef[];
   powerLevel: number;
   strictMode: boolean;
+  validationRules?: Partial<IValidationRules>;
 }
 
 interface ComponentCostResult {
@@ -37,6 +40,7 @@ export function usePowerCostCalculation({
   allModDefs,
   powerLevel,
   strictMode,
+  validationRules,
 }: UsePowerCostCalculationProps) {
   // Calculate costs per component
   const componentCosts = useMemo<ComponentCostResult[]>(() => {
@@ -93,11 +97,16 @@ export function usePowerCostCalculation({
   // validateAttackEffect: attack + highest damage rank <= PL*2
   const plViolation = useMemo(() => {
     if (!strictMode) return null;
+    
+    // Check if PL limits are enforced
+    const activeRules = getActiveValidationRules(validationRules);
+    if (!activeRules.enforcePLLimits) return null;
+    
     // Heuristic: check the highest-rank damage component against PL*2
     const highestRank = power.components.reduce((max, c) => Math.max(max, c.ranks), 0);
     const attackBonus = 0; // Power builder doesn't track attack bonus, defaulting to 0
     return validateAttackEffect(attackBonus, highestRank, powerLevel);
-  }, [strictMode, powerLevel, power.components]);
+  }, [strictMode, powerLevel, power.components, validationRules]);
 
   return {
     componentCosts,
