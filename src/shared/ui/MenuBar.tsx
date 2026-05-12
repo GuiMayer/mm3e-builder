@@ -10,10 +10,11 @@ import { usePDFExport } from '../hooks/usePDFExport';
 import { useExcelExport } from '../hooks/useExcelExport';
 import { prefetchPDFTemplate } from '../../services/pdf/pdfTemplateLoader';
 import { PDFOverflowModal } from '../../features/sheet-core/PDFOverflowModal';
+import { MobileDrawer } from './MobileDrawer';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
-import { Settings, Download, Upload, FilePlus, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2 } from 'lucide-react';
+import { Settings, Download, Upload, FilePlus, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu } from 'lucide-react';
 import i18n from '../../locales';
 import { clearDraft, getDraftMetadata } from '../../services/fileService';
 
@@ -62,6 +63,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
 
   // Local state
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Ensure i18n is synced with store on mount
@@ -113,7 +115,40 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
 
   return (
     <header className="menubar">
+      {/* Mobile Drawer */}
+      <MobileDrawer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onNew={resetCharacter}
+        onExport={exportCharacter}
+        onImport={() => fileInputRef.current?.click()}
+        onExportExcel={exportExcel}
+        onExportPDF={exportPDF}
+        isPdfLoading={isPdfLoading}
+        theme={theme}
+        onThemeChange={setTheme}
+        themes={THEMES}
+        language={language}
+        onLanguageChange={handleLanguageChange}
+        languages={LANGUAGES}
+        campaignMode={campaignMode}
+        onCampaignModeToggle={handleCampaignModeToggle}
+        hasLogEntries={hasLogEntries}
+        validationRules={validationRules}
+        onValidationRulesChange={setValidationRules}
+        onClearDraft={handleClearDraft}
+      />
+
       <div className="menubar-left">
+        {/* Hamburger button - mobile only */}
+        <button
+          className="menubar-hamburger"
+          onClick={() => setDrawerOpen(true)}
+          aria-label="Open menu"
+        >
+          <Menu size={24} />
+        </button>
+
         <h1 className="menubar-title">{t('app.title')}</h1>
         <ViewTabs activeView={activeView} onViewChange={onViewChange} />
         <span className="menubar-pp" data-over={remaining < 0}>
@@ -474,8 +509,57 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
           font-weight: bold;
         }
 
-        /* Mobile touch targets */
+        /* Hamburger button - hidden on desktop */
+        .menubar-hamburger {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          width: 44px;
+          height: 44px;
+          background: transparent;
+          border: none;
+          color: var(--c-text-secondary);
+          cursor: pointer;
+          border-radius: var(--r-md);
+          transition: all var(--t-fast);
+          flex-shrink: 0;
+        }
+
+        .menubar-hamburger:hover {
+          background: var(--c-primary-muted);
+          color: var(--c-text);
+        }
+
+        /* Mobile responsive layout */
         @media (max-width: 768px) {
+          .menubar {
+            padding: var(--s-xs) var(--s-md);
+          }
+
+          .menubar-left {
+            gap: var(--s-sm);
+          }
+
+          /* Show hamburger button */
+          .menubar-hamburger {
+            display: flex;
+          }
+
+          /* Hide action buttons - they're in the drawer now */
+          .menubar-actions {
+            display: none;
+          }
+
+          /* Adjust title size */
+          .menubar-title {
+            font-size: 0.95rem;
+          }
+
+          /* Adjust PP counter */
+          .menubar-pp {
+            font-size: 0.75rem;
+          }
+
           .menubar-btn {
             min-height: var(--touch-target-min);
             padding: var(--s-sm) var(--s-md);
