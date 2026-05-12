@@ -90,10 +90,27 @@ export function AbilitiesPanel({ cost }: { cost: number }) {
         /* Mobile responsive layout */
         @media (max-width: 768px) {
           .abilities-grid {
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: var(--s-xs);
+          }
+          .ability-card {
+            padding: var(--s-sm) var(--s-xs);
+            gap: 4px;
+          }
+          .ability-abbr {
+            font-size: 0.65rem;
+          }
+          .ability-name {
+            font-size: 0.7rem;
+          }
+          .ability-input {
+            width: 50px;
+            font-size: 1.1rem;
+            padding: 2px;
           }
           .ability-toggle {
             opacity: 1;
+            font-size: 0.6rem;
           }
         }
       `}</style>

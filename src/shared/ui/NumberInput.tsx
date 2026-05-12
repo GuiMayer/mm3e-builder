@@ -8,7 +8,7 @@ export interface NumberInputProps extends Omit<InputHTMLAttributes<HTMLInputElem
   min?: number;
   max?: number;
   step?: number;
-  variant?: 'small' | 'medium' | 'large';
+  variant?: 'small' | 'medium' | 'large' | 'compact';
 }
 
 export function NumberInput({
@@ -217,6 +217,10 @@ export function NumberInput({
           width: 36px;
         }
 
+        .number-input-wrapper--compact .number-input-btn {
+          width: 32px;
+        }
+
         /* Mobile touch targets - WCAG 2.1 AA compliant (44x44px minimum) */
         @media (max-width: 768px) {
           .number-input-wrapper--small .number-input-btn {
@@ -229,6 +233,11 @@ export function NumberInput({
 
           .number-input-wrapper--large .number-input-btn {
             width: 52px;
+          }
+
+          /* Compact variant for mobile - smaller buttons but still touch-friendly */
+          .number-input-wrapper--compact .number-input-btn {
+            width: 36px;
           }
         }
       `}</style>
