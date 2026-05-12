@@ -72,6 +72,43 @@ export function App() {
           </main>
         </ErrorBoundary>
       </div>
+
+      <style>{`
+        /* Global mobile UX improvements */
+        @media (max-width: 768px) {
+          /* Smooth scrolling for better UX */
+          html {
+            scroll-behavior: smooth;
+          }
+
+          /* Optimize touch scrolling */
+          * {
+            -webkit-overflow-scrolling: touch;
+          }
+
+          /* Prevent text size adjustment on orientation change */
+          html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+          }
+
+          /* Improve tap highlight */
+          * {
+            -webkit-tap-highlight-color: rgba(var(--c-primary-rgb, 59, 130, 246), 0.1);
+          }
+
+          /* Better focus visibility for keyboard navigation */
+          *:focus-visible {
+            outline: 2px solid var(--c-primary);
+            outline-offset: 2px;
+          }
+
+          /* Optimize app-main padding for mobile */
+          .app-main {
+            padding: var(--s-sm);
+          }
+        }
+      `}</style>
     </ErrorBoundary>
   )
 }

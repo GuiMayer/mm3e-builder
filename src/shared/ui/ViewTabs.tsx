@@ -29,6 +29,24 @@ export function ViewTabs({ activeView, onViewChange }: ViewTabsProps) {
         <Library size={13} />
         {t('nav.references', { defaultValue: 'References' })}
       </button>
+
+      <style>{`
+        /* Mobile optimizations for ViewTabs */
+        @media (max-width: 768px) {
+          .menubar-tabs {
+            padding: 1px;
+          }
+          .menubar-tab {
+            padding: 4px var(--s-xs);
+            font-size: 0.7rem;
+            min-height: 32px;
+          }
+          .menubar-tab svg {
+            width: 11px;
+            height: 11px;
+          }
+        }
+      `}</style>
     </div>
   );
 }

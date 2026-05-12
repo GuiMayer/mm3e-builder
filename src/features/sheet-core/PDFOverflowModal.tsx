@@ -253,6 +253,58 @@ export function PDFOverflowModal({ report, onConfirm, onCancel }: PDFOverflowMod
           outline: 2px solid var(--c-primary);
           outline-offset: 2px;
         }
+
+        /* Mobile responsive layout */
+        @media (max-width: 768px) {
+          .pdf-overflow-modal {
+            width: 95vw;
+            max-width: 95vw;
+            max-height: 90vh;
+            padding: var(--s-md);
+          }
+          .pdf-overflow-header {
+            flex-direction: column;
+            gap: var(--s-xs);
+            margin-bottom: var(--s-sm);
+          }
+          .pdf-overflow-icon {
+            font-size: 2rem;
+          }
+          .pdf-overflow-title {
+            font-size: 0.95rem;
+            text-align: center;
+          }
+          .pdf-overflow-body {
+            font-size: 0.8rem;
+          }
+          .pdf-overflow-list {
+            max-height: 50vh;
+          }
+          .pdf-overflow-item {
+            padding: var(--s-xs) var(--s-sm);
+          }
+          .pdf-overflow-section-name {
+            font-size: 0.8rem;
+          }
+          .pdf-overflow-count {
+            font-size: 0.72rem;
+          }
+          .pdf-overflow-destination {
+            font-size: 0.72rem;
+          }
+          .pdf-overflow-item-name {
+            font-size: 0.7rem;
+          }
+          .pdf-overflow-actions {
+            flex-direction: column-reverse;
+            gap: var(--s-xs);
+          }
+          .pdf-overflow-btn {
+            width: 100%;
+            min-height: 44px;
+            padding: var(--s-sm) var(--s-md);
+          }
+        }
       `}</style>
     </>
   );
