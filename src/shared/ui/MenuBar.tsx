@@ -114,8 +114,8 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   }
 
   return (
-    <header className="menubar">
-      {/* Mobile Drawer */}
+    <>
+      {/* Mobile Drawer - rendered outside header to avoid position conflicts */}
       <MobileDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
@@ -139,7 +139,8 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         onClearDraft={handleClearDraft}
       />
 
-      <div className="menubar-left">
+      <header className="menubar">
+        <div className="menubar-left">
         {/* Hamburger button - mobile only */}
         <button
           className="menubar-hamburger"
@@ -570,6 +571,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
           }
         }
       `}</style>
-    </header>
+      </header>
+    </>
   );
 }
