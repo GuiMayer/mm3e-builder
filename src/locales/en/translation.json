@@ -327,6 +327,7 @@
   "equipment.builder.save": "Save Equipment",
   "equipment.builder.cancel": "Cancel",
   "equipment.builder.nameRequired": "Equipment name is required",
+  "equipment.limitExceeded": "Equipment limit exceeded! Using {{used}} EP but limit is {{limit}} EP ({{over}} over). Increase Equipment advantage ranks or remove equipment.",
 
   "complications.type.motivation": "Motivation",
   "complications.type.enemy": "Enemy",

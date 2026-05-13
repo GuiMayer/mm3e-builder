@@ -74,13 +74,13 @@ export function SheetView() {
         </div>
         <div className="pp-summary-item">
           <span className="pp-summary-label">{t('summary.totalSpent')}</span>
-          <span className={`pp-summary-value ${isOver ? 'pp-summary-value--error' : 'pp-summary-value--primary'}`}>
+          <span className={`pp-summary-value ${pp.isBudgetEnforced && isOver ? 'pp-summary-value--error' : 'pp-summary-value--primary'}`}>
             {pp.totalSpent}
           </span>
         </div>
         <div className="pp-summary-item">
           <span className="pp-summary-label">{t('summary.remaining')}</span>
-          <span className={`pp-summary-value ${isOver ? 'pp-summary-value--error' : 'pp-summary-value--success'}`}>
+          <span className={`pp-summary-value ${pp.isBudgetEnforced && isOver ? 'pp-summary-value--error' : 'pp-summary-value--success'}`}>
             {pp.isBudgetEnforced ? pp.remaining : <span className="infinity-symbol">∞</span>}
           </span>
         </div>
@@ -90,7 +90,7 @@ export function SheetView() {
         <div
           className={`pp-progress-fill ${!pp.isBudgetEnforced ? 'pp-progress-fill--limitless' : ''}`}
           style={{ width: pp.isBudgetEnforced ? `${Math.min(100, pct)}%` : '100%' }}
-          data-over={isOver}
+          data-over={pp.isBudgetEnforced && isOver}
         />
       </div>
 

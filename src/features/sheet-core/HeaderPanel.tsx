@@ -111,7 +111,7 @@ export function HeaderPanel() {
         <div className="hero-stat-card hero-stat-card--pp">
           <div className="hero-stat-info">
             <span className="hero-stat-label">{t('header.powerPoints')}</span>
-            <span className={`hero-pp-display ${isOver ? 'hero-pp-display--over' : ''}`}>
+            <span className={`hero-pp-display ${pp.isBudgetEnforced && isOver ? 'hero-pp-display--over' : ''}`}>
               <strong>{pp.totalSpent}</strong>
               <span className="hero-pp-sep">/</span>
               <span>{pp.isBudgetEnforced ? pp.totalAvailable : <span className="infinity-symbol">∞</span>}</span>
@@ -121,7 +121,7 @@ export function HeaderPanel() {
             <div
               className={`hero-pp-bar-fill ${!pp.isBudgetEnforced ? 'hero-pp-bar-fill--limitless' : ''}`}
               style={{ width: pp.isBudgetEnforced ? `${pct}%` : '100%' }}
-              data-over={isOver}
+              data-over={pp.isBudgetEnforced && isOver}
             />
           </div>
         </div>

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useCharStore } from '../../store/charStore';
 import { useTranslation } from 'react-i18next';
-import { Package, Plus, Edit3, Trash2 } from 'lucide-react';
+import { Package, Plus, Edit3, Trash2, AlertTriangle } from 'lucide-react';
 import type { IEquipmentItem } from '../../entities/types';
 import { EquipmentBuilder } from '../equipment-builder/EquipmentBuilder';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useEquipmentCalculations } from '../equipment-builder/hooks/useEquipmentCalculations';
 import { Tooltip } from '../../shared/ui/Tooltip';
+import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 
 /**
  * EquipmentNotesPanel — F-15 (v1.1)
@@ -29,6 +30,9 @@ export function EquipmentNotesPanel() {
   
   const [builderOpen, setBuilderOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+
+  // F-15: Get equipment validation data
+  const { totalEPUsed, equipmentEPLimit, isOverEquipmentLimit } = useCalculatedPP();
 
   function handleSaveEquipment(item: IEquipmentItem) {
     if (editIndex !== null) {
@@ -61,16 +65,6 @@ export function EquipmentNotesPanel() {
     setBuilderOpen(true);
   }
 
-  // Calculate total EP cost
-  const totalEP = equipment.reduce((sum, item) => {
-    const calc = useEquipmentCalculations({
-      item,
-      powerDefs,
-      allModDefs: modifierDefs,
-    });
-    return sum + calc.totalEP;
-  }, 0);
-
   return (
     <section className="panel equipment-notes-panel">
       <div className="panel-header">
@@ -79,9 +73,23 @@ export function EquipmentNotesPanel() {
           {t('equipment.title')}
         </h2>
         {equipment.length > 0 && (
-          <span className="panel-cost">{totalEP} {t('equipment.ep')}</span>
+          <span className="panel-cost">{totalEPUsed} / {equipmentEPLimit} {t('equipment.ep')}</span>
         )}
       </div>
+
+      {/* F-15: Equipment PP Limit validation warning */}
+      {isOverEquipmentLimit && (
+        <div className="equipment-limit-warning">
+          <AlertTriangle size={16} />
+          <span>
+            {t('equipment.limitExceeded', { 
+              used: totalEPUsed, 
+              limit: equipmentEPLimit,
+              over: totalEPUsed - equipmentEPLimit 
+            }) || `Equipment limit exceeded! Using ${totalEPUsed} EP but limit is ${equipmentEPLimit} EP (${totalEPUsed - equipmentEPLimit} over). Increase Equipment advantage ranks or remove equipment.`}
+          </span>
+        </div>
+      )}
 
       {/* Structured Equipment List */}
       {equipment.length > 0 && (
@@ -169,6 +177,21 @@ export function EquipmentNotesPanel() {
         .equipment-notes-panel .panel-header {
           align-items: center;
           justify-content: space-between;
+        }
+        .equipment-limit-warning {
+          display: flex;
+          align-items: center;
+          gap: var(--s-sm);
+          padding: var(--s-md);
+          background: var(--c-error-bg, rgba(239, 68, 68, 0.1));
+          border: 1px solid var(--c-error, #ef4444);
+          border-radius: var(--r-md);
+          color: var(--c-error, #ef4444);
+          font-size: 0.875rem;
+          margin-bottom: var(--s-md);
+        }
+        .equipment-limit-warning svg {
+          flex-shrink: 0;
         }
         .equipment-grid {
           display: flex;
