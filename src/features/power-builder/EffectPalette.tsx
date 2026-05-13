@@ -308,6 +308,50 @@ export function EffectPalette({
         .mod-modal-options h4 { font-size: 0.78rem; font-weight: 700; color: var(--c-text-secondary); margin-bottom: var(--s-xs); }
         .mod-modal-options ul { margin: 0; padding-left: var(--s-md); display: flex; flex-direction: column; gap: 4px; }
         .mod-modal-options li { font-size: 0.82rem; color: var(--c-text-secondary); }
+
+        /* Mobile optimizations for palette */
+        @media (max-width: 768px) {
+          .palette {
+            width: 100%;
+            min-width: 100%;
+            border-right: none;
+          }
+          
+          .palette-header {
+            padding: 0;
+          }
+          
+          .palette-search {
+            padding: var(--s-md);
+          }
+          
+          .palette-search-input {
+            font-size: 1rem;
+          }
+          
+          .palette-tabs {
+            position: sticky;
+            top: 0;
+            background: var(--c-surface);
+            z-index: 10;
+          }
+          
+          .palette-tab {
+            padding: var(--s-sm) var(--s-xs);
+            font-size: 0.8rem;
+            min-height: var(--touch-target-min);
+          }
+          
+          .palette-list-container {
+            padding: var(--s-md);
+            gap: var(--s-sm);
+          }
+          
+          .palette-context-badge {
+            font-size: 0.8rem;
+            padding: var(--s-sm) var(--s-md);
+          }
+        }
       `}</style>
     </aside>
   );
@@ -415,6 +459,51 @@ function DraggableModifier({
         }
         .palette-item-info:hover { color: var(--c-primary); background: var(--c-primary-muted); }
         .palette-item-add:hover { color: var(--c-success); background: rgba(74,222,128,0.15); }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+          .palette-item {
+            flex-direction: row;
+            align-items: center;
+            padding: var(--s-sm) var(--s-md);
+            gap: var(--s-sm);
+            min-height: var(--touch-target-min);
+          }
+          
+          .palette-item-name {
+            flex: 1;
+            font-size: 0.9rem;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: unset;
+            line-height: 1.3;
+          }
+          
+          .palette-item-actions {
+            gap: var(--s-xs);
+            flex-shrink: 0;
+            align-items: center;
+          }
+          
+          .palette-item-cost {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            background: var(--c-surface);
+            border-radius: var(--r-xs);
+          }
+          
+          .palette-item-info, .palette-item-add {
+            min-width: var(--touch-target-min);
+            min-height: var(--touch-target-min);
+            padding: var(--s-xs);
+            font-size: 0.85rem;
+          }
+          
+          .palette-item-add {
+            font-size: 1.1rem;
+            font-weight: 600;
+          }
+        }
       `}</style>
     </div>
   );
