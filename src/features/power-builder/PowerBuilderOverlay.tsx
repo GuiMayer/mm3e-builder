@@ -14,6 +14,9 @@ import { useAlternateEffects } from './hooks/useAlternateEffects';
 import { usePowerDragAndDrop } from './hooks/usePowerDragAndDrop';
 import { usePowerCostCalculation } from './hooks/usePowerCostCalculation';
 import { ModifierDropzone } from './components/ModifierDropzone';
+import { MobileModifierDrawer } from './components/MobileModifierDrawer';
+import { ModifierDrawerFAB } from './components/ModifierDrawerFAB';
+import { useMobileDrawer } from './hooks/useMobileDrawer';
 import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
@@ -60,6 +63,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   // AE state: which AE card is expanded + which component within each AE is active
   const [expandedAEId, setExpandedAEId] = useState<string | null>(null);
   const [activeAEComponentId, setActiveAEComponentId] = useState<Record<string, string>>({});
+
+  // Mobile drawer state
+  const { isOpen: drawerOpen, height: drawerHeight, openDrawer, closeDrawer, setHeight: setDrawerHeight } = useMobileDrawer();
 
   // All modifier defs (general + power-specific merged for lookup)
   // Includes extras/flaws from AE components so the palette is correct
@@ -125,6 +131,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
     const compIdx = ae.components.findIndex((c) => c.id === compId);
     return `${ae.name || 'AE'} · Comp. ${compIdx + 1}`;
   }, [expandedAEId, power.alternateEffects, activeAEComponentId]);
+
+  // FAB context label for mobile
+  const fabContextLabel = useMemo(() => {
+    if (expandedAEId !== null) {
+      const ae = power.alternateEffects.find((a) => a.id === expandedAEId);
+      return ae?.name || 'AE';
+    }
+    const effect = paletteSelectedEffect;
+    return effect?.name || 'Main';
+  }, [expandedAEId, power.alternateEffects, paletteSelectedEffect]);
 
   // Define addModifierToComponent before using it in hooks
   const addModifierToComponent = useCallback(
@@ -331,16 +347,18 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
         </div>
 
         <div className="builder-body">
-          {/* Sidebar: Modifier Palette */}
-          <EffectPalette
-            filter={paletteFilter}
-            onFilterChange={setPaletteFilter}
-            selectedEffect={paletteSelectedEffect}
-            onAddModifier={handleAddModifierFromPalette}
-            collapsed={paletteCollapsed}
-            onToggleCollapse={() => setPaletteCollapsed((v) => !v)}
-            contextName={paletteContextName}
-          />
+          {/* Sidebar: Modifier Palette (Desktop) */}
+          <div className="builder-palette-desktop">
+            <EffectPalette
+              filter={paletteFilter}
+              onFilterChange={setPaletteFilter}
+              selectedEffect={paletteSelectedEffect}
+              onAddModifier={handleAddModifierFromPalette}
+              collapsed={paletteCollapsed}
+              onToggleCollapse={() => setPaletteCollapsed((v) => !v)}
+              contextName={paletteContextName}
+            />
+          </div>
 
           {/* Main: Build Workspace */}
           <div className="builder-workspace">
@@ -733,6 +751,31 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
             </div>
           )}
         </DragOverlay>
+
+        {/* Mobile Modifier Drawer */}
+        <MobileModifierDrawer
+          isOpen={drawerOpen}
+          height={drawerHeight}
+          onHeightChange={setDrawerHeight}
+          onClose={closeDrawer}
+        >
+          <EffectPalette
+            filter={paletteFilter}
+            onFilterChange={setPaletteFilter}
+            selectedEffect={paletteSelectedEffect}
+            onAddModifier={handleAddModifierFromPalette}
+            collapsed={false}
+            onToggleCollapse={() => {}}
+            contextName={paletteContextName}
+          />
+        </MobileModifierDrawer>
+
+        {/* Mobile FAB */}
+        <ModifierDrawerFAB
+          onClick={() => openDrawer('peek')}
+          contextLabel={fabContextLabel}
+          isAE={expandedAEId !== null}
+        />
       </DndContext>
 
       {/* Effect Detail Modal */}
@@ -977,6 +1020,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
         .effect-modal-meta { display: flex; gap: var(--s-xs); flex-wrap: wrap; align-items: center; }
         .effect-modal-desc { font-size: 0.88rem; line-height: 1.6; color: var(--c-text); }
 
+        /* Desktop: Show palette sidebar, hide mobile drawer */
+        .builder-palette-desktop {
+          display: flex;
+        }
+
         /* Mobile touch targets and layout */
         @media (max-width: 768px) {
           .builder-action-btn {
@@ -999,14 +1047,15 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
           .builder-body {
             flex-direction: column;
           }
-          .builder-palette {
-            width: 100%;
-            max-height: 40vh;
-            border-right: none;
-            border-bottom: 1px solid var(--c-border);
+          
+          /* Hide desktop palette, show mobile drawer instead */
+          .builder-palette-desktop {
+            display: none;
           }
-          .builder-main {
+          
+          .builder-workspace {
             width: 100%;
+            height: 100%;
           }
           .builder-topbar {
             padding: var(--s-sm) var(--s-md);
