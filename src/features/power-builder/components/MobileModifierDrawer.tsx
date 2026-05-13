@@ -27,7 +27,11 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
   const drawerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startY, setStartY] = useState(0);
+  const [startHeight, setStartHeight] = useState(0);
   const [currentHeight, setCurrentHeight] = useState(0);
+  const [dragVelocity, setDragVelocity] = useState(0);
+  const lastMoveTime = useRef(0);
+  const lastMoveY = useRef(0);
 
   // Calculate pixel heights based on viewport
   useEffect(() => {
@@ -42,6 +46,15 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
   const handleTouchStart = (e: React.TouchEvent) => {
     setIsDragging(true);
     setStartY(e.touches[0].clientY);
+    setStartHeight(currentHeight);
+    lastMoveTime.current = Date.now();
+    lastMoveY.current = e.touches[0].clientY;
+    setDragVelocity(0);
+    
+    // Haptic feedback if available
+    if ('vibrate' in navigator) {
+      navigator.vibrate(10);
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -50,7 +63,17 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
     const currentY = e.touches[0].clientY;
     const deltaY = startY - currentY;
     const vh = window.innerHeight;
-    const newHeight = Math.max(0, Math.min(vh * 0.85, currentHeight + deltaY));
+    const newHeight = Math.max(0, Math.min(vh * 0.85, startHeight + deltaY));
+
+    // Calculate velocity for momentum-based snapping
+    const now = Date.now();
+    const timeDelta = now - lastMoveTime.current;
+    if (timeDelta > 0) {
+      const yDelta = lastMoveY.current - currentY;
+      setDragVelocity(yDelta / timeDelta);
+    }
+    lastMoveTime.current = now;
+    lastMoveY.current = currentY;
 
     setCurrentHeight(newHeight);
   };
@@ -62,14 +85,42 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
     const vh = window.innerHeight;
     const heightPercent = currentHeight / vh;
 
-    // Snap to nearest state
-    if (heightPercent < 0.15) {
-      onHeightChange('closed');
-      onClose();
-    } else if (heightPercent < 0.55) {
-      onHeightChange('peek');
+    // Use velocity for smarter snapping
+    const velocityThreshold = 0.5; // pixels per ms
+    const swipeDown = dragVelocity < -velocityThreshold;
+    const swipeUp = dragVelocity > velocityThreshold;
+
+    // Snap to nearest state with velocity consideration
+    if (swipeDown && heightPercent < 0.7) {
+      // Fast swipe down - close or go to peek
+      if (heightPercent < 0.5) {
+        onHeightChange('closed');
+        onClose();
+      } else {
+        onHeightChange('peek');
+      }
+    } else if (swipeUp && heightPercent > 0.2) {
+      // Fast swipe up - go to peek or full
+      if (heightPercent < 0.6) {
+        onHeightChange('peek');
+      } else {
+        onHeightChange('full');
+      }
     } else {
-      onHeightChange('full');
+      // Normal snap based on position
+      if (heightPercent < 0.15) {
+        onHeightChange('closed');
+        onClose();
+      } else if (heightPercent < 0.55) {
+        onHeightChange('peek');
+      } else {
+        onHeightChange('full');
+      }
+    }
+
+    // Haptic feedback on snap
+    if ('vibrate' in navigator) {
+      navigator.vibrate(15);
     }
   };
 
@@ -121,6 +172,7 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
         role="dialog"
         aria-label="Modifier palette"
         aria-hidden={!isOpen}
+        aria-modal={isOpen}
       >
         {/* Drag handle */}
         <div
@@ -128,12 +180,19 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
+          role="button"
+          aria-label="Drag to resize drawer"
+          tabIndex={0}
         >
           <div className="mobile-drawer-handle" />
+          <span className="mobile-drawer-state-indicator" aria-live="polite" aria-atomic="true">
+            {height === 'peek' ? 'Preview' : height === 'full' ? 'Expanded' : ''}
+          </span>
           <button
             className="mobile-drawer-close"
             onClick={handleBackdropClick}
             aria-label="Close drawer"
+            tabIndex={0}
           >
             <X size={18} />
           </button>
@@ -199,6 +258,27 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
           background: var(--c-border);
           border-radius: var(--r-full);
           opacity: 0.6;
+          transition: all 0.2s ease;
+        }
+
+        .mobile-drawer--dragging .mobile-drawer-handle {
+          width: 50px;
+          height: 5px;
+          opacity: 1;
+          background: var(--c-primary);
+        }
+
+        .mobile-drawer-state-indicator {
+          position: absolute;
+          left: var(--s-md);
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 0.7rem;
+          color: var(--c-text-muted);
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          opacity: 0.7;
         }
 
         .mobile-drawer-close {
@@ -223,6 +303,11 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
         .mobile-drawer-close:hover {
           background: var(--c-surface-elevated);
           color: var(--c-text);
+        }
+
+        .mobile-drawer-close:focus-visible {
+          outline: 2px solid var(--c-primary);
+          outline-offset: 2px;
         }
 
         .mobile-drawer-content {

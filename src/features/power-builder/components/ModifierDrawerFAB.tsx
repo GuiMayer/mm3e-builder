@@ -51,6 +51,11 @@ export function ModifierDrawerFAB({ onClick, contextLabel, isAE }: Props) {
           transform: scale(0.95);
         }
 
+        .modifier-fab:focus-visible {
+          outline: 3px solid var(--c-primary);
+          outline-offset: 3px;
+        }
+
         .modifier-fab-badge {
           position: absolute;
           top: -8px;
@@ -66,6 +71,7 @@ export function ModifierDrawerFAB({ onClick, contextLabel, isAE }: Props) {
           overflow: hidden;
           text-overflow: ellipsis;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+          animation: badgePulse 2s ease-in-out infinite;
         }
 
         .modifier-fab-badge[data-ae="true"] {
@@ -80,6 +86,15 @@ export function ModifierDrawerFAB({ onClick, contextLabel, isAE }: Props) {
           to {
             transform: translateY(0) scale(1);
             opacity: 1;
+          }
+        }
+
+        @keyframes badgePulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.1);
           }
         }
 
