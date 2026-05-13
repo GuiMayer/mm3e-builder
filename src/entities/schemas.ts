@@ -148,6 +148,16 @@ const PPLogEntrySchema = z.object({
   note: z.string(),
 });
 
+// F-15: Equipment Item (structured equipment system)
+// Reuses CharacterPowerComponentSchema and AlternateEffectSchema for consistency
+const EquipmentItemSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  components: z.array(CharacterPowerComponentSchema),
+  notes: z.string().optional(),
+  alternateEffects: z.array(AlternateEffectSchema).optional().default([]),
+});
+
 const CharacterSchema = z.object({
   header: CharacterHeaderSchema,
   abilities: AbilitiesSchema,
@@ -158,6 +168,7 @@ const CharacterSchema = z.object({
   powers: z.array(CharacterPowerSchema),
   complications: z.array(ComplicationSchema),
   equipmentNotes: z.string().default(''),  // F-09: optional in old files, defaults to ''
+  equipment: z.array(EquipmentItemSchema).optional().default([]), // F-15: structured equipment
   notes: z.string().optional(),            // F-14: background & notes
   manualOffenseRows: z.array(ManualOffenseRowSchema).optional(), // F-13
   campaignMode: z.boolean().optional(),    // F-17: opt-in mode (default off)

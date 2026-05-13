@@ -1,7 +1,7 @@
 import { CharacterFileSchema } from '../entities/schemas';
 import type { ICharacter, ICharacterFile } from '../entities/types';
 import { downloadBlob } from './downloadHelper';
-import { migratePowers } from '../shared/lib/powerMigration';
+import { migratePowers, migrateEquipment } from '../shared/lib/powerMigration';
 import { SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS } from '../entities/constants';
 const DRAFT_KEY = 'mm3e-draft-character';
 
@@ -74,6 +74,7 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
   return {
     ...raw,
     powers: migratePowers(raw.powers as unknown[]),
+    equipment: migrateEquipment((raw.equipment as unknown[]) ?? []),
   };
 }
 
@@ -126,6 +127,7 @@ export function loadDraft(): ICharacter | null {
     return {
       ...raw,
       powers: migratePowers(raw.powers as unknown[]),
+      equipment: migrateEquipment((raw.equipment as unknown[]) ?? []),
     };
   } catch {
     return null;

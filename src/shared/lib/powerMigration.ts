@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import type { ICharacterPower, IAlternateEffect, IAppliedModifier } from '../../entities/types';
+import type { ICharacterPower, IAlternateEffect, IAppliedModifier, IEquipmentItem, ICharacterPowerComponent } from '../../entities/types';
 
 /**
  * Factory for a safe, empty AE fallback — used when input is malformed.
@@ -107,4 +107,32 @@ export function migratePower(raw: Record<string, unknown>): ICharacterPower {
  */
 export function migratePowers(rawPowers: unknown[]): ICharacterPower[] {
   return rawPowers.map((p) => migratePower(p as Record<string, unknown>));
+}
+
+/**
+ * Migrate an equipment item (similar to migratePower).
+ * Equipment items use the same component structure as powers.
+ * Migrates nested alternateEffects from v1 to v2 format.
+ */
+export function migrateEquipmentItem(raw: Record<string, unknown>): IEquipmentItem {
+  // Migrate alternateEffects if present
+  const migratedAEs = ((raw.alternateEffects as unknown[]) ?? []).map((ae) =>
+    migrateAlternateEffect(ae as Record<string, unknown>)
+  );
+
+  return {
+    id: (raw.id as string) ?? uuidv4(),
+    name: (raw.name as string) ?? '',
+    components: (raw.components as ICharacterPowerComponent[]) ?? [],
+    notes: (raw.notes as string) ?? undefined,
+    alternateEffects: migratedAEs.length > 0 ? migratedAEs : undefined,
+  };
+}
+
+/**
+ * Migrate all equipment items in a character.
+ */
+export function migrateEquipment(rawEquipment: unknown[]): IEquipmentItem[] {
+  if (!Array.isArray(rawEquipment)) return [];
+  return rawEquipment.map((e) => migrateEquipmentItem(e as Record<string, unknown>));
 }

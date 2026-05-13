@@ -183,6 +183,18 @@ export interface ICharacterPower {
   removable?: 'none' | 'removable' | 'easily_removable'; // F-06: device discount
 }
 
+// ── Equipment Item (F-15: structured equipment system) ──
+// Reuses the same component structure as powers for consistency.
+// Equipment items are essentially powers with the "Easily Removable" flaw built-in.
+// Cost: 1 EP (Equipment Point) = 1 PP after the Easily Removable discount.
+export interface IEquipmentItem {
+  id: string;
+  name: string;
+  components: ICharacterPowerComponent[];
+  notes?: string;
+  alternateEffects?: IAlternateEffect[];   // For equipment arrays (e.g., utility belt)
+}
+
 // ── Complication Type ──
 export type ComplicationType =
   | 'motivation' | 'enemy' | 'identity' | 'relationship'
@@ -246,6 +258,7 @@ export interface ICharacter {
   powers: ICharacterPower[];
   complications: IComplication[];
   equipmentNotes: string;        // F-09: free-text equipment block (v1.0)
+  equipment?: IEquipmentItem[];  // F-15: structured equipment system (v1.1+)
   notes?: string;                // F-14: background & notes
   manualOffenseRows?: IManualOffenseRow[]; // F-13: custom attack rows
   campaignMode?: boolean;        // F-17: opt-in PP advancement tracking (default: false)
