@@ -53,6 +53,7 @@ interface CharStoreState {
   setAdvantages: (advantages: ICharacter['advantages']) => void;
   setPowers: (powers: ICharacter['powers']) => void;
   setComplications: (complications: ICharacter['complications']) => void;
+  setEquipment: (equipment: ICharacter['equipment']) => void;
   setEquipmentNotes: (notes: string) => void;
   setNotes: (notes: string) => void;
   setManualOffenseRows: (rows: IManualOffenseRow[]) => void;
@@ -164,6 +165,12 @@ export const useCharStore = create<CharStoreState>()(
   setComplications: (complications) =>
     set((state) => ({
       character: { ...state.character, complications },
+      isDirty: true,
+    })),
+
+  setEquipment: (equipment) =>
+    set((state) => ({
+      character: { ...state.character, equipment },
       isDirty: true,
     })),
 

@@ -1,23 +1,75 @@
+import { useState } from 'react';
 import { useCharStore } from '../../store/charStore';
 import { useTranslation } from 'react-i18next';
-import { Package } from 'lucide-react';
+import { Package, Plus, Edit3, Trash2 } from 'lucide-react';
+import type { IEquipmentItem } from '../../entities/types';
+import { EquipmentBuilder } from '../equipment-builder/EquipmentBuilder';
+import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
+import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
+import { useEquipmentCalculations } from '../equipment-builder/hooks/useEquipmentCalculations';
+import { Tooltip } from '../../shared/ui/Tooltip';
 
 /**
- * EquipmentNotesPanel — F-09 (v1.0)
+ * EquipmentNotesPanel — F-15 (v1.1)
  *
- * A simple free-text area for equipment notes.
- * Data model: character.equipmentNotes: string
- *
- * Architecture note:
- * The field name 'equipmentNotes' is intentionally specific so the v1.1
- * structured Equipment system (see FUTURE_EXPANSIONS.md FX-03) can add
- * character.equipment[], character.vehicles[], character.headquarters[]
- * alongside this field without conflicting with it.
+ * Supports both structured equipment items and free-text notes.
+ * Data model:
+ * - character.equipment: IEquipmentItem[]
+ * - character.equipmentNotes: string
  */
 export function EquipmentNotesPanel() {
   const { t } = useTranslation();
+  const powerDefs = useLocalizedData(POWER_DEFS);
+  const modifierDefs = useLocalizedData(MODIFIER_DEFS);
+  
+  const equipment = useCharStore((s) => s.character.equipment ?? []);
+  const setEquipment = useCharStore((s) => s.setEquipment);
   const equipmentNotes = useCharStore((s) => s.character.equipmentNotes);
   const setEquipmentNotes = useCharStore((s) => s.setEquipmentNotes);
+  
+  const [builderOpen, setBuilderOpen] = useState(false);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+
+  function handleSaveEquipment(item: IEquipmentItem) {
+    if (editIndex !== null) {
+      const next = [...equipment];
+      next[editIndex] = item;
+      setEquipment(next);
+    } else {
+      setEquipment([...equipment, item]);
+    }
+    setBuilderOpen(false);
+    setEditIndex(null);
+  }
+
+  function handleDeleteEquipment(index: number) {
+    const item = equipment[index];
+    const msg = t('equipment.deleteConfirm', { name: item.name }) || `Delete ${item.name}?`;
+    
+    if (confirm(msg)) {
+      setEquipment(equipment.filter((_, i) => i !== index));
+    }
+  }
+
+  function openNew() {
+    setEditIndex(null);
+    setBuilderOpen(true);
+  }
+
+  function openEdit(index: number) {
+    setEditIndex(index);
+    setBuilderOpen(true);
+  }
+
+  // Calculate total EP cost
+  const totalEP = equipment.reduce((sum, item) => {
+    const calc = useEquipmentCalculations({
+      item,
+      powerDefs,
+      allModDefs: modifierDefs,
+    });
+    return sum + calc.totalEP;
+  }, 0);
 
   return (
     <section className="panel equipment-notes-panel">
@@ -26,28 +78,206 @@ export function EquipmentNotesPanel() {
           <Package size={15} style={{ verticalAlign: 'middle', marginRight: 6 }} />
           {t('equipment.title')}
         </h2>
-        <span className="panel-hint">{t('equipment.hint')}</span>
+        {equipment.length > 0 && (
+          <span className="panel-cost">{totalEP} {t('equipment.ep')}</span>
+        )}
       </div>
 
-      <textarea
-        className="equipment-textarea"
-        value={equipmentNotes}
-        onChange={(e) => setEquipmentNotes(e.target.value)}
-        placeholder={t('equipment.placeholder')}
-        rows={5}
-        spellCheck={false}
-      />
+      {/* Structured Equipment List */}
+      {equipment.length > 0 && (
+        <div className="equipment-grid">
+          {equipment.map((item, i) => {
+            const calc = useEquipmentCalculations({
+              item,
+              powerDefs,
+              allModDefs: modifierDefs,
+            });
+
+            // Build display info from components
+            const effectNames = item.components
+              .map((c) => powerDefs.find((d) => d.id === c.effectId))
+              .filter(Boolean)
+              .map((d) => `${d!.name} ${item.components.find((c) => c.effectId === d!.id)?.ranks ?? ''}`);
+
+            return (
+              <div key={item.id} className="equipment-card-item">
+                <div className="equipment-card-top">
+                  <div className="equipment-card-icon">
+                    <Package size={18} />
+                  </div>
+                  <div className="equipment-card-info">
+                    <span className="equipment-card-name">{item.name || t('equipment.unnamed')}</span>
+                    <span className="equipment-card-effect">{effectNames.join(' + ')}</span>
+                  </div>
+                  <span className="equipment-card-cost">{calc.totalEP} {t('equipment.ep')}</span>
+                </div>
+
+                {item.notes && (
+                  <p className="equipment-card-notes">{item.notes}</p>
+                )}
+
+                <div className="equipment-card-actions">
+                  <Tooltip content={t('equipment.editTooltip')}>
+                    <button onClick={() => openEdit(i)} className="equipment-action-btn">
+                      <Edit3 size={14} /> {t('common.edit')}
+                    </button>
+                  </Tooltip>
+                  <button 
+                    onClick={() => handleDeleteEquipment(i)} 
+                    className="equipment-action-btn equipment-action-btn--danger" 
+                    title={t('common.remove')}
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <button className="equipment-new-btn" onClick={openNew}>
+        <Plus size={18} /> {t('equipment.newEquipmentBtn')}
+      </button>
+
+      {/* Free-text Equipment Notes */}
+      <div className="equipment-notes-section">
+        <label className="equipment-notes-label">{t('equipment.notesLabel')}</label>
+        <textarea
+          className="equipment-textarea"
+          value={equipmentNotes}
+          onChange={(e) => setEquipmentNotes(e.target.value)}
+          placeholder={t('equipment.placeholder')}
+          rows={5}
+          spellCheck={false}
+        />
+      </div>
+
+      {/* Equipment Builder Modal */}
+      {builderOpen && (
+        <EquipmentBuilder
+          existingItem={editIndex !== null ? equipment[editIndex] : undefined}
+          onSave={handleSaveEquipment}
+          onClose={() => {
+            setBuilderOpen(false);
+            setEditIndex(null);
+          }}
+        />
+      )}
 
       <style>{`
         .equipment-notes-panel .panel-header {
-          align-items: flex-start;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .equipment-grid {
+          display: flex;
+          flex-direction: column;
+          gap: var(--s-md);
+          margin-bottom: var(--s-lg);
+        }
+        .equipment-card-item {
+          background: var(--c-surface-elevated);
+          border: 1px solid var(--c-border);
+          border-radius: var(--r-md);
+          padding: var(--s-md);
+          transition: border-color var(--t-fast);
+        }
+        .equipment-card-item:hover {
+          border-color: var(--c-primary);
+        }
+        .equipment-card-top {
+          display: flex;
+          align-items: center;
+          gap: var(--s-sm);
+          margin-bottom: var(--s-sm);
+        }
+        .equipment-card-icon {
+          color: var(--c-primary);
+          display: flex;
+          align-items: center;
+        }
+        .equipment-card-info {
+          flex: 1;
+          display: flex;
           flex-direction: column;
           gap: 2px;
         }
-        .equipment-notes-panel .panel-hint {
-          font-size: 0.75rem;
+        .equipment-card-name {
+          font-weight: 600;
+          color: var(--c-text);
+          font-size: 0.95rem;
+        }
+        .equipment-card-effect {
+          font-size: 0.8rem;
           color: var(--c-text-muted);
-          font-style: italic;
+        }
+        .equipment-card-cost {
+          font-weight: 600;
+          color: var(--c-primary);
+          font-size: 0.9rem;
+        }
+        .equipment-card-notes {
+          font-size: 0.8rem;
+          color: var(--c-text-secondary);
+          margin: var(--s-sm) 0;
+          line-height: 1.5;
+        }
+        .equipment-card-actions {
+          display: flex;
+          gap: var(--s-xs);
+          margin-top: var(--s-sm);
+          padding-top: var(--s-sm);
+          border-top: 1px solid var(--c-border);
+        }
+        .equipment-action-btn {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 8px;
+          background: transparent;
+          border: 1px solid var(--c-border);
+          border-radius: var(--r-sm);
+          color: var(--c-text-secondary);
+          font-size: 0.8rem;
+          cursor: pointer;
+          transition: all var(--t-fast);
+        }
+        .equipment-action-btn:hover {
+          background: var(--c-surface);
+          border-color: var(--c-primary);
+          color: var(--c-primary);
+        }
+        .equipment-action-btn--danger:hover {
+          border-color: var(--c-error);
+          color: var(--c-error);
+        }
+        .equipment-new-btn {
+          display: flex;
+          align-items: center;
+          gap: var(--s-xs);
+          padding: var(--s-sm) var(--s-md);
+          background: var(--c-primary);
+          color: white;
+          border: none;
+          border-radius: var(--r-md);
+          font-weight: 500;
+          cursor: pointer;
+          transition: opacity var(--t-fast);
+          margin-bottom: var(--s-lg);
+        }
+        .equipment-new-btn:hover {
+          opacity: 0.9;
+        }
+        .equipment-notes-section {
+          display: flex;
+          flex-direction: column;
+          gap: var(--s-xs);
+        }
+        .equipment-notes-label {
+          font-size: 0.85rem;
+          color: var(--c-text-secondary);
+          font-weight: 500;
         }
         .equipment-textarea {
           width: 100%;
