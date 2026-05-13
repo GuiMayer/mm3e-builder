@@ -330,6 +330,14 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
             animation: none;
           }
         }
+
+        /* Hide on desktop - only show on mobile */
+        @media (min-width: 769px) {
+          .mobile-drawer-backdrop,
+          .mobile-drawer {
+            display: none !important;
+          }
+        }
       `}</style>
     </>
   );
