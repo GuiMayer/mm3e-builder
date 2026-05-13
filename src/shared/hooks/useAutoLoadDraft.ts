@@ -105,7 +105,8 @@ export function useAutoLoadDraft() {
       clearInterval(heartbeatInterval);
       window.removeEventListener('beforeunload', cleanup);
     };
-  }, [loadCharacter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return draftInfo;
 }
