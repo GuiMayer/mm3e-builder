@@ -351,6 +351,13 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
           background: var(--c-surface-elevated); border: 1px solid var(--c-border); color: var(--c-text-secondary);
         }
         .adv-desc-body { font-size: 0.92rem; line-height: 1.7; color: var(--c-text); margin: 0; }
+
+        /* Mobile responsive adjustments for NumberInput */
+        @media (max-width: 768px) {
+          .adv-rank-input {
+            width: 44px;
+          }
+        }
       `}</style>
     </section>
   );
