@@ -170,7 +170,7 @@ export function MobileDrawer({
             <span className="mobile-drawer-label">{t('menu.validationRules')}</span>
             <button
               className="mobile-drawer-item"
-              onClick={() => onValidationRulesChange({ enforcePLLimits: !(validationRules?.enforcePLLimits ?? true) })}
+              onClick={() => onValidationRulesChange({ ...validationRules, enforcePLLimits: !(validationRules?.enforcePLLimits ?? true) })}
             >
               {(validationRules?.enforcePLLimits ?? true) ? <Shield size={20} /> : <ShieldOff size={20} />}
               <span>
@@ -179,7 +179,7 @@ export function MobileDrawer({
             </button>
             <button
               className="mobile-drawer-item"
-              onClick={() => onValidationRulesChange({ enforcePPBudget: !(validationRules?.enforcePPBudget ?? true) })}
+              onClick={() => onValidationRulesChange({ ...validationRules, enforcePPBudget: !(validationRules?.enforcePPBudget ?? true) })}
             >
               {(validationRules?.enforcePPBudget ?? true) ? <Shield size={20} /> : <ShieldOff size={20} />}
               <span>
@@ -188,7 +188,7 @@ export function MobileDrawer({
             </button>
             <button
               className="mobile-drawer-item"
-              onClick={() => onValidationRulesChange({ enforceMinimumAbilityScore: !(validationRules?.enforceMinimumAbilityScore ?? true) })}
+              onClick={() => onValidationRulesChange({ ...validationRules, enforceMinimumAbilityScore: !(validationRules?.enforceMinimumAbilityScore ?? true) })}
             >
               {(validationRules?.enforceMinimumAbilityScore ?? true) ? <Shield size={20} /> : <ShieldOff size={20} />}
               <span>
@@ -197,7 +197,7 @@ export function MobileDrawer({
             </button>
             <button
               className="mobile-drawer-item"
-              onClick={() => onValidationRulesChange({ enforceAlternateEffectCap: !(validationRules?.enforceAlternateEffectCap ?? true) })}
+              onClick={() => onValidationRulesChange({ ...validationRules, enforceAlternateEffectCap: !(validationRules?.enforceAlternateEffectCap ?? true) })}
             >
               {(validationRules?.enforceAlternateEffectCap ?? true) ? <Shield size={20} /> : <ShieldOff size={20} />}
               <span>
@@ -206,7 +206,7 @@ export function MobileDrawer({
             </button>
             <button
               className="mobile-drawer-item"
-              onClick={() => onValidationRulesChange({ enforceEquipmentPPLimit: !(validationRules?.enforceEquipmentPPLimit ?? true) })}
+              onClick={() => onValidationRulesChange({ ...validationRules, enforceEquipmentPPLimit: !(validationRules?.enforceEquipmentPPLimit ?? true) })}
             >
               {(validationRules?.enforceEquipmentPPLimit ?? true) ? <Shield size={20} /> : <ShieldOff size={20} />}
               <span>
