@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { X } from 'lucide-react';
 
 type DrawerHeight = 'closed' | 'peek' | 'full';
@@ -43,7 +43,7 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
     }
   }, [height]);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
     setIsDragging(true);
     setStartY(e.touches[0].clientY);
     setStartHeight(currentHeight);
@@ -55,9 +55,9 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
     if ('vibrate' in navigator) {
       navigator.vibrate(10);
     }
-  };
+  }, [currentHeight]);
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging) return;
 
     const currentY = e.touches[0].clientY;
@@ -76,9 +76,9 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
     lastMoveY.current = currentY;
 
     setCurrentHeight(newHeight);
-  };
+  }, [isDragging, startY, startHeight]);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     if (!isDragging) return;
     setIsDragging(false);
 
@@ -122,13 +122,13 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
     if ('vibrate' in navigator) {
       navigator.vibrate(15);
     }
-  };
+  }, [isDragging, currentHeight, dragVelocity, onHeightChange, onClose]);
 
   // Close on backdrop click
-  const handleBackdropClick = () => {
+  const handleBackdropClick = useCallback(() => {
     onHeightChange('closed');
     onClose();
-  };
+  }, [onHeightChange, onClose]);
 
   // Close on ESC key
   useEffect(() => {

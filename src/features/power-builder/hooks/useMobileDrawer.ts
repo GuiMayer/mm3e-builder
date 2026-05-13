@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 type DrawerHeight = 'closed' | 'peek' | 'full';
 
@@ -23,23 +23,23 @@ export function useMobileDrawer() {
     }
   }, [height]);
 
-  const openDrawer = (initialHeight: DrawerHeight = 'peek') => {
+  const openDrawer = useCallback((initialHeight: DrawerHeight = 'peek') => {
     setIsOpen(true);
     setHeight(initialHeight);
-  };
+  }, []);
 
-  const closeDrawer = () => {
+  const closeDrawer = useCallback(() => {
     setIsOpen(false);
     setHeight('closed');
-  };
+  }, []);
 
-  const toggleDrawer = () => {
+  const toggleDrawer = useCallback(() => {
     if (isOpen && height !== 'closed') {
       closeDrawer();
     } else {
       openDrawer();
     }
-  };
+  }, [isOpen, height, closeDrawer, openDrawer]);
 
   return {
     isOpen,
