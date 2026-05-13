@@ -535,6 +535,19 @@ export function SkillsPanel({ cost }: { cost: number }) {
           padding: var(--s-xs) var(--s-md) var(--s-sm);
           margin: 0;
         }
+
+        /* Mobile responsive adjustments for NumberInput */
+        @media (max-width: 768px) {
+          .skill-input {
+            width: 60px;
+          }
+          .skill-input--other {
+            width: 48px;
+          }
+          .skill-row {
+            flex-wrap: wrap;
+          }
+        }
       `}</style>
     </section>
   );
