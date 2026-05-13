@@ -403,6 +403,59 @@ export function MobileDrawer({
             transform: rotate(360deg);
           }
         }
+
+        /* Styles for ThemeSelector and LanguageSelector components */
+        .menubar-setting {
+          width: 100%;
+        }
+
+        .menubar-setting label {
+          display: flex;
+          align-items: center;
+          gap: var(--s-sm);
+          width: 100%;
+          padding: var(--s-sm) var(--s-md);
+          color: var(--c-text);
+          font-size: 0.9rem;
+          background: var(--c-surface-elevated);
+          border-radius: var(--r-md);
+          cursor: pointer;
+          transition: all var(--t-fast);
+        }
+
+        .menubar-setting label:hover {
+          background: var(--c-primary-muted);
+        }
+
+        .menubar-setting select {
+          flex: 1;
+          background: var(--c-bg);
+          border: 1px solid var(--c-border);
+          border-radius: var(--r-sm);
+          color: var(--c-text);
+          font-family: var(--f-body);
+          font-size: 0.9rem;
+          padding: var(--s-xs) var(--s-sm);
+          cursor: pointer;
+          min-height: 44px;
+        }
+
+        .menubar-setting select:hover {
+          border-color: var(--c-primary);
+        }
+
+        .menubar-setting select:focus {
+          outline: none;
+          border-color: var(--c-primary);
+          box-shadow: 0 0 0 2px var(--c-primary-muted);
+        }
+
+        /* Touch feedback for mobile */
+        .mobile-drawer-item:active:not(:disabled) {
+          transform: scale(0.98);
+          background: var(--c-primary);
+          color: #fff;
+        }
       `}</style>
     </>
   );
