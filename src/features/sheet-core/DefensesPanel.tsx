@@ -203,6 +203,9 @@ export function DefensesPanel({ cost }: { cost: number }) {
           .defense-base {
             min-width: 50px;
           }
+          .defense-input {
+            width: 60px;
+          }
         }
       `}</style>
     </section>
