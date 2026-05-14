@@ -26,14 +26,7 @@ import { getActiveValidationRules } from '../lib/validationRules';
  * - Close Combat / Ranged Combat skill totals <= PL×2
  */
 export function usePLValidation(): PLViolation[] {
-  // Use specific selectors instead of subscribing to the entire character object
-  // This prevents unnecessary re-renders when unrelated parts of character change
-  const powerLevel = useCharStore((s) => s.character.header.powerLevel);
-  const abilities = useCharStore((s) => s.character.abilities);
-  const defenses = useCharStore((s) => s.character.defenses);
-  const powers = useCharStore((s) => s.character.powers);
-  const skills = useCharStore((s) => s.character.skills);
-  const advantages = useCharStore((s) => s.character.advantages);
+  const character  = useCharStore((s) => s.character);
   const validationRules = useAppStore((s) => s.validationRules);
 
   return useMemo(() => {
@@ -41,7 +34,9 @@ export function usePLValidation(): PLViolation[] {
     const activeRules = getActiveValidationRules(validationRules);
     if (!activeRules.enforcePLLimits) return [];
 
-    const pl = powerLevel;
+    const pl        = character.header.powerLevel;
+    const abilities = character.abilities;
+    const defenses  = character.defenses;
 
     const dodgeTotal     = abilities.agl + defenses.dodge;
     const parryTotal     = abilities.fgt + defenses.parry;
@@ -50,8 +45,8 @@ export function usePLValidation(): PLViolation[] {
 
     // ── Real Toughness: STA + Protection powers + Defensive Roll ──
     const { bonus: toughnessBonus } = calcToughnessBonus(
-      powers,
-      advantages,
+      character.powers,
+      character.advantages,
       POWER_DEFS
     );
     const toughnessTotal = abilities.sta + toughnessBonus;
@@ -68,7 +63,7 @@ export function usePLValidation(): PLViolation[] {
     if (v3) violations.push(v3);
 
     // ── Attack-type power components ──────────────────────────────
-    for (const power of powers) {
+    for (const power of character.powers) {
       const attackComponents = power.components.filter((comp) => {
         const def = POWER_DEFS.find((d) => d.id === comp.effectId);
         return def?.type === 'attack';
@@ -81,13 +76,11 @@ export function usePLValidation(): PLViolation[] {
       const highestRank = primaryComp.ranks;
 
       // F-12: use real derived attack bonus
-      // Build a minimal character object for calcAttackBonus
-      const charForCalc = { abilities, skills, powers, advantages };
       const { value: attackBonus, isNoRoll } = calcAttackBonus(
         primaryDef.range,
         power.name,
         primaryComp,
-        charForCalc,
+        character,
         SKILL_DEFS,
         MODIFIER_DEFS
       );
@@ -118,7 +111,7 @@ export function usePLValidation(): PLViolation[] {
     // ── Combat skill caps ─────────────────────────────────────────
     // Close Combat and Ranged Combat: total (abilityBase + ranks) <= PL×2
     // Other skills: total <= PL + 10
-    for (const skillEntry of skills) {
+    for (const skillEntry of character.skills) {
       const def = SKILL_DEFS.find((d) => d.id === skillEntry.skillId);
       if (!def) continue;
 
@@ -138,5 +131,5 @@ export function usePLValidation(): PLViolation[] {
     }
 
     return violations;
-  }, [powerLevel, abilities, defenses, powers, skills, advantages, validationRules]);
+  }, [character, validationRules]);
 }
