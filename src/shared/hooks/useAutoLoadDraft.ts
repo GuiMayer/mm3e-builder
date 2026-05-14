@@ -3,14 +3,13 @@ import { useCharStore } from '../../store/charStore';
 import { loadDraft } from '../../services/fileService';
 import type { ICharacter } from '../../entities/types';
 
-const SESSION_KEY = 'mm3e-draft-loaded-this-session';
 const INSTANCE_KEY = 'mm3e-app-instance-active';
 
 /**
  * Hook that auto-loads the character draft from localStorage on app mount.
  * 
  * Features:
- * - Loads draft only once per browser session
+ * - Loads draft on every page load to show notification banner
  * - Detects if another instance is already open (skips load)
  * - Returns draft info for UI notification
  * - Handles corrupted drafts gracefully
@@ -28,22 +27,20 @@ export function useAutoLoadDraft() {
   });
 
   useEffect(() => {
-    // Only run once on mount
-    const alreadyLoaded = sessionStorage.getItem(SESSION_KEY);
-    if (alreadyLoaded) {
-      return;
-    }
-
+    console.log('[useAutoLoadDraft] Effect triggered');
+    
     // Check if another instance is already active
     const instanceActive = localStorage.getItem(INSTANCE_KEY);
     const now = Date.now();
+    console.log('[useAutoLoadDraft] Instance check:', { instanceActive, now });
     
     if (instanceActive) {
       const timestamp = parseInt(instanceActive, 10);
+      const timeDiff = now - timestamp;
+      console.log('[useAutoLoadDraft] Instance timestamp check:', { timestamp, timeDiff, threshold: 5000 });
       // If another instance was active in the last 5 seconds, skip loading
-      if (now - timestamp < 5000) {
+      if (timeDiff < 5000) {
         console.log('[useAutoLoadDraft] Another instance detected, skipping draft load');
-        sessionStorage.setItem(SESSION_KEY, 'skipped');
         setDraftInfo({
           loaded: false,
           character: null,
@@ -79,7 +76,6 @@ export function useAutoLoadDraft() {
       if (draft) {
         console.log('[useAutoLoadDraft] Draft found, loading character');
         loadCharacter(draft);
-        sessionStorage.setItem(SESSION_KEY, 'loaded');
         setDraftInfo({
           loaded: true,
           character: draft,
@@ -87,7 +83,6 @@ export function useAutoLoadDraft() {
         });
       } else {
         console.log('[useAutoLoadDraft] No draft found');
-        sessionStorage.setItem(SESSION_KEY, 'no-draft');
       }
     } catch (error) {
       console.error('[useAutoLoadDraft] Failed to load draft:', error);
@@ -97,7 +92,6 @@ export function useAutoLoadDraft() {
       } catch {
         // Ignore cleanup errors
       }
-      sessionStorage.setItem(SESSION_KEY, 'error');
     }
 
     // Cleanup function

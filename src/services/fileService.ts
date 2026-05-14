@@ -91,6 +91,21 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
  */
 export function saveDraft(character: ICharacter): boolean {
   try {
+    // Compare only character data, not the full file with timestamp
+    const characterJSON = JSON.stringify(character);
+    
+    // Skip save if content hasn't changed (prevents redundant saves and loops)
+    if (characterJSON === lastSavedJSON) {
+      console.log('[saveDraft] Skipping save - content unchanged');
+      return true;
+    }
+    
+    console.log('[saveDraft] Saving draft to localStorage...', {
+      characterName: character.header.name,
+      key: DRAFT_KEY,
+      size: characterJSON.length
+    });
+    
     const file: ICharacterFile = {
       schemaVersion: SCHEMA_VERSION,
       exportedAt: new Date().toISOString(),
@@ -98,13 +113,8 @@ export function saveDraft(character: ICharacter): boolean {
     };
     const json = JSON.stringify(file);
     
-    // Skip save if content hasn't changed (prevents redundant saves and loops)
-    if (json === lastSavedJSON) {
-      return true;
-    }
-    
     localStorage.setItem(DRAFT_KEY, json);
-    lastSavedJSON = json;
+    lastSavedJSON = characterJSON; // Store only character JSON for comparison
     
     // Store metadata separately for quick access without parsing full character
     const metadata = {
@@ -114,8 +124,10 @@ export function saveDraft(character: ICharacter): boolean {
     };
     localStorage.setItem(DRAFT_KEY + '-metadata', JSON.stringify(metadata));
     
+    console.log('[saveDraft] Draft saved successfully');
     return true;
   } catch (e) {
+    console.error('[saveDraft] Error saving draft:', e);
     if (e instanceof DOMException && e.name === 'QuotaExceededError') {
       // Fallback: auto-export
       exportCharacterJSON(character, 'en', 'emergency-backup.json');
@@ -127,23 +139,38 @@ export function saveDraft(character: ICharacter): boolean {
 
 /**
  * Load draft from localStorage.
+ * Syncs lastSavedJSON to prevent redundant saves after load.
  */
 export function loadDraft(): ICharacter | null {
   try {
     const stored = localStorage.getItem(DRAFT_KEY);
-    if (!stored) return null;
+    if (!stored) {
+      console.log('[loadDraft] No draft found in localStorage');
+      return null;
+    }
 
+    console.log('[loadDraft] Draft found, parsing...');
     const parsed = JSON.parse(stored);
     const result = CharacterFileSchema.safeParse(parsed);
-    if (!result.success) return null;
+    if (!result.success) {
+      console.error('[loadDraft] Draft validation failed:', result.error);
+      return null;
+    }
 
     const raw = result.data.character;
-    return {
+    const character = {
       ...raw,
       powers: migratePowers(raw.powers as unknown[]),
       equipment: migrateEquipment((raw.equipment as unknown[]) ?? []),
     };
-  } catch {
+
+    // Sync lastSavedJSON with character data only (not full file with timestamp)
+    lastSavedJSON = JSON.stringify(character);
+    console.log('[loadDraft] Draft loaded and lastSavedJSON synced');
+
+    return character;
+  } catch (error) {
+    console.error('[loadDraft] Error loading draft:', error);
     return null;
   }
 }
