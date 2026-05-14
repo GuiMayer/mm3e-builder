@@ -6,6 +6,7 @@ import type {
 import { EffectCombobox } from '../../../shared/ui/EffectCombobox';
 import { ModifierDropzone } from './ModifierDropzone';
 import { VariableCostSelector } from './VariableCostSelector';
+import { ConfigurableFieldSelector } from './ConfigurableFieldSelector';
 import { X, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../../shared/ui/NumberInput';
@@ -115,6 +116,22 @@ export function PowerComponentEditor({
           options={effectDef.variableCost.options}
           selected={component.variableCostOption}
           onChange={(optionName: string) => onUpdateComponent({ variableCostOption: optionName })}
+          t={t}
+        />
+      )}
+
+      {/* Configurable Fields Selector */}
+      {effectDef && effectDef.configurableFields && effectDef.configurableFields.length > 0 && (
+        <ConfigurableFieldSelector
+          fields={effectDef.configurableFields}
+          values={component.configurableFieldValues || {}}
+          onChange={(fieldId: string, value: string | string[]) => {
+            const newValues = {
+              ...(component.configurableFieldValues || {}),
+              [fieldId]: value,
+            };
+            onUpdateComponent({ configurableFieldValues: newValues });
+          }}
           t={t}
         />
       )}
