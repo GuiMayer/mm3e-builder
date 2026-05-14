@@ -105,7 +105,7 @@
         "description":  "Add an alternate version of the effect to a power array. +2 if Dynamic.",
         "longDescription":  "One additional effect can be substituted for the main effect. The total cost of the array is the most expensive effect plus 1 per alternate (2 if Dynamic). Only one effect can be active at a time (or two simultaneously if both are Dynamic).",
         "incompatibleWith":  [
-
+                                 "permanent_flaw"
                              ],
         "i18n":  {
                      "pt-BR":  {
@@ -768,7 +768,7 @@
         "description":  "Makes a permanent effect sustained: can be turned off and used for power stunts.",
         "longDescription":  "Applied to a permanent effect, this makes it sustained duration instead. The effect can now be turned on and off, improved with extra effort, and used for power stunts. It requires a free action each turn to maintain.",
         "incompatibleWith":  [
-
+                                 "permanent_flaw"
                              ],
         "i18n":  {
                      "pt-BR":  {
@@ -1057,7 +1057,7 @@
         "description":  "A continuous effect becomes permanent: always on, cannot be improved with extra effort.",
         "longDescription":  "A continuous effect becomes permanent in duration. It cannot be turned off voluntarily and always remains active. If an outside force (like Nullify) turns it off, it reactivates at the earliest opportunity. Cannot be improved with extra effort.",
         "incompatibleWith":  [
-
+                                 "alternate_effect"
                              ],
         "i18n":  {
                      "pt-BR":  {
