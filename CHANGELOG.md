@@ -7,6 +7,125 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.9.0] - 2026-05-14
+
+### Added
+- **Empty Component Detection**: Automatic cleanup of empty power components
+- **Visual Incompatibility Warnings**: Real-time warnings for incompatible modifiers in UI
+
+### Fixed
+- React StrictMode race condition in draft auto-load
+- sessionStorage blocking draft reload
+- isDirty flag reset after successful auto-save
+
+### Documentation
+- Updated checklist marking empty component detection as completed
+
+---
+
+## [1.8.0] - 2026-05-14
+
+### Added
+- **Power Descriptors System**: Visual descriptor tags for powers
+- **Modifier Incompatibilities**: Validation system for incompatible modifiers
+- **Variable Cost Powers**: Support for powers with variable cost per rank
+  - Affliction variable cost by condition degree
+  - Enhanced Trait variable cost support
+  - Environment variable cost documentation
+
+### Changed
+- Device toggle replaced with Removable modifier badge in PowerBuilder
+- Equipment now uses PowerBuilder for consistent power creation
+- Optimized Zustand selectors to prevent unnecessary re-renders
+
+### Fixed
+- **Auto-Save System Fixes** (5-phase refactoring):
+  - Infinite loop in useDraftAutoSave
+  - loadCharacter dependency issues in useAutoLoadDraft
+  - isDirty flag reset after successful auto-save
+  - Loop protection in saveDraft
+  - Removed debug logs
+- **Equipment Fixes**:
+  - EP cost calculation corrected
+  - Removed false removable flag
+  - EP limit exceeded warning with calculation breakdown
+  - Cached getSnapshot result to prevent infinite loop
+  - Removed duplicate useCalculatedPP declaration
+- **Mobile Refinements**:
+  - Header color in unlimited mode
+  - Mobile menu translation
+  - NumberInput button sizes for mobile
+  - Panel layouts optimized for mobile
+- **Power Builder**:
+  - Mobile drawer with 3-phase implementation
+  - UX and accessibility improvements
+  - Performance optimizations
+  - Modifier layout for mobile devices
+- Sustained/Permanent_flaw bidirectional incompatibility
+- TypeScript errors in usePLValidation
+- Reverted to stable hooks version (commit 43078d9)
+
+### Documentation
+- Complete MM3E v1.4.1 audit
+- Environment variable cost documentation
+- Affliction correction documentation
+- Progress tracking document
+
+---
+
+## [1.7.0] - 2026-05-13
+
+### Added
+- **Equipment System (F-15)**: Complete equipment builder
+  - IEquipmentItem type and schema with migration support
+  - useEquipmentCalculations hook for EP tracking
+  - EquipmentBuilder component with PowerBuilder integration
+  - Equipment integration in CharacterSheet
+  - Full i18n translations for equipment system
+  - Shows only when Equipment advantage is selected
+
+---
+
+## [1.6.0] - 2026-05-13
+
+### Added
+- **Complete Mobile Responsiveness**: Full mobile optimization
+  - Responsive design system with breakpoints and tokens
+  - Navigation drawer with hamburger menu
+  - Responsive layouts for SheetView, PowerBuilder, and all core panels
+  - WCAG 2.1 AA compliant touch targets (44×44px minimum)
+  - Mobile-optimized AbilitiesPanel, SkillsPanel, DefensesPanel, AdvantagesPanel
+  - Floating Action Button (FAB) for mobile navigation
+  - Theme and language selectors in mobile drawer
+  - Validation rules toggle in mobile drawer
+
+### Fixed
+- NumberInput double-increment bug on touch devices
+- Mobile drawer height issue
+- Desktop-specific hiding of mobile drawer and FAB
+- strictMode parameter in usePowerCostCalculation
+
+---
+
+## [1.5.0] - 2026-05-11
+
+### Added
+- **Draft Auto-Load System**: Automatic recovery of unsaved work
+  - Auto-load draft functionality on app start
+  - Draft notification banner with metadata
+  - Clear draft option in settings
+  - Comprehensive test coverage for draft recovery
+- **Custom NumberInput Component**: Themed spinbox controls
+  - Integrated across all panels (Abilities, Skills, Defenses, Advantages)
+  - Improved accessibility and touch targets
+  - Consistent styling with app theme
+
+### Technical
+- Refactored NumberInput integration in 3 phases
+- Added draft metadata tracking
+
+---
+
 ## [1.4.1] - 2026-05-11
 
 ### Fixed
@@ -213,6 +332,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Key Feature | Schema Version |
 |---------|------|-------------|----------------|
+| 1.9.0 | 2026-05-14 | Empty Component Detection | 2.0.0 |
+| 1.8.0 | 2026-05-14 | Power Descriptors + Variable Cost | 2.0.0 |
+| 1.7.0 | 2026-05-13 | Equipment System | 2.0.0 |
+| 1.6.0 | 2026-05-13 | Mobile Responsiveness | 2.0.0 |
+| 1.5.0 | 2026-05-11 | Draft Auto-Load + NumberInput | 2.0.0 |
+| 1.4.1 | 2026-05-11 | Export Corrections | 2.0.0 |
 | 1.4.0 | 2026-05-10 | Data Quality Complete | 2.0.0 |
 | 1.3.0 | 2026-04-28 | Rules Validation System | 2.0.0 |
 | 1.2.0 | 2026-04-15 | Power Builder v2 | 2.0.0 |
@@ -269,6 +394,12 @@ If you encounter issues, please report at: https://github.com/GuiMayer/mm3e-buil
 
 ---
 
+[1.9.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.8.0...v1.9.0
+[1.8.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.7.0...v1.8.0
+[1.7.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.6.0...v1.7.0
+[1.6.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.5.0...v1.6.0
+[1.5.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.4.1...v1.5.0
+[1.4.1]: https://github.com/GuiMayer/mm3e-builder/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.1.0...v1.2.0
