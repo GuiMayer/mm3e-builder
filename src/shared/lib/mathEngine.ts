@@ -321,6 +321,31 @@ export function calcPowerTotalCost(
   return Math.max(0, arrayCost - discount);
 }
 
+/**
+ * Calculate Equipment Points (EP) cost for an equipment item.
+ *
+ * Equipment uses the same component structure as powers, but cost is in EP.
+ * The Equipment advantage already provides the "Easily Removable" discount
+ * inherently (1 rank = 5 EP = 1 PP), so we do NOT apply calcRemovableDiscount().
+ *
+ * EP cost = sum of component costs + AE flat costs (1 EP per static AE, 2 per dynamic)
+ * Minimum 1 EP per item.
+ */
+export function calcEquipmentEPCost(
+  item: ICharacterPower,
+  powerDefs: IPowerEffect[],
+  modifierDefs: IModifierDef[]
+): number {
+  const mainCost = item.components.reduce((sum, comp) => {
+    const def = powerDefs.find((d) => d.id === comp.effectId);
+    return def ? sum + calcComponentCost(comp, def, modifierDefs) : sum;
+  }, 0);
+  const dynamicCount = item.alternateEffects.filter((a) => a.dynamic).length;
+  const arrayCost = calculateArrayCost(mainCost, item.alternateEffects.length, dynamicCount);
+  // No removable discount for equipment — it's inherent in the EP system
+  return Math.max(1, arrayCost);
+}
+
 // ── Derived Stats (pure — usable by PDF generator and React hooks alike) ────
 
 /**

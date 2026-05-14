@@ -125,7 +125,7 @@ export function migrateEquipmentItem(raw: Record<string, unknown>): ICharacterPo
     components: (raw.components as ICharacterPowerComponent[]) ?? [],
     notes: (raw.notes as string) ?? '',
     alternateEffects: migratedAEs,
-    removable: 'easily_removable',
+    removable: 'none', // Equipment EP cost does not use removable discount
   };
 }
 

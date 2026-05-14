@@ -7,6 +7,7 @@ import {
   calculateSkillsCost,
   calculateAdvantagesCost,
   calcPowerTotalCost,
+  calcEquipmentEPCost,
 } from '../lib/mathEngine';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { getActiveValidationRules } from '../lib/validationRules';
@@ -54,7 +55,7 @@ export function useCalculatedPP() {
     const equipmentEPLimit = equipmentRanks * 5;
     const equipmentItems = character.equipment ?? [];
     const totalEPUsed = equipmentItems.reduce(
-      (sum, item) => sum + calcPowerTotalCost(item, POWER_DEFS, MODIFIER_DEFS),
+      (sum, item) => sum + calcEquipmentEPCost(item, POWER_DEFS, MODIFIER_DEFS),
       0
     );
     const isOverEquipmentLimit = activeRules.enforceEquipmentPPLimit && totalEPUsed > equipmentEPLimit;

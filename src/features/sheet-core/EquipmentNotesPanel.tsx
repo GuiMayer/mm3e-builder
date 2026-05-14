@@ -6,14 +6,16 @@ import type { ICharacterPower } from '../../entities/types';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
-import { calcPowerTotalCost } from '../../shared/lib/mathEngine';
+import { calcEquipmentEPCost } from '../../shared/lib/mathEngine';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 
 /**
  * EquipmentNotesPanel — F-15 (v2.0)
  *
  * Equipment section that uses PowerBuilderOverlay.
- * Equipment items are stored as ICharacterPower[] with removable='easily_removable'.
+ * Equipment items are stored as ICharacterPower[] with removable='none'.
+ * EP cost is calculated via calcEquipmentEPCost() which does NOT apply
+ * the removable discount (it's inherent in the Equipment advantage system).
  * Only visible when the Equipment advantage is purchased.
  * EP budget = Equipment advantage ranks × 5.
  */
@@ -36,10 +38,12 @@ export function EquipmentNotesPanel() {
   if (equipmentRanks === 0) return null;
 
   function handleSaveEquipment(power: ICharacterPower) {
-    // Force equipment to always be 'easily_removable'
+    // Equipment items should NOT have removable set — EP cost is calculated
+    // without removable discount (it's inherent in the Equipment advantage).
+    // Strip removable if user set it accidentally in Power Builder.
     const equipmentItem: ICharacterPower = {
       ...power,
-      removable: 'easily_removable',
+      removable: 'none',
     };
 
     if (editIndex !== null) {
@@ -72,11 +76,11 @@ export function EquipmentNotesPanel() {
     setBuilderOpen(true);
   }
 
-  // Prepare the power for editing — equipment is always 'easily_removable'
+  // Prepare the power for editing — equipment does not use removable
   function getEditPower(): ICharacterPower | undefined {
     if (editIndex === null) return undefined;
     const item = equipment[editIndex];
-    return { ...item, removable: 'easily_removable' };
+    return { ...item, removable: 'none' };
   }
 
   return (
@@ -115,7 +119,7 @@ export function EquipmentNotesPanel() {
       {equipment.length > 0 && (
         <div className="equipment-grid">
           {equipment.map((item, i) => {
-            const totalCost = calcPowerTotalCost(item, powerDefs, modifierDefs);
+            const totalCost = calcEquipmentEPCost(item, powerDefs, modifierDefs);
 
             // Build display info from components
             const effectNames = item.components
