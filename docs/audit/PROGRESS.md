@@ -54,49 +54,46 @@
 
 **Impacto**: Previne combinações inválidas de modifiers que violam as regras do sistema.
 
----
+### 3. Affliction - Custo por Grau de Condição
+**Commits**: `10869d3`, `f55eb13`, `ebe74d7`  
+**Status**: ✅ CONCLUÍDO
 
-## 🔴 PENDENTE - PRIORIDADE CRÍTICA
+**O que foi feito**:
+- Adicionado campo `variableCost` com 3 opções (1, 2, 3 graus)
+- Documentado custo: 1 PP/rank por grau de condição
+- Atualizado descrições em inglês e português
+- Adicionado `longDescription` completa com referência ao Hero's Handbook p.149
+- Adicionado 5 novos testes de custo por grau
+- Validado exemplos: Poison (24 PP), Mind Control (30 PP), Stun (12 PP)
+- Todos os 41 testes de affliction passando
+- Todos os testes existentes (altEffects, dataIntegrity) passando
 
-### 3. Affliction - Corrigir Custo Base
-
-**Problema**: Affliction tem custo fixo de 1 PP/rank quando deveria ser 1 PP/rank **por grau de condição**.
-
-**Regra Oficial** (Hero's Handbook p.140):
-- 1 grau (Dazed/Hindered): 1 PP/rank
-- 2 graus (Dazed + Stunned): 2 PP/rank
-- 3 graus (Dazed + Stunned + Incapacitated): 3 PP/rank
-
-**Impacto**: ALTO - Afflictions multi-grau custam significativamente menos que deveriam.
+**Impacto**: Corrige erro de 100-200% no custo de Afflictions multi-grau.
 
 **Exemplo**:
-- Affliction rank 10 com 3 graus deveria custar 30 PP
-- Atualmente custa apenas 10 PP
-- Diferença: 20 PP (erro de 200%)
-
-**Arquivos a Modificar**:
-1. `src/data/powers.json` - Alterar definição de affliction
-2. `src/shared/lib/mathEngine.ts` - Adicionar lógica de custo por grau
-3. `src/__tests__/powers.test.ts` - Atualizar testes
+- Affliction rank 10 com 3 graus: 30 PP (correto)
+- Antes: 10 PP (incorreto - erro de 200%)
 
 ---
 
 ## 📊 Estatísticas
 
 - **Total de Correções Críticas**: 4
-- **Concluídas**: 3 (75%)
-- **Pendentes**: 1 (25%)
-- **Commits Realizados**: 3
-- **Arquivos Modificados**: 2 (powers.json, modifiers.json)
+- **Concluídas**: 4 (100%)
+- **Pendentes**: 0 (0%)
+- **Commits Realizados**: 6
+- **Arquivos Modificados**: 3 (powers.json, modifiers.json, affliction.test.ts)
 
 ---
 
 ## 🎯 Próximos Passos
 
-1. Implementar correção de Affliction (custo por grau)
-2. Executar testes para validar correções
-3. Atualizar documentação de usuário
-4. Considerar melhorias de prioridade alta (adicionar powers essenciais)
+1. ✅ ~~Implementar correção de Affliction (custo por grau)~~ - CONCLUÍDO
+2. ✅ ~~Executar testes para validar correções~~ - CONCLUÍDO
+3. Considerar melhorias de prioridade alta:
+   - Adicionar 8 powers essenciais faltando (Protection, Move Object, Senses, Speed, Teleport, Nullify, Weaken, Regeneration)
+   - Documentar Environment custo variável (1-2 PP/rank)
+4. Atualizar documentação de usuário com exemplos de Afflictions multi-grau
 
 ---
 

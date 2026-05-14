@@ -6,6 +6,8 @@
 
 **DESCOBERTA IMPORTANTE**: Todos os 40 powers base oficiais estão implementados! A auditoria anterior estava contando Sample Powers (exemplos pré-construídos) como se fossem powers base independentes.
 
+**ATUALIZAÇÃO 14/05/2026**: ✅ Todas as 4 correções críticas foram concluídas! Ver `PROGRESS.md` para detalhes dos commits.
+
 ---
 
 ## PRIORIDADE CRÍTICA 🔴
