@@ -26,7 +26,14 @@ import { getActiveValidationRules } from '../lib/validationRules';
  * - Close Combat / Ranged Combat skill totals <= PL×2
  */
 export function usePLValidation(): PLViolation[] {
-  const character  = useCharStore((s) => s.character);
+  // Use specific selectors instead of subscribing to the entire character object
+  // This prevents unnecessary re-renders when unrelated parts of character change
+  const powerLevel = useCharStore((s) => s.character.header.powerLevel);
+  const abilities = useCharStore((s) => s.character.abilities);
+  const defenses = useCharStore((s) => s.character.defenses);
+  const powers = useCharStore((s) => s.character.powers);
+  const skills = useCharStore((s) => s.character.skills);
+  const advantages = useCharStore((s) => s.character.advantages);
   const validationRules = useAppStore((s) => s.validationRules);
 
   return useMemo(() => {
@@ -34,9 +41,7 @@ export function usePLValidation(): PLViolation[] {
     const activeRules = getActiveValidationRules(validationRules);
     if (!activeRules.enforcePLLimits) return [];
 
-    const pl        = character.header.powerLevel;
-    const abilities = character.abilities;
-    const defenses  = character.defenses;
+    const pl = powerLevel;
 
     const dodgeTotal     = abilities.agl + defenses.dodge;
     const parryTotal     = abilities.fgt + defenses.parry;
@@ -111,7 +116,7 @@ export function usePLValidation(): PLViolation[] {
     // ── Combat skill caps ─────────────────────────────────────────
     // Close Combat and Ranged Combat: total (abilityBase + ranks) <= PL×2
     // Other skills: total <= PL + 10
-    for (const skillEntry of character.skills) {
+    for (const skillEntry of skills) {
       const def = SKILL_DEFS.find((d) => d.id === skillEntry.skillId);
       if (!def) continue;
 
@@ -131,5 +136,5 @@ export function usePLValidation(): PLViolation[] {
     }
 
     return violations;
-  }, [character, validationRules]);
+  }, [powerLevel, abilities, defenses, powers, skills, advantages, validationRules]);
 }

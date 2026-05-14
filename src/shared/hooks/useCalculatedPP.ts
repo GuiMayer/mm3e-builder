@@ -42,32 +42,42 @@ function calculateTotalEquipmentPoints(equipment: IEquipmentItem[]): number {
 /**
  * Hook that reactively calculates total PP spent across all sections.
  * When enforcePPBudget is disabled, isOverBudget will always be false.
+ * 
+ * Optimized: Uses specific selectors instead of subscribing to entire character object
+ * to prevent unnecessary re-renders when unrelated parts change.
  */
 export function useCalculatedPP() {
-  const character = useCharStore((s) => s.character);
+  // Use specific selectors instead of subscribing to the entire character object
+  const powerLevel = useCharStore((s) => s.character.header.powerLevel);
+  const abilities = useCharStore((s) => s.character.abilities);
+  const absentAbilities = useCharStore((s) => s.character.absentAbilities);
+  const defenses = useCharStore((s) => s.character.defenses);
+  const skills = useCharStore((s) => s.character.skills);
+  const advantages = useCharStore((s) => s.character.advantages);
+  const powers = useCharStore((s) => s.character.powers);
+  const equipment = useCharStore((s) => s.character.equipment);
+  const campaignMode = useCharStore((s) => s.character.campaignMode);
+  const ppLog = useCharStore((s) => s.character.ppLog);
   const validationRules = useAppStore((s) => s.validationRules);
 
   return useMemo(() => {
-    const abilitiesCost = calculateAbilitiesCost(
-      character.abilities,
-      character.absentAbilities
-    );
-    const defensesCost = calculateDefensesCost(character.defenses);
-    const totalSkillRanks = character.skills.reduce((sum, s) => sum + s.ranks, 0);
+    const abilitiesCost = calculateAbilitiesCost(abilities, absentAbilities);
+    const defensesCost = calculateDefensesCost(defenses);
+    const totalSkillRanks = skills.reduce((sum, s) => sum + s.ranks, 0);
     const skillsCost = calculateSkillsCost(totalSkillRanks);
-    const advantagesCost = calculateAdvantagesCost(character.advantages);
+    const advantagesCost = calculateAdvantagesCost(advantages);
 
-    const powersCost = character.powers.reduce(
+    const powersCost = powers.reduce(
       (sum, p) => sum + calcPowerTotalCost(p, POWER_DEFS, MODIFIER_DEFS),
       0
     );
 
     const totalSpent = abilitiesCost + defensesCost + skillsCost + advantagesCost + powersCost;
     // F-17: when campaign mode is on, add PP earned from the log
-    const ppEarned = character.campaignMode
-      ? (character.ppLog ?? []).reduce((s, e) => s + e.amount, 0)
+    const ppEarned = campaignMode
+      ? (ppLog ?? []).reduce((s, e) => s + e.amount, 0)
       : 0;
-    const totalAvailable = character.header.powerLevel * 15 + ppEarned;
+    const totalAvailable = powerLevel * 15 + ppEarned;
     const remaining = totalAvailable - totalSpent;
     
     // Check if PP budget enforcement is enabled
@@ -77,8 +87,8 @@ export function useCalculatedPP() {
 
     // F-15: Equipment PP Limit validation
     // Calculate total EP used and compare against Equipment advantage limit
-    const totalEPUsed = calculateTotalEquipmentPoints(character.equipment || []);
-    const equipmentAdvantage = character.advantages.find((adv) => adv.advantageId === 'equipment');
+    const totalEPUsed = calculateTotalEquipmentPoints(equipment || []);
+    const equipmentAdvantage = advantages.find((adv) => adv.advantageId === 'equipment');
     const equipmentRanks = equipmentAdvantage?.ranks || 0;
     const equipmentEPLimit = equipmentRanks * 5;
     const isOverEquipmentLimit = activeRules.enforceEquipmentPPLimit && totalEPUsed > equipmentEPLimit;
@@ -101,5 +111,17 @@ export function useCalculatedPP() {
       equipmentEPRemaining,
       isOverEquipmentLimit,
     };
-  }, [character, validationRules]);
+  }, [
+    powerLevel,
+    abilities,
+    absentAbilities,
+    defenses,
+    skills,
+    advantages,
+    powers,
+    equipment,
+    campaignMode,
+    ppLog,
+    validationRules,
+  ]);
 }
