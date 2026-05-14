@@ -158,6 +158,8 @@
   "builder.totalEP": "Total PE",
   "builder.incompatibleWith": "Incompatível com",
   "builder.noEffectError": "Adicione pelo menos um efeito antes de salvar",
+  "builder.costOption": "Opção de Custo",
+  "builder.selectCostOption": "Selecione uma opção de custo para este efeito",
 
   "palette.search": "Buscar modificadores...",
   "palette.extras": "Extras",
