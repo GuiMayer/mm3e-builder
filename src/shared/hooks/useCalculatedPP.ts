@@ -14,6 +14,7 @@ import { getActiveValidationRules } from '../lib/validationRules';
 /**
  * Hook that reactively calculates total PP spent across all sections.
  * When enforcePPBudget is disabled, isOverBudget will always be false.
+ * Also tracks Equipment Points (EP) budget from the Equipment advantage.
  */
 export function useCalculatedPP() {
   const character = useCharStore((s) => s.character);
@@ -47,6 +48,17 @@ export function useCalculatedPP() {
     const isOverBudget = activeRules.enforcePPBudget && remaining < 0;
     const isBudgetEnforced = activeRules.enforcePPBudget;
 
+    // F-15: Equipment Points (EP) budget tracking
+    const equipmentAdv = character.advantages.find((a) => a.advantageId === 'equipment');
+    const equipmentRanks = equipmentAdv?.ranks ?? 0;
+    const equipmentEPLimit = equipmentRanks * 5;
+    const equipmentItems = character.equipment ?? [];
+    const totalEPUsed = equipmentItems.reduce(
+      (sum, item) => sum + calcPowerTotalCost(item, POWER_DEFS, MODIFIER_DEFS),
+      0
+    );
+    const isOverEquipmentLimit = activeRules.enforceEquipmentPPLimit && totalEPUsed > equipmentEPLimit;
+
     return {
       abilitiesCost,
       defensesCost,
@@ -58,6 +70,11 @@ export function useCalculatedPP() {
       remaining,
       isOverBudget,
       isBudgetEnforced,
+      // Equipment EP tracking
+      equipmentRanks,
+      equipmentEPLimit,
+      totalEPUsed,
+      isOverEquipmentLimit,
     };
   }, [character, validationRules]);
 }

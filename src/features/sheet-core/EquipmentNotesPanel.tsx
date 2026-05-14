@@ -1,22 +1,21 @@
 import { useState } from 'react';
 import { useCharStore } from '../../store/charStore';
 import { useTranslation } from 'react-i18next';
-import { Package, Plus, Edit3, Trash2, AlertTriangle } from 'lucide-react';
-import type { IEquipmentItem } from '../../entities/types';
-import { EquipmentBuilder } from '../equipment-builder/EquipmentBuilder';
+import { Package, Plus, Edit3, Trash2, AlertTriangle, Zap } from 'lucide-react';
+import type { ICharacterPower } from '../../entities/types';
+import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
-import { useEquipmentCalculations } from '../equipment-builder/hooks/useEquipmentCalculations';
-import { Tooltip } from '../../shared/ui/Tooltip';
+import { calcPowerTotalCost } from '../../shared/lib/mathEngine';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 
 /**
- * EquipmentNotesPanel — F-15 (v1.1)
+ * EquipmentNotesPanel — F-15 (v2.0)
  *
- * Supports both structured equipment items and free-text notes.
- * Data model:
- * - character.equipment: IEquipmentItem[]
- * - character.equipmentNotes: string
+ * Equipment section that uses PowerBuilderOverlay.
+ * Equipment items are stored as ICharacterPower[] with removable='easily_removable'.
+ * Only visible when the Equipment advantage is purchased.
+ * EP budget = Equipment advantage ranks × 5.
  */
 export function EquipmentNotesPanel() {
   const { t } = useTranslation();
@@ -26,22 +25,29 @@ export function EquipmentNotesPanel() {
   const equipmentRaw = useCharStore((s) => s.character.equipment);
   const equipment = equipmentRaw ?? [];
   const setEquipment = useCharStore((s) => s.setEquipment);
-  const equipmentNotes = useCharStore((s) => s.character.equipmentNotes);
-  const setEquipmentNotes = useCharStore((s) => s.setEquipmentNotes);
   
   const [builderOpen, setBuilderOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
   // F-15: Get equipment validation data
-  const { totalEPUsed, equipmentEPLimit, isOverEquipmentLimit } = useCalculatedPP();
+  const { equipmentRanks, totalEPUsed, equipmentEPLimit, isOverEquipmentLimit } = useCalculatedPP();
 
-  function handleSaveEquipment(item: IEquipmentItem) {
+  // Don't render if Equipment advantage is not purchased
+  if (equipmentRanks === 0) return null;
+
+  function handleSaveEquipment(power: ICharacterPower) {
+    // Force equipment to always be 'easily_removable'
+    const equipmentItem: ICharacterPower = {
+      ...power,
+      removable: 'easily_removable',
+    };
+
     if (editIndex !== null) {
       const next = [...equipment];
-      next[editIndex] = item;
+      next[editIndex] = equipmentItem;
       setEquipment(next);
     } else {
-      setEquipment([...equipment, item]);
+      setEquipment([...equipment, equipmentItem]);
     }
     setBuilderOpen(false);
     setEditIndex(null);
@@ -66,6 +72,13 @@ export function EquipmentNotesPanel() {
     setBuilderOpen(true);
   }
 
+  // Prepare the power for editing — equipment is always 'easily_removable'
+  function getEditPower(): ICharacterPower | undefined {
+    if (editIndex === null) return undefined;
+    const item = equipment[editIndex];
+    return { ...item, removable: 'easily_removable' };
+  }
+
   return (
     <section className="panel equipment-notes-panel">
       <div className="panel-header">
@@ -73,12 +86,10 @@ export function EquipmentNotesPanel() {
           <Package size={15} style={{ verticalAlign: 'middle', marginRight: 6 }} />
           {t('equipment.title')}
         </h2>
-        {equipment.length > 0 && (
-          <span className="panel-cost">{totalEPUsed} / {equipmentEPLimit} {t('equipment.ep')}</span>
-        )}
+        <span className="panel-cost">{totalEPUsed} / {equipmentEPLimit} {t('equipment.ep')}</span>
       </div>
 
-      {/* F-15: Equipment PP Limit validation warning */}
+      {/* F-15: Equipment EP Limit validation warning */}
       {isOverEquipmentLimit && (
         <div className="equipment-limit-warning">
           <AlertTriangle size={16} />
@@ -92,37 +103,24 @@ export function EquipmentNotesPanel() {
         </div>
       )}
 
-      {/* Structured Equipment List */}
+      {/* Equipment Items List */}
       {equipment.length > 0 && (
         <div className="equipment-grid">
           {equipment.map((item, i) => {
-            // Calculate EP inline without using hook (hooks can't be called in loops)
-            const baseCost = item.components.reduce((sum, comp) => {
-              const effectDef = powerDefs.find((d) => d.id === comp.effectId);
-              if (!effectDef) return sum;
-              
-              const rankCost = (effectDef.costPerRank ?? 1) * comp.ranks;
-              const modCost = comp.modifiers.reduce((modSum, mod) => {
-                const modDef = modifierDefs.find((m) => m.id === mod.modifierId);
-                return modSum + (modDef?.flatCost ?? 0);
-              }, 0);
-              
-              return sum + rankCost + modCost;
-            }, 0);
-            
-            // Equipment discount: -2 per 5 PP (Easily Removable)
-            const discount = Math.floor(baseCost / 5) * 2;
-            const equipmentPoints = Math.max(1, baseCost - discount);
-            
-            // Add 1 EP per alternate effect if any
-            const aeCount = item.alternateEffects?.length ?? 0;
-            const totalEP = equipmentPoints + aeCount;
+            const totalCost = calcPowerTotalCost(item, powerDefs, modifierDefs);
 
             // Build display info from components
             const effectNames = item.components
               .map((c) => powerDefs.find((d) => d.id === c.effectId))
               .filter(Boolean)
               .map((d) => `${d!.name} ${item.components.find((c) => c.effectId === d!.id)?.ranks ?? ''}`);
+
+            const appliedModNames = item.components.flatMap((comp) =>
+              comp.modifiers.map((m) => {
+                const md = modifierDefs.find((d) => d.id === m.modifierId);
+                return md ? md.name : m.modifierId;
+              })
+            );
 
             return (
               <div key={item.id} className="equipment-card-item">
@@ -134,19 +132,41 @@ export function EquipmentNotesPanel() {
                     <span className="equipment-card-name">{item.name || t('equipment.unnamed')}</span>
                     <span className="equipment-card-effect">{effectNames.join(' + ')}</span>
                   </div>
-                  <span className="equipment-card-cost">{totalEP} {t('equipment.ep')}</span>
+                  <span className="equipment-card-cost">{totalCost} {t('equipment.ep')}</span>
                 </div>
+
+                {appliedModNames.length > 0 && (
+                  <div className="equipment-card-mods">
+                    {appliedModNames.map((name, j) => (
+                      <span key={j} className="equipment-mod-tag">{name}</span>
+                    ))}
+                  </div>
+                )}
+
+                {item.alternateEffects.length > 0 && (
+                  <div className="equipment-alt-info">
+                    {item.alternateEffects.map((ae) => {
+                      const aeEffects = ae.components
+                        .map((c) => powerDefs.find((d) => d.id === c.effectId)?.name)
+                        .filter(Boolean)
+                        .join(' + ');
+                      return (
+                        <span key={ae.id} className="equipment-alt-tag">
+                          ↪ {ae.name || aeEffects || 'AE'}{ae.dynamic ? ' ⚡' : ''}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
 
                 {item.notes && (
                   <p className="equipment-card-notes">{item.notes}</p>
                 )}
 
                 <div className="equipment-card-actions">
-                  <Tooltip content={t('equipment.editTooltip')}>
-                    <button onClick={() => openEdit(i)} className="equipment-action-btn">
-                      <Edit3 size={14} /> {t('common.edit')}
-                    </button>
-                  </Tooltip>
+                  <button onClick={() => openEdit(i)} className="equipment-action-btn">
+                    <Edit3 size={14} /> {t('common.edit')}
+                  </button>
                   <button 
                     onClick={() => handleDeleteEquipment(i)} 
                     className="equipment-action-btn equipment-action-btn--danger" 
@@ -161,27 +181,18 @@ export function EquipmentNotesPanel() {
         </div>
       )}
 
+      {equipment.length === 0 && (
+        <p className="equipment-empty">{t('equipment.noEquipment') || 'No equipment added yet. Use the button below to add equipment items.'}</p>
+      )}
+
       <button className="equipment-new-btn" onClick={openNew}>
         <Plus size={18} /> {t('equipment.newEquipmentBtn')}
       </button>
 
-      {/* Free-text Equipment Notes */}
-      <div className="equipment-notes-section">
-        <label className="equipment-notes-label">{t('equipment.notesLabel')}</label>
-        <textarea
-          className="equipment-textarea"
-          value={equipmentNotes}
-          onChange={(e) => setEquipmentNotes(e.target.value)}
-          placeholder={t('equipment.placeholder')}
-          rows={5}
-          spellCheck={false}
-        />
-      </div>
-
-      {/* Equipment Builder Modal */}
+      {/* Power Builder Overlay — reused for equipment */}
       {builderOpen && (
-        <EquipmentBuilder
-          existingItem={editIndex !== null ? equipment[editIndex] : undefined}
+        <PowerBuilderOverlay
+          existingPower={getEditPower()}
           onSave={handleSaveEquipment}
           onClose={() => {
             setBuilderOpen(false);
@@ -210,10 +221,15 @@ export function EquipmentNotesPanel() {
         .equipment-limit-warning svg {
           flex-shrink: 0;
         }
+        .equipment-empty {
+          color: var(--c-text-muted);
+          font-size: 0.85rem;
+          font-style: italic;
+        }
         .equipment-grid {
           display: flex;
           flex-direction: column;
-          gap: var(--s-md);
+          gap: var(--s-sm);
           margin-bottom: var(--s-lg);
         }
         .equipment-card-item {
@@ -221,47 +237,80 @@ export function EquipmentNotesPanel() {
           border: 1px solid var(--c-border);
           border-radius: var(--r-md);
           padding: var(--s-md);
-          transition: border-color var(--t-fast);
+          transition: border-color var(--t-fast), box-shadow var(--t-fast);
         }
         .equipment-card-item:hover {
-          border-color: var(--c-primary);
+          border-color: var(--c-border-active);
+          box-shadow: 0 0 12px rgba(var(--c-primary-rgb), 0.15);
         }
         .equipment-card-top {
           display: flex;
           align-items: center;
           gap: var(--s-sm);
-          margin-bottom: var(--s-sm);
         }
         .equipment-card-icon {
-          color: var(--c-primary);
+          width: 36px;
+          height: 36px;
           display: flex;
           align-items: center;
+          justify-content: center;
+          background: var(--c-primary-muted);
+          border-radius: var(--r-sm);
+          color: var(--c-primary);
         }
         .equipment-card-info {
           flex: 1;
           display: flex;
           flex-direction: column;
-          gap: 2px;
         }
         .equipment-card-name {
-          font-weight: 600;
-          color: var(--c-text);
+          font-weight: 700;
           font-size: 0.95rem;
         }
         .equipment-card-effect {
-          font-size: 0.8rem;
-          color: var(--c-text-muted);
+          font-size: 0.78rem;
+          color: var(--c-text-secondary);
         }
         .equipment-card-cost {
-          font-weight: 600;
+          font-weight: 800;
+          font-size: 1.1rem;
           color: var(--c-primary);
-          font-size: 0.9rem;
+          font-variant-numeric: tabular-nums;
+        }
+        .equipment-card-mods {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          margin-top: var(--s-sm);
+        }
+        .equipment-mod-tag {
+          font-size: 0.7rem;
+          padding: 2px 8px;
+          border-radius: var(--r-full);
+          background: var(--c-primary-muted);
+          color: var(--c-primary);
+          font-weight: 500;
+        }
+        .equipment-alt-info {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          margin-top: var(--s-xs);
+        }
+        .equipment-alt-tag {
+          font-size: 0.7rem;
+          padding: 2px 8px;
+          border-radius: var(--r-full);
+          background: rgba(139,92,246,0.12);
+          color: var(--c-accent);
+          font-weight: 500;
+          border: 1px solid rgba(139,92,246,0.25);
         }
         .equipment-card-notes {
-          font-size: 0.8rem;
-          color: var(--c-text-secondary);
-          margin: var(--s-sm) 0;
-          line-height: 1.5;
+          font-size: 0.78rem;
+          color: var(--c-text-muted);
+          font-style: italic;
+          margin-top: var(--s-xs);
         }
         .equipment-card-actions {
           display: flex;
@@ -274,74 +323,48 @@ export function EquipmentNotesPanel() {
           display: flex;
           align-items: center;
           gap: 4px;
-          padding: 4px 8px;
           background: transparent;
           border: 1px solid var(--c-border);
           border-radius: var(--r-sm);
+          padding: 4px 10px;
           color: var(--c-text-secondary);
-          font-size: 0.8rem;
+          font-family: var(--f-body);
+          font-size: 0.75rem;
           cursor: pointer;
           transition: all var(--t-fast);
         }
         .equipment-action-btn:hover {
-          background: var(--c-surface);
-          border-color: var(--c-primary);
+          background: var(--c-primary-muted);
           color: var(--c-primary);
+          border-color: var(--c-primary);
         }
         .equipment-action-btn--danger:hover {
-          border-color: var(--c-error);
+          background: rgba(248,113,113,0.15);
           color: var(--c-error);
+          border-color: var(--c-error);
         }
         .equipment-new-btn {
           display: flex;
           align-items: center;
-          gap: var(--s-xs);
-          padding: var(--s-sm) var(--s-md);
-          background: var(--c-primary);
-          color: white;
-          border: none;
+          justify-content: center;
+          gap: var(--s-sm);
+          margin-top: var(--s-sm);
+          padding: var(--s-md);
+          background: var(--c-primary-muted);
+          border: 2px dashed var(--c-primary);
           border-radius: var(--r-md);
-          font-weight: 500;
+          color: var(--c-primary);
+          font-family: var(--f-heading);
+          font-size: 0.95rem;
+          font-weight: 700;
           cursor: pointer;
-          transition: opacity var(--t-fast);
-          margin-bottom: var(--s-lg);
+          transition: all var(--t-fast);
+          width: 100%;
         }
         .equipment-new-btn:hover {
-          opacity: 0.9;
-        }
-        .equipment-notes-section {
-          display: flex;
-          flex-direction: column;
-          gap: var(--s-xs);
-        }
-        .equipment-notes-label {
-          font-size: 0.85rem;
-          color: var(--c-text-secondary);
-          font-weight: 500;
-        }
-        .equipment-textarea {
-          width: 100%;
-          background: var(--c-surface-elevated);
-          border: 1px solid var(--c-border);
-          border-radius: var(--r-md);
-          color: var(--c-text-secondary);
-          font-family: var(--f-body);
-          font-size: 0.875rem;
-          line-height: 1.65;
-          padding: var(--s-md);
-          resize: vertical;
-          min-height: 110px;
-          transition: border-color var(--t-fast), color var(--t-fast);
-          box-sizing: border-box;
-        }
-        .equipment-textarea:focus {
-          outline: none;
-          border-color: var(--c-primary);
-          color: var(--c-text);
-        }
-        .equipment-textarea::placeholder {
-          color: var(--c-text-muted);
-          font-style: italic;
+          background: var(--c-primary);
+          color: var(--c-text-inverse);
+          box-shadow: var(--shadow-glow);
         }
       `}</style>
     </section>

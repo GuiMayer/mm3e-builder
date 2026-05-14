@@ -298,6 +298,7 @@
   "equipment.placeholder": "List your equipment here...\nExample:\nUtility Belt (Equipment 4 = 20 EP):\n  Flash-Bangs: Burst Area Dazzle 3 — 12 EP\n  Grapple Gun: Movement 1 (Swinging) — 2 EP",
   "equipment.ep": "EP",
   "equipment.newEquipmentBtn": "New Equipment",
+  "equipment.noEquipment": "No equipment added yet. Use the button below to add equipment items.",
   "equipment.unnamed": "Unnamed Equipment",
   "equipment.editTooltip": "Edit equipment",
   "equipment.deleteConfirm": "Delete {{name}}?",

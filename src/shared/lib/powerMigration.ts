@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import type { ICharacterPower, IAlternateEffect, IAppliedModifier, IEquipmentItem, ICharacterPowerComponent } from '../../entities/types';
+import type { ICharacterPower, IAlternateEffect, IAppliedModifier, ICharacterPowerComponent } from '../../entities/types';
 
 /**
  * Factory for a safe, empty AE fallback — used when input is malformed.
@@ -110,11 +110,10 @@ export function migratePowers(rawPowers: unknown[]): ICharacterPower[] {
 }
 
 /**
- * Migrate an equipment item (similar to migratePower).
- * Equipment items use the same component structure as powers.
- * Migrates nested alternateEffects from v1 to v2 format.
+ * Migrate an equipment item from old IEquipmentItem format to ICharacterPower.
+ * Equipment items are now stored as ICharacterPower with removable='easily_removable'.
  */
-export function migrateEquipmentItem(raw: Record<string, unknown>): IEquipmentItem {
+export function migrateEquipmentItem(raw: Record<string, unknown>): ICharacterPower {
   // Migrate alternateEffects if present
   const migratedAEs = ((raw.alternateEffects as unknown[]) ?? []).map((ae) =>
     migrateAlternateEffect(ae as Record<string, unknown>)
@@ -124,15 +123,16 @@ export function migrateEquipmentItem(raw: Record<string, unknown>): IEquipmentIt
     id: (raw.id as string) ?? uuidv4(),
     name: (raw.name as string) ?? '',
     components: (raw.components as ICharacterPowerComponent[]) ?? [],
-    notes: (raw.notes as string) ?? undefined,
-    alternateEffects: migratedAEs.length > 0 ? migratedAEs : undefined,
+    notes: (raw.notes as string) ?? '',
+    alternateEffects: migratedAEs,
+    removable: 'easily_removable',
   };
 }
 
 /**
- * Migrate all equipment items in a character.
+ * Migrate all equipment items in a character to ICharacterPower format.
  */
-export function migrateEquipment(rawEquipment: unknown[]): IEquipmentItem[] {
+export function migrateEquipment(rawEquipment: unknown[]): ICharacterPower[] {
   if (!Array.isArray(rawEquipment)) return [];
   return rawEquipment.map((e) => migrateEquipmentItem(e as Record<string, unknown>));
 }

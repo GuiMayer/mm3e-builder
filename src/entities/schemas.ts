@@ -148,15 +148,19 @@ const PPLogEntrySchema = z.object({
   note: z.string(),
 });
 
-// F-15: Equipment Item (structured equipment system)
-// Reuses CharacterPowerComponentSchema and AlternateEffectSchema for consistency
-const EquipmentItemSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  components: z.array(CharacterPowerComponentSchema),
-  notes: z.string().optional(),
-  alternateEffects: z.array(AlternateEffectSchema).optional().default([]),
-});
+// F-15: Equipment Item — now uses same schema as powers (ICharacterPower)
+// Old format (IEquipmentItem with optional notes/AEs) is also accepted for migration
+const EquipmentItemSchema = z.union([
+  CharacterPowerSchema,
+  // Legacy equipment format (notes optional, alternateEffects optional)
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    components: z.array(CharacterPowerComponentSchema),
+    notes: z.string().optional(),
+    alternateEffects: z.array(AlternateEffectSchema).optional().default([]),
+  }),
+]);
 
 const CharacterSchema = z.object({
   header: CharacterHeaderSchema,

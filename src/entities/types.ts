@@ -257,8 +257,8 @@ export interface ICharacter {
   advantages: ICharacterAdvantage[];
   powers: ICharacterPower[];
   complications: IComplication[];
-  equipmentNotes: string;        // F-09: free-text equipment block (v1.0)
-  equipment?: IEquipmentItem[];  // F-15: structured equipment system (v1.1+)
+  equipmentNotes: string;        // F-09: free-text equipment block (v1.0, kept for migration)
+  equipment?: ICharacterPower[]; // F-15: equipment items are powers with 'easily_removable'
   notes?: string;                // F-14: background & notes
   manualOffenseRows?: IManualOffenseRow[]; // F-13: custom attack rows
   campaignMode?: boolean;        // F-17: opt-in PP advancement tracking (default: false)

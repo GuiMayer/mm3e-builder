@@ -298,6 +298,7 @@
   "equipment.placeholder": "Liste seus equipamentos aqui...\nExemplo:\nCinto de Utilidades (Equipamento 4 = 20 PE):\n  Granada de Flash: Ofuscação em Área 3 — 12 PE\n  Garra de Escalada: Movimento 1 (Balanço) — 2 PE",
   "equipment.ep": "PE",
   "equipment.newEquipmentBtn": "Novo Equipamento",
+  "equipment.noEquipment": "Nenhum equipamento adicionado. Use o botão abaixo para adicionar itens de equipamento.",
   "equipment.unnamed": "Equipamento Sem Nome",
   "equipment.editTooltip": "Editar equipamento",
   "equipment.deleteConfirm": "Excluir {{name}}?",
