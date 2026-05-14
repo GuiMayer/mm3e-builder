@@ -95,11 +95,27 @@ export function EquipmentNotesPanel() {
       {equipment.length > 0 && (
         <div className="equipment-grid">
           {equipment.map((item, i) => {
-            const calc = useEquipmentCalculations({
-              item,
-              powerDefs,
-              allModDefs: modifierDefs,
-            });
+            // Calculate EP inline without using hook (hooks can't be called in loops)
+            const baseCost = item.components.reduce((sum, comp) => {
+              const effectDef = powerDefs.find((d) => d.id === comp.effectId);
+              if (!effectDef) return sum;
+              
+              const rankCost = (effectDef.costPerRank ?? 1) * comp.ranks;
+              const modCost = comp.modifiers.reduce((modSum, mod) => {
+                const modDef = modifierDefs.find((m) => m.id === mod.modifierId);
+                return modSum + (modDef?.flatCost ?? 0);
+              }, 0);
+              
+              return sum + rankCost + modCost;
+            }, 0);
+            
+            // Equipment discount: -2 per 5 PP (Easily Removable)
+            const discount = Math.floor(baseCost / 5) * 2;
+            const equipmentPoints = Math.max(1, baseCost - discount);
+            
+            // Add 1 EP per alternate effect if any
+            const aeCount = item.alternateEffects?.length ?? 0;
+            const totalEP = equipmentPoints + aeCount;
 
             // Build display info from components
             const effectNames = item.components
@@ -117,7 +133,7 @@ export function EquipmentNotesPanel() {
                     <span className="equipment-card-name">{item.name || t('equipment.unnamed')}</span>
                     <span className="equipment-card-effect">{effectNames.join(' + ')}</span>
                   </div>
-                  <span className="equipment-card-cost">{calc.totalEP} {t('equipment.ep')}</span>
+                  <span className="equipment-card-cost">{totalEP} {t('equipment.ep')}</span>
                 </div>
 
                 {item.notes && (
