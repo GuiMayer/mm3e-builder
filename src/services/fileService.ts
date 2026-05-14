@@ -100,7 +100,6 @@ export function saveDraft(character: ICharacter): boolean {
     
     // Skip save if content hasn't changed (prevents redundant saves and loops)
     if (json === lastSavedJSON) {
-      console.log('[saveDraft] Skipping - no changes detected');
       return true;
     }
     
@@ -115,7 +114,6 @@ export function saveDraft(character: ICharacter): boolean {
     };
     localStorage.setItem(DRAFT_KEY + '-metadata', JSON.stringify(metadata));
     
-    console.log('[saveDraft] Draft saved successfully');
     return true;
   } catch (e) {
     if (e instanceof DOMException && e.name === 'QuotaExceededError') {
