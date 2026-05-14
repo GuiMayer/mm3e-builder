@@ -27,7 +27,7 @@
 - [ ] **3.1** Modifier Max Ranks Enforcement (bloquear input)
 - [ ] **3.4** Fractional Cost Warning
 - [ ] **3.7** Alternate Effect Name Uniqueness (auto-naming)
-- [ ] **3.8** Empty Component Detection
+- [x] **3.8** Empty Component Detection
 - [ ] **3.6** Minimum Effect Rank Warning
 
 #### Integrações
