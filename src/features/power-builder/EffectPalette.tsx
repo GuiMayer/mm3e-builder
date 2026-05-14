@@ -18,6 +18,7 @@ interface Props {
   collapsed: boolean;
   onToggleCollapse: () => void;
   contextName?: string | null;   // badge shown when palette serves an AE component
+  equipmentMode?: boolean;        // when true, hide 'removable' modifier
 }
 
 export function EffectPalette({
@@ -28,6 +29,7 @@ export function EffectPalette({
   collapsed,
   onToggleCollapse,
   contextName,
+  equipmentMode,
 }: Props) {
   const { t } = useTranslation();
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
@@ -48,6 +50,8 @@ export function EffectPalette({
   const generalFlaws = modifierDefs.filter(
     (m) =>
       m.category === 'flaw' &&
+      // Hide 'removable' in equipment mode (EP system handles it)
+      !(equipmentMode && m.id === 'removable') &&
       (m.name.toLowerCase().includes(lowerFilter) || m.description.toLowerCase().includes(lowerFilter))
   );
 

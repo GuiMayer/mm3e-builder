@@ -1,5 +1,6 @@
 {
   "app.title": "M&M 3e Builder",
+  "menu.actions": "Actions",
   "menu.new": "New",
   "menu.export": "Export",
   "menu.import": "Import",
@@ -131,6 +132,9 @@
   "builder.selectEffect": "Select an effect...",
   "builder.powerName": "Power Name",
   "builder.powerNamePlaceholder": "e.g., Magic Blast",
+  "builder.descriptors": "Descriptors",
+  "builder.descriptorsPlaceholder": "e.g., Fire, Magic, Technology (comma-separated)",
+  "builder.removeDescriptor": "Remove descriptor",
   "builder.ranks": "Ranks",
   "builder.modifiers": "Modifiers (drag from palette)",
   "builder.dropHere": "Drag Extras and Flaws here ←",
@@ -151,6 +155,7 @@
   "builder.save": "Save",
   "builder.close": "Close",
   "builder.total": "Total",
+  "builder.totalEP": "Total EP",
 
   "palette.search": "Search modifiers...",
   "palette.extras": "Extras",

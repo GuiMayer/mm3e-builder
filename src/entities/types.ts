@@ -178,6 +178,7 @@ export interface IAlternateEffect {
 export interface ICharacterPower {
   id: string;
   name: string;
+  descriptors?: string[];           // Power descriptors (Fire, Ice, Magic, Technology, etc.)
   components: ICharacterPowerComponent[];
   notes: string;
   alternateEffects: IAlternateEffect[];

@@ -1,5 +1,6 @@
 {
   "app.title": "M&M 3e Builder",
+  "menu.actions": "Ações",
   "menu.new": "Novo",
   "menu.export": "Exportar",
   "menu.import": "Importar",
@@ -131,6 +132,9 @@
   "builder.selectEffect": "Selecione um efeito...",
   "builder.powerName": "Nome do Poder",
   "builder.powerNamePlaceholder": "Ex: Rajada Mágica",
+  "builder.descriptors": "Descritores",
+  "builder.descriptorsPlaceholder": "Ex: Fogo, Magia, Tecnologia (separados por vírgula)",
+  "builder.removeDescriptor": "Remover descritor",
   "builder.ranks": "Ranks",
   "builder.modifiers": "Modificadores (arraste da paleta)",
   "builder.dropHere": "Arraste Extras e Falhas aqui ←",
@@ -151,6 +155,7 @@
   "builder.save": "Salvar",
   "builder.close": "Fechar",
   "builder.total": "Total",
+  "builder.totalEP": "Total PE",
 
   "palette.search": "Buscar modificadores...",
   "palette.extras": "Extras",

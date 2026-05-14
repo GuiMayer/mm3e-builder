@@ -31,9 +31,11 @@ interface Props {
   existingPower?: ICharacterPower;
   onSave: (power: ICharacterPower) => void;
   onClose: () => void;
+  /** When true, hides the Removable modifier from the palette and badge UI. */
+  equipmentMode?: boolean;
 }
 
-export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
+export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentMode }: Props) {
   const { t } = useTranslation();
   const powerDefs = useLocalizedData(POWER_DEFS) as IPowerEffect[];
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
@@ -146,7 +148,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   const addModifierToComponent = useCallback(
     (componentId: string, modId: string, isPowerSpecific?: boolean) => {
       // Intercept 'removable' — it's a power-level flaw, not a component modifier
+      // In equipment mode, removable is not available (EP system handles it)
       if (modId === 'removable') {
+        if (equipmentMode) return; // Silently ignore in equipment mode
         // Toggle: if already removable, upgrade to easily_removable, then back to none
         setPower((p) => {
           const current = p.removable ?? 'none';
@@ -217,7 +221,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
 
   function handleAddModifierFromPalette(modId: string, isPowerSpecific?: boolean) {
     // Intercept 'removable' — power-level flaw, not per-component
+    // In equipment mode, removable is not available
     if (modId === 'removable') {
+      if (equipmentMode) return; // Silently ignore in equipment mode
       setPower((p) => {
         const current = p.removable ?? 'none';
         const next = current === 'none' ? 'removable'
@@ -382,6 +388,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
               collapsed={paletteCollapsed}
               onToggleCollapse={() => setPaletteCollapsed((v) => !v)}
               contextName={paletteContextName}
+              equipmentMode={equipmentMode}
             />
           </div>
 
@@ -397,7 +404,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   onChange={(e) => setPower((p) => ({ ...p, name: e.target.value }))}
                   placeholder={t('builder.powerNamePlaceholder')}
                 />
-                {(power.removable === 'removable' || power.removable === 'easily_removable') && (
+                {!equipmentMode && (power.removable === 'removable' || power.removable === 'easily_removable') && (
                   <span
                     className="build-removable-badge"
                     title={t(`builder.removable.${power.removable}_hint`)}
@@ -424,10 +431,50 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   </span>
                 )}
               </div>
-              {removableDiscount > 0 && (
+              {!equipmentMode && removableDiscount > 0 && (
                 <span className="build-removable-discount">
                   −{removableDiscount} PP {t('builder.removable.from')} {mainCost} PP
                 </span>
+              )}
+            </div>
+
+            {/* Power Descriptors */}
+            <div className="build-section">
+              <label className="build-label">{t('builder.descriptors')}</label>
+              <div className="build-descriptors">
+                <input
+                  className="build-input"
+                  value={(power.descriptors || []).join(', ')}
+                  onChange={(e) => {
+                    const descriptors = e.target.value
+                      .split(',')
+                      .map((d) => d.trim())
+                      .filter((d) => d.length > 0);
+                    setPower((p) => ({ ...p, descriptors }));
+                  }}
+                  placeholder={t('builder.descriptorsPlaceholder')}
+                />
+              </div>
+              {power.descriptors && power.descriptors.length > 0 && (
+                <div className="build-descriptor-tags">
+                  {power.descriptors.map((desc, idx) => (
+                    <span key={idx} className="build-descriptor-tag">
+                      {desc}
+                      <button
+                        className="build-descriptor-tag-remove"
+                        onClick={() => {
+                          setPower((p) => ({
+                            ...p,
+                            descriptors: (p.descriptors || []).filter((_, i) => i !== idx),
+                          }));
+                        }}
+                        title={t('builder.removeDescriptor')}
+                      >
+                        <X size={10} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
               )}
             </div>
 
@@ -764,13 +811,13 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
             })}
           </div>
           <div className="cost-total">
-            {removableDiscount > 0 && (
+            {!equipmentMode && removableDiscount > 0 && (
               <span className="cost-removable-line">
                 {t(`builder.removable.${power.removable ?? 'none'}`)} −{removableDiscount} PP
               </span>
             )}
-            <span className="cost-total-label">{t('builder.total')}:</span>
-            <span className="cost-total-value">{totalCost} {t('common.pp')}</span>
+            <span className="cost-total-label">{equipmentMode ? t('builder.totalEP') || 'Total EP:' : t('builder.total') + ':'}</span>
+            <span className="cost-total-value">{equipmentMode ? mainCost : totalCost} {equipmentMode ? 'EP' : t('common.pp')}</span>
           </div>
           {plViolation && (
             <div className="pl-violation-banner">
@@ -806,6 +853,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
             collapsed={false}
             onToggleCollapse={() => {}}
             contextName={paletteContextName}
+            equipmentMode={equipmentMode}
           />
         </MobileModifierDrawer>
 

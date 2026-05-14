@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useCharStore } from '../../store/charStore';
 import { useTranslation } from 'react-i18next';
-import { Package, Plus, Edit3, Trash2, AlertTriangle, Zap } from 'lucide-react';
+import { Package, Plus, Edit3, Trash2, AlertTriangle } from 'lucide-react';
 import type { ICharacterPower } from '../../entities/types';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
@@ -210,6 +210,7 @@ export function EquipmentNotesPanel() {
             setBuilderOpen(false);
             setEditIndex(null);
           }}
+          equipmentMode={true}
         />
       )}
 

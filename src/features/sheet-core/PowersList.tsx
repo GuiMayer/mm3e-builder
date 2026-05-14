@@ -97,6 +97,13 @@ export function PowersList() {
                 <div className="power-card-info">
                   <span className="power-card-name">{power.name || t('powers.unnamed')}</span>
                   <span className="power-card-effect">{effectNames.join(' + ')}</span>
+                  {power.descriptors && power.descriptors.length > 0 && (
+                    <div className="power-card-descriptors">
+                      {power.descriptors.map((desc, idx) => (
+                        <span key={idx} className="power-descriptor-tag">{desc}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <span className="power-card-cost">{totalCost} {t('common.pp')}</span>
               </div>

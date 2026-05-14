@@ -456,3 +456,70 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 16px !important;
   }
 }
+
+/* ── Power Builder: Descriptors ── */
+.build-descriptors {
+  margin-bottom: var(--s-sm);
+}
+
+.build-descriptor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-xs);
+  margin-top: var(--s-sm);
+}
+
+.build-descriptor-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-xs);
+  padding: var(--s-xs) var(--s-sm);
+  background: var(--c-primary-muted);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  font-size: 0.875rem;
+  color: var(--c-text);
+  transition: all var(--t-fast);
+}
+
+.build-descriptor-tag:hover {
+  background: var(--c-surface-elevated);
+  border-color: var(--c-primary);
+}
+
+.build-descriptor-tag-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  background: transparent;
+  border: none;
+  color: var(--c-text-secondary);
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  transition: all var(--t-fast);
+}
+
+.build-descriptor-tag-remove:hover {
+  background: var(--c-error);
+  color: var(--c-text);
+}
+
+/* ── Power List: Descriptors ── */
+.power-card-descriptors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-xs);
+  margin-top: var(--s-xs);
+}
+
+.power-descriptor-tag {
+  display: inline-block;
+  padding: 2px var(--s-xs);
+  background: var(--c-primary-muted);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  font-size: 0.75rem;
+  color: var(--c-text-secondary);
+  font-weight: 500;
+}
