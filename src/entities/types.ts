@@ -27,6 +27,33 @@ export type RangeType = 'personal' | 'close' | 'ranged' | 'perception';
 // ── Duration Types ──
 export type DurationType = 'instant' | 'concentration' | 'sustained' | 'continuous' | 'permanent';
 
+// ── Configurable Field Types ──
+export type ConfigurableFieldControl = 'dropdown' | 'text' | 'multi-select';
+
+export interface IConfigurableFieldOption {
+  value: string;
+  label: string;
+  description?: string;
+  cost?: number;              // For options affecting cost (Illusion: 1-5, Transform: 2-5, etc.)
+  i18n?: Record<string, {
+    label?: string;
+    description?: string;
+  }>;
+}
+
+export interface IConfigurableField {
+  id: string;                  // e.g., "resistance", "sense_medium", "trait_target"
+  label: string;               // Display label
+  control: ConfigurableFieldControl;
+  required: boolean;
+  options?: IConfigurableFieldOption[];  // For dropdown/multi-select only
+  placeholder?: string;        // For text inputs
+  i18n?: Record<string, {
+    label?: string;
+    placeholder?: string;
+  }>;
+}
+
 // ── Variable Cost Option (for effects like Senses, Immunity) ──
 export interface IVariableCostOption {
   name: string;
@@ -75,6 +102,7 @@ export interface IPowerEffect {
   longDescription?: string;
   enhancesDefense?: string;      // technical debt flag: effect boosts a defense/resistance
   variableCost: { options: IVariableCostOption[] } | null;
+  configurableFields?: IConfigurableField[];  // NEW: configurable fields at acquisition
   extras: IModifierDef[];        // power-specific extras
   flaws: IModifierDef[];         // power-specific flaws
   i18n?: Record<string, {
@@ -160,6 +188,7 @@ export interface ICharacterPowerComponent {
   ranks: number;
   modifiers: IAppliedModifier[];
   variableCostOption?: string;   // selected variable cost option name (for effects like Affliction, Illusion)
+  fieldValues?: Record<string, string | string[]>;  // NEW: configurable field values { "resistance": "fortitude", "sense_types": ["visual", "auditory"] }
 }
 
 // ── Alternate Effect (nested inside a power) ──
@@ -302,6 +331,9 @@ export interface IValidationRules {
   // Skill validations
   enforceTrainedOnlySkills: boolean;          // Prevent untrained use of trained-only skills
   enforceSkillAbilityRequirements: boolean;   // Warn about skills with absent base abilities
+  
+  // Power field validations
+  enforceRequiredPowerFields: boolean;        // Require configurable power fields to be set at acquisition
 }
 
 // ── App Preferences ──
