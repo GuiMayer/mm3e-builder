@@ -50,8 +50,8 @@ export function usePLValidation(): PLViolation[] {
 
     // ── Real Toughness: STA + Protection powers + Defensive Roll ──
     const { bonus: toughnessBonus } = calcToughnessBonus(
-      character.powers,
-      character.advantages,
+      powers,
+      advantages,
       POWER_DEFS
     );
     const toughnessTotal = abilities.sta + toughnessBonus;
@@ -68,7 +68,7 @@ export function usePLValidation(): PLViolation[] {
     if (v3) violations.push(v3);
 
     // ── Attack-type power components ──────────────────────────────
-    for (const power of character.powers) {
+    for (const power of powers) {
       const attackComponents = power.components.filter((comp) => {
         const def = POWER_DEFS.find((d) => d.id === comp.effectId);
         return def?.type === 'attack';
@@ -81,11 +81,13 @@ export function usePLValidation(): PLViolation[] {
       const highestRank = primaryComp.ranks;
 
       // F-12: use real derived attack bonus
+      // Build a minimal character object for calcAttackBonus
+      const charForCalc = { abilities, skills, powers, advantages };
       const { value: attackBonus, isNoRoll } = calcAttackBonus(
         primaryDef.range,
         power.name,
         primaryComp,
-        character,
+        charForCalc,
         SKILL_DEFS,
         MODIFIER_DEFS
       );
