@@ -24,6 +24,31 @@
         }
       ]
     },
+    "configurableFields": [
+      {
+        "id": "resistance",
+        "label": "Resistance Type",
+        "control": "dropdown",
+        "required": true,
+        "options": [
+          {
+            "value": "fortitude",
+            "label": "Fortitude",
+            "description": "Physical resistance - used for poisons, diseases, physical afflictions"
+          },
+          {
+            "value": "will",
+            "label": "Will",
+            "description": "Mental resistance - used for mental effects, emotions, mind control"
+          }
+        ],
+        "i18n": {
+          "pt-BR": {
+            "label": "Tipo de Resistência"
+          }
+        }
+      }
+    ],
     "i18n": {
       "pt-BR": {
         "name": "Aflição",
@@ -2487,6 +2512,21 @@
     "duration": "instant",
     "description": "You can counter effects of a particular descriptor (fire, magic, mental, etc.). Make a ranged attack check, then an opposed check of Nullify rank vs. effect rank or target's Will (whichever is higher). Success: targeted effect turns off (can be reactivated). Two+ degrees of failure: extra effort required to retry in same scene. Cannot nullify innate effects.",
     "variableCost": null,
+    "configurableFields": [
+      {
+        "id": "descriptor",
+        "label": "Power Descriptor",
+        "control": "text",
+        "required": true,
+        "placeholder": "e.g., Fire, Magic, Mental, Technology",
+        "i18n": {
+          "pt-BR": {
+            "label": "Descritor do Poder",
+            "placeholder": "ex: Fogo, Magia, Mental, Tecnologia"
+          }
+        }
+      }
+    ],
     "i18n": {
       "pt-BR": {
         "name": "Anulação",
@@ -3737,6 +3777,44 @@
     "duration": "instant",
     "description": "You can temporarily lower one of a target's traits (chosen at acquisition) via a close attack. Target resists with Fortitude or Will vs. DC [10 + rank]. Failure: target loses power points from the trait equal to the difference (max = rank). Multiple failures are cumulative up to rank. Lost points return at 1 per round. Abilities weakened below -5 become debilitated.",
     "variableCost": null,
+    "configurableFields": [
+      {
+        "id": "trait",
+        "label": "Target Trait",
+        "control": "text",
+        "required": true,
+        "placeholder": "e.g., Strength, Damage, Toughness",
+        "i18n": {
+          "pt-BR": {
+            "label": "Traço Alvo",
+            "placeholder": "ex: Força, Dano, Resistência"
+          }
+        }
+      },
+      {
+        "id": "resistance",
+        "label": "Resistance Type",
+        "control": "dropdown",
+        "required": true,
+        "options": [
+          {
+            "value": "fortitude",
+            "label": "Fortitude",
+            "description": "Physical resistance - for physical traits"
+          },
+          {
+            "value": "will",
+            "label": "Will",
+            "description": "Mental resistance - for mental traits"
+          }
+        ],
+        "i18n": {
+          "pt-BR": {
+            "label": "Tipo de Resistência"
+          }
+        }
+      }
+    ],
     "i18n": {
       "pt-BR": {
         "name": "Enfraquecer",
