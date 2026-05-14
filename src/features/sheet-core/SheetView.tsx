@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 export function SheetView() {
   const { t } = useTranslation();
-  useDraftAutoSave();
+  // useDraftAutoSave(); // Temporarily disabled to debug infinite loop
   const violations = usePLValidation();
   const pp = useCalculatedPP();
 
