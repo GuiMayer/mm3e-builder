@@ -113,8 +113,20 @@ export function calcComponentCost(
   effectDef: IPowerEffect,
   modifierDefs: IModifierDef[]
 ): number {
+  // Determine base cost: use variable cost option if selected, otherwise use baseCost
+  let baseCost = effectDef.baseCost;
+  
+  if (effectDef.variableCost && component.variableCostOption) {
+    const selectedOption = effectDef.variableCost.options.find(
+      opt => opt.name === component.variableCostOption
+    );
+    if (selectedOption) {
+      baseCost = selectedOption.cost;
+    }
+  }
+
   const { costPerRank, isFractional, ranksPerPP } = calculateCostPerRank(
-    effectDef.baseCost,
+    baseCost,
     component.modifiers,
     modifierDefs
   );
@@ -213,6 +225,7 @@ export function getComponentCostBreakdown(
   modifierDefs: IModifierDef[]
 ): {
   base: number;
+  selectedVariableCost: string | null;
   perRankExtras: number;
   perRankFlaws: number;
   costPerRank: number;
@@ -239,7 +252,19 @@ export function getComponentCostBreakdown(
     }
   }
 
-  const rawCostPerRank = effectDef.baseCost + perRankExtras - perRankFlaws;
+  // Determine base cost: use variable cost option if selected, otherwise use baseCost
+  let baseCost = effectDef.baseCost;
+  
+  if (effectDef.variableCost && component.variableCostOption) {
+    const selectedOption = effectDef.variableCost.options.find(
+      opt => opt.name === component.variableCostOption
+    );
+    if (selectedOption) {
+      baseCost = selectedOption.cost;
+    }
+  }
+
+  const rawCostPerRank = baseCost + perRankExtras - perRankFlaws;
   const isFractional = rawCostPerRank < 1;
   const ranksPerPP = isFractional ? 2 - rawCostPerRank : 1;
   const costPerRank = Math.max(1, rawCostPerRank);
@@ -249,7 +274,8 @@ export function getComponentCostBreakdown(
   const total = Math.max(1, rankCost + flatCost);
 
   return {
-    base: effectDef.baseCost,
+    base: baseCost,
+    selectedVariableCost: component.variableCostOption || null,
     perRankExtras,
     perRankFlaws,
     costPerRank,
