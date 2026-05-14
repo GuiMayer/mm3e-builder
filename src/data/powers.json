@@ -403,6 +403,46 @@
     "duration": "sustained",
     "description": "You gain total concealment from a particular sense while active. Each additional rank gives concealment from another sense; two ranks cover an entire sense type. Visual concealment costs double (2 ranks for one visual sense, 4 for all visual). Cannot conceal from tactile senses (requires Insubstantial). Concealment 10 = total concealment from all non-tactile senses.",
     "variableCost": null,
+    "configurableFields": [
+      {
+        "id": "senses",
+        "label": "Concealed Senses",
+        "control": "multiselect",
+        "required": true,
+        "options": [
+          {
+            "value": "visual",
+            "label": "Visual (costs 2 ranks per sense)",
+            "description": "Invisible to sight"
+          },
+          {
+            "value": "auditory",
+            "label": "Auditory",
+            "description": "Silent, cannot be heard"
+          },
+          {
+            "value": "olfactory",
+            "label": "Olfactory",
+            "description": "No scent"
+          },
+          {
+            "value": "radio",
+            "label": "Radio",
+            "description": "Undetectable by radio/radar"
+          },
+          {
+            "value": "mental",
+            "label": "Mental",
+            "description": "Undetectable by mental senses"
+          }
+        ],
+        "i18n": {
+          "pt-BR": {
+            "label": "Sentidos Ocultos"
+          }
+        }
+      }
+    ],
     "i18n": {
       "pt-BR": {
         "name": "Camuflagem",
