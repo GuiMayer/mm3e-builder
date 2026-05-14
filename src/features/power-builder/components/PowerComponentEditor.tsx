@@ -5,6 +5,7 @@ import type {
 } from '../../../entities/types';
 import { EffectCombobox } from '../../../shared/ui/EffectCombobox';
 import { ModifierDropzone } from './ModifierDropzone';
+import { VariableCostSelector } from './VariableCostSelector';
 import { X, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../../shared/ui/NumberInput';
@@ -107,6 +108,15 @@ export function PowerComponentEditor({
           />
         </div>
       </div>
+
+      {/* Variable Cost Selector */}
+      {effectDef && effectDef.variableCost && effectDef.variableCost.length > 0 && (
+        <VariableCostSelector
+          effect={effectDef}
+          selectedCostOptionName={component.selectedCostOption}
+          onSelectCostOption={(optionName) => onUpdateComponent({ selectedCostOption: optionName })}
+        />
+      )}
 
       {/* Effect info strip */}
       {effectDef && (
