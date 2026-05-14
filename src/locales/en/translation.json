@@ -329,6 +329,12 @@
   "equipment.builder.cancel": "Cancel",
   "equipment.builder.nameRequired": "Equipment name is required",
   "equipment.limitExceeded": "Equipment limit exceeded! Using {{used}} EP but limit is {{limit}} EP ({{over}} over). Increase Equipment advantage ranks or remove equipment.",
+  "equipment.limitExceededTitle": "Equipment Point limit exceeded!",
+  "equipment.limitCalcBudget": "Budget",
+  "equipment.limitCalcRanks": "ranks",
+  "equipment.limitCalcUsed": "Used",
+  "equipment.limitCalcOver": "Over by",
+  "equipment.limitHint": "Increase Equipment advantage ranks or remove equipment items.",
 
   "complications.type.motivation": "Motivation",
   "complications.type.enemy": "Enemy",

@@ -86,20 +86,28 @@ export function EquipmentNotesPanel() {
           <Package size={15} style={{ verticalAlign: 'middle', marginRight: 6 }} />
           {t('equipment.title')}
         </h2>
-        <span className="panel-cost">{totalEPUsed} / {equipmentEPLimit} {t('equipment.ep')}</span>
+        <span className={`panel-cost ${isOverEquipmentLimit ? 'panel-cost--error' : ''}`}>{totalEPUsed} / {equipmentEPLimit} {t('equipment.ep')}</span>
       </div>
 
       {/* F-15: Equipment EP Limit validation warning */}
       {isOverEquipmentLimit && (
         <div className="equipment-limit-warning">
           <AlertTriangle size={16} />
-          <span>
-            {t('equipment.limitExceeded', { 
-              used: totalEPUsed, 
-              limit: equipmentEPLimit,
-              over: totalEPUsed - equipmentEPLimit 
-            }) || `Equipment limit exceeded! Using ${totalEPUsed} EP but limit is ${equipmentEPLimit} EP (${totalEPUsed - equipmentEPLimit} over). Increase Equipment advantage ranks or remove equipment.`}
-          </span>
+          <div className="equipment-limit-warning-content">
+            <strong>
+              {t('equipment.limitExceededTitle') || 'Equipment Point limit exceeded!'}
+            </strong>
+            <div className="equipment-limit-calc">
+              <span>{t('equipment.limitCalcBudget') || 'Budget'}: {equipmentRanks} {t('equipment.limitCalcRanks') || 'ranks'} × 5 = <strong>{equipmentEPLimit} {t('equipment.ep')}</strong></span>
+              <span>{t('equipment.limitCalcUsed') || 'Used'}: <strong>{totalEPUsed} {t('equipment.ep')}</strong></span>
+              <span className="equipment-limit-over">
+                {t('equipment.limitCalcOver') || 'Over by'}: <strong>{totalEPUsed - equipmentEPLimit} {t('equipment.ep')}</strong>
+              </span>
+            </div>
+            <span className="equipment-limit-hint">
+              {t('equipment.limitHint') || 'Increase Equipment advantage ranks or remove equipment items.'}
+            </span>
+          </div>
         </div>
       )}
 
@@ -206,9 +214,14 @@ export function EquipmentNotesPanel() {
           align-items: center;
           justify-content: space-between;
         }
+        .equipment-notes-panel .panel-cost--error {
+          color: var(--c-error, #ef4444);
+          font-weight: 700;
+          animation: shake 0.3s ease;
+        }
         .equipment-limit-warning {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           gap: var(--s-sm);
           padding: var(--s-md);
           background: var(--c-error-bg, rgba(239, 68, 68, 0.1));
@@ -220,6 +233,30 @@ export function EquipmentNotesPanel() {
         }
         .equipment-limit-warning svg {
           flex-shrink: 0;
+          margin-top: 2px;
+        }
+        .equipment-limit-warning-content {
+          display: flex;
+          flex-direction: column;
+          gap: var(--s-xs);
+        }
+        .equipment-limit-calc {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          font-size: 0.8rem;
+          font-variant-numeric: tabular-nums;
+          padding: var(--s-xs) var(--s-sm);
+          background: rgba(0, 0, 0, 0.08);
+          border-radius: var(--r-sm);
+        }
+        .equipment-limit-over {
+          color: var(--c-error, #ef4444);
+        }
+        .equipment-limit-hint {
+          font-size: 0.78rem;
+          opacity: 0.85;
+          font-style: italic;
         }
         .equipment-empty {
           color: var(--c-text-muted);
