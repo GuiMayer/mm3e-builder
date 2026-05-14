@@ -53,6 +53,7 @@ export interface IModifierDef {
   longDescription?: string;      // full rulebook text
   options?: { label: string; notes: string }[];  // sub-options (e.g. Area shapes)
   subtypes?: IModifierSubtype[];  // variable-cost sub-choices (e.g. Alternate Resistance)
+  appliesToPower?: boolean;       // true = power-level flaw (e.g. Removable), not per-component
   incompatibleWith: string[];
   i18n?: Record<string, {
     name?: string;

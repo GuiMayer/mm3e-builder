@@ -280,6 +280,8 @@
   "builder.removable.removable_hint": "Power is in an object that can be grabbed or taken away (−1PP per 5PP)",
   "builder.removable.easily_removable_hint": "Power is in an object easily lost or removed (−2PP per 5PP)",
   "builder.removable.from": "discount on",
+  "builder.removable.discount": "Removable Discount",
+  "builder.removable.remove": "Remove Removable flaw",
 
   "offense.title": "Offense",
   "offense.attack": "Attack",

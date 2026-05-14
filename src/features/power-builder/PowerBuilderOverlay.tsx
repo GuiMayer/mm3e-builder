@@ -17,7 +17,7 @@ import { ModifierDropzone } from './components/ModifierDropzone';
 import { MobileModifierDrawer } from './components/MobileModifierDrawer';
 import { ModifierDrawerFAB } from './components/ModifierDrawerFAB';
 import { useMobileDrawer } from './hooks/useMobileDrawer';
-import { X, Save, Plus, Zap, Info, AlertTriangle } from 'lucide-react';
+import { X, Save, Plus, Zap, Info, AlertTriangle, Shield } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
@@ -145,6 +145,19 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   // Define addModifierToComponent before using it in hooks
   const addModifierToComponent = useCallback(
     (componentId: string, modId: string, isPowerSpecific?: boolean) => {
+      // Intercept 'removable' — it's a power-level flaw, not a component modifier
+      if (modId === 'removable') {
+        // Toggle: if already removable, upgrade to easily_removable, then back to none
+        setPower((p) => {
+          const current = p.removable ?? 'none';
+          const next = current === 'none' ? 'removable'
+            : current === 'removable' ? 'easily_removable'
+            : 'none';
+          return { ...p, removable: next };
+        });
+        return;
+      }
+
       // Check if it comes from the power's specific modifiers
       const allSpecific = powerDefs.flatMap((p) => [...(p.extras || []), ...(p.flaws || [])]);
       const isSpecific = isPowerSpecific ?? allSpecific.some((m) => m.id === modId);
@@ -203,6 +216,18 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
   });
 
   function handleAddModifierFromPalette(modId: string, isPowerSpecific?: boolean) {
+    // Intercept 'removable' — power-level flaw, not per-component
+    if (modId === 'removable') {
+      setPower((p) => {
+        const current = p.removable ?? 'none';
+        const next = current === 'none' ? 'removable'
+          : current === 'removable' ? 'easily_removable'
+          : 'none';
+        return { ...p, removable: next };
+      });
+      return;
+    }
+
     // Palette serves the AE context when an AE card is expanded
     if (expandedAEId !== null) {
       const ae = power.alternateEffects.find((a) => a.id === expandedAEId);
@@ -362,7 +387,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
 
           {/* Main: Build Workspace */}
           <div className="builder-workspace">
-            {/* Power Name + Removable toggle */}
+            {/* Power Name + Removable badge */}
             <div className="build-section">
               <label className="build-label">{t('builder.powerName')}</label>
               <div className="build-name-row">
@@ -372,29 +397,38 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
                   onChange={(e) => setPower((p) => ({ ...p, name: e.target.value }))}
                   placeholder={t('builder.powerNamePlaceholder')}
                 />
-              </div>
-
-              {/* Removable toggle */}
-              <div className="build-removable-row">
-                <span className="build-label build-label--sm">{t('builder.removable.label')}</span>
-                <div className="build-removable-toggle">
-                  {(['none', 'removable', 'easily_removable'] as const).map((opt) => (
+                {(power.removable === 'removable' || power.removable === 'easily_removable') && (
+                  <span
+                    className="build-removable-badge"
+                    title={t(`builder.removable.${power.removable}_hint`)}
+                    onClick={() => {
+                      // Click cycles: removable → easily_removable → none
+                      setPower((p) => ({
+                        ...p,
+                        removable: p.removable === 'removable' ? 'easily_removable' : 'none',
+                      }));
+                    }}
+                  >
+                    <Shield size={12} />
+                    {t(`builder.removable.${power.removable}`)}
                     <button
-                      key={opt}
-                      className={`build-removable-opt ${(power.removable ?? 'none') === opt ? 'build-removable-opt--active' : ''}`}
-                      onClick={() => setPower((p) => ({ ...p, removable: opt }))}
-                      title={t(`builder.removable.${opt}_hint`)}
+                      className="build-removable-badge-remove"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPower((p) => ({ ...p, removable: 'none' }));
+                      }}
+                      title={t('builder.removable.remove')}
                     >
-                      {t(`builder.removable.${opt}`)}
+                      <X size={10} />
                     </button>
-                  ))}
-                </div>
-                {removableDiscount > 0 && (
-                  <span className="build-removable-discount">
-                    −{removableDiscount} PP {t('builder.removable.from')} {mainCost} PP
                   </span>
                 )}
               </div>
+              {removableDiscount > 0 && (
+                <span className="build-removable-discount">
+                  −{removableDiscount} PP {t('builder.removable.from')} {mainCost} PP
+                </span>
+              )}
             </div>
 
             {/* Effect Components */}
@@ -730,6 +764,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
             })}
           </div>
           <div className="cost-total">
+            {removableDiscount > 0 && (
+              <span className="cost-removable-line">
+                {t(`builder.removable.${power.removable ?? 'none'}`)} −{removableDiscount} PP
+              </span>
+            )}
             <span className="cost-total-label">{t('builder.total')}:</span>
             <span className="cost-total-value">{totalCost} {t('common.pp')}</span>
           </div>
@@ -860,32 +899,30 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
         }
         .build-add-comp-btn:hover { border-color: var(--c-primary); color: var(--c-primary); }
 
-        /* Removable toggle — F-06 */
-        .build-name-row { display: flex; }
+        /* Removable badge — F-06 */
+        .build-name-row { display: flex; gap: var(--s-sm); align-items: center; }
         .build-name-row .build-input { flex: 1; }
-        .build-label--sm { font-size: 0.68rem; color: var(--c-text-muted); margin-bottom: 0; }
-        .build-removable-row {
-          display: flex; align-items: center; gap: var(--s-md); flex-wrap: wrap;
-          padding: var(--s-xs) 0;
+        .build-removable-badge {
+          display: inline-flex; align-items: center; gap: 4px;
+          padding: 3px 10px; background: var(--c-warning-bg, rgba(251, 191, 36, 0.15));
+          border: 1px solid var(--c-warning, #f59e0b); border-radius: var(--r-full);
+          color: var(--c-warning, #f59e0b); font-size: 0.72rem; font-weight: 600;
+          cursor: pointer; white-space: nowrap; user-select: none;
+          transition: all var(--t-fast);
         }
-        .build-removable-toggle {
-          display: flex; border: 1px solid var(--c-border); border-radius: var(--r-sm); overflow: hidden;
+        .build-removable-badge:hover { background: var(--c-warning-bg, rgba(251, 191, 36, 0.25)); }
+        .build-removable-badge-remove {
+          display: inline-flex; align-items: center; justify-content: center;
+          background: transparent; border: none; color: inherit;
+          cursor: pointer; padding: 0; margin-left: 2px; opacity: 0.6;
+          transition: opacity var(--t-fast);
         }
-        .build-removable-opt {
-          padding: 3px 10px; background: transparent;
-          border: none; border-right: 1px solid var(--c-border);
-          color: var(--c-text-muted); font-size: 0.75rem; cursor: pointer;
-          font-family: var(--f-body); transition: all var(--t-fast);
-        }
-        .build-removable-opt:last-child { border-right: none; }
-        .build-removable-opt:hover { background: var(--c-surface-elevated); color: var(--c-text); }
-        .build-removable-opt--active {
-          background: var(--c-primary); color: var(--c-bg); font-weight: 600;
-        }
+        .build-removable-badge-remove:hover { opacity: 1; }
         .build-removable-discount {
           font-size: 0.78rem; color: var(--c-success, #4ade80); font-weight: 600;
           background: rgba(74, 222, 128, 0.1); padding: 2px 8px;
           border-radius: var(--r-full); border: 1px solid rgba(74, 222, 128, 0.3);
+          margin-top: var(--s-xs);
         }
 
         /* Component Cards */
@@ -1000,9 +1037,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose }: Props) {
         .cost-comp-item { display: flex; align-items: center; gap: 6px; }
         .cost-comp-name { font-size: 0.8rem; color: var(--c-text-secondary); }
         .cost-comp-val { font-size: 0.8rem; font-weight: 700; color: var(--c-primary); }
-        .cost-total { display: flex; align-items: center; gap: var(--s-sm); }
+        .cost-total { display: flex; align-items: center; gap: var(--s-sm); flex-wrap: wrap; }
         .cost-total-label { font-size: 0.9rem; font-weight: 600; }
         .cost-total-value { font-family: var(--f-heading); font-size: 1.4rem; font-weight: 800; color: var(--c-primary); }
+        .cost-removable-line {
+          font-size: 0.78rem; color: var(--c-success, #4ade80); font-weight: 600;
+          background: rgba(74, 222, 128, 0.1); padding: 2px 8px;
+          border-radius: var(--r-full); border: 1px solid rgba(74, 222, 128, 0.3);
+        }
         .pl-violation-banner { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--c-error); background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3); border-radius: var(--r-sm); padding: 5px 10px; margin-top: 4px; width: 100%; }
 
         /* Drag ghost */

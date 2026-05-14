@@ -1109,18 +1109,35 @@
         "id":  "removable",
         "name":  "Removable",
         "category":  "flaw",
-        "costType":  "flat_ranked",
-        "costValue":  -2,
-        "description":  "The power device can be taken away. -1/5pp (Removable) or -2/5pp (Easily Removable).",
-        "longDescription":  "Applies to the power as a whole (usually a device). Removable (-1 per 5pp): can only be taken when stunned and defenseless. Easily Removable (-2 per 5pp): can be taken with a disarm or grab action. The temporary loss of the power does not count as a complication.",
+        "costType":  "flat",
+        "costValue":  0,
+        "appliesToPower": true,
+        "description":  "The power is in a device that can be taken away. -1/5pp (Removable) or -2/5pp (Easily Removable).",
+        "longDescription":  "Applies to the power as a whole (usually a device). Removable (-1 per 5pp): can only be taken when stunned and defenseless. Easily Removable (-2 per 5pp): can be taken with a disarm or grab action. The temporary loss of the power does not count as a complication. Cost is calculated automatically based on total power cost.",
+        "subtypes": [
+            {
+                "id": "removable",
+                "label": "Removable",
+                "costValue": 0
+            },
+            {
+                "id": "easily_removable",
+                "label": "Easily Removable",
+                "costValue": 0
+            }
+        ],
         "incompatibleWith":  [
 
                              ],
         "i18n":  {
                      "pt-BR":  {
                                    "name":  "Removível",
-                                   "description":  "O dispositivo pode ser retirado. -1/5pp (Removível) ou -2/5pp (Facilmente Removível).",
-                                   "longDescription":  "Aplica-se ao poder como um todo (geralmente um dispositivo). Removível (-1 por 5pp): só pode ser retirado quando atordoado e indefeso. Facilmente Removível (-2 por 5pp): pode ser retirado com ação de desarmar ou agarrar."
+                                   "description":  "O poder está em um dispositivo que pode ser retirado. -1/5pp (Removível) ou -2/5pp (Facilmente Removível).",
+                                   "longDescription":  "Aplica-se ao poder como um todo (geralmente um dispositivo). Removível (-1 por 5pp): só pode ser retirado quando atordoado e indefeso. Facilmente Removível (-2 por 5pp): pode ser retirado com ação de desarmar ou agarrar. O custo é calculado automaticamente com base no custo total do poder.",
+                                   "subtypes": [
+                                       { "label": "Removível" },
+                                       { "label": "Facilmente Removível" }
+                                   ]
                                }
                  }
     },

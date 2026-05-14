@@ -280,6 +280,8 @@
   "builder.removable.removable_hint": "O poder está em um objeto que pode ser agarrado ou retirado (−1PP por 5PP)",
   "builder.removable.easily_removable_hint": "O poder está em um objeto fácil de perder ou remover (−2PP por 5PP)",
   "builder.removable.from": "desconto em",
+  "builder.removable.discount": "Desconto Removível",
+  "builder.removable.remove": "Remover flaw Removível",
 
   "offense.title": "Ataques",
   "offense.attack": "Ataque",

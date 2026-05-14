@@ -242,8 +242,11 @@ describe('modifiers.json — RAW semantic rules', () => {
     }
   });
 
-  it('all flaws have costValue < 0', () => {
+  it('all flaws have costValue < 0 (except power-level flaws)', () => {
     for (const mod of flaws) {
+      // Power-level flaws like 'removable' have costValue 0 because their
+      // discount is calculated separately via calcRemovableDiscount()
+      if ((mod as Record<string, unknown>).appliesToPower) continue;
       expect(mod.costValue, `flaw "${mod.id}" has non-negative costValue ${mod.costValue}`).toBeLessThan(0);
     }
   });

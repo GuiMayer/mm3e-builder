@@ -360,11 +360,13 @@ describe('modifiers.json — Flaws RAW validation', () => {
     expect(mod.costValue).toBe(-1);
   });
 
-  it('Removable: flat_ranked, -2/rank (easily removable)', () => {
+  it('Removable: flat, 0 cost (power-level flaw, discount calculated separately)', () => {
     const mod = findMod('removable');
     expect(mod.category).toBe('flaw');
-    expect(mod.costType).toBe('flat_ranked');
-    expect(mod.costValue).toBe(-2); // Easily removable, -1 for regular removable
+    expect(mod.costType).toBe('flat');
+    expect(mod.costValue).toBe(0); // Cost is 0 because discount is calculated via calcRemovableDiscount()
+    expect(mod.appliesToPower).toBe(true);
+    expect(mod.subtypes).toHaveLength(2);
   });
 
   it('Resistible: per_rank, -1/rank', () => {
