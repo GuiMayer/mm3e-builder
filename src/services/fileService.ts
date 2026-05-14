@@ -5,6 +5,9 @@ import { migratePowers, migrateEquipment } from '../shared/lib/powerMigration';
 import { SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS } from '../entities/constants';
 const DRAFT_KEY = 'mm3e-draft-character';
 
+// Cache the last saved JSON to prevent redundant saves
+let lastSavedJSON = '';
+
 /**
  * Custom error class that carries i18n translation keys and parameters.
  * The calling component resolves these via t(key, params).
@@ -82,6 +85,9 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
  * Save draft to localStorage (auto-save).
  * Returns false if QuotaExceededError occurs.
  * Includes metadata: timestamp and character name for better UX.
+ * 
+ * Protection: Skips save if character data hasn't changed since last save
+ * to prevent redundant localStorage writes and potential infinite loops.
  */
 export function saveDraft(character: ICharacter): boolean {
   try {
@@ -90,7 +96,16 @@ export function saveDraft(character: ICharacter): boolean {
       exportedAt: new Date().toISOString(),
       character,
     };
-    localStorage.setItem(DRAFT_KEY, JSON.stringify(file));
+    const json = JSON.stringify(file);
+    
+    // Skip save if content hasn't changed (prevents redundant saves and loops)
+    if (json === lastSavedJSON) {
+      console.log('[saveDraft] Skipping - no changes detected');
+      return true;
+    }
+    
+    localStorage.setItem(DRAFT_KEY, json);
+    lastSavedJSON = json;
     
     // Store metadata separately for quick access without parsing full character
     const metadata = {
@@ -100,6 +115,7 @@ export function saveDraft(character: ICharacter): boolean {
     };
     localStorage.setItem(DRAFT_KEY + '-metadata', JSON.stringify(metadata));
     
+    console.log('[saveDraft] Draft saved successfully');
     return true;
   } catch (e) {
     if (e instanceof DOMException && e.name === 'QuotaExceededError') {
@@ -136,10 +152,13 @@ export function loadDraft(): ICharacter | null {
 
 /**
  * Clear draft from localStorage.
+ * Also clears the save cache to ensure fresh saves after clearing.
  */
 export function clearDraft(): void {
   localStorage.removeItem(DRAFT_KEY);
   localStorage.removeItem(DRAFT_KEY + '-metadata');
+  // Clear the save cache so next save will work properly
+  lastSavedJSON = '';
 }
 
 /**
