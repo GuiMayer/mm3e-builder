@@ -301,6 +301,8 @@
   "offense.range_ranged": "Ranged",
   "offense.range_perception": "Perception",
   "offense.range_personal": "Personal",
+  "offense.unarmed": "Unarmed",
+  "offense.damage": "Damage",
 
   "equipment.title": "Equipment",
   "equipment.hint": "Equipment Points from the Equipment advantage (ranks × 5 EP)",

@@ -301,6 +301,8 @@
   "offense.range_ranged": "À distância",
   "offense.range_perception": "Percepção",
   "offense.range_personal": "Pessoal",
+  "offense.unarmed": "Desarmado",
+  "offense.damage": "Dano",
 
   "equipment.title": "Equipamentos",
   "equipment.hint": "Pontos de Equipamento da vantagem Equipamento (ranks × 5 PE)",
