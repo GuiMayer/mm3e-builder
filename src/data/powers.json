@@ -819,15 +819,22 @@
     "action": "free",
     "range": "personal",
     "duration": "sustained",
-    "description": "You can temporarily improve one of your existing traits by its rank while active. Cost per rank equals the cost of the base trait being enhanced. Enhanced Trait is a power effect (not a natural trait) and can be combined with extra effort. Subject to power level limits: unenhanced rank must be below the limit by at least the enhancement amount.",
-    "variableCost": null,
+    "description": "You can temporarily improve one of your existing traits by its rank while active. VARIABLE COST: Abilities cost 2 PP/rank, Skills cost 1 PP per 2 ranks (0.5 PP/rank), Advantages and Defenses cost 1 PP/rank. Enhanced Trait is a power effect (not a natural trait) and can be combined with extra effort. Subject to power level limits: unenhanced rank must be below the limit by at least the enhancement amount.",
+    "variableCost": {
+      "options": [
+        { "name": "Enhanced Ability", "cost": 2 },
+        { "name": "Enhanced Skill", "cost": 0.5 },
+        { "name": "Enhanced Advantage", "cost": 1 },
+        { "name": "Enhanced Defense", "cost": 1 }
+      ]
+    },
     "i18n": {
       "pt-BR": {
         "name": "Traço Aprimorado",
-        "description": "Permite melhorar temporariamente um de seus traços existentes pelo valor do rank enquanto ativo. O custo por rank é igual ao custo do traço base aprimorado. Traço Aprimorado é um efeito de poder (não um traço natural) e pode ser combinado com esforço extra. Sujeito aos limites de nível de poder: o rank base deve estar abaixo do limite pelo menos pelo valor do aprimoramento."
+        "description": "Permite melhorar temporariamente um de seus traços existentes pelo valor do rank enquanto ativo. CUSTO VARIÁVEL: Habilidades custam 2 PP/rank, Perícias custam 1 PP por 2 ranks (0,5 PP/rank), Vantagens e Defesas custam 1 PP/rank. Traço Aprimorado é um efeito de poder (não um traço natural) e pode ser combinado com esforço extra. Sujeito aos limites de nível de poder: o rank base deve estar abaixo do limite pelo menos pelo valor do aprimoramento."
       }
     },
-    "longDescription": "You can temporarily improve one of your existing traits by its rank while active. Cost per rank equals the cost of the base trait being enhanced. Enhanced Trait is a power effect (not a natural trait) and can be combined with extra effort. Subject to power level limits: unenhanced rank must be below the limit by at least the enhancement amount.",
+    "longDescription": "You can temporarily improve one of your existing traits by its rank while active. VARIABLE COST: Abilities cost 2 PP/rank, Skills cost 1 PP per 2 ranks (0.5 PP/rank), Advantages and Defenses cost 1 PP/rank. Enhanced Trait is a power effect (not a natural trait) and can be combined with extra effort. Subject to power level limits: unenhanced rank must be below the limit by at least the enhancement amount.",
     "enhancesDefense": null,
     "extras": [],
     "flaws": [
