@@ -34,6 +34,9 @@ export const DEFAULT_VALIDATION_RULES: IValidationRules = {
   // Skill validations
   enforceTrainedOnlySkills: false,         // Prevent untrained use (optional - some GMs allow)
   enforceSkillAbilityRequirements: false,  // Warn about skills with absent base abilities (optional)
+  
+  // Power field validations
+  enforceRequiredPowerFields: true,        // Require configurable power fields to be set at acquisition
 };
 
 /**
@@ -57,6 +60,8 @@ export const PERMISSIVE_VALIDATION_RULES: IValidationRules = {
   plTradeOffsAsErrors: false,              // PL violations as warnings only
   enforceTrainedOnlySkills: false,
   enforceSkillAbilityRequirements: false,
+  
+  enforceRequiredPowerFields: false,       // Allow incomplete power configurations
 };
 
 /**
@@ -80,6 +85,8 @@ export const STRICT_VALIDATION_RULES: IValidationRules = {
   plTradeOffsAsErrors: true,
   enforceTrainedOnlySkills: true,
   enforceSkillAbilityRequirements: true,
+  
+  enforceRequiredPowerFields: true,        // Require all power fields in strict mode
 };
 
 /**
@@ -103,6 +110,8 @@ export const SANDBOX_VALIDATION_RULES: IValidationRules = {
   plTradeOffsAsErrors: false,
   enforceTrainedOnlySkills: false,
   enforceSkillAbilityRequirements: false,
+  
+  enforceRequiredPowerFields: false,       // Allow incomplete power configurations in sandbox
 };
 
 /**
@@ -243,5 +252,13 @@ export const VALIDATION_RULE_METADATA: ValidationRuleMetadata[] = [
     category: 'skill',
     recommendedFor: 'optional',
     disableWhen: 'Playing constructs with creative skill justifications',
+  },
+  {
+    id: 'enforceRequiredPowerFields',
+    name: 'Required Power Fields',
+    description: 'Requires configurable power fields (resistance type, sense medium, etc.) to be set at acquisition',
+    category: 'power',
+    recommendedFor: 'all',
+    disableWhen: 'Allowing incomplete power configurations during character building',
   },
 ];
