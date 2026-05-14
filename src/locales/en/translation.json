@@ -157,6 +157,7 @@
   "builder.total": "Total",
   "builder.totalEP": "Total EP",
   "builder.incompatibleWith": "Incompatible with",
+  "builder.noEffectError": "Add at least one effect before saving",
 
   "palette.search": "Search modifiers...",
   "palette.extras": "Extras",

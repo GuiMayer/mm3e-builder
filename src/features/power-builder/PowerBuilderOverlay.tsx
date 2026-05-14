@@ -380,11 +380,35 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   }
 
   function handleSave() {
-    const hasEffect = power.components.some((c) => c.effectId !== '');
-    if (!hasEffect) return;
+    // Filter out empty components (components without an effect selected)
+    const validComponents = power.components.filter((c) => c.effectId !== '');
+    
+    // Check if there's at least one valid component
+    if (validComponents.length === 0) {
+      alert(t('builder.noEffectError'));
+      return;
+    }
+
+    // Clean up alternate effects: remove empty components and empty AEs
+    const cleanedAlternateEffects = power.alternateEffects
+      .map((ae) => ({
+        ...ae,
+        components: ae.components.filter((c) => c.effectId !== ''),
+      }))
+      .filter((ae) => ae.components.length > 0);
+
+    // Create cleaned power object
+    const cleanPower: ICharacterPower = {
+      ...power,
+      components: validComponents,
+      alternateEffects: cleanedAlternateEffects,
+    };
+
+    // Validate alternate effects against main cost
     const invalidAEs = aeValidations
       .map((v, i) => ({ ...v, ae: power.alternateEffects[i] }))
       .filter((v) => !v.valid && v.ae.components.some((c) => c.effectId !== ''));
+    
     if (invalidAEs.length > 0) {
       const names = invalidAEs.map((v) => v.ae.name || 'sem nome').join(', ');
       const confirmed = window.confirm(
@@ -392,7 +416,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       );
       if (!confirmed) return;
     }
-    onSave(power);
+
+    onSave(cleanPower);
   }
 
   const activeMod = activeId ? allModDefs.find((m) => m.id === activeId) : null;
