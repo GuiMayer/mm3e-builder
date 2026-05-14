@@ -21,6 +21,7 @@ interface AltEffectCardProps {
   onSetActiveComp: (id: string) => void;
   allEffects: IPowerEffect[];
   allModDefs: IModifierDef[];
+  modifierIncompatibilities: Record<string, string[]>;
 
   activeId: string | null;
   onUpdateAE: (u: Partial<IAlternateEffect>) => void;
@@ -40,7 +41,7 @@ interface AltEffectCardProps {
 export function AltEffectCard({
   ae, aeIdx, cost, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
-  allEffects, allModDefs,
+  allEffects, allModDefs, modifierIncompatibilities,
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
   onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption, onUpdateModifierOptions,
@@ -179,10 +180,16 @@ export function AltEffectCard({
                             : def.costType === 'flat_ranked'
                             ? def.costValue * applied.ranks
                             : null;
+                        
+                        // Check for incompatibilities
+                        const incompatKey = `${ae.id}:${comp.id}:${applied.modifierId}`;
+                        const conflicts = modifierIncompatibilities[incompatKey] || [];
+                        const hasIncompatibility = conflicts.length > 0;
+                        
                         return (
                           <div
                             key={applied.modifierId}
-                            className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''}`}
+                            className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                           >
                             <span className="applied-mod-name">{def.name}</span>
                             {def.costType !== 'per_rank' && (
@@ -251,6 +258,14 @@ export function AltEffectCard({
                                 return '';
                               })()}
                             </span>
+                            {hasIncompatibility && (
+                              <span 
+                                className="applied-mod-incompatible-warning" 
+                                title={`${t('builder.incompatibleWith')}: ${conflicts.map(id => allModDefs.find(d => d.id === id)?.name || id).join(', ')}`}
+                              >
+                                <AlertTriangle size={14} />
+                              </span>
+                            )}
                             <button
                               className="applied-mod-remove"
                               onClick={() => onRemoveModifier(comp.id, applied.modifierId)}

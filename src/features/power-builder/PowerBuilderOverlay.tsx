@@ -94,6 +94,51 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     });
   }, [modifierDefs, power.components, power.alternateEffects, powerDefs]);
 
+  // Detect modifier incompatibilities for all components
+  const modifierIncompatibilities = useMemo(() => {
+    const incompatibilities: Record<string, string[]> = {};
+    
+    // Check main power components
+    power.components.forEach((comp) => {
+      const appliedModIds = comp.modifiers.map((m) => m.modifierId);
+      comp.modifiers.forEach((applied) => {
+        const def = allModDefs.find((d) => d.id === applied.modifierId);
+        if (!def || !def.incompatibleWith || def.incompatibleWith.length === 0) return;
+        
+        const conflicts = def.incompatibleWith.filter((incompatId) =>
+          appliedModIds.includes(incompatId)
+        );
+        
+        if (conflicts.length > 0) {
+          const key = `${comp.id}:${applied.modifierId}`;
+          incompatibilities[key] = conflicts;
+        }
+      });
+    });
+    
+    // Check AE components
+    power.alternateEffects.forEach((ae) => {
+      ae.components.forEach((comp) => {
+        const appliedModIds = comp.modifiers.map((m) => m.modifierId);
+        comp.modifiers.forEach((applied) => {
+          const def = allModDefs.find((d) => d.id === applied.modifierId);
+          if (!def || !def.incompatibleWith || def.incompatibleWith.length === 0) return;
+          
+          const conflicts = def.incompatibleWith.filter((incompatId) =>
+            appliedModIds.includes(incompatId)
+          );
+          
+          if (conflicts.length > 0) {
+            const key = `${ae.id}:${comp.id}:${applied.modifierId}`;
+            incompatibilities[key] = conflicts;
+          }
+        });
+      });
+    });
+    
+    return incompatibilities;
+  }, [power.components, power.alternateEffects, allModDefs]);
+
   // Currently selected effect for the active component (used only in component cards)
   const activeComponent = power.components.find((c) => c.id === activeComponentId);
 
@@ -583,10 +628,15 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                           const overPL =
                             def.maxRanks !== undefined && applied.ranks > def.maxRanks;
 
+                          // Check for incompatibilities
+                          const incompatKey = `${comp.id}:${applied.modifierId}`;
+                          const conflicts = modifierIncompatibilities[incompatKey] || [];
+                          const hasIncompatibility = conflicts.length > 0;
+
                           return (
                             <div
                               key={applied.modifierId}
-                              className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${applied.isPowerSpecific ? 'applied-mod--specific' : ''}`}
+                              className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${applied.isPowerSpecific ? 'applied-mod--specific' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                             >
                               <span className="applied-mod-name">{def.name}</span>
                               {def.costType !== 'per_rank' && (
@@ -686,6 +736,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                   ⚠️
                                 </span>
                               )}
+                              {hasIncompatibility && (
+                                <span 
+                                  className="applied-mod-incompatible-warning" 
+                                  title={`${t('builder.incompatibleWith')}: ${conflicts.map(id => allModDefs.find(d => d.id === id)?.name || id).join(', ')}`}
+                                >
+                                  <AlertTriangle size={14} />
+                                </span>
+                              )}
                               <button
                                 className="applied-mod-remove"
                                 onClick={() => removeModifier(comp.id, applied.modifierId)}
@@ -759,6 +817,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   onSetActiveComp={(compId) => setActiveAEComponentId((prev) => ({ ...prev, [ae.id]: compId }))}
                   allEffects={powerDefs}
                   allModDefs={allModDefs}
+                  modifierIncompatibilities={modifierIncompatibilities}
 
                   activeId={activeId}
                   onUpdateAE={(update) => updateAlternateEffect(ae.id, update)}
@@ -1033,6 +1092,15 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         }
         .applied-mod--flaw { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.3); }
         .applied-mod--specific { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.35); }
+        .applied-mod--incompatible { 
+          background: rgba(239, 68, 68, 0.15); 
+          border-color: rgba(239, 68, 68, 0.5);
+          animation: pulse-warning 2s ease-in-out infinite;
+        }
+        @keyframes pulse-warning {
+          0%, 100% { border-color: rgba(239, 68, 68, 0.5); }
+          50% { border-color: rgba(239, 68, 68, 0.8); }
+        }
         .applied-mod-name { font-weight: 600; }
         .applied-mod-ranks {
           width: 28px; text-align: center; background: var(--c-bg);
@@ -1053,6 +1121,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         }
         .applied-mod-cost { font-size: 0.68rem; color: var(--c-text-muted); }
         .applied-mod-overlimit { font-size: 0.72rem; cursor: help; }
+        .applied-mod-incompatible-warning {
+          display: flex; align-items: center;
+          color: var(--c-error);
+          cursor: help;
+          animation: pulse-icon 2s ease-in-out infinite;
+        }
+        @keyframes pulse-icon {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.6; }
+        }
         .applied-mod-remove {
           background: transparent; border: none; color: var(--c-text-muted);
           cursor: pointer; display: flex; transition: color var(--t-fast);

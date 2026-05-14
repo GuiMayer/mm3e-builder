@@ -19,6 +19,7 @@
 - [ ] **2.2** Duplicate Power/Component
 - [ ] **2.3** Modifier Search in Applied List
 - [ ] **2.4** Cost Breakdown Tooltip
+- [x] **2.5** Modifier Incompatibility Warnings
 - [ ] **2.11** Mobile Drag-and-Drop Alternative (expandir implementação)
 - [ ] **2.13** Power Import/Export (JSON)
 

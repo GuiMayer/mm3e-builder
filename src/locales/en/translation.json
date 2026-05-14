@@ -156,6 +156,7 @@
   "builder.close": "Close",
   "builder.total": "Total",
   "builder.totalEP": "Total EP",
+  "builder.incompatibleWith": "Incompatible with",
 
   "palette.search": "Search modifiers...",
   "palette.extras": "Extras",
