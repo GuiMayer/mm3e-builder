@@ -1057,7 +1057,8 @@
         "description":  "A continuous effect becomes permanent: always on, cannot be improved with extra effort.",
         "longDescription":  "A continuous effect becomes permanent in duration. It cannot be turned off voluntarily and always remains active. If an outside force (like Nullify) turns it off, it reactivates at the earliest opportunity. Cannot be improved with extra effort.",
         "incompatibleWith":  [
-                                 "alternate_effect"
+                                 "alternate_effect",
+                                 "sustained"
                              ],
         "i18n":  {
                      "pt-BR":  {
