@@ -881,15 +881,20 @@
     "action": "standard",
     "range": "ranged",
     "duration": "sustained",
-    "description": "You can change the environment in an area. Affects a 30-foot radius at rank 1, increasing one distance rank per additional rank. Options (1-2 pts/rank each): Cold (intense/extreme), Heat (intense/extreme), Impede Movement (reduce speed by 1-2 ranks), Light (reduce/eliminate darkness concealment), Visibility (-2 or -5 to Perception). Multiple effects stack or use Selective modifier.",
-    "variableCost": null,
+    "description": "You can change the environment in an area. Affects a 30-foot radius at rank 1, increasing one distance rank per additional rank. VARIABLE COST: 1 PP/rank for distraction or impediment effects. 2 PP/rank if the environment causes damage. Options: Cold (intense/extreme), Heat (intense/extreme), Impede Movement (reduce speed by 1-2 ranks), Light (reduce/eliminate darkness concealment), Visibility (-2 or -5 to Perception). Multiple effects stack or use Selective modifier.",
+    "variableCost": {
+      "options": [
+        { "name": "Distraction/Impediment", "cost": 1 },
+        { "name": "Damaging Environment", "cost": 2 }
+      ]
+    },
     "i18n": {
       "pt-BR": {
         "name": "Controle Ambiental",
-        "description": "Permite alterar o ambiente em uma área. Afeta um raio de 9 m no rank 1, aumentando um rank de distância por rank adicional. Opções (1-2 pp/rank cada): Frio (intenso/extremo), Calor (intenso/extremo), Impedir Movimento (reduz velocidade em 1-2 ranks), Luz (reduz/elimina ocultação por escuridão), Visibilidade (-2 ou -5 em Percepção). Múltiplos efeitos se somam ou usam o modificador Seletivo."
+        "description": "Permite alterar o ambiente em uma área. Afeta um raio de 9 m no rank 1, aumentando um rank de distância por rank adicional. CUSTO VARIÁVEL: 1 PP/rank para distração ou impedimento. 2 PP/rank se o ambiente causar dano. Opções: Frio (intenso/extremo), Calor (intenso/extremo), Impedir Movimento (reduz velocidade em 1-2 ranks), Luz (reduz/elimina ocultação por escuridão), Visibilidade (-2 ou -5 em Percepção). Múltiplos efeitos se somam ou usam o modificador Seletivo."
       }
     },
-    "longDescription": "You can change the environment in an area. Affects a 30-foot radius at rank 1, increasing one distance rank per additional rank. Options (1-2 pts/rank each): Cold (intense/extreme), Heat (intense/extreme), Impede Movement (reduce speed by 1-2 ranks), Light (reduce/eliminate darkness concealment), Visibility (-2 or -5 to Perception). Multiple effects stack or use Selective modifier.",
+    "longDescription": "You can change the environment in an area. Affects a 30-foot radius at rank 1, increasing one distance rank per additional rank. VARIABLE COST: 1 PP/rank for distraction or impediment effects. 2 PP/rank if the environment causes damage. Options: Cold (intense/extreme), Heat (intense/extreme), Impede Movement (reduce speed by 1-2 ranks), Light (reduce/eliminate darkness concealment), Visibility (-2 or -5 to Perception). Multiple effects stack or use Selective modifier.",
     "enhancesDefense": null,
     "extras": [
       {
