@@ -159,6 +159,7 @@ export interface ICharacterPowerComponent {
   effectId: string;
   ranks: number;
   modifiers: IAppliedModifier[];
+  variableCostOption?: string;   // selected variable cost option name (for effects like Affliction, Illusion)
 }
 
 // ── Alternate Effect (nested inside a power) ──
