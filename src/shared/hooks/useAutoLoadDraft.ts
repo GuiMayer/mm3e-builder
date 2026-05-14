@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useEffect, useState, useRef } from 'react';
 import { loadDraft } from '../../services/fileService';
 import type { ICharacter } from '../../entities/types';
 
 const INSTANCE_KEY = 'mm3e-app-instance-active';
 
 /**
- * Hook that auto-loads the character draft from localStorage on app mount.
+ * Hook that detects character draft from localStorage on app mount.
  * 
  * Features:
- * - Loads draft on every page load to show notification banner
- * - Detects if another instance is already open (skips load)
+ * - Detects draft on every page load to show notification banner
+ * - Does NOT auto-load - waits for user action
+ * - Detects if another instance is already open (skips detection)
  * - Returns draft info for UI notification
  * - Handles corrupted drafts gracefully
  */
 export function useAutoLoadDraft() {
-  const loadCharacter = useCharStore((s) => s.loadCharacter);
+  const hasRunRef = useRef(false);
   const [draftInfo, setDraftInfo] = useState<{
     loaded: boolean;
     character: ICharacter | null;
@@ -27,20 +27,36 @@ export function useAutoLoadDraft() {
   });
 
   useEffect(() => {
-    console.log('[useAutoLoadDraft] Effect triggered');
-    
+    // Prevent double-run in React StrictMode
+    if (hasRunRef.current) {
+      return;
+    }
+    hasRunRef.current = true;
+
+    // Try to detect draft first (before instance check)
+    let draft: ICharacter | null = null;
+    try {
+      draft = loadDraft();
+    } catch (error) {
+      console.error('[useAutoLoadDraft] Failed to load draft:', error);
+      // Clear corrupted draft
+      try {
+        localStorage.removeItem('mm3e-draft-character');
+      } catch {
+        // Ignore cleanup errors
+      }
+    }
+
     // Check if another instance is already active
     const instanceActive = localStorage.getItem(INSTANCE_KEY);
     const now = Date.now();
-    console.log('[useAutoLoadDraft] Instance check:', { instanceActive, now });
     
     if (instanceActive) {
       const timestamp = parseInt(instanceActive, 10);
       const timeDiff = now - timestamp;
-      console.log('[useAutoLoadDraft] Instance timestamp check:', { timestamp, timeDiff, threshold: 5000 });
-      // If another instance was active in the last 5 seconds, skip loading
-      if (timeDiff < 5000) {
-        console.log('[useAutoLoadDraft] Another instance detected, skipping draft load');
+      // If another instance was active in the last 2 seconds, skip loading
+      // (reduced from 5s to avoid React StrictMode double-mount issues)
+      if (timeDiff < 2000) {
         setDraftInfo({
           loaded: false,
           character: null,
@@ -69,29 +85,13 @@ export function useAutoLoadDraft() {
     };
     window.addEventListener('beforeunload', cleanup);
 
-    // Try to load draft
-    try {
-      const draft = loadDraft();
-      
-      if (draft) {
-        console.log('[useAutoLoadDraft] Draft found, loading character');
-        loadCharacter(draft);
-        setDraftInfo({
-          loaded: true,
-          character: draft,
-          skippedDueToMultipleInstances: false,
-        });
-      } else {
-        console.log('[useAutoLoadDraft] No draft found');
-      }
-    } catch (error) {
-      console.error('[useAutoLoadDraft] Failed to load draft:', error);
-      // Clear corrupted draft
-      try {
-        localStorage.removeItem('mm3e-draft-character');
-      } catch {
-        // Ignore cleanup errors
-      }
+    // Set draft info if we found one
+    if (draft) {
+      setDraftInfo({
+        loaded: false, // Not loaded yet - just detected
+        character: draft,
+        skippedDueToMultipleInstances: false,
+      });
     }
 
     // Cleanup function

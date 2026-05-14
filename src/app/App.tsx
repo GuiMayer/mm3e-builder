@@ -16,23 +16,30 @@ export function App() {
   const { t, i18n } = useTranslation()
   const [activeView, setActiveView] = useState<AppView>('sheet');
   const resetCharacter = useCharStore((s) => s.resetCharacter);
+  const loadCharacter = useCharStore((s) => s.loadCharacter);
   
-  // Auto-load draft from localStorage on mount
+  // Auto-detect draft from localStorage on mount (but don't load it yet)
   const draftInfo = useAutoLoadDraft();
   const [showDraftNotification, setShowDraftNotification] = useState(false);
 
-  // Show notification when draft is loaded
+  // Show notification when draft is detected
   useEffect(() => {
-    if (draftInfo.loaded && draftInfo.character) {
+    if (draftInfo.character) {
       setShowDraftNotification(true);
     }
-  }, [draftInfo.loaded, draftInfo.character]);
+  }, [draftInfo.character]);
 
   // Sync <html lang> and <title> with the active i18n language
   useEffect(() => {
     document.documentElement.lang = i18n.language
     document.title = t('app.title') + ' — ' + t('app.subtitle')
   }, [i18n.language, t])
+
+  const handleRestoreDraft = () => {
+    if (draftInfo.character) {
+      loadCharacter(draftInfo.character);
+    }
+  };
 
   const handleDismissNotification = () => {
     setShowDraftNotification(false);
@@ -58,6 +65,7 @@ export function App() {
         {showDraftNotification && draftInfo.character && (
           <DraftNotification
             character={draftInfo.character}
+            onRestore={handleRestoreDraft}
             onDismiss={handleDismissNotification}
             onStartNew={handleStartNew}
           />

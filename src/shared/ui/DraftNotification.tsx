@@ -5,16 +5,17 @@ import type { ICharacter } from '../../entities/types';
 
 interface DraftNotificationProps {
   character: ICharacter;
+  onRestore: () => void;
   onDismiss: () => void;
   onStartNew: () => void;
 }
 
 /**
- * Banner notification that appears when a draft is auto-loaded.
- * Shows character name and provides options to continue or start fresh.
+ * Banner notification that appears when a draft is detected.
+ * Shows character name and provides options to restore or start fresh.
  * Auto-dismisses after 10 seconds if user doesn't interact.
  */
-export function DraftNotification({ character, onDismiss, onStartNew }: DraftNotificationProps) {
+export function DraftNotification({ character, onRestore, onDismiss, onStartNew }: DraftNotificationProps) {
   const { t } = useTranslation();
   const [visible, setVisible] = useState(true);
 
@@ -27,6 +28,14 @@ export function DraftNotification({ character, onDismiss, onStartNew }: DraftNot
 
     return () => clearTimeout(timer);
   }, [onDismiss]);
+
+  const handleRestore = () => {
+    setVisible(false);
+    setTimeout(() => {
+      onRestore();
+      onDismiss();
+    }, 300);
+  };
 
   const handleDismiss = () => {
     setVisible(false);
@@ -52,7 +61,7 @@ export function DraftNotification({ character, onDismiss, onStartNew }: DraftNot
       <div className="draft-notification-actions">
         <button
           className="draft-notification-btn draft-notification-btn--primary"
-          onClick={handleDismiss}
+          onClick={handleRestore}
           title={t('draftNotification.continue')}
         >
           {t('draftNotification.continue')}
