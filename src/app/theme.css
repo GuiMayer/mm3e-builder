@@ -523,3 +523,66 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--c-text-secondary);
   font-weight: 500;
 }
+
+/* ── Variable Cost Selector ── */
+.variable-cost-selector {
+  margin-top: 0.75rem;
+}
+
+.cost-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.cost-option-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background-color var(--t-fast);
+}
+
+.cost-option-radio:hover {
+  background-color: var(--c-surface-elevated);
+}
+
+.cost-option-radio input[type="radio"] {
+  cursor: pointer;
+}
+
+.cost-option-radio input[type="radio"]:checked ~ .cost-option-label {
+  font-weight: 600;
+  color: var(--c-primary);
+}
+
+.cost-option-label {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--c-text);
+  transition: all var(--t-fast);
+}
+
+.cost-option-cost {
+  margin-left: auto;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--c-accent);
+}
+
+.variable-cost-warning {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid var(--c-warning);
+  border-radius: var(--r-sm);
+  font-size: 0.875rem;
+  color: var(--c-warning);
+}
