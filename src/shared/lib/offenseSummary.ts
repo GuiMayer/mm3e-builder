@@ -227,7 +227,8 @@ export function buildOffenseSummary(
   powerDefs: IPowerEffect[],
   skillDefs: ISkillDef[],
   _advantageDefs: IAdvantageDef[],
-  modifierDefs: IModifierDef[] = []
+  modifierDefs: IModifierDef[] = [],
+  translations?: { unarmed: string; damage: string }
 ): IOffenseEntry[] {
   const entries: IOffenseEntry[] = [];
   const { abilities, skills } = character;
@@ -251,12 +252,12 @@ export function buildOffenseSummary(
 
     entries.push({
       id: '__unarmed__',
-      name: 'Unarmed',
+      name: translations?.unarmed ?? 'Unarmed',
       bonus: `+${total}`,
       bonusValue: total,
       bonusBreakdown: parts.join(' + '),
       range: 'close',
-      effect: `Damage ${abilities.str}`,
+      effect: `${translations?.damage ?? 'Damage'} ${abilities.str}`,
       notes: '',
       isAE: false,
       isManual: false,
