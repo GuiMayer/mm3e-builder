@@ -7,15 +7,30 @@
     "action": "standard",
     "range": "close",
     "duration": "instant",
-    "description": "Imposes debilitating conditions on a target via a close attack. Choose conditions for each degree of failure (1st: dazed/entranced/fatigued/hindered/impaired/vulnerable; 2nd: compelled/defenseless/disabled/exhausted/immobile/prone/stunned; 3rd: asleep/controlled/incapacitated/paralyzed/transformed/unaware). Target resists with Fortitude or Will (chosen at acquisition). Higher degrees replace lower ones.",
-    "variableCost": null,
+    "description": "Imposes debilitating conditions on a target. Cost: 1 PP/rank per degree of condition (1 degree = 1 PP/rank, 2 degrees = 2 PP/rank, 3 degrees = 3 PP/rank). Choose conditions for each degree at acquisition. Target resists with Fortitude or Will. Higher degrees replace lower ones.",
+    "variableCost": {
+      "options": [
+        {
+          "name": "1 degree (dazed/entranced/fatigued/hindered/impaired/vulnerable)",
+          "cost": 1
+        },
+        {
+          "name": "2 degrees (add compelled/defenseless/disabled/exhausted/immobile/prone/stunned)",
+          "cost": 2
+        },
+        {
+          "name": "3 degrees (add asleep/controlled/incapacitated/paralyzed/transformed/unaware)",
+          "cost": 3
+        }
+      ]
+    },
     "i18n": {
       "pt-BR": {
         "name": "Aflição",
-        "description": "Impõe condições debilitantes ao alvo por meio de um ataque corpo a corpo. Escolha condições para cada grau de falha (1º: atordoado/fascinado/fatigado/impedido/prejudicado/vulnerável; 2º: compelido/indefeso/debilitado/exausto/imóvel/derrubado/aturdido; 3º: adormecido/controlado/incapacitado/paralisado/transformado/inconsciente). O alvo resiste com Fortitude ou Vontade (escolhido na aquisição). Graus maiores substituem os menores."
+        "description": "Impõe condições debilitantes ao alvo. Custo: 1 PP/rank por grau de condição (1 grau = 1 PP/rank, 2 graus = 2 PP/rank, 3 graus = 3 PP/rank). Escolha condições para cada grau na aquisição. Alvo resiste com Fortitude ou Vontade. Graus superiores substituem os inferiores."
       }
     },
-    "longDescription": "Affliction attacks a target with a close attack (ranged with Increased Range extra). The target resists with Fortitude or Will. Each degree of failure inflicts one of three conditions chosen at acquisition. 1st degree: Dazed, Entranced, Fatigued, Hindered, Impaired, or Vulnerable. 2nd degree: Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, or Stunned. 3rd degree: Asleep, Controlled, Incapacitated, Paralyzed, Transformed, or Unaware. Conditions replace each other (not stack) as degrees worsen. The conditions at each degree must form a logical progression.",
+    "longDescription": "Affliction attacks impose debilitating conditions. The base cost is 1 PP/rank per degree of condition you purchase. A 1-degree Affliction costs 1 PP/rank and imposes one first-degree condition (dazed, entranced, fatigued, hindered, impaired, or vulnerable). A 2-degree Affliction costs 2 PP/rank and imposes a first-degree condition on one degree of failure and a second-degree condition (compelled, defenseless, disabled, exhausted, immobile, prone, or stunned) on two degrees of failure. A 3-degree Affliction costs 3 PP/rank and adds a third-degree condition (asleep, controlled, incapacitated, paralyzed, transformed, or unaware) on three degrees of failure. Higher degree conditions replace lower ones. Target resists with Fortitude or Will (chosen at acquisition). Reference: Hero's Handbook p.149",
     "enhancesDefense": null,
     "extras": [
       {
