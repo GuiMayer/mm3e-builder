@@ -23,7 +23,8 @@ export function EquipmentNotesPanel() {
   const powerDefs = useLocalizedData(POWER_DEFS);
   const modifierDefs = useLocalizedData(MODIFIER_DEFS);
   
-  const equipment = useCharStore((s) => s.character.equipment ?? []);
+  const equipmentRaw = useCharStore((s) => s.character.equipment);
+  const equipment = equipmentRaw ?? [];
   const setEquipment = useCharStore((s) => s.setEquipment);
   const equipmentNotes = useCharStore((s) => s.character.equipmentNotes);
   const setEquipmentNotes = useCharStore((s) => s.setEquipmentNotes);
