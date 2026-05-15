@@ -238,3 +238,28 @@ export function validateSkillCap(
   }
   return null;
 }
+
+/**
+ * Validates Luck advantage against PL limit.
+ * 
+ * Official Rule (Hero's Handbook p.565):
+ * - "You can do this a number of times per game session equal to your Luck rank, 
+ *    with a maximum rank of half the series power level (rounded down)."
+ * 
+ * Formula: Luck Rank ≤ PL ÷ 2 (rounded down)
+ */
+export function validateLuckAdvantage(
+  luckRanks: number,
+  powerLevel: number
+): PLViolation | null {
+  const limit = Math.floor(powerLevel / 2);
+  if (luckRanks > limit) {
+    return {
+      rule: 'validation.luckAdvantage',
+      formula: `Luck ${luckRanks} > ${limit}`,
+      actual: luckRanks,
+      limit,
+    };
+  }
+  return null;
+}
