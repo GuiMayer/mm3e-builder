@@ -5,6 +5,7 @@ import {
   validateParryToughness,
   validateFortitudeWill,
   validateSkillCap,
+  validateLuckAdvantage,
 } from '../shared/lib/validation';
 
 describe('PL Validation', () => {
@@ -56,6 +57,25 @@ describe('PL Validation', () => {
     });
     it('combat: fails over 2×PL', () => {
       expect(validateSkillCap(10, 11, PL, true)).not.toBeNull();
+    });
+  });
+
+  describe('validateLuckAdvantage', () => {
+    it('passes when Luck equals PL ÷ 2', () => {
+      expect(validateLuckAdvantage(5, PL)).toBeNull();
+    });
+    it('passes when Luck is below PL ÷ 2', () => {
+      expect(validateLuckAdvantage(3, PL)).toBeNull();
+    });
+    it('fails when Luck exceeds PL ÷ 2', () => {
+      const result = validateLuckAdvantage(6, PL);
+      expect(result).not.toBeNull();
+      expect(result!.actual).toBe(6);
+      expect(result!.limit).toBe(5);
+    });
+    it('handles odd PL correctly (rounds down)', () => {
+      expect(validateLuckAdvantage(5, 11)).toBeNull(); // 11 ÷ 2 = 5.5 → 5
+      expect(validateLuckAdvantage(6, 11)).not.toBeNull();
     });
   });
 });
