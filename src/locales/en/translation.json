@@ -203,6 +203,7 @@
   "validation.fortitudeWill": "Fortitude + Will",
   "validation.combatSkill": "Combat Skill",
   "validation.skill": "Skill",
+  "validation.luckAdvantage": "Luck Advantage",
 
   "errors.invalidJson": "Invalid JSON file: could not parse the content.",
   "errors.validationError": "Validation error in field \"{{field}}\": {{message}}",

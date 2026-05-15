@@ -203,6 +203,7 @@
   "validation.fortitudeWill": "Fortitude + Vontade",
   "validation.combatSkill": "Perícia de Combate",
   "validation.skill": "Perícia",
+  "validation.luckAdvantage": "Vantagem Sorte",
 
   "errors.invalidJson": "Arquivo JSON inválido: não foi possível interpretar o conteúdo.",
   "errors.validationError": "Erro de validação no campo \"{{field}}\": {{message}}",
