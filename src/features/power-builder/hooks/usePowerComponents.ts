@@ -25,7 +25,7 @@ export function usePowerComponents({
       effectId: '',
       ranks: 1,
       modifiers: [],
-      configurableFieldValues: {},
+      fieldValues: {},
     };
     setPower((p) => ({ ...p, components: [...p.components, newComp] }));
     setActiveComponentId(newComp.id);
@@ -54,8 +54,8 @@ export function usePowerComponents({
         if (c.id !== compId) return c;
         return {
           ...c,
-          configurableFieldValues: {
-            ...(c.configurableFieldValues || {}),
+          fieldValues: {
+            ...(c.fieldValues || {}),
             [fieldId]: value,
           },
         };

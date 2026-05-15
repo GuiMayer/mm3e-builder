@@ -166,6 +166,7 @@ describe('validateComponentModifiers with enforcePowerSpecificModifiers', () => 
     enforceMinimumAbilityScore: true,
     enforceAlternateEffectCap: true,
     enforceEquipmentPPLimit: true,
+    enforceRequiredPowerFields: false,
   };
 
   const validationRulesDisabled: IValidationRules = {
@@ -211,6 +212,7 @@ describe('validateComponentModifiers with enforcePowerSpecificModifiers', () => 
       enforceSkillAbilityRequirements: false,
       enforcePLLimits: true,
       enforcePPBudget: true,
+      enforceRequiredPowerFields: false,
       enforceMinimumAbilityScore: true,
       enforceAlternateEffectCap: true,
       enforceEquipmentPPLimit: true,

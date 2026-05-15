@@ -1,4 +1,4 @@
-import type { IConfigurableField, IFieldOption } from '../../../entities/types';
+import type { IConfigurableField } from '../../../entities/types';
 import type { TFunction } from 'i18next';
 
 /* ================================================
@@ -60,7 +60,7 @@ export function ConfigurableFieldSelector({
             />
           )}
 
-          {field.control === 'multiselect' && (
+          {field.control === 'multi-select' && (
             <div className="field-multiselect">
               {field.options?.map((opt) => {
                 const selectedValues = (values[field.id] as string[]) || [];

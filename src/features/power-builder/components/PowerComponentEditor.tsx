@@ -124,13 +124,13 @@ export function PowerComponentEditor({
       {effectDef && effectDef.configurableFields && effectDef.configurableFields.length > 0 && (
         <ConfigurableFieldSelector
           fields={effectDef.configurableFields}
-          values={component.configurableFieldValues || {}}
+          values={component.fieldValues || {}}
           onChange={(fieldId: string, value: string | string[]) => {
             const newValues = {
-              ...(component.configurableFieldValues || {}),
+              ...(component.fieldValues || {}),
               [fieldId]: value,
             };
-            onUpdateComponent({ configurableFieldValues: newValues });
+            onUpdateComponent({ fieldValues: newValues });
           }}
           t={t}
         />
