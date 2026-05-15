@@ -1,9 +1,14 @@
 /* ================================================
-   Power Field Validation Functions
-   Validates configurable power fields at acquisition.
+   Validation Functions
+   - Power Field Validation (configurable fields)
+   - PL Trade-Off Limit Checks (M&M 3e official rules)
    ================================================ */
 
 import type { ICharacterPowerComponent, IPowerEffect } from '../../entities/types';
+
+// ══════════════════════════════════════════════════════════════════════════════
+// POWER FIELD VALIDATION
+// ══════════════════════════════════════════════════════════════════════════════
 
 export interface IPowerFieldViolation {
   field: string;
@@ -78,4 +83,158 @@ export function validatePowerComponents(
   });
 
   return violations;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PL TRADE-OFF VALIDATION (M&M 3e Hero's Handbook p.24)
+// ══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Represents a Power Level violation.
+ * Used by usePLValidation hook and power cost calculation.
+ */
+export interface PLViolation {
+  rule: string;        // Translation key: 'validation.attackDamage', 'validation.dodgeToughness', etc.
+  formula: string;     // Human-readable: "Attack +12 + Damage 10 = 22"
+  actual: number;      // 22
+  limit: number;       // 20 (PL 10 × 2)
+}
+
+/**
+ * Validates attack + effect rank limit.
+ * 
+ * Official Rule (Hero's Handbook p.24):
+ * - "The total of your hero's attack bonus and effect rank with that attack 
+ *    cannot exceed twice the series power level."
+ * 
+ * Formula: attackBonus + effectRank ≤ PL × 2
+ */
+export function validateAttackEffect(
+  attackBonus: number,
+  effectRank: number,
+  powerLevel: number
+): PLViolation | null {
+  const actual = attackBonus + effectRank;
+  const limit = powerLevel * 2;
+  if (actual > limit) {
+    return {
+      rule: 'validation.attackDamage',
+      formula: `${attackBonus} + ${effectRank} = ${actual} > ${limit}`,
+      actual,
+      limit,
+    };
+  }
+  return null;
+}
+
+/**
+ * Validates Dodge + Toughness limit.
+ * 
+ * Official Rule (Hero's Handbook p.24):
+ * - "The total of your hero's Dodge and Toughness defenses cannot exceed 
+ *    twice the series power level."
+ * 
+ * Formula: dodge + toughness ≤ PL × 2
+ */
+export function validateDodgeToughness(
+  dodge: number,
+  toughness: number,
+  powerLevel: number
+): PLViolation | null {
+  const actual = dodge + toughness;
+  const limit = powerLevel * 2;
+  if (actual > limit) {
+    return {
+      rule: 'validation.dodgeToughness',
+      formula: `${dodge} + ${toughness} = ${actual} > ${limit}`,
+      actual,
+      limit,
+    };
+  }
+  return null;
+}
+
+/**
+ * Validates Parry + Toughness limit.
+ * 
+ * Official Rule (Hero's Handbook p.24):
+ * - "The total of your hero's Parry and Toughness defenses cannot exceed 
+ *    twice the series power level."
+ * 
+ * Formula: parry + toughness ≤ PL × 2
+ */
+export function validateParryToughness(
+  parry: number,
+  toughness: number,
+  powerLevel: number
+): PLViolation | null {
+  const actual = parry + toughness;
+  const limit = powerLevel * 2;
+  if (actual > limit) {
+    return {
+      rule: 'validation.parryToughness',
+      formula: `${parry} + ${toughness} = ${actual} > ${limit}`,
+      actual,
+      limit,
+    };
+  }
+  return null;
+}
+
+/**
+ * Validates Fortitude + Will limit.
+ * 
+ * Official Rule (Hero's Handbook p.24):
+ * - "The total of your hero's Fortitude and Will defenses cannot exceed 
+ *    twice the series power level."
+ * 
+ * Formula: fortitude + will ≤ PL × 2
+ */
+export function validateFortitudeWill(
+  fortitude: number,
+  will: number,
+  powerLevel: number
+): PLViolation | null {
+  const actual = fortitude + will;
+  const limit = powerLevel * 2;
+  if (actual > limit) {
+    return {
+      rule: 'validation.fortitudeWill',
+      formula: `${fortitude} + ${will} = ${actual} > ${limit}`,
+      actual,
+      limit,
+    };
+  }
+  return null;
+}
+
+/**
+ * Validates skill total modifier against PL limit.
+ * 
+ * Official Rules (Hero's Handbook p.24):
+ * - Combat skills (Close Combat, Ranged Combat): total ≤ PL × 2
+ * - Non-combat skills: total ≤ PL + 10
+ * 
+ * Note: "Your hero's total modifier with any skill (ability rank + skill rank + 
+ * advantage modifiers) cannot exceed the series power level +10."
+ * 
+ * Combat skills use PL × 2 as they directly contribute to attack trade-offs.
+ */
+export function validateSkillCap(
+  abilityBase: number,
+  ranks: number,
+  powerLevel: number,
+  isCombatSkill: boolean
+): PLViolation | null {
+  const actual = abilityBase + ranks;
+  const limit = isCombatSkill ? powerLevel * 2 : powerLevel + 10;
+  if (actual > limit) {
+    return {
+      rule: isCombatSkill ? 'validation.combatSkill' : 'validation.skill',
+      formula: `${abilityBase} + ${ranks} = ${actual} > ${limit}`,
+      actual,
+      limit,
+    };
+  }
+  return null;
 }
