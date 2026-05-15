@@ -292,23 +292,23 @@ describe('PL Trade-Off Limits (Hero\'s Handbook p.24)', () => {
     });
   });
 
-  describe('Skill Caps', () => {
-    it('combat skill: ability 5 + ranks 15 = 20 (valid at PL 10)', () => {
-      const total = 5 + 15;
-      expect(total).toBe(PL * 2);
-    });
-
-    it('non-combat skill: ability 5 + ranks 15 = 20 (valid at PL 10)', () => {
+  describe('Skill Caps (ALL skills follow PL+10 per official rules)', () => {
+    it('any skill: ability 5 + ranks 15 = 20 (valid at PL 10)', () => {
       const total = 5 + 15;
       expect(total).toBe(PL + 10);
     });
 
-    it('combat skill violation: ability 6 + ranks 15 = 21 (invalid)', () => {
-      const total = 6 + 15;
-      expect(total).toBeGreaterThan(PL * 2);
+    it('Close Combat: ability 5 + ranks 15 = 20 (valid at PL 10)', () => {
+      const total = 5 + 15;
+      expect(total).toBe(PL + 10);
     });
 
-    it('non-combat skill violation: ability 6 + ranks 15 = 21 (invalid)', () => {
+    it('Ranged Combat: ability 5 + ranks 15 = 20 (valid at PL 10)', () => {
+      const total = 5 + 15;
+      expect(total).toBe(PL + 10);
+    });
+
+    it('skill violation: ability 6 + ranks 15 = 21 (invalid at PL 10)', () => {
       const total = 6 + 15;
       expect(total).toBeGreaterThan(PL + 10);
     });

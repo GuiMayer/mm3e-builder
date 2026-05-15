@@ -19,12 +19,13 @@ import { getActiveValidationRules } from '../lib/validationRules';
  * Hook that returns current PL violations in real time.
  * Empty array when enforcePLLimits is disabled.
  *
- * Validates:
+ * Validates (per M&M 3e Hero's Handbook p.24-25):
  * - Dodge + Toughness <= PL×2   (real Toughness: STA + Protection + Defensive Roll)
  * - Parry + Toughness <= PL×2
  * - Fortitude + Will  <= PL×2
  * - Attack-type power components: attackBonus + rank <= PL×2
- * - Close Combat / Ranged Combat skill totals <= PL×2
+ * - ALL skills (including Close Combat / Ranged Combat): total <= PL+10
+ * - Luck advantage: ranks <= PL÷2 (rounded down)
  */
 export function usePLValidation(): PLViolation[] {
   const character  = useCharStore((s) => s.character);

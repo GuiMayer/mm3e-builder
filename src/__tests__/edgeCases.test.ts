@@ -194,11 +194,11 @@ describe('PL Extremes', () => {
       expect(violation).not.toBeNull();
     });
 
-    it('skill cap: combat = 2, non-combat = 11', () => {
-      expect(validateSkillCap(1, 1, PL, true)).toBeNull(); // Combat: 2
-      expect(validateSkillCap(1, 2, PL, true)).not.toBeNull(); // Combat: 3 > 2
-      expect(validateSkillCap(5, 6, PL, false)).toBeNull(); // Non-combat: 11
-      expect(validateSkillCap(5, 7, PL, false)).not.toBeNull(); // Non-combat: 12 > 11
+    it('skill cap: all skills follow PL+10 = 11', () => {
+      expect(validateSkillCap(1, 1, PL)).toBeNull(); // Any skill: 2 <= 11
+      expect(validateSkillCap(5, 6, PL)).toBeNull(); // Any skill: 11 <= 11
+      expect(validateSkillCap(5, 7, PL)).not.toBeNull(); // Any skill: 12 > 11
+      expect(validateSkillCap(6, 6, PL)).not.toBeNull(); // Any skill: 12 > 11
     });
   });
 
@@ -222,11 +222,11 @@ describe('PL Extremes', () => {
       expect(violation).toBeNull();
     });
 
-    it('skill cap: combat = 40, non-combat = 30', () => {
-      expect(validateSkillCap(10, 30, PL, true)).toBeNull(); // Combat: 40
-      expect(validateSkillCap(10, 31, PL, true)).not.toBeNull(); // Combat: 41 > 40
-      expect(validateSkillCap(10, 20, PL, false)).toBeNull(); // Non-combat: 30
-      expect(validateSkillCap(10, 21, PL, false)).not.toBeNull(); // Non-combat: 31 > 30
+    it('skill cap: all skills follow PL+10 = 30', () => {
+      expect(validateSkillCap(10, 20, PL)).toBeNull(); // Any skill: 30 <= 30
+      expect(validateSkillCap(10, 21, PL)).not.toBeNull(); // Any skill: 31 > 30
+      expect(validateSkillCap(15, 15, PL)).toBeNull(); // Any skill: 30 <= 30
+      expect(validateSkillCap(15, 16, PL)).not.toBeNull(); // Any skill: 31 > 30
     });
   });
 
