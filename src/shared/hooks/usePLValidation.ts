@@ -155,16 +155,16 @@ export function usePLValidation(): PLViolation[] {
       }
     }
 
-    // ── Combat skill caps ─────────────────────────────────────────
-    // Close Combat and Ranged Combat: total (abilityBase + ranks) <= PL×2
-    // Other skills: total <= PL + 10
+    // ── Skill caps (ALL skills follow PL+10 per official rules) ──────
+    // Official M&M 3e rule (Hero's Handbook p.24):
+    // "Your hero's total modifier with any skill cannot exceed the series power level +10."
+    // Note: The book does NOT distinguish between combat and non-combat skills.
     for (const skillEntry of character.skills) {
       const def = SKILL_DEFS.find((d) => d.id === skillEntry.skillId);
       if (!def) continue;
 
-      const isCombatSkill = def.id === 'close_combat' || def.id === 'ranged_combat';
       const abilityBase = abilities[def.baseAbility] ?? 0;
-      const v = validateSkillCap(abilityBase, skillEntry.ranks, pl, isCombatSkill);
+      const v = validateSkillCap(abilityBase, skillEntry.ranks, pl);
 
       if (v) {
         const label = skillEntry.subtype
@@ -172,7 +172,7 @@ export function usePLValidation(): PLViolation[] {
           : def.name;
         violations.push({
           ...v,
-          formula: `${label}: ${abilityBase} + ${skillEntry.ranks} = ${abilityBase + skillEntry.ranks} > ${isCombatSkill ? pl * 2 : pl + 10}`,
+          formula: `${label}: ${abilityBase} + ${skillEntry.ranks} = ${abilityBase + skillEntry.ranks} > ${pl + 10}`,
         });
       }
     }

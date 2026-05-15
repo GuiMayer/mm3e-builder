@@ -17,16 +17,14 @@ export interface IPowerFieldViolation {
 }
 
 /**
- * Validates that all required configurable fields are set for a power component.
- * Returns a violation object if validation fails, null if valid.
+ * Validates that all required configurable fields are set on a power component.
+ * Returns null if valid, or a violation object if a required field is missing/empty.
  */
 export function validateRequiredPowerFields(
   component: ICharacterPowerComponent,
-  effectDef: IPowerEffect | undefined
+  effectDef?: IPowerEffect
 ): IPowerFieldViolation | null {
-  if (!effectDef?.configurableFields) {
-    return null; // No configurable fields for this effect
-  }
+  if (!effectDef?.configurableFields) return null;
 
   for (const field of effectDef.configurableFields) {
     if (!field.required) continue;
@@ -208,29 +206,29 @@ export function validateFortitudeWill(
   return null;
 }
 
+
+
 /**
- * Validates skill total modifier against PL limit.
+ * Validate skill cap (ALL skills, combat and non-combat).
+ * Official M&M 3e rule (Hero's Handbook p.24):
+ * "Your hero's total modifier with any skill (ability rank + skill rank + advantage modifiers)
+ * cannot exceed the series power level +10."
  * 
- * Official Rules (Hero's Handbook p.24):
- * - Combat skills (Close Combat, Ranged Combat): total ≤ PL × 2
- * - Non-combat skills: total ≤ PL + 10
+ * Formula: abilityBase + ranks <= PL + 10
  * 
- * Note: "Your hero's total modifier with any skill (ability rank + skill rank + 
- * advantage modifiers) cannot exceed the series power level +10."
- * 
- * Combat skills use PL × 2 as they directly contribute to attack trade-offs.
+ * Note: The book does NOT distinguish between combat and non-combat skills.
+ * All skills follow the same PL+10 limit.
  */
 export function validateSkillCap(
   abilityBase: number,
   ranks: number,
-  powerLevel: number,
-  isCombatSkill: boolean
+  powerLevel: number
 ): PLViolation | null {
   const actual = abilityBase + ranks;
-  const limit = isCombatSkill ? powerLevel * 2 : powerLevel + 10;
+  const limit = powerLevel + 10;
   if (actual > limit) {
     return {
-      rule: isCombatSkill ? 'validation.combatSkill' : 'validation.skill',
+      rule: 'validation.skill',
       formula: `${abilityBase} + ${ranks} = ${actual} > ${limit}`,
       actual,
       limit,

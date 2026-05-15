@@ -46,17 +46,16 @@ describe('PL Validation', () => {
   });
 
   describe('validateSkillCap', () => {
-    it('non-combat: passes at PL + 10', () => {
-      expect(validateSkillCap(5, 15, PL, false)).toBeNull();
+    it('passes at PL + 10 (official rule for ALL skills)', () => {
+      expect(validateSkillCap(5, 15, PL)).toBeNull();
     });
-    it('non-combat: fails over PL + 10', () => {
-      expect(validateSkillCap(5, 16, PL, false)).not.toBeNull();
+    it('fails over PL + 10', () => {
+      expect(validateSkillCap(5, 16, PL)).not.toBeNull();
     });
-    it('combat: passes at 2×PL', () => {
-      expect(validateSkillCap(8, 12, PL, true)).toBeNull();
-    });
-    it('combat: fails over 2×PL', () => {
-      expect(validateSkillCap(10, 11, PL, true)).not.toBeNull();
+    it('combat skills also follow PL + 10 (not 2×PL)', () => {
+      // Close Combat and Ranged Combat follow the same PL+10 rule
+      expect(validateSkillCap(8, 12, PL)).toBeNull(); // 8 + 12 = 20 = PL+10 ✓
+      expect(validateSkillCap(10, 11, PL)).not.toBeNull(); // 10 + 11 = 21 > PL+10 ✗
     });
   });
 
