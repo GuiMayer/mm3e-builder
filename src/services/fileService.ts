@@ -3,6 +3,8 @@ import type { ICharacter, ICharacterFile } from '../entities/types';
 import { downloadBlob } from './downloadHelper';
 import { migratePowers, migrateEquipment } from '../shared/lib/powerMigration';
 import { SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS } from '../entities/constants';
+import { ADVANTAGE_DEFS, MODIFIER_DEFS, POWER_DEFS, SKILL_DEFS } from '../entities/gameDataLoaders';
+import { validateCharacterSemantics } from '../shared/lib/semanticValidation';
 const DRAFT_KEY = 'mm3e-draft-character';
 
 // Cache the last saved JSON to prevent redundant saves
@@ -74,11 +76,28 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
   }
 
   const raw = result.data.character;
-  return {
+  const character = {
     ...raw,
     powers: migratePowers(raw.powers as unknown[]),
     equipment: migrateEquipment((raw.equipment as unknown[]) ?? []),
   };
+
+  const semanticErrors = validateCharacterSemantics(character, {
+    powerDefs: POWER_DEFS,
+    modifierDefs: MODIFIER_DEFS,
+    skillDefs: SKILL_DEFS,
+    advantageDefs: ADVANTAGE_DEFS,
+  }).filter((validationIssue) => validationIssue.severity === 'error');
+
+  if (semanticErrors.length > 0) {
+    const firstError = semanticErrors[0];
+    throw new I18nError('errors.validationError', {
+      field: firstError.path,
+      message: firstError.message,
+    });
+  }
+
+  return character;
 }
 
 /**

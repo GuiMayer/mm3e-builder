@@ -15,11 +15,15 @@ const AppliedModifierSchema = z.object({
   options: z.record(z.string(), z.any()).optional(),
 });
 
+const FieldValueSchema = z.union([z.string(), z.array(z.string())]);
+
 const CharacterPowerComponentSchema = z.object({
   id: z.string(),
   effectId: z.string(),
   ranks: z.number().int().min(0),
   modifiers: z.array(AppliedModifierSchema),
+  variableCostOption: z.string().optional(),
+  fieldValues: z.record(z.string(), FieldValueSchema).optional(),
 });
 
 // Accept both v2 (components[]) and v1 legacy (effectId + ranks) formats

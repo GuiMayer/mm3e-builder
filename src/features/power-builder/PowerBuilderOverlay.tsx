@@ -25,11 +25,11 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 import { Button } from '../../shared/ui/Button';
 import { useCharStore } from '../../store/charStore';
 import { useAppStore } from '../../store/appStore';
+import { DEFAULT_VALIDATION_RULES } from '../../shared/lib/validationRules';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
-import { validatePowerComponents } from '../../shared/lib/validation';
-import { validateModifierMaxRanks } from '../../shared/lib/modifierValidation';
+import { validatePowerForSave } from '../../shared/lib/semanticValidation';
 
 interface Props {
   existingPower?: ICharacterPower;
@@ -47,7 +47,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   // Read character and validation rules from stores
   const character = useCharStore((s) => s.character);
   const powerLevel = character.header.powerLevel;
-  const validationRules = useAppStore((s) => s.validationRules);
+  const validationRules = useAppStore((s) => s.validationRules) ?? DEFAULT_VALIDATION_RULES;
 
   // Build initial state — if existing power has legacy format, migration handles it at store level
   const [power, setPower] = useState<ICharacterPower>(
@@ -405,58 +405,23 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       }))
       .filter((ae) => ae.components.length > 0);
 
-    const mainFieldViolations = validatePowerComponents(validComponents, powerDefs);
-    if (mainFieldViolations.length > 0) {
-      const first = mainFieldViolations[0];
-      alert(`Componente ${first.componentIndex + 1}: campo obrigatorio "${first.violation.label}" nao preenchido.`);
-      return;
-    }
-
-    for (const ae of cleanedAlternateEffects) {
-      const aeFieldViolations = validatePowerComponents(ae.components, powerDefs);
-      if (aeFieldViolations.length > 0) {
-        const first = aeFieldViolations[0];
-        alert(`${ae.name || 'AE'} - componente ${first.componentIndex + 1}: campo obrigatorio "${first.violation.label}" nao preenchido.`);
-        return;
-      }
-    }
-
-    const validateModifierRanksForSave = (
-      components: ICharacterPowerComponent[],
-      labelPrefix: string
-    ) => {
-      for (let index = 0; index < components.length; index += 1) {
-        const violations = validateModifierMaxRanks(components[index].modifiers, allModDefs);
-        if (violations.length > 0) {
-          const first = violations[0];
-          const modName = allModDefs.find((def) => def.id === first.modifierId)?.name || first.modifierId;
-          const maxRanks = allModDefs.find((def) => def.id === first.modifierId)?.maxRanks;
-          return `${labelPrefix} componente ${index + 1}: ${modName} excede o limite de ranks${maxRanks !== undefined ? ` (${maxRanks})` : ''}.`;
-        }
-      }
-      return null;
-    };
-
-    const mainRankError = validateModifierRanksForSave(validComponents, 'Poder principal');
-    if (mainRankError) {
-      alert(mainRankError);
-      return;
-    }
-
-    for (const ae of cleanedAlternateEffects) {
-      const aeRankError = validateModifierRanksForSave(ae.components, ae.name || 'AE');
-      if (aeRankError) {
-        alert(aeRankError);
-        return;
-      }
-    }
-
     // Create cleaned power object
     const cleanPower: ICharacterPower = {
       ...power,
       components: validComponents,
       alternateEffects: cleanedAlternateEffects,
     };
+
+    const saveIssues = validatePowerForSave(cleanPower, validationRules, {
+      powerDefs,
+      modifierDefs: allModDefs,
+    }).filter((validationIssue) => validationIssue.severity === 'error');
+
+    if (saveIssues.length > 0) {
+      const firstIssue = saveIssues[0];
+      alert(`${firstIssue.path}: ${firstIssue.message}`);
+      return;
+    }
 
     // Validate alternate effects against main cost
     const invalidAEs = aeValidations
