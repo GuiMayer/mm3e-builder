@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react'
+import { lazy, Suspense, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MenuBar } from '../shared/ui/MenuBar'
 import { SheetView } from '../features/sheet-core/SheetView'
-import { ReferencesView } from '../features/references/ReferencesView'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 import { useAutoLoadDraft } from '../shared/hooks/useAutoLoadDraft'
 import { DraftNotification } from '../shared/ui/DraftNotification'
 import { useCharStore } from '../store/charStore'
 import { clearDraft } from '../services/fileService'
+
+const ReferencesView = lazy(() =>
+  import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
+);
 
 export type AppView = 'sheet' | 'references';
 
@@ -69,7 +72,13 @@ export function App() {
           resetKeys={[activeView]}
         >
           <main className="app-main">
-            {activeView === 'sheet' ? <SheetView /> : <ReferencesView />}
+            {activeView === 'sheet' ? (
+              <SheetView />
+            ) : (
+              <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
+                <ReferencesView />
+              </Suspense>
+            )}
           </main>
         </ErrorBoundary>
       </div>

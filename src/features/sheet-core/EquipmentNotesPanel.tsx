@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useCharStore } from '../../store/charStore';
 import { useTranslation } from 'react-i18next';
 import { Package, Plus, Edit3, Trash2, AlertTriangle } from 'lucide-react';
 import type { ICharacterPower } from '../../entities/types';
-import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { calcEquipmentEPCost } from '../../shared/lib/mathEngine';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
+
+const PowerBuilderOverlay = lazy(() =>
+  import('../power-builder/PowerBuilderOverlay').then((module) => ({ default: module.PowerBuilderOverlay }))
+);
 
 /**
  * EquipmentNotesPanel — F-15 (v2.0)
@@ -203,15 +206,17 @@ export function EquipmentNotesPanel() {
 
       {/* Power Builder Overlay — reused for equipment */}
       {builderOpen && (
-        <PowerBuilderOverlay
-          existingPower={getEditPower()}
-          onSave={handleSaveEquipment}
-          onClose={() => {
-            setBuilderOpen(false);
-            setEditIndex(null);
-          }}
-          equipmentMode={true}
-        />
+        <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
+          <PowerBuilderOverlay
+            existingPower={getEditPower()}
+            onSave={handleSaveEquipment}
+            onClose={() => {
+              setBuilderOpen(false);
+              setEditIndex(null);
+            }}
+            equipmentMode={true}
+          />
+        </Suspense>
       )}
 
       <style>{`

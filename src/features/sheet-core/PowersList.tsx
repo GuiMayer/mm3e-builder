@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useCharStore } from '../../store/charStore';
 import type { ICharacterPower } from '../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { calcPowerTotalCost } from '../../shared/lib/mathEngine';
-import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Plus, Edit3, Trash2, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+
+const PowerBuilderOverlay = lazy(() =>
+  import('../power-builder/PowerBuilderOverlay').then((module) => ({ default: module.PowerBuilderOverlay }))
+);
 
 export function PowersList() {
   const { t } = useTranslation();
@@ -156,11 +159,13 @@ export function PowersList() {
       </button>
 
       {builderOpen && (
-        <PowerBuilderOverlay
-          existingPower={editIndex !== null ? powers[editIndex] : undefined}
-          onSave={handleSavePower}
-          onClose={() => { setBuilderOpen(false); setEditIndex(null); }}
-        />
+        <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
+          <PowerBuilderOverlay
+            existingPower={editIndex !== null ? powers[editIndex] : undefined}
+            onSave={handleSavePower}
+            onClose={() => { setBuilderOpen(false); setEditIndex(null); }}
+          />
+        </Suspense>
       )}
 
       <style>{`
