@@ -33,6 +33,11 @@ export interface IOffenseEntry {
   parentId?: string;        // parent power id when isAE = true
 }
 
+export function parseEffectRank(effect: string): number | null {
+  const match = effect.match(/\b(\d+)\b(?!.*\b\d+\b)/);
+  return match ? Number(match[1]) : null;
+}
+
 /**
  * Calculate the effective range of a component, accounting for modifiers.
  * Rules: Increased Range moves range up one step per rank: close → ranged → perception.

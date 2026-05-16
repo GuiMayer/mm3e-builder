@@ -3,7 +3,7 @@ import { useCharStore } from '../../store/charStore';
 import { useAppStore } from '../../store/appStore';
 import { POWER_DEFS, SKILL_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { calcToughnessBonus } from '../lib/mathEngine';
-import { calcAttackBonus } from '../lib/offenseSummary';
+import { calcAttackBonus, parseEffectRank } from '../lib/offenseSummary';
 import {
   validateDodgeToughness,
   validateParryToughness,
@@ -156,6 +156,31 @@ export function usePLValidation(): PLViolation[] {
       }
     }
 
+    for (const row of character.manualOffenseRows ?? []) {
+      const rank = parseEffectRank(row.effect);
+      if (rank === null) continue;
+
+      if (row.range === 'perception') {
+        if (rank > pl) {
+          violations.push({
+            rule: 'pl.attack',
+            formula: `${row.name || 'Manual attack'} [no-roll]: rank ${rank} > PL ${pl}`,
+            actual: rank,
+            limit: pl,
+          });
+        }
+        continue;
+      }
+
+      const v = validateAttackEffect(row.bonus, rank, pl);
+      if (v) {
+        violations.push({
+          ...v,
+          formula: `${row.name || 'Manual attack'}: ${row.bonus} + ${rank} = ${row.bonus + rank} > ${pl * 2}`,
+        });
+      }
+    }
+
     // ── Skill caps (ALL skills follow PL+10 per official rules) ──────
     // Official M&M 3e rule (Hero's Handbook p.24):
     // "Your hero's total modifier with any skill cannot exceed the series power level +10."
@@ -165,7 +190,9 @@ export function usePLValidation(): PLViolation[] {
       if (!def) continue;
 
       const abilityBase = abilities[def.baseAbility] ?? 0;
-      const v = validateSkillCap(abilityBase, skillEntry.ranks, pl);
+      const otherBonus = skillEntry.otherBonus ?? 0;
+      const totalBonusRanks = skillEntry.ranks + otherBonus;
+      const v = validateSkillCap(abilityBase, totalBonusRanks, pl);
 
       if (v) {
         const label = skillEntry.subtype
@@ -173,7 +200,7 @@ export function usePLValidation(): PLViolation[] {
           : def.name;
         violations.push({
           ...v,
-          formula: `${label}: ${abilityBase} + ${skillEntry.ranks} = ${abilityBase + skillEntry.ranks} > ${pl + 10}`,
+          formula: `${label}: ${abilityBase} + ${skillEntry.ranks} + ${otherBonus} = ${abilityBase + totalBonusRanks} > ${pl + 10}`,
         });
       }
     }

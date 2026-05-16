@@ -399,16 +399,6 @@ export function calcToughnessBonus(
         breakdown.push(`${power.name || def.name} ${comp.ranks}`);
       }
     }
-    // Also check AE components — AEs can have their own Protection
-    for (const ae of power.alternateEffects) {
-      for (const comp of ae.components) {
-        const def = powerDefs.find((d) => d.id === comp.effectId);
-        if (def?.enhancesDefense === 'toughness') {
-          bonus += comp.ranks;
-          breakdown.push(`${ae.name || def.name} ${comp.ranks} (AE)`);
-        }
-      }
-    }
   }
 
   // Defensive Roll advantage

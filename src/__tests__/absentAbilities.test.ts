@@ -125,6 +125,32 @@ describe('Absent Abilities - Derived Stats', () => {
       // 5 (Protection) + 2 (Defensive Roll) = 7
       expect(result.bonus).toBe(7);
     });
+
+    it('does not count alternate effect Protection as passive Toughness', () => {
+      const powers = [{
+        id: 'p1',
+        name: 'Force Field Array',
+        components: [{ id: 'c1', effectId: 'protection', ranks: 4, modifiers: [] }],
+        alternateEffects: [{
+          id: 'ae1',
+          name: 'Emergency Shield',
+          components: [{ id: 'c2', effectId: 'protection', ranks: 10, modifiers: [] }],
+          dynamic: false,
+          notes: '',
+        }],
+        notes: '',
+      }];
+      const advantages: { advantageId: string; ranks: number }[] = [];
+      const powerDefs = [
+        { id: 'protection', name: 'Protection', baseCost: 1, type: 'defense',
+          action: 'none', range: 'personal', duration: 'permanent',
+          enhancesDefense: 'toughness', description: '', variableCost: null, extras: [], flaws: [] }
+      ];
+
+      const result = calcToughnessBonus(powers, advantages, powerDefs as any);
+      expect(result.bonus).toBe(4);
+      expect(result.breakdown).toEqual(['Force Field Array 4']);
+    });
   });
 
   describe('Initiative with absent AGL', () => {
