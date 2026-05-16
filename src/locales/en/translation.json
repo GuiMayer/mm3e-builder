@@ -2,6 +2,7 @@
   "app.title": "M&M 3e Builder",
   "menu.actions": "Actions",
   "menu.new": "New",
+  "menu.new.confirm": "Start a new character? Unsaved changes in the current sheet will be lost.",
   "menu.export": "Export",
   "menu.import": "Import",
   "menu.settings": "Settings",

@@ -1,6 +1,6 @@
 import { CharacterFileSchema } from '../entities/schemas';
 import type { ICharacter, ICharacterFile } from '../entities/types';
-import { downloadBlob } from './downloadHelper';
+import { downloadBlob, sanitizeFileName } from './downloadHelper';
 import { migratePowers, migrateEquipment } from '../shared/lib/powerMigration';
 import { SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS } from '../entities/constants';
 import { ADVANTAGE_DEFS, MODIFIER_DEFS, POWER_DEFS, SKILL_DEFS } from '../entities/gameDataLoaders';
@@ -38,7 +38,7 @@ export async function exportCharacterJSON(character: ICharacter, language: strin
   };
 
   const blob = new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' });
-  const name = filename || `${character.header.name || 'character'}.json`;
+  const name = filename || `${sanitizeFileName(character.header.name)}.json`;
   await downloadBlob(blob, name);
 }
 

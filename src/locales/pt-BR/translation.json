@@ -2,6 +2,7 @@
   "app.title": "M&M 3e Builder",
   "menu.actions": "Ações",
   "menu.new": "Novo",
+  "menu.new.confirm": "Iniciar uma nova ficha? Alterações não salvas na ficha atual serão perdidas.",
   "menu.export": "Exportar",
   "menu.import": "Importar",
   "menu.settings": "Configurações",

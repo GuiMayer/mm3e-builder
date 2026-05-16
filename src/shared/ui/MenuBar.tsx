@@ -113,13 +113,19 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
     }
   }
 
+  function handleNewCharacter() {
+    const confirmed = window.confirm(t('menu.new.confirm'));
+    if (!confirmed) return;
+    resetCharacter();
+  }
+
   return (
     <>
       {/* Mobile Drawer - rendered outside header to avoid position conflicts */}
       <MobileDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        onNew={resetCharacter}
+        onNew={handleNewCharacter}
         onExport={exportCharacter}
         onImport={() => fileInputRef.current?.click()}
         onExportExcel={exportExcel}
@@ -159,7 +165,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
       </div>
 
       <nav className="menubar-actions">
-        <button className="menubar-btn" onClick={resetCharacter} title={t('menu.new')}>
+        <button className="menubar-btn" onClick={handleNewCharacter} title={t('menu.new')}>
           <FilePlus size={18} /> <span>{t('menu.new')}</span>
         </button>
         <button className="menubar-btn" onClick={exportCharacter} title={t('menu.export')}>
