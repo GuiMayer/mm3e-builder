@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import type {
   ICharacterPower,
+  ICharacter,
+  ICharacterPowerComponent,
   IPowerEffect,
   IModifierDef,
   IValidationRules,
@@ -12,8 +14,10 @@ import {
   validateAECost,
   calcRemovableDiscount,
 } from '../../../shared/lib/mathEngine';
-import { validateAttackEffect } from '../../../shared/lib/validation';
+import { validateAttackEffect, type PLViolation } from '../../../shared/lib/validation';
 import { getActiveValidationRules } from '../../../shared/lib/validationRules';
+import { calcAttackBonus } from '../../../shared/lib/offenseSummary';
+import { SKILL_DEFS, MODIFIER_DEFS } from '../../../entities/gameDataLoaders';
 
 /* ================================================
    usePowerCostCalculation Hook
@@ -26,6 +30,7 @@ interface UsePowerCostCalculationProps {
   allModDefs: IModifierDef[];
   powerLevel: number;
   validationRules?: Partial<IValidationRules>;
+  character: ICharacter;
 }
 
 interface ComponentCostResult {
@@ -39,6 +44,7 @@ export function usePowerCostCalculation({
   allModDefs,
   powerLevel,
   validationRules,
+  character,
 }: UsePowerCostCalculationProps) {
   // Calculate costs per component
   const componentCosts = useMemo<ComponentCostResult[]>(() => {
@@ -95,18 +101,61 @@ export function usePowerCostCalculation({
     return aeCosts.map((cost) => validateAECost(cost, mainCost));
   }, [aeCosts, mainCost, validationRules]);
 
-  // PL violation check
-  // validateAttackEffect: attack + highest damage rank <= PL*2
+  // PL violation check: attack bonus + rank <= PL*2, or no-roll rank <= PL.
   const plViolation = useMemo(() => {
-    // Check if PL limits are enforced
     const activeRules = getActiveValidationRules(validationRules);
     if (!activeRules.enforcePLLimits) return null;
-    
-    // Heuristic: check the highest-rank damage component against PL*2
-    const highestRank = power.components.reduce((max, c) => Math.max(max, c.ranks), 0);
-    const attackBonus = 0; // Power builder doesn't track attack bonus, defaulting to 0
-    return validateAttackEffect(attackBonus, highestRank, powerLevel);
-  }, [powerLevel, power.components, validationRules]);
+
+    const validateComponent = (
+      component: ICharacterPowerComponent,
+      label: string
+    ): PLViolation | null => {
+      const effectDef = powerDefs.find((d) => d.id === component.effectId);
+      if (!effectDef || effectDef.type !== 'attack') return null;
+
+      const { value: attackBonus, isNoRoll } = calcAttackBonus(
+        effectDef.range,
+        label,
+        component,
+        character,
+        SKILL_DEFS,
+        MODIFIER_DEFS
+      );
+
+      if (isNoRoll) {
+        if (component.ranks <= powerLevel) return null;
+        return {
+          rule: 'pl.attack',
+          formula: `${label} [no-roll]: rank ${component.ranks} > PL ${powerLevel}`,
+          actual: component.ranks,
+          limit: powerLevel,
+        };
+      }
+
+      const atkVal = attackBonus ?? 0;
+      const violation = validateAttackEffect(atkVal, component.ranks, powerLevel);
+      if (!violation) return null;
+      return {
+        ...violation,
+        formula: `${label}: ${atkVal} + ${component.ranks} = ${atkVal + component.ranks} > ${powerLevel * 2}`,
+      };
+    };
+
+    for (const component of power.components) {
+      const violation = validateComponent(component, power.name || 'Power');
+      if (violation) return violation;
+    }
+
+    for (const ae of power.alternateEffects) {
+      for (const component of ae.components) {
+        const label = `${power.name || 'Power'} (AE: ${ae.name || 'AE'})`;
+        const violation = validateComponent(component, label);
+        if (violation) return violation;
+      }
+    }
+
+    return null;
+  }, [character, power.name, power.components, power.alternateEffects, powerDefs, powerLevel, validationRules]);
 
   return {
     componentCosts,

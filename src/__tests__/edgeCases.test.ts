@@ -400,12 +400,12 @@ describe('Boundary Validation', () => {
   });
 
   it('skill cap exactly at boundary', () => {
-    expect(validateSkillCap(5, 15, 10, true)).toBeNull(); // Combat: 20
-    expect(validateSkillCap(5, 15, 10, false)).toBeNull(); // Non-combat: 20
+    expect(validateSkillCap(5, 15, 10)).toBeNull(); // Skill total: 20
+    expect(validateSkillCap(5, 15, 10)).toBeNull(); // Skill total: 20
   });
 
   it('skill cap 1 over boundary', () => {
-    expect(validateSkillCap(5, 16, 10, true)).not.toBeNull(); // Combat: 21 > 20
-    expect(validateSkillCap(5, 16, 10, false)).not.toBeNull(); // Non-combat: 21 > 20
+    expect(validateSkillCap(5, 16, 10)).not.toBeNull(); // Skill total: 21 > 20
+    expect(validateSkillCap(5, 16, 10)).not.toBeNull(); // Skill total: 21 > 20
   });
 });

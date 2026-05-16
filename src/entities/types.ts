@@ -28,7 +28,7 @@ export type RangeType = 'personal' | 'close' | 'ranged' | 'perception';
 export type DurationType = 'instant' | 'concentration' | 'sustained' | 'continuous' | 'permanent';
 
 // ── Configurable Field Types ──
-export type ConfigurableFieldControl = 'dropdown' | 'text' | 'multi-select';
+export type ConfigurableFieldControl = 'dropdown' | 'text' | 'multi-select' | 'multiselect';
 
 export interface IConfigurableFieldOption {
   value: string;

@@ -3,12 +3,16 @@ import { X, Plus, AlertTriangle } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { Button } from '../../shared/ui/Button';
+import type { TFunction } from 'i18next';
 import type {
   IAlternateEffect,
   IPowerEffect,
   IModifierDef,
+  ICharacterPowerComponent,
 } from '../../entities/types';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { VariableCostSelector } from './components/VariableCostSelector';
+import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
 
 interface AltEffectCardProps {
   ae: IAlternateEffect;
@@ -28,14 +32,14 @@ interface AltEffectCardProps {
   onRemoveAE: () => void;
   onAddComponent: () => void;
   onRemoveComponent: (cId: string) => void;
-  onUpdateComponent: (cId: string, u: Partial<{ effectId: string; ranks: number }>) => void;
+  onUpdateComponent: (cId: string, u: Partial<ICharacterPowerComponent>) => void;
   onAddModifier: (cId: string, modId: string, sp?: boolean) => void;
   onRemoveModifier: (cId: string, modId: string) => void;
   onUpdateModifierRanks: (cId: string, modId: string, ranks: number) => void;
   onUpdateModifierOption: (cId: string, modId: string, opt: string) => void;
   onUpdateModifierOptions: (cId: string, modId: string, opts: Record<string, boolean | number | string>) => void;
   onInfoClick: (e: IPowerEffect) => void;
-  t: (key: string, opts?: Record<string, unknown>) => string;
+  t: TFunction;
 }
 
 export function AltEffectCard({
@@ -133,7 +137,11 @@ export function AltEffectCard({
                     <div className="build-section build-section--flex">
                       <EffectCombobox
                         value={comp.effectId}
-                        onChange={(effectId) => onUpdateComponent(comp.id, { effectId })}
+                        onChange={(effectId) => onUpdateComponent(comp.id, {
+                          effectId,
+                          variableCostOption: undefined,
+                          fieldValues: {},
+                        })}
                         allEffects={allEffects}
                         t={t}
                         onInfo={onInfoClick}
@@ -153,6 +161,31 @@ export function AltEffectCard({
                       />
                     </div>
                   </div>
+
+                  {effectDef?.variableCost && (
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <VariableCostSelector
+                        options={effectDef.variableCost.options}
+                        selected={comp.variableCostOption}
+                        onChange={(optionName) => onUpdateComponent(comp.id, { variableCostOption: optionName })}
+                        t={t}
+                        name={`variable-cost-${ae.id}-${comp.id}`}
+                      />
+                    </div>
+                  )}
+
+                  {effectDef?.configurableFields && effectDef.configurableFields.length > 0 && (
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <ConfigurableFieldSelector
+                        fields={effectDef.configurableFields}
+                        values={comp.fieldValues || {}}
+                        onChange={(fieldId, value) => onUpdateComponent(comp.id, {
+                          fieldValues: { ...(comp.fieldValues || {}), [fieldId]: value },
+                        })}
+                        t={t}
+                      />
+                    </div>
+                  )}
 
                   {/* Effect info tags */}
                   {effectDef && (

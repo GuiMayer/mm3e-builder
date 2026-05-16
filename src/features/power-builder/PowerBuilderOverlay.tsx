@@ -26,6 +26,9 @@ import { Button } from '../../shared/ui/Button';
 import { useCharStore } from '../../store/charStore';
 import { useAppStore } from '../../store/appStore';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
+import { VariableCostSelector } from './components/VariableCostSelector';
+import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
+import { validatePowerComponents } from '../../shared/lib/validation';
 
 interface Props {
   existingPower?: ICharacterPower;
@@ -40,8 +43,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   const powerDefs = useLocalizedData(POWER_DEFS) as IPowerEffect[];
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
 
-  // Read powerLevel and validation rules from stores
-  const powerLevel = useCharStore((s) => s.character.header.powerLevel);
+  // Read character and validation rules from stores
+  const character = useCharStore((s) => s.character);
+  const powerLevel = character.header.powerLevel;
   const validationRules = useAppStore((s) => s.validationRules);
 
   // Build initial state — if existing power has legacy format, migration handles it at store level
@@ -49,7 +53,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     existingPower ?? {
       id: uuidv4(),
       name: '',
-      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [] }],
+      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} }],
       notes: '',
       alternateEffects: [],
     }
@@ -157,6 +161,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     allModDefs,
     powerLevel,
     validationRules,
+    character,
   });
 
   // Palette context: when an AE is expanded, palette serves that AE's active component
@@ -356,6 +361,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       effectId: '',
       ranks: 1,
       modifiers: [],
+      fieldValues: {},
     };
     setPower((p) => ({ ...p, components: [...p.components, newComp] }));
     setActiveComponentId(newComp.id);
@@ -396,6 +402,22 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         components: ae.components.filter((c) => c.effectId !== ''),
       }))
       .filter((ae) => ae.components.length > 0);
+
+    const mainFieldViolations = validatePowerComponents(validComponents, powerDefs);
+    if (mainFieldViolations.length > 0) {
+      const first = mainFieldViolations[0];
+      alert(`Componente ${first.componentIndex + 1}: campo obrigatorio "${first.violation.label}" nao preenchido.`);
+      return;
+    }
+
+    for (const ae of cleanedAlternateEffects) {
+      const aeFieldViolations = validatePowerComponents(ae.components, powerDefs);
+      if (aeFieldViolations.length > 0) {
+        const first = aeFieldViolations[0];
+        alert(`${ae.name || 'AE'} - componente ${first.componentIndex + 1}: campo obrigatorio "${first.violation.label}" nao preenchido.`);
+        return;
+      }
+    }
 
     // Create cleaned power object
     const cleanPower: ICharacterPower = {
@@ -592,7 +614,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                       <div className="build-section build-section--flex">
                         <EffectCombobox
                           value={comp.effectId}
-                          onChange={(effectId) => updateComponent(comp.id, { effectId })}
+                          onChange={(effectId) => updateComponent(comp.id, {
+                            effectId,
+                            variableCostOption: undefined,
+                            fieldValues: {},
+                          })}
                           allEffects={powerDefs}
                           t={t}
                           onInfo={(e) => setEffectModalPower(e)}
@@ -614,6 +640,31 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                         />
                       </div>
                     </div>
+
+                    {effectDef?.variableCost && (
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <VariableCostSelector
+                          options={effectDef.variableCost.options}
+                          selected={comp.variableCostOption}
+                          onChange={(optionName) => updateComponent(comp.id, { variableCostOption: optionName })}
+                          t={t}
+                          name={`variable-cost-${comp.id}`}
+                        />
+                      </div>
+                    )}
+
+                    {effectDef?.configurableFields && effectDef.configurableFields.length > 0 && (
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <ConfigurableFieldSelector
+                          fields={effectDef.configurableFields}
+                          values={comp.fieldValues || {}}
+                          onChange={(fieldId, value) => updateComponent(comp.id, {
+                            fieldValues: { ...(comp.fieldValues || {}), [fieldId]: value },
+                          })}
+                          t={t}
+                        />
+                      </div>
+                    )}
 
                     {/* Effect info strip */}
                     {effectDef && (

@@ -3,6 +3,7 @@ import type {
   ICharacterPower,
   IAlternateEffect,
   IPowerEffect,
+  ICharacterPowerComponent,
 } from '../../../entities/types';
 
 interface UseAlternateEffectsParams {
@@ -26,7 +27,7 @@ export function useAlternateEffects({
     const newAE: IAlternateEffect = {
       id: uuidv4(),
       name: '',
-      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [] }],
+      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} }],
       dynamic: false,
       notes: '',
     };
@@ -49,7 +50,7 @@ export function useAlternateEffects({
   // ── AE Component CRUD ──
 
   function addAEComponent(aeId: string) {
-    const newComp = { id: uuidv4(), effectId: '', ranks: 1, modifiers: [] };
+    const newComp: ICharacterPowerComponent = { id: uuidv4(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} };
     setPower((p) => ({
       ...p,
       alternateEffects: p.alternateEffects.map((ae) =>
@@ -72,7 +73,7 @@ export function useAlternateEffects({
   function updateAEComponent(
     aeId: string,
     compId: string,
-    update: Partial<{ effectId: string; ranks: number }>
+    update: Partial<ICharacterPowerComponent>
   ) {
     setPower((p) => ({
       ...p,

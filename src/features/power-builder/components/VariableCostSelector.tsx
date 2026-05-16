@@ -12,6 +12,7 @@ interface VariableCostSelectorProps {
   selected: string | undefined;
   onChange: (optionName: string) => void;
   t: TFunction;
+  name?: string;
 }
 
 export function VariableCostSelector({
@@ -19,6 +20,7 @@ export function VariableCostSelector({
   selected,
   onChange,
   t,
+  name,
 }: VariableCostSelectorProps) {
   return (
     <div className="variable-cost-selector">
@@ -30,7 +32,7 @@ export function VariableCostSelector({
           <label key={opt.name} className="cost-option-radio">
             <input
               type="radio"
-              name="variable-cost"
+              name={name ?? 'variable-cost'}
               value={opt.name}
               checked={selected === opt.name}
               onChange={() => onChange(opt.name)}

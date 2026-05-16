@@ -60,7 +60,7 @@ export function ConfigurableFieldSelector({
             />
           )}
 
-          {field.control === 'multi-select' && (
+          {(field.control === 'multi-select' || field.control === 'multiselect') && (
             <div className="field-multiselect">
               {field.options?.map((opt) => {
                 const selectedValues = (values[field.id] as string[]) || [];
