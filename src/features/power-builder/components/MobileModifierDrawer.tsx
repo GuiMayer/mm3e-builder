@@ -23,6 +23,10 @@ const HEIGHT_PX: Record<DrawerHeight, number> = {
   full: 0.85,
 };
 
+function getHeightPixels(height: DrawerHeight): number {
+  return window.innerHeight * HEIGHT_PX[height];
+}
+
 export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, children }: Props) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -33,20 +37,12 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
   const lastMoveTime = useRef(0);
   const lastMoveY = useRef(0);
 
-  // Calculate pixel heights based on viewport
-  useEffect(() => {
-    if (height !== 'closed') {
-      const vh = window.innerHeight;
-      setCurrentHeight(vh * HEIGHT_PX[height]);
-    } else {
-      setCurrentHeight(0);
-    }
-  }, [height]);
-
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const initialHeight = getHeightPixels(height);
     setIsDragging(true);
     setStartY(e.touches[0].clientY);
-    setStartHeight(currentHeight);
+    setStartHeight(initialHeight);
+    setCurrentHeight(initialHeight);
     lastMoveTime.current = Date.now();
     lastMoveY.current = e.touches[0].clientY;
     setDragVelocity(0);
@@ -55,7 +51,7 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
     if ('vibrate' in navigator) {
       navigator.vibrate(10);
     }
-  }, [currentHeight]);
+  }, [height]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging) return;

@@ -241,7 +241,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         }),
       }));
     },
-    [powerDefs]
+    [equipmentMode, powerDefs]
   );
 
   // ── AE CRUD — delegado ao hook useAlternateEffects ──

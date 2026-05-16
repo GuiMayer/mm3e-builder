@@ -50,32 +50,36 @@ export const useAppStore = create<AppStoreState>()(
       }),
       {
         name: 'mm3e-app-preferences',
-        migrate: (persistedState: any) => {
+        migrate: (persistedState: unknown) => {
           if (!persistedState) return persistedState;
+          const state = persistedState as {
+            language?: string;
+            strictMode?: boolean;
+            validationRules?: Partial<IValidationRules>;
+          };
           
           // Migrate from old separate language key if needed
-          if (!persistedState.language) {
+          if (!state.language) {
             const oldLang = localStorage.getItem('mm3e-language');
             if (oldLang) {
-              persistedState.language = oldLang;
+              state.language = oldLang;
               localStorage.removeItem('mm3e-language');
             }
           }
           
           // Migrate strictMode to enforcePLLimits
-          if (persistedState.strictMode === false) {
-            if (!persistedState.validationRules) {
-              persistedState.validationRules = { ...DEFAULT_VALIDATION_RULES };
+          if (state.strictMode === false) {
+            if (!state.validationRules) {
+              state.validationRules = { ...DEFAULT_VALIDATION_RULES };
             }
-            persistedState.validationRules.enforcePLLimits = false;
+            state.validationRules.enforcePLLimits = false;
           }
-          delete persistedState.strictMode;
+          delete state.strictMode;
           
-          return persistedState;
+          return state;
         },
       }
     ),
     { name: 'AppStore' }
   )
 );
-

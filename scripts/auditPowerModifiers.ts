@@ -149,15 +149,7 @@ function normalizeId(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '_');
 }
 
-function calculateCoverage(current: string[], handbook: string[]): number {
-  if (handbook.length === 0) return 100; // No modifiers expected
-  const found = handbook.filter(h => 
-    current.some(c => normalizeId(c) === normalizeId(h))
-  ).length;
-  return Math.round((found / handbook.length) * 100);
-}
-
-function determinePriority(missingCount: number, baseCost: number): 'high' | 'medium' | 'low' {
+function determinePriority(missingCount: number): 'high' | 'medium' | 'low' {
   if (missingCount >= 6) return 'high';
   if (missingCount >= 3) return 'medium';
   return 'low';
@@ -234,7 +226,7 @@ function auditPowers(): AuditResult[] {
       extraExtras,
       extraFlaws,
       coverage,
-      priority: determinePriority(totalMissing, power.baseCost),
+      priority: determinePriority(totalMissing),
       pageReference: ref.pageReference,
       notes: ref.notes,
     });

@@ -226,8 +226,7 @@ describe('Accurate PL Cap', () => {
         component,
         MOCK_DAMAGE_EFFECT,
         0, // base attack bonus
-        10, // PL
-        MOCK_MODIFIERS
+        10 // PL
       );
 
       expect(violations.length).toBe(0);
@@ -245,8 +244,7 @@ describe('Accurate PL Cap', () => {
         component,
         MOCK_DAMAGE_EFFECT,
         0,
-        10,
-        MOCK_MODIFIERS
+        10
       );
 
       expect(violations.length).toBe(1);
@@ -266,8 +264,7 @@ describe('Accurate PL Cap', () => {
         component,
         MOCK_DAMAGE_EFFECT,
         5, // base attack bonus (from DEX/FGT + advantages)
-        10,
-        MOCK_MODIFIERS
+        10
       );
 
       expect(violations.length).toBe(1);
@@ -286,8 +283,7 @@ describe('Accurate PL Cap', () => {
         component,
         MOCK_DAMAGE_EFFECT,
         5,
-        10,
-        MOCK_MODIFIERS
+        10
       );
 
       expect(violations.length).toBe(0);
@@ -312,8 +308,7 @@ describe('Accurate PL Cap', () => {
         component,
         protectionEffect,
         0,
-        10,
-        MOCK_MODIFIERS
+        10
       );
 
       expect(violations.length).toBe(0); // Not an attack, so no PL cap check
@@ -331,8 +326,7 @@ describe('Accurate PL Cap', () => {
         component,
         MOCK_DAMAGE_EFFECT,
         0,
-        10,
-        MOCK_MODIFIERS
+        10
       );
 
       expect(violations.length).toBe(0);

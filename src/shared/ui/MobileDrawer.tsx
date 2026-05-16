@@ -3,6 +3,7 @@ import { X, FilePlus, Download, Upload, FileSpreadsheet, FileText, BookOpen, Shi
 import { useTranslation } from 'react-i18next';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
+import type { IValidationRules } from '../../entities/types';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -22,8 +23,8 @@ interface MobileDrawerProps {
   campaignMode: boolean;
   onCampaignModeToggle: () => void;
   hasLogEntries: boolean;
-  validationRules: any;
-  onValidationRulesChange: (rules: any) => void;
+  validationRules: IValidationRules | undefined;
+  onValidationRulesChange: (rules: Partial<IValidationRules>) => void;
   onClearDraft: () => void;
 }
 

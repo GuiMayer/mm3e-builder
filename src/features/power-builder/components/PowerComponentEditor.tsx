@@ -10,6 +10,7 @@ import { ConfigurableFieldSelector } from './ConfigurableFieldSelector';
 import { X, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../../shared/ui/NumberInput';
+import type { getComponentCostBreakdown } from '../../../shared/lib/mathEngine';
 
 /* ================================================
    PowerComponentEditor Component
@@ -24,7 +25,7 @@ interface PowerComponentEditorProps {
   isActive: boolean;
   canRemove: boolean;
   costTotal: number;
-  costBreakdown: any;
+  costBreakdown: ReturnType<typeof getComponentCostBreakdown> | null;
   activeId: string | null;
   onSetActive: () => void;
   onUpdateComponent: (update: Partial<ICharacterPowerComponent>) => void;

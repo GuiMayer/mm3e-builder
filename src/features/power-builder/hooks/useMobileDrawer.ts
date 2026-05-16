@@ -6,15 +6,14 @@ const STORAGE_KEY = 'powerbuilder-drawer-state';
 
 export function useMobileDrawer() {
   const [isOpen, setIsOpen] = useState(false);
-  const [height, setHeight] = useState<DrawerHeight>('closed');
-
-  // Load preferred state from localStorage
-  useEffect(() => {
+  const [height, setHeight] = useState<DrawerHeight>(() => {
+    if (typeof localStorage === 'undefined') return 'closed';
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === 'peek' || saved === 'full') {
-      setHeight(saved);
+      return saved;
     }
-  }, []);
+    return 'closed';
+  });
 
   // Save preferred state to localStorage
   useEffect(() => {

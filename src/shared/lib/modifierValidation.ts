@@ -91,8 +91,7 @@ export function validateAccuratePLCap(
   component: ICharacterPowerComponent,
   effectDef: IPowerEffect,
   baseAttackBonus: number,
-  powerLevel: number,
-  _modifierDefs: IModifierDef[]
+  powerLevel: number
 ): ModifierViolation[] {
   const violations: ModifierViolation[] = [];
 
@@ -199,7 +198,7 @@ export function validateComponentModifiers(
   // Check Accurate PL cap
   if (validationRules.enforceAccuratePLCap) {
     violations.push(
-      ...validateAccuratePLCap(component, effectDef, baseAttackBonus, powerLevel, modifierDefs)
+      ...validateAccuratePLCap(component, effectDef, baseAttackBonus, powerLevel)
     );
   }
 

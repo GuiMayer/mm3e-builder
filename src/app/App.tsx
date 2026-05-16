@@ -20,14 +20,7 @@ export function App() {
   
   // Auto-detect draft from localStorage on mount (but don't load it yet)
   const draftInfo = useAutoLoadDraft();
-  const [showDraftNotification, setShowDraftNotification] = useState(false);
-
-  // Show notification when draft is detected
-  useEffect(() => {
-    if (draftInfo.character) {
-      setShowDraftNotification(true);
-    }
-  }, [draftInfo.character]);
+  const [draftNotificationDismissed, setDraftNotificationDismissed] = useState(false);
 
   // Sync <html lang> and <title> with the active i18n language
   useEffect(() => {
@@ -42,13 +35,13 @@ export function App() {
   };
 
   const handleDismissNotification = () => {
-    setShowDraftNotification(false);
+    setDraftNotificationDismissed(true);
   };
 
   const handleStartNew = () => {
     clearDraft();
     resetCharacter();
-    setShowDraftNotification(false);
+    setDraftNotificationDismissed(true);
   };
 
   return (
@@ -62,7 +55,7 @@ export function App() {
       }}
     >
       <div className="app-root">
-        {showDraftNotification && draftInfo.character && (
+        {draftInfo.character && !draftNotificationDismissed && (
           <DraftNotification
             character={draftInfo.character}
             onRestore={handleRestoreDraft}

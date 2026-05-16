@@ -1,8 +1,55 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { loadDraft } from '../../services/fileService';
 import type { ICharacter } from '../../entities/types';
 
 const INSTANCE_KEY = 'mm3e-app-instance-active';
+
+interface DraftInfo {
+  loaded: boolean;
+  character: ICharacter | null;
+  skippedDueToMultipleInstances: boolean;
+}
+
+let cachedDraftInfo: DraftInfo | null = null;
+
+function detectDraftInfo(): DraftInfo {
+  if (cachedDraftInfo) return cachedDraftInfo;
+
+  let draft: ICharacter | null = null;
+  try {
+    draft = loadDraft();
+  } catch (error) {
+    console.error('[useAutoLoadDraft] Failed to load draft:', error);
+    try {
+      localStorage.removeItem('mm3e-draft-character');
+    } catch {
+      // Ignore cleanup errors
+    }
+  }
+
+  const instanceActive = localStorage.getItem(INSTANCE_KEY);
+  const now = Date.now();
+
+  if (instanceActive) {
+    const timestamp = parseInt(instanceActive, 10);
+    const timeDiff = now - timestamp;
+    if (timeDiff < 2000) {
+      cachedDraftInfo = {
+        loaded: false,
+        character: null,
+        skippedDueToMultipleInstances: true,
+      };
+      return cachedDraftInfo;
+    }
+  }
+
+  cachedDraftInfo = {
+    loaded: false,
+    character: draft,
+    skippedDueToMultipleInstances: false,
+  };
+  return cachedDraftInfo;
+}
 
 /**
  * Hook that detects character draft from localStorage on app mount.
@@ -16,15 +63,11 @@ const INSTANCE_KEY = 'mm3e-app-instance-active';
  */
 export function useAutoLoadDraft() {
   const hasRunRef = useRef(false);
-  const [draftInfo, setDraftInfo] = useState<{
-    loaded: boolean;
-    character: ICharacter | null;
-    skippedDueToMultipleInstances: boolean;
-  }>({
-    loaded: false,
-    character: null,
-    skippedDueToMultipleInstances: false,
-  });
+  const draftInfo = useSyncExternalStore(
+    () => () => undefined,
+    detectDraftInfo,
+    detectDraftInfo
+  );
 
   useEffect(() => {
     // Prevent double-run in React StrictMode
@@ -33,21 +76,6 @@ export function useAutoLoadDraft() {
     }
     hasRunRef.current = true;
 
-    // Try to detect draft first (before instance check)
-    let draft: ICharacter | null = null;
-    try {
-      draft = loadDraft();
-    } catch (error) {
-      console.error('[useAutoLoadDraft] Failed to load draft:', error);
-      // Clear corrupted draft
-      try {
-        localStorage.removeItem('mm3e-draft-character');
-      } catch {
-        // Ignore cleanup errors
-      }
-    }
-
-    // Check if another instance is already active
     const instanceActive = localStorage.getItem(INSTANCE_KEY);
     const now = Date.now();
     
@@ -57,11 +85,6 @@ export function useAutoLoadDraft() {
       // If another instance was active in the last 2 seconds, skip loading
       // (reduced from 5s to avoid React StrictMode double-mount issues)
       if (timeDiff < 2000) {
-        setDraftInfo({
-          loaded: false,
-          character: null,
-          skippedDueToMultipleInstances: true,
-        });
         return;
       }
     }
@@ -85,21 +108,11 @@ export function useAutoLoadDraft() {
     };
     window.addEventListener('beforeunload', cleanup);
 
-    // Set draft info if we found one
-    if (draft) {
-      setDraftInfo({
-        loaded: false, // Not loaded yet - just detected
-        character: draft,
-        skippedDueToMultipleInstances: false,
-      });
-    }
-
     // Cleanup function
     return () => {
       clearInterval(heartbeatInterval);
       window.removeEventListener('beforeunload', cleanup);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return draftInfo;
