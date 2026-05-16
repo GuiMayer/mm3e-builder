@@ -1,187 +1,187 @@
 # Estado Atual do Power Builder e Funcionalidades Ausentes
 
 **Data de atualizacao:** 16 de maio de 2026  
-**Versao do MM3E Builder analisada:** 1.9.0  
-**Escopo:** comparacao entre o documento anterior e o estado real do codigo em `src/features/power-builder/`, `src/shared/lib/`, `src/shared/hooks/`, `src/data/` e `src/entities/`.
+**Versao analisada:** 1.9.0  
+**Escopo:** estado atual do criador de poderes/equipamentos em `src/features/power-builder/`, regras puras em `src/shared/lib/`, calculos globais em `src/shared/hooks/`, dados em `src/data/` e tipos em `src/entities/`.
 
 ---
 
 ## Resumo Executivo
 
-O Power Builder ja e utilizavel para poderes simples: nome, descritores, efeitos, ranks, modificadores, notas, efeitos alternativos, custos basicos, arrays, Removable e avisos de incompatibilidade existem no fluxo principal.
+O Power Builder ja e utilizavel para montar poderes comuns de M&M 3E: nome, descritores, efeitos, ranks, modificadores, custo por componente, custo fracionario, Alternate Effects, Removable, validacao de campos obrigatorios, custo variavel e validacao local de PL estao integrados ao fluxo principal.
 
-Ainda havia quatro bloqueadores criticos para o app ser um criador de ficha confiavel em M&M 3E:
+Os antigos bloqueadores criticos B1-B4 foram corrigidos no codigo. O projeto agora esta proximo de um criador de ficha usavel, mas ainda nao deve ser chamado de **feature-complete** enquanto puder salvar poderes com inconsistencias legais silenciosas ou mostrar custo divergente entre builder e ficha.
 
-1. **Opcoes de custo variavel nao estavam integradas ao fluxo principal do builder.**
-2. **Campos obrigatorios/configuraveis de poderes nao estavam integrados ao fluxo principal nem aos efeitos alternativos.**
-3. **Validacao de campos obrigatorios existia em biblioteca, mas nao era executada no salvamento.**
-4. **Validacao local de PL no builder usava `attackBonus = 0`, diferente da validacao global da ficha.**
-
-Esses pontos afetam poderes comuns como Affliction, Illusion, Environment, Transform, Weaken, Nullify e Concealment. Sem eles, uma ficha podia ser salva com custos errados ou poderes mecanicamente incompletos.
+Para feature-complete, o foco restante nao e adicionar conveniencias; e fechar validacoes defensivas e consistencia de calculo.
 
 ---
 
-## Estado Real Encontrado
+## Ja Implementado
 
-### Ja implementado
-
-| Item | Estado atual | Evidencia |
+| Area | Estado atual | Evidencia |
 |---|---|---|
-| 1.1 Power Descriptors | Implementado | `ICharacterPower.descriptors`, UI no `PowerBuilderOverlay.tsx`, exibicao no `PowersList.tsx` |
-| 2.5 Modifier Incompatibility Warnings | Implementado | `modifierIncompatibilities` em `PowerBuilderOverlay.tsx` e `AltEffectCard.tsx` |
-| 3.1 Modifier Max Ranks Enforcement | Parcialmente implementado | `NumberInput` recebe `max={def.maxRanks}`; faltava validacao final defensiva |
-| 3.4 Fractional Cost | Calculo implementado, aviso visual limitado | `mathEngine.ts` retorna `isFractional` e `ranksPerPP` |
-| 3.8 Empty Component Detection | Implementado | `handleSave()` filtra componentes vazios e bloqueia salvar sem efeito valido |
+| Power Descriptors | Implementado | `ICharacterPower.descriptors`, UI em `PowerBuilderOverlay.tsx`, exibicao em `PowersList.tsx` |
+| Empty Component Detection | Implementado | `handleSave()` bloqueia salvar sem componente valido |
+| Variable Cost Powers UI | Implementado | `VariableCostSelector` no poder principal e em AEs |
+| Configurable Fields UI | Implementado | `ConfigurableFieldSelector` no poder principal e em AEs |
+| Required Field Validation | Implementado | `validatePowerComponents()` chamado no salvamento |
+| Reset de dados obsoletos ao trocar efeito | Implementado | `variableCostOption` e `fieldValues` sao limpos ao trocar efeito |
+| Local PL validation no builder | Implementado | `usePowerCostCalculation.ts` usa `calcAttackBonus()` e considera AEs |
+| No-roll attack cap | Implementado | ataques sem rolagem usam limite `rank <= PL` |
+| Modifier incompatibility warnings | Implementado como aviso | `modifierIncompatibilities` no builder e em AEs |
+| Modifier max ranks na UI | Parcial | `NumberInput` recebe `max={def.maxRanks}` |
+| Fractional cost engine | Implementado | `calculateCostPerRank()` e breakdown indicam custo fracionario |
 | Alternate Effects basicos | Implementado | `useAlternateEffects.ts`, `AltEffectCard.tsx`, `calculateArrayCost()` |
-| Equipment EP cost engine | Parcialmente implementado | `calcEquipmentEPCost()` existe; UI ainda incompleta |
-| PL global da ficha | Implementado fora do builder | `usePLValidation.ts` calcula ataque real com `calcAttackBonus()` |
+| Equipment EP engine | Implementado fora do builder | `calcEquipmentEPCost()`, `EquipmentNotesPanel.tsx`, `useCalculatedPP.ts` |
 
-### Parcialmente implementado, mas incompleto no fluxo principal
+---
 
-| Item | Estado atual | Problema |
-|---|---|---|
-| 1.2 Variable Cost Powers UI | Componentes e engine existem | `PowerBuilderOverlay.tsx` nao renderizava `VariableCostSelector` no fluxo principal |
-| 1.8 Weaken/Transform Target Selection | Dados existem via `configurableFields` | Builder principal e AEs nao renderizavam `ConfigurableFieldSelector` |
-| Required configurable fields validation | Funcoes existem | `validatePowerComponents()` nao era chamado no salvamento |
-| 3.2 PL limits no builder | Existe uma checagem local | Usava `attackBonus = 0`, produzindo aviso incompleto |
+## Essenciais Para Feature-Complete
 
-### Ausente ou backlog
+### E1. Validacao defensiva de `maxRanks` no salvamento
 
-| Item | Impacto |
+**Estado:** parcial.
+
+A UI limita ranks de modificadores com `max={def.maxRanks}`, mas o salvamento ainda deve bloquear dados invalidos vindos de estado antigo, importacao futura, bugs de UI ou edicao programatica.
+
+**Criterio de aceitacao:**
+
+- `handleSave()` bloqueia modificador com `ranks > def.maxRanks` no poder principal.
+- `handleSave()` bloqueia o mesmo caso em AEs.
+- A mensagem indica componente/AE, modificador e limite.
+
+### E2. Consistencia de custo em Equipment Mode
+
+**Estado:** parcial.
+
+O custo de equipamento da ficha usa `calcEquipmentEPCost()`, mas o footer do builder em `equipmentMode` exibe `mainCost`. Isso pode divergir quando o equipamento tem Alternate Effects/dynamic AEs, pois `calcEquipmentEPCost()` soma o custo de array em EP.
+
+**Criterio de aceitacao:**
+
+- Builder em `equipmentMode` exibe o mesmo total que `calcEquipmentEPCost()`.
+- Removable continua indisponivel/ignorado em equipamento.
+- O texto da UI deixa claro quando o total esta em EP, nao PP.
+
+### E3. Modifier stacking rules
+
+**Estado:** ausente como bloqueio, parcialmente coberto por avisos.
+
+O builder avisa incompatibilidades declaradas nos dados, mas ainda falta bloquear ou validar empilhamentos ilegais/ambiguous. Exemplos: duplicar modificadores que deveriam ser unicos, combinar alteracoes mutuamente exclusivas nao mapeadas em `incompatibleWith`, ou acumular ranks alem de limites por regra.
+
+**Criterio de aceitacao:**
+
+- Regras de incompatibilidade marcadas como obrigatorias devem bloquear salvamento quando a validacao estiver ativa.
+- Modificadores unicos nao devem ser duplicados silenciosamente.
+- Casos permitidos por rank continuam funcionando.
+
+### E4. Action economy validation
+
+**Estado:** ausente.
+
+Os dados de efeito possuem `action`, mas o builder ainda nao valida combinacoes que criam custo/acao mecanicamente suspeitos. Isso deve ser tratado como validacao/aviso, nao como assistente criativo.
+
+**Criterio de aceitacao:**
+
+- O builder identifica mudancas de acao relevantes quando modificadores alteram a economia de acao.
+- Casos impossiveis ou contraditorios geram bloqueio ou aviso conforme `validationRules`.
+- A validacao cobre componentes principais e AEs.
+
+### E5. PP/EP budget awareness no fluxo de criacao
+
+**Estado:** parcial fora do builder.
+
+A ficha calcula PP total e o painel de equipamento calcula limite de EP pela vantagem Equipment, mas o builder ainda nao mostra claramente o impacto antes de salvar um poder/equipamento.
+
+**Criterio de aceitacao:**
+
+- Ao editar/criar poder, o builder mostra impacto estimado no total de PP.
+- Ao editar/criar equipamento, o builder mostra impacto estimado no limite de EP.
+- O app avisa antes de salvar algo que estoure o orcamento quando a regra estiver ativa.
+
+### E6. AE name uniqueness e identidade de slots
+
+**Estado:** ausente.
+
+Nomes duplicados de AEs nao quebram custo, mas prejudicam leitura, validacao e relatorios. Para uma ficha final confiavel, cada slot de array deve ser distinguivel.
+
+**Criterio de aceitacao:**
+
+- AEs sem nome recebem nome padrao estavel ou sao bloqueados no salvamento.
+- Nomes duplicados geram aviso ou bloqueio.
+- Mensagens de validacao sempre apontam para o AE correto.
+
+### E7. Aviso visual claro de custo fracionario
+
+**Estado:** calculo implementado, comunicacao limitada.
+
+O motor calcula corretamente custos fracionarios, mas o usuario precisa ver claramente quando o poder esta usando regra de `1 PP por N ranks`, porque isso muda como ranks e flaws sao interpretados.
+
+**Criterio de aceitacao:**
+
+- Breakdown mostra `1 PP / N ranks` quando `isFractional` for verdadeiro.
+- O footer ou card do componente diferencia custo fracionario de custo normal por rank.
+
+---
+
+## QOL Importante, Mas Nao Essencial
+
+Estes itens melhoram velocidade, onboarding e ergonomia, mas nao impedem uma ficha legal/usavel se as validacoes essenciais acima existirem.
+
+| Item | Motivo |
 |---|---|
-| 2.2 Duplicate Power/Component | Conveniencia, nao bloqueador |
-| 2.3 Modifier Search in Applied List | UX para poderes complexos |
-| 2.4 Cost Breakdown Tooltip | Clareza de calculo |
-| 2.6 Undo/Redo | Conveniencia |
-| 2.7 Power Comparison View | Otimizacao |
-| 2.8 Modifier Recommendations | Onboarding |
-| 2.9 Bulk Modifier Operations | Conveniencia |
-| 2.10 Rich Text Notes | Conveniencia |
-| 2.12 Keyboard Shortcuts | Conveniencia |
-| 2.13 Power Import/Export | Compartilhamento/backup |
-| 3.7 AE Name Uniqueness | Qualidade de dados |
-| 3.9 Modifier Stacking Rules | Legalidade avancada |
-| 3.10 Action Economy Validation | Legalidade avancada |
-| 4.1 Auto-Calculate Accurate Ranks | Otimizacao |
-| 4.2 Power Point Budget Tracker | Importante para ficha completa |
-| 4.5 Equipment Mode Integration | Parcial, precisa completar |
-| 4.6 Power to Equipment Converter | Conveniencia |
-| 4.8 Power Dependencies | Validacao avancada |
-| 4.9 Character Sheet Preview | UX |
-| 4.11 Community Power Library | Longo prazo |
-| 4.12 AI Power Assistant | Longo prazo |
+| Duplicate Power/Component | Acelera montagem de poderes parecidos |
+| Modifier Search in Applied List | Ajuda em poderes muito carregados |
+| Cost Breakdown Tooltip detalhado | Melhora explicabilidade do calculo |
+| Power Comparison View | Ajuda otimizacao, nao legalidade basica |
+| Modifier Recommendations | Onboarding e sugestoes |
+| Bulk Modifier Operations | Conveniencia para edicoes repetitivas |
+| Rich Text Notes | Organizacao narrativa |
+| Keyboard Shortcuts | Produtividade |
+| Power Import/Export JSON | Compartilhamento e backup individual |
+| Templates/Presets | Criacao mais rapida |
+| Power to Equipment Converter | Conveniencia entre fluxos |
+| Character Sheet Preview dentro do builder | UX; a ficha ja existe fora do modal |
+| Undo/Redo | Conforto e seguranca de edicao |
 
 ---
 
-## Bloqueadores Criticos
+## Fora Do Escopo De Feature-Complete Local
 
-### B1. Variable Cost Powers UI
+Esses recursos podem ser bons para produto, mas nao devem bloquear o marco de feature-complete do criador local.
 
-**Estado antes da correcao:** parcialmente implementado, nao integrado ao fluxo principal.
-
-O projeto ja possuia:
-
-- `IVariableCostOption` em `src/entities/types.ts`
-- `variableCostOption` em `ICharacterPowerComponent`
-- `VariableCostSelector.tsx`
-- suporte em `calcComponentCost()` e `getComponentCostBreakdown()`
-- opcoes em `src/data/powers.json`
-
-Mas o fluxo renderizado diretamente em `PowerBuilderOverlay.tsx` nao mostrava a escolha de custo variavel. Assim, efeitos como Affliction, Illusion, Environment e Transform podiam cair no `baseCost` padrao e gerar custo incorreto.
-
-**Criterio de aceitacao:**
-
-- Cada componente principal com `effectDef.variableCost` deve renderizar seletor de custo.
-- Cada componente de AE com `effectDef.variableCost` deve renderizar seletor de custo.
-- Mudanca de efeito deve limpar `variableCostOption` anterior.
-- O custo exibido deve usar a opcao escolhida.
-
-### B2. Campos obrigatorios/configuraveis de poderes
-
-**Estado antes da correcao:** parcialmente implementado, nao integrado ao fluxo principal.
-
-O projeto ja possuia:
-
-- `configurableFields` em `IPowerEffect`
-- `fieldValues` em `ICharacterPowerComponent`
-- `ConfigurableFieldSelector.tsx`
-- dados em `powers.json` para Affliction, Concealment, Nullify, Weaken e outros
-
-Mas a UI principal e os AEs nao renderizavam estes campos.
-
-**Criterio de aceitacao:**
-
-- Componentes principais devem renderizar `ConfigurableFieldSelector` quando o efeito tiver `configurableFields`.
-- Componentes de AE devem renderizar os mesmos campos.
-- Mudanca de efeito deve limpar `fieldValues` anteriores.
-
-### B3. Validacao no salvamento
-
-**Estado antes da correcao:** funcoes existiam, mas nao eram chamadas.
-
-`validatePowerComponents()` e `validateRequiredPowerFields()` existem em `src/shared/lib/validation.ts`, mas o `handleSave()` do builder apenas filtrava componentes vazios e validava cap de AE.
-
-**Criterio de aceitacao:**
-
-- `handleSave()` deve bloquear salvamento quando qualquer componente principal valido estiver sem campo obrigatorio.
-- `handleSave()` deve bloquear salvamento quando qualquer AE valido estiver sem campo obrigatorio.
-- A mensagem deve indicar componente/AE e campo ausente.
-
-### B4. Validacao local de PL no builder
-
-**Estado antes da correcao:** incompleta.
-
-`usePowerCostCalculation.ts` validava o maior rank contra PL usando `attackBonus = 0`. A validacao global em `usePLValidation.ts` e mais correta, pois usa `calcAttackBonus()` com dados reais da ficha.
-
-**Criterio de aceitacao:**
-
-- A validacao local do builder deve usar `calcAttackBonus()` quando possivel.
-- Ataques `perception`/area/no-roll devem respeitar cap de rank <= PL.
-- A validacao deve considerar componentes principais e AEs.
-
----
-
-## Priorizacao Atual
-
-### Fazer agora
-
-1. Integrar custo variavel no `PowerBuilderOverlay.tsx`.
-2. Integrar campos configuraveis no `PowerBuilderOverlay.tsx`.
-3. Integrar campos configuraveis e custo variavel em `AltEffectCard.tsx`.
-4. Bloquear salvamento com campos obrigatorios ausentes.
-5. Corrigir validacao local de PL do builder para usar bonus de ataque real.
-6. Adicionar testes de regressao para custo variavel/campos obrigatorios quando possivel.
-
-### Proxima onda
-
-1. Budget tracker real de PP total da ficha no builder.
-2. Validacao defensiva final de `maxRanks` no salvamento.
-3. Aviso visual claro para custo fracionario.
-4. AE name uniqueness.
-5. Action economy validation.
-6. Modifier stacking rules.
-
-### Backlog
-
-1. Duplicate Power/Component.
-2. Import/Export de poder em JSON.
-3. Templates/Presets.
-4. Recommendations.
-5. Undo/Redo.
-6. Community library e AI assistant.
+| Item | Classificacao |
+|---|---|
+| Community Power Library | Produto/comunidade |
+| AI Power Assistant | Produto/assistente |
+| Suggested Alternate Effects | Assistencia criativa |
+| Power History/Changelog detalhado | Auditoria avancada |
+| Marketplace/importacao remota | Ecossistema |
 
 ---
 
 ## Observacoes Tecnicas
 
-- Ha duplicacao entre `PowerComponentEditor.tsx` e o JSX inline de `PowerBuilderOverlay.tsx`. O ideal futuro e reutilizar `PowerComponentEditor` para reduzir divergencia, mas a correcao minima e integrar os seletores no fluxo inline existente.
-- `ConfigurableFieldSelector.tsx` verifica `field.control === 'multi-select'`, enquanto o JSON usa ao menos um caso com `"control": "multiselect"`. Isso deve ser normalizado para evitar UI quebrada.
-- O tipo `ConfigurableFieldControl` deve aceitar o formato usado pelos dados ou os dados devem ser migrados. A correcao minima e aceitar ambos na UI/tipo.
-- `PowerCostFooter.tsx` parece legado ou nao usado pelo overlay principal. O footer inline de `PowerBuilderOverlay.tsx` e o fluxo atualmente relevante.
-- O calculo de EP para equipamento existe em `mathEngine.ts`, mas a integracao de UI continua incompleta.
+- `PowerBuilderOverlay.tsx` ainda contem muito JSX e regras inline. Isso aumenta o risco de divergencia com componentes como `PowerComponentEditor.tsx`.
+- `PowerComponentEditor.tsx` parece ser uma versao reutilizavel/legada do editor de componente; antes de remover, e preciso confirmar se nenhum fluxo futuro depende dele.
+- O builder ja calcula AEs e validacoes em `usePowerCostCalculation.ts`; novas validacoes devem ficar nesse hook ou em funcoes puras de `src/shared/lib/validation.ts` quando possivel.
+- `calcEquipmentEPCost()` e a fonte correta para total de EP. Qualquer UI de equipamento deve convergir para essa funcao.
+- Evitar duplicar regras do livro em componentes React; preferir funcoes puras testaveis.
+- Se houver duvida de regra, consultar `docs/sources/Mutants & Masterminds 3 - Heros Handbook Deluxe.md`, `docs/sources/Mutants & Masterminds 3 - Powers.md` e `docs/sources/Mutants & Masterminds 3 - Modifiers.md`.
+
+---
+
+## Proxima Sequencia Recomendada
+
+1. Corrigir custo exibido em Equipment Mode para usar `calcEquipmentEPCost()`.
+2. Adicionar validacao defensiva de `maxRanks` no salvamento.
+3. Extrair validacoes repetiveis para `src/shared/lib/validation.ts`.
+4. Adicionar aviso visual de custo fracionario no card do componente.
+5. Implementar regras de stacking/action economy com base nos dados oficiais e em `validationRules`.
 
 ---
 
 ## Conclusao
 
-O app ja funciona como criador de poderes simples, mas os bloqueadores criticos acima eram suficientes para impedir confiabilidade em fichas reais de M&M 3E. A prioridade correta e concluir a integracao de custo variavel, campos obrigatorios e validacoes no fluxo principal antes de investir em recursos de conveniencia.
+O projeto ja pode criar poderes simples e moderadamente complexos, incluindo efeitos com custo variavel e campos obrigatorios. Para chamar de feature-complete, o criterio deve ser: **nao salvar custo divergente, nao salvar modificador acima do limite, nao esconder estouro de PP/EP e nao permitir combinacoes mecanicamente ilegais sem aviso claro**.
+
+QOL pode esperar; consistencia de calculo e validacao defensiva nao.
