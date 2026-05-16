@@ -11,6 +11,7 @@ import {
   calculateArrayCost,
   getComponentCostBreakdown,
   calcAlternateEffectCost,
+  calcEquipmentEPCost,
   validateAECost,
   calcRemovableDiscount,
 } from '../../../shared/lib/mathEngine';
@@ -83,6 +84,11 @@ export function usePowerCostCalculation({
   const totalCost = useMemo(
     () => Math.max(0, arrayCost - removableDiscount),
     [arrayCost, removableDiscount]
+  );
+
+  const equipmentEPCost = useMemo(
+    () => calcEquipmentEPCost(power, powerDefs, allModDefs),
+    [power, powerDefs, allModDefs]
   );
 
   // Calculate AE costs
@@ -163,6 +169,7 @@ export function usePowerCostCalculation({
     arrayCost,
     removableDiscount,
     totalCost,
+    equipmentEPCost,
     aeCosts,
     aeValidations,
     plViolation,

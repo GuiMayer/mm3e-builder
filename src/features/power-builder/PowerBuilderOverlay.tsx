@@ -29,6 +29,7 @@ import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
 import { validatePowerComponents } from '../../shared/lib/validation';
+import { validateModifierMaxRanks } from '../../shared/lib/modifierValidation';
 
 interface Props {
   existingPower?: ICharacterPower;
@@ -152,6 +153,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     mainCost,
     removableDiscount,
     totalCost,
+    equipmentEPCost,
     aeCosts,
     aeValidations,
     plViolation,
@@ -415,6 +417,36 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       if (aeFieldViolations.length > 0) {
         const first = aeFieldViolations[0];
         alert(`${ae.name || 'AE'} - componente ${first.componentIndex + 1}: campo obrigatorio "${first.violation.label}" nao preenchido.`);
+        return;
+      }
+    }
+
+    const validateModifierRanksForSave = (
+      components: ICharacterPowerComponent[],
+      labelPrefix: string
+    ) => {
+      for (let index = 0; index < components.length; index += 1) {
+        const violations = validateModifierMaxRanks(components[index].modifiers, allModDefs);
+        if (violations.length > 0) {
+          const first = violations[0];
+          const modName = allModDefs.find((def) => def.id === first.modifierId)?.name || first.modifierId;
+          const maxRanks = allModDefs.find((def) => def.id === first.modifierId)?.maxRanks;
+          return `${labelPrefix} componente ${index + 1}: ${modName} excede o limite de ranks${maxRanks !== undefined ? ` (${maxRanks})` : ''}.`;
+        }
+      }
+      return null;
+    };
+
+    const mainRankError = validateModifierRanksForSave(validComponents, 'Poder principal');
+    if (mainRankError) {
+      alert(mainRankError);
+      return;
+    }
+
+    for (const ae of cleanedAlternateEffects) {
+      const aeRankError = validateModifierRanksForSave(ae.components, ae.name || 'AE');
+      if (aeRankError) {
+        alert(aeRankError);
         return;
       }
     }
@@ -952,7 +984,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               </span>
             )}
             <span className="cost-total-label">{equipmentMode ? t('builder.totalEP') || 'Total EP:' : t('builder.total') + ':'}</span>
-            <span className="cost-total-value">{equipmentMode ? mainCost : totalCost} {equipmentMode ? 'EP' : t('common.pp')}</span>
+            <span className="cost-total-value">{equipmentMode ? equipmentEPCost : totalCost} {equipmentMode ? 'EP' : t('common.pp')}</span>
           </div>
           {plViolation && (
             <div className="pl-violation-banner">
