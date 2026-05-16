@@ -158,7 +158,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
 
         <h1 className="menubar-title">{t('app.title')}</h1>
         <ViewTabs activeView={activeView} onViewChange={onViewChange} />
-        <span className="menubar-pp" data-over={remaining < 0}>
+        <span className="menubar-pp" data-over={isBudgetEnforced && remaining < 0}>
           <strong>{totalSpent}</strong> / {isBudgetEnforced ? totalAvailable : <span className="infinity-symbol">∞</span>} {t('common.pp')}
           {remaining < 0 && isBudgetEnforced && <span className="menubar-pp-warning"> ({remaining})</span>}
         </span>
