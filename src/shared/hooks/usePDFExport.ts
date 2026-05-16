@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCharStore } from '../../store/charStore';
-import { fillAndDownloadPDF, checkPDFOverflow } from '../../services/pdf/pdfFillService';
-import type { PDFOverflowReport } from '../../services/pdf/pdfFillService';
+import { checkPDFOverflow } from '../../services/pdf/overflowCollector';
+import type { PDFOverflowReport } from '../../services/pdf/overflowCollector';
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 
@@ -46,6 +46,7 @@ export function usePDFExport() {
     setPdfOverflow([]);
     
     try {
+      const { fillAndDownloadPDF } = await import('../../services/pdf/pdfFillService');
       await fillAndDownloadPDF(character);
     } catch (e) {
       alert(t('errors.exportError') + '\n' + String(e));

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCharStore } from '../../store/charStore';
-import { generateExcel } from '../../services/excelGenerator';
 import type { ExportLabels, GameDataRefs } from '../../services/excelGenerator';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 
@@ -108,6 +107,7 @@ export function useExcelExport() {
       const gameData = buildGameDataRefs();
       const lang = i18n.language;
 
+      const { generateExcel } = await import('../../services/excelGenerator');
       await generateExcel(character, labels, gameData, lang);
     } catch (err) {
       console.error('Excel export failed:', err);
