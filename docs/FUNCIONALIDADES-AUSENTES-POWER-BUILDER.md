@@ -1,8 +1,34 @@
 # Estado Atual do Power Builder e Roadmap Feature-Complete
 
-**Data de atualizacao:** 16 de maio de 2026  
-**Versao analisada:** 1.9.0  
+**Data de atualizacao:** 17 de maio de 2026  
+**Versao analisada:** 1.9.0 (commits recentes: f169a0f, 7b104d9, fcc7cf7)  
 **Escopo:** criador de poderes/equipamentos em `src/features/power-builder/`, validacoes puras em `src/shared/lib/`, calculos globais em `src/shared/hooks/`, dados em `src/data/` e tipos em `src/entities/`.
+
+---
+
+## Avaliacao Geral de Utilidade (17/05/2026)
+
+**Score: 8/10 — Strong**
+
+A aplicacao e **altamente funcional e completa** para criacao de personagens de M&M 3e. Para um jogador real, ela resolve os principais problemas do sistema: calculo automatico de PP, validacao de regras complexas, e construcao de poderes com arrays. E **utilizavel em producao hoje**.
+
+### Cobertura por Arquetipo
+
+- **70-80% dos arquetipos** (Paragon, Powerhouse, Mystic, Speedster, Energy Controller): ferramenta **completa**
+- **20-30% restantes** (Battlesuit, Gadgeteer, Summoner): **funcional mas incompleta** (falta Equipment Builder detalhado, Minions/Sidekicks)
+
+### Lacunas Criticas Identificadas
+
+- **MEDIUM**: Equipamentos limitados (falta detalhamento de armas, veiculos, headquarters)
+- **MEDIUM**: Sem Minions/Sidekicks (personagens summoners precisam de ficha separada)
+- **LOW**: Validacao de Complicacoes aceita texto livre sem guidance
+- **LOW**: Sem testes E2E (regressoes em integracoes podem passar despercebidas)
+
+### Proximos Passos Recomendados
+
+1. Equipment Builder basico (maior impacto funcional)
+2. Testes E2E com Playwright (maior impacto em confiabilidade)
+3. Minions/Sidekicks (completa arquetipos restantes)
 
 ---
 
@@ -10,12 +36,13 @@
 
 O Power Builder ja e utilizavel para criar poderes comuns e moderadamente complexos de M&M 3E. O fluxo atual cobre nome, descritores, efeitos, ranks, modificadores, custo por componente, custo fracionario no motor, Alternate Effects, Removable, custo variavel, campos configuraveis obrigatorios, validacao local de PL e modo de equipamento em EP.
 
-Depois do diagnostico mais recente, dois itens que ainda estavam marcados como parciais no documento foram reclassificados como **implementados no codigo atual**:
+**Atualizacao 17/05/2026:** Tres itens essenciais foram implementados e verificados:
 
-- Validacao defensiva de `maxRanks` no salvamento.
-- Consistencia do total exibido em `equipmentMode` usando `calcEquipmentEPCost()`.
+- **E7**: Comunicacao visual de custo fracionario (`1 PP / N ranks`)
+- **E3**: Validacao de modificadores duplicados com flag `enforceDuplicateModifiers`
+- **E6**: Identidade de Alternate Effects com nomes padrao estaveis e validacao de duplicacao
 
-O projeto ainda nao deve ser chamado de **feature-complete** porque restam lacunas que podem deixar a ficha ambigua ou ilegal sem aviso claro: duplicacao/stacking de modificadores, nomes de Alternate Effects, comunicacao visual de custo fracionario, impacto de PP/EP antes de salvar e validacao de economia de acao.
+O projeto ainda nao deve ser chamado de **feature-complete** porque restam lacunas que podem deixar a ficha ambigua ou ilegal sem aviso claro: impacto de PP/EP antes de salvar e validacao de economia de acao.
 
 ---
 
@@ -33,27 +60,17 @@ O projeto ainda nao deve ser chamado de **feature-complete** porque restam lacun
 | No-roll attack cap | Implementado | ataques sem rolagem usam limite `rank <= PL` |
 | Modifier incompatibility validation | Implementado | `validateIncompatibleModifiers()` roda via `validateComponentModifiers()` quando a regra esta ativa |
 | Modifier max ranks defensivo | Implementado | `validateModifierMaxRanks()` roda no salvamento via `validatePowerForSave()` |
+| Modifier duplicate validation | Implementado | `validateDuplicateModifiers()` detecta modificadores duplicados, flag `enforceDuplicateModifiers` em `IValidationRules` |
 | Fractional cost engine | Implementado no motor | `getComponentCostBreakdown()` retorna `isFractional` e `ranksPerPP` |
+| Fractional cost UI | Implementado | `PowerBuilderOverlay.tsx` e `AltEffectCard.tsx` mostram `1 PP / N ranks` quando `isFractional` |
 | Alternate Effects basicos | Implementado | `useAlternateEffects.ts`, `AltEffectCard.tsx`, `calculateArrayCost()` |
+| AE name uniqueness | Implementado | `getNextAlternateEffectName()` gera nomes padrao estaveis, `validatePowerForSave()` detecta duplicacao |
 | Equipment EP engine | Implementado | `calcEquipmentEPCost()`, `EquipmentNotesPanel.tsx`, `useCalculatedPP.ts` |
 | Equipment Mode cost no builder | Implementado | footer do builder usa `equipmentEPCost` quando `equipmentMode` esta ativo |
 
 ---
 
 ## Essenciais Ainda Pendentes
-
-### E3. Modifier stacking rules
-
-**Estado:** parcial.
-
-O builder ja valida incompatibilidades declaradas em `incompatibleWith` e `maxRanks`, mas ainda falta bloquear duplicacao do mesmo modificador quando isso cria um estado ambiguo. Hoje um componente ainda pode receber o mesmo `modifierId` mais de uma vez se isso vier de estado antigo, importacao futura, bug de UI ou edicao programatica.
-
-**Criterio de aceitacao:**
-
-- O salvamento detecta `modifierId` duplicado em cada componente principal.
-- O mesmo vale para componentes dentro de AEs.
-- A mensagem indica componente/AE e modificador duplicado.
-- Casos permitidos por ranks continuam usando um unico modificador com `ranks > 1`, nao entradas duplicadas.
 
 ### E4. Action economy validation
 
@@ -82,92 +99,71 @@ A ficha ja calcula o total de PP e o painel de equipamento ja calcula limite de 
 - Se o modo equipamento estiver ativo, o aviso usa o limite de EP, nao o limite de PP.
 - O salvamento avisa antes de confirmar algo que estoure o orcamento quando a regra estiver ativa.
 
-### E6. AE name uniqueness e identidade de slots
-
-**Estado:** ausente.
-
-Nomes duplicados ou vazios de Alternate Effects nao quebram o custo, mas prejudicam leitura, validacao, relatorios e mensagens de erro. Para uma ficha final confiavel, cada slot de array precisa ser distinguivel.
-
-**Criterio de aceitacao:**
-
-- AEs sem nome recebem nome padrao estavel ou geram aviso no salvamento.
-- Nomes duplicados geram erro ou aviso conforme regra ativa.
-- Mensagens de validacao apontam para o AE correto mesmo quando o usuario nao nomeou o slot.
-
-### E7. Aviso visual claro de custo fracionario
-
-**Estado:** calculo implementado, comunicacao visual limitada.
-
-O motor calcula corretamente custo fracionario (`1 PP por N ranks`), mas a UI ainda nao comunica isso com clareza suficiente. O usuario precisa ver quando ranks e flaws estao sendo interpretados por regra fracionaria.
-
-**Criterio de aceitacao:**
-
-- Componentes principais mostram `1 PP / N ranks` quando `breakdown.isFractional` for verdadeiro.
-- AEs mostram a mesma informacao.
-- O custo fracionario aparece no breakdown/card do componente, nao apenas em teste ou funcao interna.
-
 ---
 
 ## Fases De Implementacao
 
-### Fase 1 - Comunicacao de custo fracionario
+### ✅ Fase 1 - Comunicacao de custo fracionario (CONCLUIDA)
 
-**Objetivo:** deixar explicito na UI quando um componente usa regra de custo fracionario.
+**Status:** Implementado em commit `fcc7cf7`.
 
 **Itens cobertos:** E7.
 
-**Arquivos provaveis:**
+**Arquivos modificados:**
 
 - `src/features/power-builder/PowerBuilderOverlay.tsx`
 - `src/features/power-builder/AltEffectCard.tsx`
-- possivelmente `src/features/power-builder/components/PowerComponentEditor.tsx`, se for manter consistencia com o componente reutilizavel
 
-**Saida esperada:**
+**Resultado:**
 
-- Badge ou linha no breakdown: `1 PP / N ranks`.
-- Visual diferenciado para custo fracionario.
-- Teste ou verificacao manual com um poder de custo fracionario.
+- Badge visual mostra `1 PP / N ranks` quando `breakdown.isFractional` e verdadeiro.
+- Estilo diferenciado para custo fracionario.
+- Componentes principais e AEs exibem a informacao.
 
-### Fase 2 - Validacao de stacking/duplicacao de modificadores
+### ✅ Fase 2 - Validacao de stacking/duplicacao de modificadores (CONCLUIDA)
 
-**Objetivo:** impedir estados ambiguos onde o mesmo modificador aparece duplicado no mesmo componente.
+**Status:** Implementado em commit `7b104d9`.
 
 **Itens cobertos:** E3.
 
-**Arquivos provaveis:**
+**Arquivos modificados:**
 
-- `src/shared/lib/modifierValidation.ts`
-- `src/shared/lib/semanticValidation.ts`
-- `src/entities/types.ts`
-- `src/shared/lib/validationRules.ts`
-- testes em `src/__tests__/`
+- `src/shared/lib/modifierValidation.ts` — nova funcao `validateDuplicateModifiers()`
+- `src/shared/lib/semanticValidation.ts` — integrado em `validateComponentModifiers()`
+- `src/entities/types.ts` — adicionado `enforceDuplicateModifiers` em `IValidationRules`
+- `src/shared/lib/validationRules.ts` — defaults, permissive, strict, sandbox
+- `src/shared/ui/MenuBar.tsx` — toggle no menu de validacao
+- `src/locales/en/translation.json` e `src/locales/pt-BR/translation.json` — traducoes
+- `src/__tests__/modifierRestrictions.test.ts` — testes de duplicacao
+- `src/__tests__/powerSpecificModifiers.test.ts` — ajustes
 
-**Saida esperada:**
+**Resultado:**
 
-- Nova validacao pura para duplicados.
-- Flag em `IValidationRules` e defaults.
-- Salvamento bloqueia duplicados quando a regra estiver ativa.
+- Salvamento detecta `modifierId` duplicado em componentes principais e AEs.
+- Mensagem indica modificador duplicado e sugere usar ranks.
+- Flag `enforceDuplicateModifiers` controla a validacao.
 
-### Fase 3 - Identidade de Alternate Effects
+### ✅ Fase 3 - Identidade de Alternate Effects (CONCLUIDA)
 
-**Objetivo:** garantir que cada AE seja identificavel em validacoes, relatorios e leitura da ficha.
+**Status:** Implementado em commit `f169a0f`.
 
 **Itens cobertos:** E6.
 
-**Arquivos provaveis:**
+**Arquivos modificados:**
 
-- `src/shared/lib/semanticValidation.ts`
-- `src/features/power-builder/hooks/useAlternateEffects.ts`
-- `src/features/power-builder/AltEffectCard.tsx`
-- testes em `src/__tests__/`
+- `src/features/power-builder/hooks/useAlternateEffects.ts` — funcao `getNextAlternateEffectName()`
+- `src/shared/lib/semanticValidation.ts` — validacao de nomes vazios e duplicados
+- `src/features/power-builder/PowerBuilderOverlay.tsx` — fallback `AE N` em mensagens
+- `src/__tests__/semanticValidation.test.ts` — novo arquivo de testes
 
-**Saida esperada:**
+**Resultado:**
 
-- AEs novas recebem nome padrao estavel ou validacao clara.
-- Nomes duplicados sao detectados.
-- Mensagens usam indice/nome do AE de forma confiavel.
+- Novos AEs recebem nome padrao estavel (`AE 1`, `AE 2`, etc.)
+- Nomes vazios geram warning no salvamento.
+- Nomes duplicados geram erro no salvamento (case-insensitive).
+- Mensagens de validacao usam nome ou fallback confiavel.
 
-### Fase 4 - PP/EP budget awareness dentro do builder
+### Fase 4 - PP/EP budget awareness dentro do builder (PENDENTE)
 
 **Objetivo:** mostrar o impacto antes de salvar e avisar quando o usuario vai estourar PP/EP.
 
@@ -260,14 +256,29 @@ Esses recursos podem ser bons para produto, mas nao devem bloquear o marco de fe
 
 ## Sequencia Recomendada
 
-1. Fase 1: aviso visual de custo fracionario.
-2. Fase 2: stacking/duplicacao de modificadores.
-3. Fase 3: identidade e nomes de AEs.
-4. Fase 4: impacto PP/EP no builder.
-5. Fase 5: economia de acao com consulta nas regras oficiais.
+1. ✅ ~~Fase 1: aviso visual de custo fracionario~~ (CONCLUIDA)
+2. ✅ ~~Fase 2: stacking/duplicacao de modificadores~~ (CONCLUIDA)
+3. ✅ ~~Fase 3: identidade e nomes de AEs~~ (CONCLUIDA)
+4. Fase 4: impacto PP/EP no builder (PENDENTE)
+5. Fase 5: economia de acao com consulta nas regras oficiais (PENDENTE)
 
 ---
 
 ## Conclusao
 
-O projeto ja cobre os requisitos basicos para criar poderes usaveis, incluindo custo variavel, campos obrigatorios, PL local, AEs e EP de equipamento. Para chamar o Power Builder de feature-complete, o criterio restante deve ser: **nao permitir estado ambiguo de modificadores, nao esconder identidade de AEs, comunicar custo fracionario, mostrar impacto de PP/EP antes de salvar e avisar combinacoes de acao problematicas**.
+O projeto ja cobre os requisitos basicos para criar poderes usaveis, incluindo custo variavel, campos obrigatorios, PL local, AEs e EP de equipamento.
+
+**Progresso recente (17/05/2026):** Tres fases essenciais foram concluidas:
+
+- ✅ **Fase 1 (E7):** Comunicacao visual de custo fracionario implementada
+- ✅ **Fase 2 (E3):** Validacao de modificadores duplicados implementada
+- ✅ **Fase 3 (E6):** Identidade de Alternate Effects implementada
+
+**Criterio restante para feature-complete:** O Power Builder ainda precisa de duas implementacoes finais:
+
+1. **Fase 4 (E5):** Mostrar impacto de PP/EP antes de salvar e avisar quando o usuario vai estourar o orcamento
+2. **Fase 5 (E4):** Avisar combinacoes de acao problematicas conforme regras oficiais
+
+Com essas duas fases, o builder nao permitira estado ambiguo de modificadores, nao escondera identidade de AEs, comunicara custo fracionario, mostrara impacto de PP/EP antes de salvar e avisara combinacoes de acao problematicas.
+
+**Avaliacao geral:** Score 8/10 — A aplicacao e altamente funcional e utilizavel em producao hoje para 70-80% dos arquetipos de M&M 3e. As lacunas restantes sao features avancadas (Equipment Builder detalhado, Minions/Sidekicks) e polish (testes E2E), nao problemas fundamentais.
