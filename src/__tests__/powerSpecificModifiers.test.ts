@@ -153,6 +153,7 @@ describe('validatePowerSpecificModifiers', () => {
 describe('validateComponentModifiers with enforcePowerSpecificModifiers', () => {
   const validationRulesEnabled: IValidationRules = {
     enforceIncompatibleModifiers: false,
+    enforceDuplicateModifiers: false,
     enforceModifierMaxRanks: false,
     enforceAccuratePLCap: false,
     enforcePowerSpecificModifiers: true,  // ENABLED
@@ -202,6 +203,7 @@ describe('validateComponentModifiers with enforcePowerSpecificModifiers', () => 
   it('combines power-specific validation with other validations', () => {
     const allRulesEnabled: IValidationRules = {
       enforceIncompatibleModifiers: true,
+      enforceDuplicateModifiers: true,
       enforceModifierMaxRanks: true,
       enforceAccuratePLCap: false,
       enforcePowerSpecificModifiers: true,

@@ -13,7 +13,7 @@ import type {
 import type { IValidationRules } from '../../entities/types';
 
 export interface ModifierViolation {
-  type: 'incompatible' | 'max_ranks' | 'accurate_pl_cap' | 'power_specific';
+  type: 'incompatible' | 'duplicate_modifier' | 'max_ranks' | 'accurate_pl_cap' | 'power_specific';
   modifierId: string;
   message: string;
   severity: 'error' | 'warning';
@@ -75,6 +75,36 @@ export function validateModifierMaxRanks(
         reference: def.id === 'accurate' ? 'Hero\'s Handbook p.137' : undefined,
       });
     }
+  }
+
+  return violations;
+}
+
+/**
+ * Validate that a component does not contain the same modifier entry twice.
+ * Ranked modifiers should be represented by one entry with ranks > 1.
+ */
+export function validateDuplicateModifiers(
+  appliedModifiers: IAppliedModifier[],
+  modifierDefs: IModifierDef[]
+): ModifierViolation[] {
+  const violations: ModifierViolation[] = [];
+  const counts = new Map<string, number>();
+
+  for (const applied of appliedModifiers) {
+    counts.set(applied.modifierId, (counts.get(applied.modifierId) ?? 0) + 1);
+  }
+
+  for (const [modifierId, count] of counts.entries()) {
+    if (count <= 1) continue;
+    const def = modifierDefs.find((d) => d.id === modifierId);
+    violations.push({
+      type: 'duplicate_modifier',
+      modifierId,
+      message: `${def?.name || modifierId} appears ${count} times. Use ranks instead of duplicate entries.`,
+      severity: 'error',
+      reference: 'Hero\'s Handbook p.137',
+    });
   }
 
   return violations;
@@ -188,6 +218,11 @@ export function validateComponentModifiers(
   // Check incompatible modifiers
   if (validationRules.enforceIncompatibleModifiers) {
     violations.push(...validateIncompatibleModifiers(component.modifiers, modifierDefs));
+  }
+
+  // Check duplicate modifier entries
+  if (validationRules.enforceDuplicateModifiers) {
+    violations.push(...validateDuplicateModifiers(component.modifiers, modifierDefs));
   }
 
   // Check max ranks

@@ -23,6 +23,7 @@
   "menu.validationRules.enforceMinimumAbilityScore": "Aplicar Habilidade Mínima (-5)",
   "menu.validationRules.enforceAlternateEffectCap": "Aplicar Limite de Efeito Alternativo",
   "menu.validationRules.enforceEquipmentPPLimit": "Aplicar Limite de PP de Equipamento",
+  "menu.validationRules.enforceDuplicateModifiers": "Bloquear Modificadores Duplicados",
   "menu.cancel": "Cancelar",
   "ppLog.title": "Registro de Avanço de PP",
   "ppLog.awardPP": "Conceder PP",

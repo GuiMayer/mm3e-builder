@@ -23,6 +23,7 @@
   "menu.validationRules.enforceMinimumAbilityScore": "Enforce Minimum Ability Score (-5)",
   "menu.validationRules.enforceAlternateEffectCap": "Enforce Alternate Effect Cap",
   "menu.validationRules.enforceEquipmentPPLimit": "Enforce Equipment PP Limit",
+  "menu.validationRules.enforceDuplicateModifiers": "Block Duplicate Modifiers",
   "menu.cancel": "Cancel",
   "ppLog.title": "PP Advancement Log",
   "ppLog.awardPP": "Award PP",

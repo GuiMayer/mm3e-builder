@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   validateIncompatibleModifiers,
+  validateDuplicateModifiers,
   validateModifierMaxRanks,
   validateAccuratePLCap,
   validateComponentModifiers,
@@ -156,6 +157,34 @@ describe('Modifier Incompatibility Rules', () => {
 
       expect(violations.length).toBe(0); // Unknown mod is skipped
     });
+  });
+});
+
+// ══════════════════════════════════════════════════════
+//  Duplicate Modifier Entries
+// ══════════════════════════════════════════════════════
+
+describe('Duplicate Modifier Entries', () => {
+  it('detects the same modifier twice on one component', () => {
+    const mods: IAppliedModifier[] = [
+      { modifierId: 'accurate', ranks: 2 },
+      { modifierId: 'accurate', ranks: 1 },
+    ];
+
+    const violations = validateDuplicateModifiers(mods, MOCK_MODIFIERS);
+
+    expect(violations).toHaveLength(1);
+    expect(violations[0].type).toBe('duplicate_modifier');
+    expect(violations[0].modifierId).toBe('accurate');
+    expect(violations[0].message).toContain('appears 2 times');
+  });
+
+  it('allows one ranked modifier entry', () => {
+    const mods: IAppliedModifier[] = [{ modifierId: 'accurate', ranks: 3 }];
+
+    const violations = validateDuplicateModifiers(mods, MOCK_MODIFIERS);
+
+    expect(violations).toHaveLength(0);
   });
 });
 
@@ -348,6 +377,7 @@ describe('validateComponentModifiers (integrated)', () => {
         { modifierId: 'ranged', ranks: 1 },
         { modifierId: 'close_only', ranks: 1 }, // Incompatible with ranged
         { modifierId: 'accurate', ranks: 6 }, // Exceeds maxRanks
+        { modifierId: 'accurate', ranks: 1 }, // Duplicate entry
       ],
     };
 
@@ -362,6 +392,7 @@ describe('validateComponentModifiers (integrated)', () => {
 
     expect(violations.length).toBeGreaterThanOrEqual(2);
     expect(violations.some((v) => v.type === 'incompatible')).toBe(true);
+    expect(violations.some((v) => v.type === 'duplicate_modifier')).toBe(true);
     expect(violations.some((v) => v.type === 'max_ranks')).toBe(true);
   });
 
@@ -392,6 +423,29 @@ describe('validateComponentModifiers (integrated)', () => {
     );
 
     expect(violations.length).toBe(0); // No violations when rule disabled
+  });
+
+  it('respects duplicate modifier validation rule', () => {
+    const component: ICharacterPowerComponent = {
+      id: 'c1',
+      effectId: 'damage',
+      ranks: 10,
+      modifiers: [
+        { modifierId: 'accurate', ranks: 1 },
+        { modifierId: 'accurate', ranks: 1 },
+      ],
+    };
+
+    const violations = validateComponentModifiers(
+      component,
+      MOCK_DAMAGE_EFFECT,
+      MOCK_MODIFIERS,
+      { ...DEFAULT_VALIDATION_RULES, enforceDuplicateModifiers: false },
+      0,
+      10
+    );
+
+    expect(violations.some((v) => v.type === 'duplicate_modifier')).toBe(false);
   });
 
   it('clean component passes all validations', () => {

@@ -269,6 +269,10 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
                   {(validationRules?.enforceEquipmentPPLimit ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
                   {t('menu.validationRules.enforceEquipmentPPLimit')}: <strong>{(validationRules?.enforceEquipmentPPLimit ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
                 </button>
+                <button className="dropdown-item" onClick={() => setValidationRules({ enforceDuplicateModifiers: !(validationRules?.enforceDuplicateModifiers ?? true) })}>
+                  {(validationRules?.enforceDuplicateModifiers ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.validationRules.enforceDuplicateModifiers')}: <strong>{(validationRules?.enforceDuplicateModifiers ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+                </button>
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">
