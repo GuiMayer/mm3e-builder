@@ -832,7 +832,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                     {/* Cost breakdown for this component */}
                     {costInfo.breakdown && costInfo.total > 0 && (
                       <div className="component-breakdown">
-                        {costInfo.breakdown.perRankExtras > 0 || costInfo.breakdown.perRankFlaws > 0 ? (
+                        {costInfo.breakdown.isFractional ? (
+                          <span className="fractional-cost-line">
+                            <span className="fractional-cost-badge">
+                              1 PP / {costInfo.breakdown.ranksPerPP} ranks
+                            </span>
+                            {' '}({comp.ranks} ranks = {costInfo.breakdown.rankCost} PP)
+                            {costInfo.breakdown.flatCost !== 0 ? ` + ${costInfo.breakdown.flatCost} flat` : ''}
+                            {' = '}<strong>{costInfo.breakdown.total} PP</strong>
+                          </span>
+                        ) : costInfo.breakdown.perRankExtras > 0 || costInfo.breakdown.perRankFlaws > 0 ? (
                           <span>
                             ({costInfo.breakdown.base} + {costInfo.breakdown.perRankExtras} − {costInfo.breakdown.perRankFlaws}) × {comp.ranks} = {costInfo.breakdown.rankCost}
                             {costInfo.breakdown.flatCost !== 0 ? ` + ${costInfo.breakdown.flatCost} flat` : ''}
@@ -1126,6 +1135,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           font-size: 0.72rem; color: var(--c-text-muted); padding: 4px 8px;
           background: var(--c-surface-elevated); border-radius: var(--r-sm);
         }
+        .fractional-cost-line { color: var(--c-warning); }
+        .fractional-cost-badge { font-weight: 800; }
 
         /* Effect info strip */
         .build-effect-info {

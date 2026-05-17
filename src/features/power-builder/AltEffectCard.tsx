@@ -13,6 +13,7 @@ import type {
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
+import { getComponentCostBreakdown } from '../../shared/lib/mathEngine';
 
 interface AltEffectCardProps {
   ae: IAlternateEffect;
@@ -106,6 +107,7 @@ export function AltEffectCard({
           {/* Component cards */}
           {ae.components.map((comp, cIdx) => {
             const effectDef = allEffects.find((d) => d.id === comp.effectId);
+            const costBreakdown = effectDef ? getComponentCostBreakdown(comp, effectDef, allModDefs) : null;
             const isActiveComp = comp.id === activeCompId;
             const droppableId = `dropzone-ae::${ae.id}::${comp.id}`;
 
@@ -194,6 +196,17 @@ export function AltEffectCard({
                       <span className="effect-detail">{effectDef.action}</span>
                       <span className="effect-detail">{effectDef.range}</span>
                       <span className="effect-detail">{effectDef.duration}</span>
+                    </div>
+                  )}
+
+                  {costBreakdown?.isFractional && (
+                    <div className="component-breakdown component-breakdown--fractional">
+                      <span className="fractional-cost-badge">
+                        1 PP / {costBreakdown.ranksPerPP} ranks
+                      </span>
+                      <span>
+                        {comp.ranks} ranks = <strong>{costBreakdown.total} PP</strong>
+                      </span>
                     </div>
                   )}
 
@@ -384,6 +397,8 @@ export function AltEffectCard({
         .ae-comp-card:hover { border-color: var(--c-primary-muted); }
         .ae-comp-header { display: flex; align-items: center; gap: var(--s-sm); }
         .ae-comp-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--c-text-muted); flex: 1; }
+        .component-breakdown--fractional { color: var(--c-warning); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.08); }
+        .fractional-cost-badge { font-weight: 800; }
         .cost-comp-val--invalid { color: var(--c-error); }
         .ae-mod-fallback-select {
           width: 100%; padding: 4px 8px; border-radius: var(--r-sm);
