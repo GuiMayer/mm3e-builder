@@ -32,6 +32,7 @@ import { fillAdvantages }    from './sections/advantagesSection';
 import { fillEquipment }     from './sections/equipmentSection';
 import { fillComplications } from './sections/complicationsSection';
 import { fillNotes }         from './sections/notesSection';
+import { fillPowerPointTotals } from './sections/powerPointTotalsSection';
 
 // Re-export for MenuBar to use without importing from overflowCollector directly
 export { checkPDFOverflow } from './overflowCollector';
@@ -124,6 +125,16 @@ export async function fillAndDownloadPDF(character: ICharacter): Promise<void> {
   fillComplications(form, character);
 
   fillNotes(form, character, advantageOverflow);
+
+  // ── Phase 4: Power Point Totals (must be last to overwrite descriptive text) ──
+  fillPowerPointTotals(form, {
+    abilitiesCost,
+    powersCost,
+    advantagesCost,
+    skillsCost,
+    defensesCost,
+    totalSpent,
+  });
 
   // ── 7. Serialise and download ─────────────────────────────────
   const pdfBytes = await pdfDoc.save();
