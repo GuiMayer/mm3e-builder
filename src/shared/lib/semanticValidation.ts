@@ -85,7 +85,28 @@ export function validatePowerForSave(
     issues.push(...validatePowerComponentForSave(component, `components.${index}`, rules, context));
   });
 
+  const alternateEffectNames = new Set<string>();
   power.alternateEffects.forEach((ae, aeIndex) => {
+    const trimmedName = ae.name.trim();
+    const normalizedName = trimmedName.toLowerCase();
+
+    if (!trimmedName) {
+      issues.push(issue(
+        `alternateEffects.${aeIndex}.name`,
+        `Alternate Effect ${aeIndex + 1} has no name.`,
+        'warning',
+      ));
+    } else if (alternateEffectNames.has(normalizedName)) {
+      issues.push(issue(
+        `alternateEffects.${aeIndex}.name`,
+        `Duplicate Alternate Effect name "${ae.name}". Each Alternate Effect must have a unique name.`,
+      ));
+    }
+
+    if (normalizedName) {
+      alternateEffectNames.add(normalizedName);
+    }
+
     ae.components
       .filter((component) => component.effectId !== '')
       .forEach((component, componentIndex) => {

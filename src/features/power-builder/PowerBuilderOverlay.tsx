@@ -429,7 +429,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       .filter((v) => !v.valid && v.ae.components.some((c) => c.effectId !== ''));
     
     if (invalidAEs.length > 0) {
-      const names = invalidAEs.map((v) => v.ae.name || 'sem nome').join(', ');
+      const names = invalidAEs.map((v, index) => v.ae.name || `AE ${index + 1}`).join(', ');
       const confirmed = window.confirm(
         `${invalidAEs.length} efeito(s) alternativo(s) excedem o limite de ${mainCost}PP: ${names}.\nSalvar mesmo assim?`
       );

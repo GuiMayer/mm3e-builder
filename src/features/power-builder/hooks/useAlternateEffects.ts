@@ -16,6 +16,19 @@ interface UseAlternateEffectsParams {
   setActiveAEComponentId: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }
 
+function getNextAlternateEffectName(alternateEffects: IAlternateEffect[]): string {
+  const existingNames = new Set(
+    alternateEffects.map((ae) => ae.name.trim().toLowerCase()).filter(Boolean)
+  );
+  let index = alternateEffects.length + 1;
+
+  while (existingNames.has(`ae ${index}`.toLowerCase())) {
+    index += 1;
+  }
+
+  return `AE ${index}`;
+}
+
 export function useAlternateEffects({
   setPower,
   powerDefs,
@@ -24,15 +37,24 @@ export function useAlternateEffects({
   setActiveAEComponentId,
 }: UseAlternateEffectsParams) {
   function addAlternateEffect() {
+    const newAEId = uuidv4();
+    const newComponentId = uuidv4();
     const newAE: IAlternateEffect = {
-      id: uuidv4(),
+      id: newAEId,
       name: '',
-      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} }],
+      components: [{ id: newComponentId, effectId: '', ranks: 1, modifiers: [], fieldValues: {} }],
       dynamic: false,
       notes: '',
     };
-    setPower((p) => ({ ...p, alternateEffects: [...p.alternateEffects, newAE] }));
-    setExpandedAEId(newAE.id);
+    setPower((p) => ({
+      ...p,
+      alternateEffects: [
+        ...p.alternateEffects,
+        { ...newAE, name: getNextAlternateEffectName(p.alternateEffects) },
+      ],
+    }));
+    setExpandedAEId(newAEId);
+    setActiveAEComponentId((prev) => ({ ...prev, [newAEId]: newComponentId }));
   }
 
   function removeAlternateEffect(id: string) {
