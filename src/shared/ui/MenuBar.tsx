@@ -17,7 +17,7 @@ import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
 import { Settings, Download, Upload, Eraser, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu } from 'lucide-react';
 import i18n from '../../locales';
-import { clearDraft, getDraftMetadata } from '../../services/fileService';
+import { clearDraftMulti, getDraftMetadataMulti } from '../../services/fileService';
 
 const THEMES = [
   { id: 'dark-knight', label: 'Dark Knight' },
@@ -104,11 +104,11 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   }
 
   function handleClearDraft() {
-    const metadata = getDraftMetadata();
-    const characterName = metadata?.characterName || t('draftNotification.unnamedCharacter');
+    const metadata = getDraftMetadataMulti();
+    const characterName = metadata?.activeCharacterName || t('draftNotification.unnamedCharacter');
     const confirmed = window.confirm(t('menu.clearDraft.confirm', { name: characterName }));
     if (confirmed) {
-      clearDraft();
+      clearDraftMulti();
       alert(t('menu.clearDraft.success'));
     }
   }
