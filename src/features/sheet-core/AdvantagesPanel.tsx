@@ -28,18 +28,26 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
   const [subtypeModal, setSubtypeModal] = useState<{ defId: string; existingInstances: ICharacterAdvantage[] } | null>(null);
   const [subtypeInput, setSubtypeInput] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
-  const subtypeRef = useRef<HTMLSelectElement>(null);
+  const subtypeSelectRef = useRef<HTMLSelectElement>(null);
+  const subtypeInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (showSelector && searchRef.current) searchRef.current.focus();
   }, [showSelector]);
 
   useEffect(() => {
-    if (subtypeModal && subtypeRef.current) subtypeRef.current.focus();
+    if (subtypeModal) {
+      // Focus on the appropriate input based on which one is visible
+      if (subtypeSelectRef.current) {
+        subtypeSelectRef.current.focus();
+      } else if (subtypeInputRef.current) {
+        subtypeInputRef.current.focus();
+      }
+    }
   }, [subtypeModal]);
 
-  // Helper function to get available skills for Skill Mastery dropdown
-  function getAvailableSkillsForMastery(): { value: string; label: string }[] {
+  // Memoize available skills to avoid recalculating on every render
+  const availableSkills = useMemo(() => {
     // 1. Get all character skills with full names
     const characterSkills = character.skills
       .map(s => {
@@ -67,10 +75,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
     return characterSkills
       .filter(skill => !skillsWithMastery.has(skill.value))
       .sort((a, b) => a.label.localeCompare(b.label));
-  }
-
-  // Memoize available skills to avoid recalculating on every render
-  const availableSkills = useMemo(() => getAvailableSkillsForMastery(), [character.skills, skillDefs, advantages]);
+  }, [character.skills, skillDefs, advantages]);
 
   function addAdvantage(defId: string, subtype?: string | null) {
     const def = advantageDefs.find((d) => d.id === defId);
@@ -412,7 +417,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                       
                       {def.id === 'skill_mastery' ? (
                         <select
-                          ref={subtypeRef}
+                          ref={subtypeSelectRef}
                           className="subtype-dropdown"
                           value={subtypeInput}
                           onChange={(e) => setSubtypeInput(e.target.value)}
@@ -431,7 +436,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                         </select>
                       ) : (
                         <input
-                          ref={subtypeRef as any}
+                          ref={subtypeInputRef}
                           type="text"
                           className="subtype-input"
                           value={subtypeInput}
@@ -466,7 +471,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                   
                   {def.id === 'skill_mastery' ? (
                     <select
-                      ref={subtypeRef}
+                      ref={subtypeSelectRef}
                       className="subtype-dropdown"
                       value={subtypeInput}
                       onChange={(e) => setSubtypeInput(e.target.value)}
@@ -485,7 +490,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                     </select>
                   ) : (
                     <input
-                      ref={subtypeRef as any}
+                      ref={subtypeInputRef}
                       type="text"
                       className="subtype-input"
                       value={subtypeInput}

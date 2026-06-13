@@ -1,23 +1,28 @@
 import { describe, it, expect } from 'vitest';
-import type { ICharacter, IAdvantageDef } from '../entities/types';
+import type { ICharacter, IAdvantageDef, ISkillDef } from '../entities/types';
 import { validateCharacterSemantics } from '../shared/lib/semanticValidation';
 import advantages from '../data/advantages.json';
 import skills from '../data/skills.json';
 
 describe('Advantage Subtypes', () => {
   const mockCharacter: ICharacter = {
-    version: '1.9.0',
-    characterName: 'Test Hero',
-    playerName: '',
-    powerLevel: 10,
-    heroPoints: 1,
+    header: {
+      name: 'Test Hero',
+      player: '',
+      identity: '',
+      base: '',
+      powerLevel: 10,
+      heroPoints: 1,
+    },
     abilities: { str: 0, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0 },
+    absentAbilities: [],
     defenses: { dodge: 0, parry: 0, fortitude: 0, will: 0 },
     skills: [],
     advantages: [],
     powers: [],
     equipment: [],
     complications: [],
+    equipmentNotes: '',
   };
 
   describe('Data Integrity — advantages.json subtype fields', () => {
@@ -66,7 +71,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -87,7 +92,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -107,7 +112,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -128,7 +133,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -149,7 +154,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -168,7 +173,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -191,7 +196,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -211,7 +216,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -234,7 +239,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
@@ -253,7 +258,7 @@ describe('Advantage Subtypes', () => {
       const issues = validateCharacterSemantics(testChar, {
         powerDefs: [],
         modifierDefs: [],
-        skillDefs: skills,
+        skillDefs: skills as ISkillDef[],
         advantageDefs: advantages as IAdvantageDef[],
       });
 
