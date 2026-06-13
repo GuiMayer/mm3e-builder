@@ -22,12 +22,13 @@ export interface AdvantageOverflow {
 
 /**
  * Format a single advantage for display on the PDF.
- * Returns "Advantage Name" or "Advantage Name [Rank N]".
+ * Returns "Advantage Name", "Advantage Name [Rank N]", or "Advantage Name (Subtype) [Rank N]".
  */
 function fmtAdvantage(adv: ICharacterAdvantage, def: IAdvantageDef | undefined): string {
   const name = def?.name ?? adv.advantageId;
-  if (adv.ranks > 1) return `${name} ${adv.ranks}`;
-  return name;
+  const subtype = adv.subtype ? ` (${adv.subtype})` : '';
+  if (adv.ranks > 1) return `${name}${subtype} ${adv.ranks}`;
+  return `${name}${subtype}`;
 }
 
 /**

@@ -470,7 +470,9 @@ function buildAdvantagesSheet(
   char.advantages.forEach((adv, i) => {
     const def = gameData.advantageDefs.find((d) => d.id === adv.advantageId);
     const row = ws.getRow(i + 2);
-    row.getCell(1).value = def ? locName(def, lang) : adv.advantageId;
+    const baseName = def ? locName(def, lang) : adv.advantageId;
+    const displayName = adv.subtype ? `${baseName} (${adv.subtype})` : baseName;
+    row.getCell(1).value = displayName;
     row.getCell(2).value = adv.ranks;
     row.getCell(3).value = def ? locDesc(def, lang) : '';
     row.getCell(3).alignment = { wrapText: true };
