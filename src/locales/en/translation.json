@@ -135,6 +135,10 @@
   "advantages.enterSubtype": "Enter a subtype for this advantage:",
   "advantages.subtypePlaceholder": "Enter subtype...",
   "advantages.confirm": "Confirm",
+  "advantages.selectSkill": "Select a skill...",
+  "advantages.noSkillsAvailable": "No skills available",
+  "advantages.noSkillsInSheet": "You must add skills to your character sheet before selecting Skill Mastery.",
+  "advantages.allSkillsHaveMastery": "All your skills already have Skill Mastery.",
 
   "powers.title": "Powers",
   "powers.noPowers": "No powers created. Use the builder to create.",

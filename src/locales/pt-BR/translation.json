@@ -135,6 +135,10 @@
   "advantages.enterSubtype": "Digite um subtipo para esta vantagem:",
   "advantages.subtypePlaceholder": "Digite o subtipo...",
   "advantages.confirm": "Confirmar",
+  "advantages.selectSkill": "Selecione uma perícia...",
+  "advantages.noSkillsAvailable": "Nenhuma perícia disponível",
+  "advantages.noSkillsInSheet": "Você deve adicionar perícias à sua ficha antes de selecionar Maestria em Perícia.",
+  "advantages.allSkillsHaveMastery": "Todas as suas perícias já possuem Maestria em Perícia.",
 
   "powers.title": "Poderes",
   "powers.noPowers": "Nenhum poder criado. Use o construtor para criar.",
