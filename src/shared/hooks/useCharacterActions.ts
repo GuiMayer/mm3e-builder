@@ -80,7 +80,8 @@ export function useCharacterActions() {
     if (activeId) {
       // Replace active character
       store.updateCharacter(activeId, migratedCharacter);
-      store.markCharacterClean(activeId);
+      // isDirty is already set to true by updateCharacter
+      // Auto-save will be triggered automatically after debounce
     } else {
       // Create new tab if none exists
       store.addCharacter(migratedCharacter);
