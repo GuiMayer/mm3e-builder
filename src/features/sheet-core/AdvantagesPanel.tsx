@@ -1,5 +1,4 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { AdvantageType, ICharacterAdvantage } from '../../entities/types';
@@ -28,10 +27,8 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
   const [descTarget, setDescTarget] = useState<(typeof advantageDefs)[0] | null>(null);
   const [subtypeModal, setSubtypeModal] = useState<{ defId: string; existingInstances: ICharacterAdvantage[] } | null>(null);
   const [subtypeInput, setSubtypeInput] = useState('');
-  const [filteredSkills, setFilteredSkills] = useState<typeof skillDefs>([]);
-  const [autocompletePosition, setAutocompletePosition] = useState<{ top: number; left: number; width: number } | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const subtypeRef = useRef<HTMLInputElement>(null);
+  const subtypeRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     if (showSelector && searchRef.current) searchRef.current.focus();
@@ -41,28 +38,39 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
     if (subtypeModal && subtypeRef.current) subtypeRef.current.focus();
   }, [subtypeModal]);
 
-  useEffect(() => {
-    if (subtypeInput.length > 0) {
-      const term = subtypeInput.toLowerCase();
-      setFilteredSkills(skillDefs.filter(s => s.name.toLowerCase().includes(term)).slice(0, 10));
-    } else {
-      setFilteredSkills([]);
-    }
-  }, [subtypeInput, skillDefs]);
+  // Helper function to get available skills for Skill Mastery dropdown
+  function getAvailableSkillsForMastery(): { value: string; label: string }[] {
+    // 1. Get all character skills with full names
+    const characterSkills = character.skills
+      .map(s => {
+        const def = skillDefs.find(d => d.id === s.skillId);
+        if (!def) return null;
+        
+        // Skills with subtype: "Expertise: Magic"
+        if (def.subtyped && s.subtype) {
+          return { value: `${def.name}: ${s.subtype}`, label: `${def.name}: ${s.subtype}` };
+        }
+        
+        // Normal skills: "Acrobatics"
+        return { value: def.name, label: def.name };
+      })
+      .filter((skill): skill is { value: string; label: string } => skill !== null);
+    
+    // 2. Get skills that already have Skill Mastery
+    const skillsWithMastery = new Set(
+      advantages
+        .filter(a => a.advantageId === 'skill_mastery' && a.subtype)
+        .map(a => a.subtype!)
+    );
+    
+    // 3. Filter and sort alphabetically
+    return characterSkills
+      .filter(skill => !skillsWithMastery.has(skill.value))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }
 
-  useEffect(() => {
-    if (filteredSkills.length > 0 && subtypeRef.current) {
-      const rect = subtypeRef.current.getBoundingClientRect();
-      setAutocompletePosition({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        width: rect.width
-      });
-    } else {
-      setAutocompletePosition(null);
-    }
-  }, [filteredSkills]);
-
+  // Memoize available skills to avoid recalculating on every render
+  const availableSkills = useMemo(() => getAvailableSkillsForMastery(), [character.skills, skillDefs, advantages]);
 
   function addAdvantage(defId: string, subtype?: string | null) {
     const def = advantageDefs.find((d) => d.id === defId);
@@ -130,7 +138,6 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
     const subtype = subtypeInput.trim() || null;
     setSubtypeModal(null);
     setSubtypeInput('');
-    setFilteredSkills([]);
     addAdvantage(subtypeModal.defId, subtype);
   }
 
