@@ -506,19 +506,11 @@ function migrateLegacyDraft(): { tabs: CharacterTab[]; activeId: string | null }
 /**
  * Get multi-character draft metadata.
  */
-export function getDraftMetadataMulti(): (DraftMetadataMulti & { characters: CharacterTab[]; activeCharacterId: string | null }) | null {
+export function getDraftMetadataMulti(): DraftMetadataMulti | null {
   try {
     const stored = localStorage.getItem(DRAFT_METADATA_KEY);
     if (!stored) return null;
-    const metadata = JSON.parse(stored) as DraftMetadataMulti;
-    
-    // Also load tabs for compatibility with useAutoLoadDraftMulti
-    const draft = loadDraftMulti();
-    return {
-      ...metadata,
-      characters: draft?.tabs || [],
-      activeCharacterId: draft?.activeId || null,
-    };
+    return JSON.parse(stored) as DraftMetadataMulti;
   } catch {
     return null;
   }

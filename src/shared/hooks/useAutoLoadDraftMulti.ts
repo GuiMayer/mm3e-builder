@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { loadDraftMulti, getDraftMetadataMulti } from '../../services/fileService';
+import { loadDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
 
 const INSTANCE_KEY = 'mm3e-app-instance-active';
@@ -85,6 +85,5 @@ export function useAutoLoadDraftMulti() {
     };
   }, [loadTabs]);
 
-  // Return metadata for UI notifications (if needed)
-  return getDraftMetadataMulti();
+  // This hook has no return value - it's a side-effect only
 }
