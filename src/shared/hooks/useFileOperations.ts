@@ -2,7 +2,8 @@ import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
 import { useCharacterActions } from './useCharacterActions';
-import { exportCharacterJSON, importCharacterJSON, I18nError } from '../../services/fileService';
+import { exportCharacterJSON, importCharacterJSON, I18nError, saveDraftMulti } from '../../services/fileService';
+import { useCharactersStore } from '../../store/charactersStore';
 
 /**
  * Hook for managing character file operations (import/export JSON).
@@ -17,8 +18,15 @@ export function useFileOperations() {
 
   /**
    * Export current character as JSON file
+   * Flushes draft to localStorage before exporting to ensure latest changes are saved
    */
   function exportCharacter() {
+    // Force immediate save to draft before exporting
+    // This ensures any pending changes (within debounce window) are saved
+    const tabs = useCharactersStore.getState().tabs;
+    const activeId = useCharactersStore.getState().activeCharacterId;
+    saveDraftMulti(tabs, activeId);
+    
     exportCharacterJSON(character, i18n.language);
   }
 
