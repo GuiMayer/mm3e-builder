@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { ICharacter, AbilityKey } from '../entities/types';
-import { migratePowers, migrateEquipment } from '../shared/lib/powerMigration';
+import type { ICharacter } from '../entities/types';
 
 /* ================================================
    Characters Store — Multi-Character Management
@@ -53,6 +52,7 @@ interface CharactersStoreState {
 
   // Bulk operations
   loadCharacters: (tabs: CharacterTab[], activeId: string | null) => void;
+  loadTabs: (tabs: CharacterTab[], activeId: string | null) => void;
   clearAllCharacters: () => void;
 
   // Dirty state management
@@ -256,6 +256,13 @@ export const useCharactersStore = create<CharactersStoreState>()(
       },
 
       loadCharacters: (tabs, activeId) => {
+        set({
+          tabs,
+          activeCharacterId: activeId,
+        });
+      },
+
+      loadTabs: (tabs, activeId) => {
         set({
           tabs,
           activeCharacterId: activeId,

@@ -75,7 +75,7 @@ interface CharStoreState {
 
 export const useCharStore = create<CharStoreState>()(
   devtools(
-    (set, get) => ({
+    () => ({
       // Computed properties from charactersStore
       get character() {
         const active = useCharactersStore.getState().getActiveCharacter();

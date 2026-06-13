@@ -54,7 +54,11 @@ export function CharacterTabs() {
 
   const handleDragEnd = () => {
     if (draggedIndex !== null && dragOverIndex !== null && draggedIndex !== dragOverIndex) {
-      reorderTabs(draggedIndex, dragOverIndex);
+      // Create new order by moving the dragged tab to the drop position
+      const newOrder = [...tabs];
+      const [removed] = newOrder.splice(draggedIndex, 1);
+      newOrder.splice(dragOverIndex, 0, removed);
+      reorderTabs(newOrder.map((t) => t.id));
     }
     setDraggedIndex(null);
     setDragOverIndex(null);

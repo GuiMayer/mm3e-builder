@@ -44,9 +44,9 @@ export function useAutoLoadDraftMulti() {
     // Try to load draft tabs
     try {
       const draft = loadDraftMulti();
-      if (draft && draft.characters.length > 0) {
-        loadTabs(draft.characters, draft.activeCharacterId);
-        console.log(`[useAutoLoadDraftMulti] Loaded ${draft.characters.length} character(s)`);
+      if (draft && draft.tabs.length > 0) {
+        loadTabs(draft.tabs, draft.activeId);
+        console.log(`[useAutoLoadDraftMulti] Loaded ${draft.tabs.length} character(s)`);
       } else {
         console.log('[useAutoLoadDraftMulti] No draft found, starting fresh');
       }
