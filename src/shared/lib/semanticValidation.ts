@@ -30,6 +30,43 @@ function issue(path: string, message: string, severity: SemanticSeverity = 'erro
   return { path, message, severity };
 }
 
+/**
+ * Check if a modifierId is valid for a given effectId.
+ * Searches in both:
+ * 1. Universal modifiers (from modifiers.json)
+ * 2. Effect-specific extras/flaws (from powers.json[effectId].extras[] and .flaws[])
+ *
+ * Returns true if the modifier is found in either location.
+ */
+function isValidModifierForEffect(
+  modifierId: string,
+  effectId: string,
+  context: GameDataContext
+): boolean {
+  // Check universal modifiers first
+  if (context.modifierDefs.some((def) => def.id === modifierId)) {
+    return true;
+  }
+
+  // Check effect-specific extras and flaws
+  const effectDef = context.powerDefs.find((def) => def.id === effectId);
+  if (!effectDef) {
+    return false; // Effect not found, so modifier can't be valid for it
+  }
+
+  // Check extras
+  if (effectDef.extras.some((extra) => extra.id === modifierId)) {
+    return true;
+  }
+
+  // Check flaws
+  if (effectDef.flaws.some((flaw) => flaw.id === modifierId)) {
+    return true;
+  }
+
+  return false;
+}
+
 function validatePowerComponentForSave(
   component: ICharacterPowerComponent,
   path: string,
@@ -131,10 +168,12 @@ function validatePowerReferences(
   const validateComponentRefs = (component: ICharacterPowerComponent, componentPath: string) => {
     if (!context.powerDefs.some((def) => def.id === component.effectId)) {
       issues.push(issue(`${componentPath}.effectId`, `Unknown power effect "${component.effectId}".`));
+      return; // Stop validating modifiers if effect is unknown
     }
 
+    // Validate modifiers: check both universal modifiers and effect-specific extras/flaws
     for (const [modifierIndex, modifier] of component.modifiers.entries()) {
-      if (!context.modifierDefs.some((def) => def.id === modifier.modifierId)) {
+      if (!isValidModifierForEffect(modifier.modifierId, component.effectId, context)) {
         issues.push(issue(
           `${componentPath}.modifiers.${modifierIndex}.modifierId`,
           `Unknown modifier "${modifier.modifierId}".`,
