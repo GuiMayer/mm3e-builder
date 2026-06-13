@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from './useActiveCharacter';
 import { POWER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import type { IOffenseEntry } from '../lib/offenseSummary';
@@ -13,7 +13,7 @@ export type { IOffenseEntry };
  * The PDF generator calls buildOffenseSummary directly.
  */
 export function useOffenseSummary(): IOffenseEntry[] {
-  const character = useCharStore((s) => s.character);
+  const { character } = useActiveCharacter();
   const { t } = useTranslation();
 
   return useMemo(

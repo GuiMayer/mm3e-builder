@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useOffenseSummary } from '../../shared/hooks/useOffenseSummary';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useTranslation } from 'react-i18next';
 import { Zap, Plus, Trash2, Pencil, Check, X } from 'lucide-react';
 import type { IManualOffenseRow } from '../../entities/types';
@@ -9,8 +10,9 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 export function OffensePanel() {
   const { t } = useTranslation();
   const entries = useOffenseSummary();
-  const manualRows = useCharStore((s) => s.character.manualOffenseRows ?? []);
-  const setManualOffenseRows = useCharStore((s) => s.setManualOffenseRows);
+  const { character } = useActiveCharacter();
+  const { setManualOffenseRows } = useCharacterActions();
+  const manualRows = character.manualOffenseRows ?? [];
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [addingNew, setAddingNew] = useState(false);

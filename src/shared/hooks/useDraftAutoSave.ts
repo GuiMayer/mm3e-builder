@@ -1,42 +1,52 @@
 import { useEffect, useRef } from 'react';
-import { useCharStore } from '../../store/charStore';
-import { saveDraft } from '../../services/fileService';
+import { useCharactersStore } from '../../store/charactersStore';
+import { saveDraftMulti } from '../../services/fileService';
 
 /**
- * Hook that auto-saves the character draft to localStorage on every change.
- * Uses try/catch internally; triggers emergency export on quota exceeded.
- * Resets isDirty flag after successful save to allow subsequent saves.
+ * Hook that auto-saves all character tabs to localStorage on every change.
+ * Uses hash-based change detection to avoid redundant saves.
+ * Resets isDirty flag for all saved tabs after successful save.
  */
 export function useDraftAutoSave() {
-  const character = useCharStore((s) => s.character);
-  const isDirty = useCharStore((s) => s.isDirty);
-  const markClean = useCharStore((s) => s.markClean);
+  const tabs = useCharactersStore((s) => s.tabs);
+  const activeId = useCharactersStore((s) => s.activeCharacterId);
+  const markCharacterClean = useCharactersStore((s) => s.markCharacterClean);
   const timerRef = useRef<number | null>(null);
+  const dirtyTabsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    // Clear any existing timer
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
+    // Find all dirty tabs
+    const dirtyTabs = tabs.filter((t) => t.isDirty);
 
-    if (!isDirty) {
+    if (dirtyTabs.length === 0) {
       return;
     }
 
+    // Track which tabs need saving
+    dirtyTabs.forEach((t) => dirtyTabsRef.current.add(t.id));
+
+    // Clear existing timer
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    // Debounced save (500ms)
     timerRef.current = window.setTimeout(() => {
-      const success = saveDraft(character);
+      const success = saveDraftMulti(tabs, activeId);
+
       if (success) {
-        markClean();
+        // Mark all dirty tabs as clean
+        dirtyTabsRef.current.forEach((id) => markCharacterClean(id));
+        dirtyTabsRef.current.clear();
       }
+
       timerRef.current = null;
-    }, 500); // Debounce 500ms
+    }, 500);
 
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
-        timerRef.current = null;
       }
     };
-  }, [character, isDirty, markClean]);
+  }, [tabs, activeId, markCharacterClean]);
 }

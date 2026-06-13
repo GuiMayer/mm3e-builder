@@ -281,6 +281,7 @@ export interface IPPLogEntry {
 
 // ── Full Character ──
 export interface ICharacter {
+  characterId?: string;          // Unique immutable ID for cross-device sync
   header: ICharacterHeader;
   abilities: Abilities;
   absentAbilities: AbilityKey[];

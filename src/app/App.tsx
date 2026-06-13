@@ -2,12 +2,10 @@ import { lazy, Suspense, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MenuBar } from '../shared/ui/MenuBar'
 import { SheetView } from '../features/sheet-core/SheetView'
+import { CharacterTabs } from '../features/sheet-core/CharacterTabs'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
-import { useAutoLoadDraft } from '../shared/hooks/useAutoLoadDraft'
-import { DraftNotification } from '../shared/ui/DraftNotification'
-import { useCharStore } from '../store/charStore'
-import { clearDraft } from '../services/fileService'
+import { useAutoLoadDraftMulti } from '../shared/hooks/useAutoLoadDraftMulti'
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -18,34 +16,15 @@ export type AppView = 'sheet' | 'references';
 export function App() {
   const { t, i18n } = useTranslation()
   const [activeView, setActiveView] = useState<AppView>('sheet');
-  const resetCharacter = useCharStore((s) => s.resetCharacter);
-  const loadCharacter = useCharStore((s) => s.loadCharacter);
   
-  // Auto-detect draft from localStorage on mount (but don't load it yet)
-  const draftInfo = useAutoLoadDraft();
-  const [draftNotificationDismissed, setDraftNotificationDismissed] = useState(false);
+  // Auto-load character tabs from localStorage on mount
+  useAutoLoadDraftMulti();
 
   // Sync <html lang> and <title> with the active i18n language
   useEffect(() => {
     document.documentElement.lang = i18n.language
     document.title = t('app.title') + ' — ' + t('app.subtitle')
   }, [i18n.language, t])
-
-  const handleRestoreDraft = () => {
-    if (draftInfo.character) {
-      loadCharacter(draftInfo.character);
-    }
-  };
-
-  const handleDismissNotification = () => {
-    setDraftNotificationDismissed(true);
-  };
-
-  const handleStartNew = () => {
-    clearDraft();
-    resetCharacter();
-    setDraftNotificationDismissed(true);
-  };
 
   return (
     <ErrorBoundary
@@ -58,15 +37,8 @@ export function App() {
       }}
     >
       <div className="app-root">
-        {draftInfo.character && !draftNotificationDismissed && (
-          <DraftNotification
-            character={draftInfo.character}
-            onRestore={handleRestoreDraft}
-            onDismiss={handleDismissNotification}
-            onStartNew={handleStartNew}
-          />
-        )}
         <MenuBar activeView={activeView} onViewChange={setActiveView} />
+        {activeView === 'sheet' && <CharacterTabs />}
         <ErrorBoundary
           fallback={(error) => <ErrorFallback error={error} />}
           resetKeys={[activeView]}

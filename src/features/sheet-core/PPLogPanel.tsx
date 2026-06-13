@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
@@ -11,9 +12,8 @@ import { BookOpen, Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react'
  */
 export function PPLogPanel() {
   const { t } = useTranslation();
-  const character = useCharStore((s) => s.character);
-  const addPPLogEntry = useCharStore((s) => s.addPPLogEntry);
-  const removePPLogEntry = useCharStore((s) => s.removePPLogEntry);
+  const { character } = useActiveCharacter();
+  const { addPPLogEntry, removePPLogEntry } = useCharacterActions();
   const { totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
 
   const [open, setOpen] = useState(true);

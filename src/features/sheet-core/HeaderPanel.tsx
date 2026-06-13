@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { User, MapPin, Shield, Star, ChevronDown, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -7,8 +8,9 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 
 export function HeaderPanel() {
   const { t } = useTranslation();
-  const header = useCharStore((s) => s.character.header);
-  const updateHeader = useCharStore((s) => s.updateHeader);
+  const { character } = useActiveCharacter();
+  const { updateHeader } = useCharacterActions();
+  const header = character.header;
   const pp = useCalculatedPP();
   const isOver = pp.isOverBudget;
   const pct = pp.totalAvailable > 0 ? Math.min(100, (pp.totalSpent / pp.totalAvailable) * 100) : 0;

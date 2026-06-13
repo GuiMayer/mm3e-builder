@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { Button } from '../../shared/ui/Button';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
 import { DEFAULT_VALIDATION_RULES } from '../../shared/lib/validationRules';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
@@ -45,7 +45,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
 
   // Read character and validation rules from stores
-  const character = useCharStore((s) => s.character);
+  const { character } = useActiveCharacter();
   const powerLevel = character.header.powerLevel;
   const validationRules = useAppStore((s) => s.validationRules) ?? DEFAULT_VALIDATION_RULES;
 

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useTranslation } from 'react-i18next';
 import { Package, Plus, Edit3, Trash2, AlertTriangle } from 'lucide-react';
 import type { ICharacterPower } from '../../entities/types';
@@ -27,9 +28,10 @@ export function EquipmentNotesPanel() {
   const powerDefs = useLocalizedData(POWER_DEFS);
   const modifierDefs = useLocalizedData(MODIFIER_DEFS);
   
-  const equipmentRaw = useCharStore((s) => s.character.equipment);
+  const { character } = useActiveCharacter();
+  const { setEquipment } = useCharacterActions();
+  const equipmentRaw = character.equipment;
   const equipment = equipmentRaw ?? [];
-  const setEquipment = useCharStore((s) => s.setEquipment);
   
   const [builderOpen, setBuilderOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);

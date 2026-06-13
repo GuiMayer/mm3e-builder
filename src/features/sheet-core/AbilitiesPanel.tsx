@@ -1,4 +1,5 @@
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useAppStore } from '../../store/appStore';
 import type { AbilityKey } from '../../entities/types';
 import { useTranslation } from 'react-i18next';
@@ -9,10 +10,10 @@ const ABILITY_KEYS: AbilityKey[] = ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'a
 
 export function AbilitiesPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const abilities = useCharStore((s) => s.character.abilities);
-  const absentAbilities = useCharStore((s) => s.character.absentAbilities);
-  const setAbility = useCharStore((s) => s.setAbility);
-  const toggleAbsentAbility = useCharStore((s) => s.toggleAbsentAbility);
+  const { character } = useActiveCharacter();
+  const { setAbility, toggleAbsentAbility } = useCharacterActions();
+  const abilities = character.abilities;
+  const absentAbilities = character.absentAbilities;
   const validationRules = useAppStore((s) => s.validationRules);
   
   const activeRules = getActiveValidationRules(validationRules);

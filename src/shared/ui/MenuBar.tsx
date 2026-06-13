@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import type { AppView } from '../../app/App';
 
 import { useAppStore } from '../../store/appStore';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../hooks/useActiveCharacter';
+import { useCharacterActions } from '../hooks/useCharacterActions';
 import { useCalculatedPP } from '../hooks/useCalculatedPP';
 import { useFileOperations } from '../hooks/useFileOperations';
 import { usePDFExport } from '../hooks/usePDFExport';
@@ -14,9 +15,9 @@ import { MobileDrawer } from './MobileDrawer';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
-import { Settings, Download, Upload, FilePlus, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu } from 'lucide-react';
+import { Settings, Download, Upload, Eraser, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu } from 'lucide-react';
 import i18n from '../../locales';
-import { clearDraft, getDraftMetadata } from '../../services/fileService';
+import { clearDraftMulti, getDraftMetadataMulti } from '../../services/fileService';
 
 const THEMES = [
   { id: 'dark-knight', label: 'Dark Knight' },
@@ -49,11 +50,10 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   const setLanguage = useAppStore((s) => s.setLanguage);
   const validationRules = useAppStore((s) => s.validationRules);
   const setValidationRules = useAppStore((s) => s.setValidationRules);
-  const character = useCharStore((s) => s.character);
+  const { character } = useActiveCharacter();
+  const { setCampaignMode, resetCharacter } = useCharacterActions();
   const campaignMode = character.campaignMode ?? false;
-  const setCampaignMode = useCharStore((s) => s.setCampaignMode);
   const hasLogEntries = (character.ppLog ?? []).length > 0;
-  const resetCharacter = useCharStore((s) => s.resetCharacter);
   
   // Hooks
   const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
@@ -104,17 +104,17 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   }
 
   function handleClearDraft() {
-    const metadata = getDraftMetadata();
-    const characterName = metadata?.characterName || t('draftNotification.unnamedCharacter');
+    const metadata = getDraftMetadataMulti();
+    const characterName = metadata?.activeCharacterName || t('draftNotification.unnamedCharacter');
     const confirmed = window.confirm(t('menu.clearDraft.confirm', { name: characterName }));
     if (confirmed) {
-      clearDraft();
+      clearDraftMulti();
       alert(t('menu.clearDraft.success'));
     }
   }
 
-  function handleNewCharacter() {
-    const confirmed = window.confirm(t('menu.new.confirm'));
+  function handleClearCharacter() {
+    const confirmed = window.confirm(t('menu.clear.confirm'));
     if (!confirmed) return;
     resetCharacter();
   }
@@ -125,7 +125,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
       <MobileDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        onNew={handleNewCharacter}
+        onClear={handleClearCharacter}
         onExport={exportCharacter}
         onImport={() => fileInputRef.current?.click()}
         onExportExcel={exportExcel}
@@ -165,8 +165,8 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
       </div>
 
       <nav className="menubar-actions">
-        <button className="menubar-btn" onClick={handleNewCharacter} title={t('menu.new')}>
-          <FilePlus size={18} /> <span>{t('menu.new')}</span>
+        <button className="menubar-btn" onClick={handleClearCharacter} title={t('menu.clear')}>
+          <Eraser size={18} /> <span>{t('menu.clear')}</span>
         </button>
         <button className="menubar-btn" onClick={exportCharacter} title={t('menu.export')}>
           <Download size={18} /> <span>{t('menu.export')}</span>

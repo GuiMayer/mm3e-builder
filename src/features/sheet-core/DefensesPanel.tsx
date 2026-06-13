@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useTranslation } from 'react-i18next';
 import { useDerivedDefenses } from '../../shared/hooks/useDerivedDefenses';
 import { Info } from 'lucide-react';
@@ -7,9 +8,10 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 
 export function DefensesPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const abilities  = useCharStore((s) => s.character.abilities);
-  const defenses   = useCharStore((s) => s.character.defenses);
-  const setDefense = useCharStore((s) => s.setDefense);
+  const { character } = useActiveCharacter();
+  const { setDefense } = useCharacterActions();
+  const abilities = character.abilities;
+  const defenses = character.defenses;
 
   const { toughnessBonus, toughnessTotal, toughnessBreakdown, initiativeTotal, initiativeBreakdown } =
     useDerivedDefenses();

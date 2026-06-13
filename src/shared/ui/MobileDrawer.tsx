@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { X, FilePlus, Download, Upload, FileSpreadsheet, FileText, BookOpen, Shield, ShieldOff, Trash2, Loader2 } from 'lucide-react';
+import { X, Eraser, Download, Upload, FileSpreadsheet, FileText, BookOpen, Shield, ShieldOff, Trash2, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
@@ -8,7 +8,7 @@ import type { IValidationRules } from '../../entities/types';
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  onNew: () => void;
+  onClear: () => void;
   onExport: () => void;
   onImport: () => void;
   onExportExcel: () => void;
@@ -31,7 +31,7 @@ interface MobileDrawerProps {
 export function MobileDrawer({
   isOpen,
   onClose,
-  onNew,
+  onClear,
   onExport,
   onImport,
   onExportExcel,
@@ -100,9 +100,9 @@ export function MobileDrawer({
           {/* Actions Section */}
           <div className="mobile-drawer-section">
             <span className="mobile-drawer-label">{t('menu.actions') || 'Actions'}</span>
-            <button className="mobile-drawer-item" onClick={() => handleAction(onNew)}>
-              <FilePlus size={20} />
-              <span>{t('menu.new')}</span>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onClear)}>
+              <Eraser size={20} />
+              <span>{t('menu.clear')}</span>
             </button>
             <button className="mobile-drawer-item" onClick={() => handleAction(onExport)}>
               <Download size={20} />

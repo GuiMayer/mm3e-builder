@@ -1,6 +1,8 @@
 {
   "app.title": "M&M 3e Builder",
   "menu.actions": "Ações",
+  "menu.clear": "Limpar",
+  "menu.clear.confirm": "Limpar a ficha atual? Todos os dados não salvos serão perdidos.",
   "menu.new": "Novo",
   "menu.new.confirm": "Iniciar uma nova ficha? Alterações não salvas na ficha atual serão perdidas.",
   "menu.export": "Exportar",
@@ -37,6 +39,16 @@
   "ppLog.earned": "{{amount}} PP ganhos",
   "ppLog.base": "Base (NP × 15)",
   "ppLog.total": "Total Disponível",
+
+  "tabs.newCharacter": "Novo Personagem",
+  "tabs.closeCharacter": "Fechar Aba",
+  "tabs.closeConfirm": "Fechar este personagem? Alterações não salvas serão perdidas.",
+  "tabs.duplicateCharacter": "Duplicar Personagem",
+  "tabs.unnamed": "Personagem Sem Nome",
+  "tabs.reorderHint": "Arraste as abas para reordenar",
+  "tabs.maxTabsWarning": "Você tem {{count}} abas abertas. Considere exportar personagens antigos para liberar espaço.",
+  "tabs.copyLabel": " (Cópia)",
+  "tabs.copyOfCopy": " (Cópia {{number}})",
 
   "header.heroName": "Nome do Herói",
   "header.player": "Jogador",

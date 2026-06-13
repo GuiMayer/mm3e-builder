@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from './useActiveCharacter';
 import { POWER_DEFS } from '../../entities/gameDataLoaders';
 import { calcToughnessBonus, calcInitiativeBonus } from '../lib/mathEngine';
 
@@ -9,9 +9,10 @@ import { calcToughnessBonus, calcInitiativeBonus } from '../lib/mathEngine';
  * The PDF generator calls the pure functions directly.
  */
 export function useDerivedDefenses() {
-  const abilities   = useCharStore((s) => s.character.abilities);
-  const powers      = useCharStore((s) => s.character.powers);
-  const advantages  = useCharStore((s) => s.character.advantages);
+  const { character } = useActiveCharacter();
+  const abilities = character.abilities;
+  const powers = character.powers;
+  const advantages = character.advantages;
 
   return useMemo(() => {
     const { bonus: toughnessBonus, breakdown: toughnessBreakdown } =
