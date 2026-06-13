@@ -88,22 +88,17 @@ function sanitizeCharacterForExport(character: ICharacter): ICharacter {
 /**
  * Export character to a downloadable .json file with security enhancements.
  * - Sanitizes character data before export
- * - Includes integrity hash for tamper detection
  * - Validates filename for safe downloads
  */
 export async function exportCharacterJSON(character: ICharacter, language: string = 'en', filename?: string): Promise<void> {
   // Sanitize character data
   const sanitized = sanitizeCharacterForExport(character);
 
-  // Generate integrity hash
-  const integrityHash = await generateCharacterHash(sanitized);
-
-  const file: ICharacterFile & { integrityHash?: string } = {
+  const file: ICharacterFile = {
     schemaVersion: SCHEMA_VERSION,
     exportedAt: new Date().toISOString(),
     language,
     character: sanitized,
-    integrityHash, // Optional field for future integrity checks
   };
 
   const blob = new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' });
