@@ -30,9 +30,10 @@ describe('Effect-Specific Extras Validation', () => {
     header: {
       name: 'Test Character',
       player: '',
-      origin: '',
-      archetype: '',
+      identity: '',
+      base: '',
       powerLevel: 10,
+      heroPoints: 0,
     },
     abilities: { str: 10, sta: 10, agl: 10, dex: 10, fgt: 10, int: 10, awe: 10, pre: 10 },
     absentAbilities: [],
@@ -41,6 +42,7 @@ describe('Effect-Specific Extras Validation', () => {
     advantages: [],
     powers,
     complications: [],
+    equipmentNotes: '',
   });
 
   it('should validate universal modifier (accurate) on any effect', () => {
