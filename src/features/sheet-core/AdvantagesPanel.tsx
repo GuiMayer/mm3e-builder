@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { AdvantageType, ICharacterAdvantage } from '../../entities/types';
@@ -28,6 +29,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
   const [subtypeModal, setSubtypeModal] = useState<{ defId: string; existingInstances: ICharacterAdvantage[] } | null>(null);
   const [subtypeInput, setSubtypeInput] = useState('');
   const [filteredSkills, setFilteredSkills] = useState<typeof skillDefs>([]);
+  const [autocompletePosition, setAutocompletePosition] = useState<{ top: number; left: number; width: number } | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const subtypeRef = useRef<HTMLInputElement>(null);
 
@@ -47,6 +49,19 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
       setFilteredSkills([]);
     }
   }, [subtypeInput, skillDefs]);
+
+  useEffect(() => {
+    if (filteredSkills.length > 0 && subtypeRef.current) {
+      const rect = subtypeRef.current.getBoundingClientRect();
+      setAutocompletePosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width
+      });
+    } else {
+      setAutocompletePosition(null);
+    }
+  }, [filteredSkills]);
 
 
   function addAdvantage(defId: string, subtype?: string | null) {
@@ -389,8 +404,17 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                           onKeyDown={(e) => e.key === 'Enter' && confirmSubtype()}
                           placeholder={t('advantages.subtypePlaceholder')}
                         />
-                        {filteredSkills.length > 0 && (
-                          <div className="subtype-autocomplete">
+                        {filteredSkills.length > 0 && autocompletePosition && createPortal(
+                          <div 
+                            className="subtype-autocomplete-portal"
+                            style={{
+                              position: 'fixed',
+                              top: `${autocompletePosition.top}px`,
+                              left: `${autocompletePosition.left}px`,
+                              width: `${autocompletePosition.width}px`,
+                              zIndex: 10000
+                            }}
+                          >
                             {filteredSkills.map((skill) => (
                               <button
                                 key={skill.id}
@@ -400,7 +424,8 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                                 {skill.name}
                               </button>
                             ))}
-                          </div>
+                          </div>,
+                          document.body
                         )}
                       </div>
                       <Button variant="primary" size="sm" onClick={confirmSubtype}>
@@ -422,8 +447,17 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                       onKeyDown={(e) => e.key === 'Enter' && confirmSubtype()}
                       placeholder={t('advantages.subtypePlaceholder')}
                     />
-                    {filteredSkills.length > 0 && (
-                      <div className="subtype-autocomplete">
+                    {filteredSkills.length > 0 && autocompletePosition && createPortal(
+                      <div 
+                        className="subtype-autocomplete-portal"
+                        style={{
+                          position: 'fixed',
+                          top: `${autocompletePosition.top}px`,
+                          left: `${autocompletePosition.left}px`,
+                          width: `${autocompletePosition.width}px`,
+                          zIndex: 10000
+                        }}
+                      >
                         {filteredSkills.map((skill) => (
                           <button
                             key={skill.id}
@@ -433,7 +467,8 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                             {skill.name}
                           </button>
                         ))}
-                      </div>
+                      </div>,
+                      document.body
                     )}
                   </div>
                   <div className="subtype-actions">
@@ -588,6 +623,11 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
           border-radius: var(--r-sm); margin-top: 4px; max-height: 200px; overflow-y: auto;
           box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .subtype-autocomplete-portal {
+          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
+          border-radius: var(--r-sm); margin-top: 4px; max-height: 200px; overflow-y: auto;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
         .subtype-autocomplete-item {
           width: 100%; padding: var(--s-sm); text-align: left;
