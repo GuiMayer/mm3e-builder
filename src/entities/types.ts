@@ -170,6 +170,7 @@ export interface ICharacterSkill {
 export interface ICharacterAdvantage {
   advantageId: string;
   ranks: number;
+  subtype?: string | null;  // For advantages like Skill Mastery, Fascinate, Improved Critical, etc.
 }
 
 // ── Applied Modifier (on a power component) ──

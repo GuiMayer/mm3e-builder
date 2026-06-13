@@ -84,6 +84,7 @@ const CharacterSkillSchema = z.object({
 const CharacterAdvantageSchema = z.object({
   advantageId: z.string(),
   ranks: z.number().int().min(1),
+  subtype: z.string().nullable().optional(),  // For advantages like Skill Mastery, Fascinate, Improved Critical, etc.
 });
 
 const ComplicationTypeSchema = z.enum([
