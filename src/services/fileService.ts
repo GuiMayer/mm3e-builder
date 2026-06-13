@@ -405,6 +405,29 @@ export function saveDraftMulti(tabs: CharacterTab[], activeId: string | null): b
 }
 
 /**
+ * Migrate existing tabs in localStorage to add characterId if missing.
+ * Called once at app startup to ensure all tabs have characterId.
+ */
+function migrateTabsWithCharacterId(tabs: CharacterTab[]): CharacterTab[] {
+  return tabs.map(tab => {
+    // If character already has characterId, preserve it
+    if (tab.character.characterId) {
+      return tab;
+    }
+    
+    // If not, use the tab's ID as characterId for stability
+    console.log(`[migrateTabsWithCharacterId] Adding characterId to tab ${tab.id}`);
+    return {
+      ...tab,
+      character: {
+        ...tab.character,
+        characterId: tab.id,
+      },
+    };
+  });
+}
+
+/**
  * Load multiple character tabs from localStorage.
  */
 export function loadDraftMulti(): { tabs: CharacterTab[]; activeId: string | null } | null {
@@ -422,7 +445,7 @@ export function loadDraftMulti(): { tabs: CharacterTab[]; activeId: string | nul
       }
 
       // Reconstruct tabs with migrations
-      const tabs: CharacterTab[] = parsed.characters.map((char) => ({
+      let tabs: CharacterTab[] = parsed.characters.map((char) => ({
         id: char.id,
         character: {
           ...char.character,
@@ -433,6 +456,9 @@ export function loadDraftMulti(): { tabs: CharacterTab[]; activeId: string | nul
         isDirty: false,
         lastModified: char.lastModified,
       }));
+
+      // Migrate tabs to add characterId if missing
+      tabs = migrateTabsWithCharacterId(tabs);
 
       // Update hash cache
       tabs.forEach((tab) => {
