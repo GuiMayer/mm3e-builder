@@ -116,7 +116,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
         const newTab: CharacterTab = {
           id: newId,
           character: baseCharacter,
-          isDirty: false,
+          isDirty: true, // New characters should be auto-saved immediately
           label: baseCharacter.header?.name || 'Unnamed Character',
           lastModified: Date.now(),
         };
