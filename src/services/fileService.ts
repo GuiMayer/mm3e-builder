@@ -42,6 +42,7 @@ export class I18nError extends Error {
 function sanitizeCharacterForExport(character: ICharacter): ICharacter {
   // Create a clean copy with only safe fields
   const sanitized: ICharacter = {
+    characterId: character.characterId, // Preserve unique ID for cross-device sync
     header: {
       name: character.header.name || 'Unnamed',
       player: character.header.player || '',
@@ -98,6 +99,11 @@ function sanitizeCharacterForExport(character: ICharacter): ICharacter {
  * - Validates filename for safe downloads
  */
 export async function exportCharacterJSON(character: ICharacter, language: string = 'en', filename?: string): Promise<void> {
+  // Warn if character doesn't have characterId (shouldn't happen after migration)
+  if (!character.characterId) {
+    console.warn('[fileService] Exporting character without characterId. This should not happen after migration.');
+  }
+
   // Sanitize character data
   const sanitized = sanitizeCharacterForExport(character);
 
