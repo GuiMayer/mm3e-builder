@@ -401,9 +401,37 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                     <div className="subtype-new-section">
                       <h4>{t('advantages.createNew')}</h4>
                       <p className="subtype-prompt-text">{def.subtypePrompt || t('advantages.enterSubtype')}</p>
-                      <div className="subtype-input-container">
-                        <input
+                      
+                      {def.id === 'skill_mastery' && availableSkills.length === 0 && (
+                        <p className="subtype-warning">
+                          {character.skills.length === 0 
+                            ? t('advantages.noSkillsInSheet')
+                            : t('advantages.allSkillsHaveMastery')}
+                        </p>
+                      )}
+                      
+                      {def.id === 'skill_mastery' ? (
+                        <select
                           ref={subtypeRef}
+                          className="subtype-dropdown"
+                          value={subtypeInput}
+                          onChange={(e) => setSubtypeInput(e.target.value)}
+                          disabled={availableSkills.length === 0}
+                        >
+                          <option value="">
+                            {availableSkills.length === 0 
+                              ? t('advantages.noSkillsAvailable')
+                              : t('advantages.selectSkill')}
+                          </option>
+                          {availableSkills.map((skill) => (
+                            <option key={skill.value} value={skill.value}>
+                              {skill.label}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          ref={subtypeRef as any}
                           type="text"
                           className="subtype-input"
                           value={subtypeInput}
@@ -411,31 +439,14 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                           onKeyDown={(e) => e.key === 'Enter' && confirmSubtype()}
                           placeholder={t('advantages.subtypePlaceholder')}
                         />
-                        {filteredSkills.length > 0 && autocompletePosition && createPortal(
-                          <div 
-                            className="subtype-autocomplete-portal"
-                            style={{
-                              position: 'fixed',
-                              top: `${autocompletePosition.top}px`,
-                              left: `${autocompletePosition.left}px`,
-                              width: `${autocompletePosition.width}px`,
-                              zIndex: 10000
-                            }}
-                          >
-                            {filteredSkills.map((skill) => (
-                              <button
-                                key={skill.id}
-                                className="subtype-autocomplete-item"
-                                onClick={() => { setSubtypeInput(skill.name); setFilteredSkills([]); }}
-                              >
-                                {skill.name}
-                              </button>
-                            ))}
-                          </div>,
-                          document.body
-                        )}
-                      </div>
-                      <Button variant="primary" size="sm" onClick={confirmSubtype}>
+                      )}
+                      
+                      <Button 
+                        variant="primary" 
+                        size="sm" 
+                        onClick={confirmSubtype}
+                        disabled={def.id === 'skill_mastery' && (!subtypeInput || availableSkills.length === 0)}
+                      >
                         {t('advantages.confirm')}
                       </Button>
                     </div>
