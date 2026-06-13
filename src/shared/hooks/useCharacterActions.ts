@@ -118,7 +118,8 @@ export function useCharacterActions() {
         };
         
         store.updateCharacter(activeId, DEFAULT_CHARACTER);
-        store.markCharacterClean(activeId);
+        // isDirty is already set to true by updateCharacter
+        // Auto-save will be triggered automatically after debounce
       }
     }
   }, [store]);
