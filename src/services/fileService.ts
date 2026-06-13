@@ -5,10 +5,17 @@ import { migratePowers, migrateEquipment } from '../shared/lib/powerMigration';
 import { SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS } from '../entities/constants';
 import { ADVANTAGE_DEFS, MODIFIER_DEFS, POWER_DEFS, SKILL_DEFS } from '../entities/gameDataLoaders';
 import { validateCharacterSemantics } from '../shared/lib/semanticValidation';
-const DRAFT_KEY = 'mm3e-draft-character';
+import type { CharacterTab } from '../store/charactersStore';
+
+// Storage keys
+const DRAFT_KEY = 'mm3e-draft-character';           // Legacy single-character key
+const DRAFT_KEY_MULTI = 'mm3e-draft-characters';    // New multi-character key
+const DRAFT_METADATA_KEY = 'mm3e-draft-metadata';
+const DRAFT_VERSION = 1;
 
 // Cache the last saved JSON to prevent redundant saves
 let lastSavedJSON = '';
+const characterHashCache = new Map<string, string>();
 
 /**
  * Custom error class that carries i18n translation keys and parameters.
@@ -281,4 +288,249 @@ export function getDraftMetadata(): { timestamp: string; characterName: string; 
   } catch {
     return null;
   }
+}
+
+/* ================================================
+   Multi-Character Draft System (Phase 2)
+   ================================================ */
+
+interface MultiCharacterDraft {
+  version: number;
+  activeCharacterId: string | null;
+  characters: {
+    id: string;
+    character: ICharacter;
+    label: string;
+    lastModified: number;
+  }[];
+  savedAt: string;
+}
+
+interface DraftMetadataMulti {
+  version: number;
+  characterCount: number;
+  activeCharacterName: string;
+  characterNames: string[];
+  totalSize: number;
+  savedAt: string;
+}
+
+/**
+ * Generate hash for character to detect changes
+ */
+function hashCharacter(char: ICharacter): string {
+  const json = JSON.stringify(char);
+  return json.length + '_' + json.slice(0, 100);
+}
+
+/**
+ * Save multiple character tabs to localStorage (auto-save).
+ * Returns false if QuotaExceededError occurs.
+ */
+export function saveDraftMulti(tabs: CharacterTab[], activeId: string | null): boolean {
+  try {
+    // Check if any characters have changed using hash cache
+    let hasChanges = false;
+    for (const tab of tabs) {
+      const currentHash = hashCharacter(tab.character);
+      const cachedHash = characterHashCache.get(tab.id);
+      if (currentHash !== cachedHash) {
+        hasChanges = true;
+        break;
+      }
+    }
+
+    if (!hasChanges) {
+      console.log('[saveDraftMulti] Skipping save - no changes detected');
+      return true;
+    }
+
+    console.log('[saveDraftMulti] Saving draft to localStorage...', {
+      characterCount: tabs.length,
+      activeId,
+      key: DRAFT_KEY_MULTI,
+    });
+
+    const draft: MultiCharacterDraft = {
+      version: DRAFT_VERSION,
+      activeCharacterId: activeId,
+      characters: tabs.map((tab) => ({
+        id: tab.id,
+        character: tab.character,
+        label: tab.label,
+        lastModified: tab.lastModified,
+      })),
+      savedAt: new Date().toISOString(),
+    };
+
+    const json = JSON.stringify(draft);
+    localStorage.setItem(DRAFT_KEY_MULTI, json);
+
+    // Update hash cache
+    tabs.forEach((tab) => {
+      characterHashCache.set(tab.id, hashCharacter(tab.character));
+    });
+
+    // Store metadata separately
+    const metadata: DraftMetadataMulti = {
+      version: DRAFT_VERSION,
+      characterCount: tabs.length,
+      activeCharacterName:
+        activeId
+          ? tabs.find((t) => t.id === activeId)?.label || 'Unnamed Character'
+          : 'No active character',
+      characterNames: tabs.map((t) => t.label),
+      totalSize: json.length,
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem(DRAFT_METADATA_KEY, JSON.stringify(metadata));
+
+    console.log('[saveDraftMulti] Draft saved successfully');
+    return true;
+  } catch (e) {
+    console.error('[saveDraftMulti] Error saving draft:', e);
+    if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+      // Fallback: export all characters as emergency backup
+      console.error('[saveDraftMulti] localStorage quota exceeded - emergency export triggered');
+      return false;
+    }
+    return false;
+  }
+}
+
+/**
+ * Load multiple character tabs from localStorage.
+ */
+export function loadDraftMulti(): { tabs: CharacterTab[]; activeId: string | null } | null {
+  try {
+    // Try to load new multi-character format first
+    const stored = localStorage.getItem(DRAFT_KEY_MULTI);
+    
+    if (stored) {
+      console.log('[loadDraftMulti] Multi-character draft found, parsing...');
+      const parsed = JSON.parse(stored) as MultiCharacterDraft;
+
+      // Validate version
+      if (parsed.version !== DRAFT_VERSION) {
+        console.warn(`[loadDraftMulti] Unknown version ${parsed.version}`);
+      }
+
+      // Reconstruct tabs with migrations
+      const tabs: CharacterTab[] = parsed.characters.map((char) => ({
+        id: char.id,
+        character: {
+          ...char.character,
+          powers: migratePowers(char.character.powers as unknown[]),
+          equipment: migrateEquipment((char.character.equipment as unknown[]) ?? []),
+        },
+        label: char.label,
+        isDirty: false,
+        lastModified: char.lastModified,
+      }));
+
+      // Update hash cache
+      tabs.forEach((tab) => {
+        characterHashCache.set(tab.id, hashCharacter(tab.character));
+      });
+
+      console.log('[loadDraftMulti] Draft loaded successfully', { count: tabs.length });
+      return { tabs, activeId: parsed.activeCharacterId };
+    }
+
+    // Try legacy migration
+    console.log('[loadDraftMulti] No multi-character draft, attempting legacy migration...');
+    return migrateLegacyDraft();
+  } catch (error) {
+    console.error('[loadDraftMulti] Error loading draft:', error);
+    return null;
+  }
+}
+
+/**
+ * Migrate legacy single-character draft to multi-character format.
+ */
+function migrateLegacyDraft(): { tabs: CharacterTab[]; activeId: string | null } | null {
+  try {
+    const stored = localStorage.getItem(DRAFT_KEY);
+    if (!stored) {
+      console.log('[migrateLegacyDraft] No legacy draft found');
+      return null;
+    }
+
+    console.log('[migrateLegacyDraft] Legacy draft found, migrating...');
+    const parsed = JSON.parse(stored);
+    const result = CharacterFileSchema.safeParse(parsed);
+    
+    if (!result.success) {
+      console.error('[migrateLegacyDraft] Legacy draft validation failed:', result.error);
+      return null;
+    }
+
+    const character = {
+      ...result.data.character,
+      powers: migratePowers(result.data.character.powers as unknown[]),
+      equipment: migrateEquipment((result.data.character.equipment as unknown[]) ?? []),
+    };
+
+    // Create single tab from legacy character
+    const newId = crypto.randomUUID();
+    const tab: CharacterTab = {
+      id: newId,
+      character,
+      label: character.header.name || 'Unnamed Character',
+      isDirty: false,
+      lastModified: Date.now(),
+    };
+
+    // Save to new format
+    const success = saveDraftMulti([tab], newId);
+    
+    if (success) {
+      // Only delete legacy draft after successful save
+      localStorage.removeItem(DRAFT_KEY);
+      localStorage.removeItem(DRAFT_KEY + '-metadata');
+      localStorage.setItem('mm3e-multi-char-migrated', 'true');
+      console.log('[migrateLegacyDraft] Migration successful');
+      
+      return { tabs: [tab], activeId: newId };
+    }
+
+    console.error('[migrateLegacyDraft] Failed to save migrated draft');
+    return null;
+  } catch (error) {
+    console.error('[migrateLegacyDraft] Error during migration:', error);
+    return null;
+  }
+}
+
+/**
+ * Get multi-character draft metadata.
+ */
+export function getDraftMetadataMulti(): DraftMetadataMulti | null {
+  try {
+    const stored = localStorage.getItem(DRAFT_METADATA_KEY);
+    if (!stored) return null;
+    return JSON.parse(stored) as DraftMetadataMulti;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Clear all draft data (both legacy and multi-character).
+ */
+export function clearDraftMulti(): void {
+  // Clear new format
+  localStorage.removeItem(DRAFT_KEY_MULTI);
+  localStorage.removeItem(DRAFT_METADATA_KEY);
+
+  // Clear legacy format
+  localStorage.removeItem(DRAFT_KEY);
+  localStorage.removeItem(DRAFT_KEY + '-metadata');
+
+  // Clear hash cache
+  characterHashCache.clear();
+  lastSavedJSON = '';
+
+  console.log('[clearDraftMulti] All drafts cleared');
 }
