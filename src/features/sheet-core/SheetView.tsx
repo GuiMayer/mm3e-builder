@@ -13,6 +13,7 @@ import { EquipmentNotesPanel } from './EquipmentNotesPanel';
 import { PPLogPanel } from './PPLogPanel';
 import { ConditionsPanel } from './ConditionsPanel';
 import { NotesPanel } from './NotesPanel';
+import { CharacterTabs } from './CharacterTabs';
 import { useTranslation } from 'react-i18next';
 
 export function SheetView() {
@@ -27,6 +28,8 @@ export function SheetView() {
 
   return (
     <div className="sheet">
+      <CharacterTabs />
+      
       {violations.length > 0 && (
         <div className="sheet-violations">
           {violations.map((v, i) => (
