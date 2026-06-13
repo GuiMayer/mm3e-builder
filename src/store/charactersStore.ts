@@ -114,6 +114,13 @@ export const useCharactersStore = create<CharactersStoreState>()(
           ? { ...DEFAULT_CHARACTER, ...character }
           : { ...DEFAULT_CHARACTER };
 
+        // Ensure character has characterId for cross-device sync
+        // If already exists (from import), preserve it
+        // If not (new tab created by user), generate new UUID
+        if (!baseCharacter.characterId) {
+          baseCharacter.characterId = newId;
+        }
+
         const newTab: CharacterTab = {
           id: newId,
           character: baseCharacter,
