@@ -15,7 +15,7 @@ import { MobileDrawer } from './MobileDrawer';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
-import { Settings, Download, Upload, FilePlus, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu } from 'lucide-react';
+import { Settings, Download, Upload, Eraser, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu } from 'lucide-react';
 import i18n from '../../locales';
 import { clearDraft, getDraftMetadata } from '../../services/fileService';
 
@@ -113,8 +113,8 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
     }
   }
 
-  function handleNewCharacter() {
-    const confirmed = window.confirm(t('menu.new.confirm'));
+  function handleClearCharacter() {
+    const confirmed = window.confirm(t('menu.clear.confirm'));
     if (!confirmed) return;
     resetCharacter();
   }
@@ -125,7 +125,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
       <MobileDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        onNew={handleNewCharacter}
+        onClear={handleClearCharacter}
         onExport={exportCharacter}
         onImport={() => fileInputRef.current?.click()}
         onExportExcel={exportExcel}
@@ -165,8 +165,8 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
       </div>
 
       <nav className="menubar-actions">
-        <button className="menubar-btn" onClick={handleNewCharacter} title={t('menu.new')}>
-          <FilePlus size={18} /> <span>{t('menu.new')}</span>
+        <button className="menubar-btn" onClick={handleClearCharacter} title={t('menu.clear')}>
+          <Eraser size={18} /> <span>{t('menu.clear')}</span>
         </button>
         <button className="menubar-btn" onClick={exportCharacter} title={t('menu.export')}>
           <Download size={18} /> <span>{t('menu.export')}</span>

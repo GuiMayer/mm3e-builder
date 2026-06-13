@@ -1,6 +1,8 @@
 {
   "app.title": "M&M 3e Builder",
   "menu.actions": "Ações",
+  "menu.clear": "Limpar",
+  "menu.clear.confirm": "Limpar a ficha atual? Todos os dados não salvos serão perdidos.",
   "menu.new": "Novo",
   "menu.new.confirm": "Iniciar uma nova ficha? Alterações não salvas na ficha atual serão perdidas.",
   "menu.export": "Exportar",
