@@ -69,6 +69,9 @@ interface CharactersStoreState {
  * Recursively regenerate all UUIDs in a character's nested structures
  */
 function regenerateNestedUUIDs(character: ICharacter): void {
+  // CRITICAL: Regenerate characterId to prevent sync conflicts
+  character.characterId = crypto.randomUUID();
+
   // Regenerate power IDs
   character.powers?.forEach((power) => {
     power.id = crypto.randomUUID();
