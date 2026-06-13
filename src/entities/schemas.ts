@@ -54,6 +54,7 @@ const CharacterPowerSchema = z.union([
   z.object({
     id: z.string(),
     name: z.string(),
+    descriptors: z.array(z.string()).optional(),
     components: z.array(CharacterPowerComponentSchema),
     notes: z.string(),
     alternateEffects: z.array(AlternateEffectSchema),
@@ -63,6 +64,7 @@ const CharacterPowerSchema = z.union([
   z.object({
     id: z.string(),
     name: z.string(),
+    descriptors: z.array(z.string()).optional(),
     effectId: z.string(),
     ranks: z.number().int().min(0),
     modifiers: z.array(AppliedModifierSchema),
@@ -160,9 +162,11 @@ const EquipmentItemSchema = z.union([
   z.object({
     id: z.string(),
     name: z.string(),
+    descriptors: z.array(z.string()).optional(),
     components: z.array(CharacterPowerComponentSchema),
     notes: z.string().optional(),
     alternateEffects: z.array(AlternateEffectSchema).optional().default([]),
+    removable: z.enum(['none', 'removable', 'easily_removable']).optional(),
   }),
 ]);
 
