@@ -1,8 +1,8 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
-import type { AdvantageType } from '../../entities/types';
-import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
+import type { AdvantageType, ICharacterAdvantage } from '../../entities/types';
+import { ADVANTAGE_DEFS, SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Modal } from '../../shared/ui/Modal';
@@ -16,6 +16,7 @@ const ADVANTAGE_TYPES: AdvantageType[] = ['combat', 'fortune', 'general', 'skill
 export function AdvantagesPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const advantageDefs = useLocalizedData(ADVANTAGE_DEFS);
+  const skillDefs = useLocalizedData(SKILL_DEFS);
   const { character } = useActiveCharacter();
   const { setAdvantages } = useCharacterActions();
   const advantages = character.advantages;
@@ -24,27 +25,114 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilters, setActiveFilters] = useState<Set<AdvantageType>>(new Set());
   const [descTarget, setDescTarget] = useState<(typeof advantageDefs)[0] | null>(null);
+  const [subtypeModal, setSubtypeModal] = useState<{ defId: string; existingInstances: ICharacterAdvantage[] } | null>(null);
+  const [subtypeInput, setSubtypeInput] = useState('');
+  const [filteredSkills, setFilteredSkills] = useState<typeof skillDefs>([]);
   const searchRef = useRef<HTMLInputElement>(null);
+  const subtypeRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (showSelector && searchRef.current) searchRef.current.focus();
   }, [showSelector]);
 
+  useEffect(() => {
+    if (subtypeModal && subtypeRef.current) subtypeRef.current.focus();
+  }, [subtypeModal]);
 
-  function addAdvantage(defId: string) {
-    const existing = advantages.findIndex((a) => a.advantageId === defId);
+  useEffect(() => {
+    if (subtypeInput.length > 0) {
+      const term = subtypeInput.toLowerCase();
+      setFilteredSkills(skillDefs.filter(s => s.name.toLowerCase().includes(term)).slice(0, 10));
+    } else {
+      setFilteredSkills([]);
+    }
+  }, [subtypeInput, skillDefs]);
+
+
+  function addAdvantage(defId: string, subtype?: string | null) {
     const def = advantageDefs.find((d) => d.id === defId);
     if (!def) return;
 
-    if (existing >= 0 && def.ranked) {
-      const max = def.maxRank ?? Infinity;
-      if (advantages[existing].ranks >= max) return;
-      const next = [...advantages];
-      next[existing] = { ...next[existing], ranks: next[existing].ranks + 1 };
-      setAdvantages(next);
-    } else if (existing < 0) {
-      setAdvantages([...advantages, { advantageId: defId, ranks: 1 }]);
+    // Multi-instance support: check if advantage allows multiple instances
+    if (def.allowMultiple) {
+      const existingInstances = advantages.filter((a) => a.advantageId === defId);
+      
+      // Hybrid mode: advantage can either stack ranks OR create new instances
+      if (def.hybridMode && existingInstances.length > 0 && !subtype) {
+        // Show modal to choose: increase existing or create new
+        setSubtypeModal({ defId, existingInstances });
+        return;
+      }
+
+      // If subtype is required but not provided, show modal
+      if (def.subtypeRequired && !subtype) {
+        setSubtypeModal({ defId, existingInstances });
+        return;
+      }
+
+      // Check for duplicate (same advantageId + same subtype)
+      const duplicate = existingInstances.find((a) => a.subtype === (subtype ?? null));
+      if (duplicate && def.ranked) {
+        // Increase rank of existing instance
+        const index = advantages.indexOf(duplicate);
+        const max = def.maxRank ?? Infinity;
+        if (duplicate.ranks >= max) return;
+        const next = [...advantages];
+        next[index] = { ...next[index], ranks: next[index].ranks + 1 };
+        setAdvantages(next);
+      } else if (!duplicate) {
+        // Create new instance with subtype
+        setAdvantages([...advantages, { advantageId: defId, ranks: 1, subtype: subtype ?? null }]);
+      }
+    } else {
+      // Simple ranked or non-ranked advantage (old behavior)
+      const existing = advantages.findIndex((a) => a.advantageId === defId);
+
+      if (existing >= 0 && def.ranked) {
+        const max = def.maxRank ?? Infinity;
+        if (advantages[existing].ranks >= max) return;
+        const next = [...advantages];
+        next[existing] = { ...next[existing], ranks: next[existing].ranks + 1 };
+        setAdvantages(next);
+      } else if (existing < 0) {
+        setAdvantages([...advantages, { advantageId: defId, ranks: 1, subtype: null }]);
+      }
     }
+  }
+
+  function confirmSubtype() {
+    if (!subtypeModal) return;
+    const def = advantageDefs.find((d) => d.id === subtypeModal.defId);
+    if (!def) return;
+
+    // Validate required subtype
+    if (def.subtypeRequired && !subtypeInput.trim()) {
+      alert(t('advantages.subtypeRequired'));
+      return;
+    }
+
+    // Close modal and add advantage
+    const subtype = subtypeInput.trim() || null;
+    setSubtypeModal(null);
+    setSubtypeInput('');
+    setFilteredSkills([]);
+    addAdvantage(subtypeModal.defId, subtype);
+  }
+
+  function increaseExistingRank(advantageIndex: number) {
+    if (!subtypeModal) return;
+    const def = advantageDefs.find((d) => d.id === subtypeModal.defId);
+    if (!def) return;
+
+    const adv = advantages[advantageIndex];
+    const max = def.maxRank ?? Infinity;
+    if (adv.ranks >= max) return;
+
+    const next = [...advantages];
+    next[advantageIndex] = { ...next[advantageIndex], ranks: next[advantageIndex].ranks + 1 };
+    setAdvantages(next);
+    setSubtypeModal(null);
+    setSubtypeInput('');
   }
 
   function updateRanks(index: number, ranks: number) {
@@ -70,8 +158,16 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
 
   function getAdvStatus(defId: string) {
     const def = advantageDefs.find((d) => d.id === defId);
-    const existing = advantages.find((a) => a.advantageId === defId);
-    if (!def || !existing) return 'available';
+    if (!def) return 'available';
+
+    const existingInstances = advantages.filter((a) => a.advantageId === defId);
+    if (existingInstances.length === 0) return 'available';
+
+    // Multi-instance advantages: always show as available if allowMultiple is true
+    if (def.allowMultiple) return 'multiple-available';
+
+    // Simple advantages
+    const existing = existingInstances[0];
     if (!def.ranked) return 'added';
     if (def.maxRank && existing.ranks >= def.maxRank) return 'maxed';
     return 'ranked-available';
@@ -107,7 +203,10 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
           return (
             <div key={`${adv.advantageId}-${i}`} className="adv-chip">
               <Tooltip content={def.description!}>
-                <span className="adv-name">{def.name}</span>
+                <span className="adv-name">
+                  {def.name}
+                  {adv.subtype && <span className="adv-subtype"> ({adv.subtype})</span>}
+                </span>
               </Tooltip>
               {def.ranked && (
                 <>
@@ -178,7 +277,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
             )}
             {filteredAdvantages.map((def) => {
               const status = getAdvStatus(def.id);
-              const isDisabled = status === 'added' || status === 'maxed';
+              const isDisabled = status === 'maxed';
               return (
                 <div
                   key={def.id}
@@ -187,7 +286,10 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                 >
                   <span className="adv-result-name">{def.name}</span>
                   {def.ranked && <span className="adv-result-badge">{t('advantages.ranked')}</span>}
-                  {(status === 'added' || status === 'maxed' || status === 'ranked-available') && (
+                  {def.allowMultiple && status === 'multiple-available' && (
+                    <span className="adv-result-badge">{t('advantages.multipleAvailable')}</span>
+                  )}
+                  {(status === 'added' || status === 'maxed' || status === 'ranked-available' || status === 'multiple-available') && (
                     <span className="adv-result-check">✓</span>
                   )}
                   <button
@@ -236,6 +338,118 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
           <p className="adv-desc-body">{descTarget.longDescription}</p>
         </Modal>
       )}
+
+      {/* Subtype Modal */}
+      {subtypeModal && (() => {
+        const def = advantageDefs.find((d) => d.id === subtypeModal.defId);
+        if (!def) return null;
+        const isHybridWithExisting = def.hybridMode && subtypeModal.existingInstances.length > 0;
+        return (
+          <Modal
+            isOpen={!!subtypeModal}
+            onClose={() => { setSubtypeModal(null); setSubtypeInput(''); setFilteredSkills([]); }}
+            title={def.name}
+            compact
+          >
+            <div className="subtype-modal-content">
+              {isHybridWithExisting ? (
+                <>
+                  <p className="subtype-prompt">{t('advantages.hybridChoice')}</p>
+                  <div className="subtype-hybrid-options">
+                    <div className="subtype-existing-list">
+                      <h4>{t('advantages.increaseExisting')}</h4>
+                      {subtypeModal.existingInstances.map((adv, idx) => {
+                        const actualIndex = advantages.indexOf(adv);
+                        const max = def.maxRank ?? Infinity;
+                        const isMaxed = adv.ranks >= max;
+                        return (
+                          <button
+                            key={idx}
+                            className={`subtype-existing-item ${isMaxed ? 'subtype-existing-item--disabled' : ''}`}
+                            onClick={() => !isMaxed && increaseExistingRank(actualIndex)}
+                            disabled={isMaxed}
+                          >
+                            <span>{def.name}{adv.subtype ? ` (${adv.subtype})` : ''}</span>
+                            <span className="subtype-ranks">Rank {adv.ranks}{max < Infinity ? ` / ${max}` : ''}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className="subtype-divider">{t('advantages.or')}</div>
+                    <div className="subtype-new-section">
+                      <h4>{t('advantages.createNew')}</h4>
+                      <p className="subtype-prompt-text">{def.subtypePrompt || t('advantages.enterSubtype')}</p>
+                      <div className="subtype-input-container">
+                        <input
+                          ref={subtypeRef}
+                          type="text"
+                          className="subtype-input"
+                          value={subtypeInput}
+                          onChange={(e) => setSubtypeInput(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && confirmSubtype()}
+                          placeholder={t('advantages.subtypePlaceholder')}
+                        />
+                        {filteredSkills.length > 0 && (
+                          <div className="subtype-autocomplete">
+                            {filteredSkills.map((skill) => (
+                              <button
+                                key={skill.id}
+                                className="subtype-autocomplete-item"
+                                onClick={() => { setSubtypeInput(skill.name); setFilteredSkills([]); }}
+                              >
+                                {skill.name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <Button variant="primary" size="sm" onClick={confirmSubtype}>
+                        {t('advantages.confirm')}
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="subtype-prompt">{def.subtypePrompt || t('advantages.enterSubtype')}</p>
+                  <div className="subtype-input-container">
+                    <input
+                      ref={subtypeRef}
+                      type="text"
+                      className="subtype-input"
+                      value={subtypeInput}
+                      onChange={(e) => setSubtypeInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && confirmSubtype()}
+                      placeholder={t('advantages.subtypePlaceholder')}
+                    />
+                    {filteredSkills.length > 0 && (
+                      <div className="subtype-autocomplete">
+                        {filteredSkills.map((skill) => (
+                          <button
+                            key={skill.id}
+                            className="subtype-autocomplete-item"
+                            onClick={() => { setSubtypeInput(skill.name); setFilteredSkills([]); }}
+                          >
+                            {skill.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="subtype-actions">
+                    <Button variant="ghost" size="sm" onClick={() => { setSubtypeModal(null); setSubtypeInput(''); setFilteredSkills([]); }}>
+                      {t('common.cancel')}
+                    </Button>
+                    <Button variant="primary" size="sm" onClick={confirmSubtype}>
+                      {t('advantages.confirm')}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          </Modal>
+        );
+      })()}
 
       <style>{`
         .adv-empty { color: var(--c-text-muted); font-size: 0.85rem; font-style: italic; }
@@ -353,6 +567,66 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
           background: var(--c-surface-elevated); border: 1px solid var(--c-border); color: var(--c-text-secondary);
         }
         .adv-desc-body { font-size: 0.92rem; line-height: 1.7; color: var(--c-text); margin: 0; }
+
+        /* Subtype display in chip */
+        .adv-subtype { font-size: 0.72rem; color: var(--c-text-muted); font-weight: 400; font-style: italic; }
+
+        /* Subtype Modal */
+        .subtype-modal-content { display: flex; flex-direction: column; gap: var(--s-md); }
+        .subtype-prompt { font-size: 0.9rem; color: var(--c-text-secondary); margin: 0; }
+        .subtype-prompt-text { font-size: 0.85rem; color: var(--c-text-secondary); margin: var(--s-xs) 0; }
+        .subtype-input-container { position: relative; }
+        .subtype-input {
+          width: 100%; padding: var(--s-sm);
+          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
+          border-radius: var(--r-sm); color: var(--c-text);
+          font-family: var(--f-body); font-size: 0.9rem;
+        }
+        .subtype-input:focus { outline: none; border-color: var(--c-primary); }
+        .subtype-autocomplete {
+          position: absolute; top: 100%; left: 0; right: 0; z-index: 1000;
+          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
+          border-radius: var(--r-sm); margin-top: 4px; max-height: 200px; overflow-y: auto;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .subtype-autocomplete-item {
+          width: 100%; padding: var(--s-sm); text-align: left;
+          background: transparent; border: none; color: var(--c-text);
+          font-family: var(--f-body); font-size: 0.85rem; cursor: pointer;
+          transition: background var(--t-fast);
+        }
+        .subtype-autocomplete-item:hover { background: var(--c-primary-muted); }
+        .subtype-actions {
+          display: flex; gap: var(--s-sm); justify-content: flex-end; margin-top: var(--s-sm);
+        }
+
+        /* Hybrid mode layout */
+        .subtype-hybrid-options {
+          display: flex; flex-direction: column; gap: var(--s-md);
+        }
+        .subtype-existing-list h4, .subtype-new-section h4 {
+          font-size: 0.85rem; font-weight: 600; margin: 0 0 var(--s-xs) 0;
+          color: var(--c-text);
+        }
+        .subtype-existing-item {
+          width: 100%; display: flex; justify-content: space-between; align-items: center;
+          padding: var(--s-sm); background: var(--c-surface-elevated);
+          border: 1px solid var(--c-border); border-radius: var(--r-sm);
+          font-family: var(--f-body); font-size: 0.85rem; cursor: pointer;
+          transition: all var(--t-fast); margin-bottom: var(--s-xs);
+        }
+        .subtype-existing-item:hover:not(.subtype-existing-item--disabled) {
+          border-color: var(--c-primary); background: var(--c-primary-muted);
+        }
+        .subtype-existing-item--disabled {
+          opacity: 0.5; cursor: not-allowed;
+        }
+        .subtype-ranks { font-size: 0.75rem; color: var(--c-text-muted); font-weight: 600; }
+        .subtype-divider {
+          text-align: center; font-size: 0.8rem; font-weight: 600;
+          color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .subtype-new-section { display: flex; flex-direction: column; gap: var(--s-sm); }
 
         /* Mobile responsive adjustments for NumberInput */
         @media (max-width: 768px) {
