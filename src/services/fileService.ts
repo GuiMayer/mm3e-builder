@@ -86,19 +86,6 @@ function sanitizeCharacterForExport(character: ICharacter): ICharacter {
 }
 
 /**
- * Generate SHA-256 hash of character data for integrity verification.
- * Used to detect tampering or corruption during export/import.
- */
-async function generateCharacterHash(character: ICharacter): Promise<string> {
-  const characterJSON = JSON.stringify(character);
-  const encoder = new TextEncoder();
-  const data = encoder.encode(characterJSON);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-}
-
-/**
  * Export character to a downloadable .json file with security enhancements.
  * - Sanitizes character data before export
  * - Includes integrity hash for tamper detection
