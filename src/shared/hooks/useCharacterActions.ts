@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useCharactersStore } from '../../store/charactersStore';
 import { migratePowers, migrateAdvantages } from '../lib/powerMigration';
 import type { ICharacter, AbilityKey, IPPLogEntry, IManualOffenseRow } from '../../entities/types';
+import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 
 /**
  * Hook providing character mutation actions.
@@ -75,7 +76,7 @@ export function useCharacterActions() {
     const migratedCharacter = {
       ...character,
       powers: migratePowers(character.powers as unknown[]),
-      advantages: migrateAdvantages((character.advantages as unknown[]) ?? []),
+      advantages: migrateAdvantages((character.advantages as unknown[]) ?? [], ADVANTAGE_DEFS),
     };
 
     // Validate characterId format if present

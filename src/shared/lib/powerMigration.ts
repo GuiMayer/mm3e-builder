@@ -1,5 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
-import type { ICharacterPower, IAlternateEffect, IAppliedModifier, ICharacterPowerComponent, ICharacterAdvantage } from '../../entities/types';
+import type { ICharacterPower, IAlternateEffect, IAppliedModifier, ICharacterPowerComponent, ICharacterAdvantage, IAdvantageDef } from '../../entities/types';
+
+/**
+ * Default subtype used when migrating legacy advantages that require a subtype but don't have one.
+ * This allows backward compatibility with characters created before subtype requirements were enforced.
+ */
+const DEFAULT_SUBTYPE = 'Unspecified';
 
 /**
  * Factory for a safe, empty AE fallback — used when input is malformed.
@@ -141,19 +147,43 @@ export function migrateEquipment(rawEquipment: unknown[]): ICharacterPower[] {
  * Migrate an advantage from old format (without subtype) to new format (with subtype).
  * Old format: { advantageId: string, ranks: number }
  * New format: { advantageId: string, ranks: number, subtype: string | null }
+ * 
+ * Backward compatibility: If the advantage definition requires a subtype but the legacy
+ * advantage doesn't have one, automatically fills with DEFAULT_SUBTYPE to allow import.
  */
-export function migrateAdvantage(raw: Record<string, unknown>): ICharacterAdvantage {
+export function migrateAdvantage(
+  raw: Record<string, unknown>,
+  advantageDefs?: readonly IAdvantageDef[]
+): ICharacterAdvantage {
+  const advantageId = (raw.advantageId as string) ?? '';
+  const ranks = (raw.ranks as number) ?? 1;
+  let subtype = (raw.subtype as string | null) ?? null;
+
+  // Apply default subtype for backward compatibility if:
+  // 1. Legacy advantage has no subtype (null or empty)
+  // 2. Advantage definition requires a subtype
+  if (advantageDefs && (!subtype || subtype.trim() === '')) {
+    const advantageDef = advantageDefs.find((def) => def.id === advantageId);
+    if (advantageDef?.subtypeRequired) {
+      subtype = DEFAULT_SUBTYPE;
+    }
+  }
+
   return {
-    advantageId: (raw.advantageId as string) ?? '',
-    ranks: (raw.ranks as number) ?? 1,
-    subtype: (raw.subtype as string | null) ?? null,
+    advantageId,
+    ranks,
+    subtype,
   };
 }
 
 /**
  * Migrate all advantages in a character to include subtype field.
+ * Optionally accepts advantage definitions to enable smart migration with default subtypes.
  */
-export function migrateAdvantages(rawAdvantages: unknown[]): ICharacterAdvantage[] {
+export function migrateAdvantages(
+  rawAdvantages: unknown[],
+  advantageDefs?: readonly IAdvantageDef[]
+): ICharacterAdvantage[] {
   if (!Array.isArray(rawAdvantages)) return [];
-  return rawAdvantages.map((a) => migrateAdvantage(a as Record<string, unknown>));
+  return rawAdvantages.map((a) => migrateAdvantage(a as Record<string, unknown>, advantageDefs));
 }

@@ -157,7 +157,7 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
     ...raw,
     powers: migratePowers(raw.powers as unknown[]),
     equipment: migrateEquipment((raw.equipment as unknown[]) ?? []),
-    advantages: migrateAdvantages((raw.advantages as unknown[]) ?? []),
+    advantages: migrateAdvantages((raw.advantages as unknown[]) ?? [], ADVANTAGE_DEFS),
   };
 
   const semanticErrors = validateCharacterSemantics(character, {
@@ -259,7 +259,7 @@ export function loadDraft(): ICharacter | null {
       ...raw,
       powers: migratePowers(raw.powers as unknown[]),
       equipment: migrateEquipment((raw.equipment as unknown[]) ?? []),
-      advantages: migrateAdvantages((raw.advantages as unknown[]) ?? []),
+      advantages: migrateAdvantages((raw.advantages as unknown[]) ?? [], ADVANTAGE_DEFS),
     };
 
     // Sync lastSavedJSON with character data only (not full file with timestamp)
@@ -453,7 +453,7 @@ export function loadDraftMulti(): { tabs: CharacterTab[]; activeId: string | nul
           ...char.character,
           powers: migratePowers(char.character.powers as unknown[]),
           equipment: migrateEquipment((char.character.equipment as unknown[]) ?? []),
-          advantages: migrateAdvantages((char.character.advantages as unknown[]) ?? []),
+          advantages: migrateAdvantages((char.character.advantages as unknown[]) ?? [], ADVANTAGE_DEFS),
         },
         label: char.label,
         isDirty: false,
@@ -505,7 +505,7 @@ function migrateLegacyDraft(): { tabs: CharacterTab[]; activeId: string | null }
       ...result.data.character,
       powers: migratePowers(result.data.character.powers as unknown[]),
       equipment: migrateEquipment((result.data.character.equipment as unknown[]) ?? []),
-      advantages: migrateAdvantages((result.data.character.advantages as unknown[]) ?? []),
+      advantages: migrateAdvantages((result.data.character.advantages as unknown[]) ?? [], ADVANTAGE_DEFS),
     };
 
     // Create single tab from legacy character
