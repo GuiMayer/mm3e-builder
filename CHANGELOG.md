@@ -7,6 +7,80 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.10.0] - 2026-06-13
+
+### Added
+- **Multi-Character Tabs System**: Work on multiple characters simultaneously with full tab management
+  - Character tabs with drag-and-drop reordering
+  - Per-tab auto-save with dirty state tracking (• indicator)
+  - Smart import based on characterId matching to prevent duplicates
+  - Duplicate character functionality with automatic characterId regeneration
+  - Tab labels showing character name or "Unnamed Character"
+  - Multi-character persistence system with charactersStore
+  - useActiveCharacter hook for accessing active character state
+- **Advantage Subtypes System**: Take advantages multiple times with different subtypes
+  - 8 advantages with subtype support: Skill Mastery, Favored Foe, Favored Environment, Ultimate Effort, Benefit, Daze, Fascinate, Second Chance
+  - Hybrid mode for Improved Critical (stack ranks OR create multiple instances)
+  - Automatic migration for existing characters (adds subtype: null field)
+  - Subtype validation logic ensuring required subtypes are provided
+  - Multi-instance UI with dropdown/autocomplete for subtype selection
+- **Skill Mastery Dropdown**: Replaced text autocomplete with smart dropdown
+  - Shows only character's actual skills
+  - Excludes skills that already have Skill Mastery
+  - Handles subtyped skills correctly (e.g., "Expertise: Magic")
+  - Works in both hybrid mode and regular mode
+- **Portal Rendering Fix**: Modal overflow clipping resolved for autocomplete dropdowns
+  - Renders dropdowns directly to document.body using React Portal
+  - Dynamic positioning with fixed coordinates
+  - z-index: 10000 to appear above modals
+
+### Changed
+- **Performance Optimizations**: Significantly improved load times and caching
+  - Lazy loading for heavy features (ReferencesView, PowerBuilderOverlay)
+  - Vendor chunk splitting into 9 separate chunks (excel, pdf, dnd, icons, react, i18n, validation, state, game-data, locales)
+  - Better browser caching for production builds
+- **UI Improvements**: Enhanced user experience across multiple areas
+  - Fractional cost display in Power Builder UI
+  - PP budget toggle respected in menu indicator
+  - Character reset now requires confirmation dialog
+  - Skill validation corrected to follow official M&M 3e rules (PL + 10 limit)
+
+### Fixed
+- **Data Quality - Advantages**: 7 corrections to match official M&M 3e Hero's Handbook
+  - **Improved Hold**: Corrected escape penalty description (-5 circumstance penalty)
+  - **Languages**: Fixed to exponential progression formula (2^(rank-1): 1→2→4→8→16→32→64 languages)
+  - **Beginner's Luck**: Expanded description with full Hero Point mechanics and routine check limitations
+  - **Daze**: Expanded with complete interaction check mechanics, immunity rules, and dazed vs stunned effects
+  - **Improvised Weapon**: Enhanced description with damage bonus details and weapon proficiency clarification
+  - **Fascinate**: Expanded with target count mechanics, interaction requirements, and entranced condition details
+  - **Takedown**: Corrected to remove "close attack" restriction and clarify "same attack modifiers" rule
+- **Validation Improvements**: Enhanced rules enforcement
+  - Luck advantage PL validation (max rank = PL ÷ 2, rounded down)
+  - Effect-specific extras now validated as proper modifiers
+  - Alternate Effects validation: unique names enforced, duplicate modifiers prevented
+  - Skill rank cap corrections (PL + 10 for trained skills per official rules)
+- **Export Fixes**:
+  - PDF: Power Point Totals now show numeric values instead of strings
+- **Multi-Character System Fixes**:
+  - Fixed infinite loops in useAutoLoadDraftMulti
+  - Regenerate characterId when duplicating characters
+  - Mark new character tabs as dirty to enable auto-save
+  - Remove markCharacterClean after load/clear to enable auto-save
+  - Migrate MenuBar to use multi-character draft APIs
+  - Flush draft to localStorage before export
+- **Schema Compatibility**:
+  - Added descriptors field to schema for JSON import compatibility
+  - Added equipmentNotes property to character schema
+- **TypeScript Fixes**:
+  - Resolved TypeScript errors in Phase 3.5 of multi-character implementation
+  - Fixed configurable fields and validation test errors
+
+### Documentation
+- Complete audit reports for advantages corrections in docs/audit/
+- Commits analysis document: docs/analysis/commits-v1.9.0-to-v1.10.0.txt
+
+---
+
 ## [1.9.0] - 2026-05-14
 
 ### Added
@@ -332,6 +406,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Key Feature | Schema Version |
 |---------|------|-------------|----------------|
+| 1.10.0 | 2026-06-13 | Multi-Character Tabs + Advantage Subtypes | 2.0.0 |
 | 1.9.0 | 2026-05-14 | Empty Component Detection | 2.0.0 |
 | 1.8.0 | 2026-05-14 | Power Descriptors + Variable Cost | 2.0.0 |
 | 1.7.0 | 2026-05-13 | Equipment System | 2.0.0 |
@@ -394,6 +469,7 @@ If you encounter issues, please report at: https://github.com/GuiMayer/mm3e-buil
 
 ---
 
+[1.10.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.6.0...v1.7.0

@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.4.0
+# Mutants & Masterminds 3e Character Builder — v1.10.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -20,7 +20,7 @@ A modern, fast, and user-friendly character builder for the Mutants & Mastermind
 - **Abilities** — Set all 8 core abilities (STR, STA, AGL, DEX, FGT, INT, AWE, PRE) with automatic PP cost (×2/rank). Supports "Absent" abilities (Construct, Immortal, etc.) at −4 PP flat.
 - **Defenses** — Dodge, Parry, Fortitude, Will with automatic calculation based on ability scores + bought ranks.
 - **Skills** — Full skill list (28+ skills), subtypes (e.g. Expertise: History), auto-cost at 1 PP per 2 ranks.
-- **Advantages** — Searchable and filterable advantage selector with 49 advantages, ranked/flat type display, and description modal.
+- **Advantages** — Searchable and filterable advantage selector with 49 advantages, ranked/flat type display, and description modal. **Advantage Subtypes** — 8 advantages support multiple instances with different subtypes (e.g., Skill Mastery: Acrobatics, Skill Mastery: Stealth). Includes hybrid mode for Improved Critical allowing both rank stacking and multiple instances.
 - **Complications** — Free-form title + description fields for Motivation, Enemy, Secret, etc.
 
 #### 📖 Campaign Mode & PP Advancement Log
@@ -29,6 +29,14 @@ A modern, fast, and user-friendly character builder for the Mutants & Mastermind
 - **Automatic PP calculation** — Base PP (PL × 15) + earned PP from log = total available PP.
 - **Data protection** — Confirmation dialogs when disabling Campaign Mode or removing log entries to prevent accidental data loss.
 - **Smart validation** — Campaign Mode toggle is disabled when log has entries, requiring cleanup before mode switch to maintain PP budget consistency.
+
+#### 🗂️ Multi-Character Management
+- **Character Tabs** — Work on multiple characters simultaneously in separate tabs with visual tab management UI.
+- **Drag-and-Drop Reordering** — Organize tabs by dragging them to your preferred order.
+- **Per-Tab Auto-Save** — Each character auto-saves independently with dirty state indicator (•) showing unsaved changes.
+- **Smart Import** — Import matches existing tabs by characterId to prevent duplicates and merge intelligently.
+- **Duplicate Character** — Clone existing characters with a single click, automatically generating new unique IDs.
+- **Tab Labels** — Shows character name or "Unnamed Character" for easy identification.
 
 #### ⚡ Power Builder (v2)
 The Power Builder is the most feature-rich section, built for full M&M 3e rules compliance:
@@ -106,6 +114,14 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 ### 📋 Version History
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
+
+#### v1.10.0 (2026-06-13)
+- Multi-Character Tabs System with drag-and-drop and per-tab auto-save
+- Advantage Subtypes System with 8 advantages supporting multiple instances
+- Data Quality: 7 advantage corrections matching official M&M 3e rulebook
+- Performance optimizations: lazy loading and vendor chunk splitting
+- Validation improvements: Luck advantage PL limit, skill caps, AE validation
+- UI improvements: Skill Mastery dropdown, Portal rendering fix, character reset guard
 
 #### v1.4.1 (2026-05-11)
 - Fixed PP calculation in campaign mode to include PP Log adjustments
@@ -196,7 +212,7 @@ Um criador de fichas moderno, rápido e focado na facilidade de uso para o siste
 - **Atributos** — Configure os 8 atributos base (FOR, VIG, AGL, DES, LUT, INT, PRO, PRE) com cálculo automático de custo em PP (×2/rank). Suporta atributos "Absent" (Construto, Imortal, etc.) com −4 PP flat.
 - **Defesas** — Esquiva, Aparar, Resistência, Vontade com cálculo automático baseado nos atributos + ranks comprados.
 - **Perícias** — Lista completa (28+ perícias), subtipos (ex: Especialidade: História), custo automático de 1 PP a cada 2 ranks.
-- **Vantagens** — Seletor pesquisável e filtrável com 49 vantagens, exibição de tipo (ranqueada/flat) e modal de descrição.
+- **Vantagens** — Seletor pesquisável e filtrável com 49 vantagens, exibição de tipo (ranqueada/flat) e modal de descrição. **Subtipos de Vantagens** — 8 vantagens suportam múltiplas instâncias com diferentes subtipos (ex: Maestria em Perícia: Acrobacia, Maestria em Perícia: Furtividade). Inclui modo híbrido para Crítico Aprimorado permitindo tanto empilhamento de ranks quanto múltiplas instâncias.
 - **Complicações** — Campos livres de título e descrição para Motivação, Inimigo, Segredo, etc.
 
 #### 📖 Modo Campanha & Registro de Avanço de PP
@@ -205,6 +221,14 @@ Um criador de fichas moderno, rápido e focado na facilidade de uso para o siste
 - **Cálculo automático de PP** — PP base (NP × 15) + PP ganhos do registro = PP total disponível.
 - **Proteção de dados** — Diálogos de confirmação ao desativar Modo Campanha ou remover entradas do registro para prevenir perda acidental de dados.
 - **Validação inteligente** — Toggle de Modo Campanha é desabilitado quando há entradas no registro, exigindo limpeza antes da troca de modo para manter consistência do orçamento de PP.
+
+#### 🗂️ Gerenciamento Multi-Personagem
+- **Abas de Personagem** — Trabalhe em múltiplos personagens simultaneamente em abas separadas com interface visual de gerenciamento.
+- **Reordenação via Drag-and-Drop** — Organize as abas arrastando-as para sua ordem preferida.
+- **Auto-Save por Aba** — Cada personagem salva automaticamente de forma independente com indicador de estado sujo (•) mostrando alterações não salvas.
+- **Importação Inteligente** — A importação corresponde abas existentes por characterId para prevenir duplicatas e fazer merge inteligente.
+- **Duplicar Personagem** — Clone personagens existentes com um único clique, gerando automaticamente novos IDs únicos.
+- **Rótulos de Aba** — Mostra o nome do personagem ou "Personagem Sem Nome" para fácil identificação.
 
 #### ⚡ Power Builder (v2)
 O Power Builder é a seção mais completa, construído para máxima conformidade com as regras do M&M 3e:
@@ -282,6 +306,14 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 ### 📋 Histórico de Versões
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
+
+#### v1.10.0 (2026-06-13)
+- Sistema de Abas Multi-Personagem com drag-and-drop e auto-save por aba
+- Sistema de Subtipos de Vantagens com 8 vantagens suportando múltiplas instâncias
+- Qualidade de Dados: 7 correções de vantagens correspondentes ao livro oficial M&M 3e
+- Otimizações de performance: lazy loading e divisão de vendor chunks
+- Melhorias de validação: limite de NP para vantagem Sorte, caps de perícias, validação de EA
+- Melhorias de UI: dropdown de Maestria em Perícia, correção de renderização Portal, proteção de reset de personagem
 
 #### v1.4.1 (2026-05-11)
 - Corrigido cálculo de PP em modo campanha para incluir ajustes do Registro de PP
