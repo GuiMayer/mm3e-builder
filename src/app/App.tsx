@@ -2,6 +2,7 @@ import { lazy, Suspense, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MenuBar } from '../shared/ui/MenuBar'
 import { SheetView } from '../features/sheet-core/SheetView'
+import { CharacterTabs } from '../features/sheet-core/CharacterTabs'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 import { useAutoLoadDraftMulti } from '../shared/hooks/useAutoLoadDraftMulti'
@@ -37,6 +38,7 @@ export function App() {
     >
       <div className="app-root">
         <MenuBar activeView={activeView} onViewChange={setActiveView} />
+        {activeView === 'sheet' && <CharacterTabs />}
         <ErrorBoundary
           fallback={(error) => <ErrorFallback error={error} />}
           resetKeys={[activeView]}
