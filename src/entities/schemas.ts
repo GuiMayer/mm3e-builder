@@ -171,6 +171,7 @@ const EquipmentItemSchema = z.union([
 ]);
 
 const CharacterSchema = z.object({
+  characterId: z.string().uuid().optional(),  // Unique immutable ID for cross-device sync
   header: CharacterHeaderSchema,
   abilities: AbilitiesSchema,
   absentAbilities: z.array(AbilityKeySchema),
