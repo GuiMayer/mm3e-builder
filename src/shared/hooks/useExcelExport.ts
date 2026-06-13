@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from './useActiveCharacter';
 import type { ExportLabels, GameDataRefs } from '../../services/excelGenerator';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 
@@ -10,7 +10,7 @@ import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../ent
  */
 export function useExcelExport() {
   const { t, i18n } = useTranslation();
-  const character = useCharStore((s) => s.character);
+  const { character } = useActiveCharacter();
   const [isExcelLoading, setIsExcelLoading] = useState(false);
   const [excelError, setExcelError] = useState<string | null>(null);
 

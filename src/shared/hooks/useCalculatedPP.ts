@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
 import {
   calculateAbilitiesCost,
@@ -18,7 +18,7 @@ import { getActiveValidationRules } from '../lib/validationRules';
  * Also tracks Equipment Points (EP) budget from the Equipment advantage.
  */
 export function useCalculatedPP() {
-  const character = useCharStore((s) => s.character);
+  const { character } = useActiveCharacter();
   const validationRules = useAppStore((s) => s.validationRules);
 
   return useMemo(() => {

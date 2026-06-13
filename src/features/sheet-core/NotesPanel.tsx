@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useTranslation } from 'react-i18next';
 import { FileText, ChevronDown, ChevronRight } from 'lucide-react';
 
@@ -9,8 +10,9 @@ import { FileText, ChevronDown, ChevronRight } from 'lucide-react';
  */
 export function NotesPanel() {
   const { t } = useTranslation();
-  const notes = useCharStore((s) => s.character.notes ?? '');
-  const setNotes = useCharStore((s) => s.setNotes);
+  const { character } = useActiveCharacter();
+  const { setNotes } = useCharacterActions();
+  const notes = character.notes ?? '';
   const [open, setOpen] = useState(false);
 
   return (

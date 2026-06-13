@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { ICharacterSkill, AbilityKey, ISkillDef } from '../../entities/types';
 import { SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
@@ -24,9 +25,10 @@ const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: st
 export function SkillsPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const skillDefs = useLocalizedData(SKILL_DEFS);
-  const skills = useCharStore((s) => s.character.skills);
-  const setSkills = useCharStore((s) => s.setSkills);
-  const abilities = useCharStore((s) => s.character.abilities);
+  const { character } = useActiveCharacter();
+  const { setSkills } = useCharacterActions();
+  const skills = character.skills;
+  const abilities = character.abilities;
 
   const [showSelector, setShowSelector]     = useState(false);
   const [searchTerm, setSearchTerm]         = useState('');

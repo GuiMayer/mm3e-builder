@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import type { AppView } from '../../app/App';
 
 import { useAppStore } from '../../store/appStore';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../hooks/useActiveCharacter';
+import { useCharacterActions } from '../hooks/useCharacterActions';
 import { useCalculatedPP } from '../hooks/useCalculatedPP';
 import { useFileOperations } from '../hooks/useFileOperations';
 import { usePDFExport } from '../hooks/usePDFExport';
@@ -49,11 +50,10 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   const setLanguage = useAppStore((s) => s.setLanguage);
   const validationRules = useAppStore((s) => s.validationRules);
   const setValidationRules = useAppStore((s) => s.setValidationRules);
-  const character = useCharStore((s) => s.character);
+  const { character } = useActiveCharacter();
+  const { setCampaignMode, resetCharacter } = useCharacterActions();
   const campaignMode = character.campaignMode ?? false;
-  const setCampaignMode = useCharStore((s) => s.setCampaignMode);
   const hasLogEntries = (character.ppLog ?? []).length > 0;
-  const resetCharacter = useCharStore((s) => s.resetCharacter);
   
   // Hooks
   const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();

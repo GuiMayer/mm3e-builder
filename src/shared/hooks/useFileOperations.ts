@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from './useActiveCharacter';
+import { useCharacterActions } from './useCharacterActions';
 import { exportCharacterJSON, importCharacterJSON, I18nError } from '../../services/fileService';
 
 /**
@@ -9,8 +10,8 @@ import { exportCharacterJSON, importCharacterJSON, I18nError } from '../../servi
  */
 export function useFileOperations() {
   const { t, i18n } = useTranslation();
-  const character = useCharStore((s) => s.character);
-  const loadCharacter = useCharStore((s) => s.loadCharacter);
+  const { character } = useActiveCharacter();
+  const { loadCharacter } = useCharacterActions();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isImporting, setIsImporting] = useState(false);
 

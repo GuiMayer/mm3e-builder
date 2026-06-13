@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
 import { POWER_DEFS, SKILL_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { calcToughnessBonus } from '../lib/mathEngine';
@@ -28,7 +28,7 @@ import { getActiveValidationRules } from '../lib/validationRules';
  * - Luck advantage: ranks <= PL÷2 (rounded down)
  */
 export function usePLValidation(): PLViolation[] {
-  const character  = useCharStore((s) => s.character);
+  const { character } = useActiveCharacter();
   const validationRules = useAppStore((s) => s.validationRules);
 
   return useMemo(() => {

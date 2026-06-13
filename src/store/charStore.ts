@@ -5,13 +5,24 @@ import { migratePowers } from '../shared/lib/powerMigration';
 import { useCharactersStore } from './charactersStore';
 
 /* ================================================
-   Character Store — Facade (DEPRECATED)
+   Character Store — Facade (DEPRECATED - DO NOT USE)
    
-   @deprecated This store is maintained for backward compatibility only.
-   New code should use useActiveCharacter() hook instead.
+   ⚠️ CRITICAL WARNING ⚠️
+   This store is DEPRECATED and causes infinite render loops.
    
-   This facade delegates all operations to charactersStore, operating
-   on the currently active character tab.
+   DO NOT USE THIS STORE IN NEW CODE.
+   DO NOT IMPORT useCharStore IN NEW COMPONENTS.
+   
+   Root cause: This store uses getters that access useCharactersStore.getState()
+   and return new object references on every access, causing React infinite loops.
+   
+   MIGRATION COMPLETE: All components have been migrated away from this store.
+   
+   Use instead:
+   - useActiveCharacter() hook for reading character data
+   - useCharacterActions() hook for mutations
+   
+   This file is kept for reference only and will be removed in a future version.
    ================================================ */
 
 const DEFAULT_CHARACTER: ICharacter = {

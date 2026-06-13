@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { ICharacterPower } from '../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
@@ -17,8 +18,9 @@ export function PowersList() {
   const powerDefs = useLocalizedData(POWER_DEFS);
   const modifierDefs = useLocalizedData(MODIFIER_DEFS);
   
-  const powers = useCharStore((s) => s.character.powers);
-  const setPowers = useCharStore((s) => s.setPowers);
+  const { character } = useActiveCharacter();
+  const { setPowers } = useCharacterActions();
+  const powers = character.powers;
   const [builderOpen, setBuilderOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 

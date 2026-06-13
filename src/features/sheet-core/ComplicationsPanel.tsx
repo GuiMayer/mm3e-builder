@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { IComplication, ComplicationType } from '../../entities/types';
 import { Plus, Trash2, Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -27,8 +28,9 @@ const ALL_TYPES: ComplicationType[] = [
 
 export function ComplicationsPanel() {
   const { t } = useTranslation();
-  const complications  = useCharStore((s) => s.character.complications);
-  const setComplications = useCharStore((s) => s.setComplications);
+  const { character } = useActiveCharacter();
+  const { setComplications } = useCharacterActions();
+  const complications = character.complications;
 
   const [showAdd, setShowAdd]       = useState(false);
   const [newTitle, setNewTitle]     = useState('');

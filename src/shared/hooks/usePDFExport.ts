@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCharStore } from '../../store/charStore';
+import { useActiveCharacter } from './useActiveCharacter';
 import { checkPDFOverflow } from '../../services/pdf/overflowCollector';
 import type { PDFOverflowReport } from '../../services/pdf/overflowCollector';
 import { buildOffenseSummary } from '../lib/offenseSummary';
@@ -12,7 +12,7 @@ import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../ent
  */
 export function usePDFExport() {
   const { t } = useTranslation();
-  const character = useCharStore((s) => s.character);
+  const { character } = useActiveCharacter();
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [pdfOverflow, setPdfOverflow] = useState<PDFOverflowReport[]>([]);
 
