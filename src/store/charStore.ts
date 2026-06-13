@@ -2,10 +2,16 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { ICharacter, AbilityKey, IPPLogEntry, IManualOffenseRow } from '../entities/types';
 import { migratePowers } from '../shared/lib/powerMigration';
+import { useCharactersStore } from './charactersStore';
 
 /* ================================================
-   Character Store — Single Source of Truth
-   Only manages character state. I/O is in fileService.
+   Character Store — Facade (DEPRECATED)
+   
+   @deprecated This store is maintained for backward compatibility only.
+   New code should use useActiveCharacter() hook instead.
+   
+   This facade delegates all operations to charactersStore, operating
+   on the currently active character tab.
    ================================================ */
 
 const DEFAULT_CHARACTER: ICharacter = {
@@ -69,68 +75,105 @@ interface CharStoreState {
 
 export const useCharStore = create<CharStoreState>()(
   devtools(
-    (set) => ({
-      character: { ...DEFAULT_CHARACTER },
-      isDirty: false,
-
-  updateHeader: (partial) =>
-    set((state) => ({
-      character: {
-        ...state.character,
-        header: { ...state.character.header, ...partial },
+    (set, get) => ({
+      // Computed properties from charactersStore
+      get character() {
+        const active = useCharactersStore.getState().getActiveCharacter();
+        return active?.character ?? { ...DEFAULT_CHARACTER };
       },
-      isDirty: true,
-    })),
 
-  setAbility: (key, value) =>
-    set((state) => ({
-      character: {
-        ...state.character,
-        abilities: { ...state.character.abilities, [key]: value },
+      get isDirty() {
+        const active = useCharactersStore.getState().getActiveCharacter();
+        return active?.isDirty ?? false;
       },
-      isDirty: true,
-    })),
 
-  toggleAbsentAbility: (key) =>
-    set((state) => {
-      const absent = state.character.absentAbilities;
-      const newAbsent = absent.includes(key)
-        ? absent.filter((k) => k !== key)
-        : [...absent, key];
-      return {
-        character: {
-          ...state.character,
-          absentAbilities: newAbsent,
-          abilities: {
-            ...state.character.abilities,
-            ...(newAbsent.includes(key) ? { [key]: 0 } : {}),
-          },
-        },
-        isDirty: true,
-      };
-    }),
+  updateHeader: (partial) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (!activeId) return;
 
-  setDefense: (key, value) =>
-    set((state) => ({
-      character: {
-        ...state.character,
-        defenses: { ...state.character.defenses, [key]: value },
+    const active = state.getCharacterById(activeId);
+    if (!active) return;
+
+    state.updateCharacter(activeId, {
+      header: { ...active.character.header, ...partial },
+    });
+  },
+
+  setAbility: (key, value) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (!activeId) return;
+
+    const active = state.getCharacterById(activeId);
+    if (!active) return;
+
+    state.updateCharacter(activeId, {
+      abilities: { ...active.character.abilities, [key]: value },
+    });
+  },
+
+  toggleAbsentAbility: (key) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (!activeId) return;
+
+    const active = state.getCharacterById(activeId);
+    if (!active) return;
+
+    const absent = active.character.absentAbilities;
+    const newAbsent = absent.includes(key)
+      ? absent.filter((k) => k !== key)
+      : [...absent, key];
+
+    state.updateCharacter(activeId, {
+      absentAbilities: newAbsent,
+      abilities: {
+        ...active.character.abilities,
+        ...(newAbsent.includes(key) ? { [key]: 0 } : {}),
       },
-      isDirty: true,
-    })),
+    });
+  },
 
-  loadCharacter: (character) =>
-    set({
-      character: {
-        ...character,
-        powers: migratePowers(character.powers as unknown[]),
-      },
-      isDirty: false,
-    }),
+  setDefense: (key, value) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (!activeId) return;
 
-  resetCharacter: () =>
-    set({
-      character: {
+    const active = state.getCharacterById(activeId);
+    if (!active) return;
+
+    state.updateCharacter(activeId, {
+      defenses: { ...active.character.defenses, [key]: value },
+    });
+  },
+
+  loadCharacter: (character) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+
+    const migratedCharacter = {
+      ...character,
+      powers: migratePowers(character.powers as unknown[]),
+    };
+
+    if (activeId) {
+      // Replace active character
+      state.updateCharacter(activeId, migratedCharacter);
+      state.markCharacterClean(activeId);
+    } else {
+      // Create new tab if none exists
+      state.addCharacter(migratedCharacter);
+    }
+  },
+
+  resetCharacter: () => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+
+    if (activeId) {
+      // Reset active character to defaults
+      state.updateCharacter(activeId, {
         ...DEFAULT_CHARACTER,
         abilities: { ...DEFAULT_CHARACTER.abilities },
         defenses: { ...DEFAULT_CHARACTER.defenses },
@@ -140,91 +183,108 @@ export const useCharStore = create<CharStoreState>()(
         powers: [],
         complications: [],
         equipmentNotes: '',
-      },
-      isDirty: false,
-    }),
+      });
+      state.markCharacterClean(activeId);
+    }
+  },
 
-  setSkills: (skills) =>
-    set((state) => ({
-      character: { ...state.character, skills },
-      isDirty: true,
-    })),
+  setSkills: (skills) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.updateCharacter(activeId, { skills });
+  },
 
-  setAdvantages: (advantages) =>
-    set((state) => ({
-      character: { ...state.character, advantages },
-      isDirty: true,
-    })),
+  setAdvantages: (advantages) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.updateCharacter(activeId, { advantages });
+  },
 
-  setPowers: (powers) =>
-    set((state) => ({
-      character: { ...state.character, powers },
-      isDirty: true,
-    })),
+  setPowers: (powers) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.updateCharacter(activeId, { powers });
+  },
 
-  setComplications: (complications) =>
-    set((state) => ({
-      character: { ...state.character, complications },
-      isDirty: true,
-    })),
+  setComplications: (complications) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.updateCharacter(activeId, { complications });
+  },
 
-  setEquipment: (equipment) =>
-    set((state) => ({
-      character: { ...state.character, equipment },
-      isDirty: true,
-    })),
+  setEquipment: (equipment) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.updateCharacter(activeId, { equipment });
+  },
 
-  setEquipmentNotes: (equipmentNotes) =>
-    set((state) => ({
-      character: { ...state.character, equipmentNotes },
-      isDirty: true,
-    })),
+  setEquipmentNotes: (equipmentNotes) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.updateCharacter(activeId, { equipmentNotes });
+  },
 
-  setManualOffenseRows: (manualOffenseRows) =>
-    set((state) => ({
-      character: { ...state.character, manualOffenseRows },
-      isDirty: true,
-    })),
+  setManualOffenseRows: (manualOffenseRows) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.updateCharacter(activeId, { manualOffenseRows });
+  },
 
-  setNotes: (notes) =>
-    set((state) => ({
-      character: { ...state.character, notes },
-      isDirty: true,
-    })),
+  setNotes: (notes) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.updateCharacter(activeId, { notes });
+  },
 
   // F-17: Campaign Mode
-  setCampaignMode: (enabled) =>
-    set((state) => ({
-      character: {
-        ...state.character,
-        campaignMode: enabled,
-        ppLog: enabled ? (state.character.ppLog ?? []) : [],
-      },
-      isDirty: true,
-    })),
+  setCampaignMode: (enabled) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (!activeId) return;
 
-  addPPLogEntry: (entry) =>
-    set((state) => ({
-      character: {
-        ...state.character,
-        ppLog: [
-          ...(state.character.ppLog ?? []),
-          { ...entry, id: crypto.randomUUID() },
-        ],
-      },
-      isDirty: true,
-    })),
+    const active = state.getCharacterById(activeId);
+    if (!active) return;
 
-  removePPLogEntry: (id) =>
-    set((state) => ({
-      character: {
-        ...state.character,
-        ppLog: (state.character.ppLog ?? []).filter((e) => e.id !== id),
-      },
-      isDirty: true,
-    })),
+    state.updateCharacter(activeId, {
+      campaignMode: enabled,
+      ppLog: enabled ? (active.character.ppLog ?? []) : [],
+    });
+  },
 
-  markClean: () => set({ isDirty: false }),
+  addPPLogEntry: (entry) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (!activeId) return;
+
+    const active = state.getCharacterById(activeId);
+    if (!active) return;
+
+    state.updateCharacter(activeId, {
+      ppLog: [
+        ...(active.character.ppLog ?? []),
+        { ...entry, id: crypto.randomUUID() },
+      ],
+    });
+  },
+
+  removePPLogEntry: (id) => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (!activeId) return;
+
+    const active = state.getCharacterById(activeId);
+    if (!active) return;
+
+    state.updateCharacter(activeId, {
+      ppLog: (active.character.ppLog ?? []).filter((e) => e.id !== id),
+    });
+  },
+
+  markClean: () => {
+    const state = useCharactersStore.getState();
+    const activeId = state.activeCharacterId;
+    if (activeId) state.markCharacterClean(activeId);
+  },
     }),
     { name: 'CharStore' }
   )
