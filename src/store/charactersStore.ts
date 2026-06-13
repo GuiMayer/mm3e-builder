@@ -9,6 +9,7 @@ import type { ICharacter } from '../entities/types';
    ================================================ */
 
 const DEFAULT_CHARACTER: ICharacter = {
+  characterId: undefined,
   header: {
     name: '',
     player: '',
