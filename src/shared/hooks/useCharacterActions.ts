@@ -77,15 +77,42 @@ export function useCharacterActions() {
       powers: migratePowers(character.powers as unknown[]),
     };
 
-    if (activeId) {
-      // Replace active character
-      store.updateCharacter(activeId, migratedCharacter);
-      // isDirty is already set to true by updateCharacter
-      // Auto-save will be triggered automatically after debounce
-    } else {
-      // Create new tab if none exists
-      store.addCharacter(migratedCharacter);
+    // Validate characterId format if present
+    let hasValidCharacterId = false;
+    if (migratedCharacter.characterId) {
+      // UUID v4 format validation: 8-4-4-4-12 hex digits
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      
+      if (uuidRegex.test(migratedCharacter.characterId)) {
+        hasValidCharacterId = true;
+      } else {
+        console.warn('[loadCharacter] Invalid characterId format detected, treating as character without ID');
+        // Remove invalid characterId - will be treated as new character
+        migratedCharacter.characterId = undefined;
+      }
     }
+
+    // Smart import logic based on characterId matching
+    if (activeId && hasValidCharacterId) {
+      const activeTab = store.getCharacterById(activeId);
+      
+      // If characterId matches the current active tab's character → REPLACE
+      if (activeTab?.character.characterId === migratedCharacter.characterId) {
+        console.log('[loadCharacter] Updating existing character (same characterId)');
+        store.updateCharacter(activeId, migratedCharacter);
+        return;
+      }
+    }
+    
+    // FALLBACK: Different ID, no ID, or no active tab → CREATE NEW TAB
+    console.log('[loadCharacter] Creating new tab (different or missing characterId)');
+    
+    // Ensure imported character has characterId
+    if (!migratedCharacter.characterId) {
+      migratedCharacter.characterId = crypto.randomUUID();
+    }
+    
+    store.addCharacter(migratedCharacter);
   }, [store]);
 
   const resetCharacter = useCallback(() => {
