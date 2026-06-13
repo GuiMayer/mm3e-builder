@@ -124,6 +124,11 @@ export interface IAdvantageDef {
   maxRank: number | null;
   description: string;
   longDescription: string;
+  // Multi-instance support (e.g., Skill Mastery, Fascinate, Improved Critical)
+  allowMultiple?: boolean;        // Can be taken multiple times with different subtypes
+  subtypePrompt?: string | null;  // Prompt text for subtype input (e.g., "Choose a skill:")
+  subtypeRequired?: boolean;      // Whether subtype must be provided
+  hybridMode?: boolean;           // Can either increase ranks OR add new instances (e.g., Improved Critical)
 }
 
 // ── Skill Usage (sub-section within skill description) ──
