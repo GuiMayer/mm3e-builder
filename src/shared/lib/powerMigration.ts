@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import type { ICharacterPower, IAlternateEffect, IAppliedModifier, ICharacterPowerComponent } from '../../entities/types';
+import type { ICharacterPower, IAlternateEffect, IAppliedModifier, ICharacterPowerComponent, ICharacterAdvantage } from '../../entities/types';
 
 /**
  * Factory for a safe, empty AE fallback — used when input is malformed.
@@ -135,4 +135,25 @@ export function migrateEquipmentItem(raw: Record<string, unknown>): ICharacterPo
 export function migrateEquipment(rawEquipment: unknown[]): ICharacterPower[] {
   if (!Array.isArray(rawEquipment)) return [];
   return rawEquipment.map((e) => migrateEquipmentItem(e as Record<string, unknown>));
+}
+
+/**
+ * Migrate an advantage from old format (without subtype) to new format (with subtype).
+ * Old format: { advantageId: string, ranks: number }
+ * New format: { advantageId: string, ranks: number, subtype: string | null }
+ */
+export function migrateAdvantage(raw: Record<string, unknown>): ICharacterAdvantage {
+  return {
+    advantageId: (raw.advantageId as string) ?? '',
+    ranks: (raw.ranks as number) ?? 1,
+    subtype: (raw.subtype as string | null) ?? null,
+  };
+}
+
+/**
+ * Migrate all advantages in a character to include subtype field.
+ */
+export function migrateAdvantages(rawAdvantages: unknown[]): ICharacterAdvantage[] {
+  if (!Array.isArray(rawAdvantages)) return [];
+  return rawAdvantages.map((a) => migrateAdvantage(a as Record<string, unknown>));
 }

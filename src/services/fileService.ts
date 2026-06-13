@@ -1,7 +1,7 @@
 import { CharacterFileSchema } from '../entities/schemas';
 import type { ICharacter, ICharacterFile } from '../entities/types';
 import { downloadBlob, sanitizeFileName } from './downloadHelper';
-import { migratePowers, migrateEquipment } from '../shared/lib/powerMigration';
+import { migratePowers, migrateEquipment, migrateAdvantages } from '../shared/lib/powerMigration';
 import { SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS } from '../entities/constants';
 import { ADVANTAGE_DEFS, MODIFIER_DEFS, POWER_DEFS, SKILL_DEFS } from '../entities/gameDataLoaders';
 import { validateCharacterSemantics } from '../shared/lib/semanticValidation';
@@ -157,6 +157,7 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
     ...raw,
     powers: migratePowers(raw.powers as unknown[]),
     equipment: migrateEquipment((raw.equipment as unknown[]) ?? []),
+    advantages: migrateAdvantages((raw.advantages as unknown[]) ?? []),
   };
 
   const semanticErrors = validateCharacterSemantics(character, {
@@ -258,6 +259,7 @@ export function loadDraft(): ICharacter | null {
       ...raw,
       powers: migratePowers(raw.powers as unknown[]),
       equipment: migrateEquipment((raw.equipment as unknown[]) ?? []),
+      advantages: migrateAdvantages((raw.advantages as unknown[]) ?? []),
     };
 
     // Sync lastSavedJSON with character data only (not full file with timestamp)
@@ -451,6 +453,7 @@ export function loadDraftMulti(): { tabs: CharacterTab[]; activeId: string | nul
           ...char.character,
           powers: migratePowers(char.character.powers as unknown[]),
           equipment: migrateEquipment((char.character.equipment as unknown[]) ?? []),
+          advantages: migrateAdvantages((char.character.advantages as unknown[]) ?? []),
         },
         label: char.label,
         isDirty: false,
@@ -502,6 +505,7 @@ function migrateLegacyDraft(): { tabs: CharacterTab[]; activeId: string | null }
       ...result.data.character,
       powers: migratePowers(result.data.character.powers as unknown[]),
       equipment: migrateEquipment((result.data.character.equipment as unknown[]) ?? []),
+      advantages: migrateAdvantages((result.data.character.advantages as unknown[]) ?? []),
     };
 
     // Create single tab from legacy character

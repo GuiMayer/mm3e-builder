@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useCharactersStore } from '../../store/charactersStore';
-import { migratePowers } from '../lib/powerMigration';
+import { migratePowers, migrateAdvantages } from '../lib/powerMigration';
 import type { ICharacter, AbilityKey, IPPLogEntry, IManualOffenseRow } from '../../entities/types';
 
 /**
@@ -75,6 +75,7 @@ export function useCharacterActions() {
     const migratedCharacter = {
       ...character,
       powers: migratePowers(character.powers as unknown[]),
+      advantages: migrateAdvantages((character.advantages as unknown[]) ?? []),
     };
 
     // Validate characterId format if present
