@@ -369,7 +369,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
         return (
           <Modal
             isOpen={!!subtypeModal}
-            onClose={() => { setSubtypeModal(null); setSubtypeInput(''); setFilteredSkills([]); }}
+            onClose={() => { setSubtypeModal(null); setSubtypeInput(''); }}
             title={def.name}
             compact
           >
@@ -444,9 +444,37 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
               ) : (
                 <>
                   <p className="subtype-prompt">{def.subtypePrompt || t('advantages.enterSubtype')}</p>
-                  <div className="subtype-input-container">
-                    <input
+                  
+                  {def.id === 'skill_mastery' && availableSkills.length === 0 && (
+                    <p className="subtype-warning">
+                      {character.skills.length === 0 
+                        ? t('advantages.noSkillsInSheet')
+                        : t('advantages.allSkillsHaveMastery')}
+                    </p>
+                  )}
+                  
+                  {def.id === 'skill_mastery' ? (
+                    <select
                       ref={subtypeRef}
+                      className="subtype-dropdown"
+                      value={subtypeInput}
+                      onChange={(e) => setSubtypeInput(e.target.value)}
+                      disabled={availableSkills.length === 0}
+                    >
+                      <option value="">
+                        {availableSkills.length === 0 
+                          ? t('advantages.noSkillsAvailable')
+                          : t('advantages.selectSkill')}
+                      </option>
+                      {availableSkills.map((skill) => (
+                        <option key={skill.value} value={skill.value}>
+                          {skill.label}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      ref={subtypeRef as any}
                       type="text"
                       className="subtype-input"
                       value={subtypeInput}
@@ -454,35 +482,18 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
                       onKeyDown={(e) => e.key === 'Enter' && confirmSubtype()}
                       placeholder={t('advantages.subtypePlaceholder')}
                     />
-                    {filteredSkills.length > 0 && autocompletePosition && createPortal(
-                      <div 
-                        className="subtype-autocomplete-portal"
-                        style={{
-                          position: 'fixed',
-                          top: `${autocompletePosition.top}px`,
-                          left: `${autocompletePosition.left}px`,
-                          width: `${autocompletePosition.width}px`,
-                          zIndex: 10000
-                        }}
-                      >
-                        {filteredSkills.map((skill) => (
-                          <button
-                            key={skill.id}
-                            className="subtype-autocomplete-item"
-                            onClick={() => { setSubtypeInput(skill.name); setFilteredSkills([]); }}
-                          >
-                            {skill.name}
-                          </button>
-                        ))}
-                      </div>,
-                      document.body
-                    )}
-                  </div>
+                  )}
+                  
                   <div className="subtype-actions">
-                    <Button variant="ghost" size="sm" onClick={() => { setSubtypeModal(null); setSubtypeInput(''); setFilteredSkills([]); }}>
+                    <Button variant="ghost" size="sm" onClick={() => { setSubtypeModal(null); setSubtypeInput(''); }}>
                       {t('common.cancel')}
                     </Button>
-                    <Button variant="primary" size="sm" onClick={confirmSubtype}>
+                    <Button 
+                      variant="primary" 
+                      size="sm" 
+                      onClick={confirmSubtype}
+                      disabled={def.id === 'skill_mastery' && (!subtypeInput || availableSkills.length === 0)}
+                    >
                       {t('advantages.confirm')}
                     </Button>
                   </div>
@@ -625,6 +636,24 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
           font-family: var(--f-body); font-size: 0.9rem;
         }
         .subtype-input:focus { outline: none; border-color: var(--c-primary); }
+        .subtype-dropdown {
+          width: 100%; padding: var(--s-sm);
+          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
+          border-radius: var(--r-sm); color: var(--c-text);
+          font-family: var(--f-body); font-size: 0.9rem;
+          cursor: pointer;
+        }
+        .subtype-dropdown:focus { outline: none; border-color: var(--c-primary); }
+        .subtype-dropdown:disabled {
+          opacity: 0.5; cursor: not-allowed;
+          background: var(--c-surface);
+        }
+        .subtype-warning {
+          font-size: 0.85rem; color: var(--c-warning);
+          background: rgba(251, 191, 36, 0.1);
+          padding: var(--s-sm); border-radius: var(--r-sm);
+          margin: var(--s-sm) 0;
+        }
         .subtype-autocomplete {
           position: absolute; top: 100%; left: 0; right: 0; z-index: 1000;
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
