@@ -209,6 +209,39 @@ export function validateCharacterSemantics(
   character.advantages.forEach((advantage, index) => {
     if (advantageIds.size > 0 && !advantageIds.has(advantage.advantageId)) {
       issues.push(issue(`advantages.${index}.advantageId`, `Unknown advantage "${advantage.advantageId}".`));
+      return;
+    }
+
+    // Validate subtype requirements
+    const advantageDef = context.advantageDefs?.find((def) => def.id === advantage.advantageId);
+    if (advantageDef) {
+      // Check if advantage requires a subtype but doesn't have one
+      if (advantageDef.subtypeRequired && (!advantage.subtype || advantage.subtype.trim() === '')) {
+        issues.push(issue(
+          `advantages.${index}.subtype`,
+          `Advantage "${advantageDef.name}" requires a subtype.`,
+        ));
+      }
+
+      // For skill-based advantages with subtypes, validate against known skills
+      // Skill-based advantages are those with advantageType === 'skill' and have a subtypePrompt
+      if (
+        advantageDef.advantageType === 'skill' &&
+        advantageDef.subtypePrompt &&
+        advantage.subtype &&
+        advantage.subtype.trim() !== ''
+      ) {
+        const skillExists = context.skillDefs?.some(
+          (skill) => skill.name.toLowerCase() === advantage.subtype!.toLowerCase()
+        );
+        if (!skillExists && context.skillDefs && context.skillDefs.length > 0) {
+          issues.push(issue(
+            `advantages.${index}.subtype`,
+            `Subtype "${advantage.subtype}" for advantage "${advantageDef.name}" must be a valid skill name.`,
+            'warning',
+          ));
+        }
+      }
     }
   });
 
