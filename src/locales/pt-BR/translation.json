@@ -38,6 +38,16 @@
   "ppLog.base": "Base (NP × 15)",
   "ppLog.total": "Total Disponível",
 
+  "tabs.newCharacter": "Novo Personagem",
+  "tabs.closeCharacter": "Fechar Aba",
+  "tabs.closeConfirm": "Fechar este personagem? Alterações não salvas serão perdidas.",
+  "tabs.duplicateCharacter": "Duplicar Personagem",
+  "tabs.unnamed": "Personagem Sem Nome",
+  "tabs.reorderHint": "Arraste as abas para reordenar",
+  "tabs.maxTabsWarning": "Você tem {{count}} abas abertas. Considere exportar personagens antigos para liberar espaço.",
+  "tabs.copyLabel": " (Cópia)",
+  "tabs.copyOfCopy": " (Cópia {{number}})",
+
   "header.heroName": "Nome do Herói",
   "header.player": "Jogador",
   "header.identity": "Identidade",

@@ -38,6 +38,16 @@
   "ppLog.base": "Base (PL × 15)",
   "ppLog.total": "Total Available",
 
+  "tabs.newCharacter": "New Character",
+  "tabs.closeCharacter": "Close Tab",
+  "tabs.closeConfirm": "Close this character? Unsaved changes will be lost.",
+  "tabs.duplicateCharacter": "Duplicate Character",
+  "tabs.unnamed": "Unnamed Character",
+  "tabs.reorderHint": "Drag tabs to reorder",
+  "tabs.maxTabsWarning": "You have {{count}} tabs open. Consider exporting older characters to free up space.",
+  "tabs.copyLabel": " (Copy)",
+  "tabs.copyOfCopy": " (Copy {{number}})",
+
   "header.heroName": "Hero Name",
   "header.player": "Player",
   "header.identity": "Identity",
