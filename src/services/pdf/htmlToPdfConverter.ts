@@ -67,37 +67,83 @@ export async function convertHtmlToPdf(
       }
       
       case 'paged': {
-        // Paged.js renderer: Same as html2canvas but with lower scale for faster rendering
-        // and slightly different settings. Both use html2canvas underneath.
-        console.log('[Paged Renderer] Using html2pdf with optimized settings');
+        // Paged.js renderer uses the Paged.js library to chunk content into pages
+        // following CSS Paged Media specifications
+        console.log('[Paged Renderer] Using Paged.js for CSS Paged Media rendering');
         
-        const pagedOptions = {
-          margin: options.margin || 10,
-          filename: options.filename,
-          image: { 
-            type: 'jpeg' as const, 
-            quality: 0.95 
-          },
-          html2canvas: { 
-            scale: 1.5, // Lower scale than html2canvas mode for faster processing
-            useCORS: true,
-            letterRendering: true,
-            logging: false,
-          },
-          jsPDF: { 
-            unit: 'mm', 
-            format: 'a4', 
-            orientation: 'portrait' as const,
-          },
-          pagebreak: options.pagebreak || { 
-            mode: ['avoid-all', 'css', 'legacy'] 
-          },
-        };
+        // Import Paged.js Previewer
+        const { Previewer } = await import('pagedjs');
         
-        pdfBlob = await html2pdf()
-          .set(pagedOptions)
-          .from(element)
-          .output('blob') as Blob;
+        // Create a temporary container for Paged.js rendering
+        const tempContainer = document.createElement('div');
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        document.body.appendChild(tempContainer);
+        
+        try {
+          // Create a previewer instance
+          const previewer = new Previewer();
+          
+          // Render the HTML with Paged.js
+          // preview(content, stylesheets, renderTo)
+          const flow = await previewer.preview(
+            element.innerHTML,
+            [], // Can add CSS stylesheets here if needed
+            tempContainer
+          );
+          
+          console.log('[Paged Renderer] Content rendered into', flow.total, 'pages');
+          
+          // Now convert each page to PDF using html2canvas + jsPDF
+          const html2canvas = (await import('html2canvas')).default;
+          const { jsPDF } = await import('jspdf');
+          
+          const pdf = new jsPDF({
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait',
+          });
+          
+          // Get all rendered pages from Paged.js
+          const pages = tempContainer.querySelectorAll('.pagedjs_page');
+          
+          if (!pages.length) {
+            throw new Error('Paged.js did not generate any pages');
+          }
+          
+          // Convert each page to PDF
+          for (let i = 0; i < pages.length; i++) {
+            const page = pages[i] as HTMLElement;
+            
+            // Capture the page as canvas
+            const canvas = await html2canvas(page, {
+              scale: 2, // High quality
+              useCORS: true,
+              letterRendering: true,
+              logging: false,
+              backgroundColor: '#ffffff',
+            });
+            
+            // Add new page to PDF (except for the first one)
+            if (i > 0) {
+              pdf.addPage();
+            }
+            
+            // Convert canvas to image and add to PDF
+            const imgData = canvas.toDataURL('image/jpeg', 0.95);
+            const imgWidth = 210; // A4 width in mm
+            const imgHeight = 297; // A4 height in mm
+            
+            pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+          }
+          
+          pdfBlob = pdf.output('blob');
+          
+        } finally {
+          // Clean up: remove temporary container
+          document.body.removeChild(tempContainer);
+        }
+        
         break;
       }
       
