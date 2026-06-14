@@ -4,6 +4,7 @@ import { MenuBar } from '../shared/ui/MenuBar'
 import { SheetView } from '../features/sheet-core/SheetView'
 import { CharacterTabs } from '../features/sheet-core/CharacterTabs'
 import { PDFPreviewDialog } from '../features/sheet-core/PDFPreviewDialog'
+import { PDFOverflowModal } from '../features/sheet-core/PDFOverflowModal'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 import { useAutoLoadDraftMulti } from '../shared/hooks/useAutoLoadDraftMulti'
@@ -24,6 +25,7 @@ export function App() {
   
   // PDF export with preview dialog
   const {
+    exportPDF,
     isPreviewOpen,
     isGeneratingPreview,
     pdfPreviewHtml,
@@ -31,6 +33,9 @@ export function App() {
     generateAndOpenPdf,
     downloadHtmlFromPreview,
     closePreview,
+    pdfOverflow,
+    confirmAndExportPDF,
+    clearOverflow,
   } = usePDFExport();
 
   // Sync <html lang> and <title> with the active i18n language
@@ -50,7 +55,12 @@ export function App() {
       }}
     >
       <div className="app-root">
-        <MenuBar activeView={activeView} onViewChange={setActiveView} />
+        <MenuBar 
+          activeView={activeView} 
+          onViewChange={setActiveView}
+          onExportPDF={exportPDF}
+          isGeneratingPreview={isGeneratingPreview}
+        />
         {activeView === 'sheet' && <CharacterTabs />}
         <ErrorBoundary
           fallback={(error) => <ErrorFallback error={error} />}
@@ -77,6 +87,15 @@ export function App() {
           onGeneratePdf={generateAndOpenPdf}
           onDownloadHtml={downloadHtmlFromPreview}
         />
+
+        {/* PDF Overflow Modal */}
+        {pdfOverflow.length > 0 && (
+          <PDFOverflowModal
+            report={pdfOverflow}
+            onConfirm={confirmAndExportPDF}
+            onCancel={clearOverflow}
+          />
+        )}
       </div>
 
       <style>{`

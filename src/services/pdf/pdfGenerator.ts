@@ -24,6 +24,8 @@ import {
   calcPowerTotalCost,
 } from '../../shared/lib/mathEngine';
 import { buildOffenseSummary } from '../../shared/lib/offenseSummary';
+import type { PDFCustomizationOptions, ColorScheme, LayoutMode, FontFamily, FontSize } from './types';
+import { DEFAULT_CUSTOMIZATION, COLOR_THEMES, SPACING_SCALES, FONT_SIZE_SCALES } from './types';
 
 export interface PDFGeneratorOptions {
   character: ICharacter;
@@ -32,6 +34,7 @@ export interface PDFGeneratorOptions {
   skillDefs: Record<string, ISkillDef>;
   advantageDefs: Record<string, IAdvantageDef>;
   includeStyles?: boolean;  // Whether to include inline styles
+  customization?: PDFCustomizationOptions;  // Customization options for PDF appearance
 }
 
 export interface PDFGenerationResult {
@@ -52,6 +55,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       skillDefs,
       advantageDefs,
       includeStyles = true,
+      customization = DEFAULT_CUSTOMIZATION,
     } = options;
 
     // Calculate costs
@@ -151,37 +155,43 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       powersCost,
     }));
 
-    // Equipment
-    const equipmentSection = renderEquipmentSection({
-      character,
-      powerDefs,
-      modifierDefs,
-    });
-    if (equipmentSection) {
-      sections.push(equipmentSection);
+    // Equipment (optional based on customization)
+    if (customization.includeEquipment) {
+      const equipmentSection = renderEquipmentSection({
+        character,
+        powerDefs,
+        modifierDefs,
+      });
+      if (equipmentSection) {
+        sections.push(equipmentSection);
+      }
     }
 
-    // Complications
-    const complicationsSection = renderComplicationsSection({
-      character,
-    });
-    if (complicationsSection) {
-      sections.push(complicationsSection);
+    // Complications (optional based on customization)
+    if (customization.includeComplications) {
+      const complicationsSection = renderComplicationsSection({
+        character,
+      });
+      if (complicationsSection) {
+        sections.push(complicationsSection);
+      }
     }
 
-    // Notes
-    const notesSection = renderNotesSection({
-      character,
-    });
-    if (notesSection) {
-      sections.push(notesSection);
+    // Notes (optional based on customization)
+    if (customization.includeNotes) {
+      const notesSection = renderNotesSection({
+        character,
+      });
+      if (notesSection) {
+        sections.push(notesSection);
+      }
     }
 
     // Combine sections
     const bodyContent = sections.filter(s => s.trim().length > 0).join('\n\n');
 
     // Generate full HTML
-    const html = generateHTMLDocument(bodyContent, includeStyles);
+    const html = generateHTMLDocument(bodyContent, includeStyles, customization);
 
     return {
       html,
@@ -200,8 +210,12 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
 /**
  * Generate a complete HTML document with optional styles
  */
-function generateHTMLDocument(bodyContent: string, includeStyles: boolean): string {
-  const styles = includeStyles ? getPDFStyles() : '';
+function generateHTMLDocument(
+  bodyContent: string, 
+  includeStyles: boolean, 
+  customization: PDFCustomizationOptions
+): string {
+  const styles = includeStyles ? getPDFStyles(customization) : '';
   
   return `<!DOCTYPE html>
 <html lang="en">
@@ -220,12 +234,24 @@ function generateHTMLDocument(bodyContent: string, includeStyles: boolean): stri
 }
 
 /**
- * Get PDF stylesheet
- * Inline the styles from styles.css
+ * Get PDF stylesheet with customization applied
  */
-function getPDFStyles(): string {
-  // Import styles - in production, you might want to use a bundler to inline this
-  // For now, we'll embed the styles directly
+function getPDFStyles(customization: PDFCustomizationOptions): string {
+  // Import styles and apply customization
+  const baseStyles = getBaseStyles();
+  
+  // Apply customizations
+  let styles = applyColorTheme(baseStyles, customization.colorScheme);
+  styles = applyLayoutMode(styles, customization.layoutMode);
+  styles = applyFontFamily(styles, customization.fontFamily);
+  styles = applyFontSize(styles, customization.fontSize);
+  
+  return styles;
+}
+/**
+ * Get base PDF stylesheet
+ */
+function getBaseStyles(): string {
   return `
 /* ================================================
    CSS Variables - Design System Theme
@@ -1162,4 +1188,67 @@ body {
   }
 }
   `;
+}
+
+/**
+ * Apply color theme to stylesheet
+ */
+function applyColorTheme(styles: string, colorScheme: ColorScheme): string {
+  const theme = COLOR_THEMES[colorScheme];
+  
+  return styles
+    .replace(/--color-primary:\s*#[0-9a-fA-F]{6};/g, `--color-primary: ${theme.primary};`)
+    .replace(/--color-primary-light:\s*#[0-9a-fA-F]{6};/g, `--color-primary-light: ${theme.primaryLight};`)
+    .replace(/--color-primary-dark:\s*#[0-9a-fA-F]{6};/g, `--color-primary-dark: ${theme.primaryDark};`)
+    .replace(/--color-secondary:\s*#[0-9a-fA-F]{6};/g, `--color-secondary: ${theme.secondary};`)
+    .replace(/--color-accent:\s*#[0-9a-fA-F]{6};/g, `--color-accent: ${theme.accent};`);
+}
+
+/**
+ * Apply layout mode (spacing) to stylesheet
+ */
+function applyLayoutMode(styles: string, layoutMode: LayoutMode): string {
+  const spacing = SPACING_SCALES[layoutMode];
+  
+  return styles
+    .replace(/--space-xs:\s*[\d.]+in;/g, `--space-xs: ${spacing.xs}in;`)
+    .replace(/--space-sm:\s*[\d.]+in;/g, `--space-sm: ${spacing.sm}in;`)
+    .replace(/--space-md:\s*[\d.]+in;/g, `--space-md: ${spacing.md}in;`)
+    .replace(/--space-lg:\s*[\d.]+in;/g, `--space-lg: ${spacing.lg}in;`)
+    .replace(/--space-xl:\s*[\d.]+in;/g, `--space-xl: ${spacing.xl}in;`)
+    .replace(/--space-2xl:\s*[\d.]+in;/g, `--space-2xl: ${spacing['2xl']}in;`)
+    .replace(/--space-3xl:\s*[\d.]+in;/g, `--space-3xl: ${spacing['3xl']}in;`)
+    .replace(/--page-padding:\s*[\d.]+in;/g, `--page-padding: ${spacing.pagePadding}in;`);
+}
+
+/**
+ * Apply font family to stylesheet
+ */
+function applyFontFamily(styles: string, fontFamily: FontFamily): string {
+  const fontStack = fontFamily === 'Segoe UI' 
+    ? "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+    : fontFamily === 'Arial'
+    ? "Arial, Helvetica, sans-serif"
+    : fontFamily === 'Times New Roman'
+    ? "'Times New Roman', Times, serif"
+    : "Georgia, 'Times New Roman', serif";
+  
+  return styles.replace(/--font-family-base:\s*[^;]+;/g, `--font-family-base: ${fontStack};`);
+}
+
+/**
+ * Apply font size scale to stylesheet
+ */
+function applyFontSize(styles: string, fontSize: FontSize): string {
+  const scale = FONT_SIZE_SCALES[fontSize];
+  
+  return styles
+    .replace(/--font-size-xs:\s*[\d.]+pt;/g, `--font-size-xs: ${scale.xs}pt;`)
+    .replace(/--font-size-sm:\s*[\d.]+pt;/g, `--font-size-sm: ${scale.sm}pt;`)
+    .replace(/--font-size-base:\s*[\d.]+pt;/g, `--font-size-base: ${scale.base}pt;`)
+    .replace(/--font-size-md:\s*[\d.]+pt;/g, `--font-size-md: ${scale.md}pt;`)
+    .replace(/--font-size-lg:\s*[\d.]+pt;/g, `--font-size-lg: ${scale.lg}pt;`)
+    .replace(/--font-size-xl:\s*[\d.]+pt;/g, `--font-size-xl: ${scale.xl}pt;`)
+    .replace(/--font-size-2xl:\s*[\d.]+pt;/g, `--font-size-2xl: ${scale['2xl']}pt;`)
+    .replace(/--font-size-3xl:\s*[\d.]+pt;/g, `--font-size-3xl: ${scale['3xl']}pt;`);
 }

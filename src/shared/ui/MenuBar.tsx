@@ -7,10 +7,8 @@ import { useActiveCharacter } from '../hooks/useActiveCharacter';
 import { useCharacterActions } from '../hooks/useCharacterActions';
 import { useCalculatedPP } from '../hooks/useCalculatedPP';
 import { useFileOperations } from '../hooks/useFileOperations';
-import { usePDFExport } from '../hooks/usePDFExport';
 import { useExcelExport } from '../hooks/useExcelExport';
 import { prefetchPDFTemplate } from '../../services/pdf-legacy';
-import { PDFOverflowModal } from '../../features/sheet-core/PDFOverflowModal';
 import { MobileDrawer } from './MobileDrawer';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
@@ -40,7 +38,14 @@ const LANGUAGES = Object.keys(i18n.options.resources ?? {}).map((id) => ({
   label: LANGUAGE_LABELS[id] ?? id, // fallback to language code if no label
 }));
 
-export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onViewChange: (v: AppView) => void }) {
+interface MenuBarProps {
+  activeView: AppView;
+  onViewChange: (v: AppView) => void;
+  onExportPDF: () => void;
+  isGeneratingPreview: boolean;
+}
+
+export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPreview }: MenuBarProps) {
   const { t, i18n: i18nInstance } = useTranslation();
   
   // Store
@@ -60,7 +65,6 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   // Hooks
   const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
   const { exportCharacter, handleFileInput, fileInputRef } = useFileOperations();
-  const { exportPDF, confirmAndExportPDF, clearOverflow, pdfOverflow, isGeneratingPreview } = usePDFExport();
   const { exportExcel } = useExcelExport();
 
   // Local state
@@ -131,7 +135,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         onExport={exportCharacter}
         onImport={() => fileInputRef.current?.click()}
         onExportExcel={exportExcel}
-        onExportPDF={exportPDF}
+        onExportPDF={onExportPDF}
         isGeneratingPreview={isGeneratingPreview}
         theme={theme}
         onThemeChange={setTheme}
@@ -179,7 +183,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         <button
           id="btn-export-pdf"
           className={`menubar-btn menubar-btn--pdf ${isGeneratingPreview ? 'menubar-btn--loading' : ''}`}
-          onClick={exportPDF}
+          onClick={onExportPDF}
           disabled={isGeneratingPreview}
           title={t('menu.exportPdf')}
         >
@@ -299,14 +303,6 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
           )}
         </div>
       </nav>
-
-      {pdfOverflow.length > 0 && (
-        <PDFOverflowModal
-          report={pdfOverflow}
-          onConfirm={confirmAndExportPDF}
-          onCancel={clearOverflow}
-        />
-      )}
 
       <style>{`
         .menubar {

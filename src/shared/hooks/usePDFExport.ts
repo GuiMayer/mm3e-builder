@@ -33,6 +33,7 @@ export function usePDFExport() {
    */
   async function exportPDF() {
     const useLegacy = useAppStore.getState().useLegacyPdfExporter;
+    console.log('[usePDFExport] exportPDF called, useLegacy:', useLegacy);
     
     // Legacy mode: check overflow and export directly
     if (useLegacy) {
