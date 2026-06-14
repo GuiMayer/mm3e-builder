@@ -1,44 +1,49 @@
 /* ================================================
    PDF Preview Dialog
-   Shows HTML preview before downloading as PDF
+   Shows HTML preview with instant modal open and loading state
    ================================================ */
 
 import { useEffect, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface PDFPreviewDialogProps {
-  html: string;
-  characterName: string;
   isOpen: boolean;
+  isGenerating: boolean;
+  html: string | null;
+  characterName: string;
   onClose: () => void;
-  onDownloadPdf: () => Promise<void>;
+  onGeneratePdf: () => Promise<void>;
   onDownloadHtml: () => void;
 }
 
 export function PDFPreviewDialog({
+  isOpen,
+  isGenerating,
   html,
   characterName,
-  isOpen,
   onClose,
-  onDownloadPdf,
+  onGeneratePdf,
   onDownloadHtml,
 }: PDFPreviewDialogProps) {
   const { t } = useTranslation();
   const [isConverting, setIsConverting] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
 
-  // Handle PDF download with loading state
-  const handleDownloadPdf = useCallback(async () => {
+  // Determine if actions should be disabled
+  const isActionsDisabled = isGenerating || isConverting;
+
+  // Handle PDF generation with loading state
+  const handleGeneratePdf = useCallback(async () => {
     setIsConverting(true);
     try {
-      await onDownloadPdf();
+      await onGeneratePdf();
     } catch (error) {
-      console.error('Error converting to PDF:', error);
+      console.error('Error generating PDF:', error);
       alert(t('pdf.preview.error'));
     } finally {
       setIsConverting(false);
     }
-  }, [onDownloadPdf, t]);
+  }, [onGeneratePdf, t]);
 
   // Handle HTML download
   const handleDownloadHtml = useCallback(() => {
@@ -47,26 +52,26 @@ export function PDFPreviewDialog({
 
   // Close handler (prevent closing while converting)
   const handleClose = useCallback(() => {
-    if (isConverting) return;
+    if (isActionsDisabled) return;
     onClose();
-  }, [isConverting, onClose]);
+  }, [isActionsDisabled, onClose]);
 
   // Handle ESC key
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !isConverting) {
+      if (e.key === 'Escape' && !isActionsDisabled) {
         onClose();
       }
     },
-    [isConverting, onClose]
+    [isActionsDisabled, onClose]
   );
 
   // Handle backdrop click
   const handleBackdropClick = useCallback(() => {
-    if (!isConverting) {
+    if (!isActionsDisabled) {
       onClose();
     }
-  }, [isConverting, onClose]);
+  }, [isActionsDisabled, onClose]);
 
   // Setup keyboard listener
   useEffect(() => {
@@ -78,7 +83,9 @@ export function PDFPreviewDialog({
 
   // Reset iframe loaded state when HTML changes
   useEffect(() => {
-    setIframeLoaded(false);
+    if (html) {
+      setIframeLoaded(false);
+    }
   }, [html]);
 
   if (!isOpen) return null;
@@ -102,25 +109,38 @@ export function PDFPreviewDialog({
       >
         {/* Header */}
         <div className="pdf-preview-header">
-          <h2 id="pdf-preview-title" className="pdf-preview-title">
-            {t('pdf.preview.title')} - {characterName}
-          </h2>
+          <div>
+            <h2 id="pdf-preview-title" className="pdf-preview-title">
+              {t('pdf.preview.title')}
+            </h2>
+            <p className="pdf-preview-subtitle">
+              {characterName}
+            </p>
+          </div>
           <button
             className="pdf-preview-close-btn"
             onClick={handleClose}
-            disabled={isConverting}
+            disabled={isActionsDisabled}
             aria-label={t('pdf.preview.close')}
           >
             ✕
           </button>
         </div>
 
+        {/* Options Section - Reserved for future customization */}
+        <div className="pdf-preview-options">
+          <span className="pdf-preview-options-label">{t('pdf.preview.options')}</span>
+          <div className="pdf-preview-options-placeholder">
+            {/* Future: Font size, page format, sections to include, etc. */}
+          </div>
+        </div>
+
         {/* Control Bar */}
         <div className="pdf-preview-controls">
           <button
             className="pdf-preview-btn pdf-preview-btn--primary"
-            onClick={handleDownloadPdf}
-            disabled={isConverting}
+            onClick={handleGeneratePdf}
+            disabled={isActionsDisabled || !html}
           >
             {isConverting ? (
               <>
@@ -130,14 +150,14 @@ export function PDFPreviewDialog({
             ) : (
               <>
                 <span className="pdf-preview-icon">📄</span>
-                {t('pdf.preview.downloadPDF')}
+                {t('pdf.preview.generatePDF')}
               </>
             )}
           </button>
           <button
             className="pdf-preview-btn pdf-preview-btn--secondary"
             onClick={handleDownloadHtml}
-            disabled={isConverting}
+            disabled={isActionsDisabled || !html}
           >
             <span className="pdf-preview-icon">🗂️</span>
             {t('pdf.preview.downloadHTML')}
@@ -146,20 +166,28 @@ export function PDFPreviewDialog({
 
         {/* Preview Body */}
         <div className="pdf-preview-body">
-          {!iframeLoaded && (
+          {isGenerating ? (
+            <div className="pdf-preview-loading">
+              <span className="pdf-preview-spinner" />
+              <p>{t('pdf.preview.generatingMessage')}</p>
+            </div>
+          ) : html && !iframeLoaded ? (
             <div className="pdf-preview-loading">
               <span className="pdf-preview-spinner" />
               <p>Loading preview...</p>
             </div>
+          ) : null}
+          
+          {html && (
+            <iframe
+              className="pdf-preview-iframe"
+              srcDoc={html}
+              sandbox="allow-same-origin"
+              title="PDF Preview"
+              onLoad={() => setIframeLoaded(true)}
+              style={{ opacity: iframeLoaded ? 1 : 0 }}
+            />
           )}
-          <iframe
-            className="pdf-preview-iframe"
-            srcDoc={html}
-            sandbox="allow-same-origin"
-            title="PDF Preview"
-            onLoad={() => setIframeLoaded(true)}
-            style={{ opacity: iframeLoaded ? 1 : 0 }}
-          />
         </div>
       </div>
 
@@ -214,9 +242,15 @@ export function PDFPreviewDialog({
 
         .pdf-preview-title {
           font-family: var(--f-heading, system-ui, sans-serif);
-          font-size: 1.1rem;
+          font-size: 1.25rem;
           font-weight: 700;
           color: var(--c-text, #e0e0e0);
+          margin: 0 0 0.25rem 0;
+        }
+
+        .pdf-preview-subtitle {
+          font-size: 0.9rem;
+          color: var(--c-text-secondary, #999);
           margin: 0;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -248,6 +282,29 @@ export function PDFPreviewDialog({
         .pdf-preview-close-btn:disabled {
           opacity: 0.5;
           cursor: not-allowed;
+        }
+
+        .pdf-preview-options {
+          padding: var(--s-md, 0.75rem) var(--s-xl, 1.5rem);
+          border-bottom: 1px solid var(--c-border, #333);
+          background: var(--c-surface, #252525);
+          flex-shrink: 0;
+          display: none; /* Hidden until we add actual options */
+        }
+
+        .pdf-preview-options-label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: var(--c-text-secondary, #999);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .pdf-preview-options-placeholder {
+          margin-top: var(--s-sm, 0.5rem);
+          color: var(--c-text-tertiary, #666);
+          font-size: 0.85rem;
+          font-style: italic;
         }
 
         .pdf-preview-controls {
@@ -369,6 +426,14 @@ export function PDFPreviewDialog({
 
           .pdf-preview-title {
             font-size: 1rem;
+          }
+
+          .pdf-preview-subtitle {
+            font-size: 0.8rem;
+          }
+
+          .pdf-preview-options {
+            padding: var(--s-sm, 0.5rem);
           }
 
           .pdf-preview-controls {
