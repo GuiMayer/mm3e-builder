@@ -174,7 +174,10 @@ export function usePDFExport() {
     const toastId = showToast(t('pdf.toast.converting'), 'loading');
     
     try {
-      const pdfBlob = await convertHtmlToPdf(pdfPreviewHtml, { filename });
+      const pdfBlob = await convertHtmlToPdf(pdfPreviewHtml, { 
+        filename,
+        renderer: customizationOptions.renderer || 'html2canvas'
+      });
       
       // Open PDF in new browser tab
       const pdfUrl = URL.createObjectURL(pdfBlob);
