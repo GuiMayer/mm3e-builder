@@ -7,6 +7,8 @@ import type { PDFOverflowReport } from '../../services/pdf-legacy';
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import type { ISkillDef, IAdvantageDef } from '../../entities/types';
+import { convertHtmlToPdf } from '../../services/pdf/htmlToPdfConverter';
+import { downloadBlob, sanitizeFileName } from '../../services/downloadHelper';
 
 /**
  * Hook for managing PDF export with overflow detection.
@@ -17,6 +19,8 @@ export function usePDFExport() {
   const { character } = useActiveCharacter();
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [pdfOverflow, setPdfOverflow] = useState<PDFOverflowReport[]>([]);
+  const [pdfPreviewHtml, setPdfPreviewHtml] = useState<string | null>(null);
+  const [pdfCharacterName, setPdfCharacterName] = useState<string>('');
 
   /**
    * Check for PDF overflow and show modal if needed, otherwise export directly
@@ -81,15 +85,9 @@ export function usePDFExport() {
           throw new Error(result.error || 'PDF generation failed');
         }
         
-        // TODO: Implement HTML to PDF conversion and download
-        // For now, create a temporary HTML file to preview
-        const blob = new Blob([result.html], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${character.header.name || 'character'}_sheet.html`;
-        link.click();
-        URL.revokeObjectURL(url);
+        // Store HTML for preview
+        setPdfPreviewHtml(result.html);
+        setPdfCharacterName(character.header.name || 'character');
       }
     } catch (e) {
       alert(t('errors.exportError') + '\n' + String(e));
@@ -112,11 +110,54 @@ export function usePDFExport() {
     setPdfOverflow([]);
   }
 
+  /**
+   * Download PDF from preview HTML
+   */
+  async function downloadPdfFromPreview() {
+    if (!pdfPreviewHtml) return;
+    
+    const sanitizedName = sanitizeFileName(pdfCharacterName);
+    const filename = `${sanitizedName}_sheet.pdf`;
+    
+    try {
+      const pdfBlob = await convertHtmlToPdf(pdfPreviewHtml, { filename });
+      await downloadBlob(pdfBlob, filename);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Download HTML from preview
+   */
+  async function downloadHtmlFromPreview() {
+    if (!pdfPreviewHtml) return;
+    
+    const sanitizedName = sanitizeFileName(pdfCharacterName);
+    const filename = `${sanitizedName}_sheet.html`;
+    const blob = new Blob([pdfPreviewHtml], { type: 'text/html' });
+    await downloadBlob(blob, filename);
+  }
+
+  /**
+   * Close preview dialog
+   */
+  function closePreview() {
+    setPdfPreviewHtml(null);
+    setPdfCharacterName('');
+  }
+
   return {
     exportPDF,
     confirmAndExportPDF,
     clearOverflow,
     pdfOverflow,
     isPdfLoading,
+    pdfPreviewHtml,
+    pdfCharacterName,
+    downloadPdfFromPreview,
+    downloadHtmlFromPreview,
+    closePreview,
   };
 }
