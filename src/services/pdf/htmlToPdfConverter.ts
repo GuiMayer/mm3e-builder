@@ -87,8 +87,8 @@ export async function convertHtmlToPdf(
             },
             margin: 10, // Consistent with html2canvas renderer
             autoPaging: 'text', // Smart pagination that avoids cutting text
-            x: 10,
-            y: 10,
+            x: 0,
+            y: 0,
             html2canvas: {
               scale: 0.264,
               useCORS: true,
