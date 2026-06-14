@@ -788,12 +788,14 @@ body {
 
 .power-entry {
   margin-bottom: var(--space-xl);
-  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
-  border: 1px solid var(--color-border);
-  border-left: 4px solid var(--color-primary);
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-left: 4px solid #2c5aa0;
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   box-shadow: var(--shadow-sm);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .power-header {
@@ -861,12 +863,14 @@ body {
 
 .equipment-entry {
   margin-bottom: var(--space-xl);
-  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
-  border: 1px solid var(--color-border);
-  border-left: 4px solid var(--color-accent);
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-left: 4px solid #6b7a8c;
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   box-shadow: var(--shadow-sm);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 /* ================================================
