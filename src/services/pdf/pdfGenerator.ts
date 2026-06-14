@@ -235,6 +235,72 @@ function getPDFStyles(): string {
   // Import styles - in production, you might want to use a bundler to inline this
   // For now, we'll embed the styles directly
   return `
+/* ================================================
+   CSS Variables - Design System Theme
+   ================================================ */
+:root {
+  /* Color Palette - Conservative Professional Theme */
+  --color-primary: #2c5aa0;
+  --color-primary-light: #4a7bc8;
+  --color-primary-dark: #1e3a70;
+  --color-secondary: #5a6c7d;
+  --color-accent: #6b7a8c;
+  
+  /* Semantic Colors */
+  --color-success: #2d7a3e;
+  --color-warning: #d97706;
+  --color-danger: #b91c1c;
+  --color-info: #0369a1;
+  
+  /* Neutrals */
+  --color-text: #1f2937;
+  --color-text-light: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-border: #d1d5db;
+  --color-border-light: #e5e7eb;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f9fafb;
+  --color-bg-tertiary: #f3f4f6;
+  --color-bg-accent: #e8edf4;
+  
+  /* Typography Scale */
+  --font-family-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-size-xs: 7pt;
+  --font-size-sm: 8pt;
+  --font-size-base: 10pt;
+  --font-size-md: 11pt;
+  --font-size-lg: 12pt;
+  --font-size-xl: 14pt;
+  --font-size-2xl: 16pt;
+  --font-size-3xl: 20pt;
+  --line-height-tight: 1.2;
+  --line-height-base: 1.4;
+  --line-height-relaxed: 1.6;
+  
+  /* Spacing Scale (using inches for print) */
+  --space-xs: 0.03in;
+  --space-sm: 0.05in;
+  --space-md: 0.08in;
+  --space-lg: 0.1in;
+  --space-xl: 0.15in;
+  --space-2xl: 0.2in;
+  --space-3xl: 0.3in;
+  
+  /* Border Radius */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  /* Layout */
+  --page-width: 8.5in;
+  --page-padding: 0.5in;
+}
+
 /* Base reset and typography */
 * {
   margin: 0;
@@ -243,17 +309,20 @@ function getPDFStyles(): string {
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 10pt;
-  line-height: 1.4;
-  color: #333;
-  background: #fff;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background: var(--color-bg-primary);
 }
 
+/* ================================================
+   Layout & Container
+   ================================================ */
 .pdf-container {
-  max-width: 8.5in;
+  max-width: var(--page-width);
   margin: 0 auto;
-  padding: 0.5in;
+  padding: var(--page-padding);
 }
 
 @media print {
@@ -261,94 +330,830 @@ body {
   .pdf-section { page-break-inside: avoid; }
 }
 
-.pdf-section { margin-bottom: 0.2in; }
-.pdf-section-title {
-  font-size: 14pt;
-  font-weight: bold;
-  border-bottom: 2px solid #333;
-  margin-bottom: 0.1in;
-  padding-bottom: 0.05in;
-}
-.pdf-subsection { margin-bottom: 0.15in; }
-
-/* Header section */
-.header-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.1in; margin-bottom: 0.15in; }
-.header-field { margin-bottom: 0.08in; }
-.header-label { font-size: 8pt; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
-.header-value { font-size: 11pt; font-weight: 600; }
-.physical-description { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.1in; margin-top: 0.1in; }
-
-/* Abilities section */
-.abilities-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.1in; }
-.ability-box { border: 1px solid #ccc; padding: 0.08in; text-align: center; }
-.ability-name { font-size: 9pt; font-weight: bold; text-transform: uppercase; color: #555; }
-.ability-score { font-size: 16pt; font-weight: bold; margin: 0.05in 0; }
-
-/* Defenses section */
-.defenses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.1in; }
-.defense-box { border: 1px solid #ccc; padding: 0.08in; text-align: center; }
-.defense-name { font-size: 9pt; font-weight: bold; text-transform: uppercase; color: #555; }
-.defense-total { font-size: 16pt; font-weight: bold; margin: 0.05in 0; }
-.defense-breakdown { font-size: 8pt; color: #666; }
-
-/* Offense section */
-.offense-table { width: 100%; border-collapse: collapse; margin-top: 0.1in; }
-.offense-table th { background: #f5f5f5; border: 1px solid #ccc; padding: 0.05in; font-size: 9pt; text-align: left; font-weight: bold; }
-.offense-table td { border: 1px solid #ccc; padding: 0.05in; font-size: 9pt; }
-
-/* Skills section */
-.skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.05in 0.15in; }
-.skill-entry { display: flex; justify-content: space-between; align-items: baseline; padding: 0.03in 0; border-bottom: 1px dotted #ddd; }
-.skill-name { font-size: 9pt; flex: 1; }
-.skill-ranks { font-size: 8pt; color: #666; margin: 0 0.1in; }
-.skill-total { font-size: 10pt; font-weight: bold; min-width: 0.3in; text-align: right; }
-
-/* Advantages section */
-.advantages-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.05in 0.15in; }
-.advantage-entry { display: flex; justify-content: space-between; align-items: baseline; padding: 0.03in 0; border-bottom: 1px dotted #ddd; }
-.advantage-name { font-size: 9pt; flex: 1; }
-.advantage-rank { font-size: 9pt; font-weight: bold; color: #666; margin-left: 0.1in; }
-
-/* Powers section */
-.powers-list { margin-top: 0.1in; }
-.power-entry { margin-bottom: 0.12in; padding: 0.08in; border: 1px solid #ddd; border-radius: 3px; background: #fafafa; }
-.power-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.05in; }
-.power-name { font-size: 10pt; font-weight: bold; flex: 1; }
-.power-cost { font-size: 10pt; font-weight: bold; color: #0066cc; margin-left: 0.1in; }
-.power-effects { font-size: 9pt; margin-bottom: 0.03in; }
-.power-modifiers { font-size: 8pt; color: #555; font-style: italic; margin-bottom: 0.03in; }
-.power-description { font-size: 8pt; color: #666; margin-top: 0.05in; }
-
-/* Equipment section */
-.equipment-list { margin-top: 0.1in; }
-.equipment-entry { margin-bottom: 0.12in; padding: 0.08in; border: 1px solid #ddd; border-radius: 3px; background: #f9f9f9; }
-
-/* Complications section */
-.complications-list { margin-top: 0.1in; }
-.complication-item { margin-bottom: 0.08in; padding: 0.06in; border-left: 3px solid #cc6600; background: #fff9f0; }
-.complication-name { font-size: 9pt; }
-
-/* Notes section */
-.notes-content { font-size: 9pt; line-height: 1.5; white-space: pre-wrap; padding: 0.1in; background: #f9f9f9; border: 1px solid #ddd; border-radius: 3px; margin-top: 0.1in; }
-
-/* Power Point Totals */
-.pp-totals { margin-top: 0.1in; padding: 0.1in; border: 2px solid #333; background: #f5f5f5; }
-.pp-totals-grid { display: grid; grid-template-columns: auto 1fr; gap: 0.05in 0.15in; align-items: baseline; }
-.pp-label { font-size: 9pt; text-align: right; }
-.pp-value { font-size: 10pt; font-weight: bold; text-align: left; }
-.pp-total-row { margin-top: 0.05in; padding-top: 0.05in; border-top: 1px solid #999; }
-
-/* Utility classes */
-.text-bold { font-weight: bold; }
-.text-muted { color: #666; font-style: italic; }
+/* ================================================
+   Typography Utilities
+   ================================================ */
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-md { font-size: var(--font-size-md); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-bold { font-weight: 700; }
+.text-semibold { font-weight: 600; }
+.text-medium { font-weight: 500; }
+.text-muted { color: var(--color-text-muted); font-style: italic; }
+.text-light { color: var(--color-text-light); }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
-.text-small { font-size: 8pt; }
+.text-left { text-align: left; }
+.text-uppercase { text-transform: uppercase; letter-spacing: 0.5px; }
 
+/* ================================================
+   Card System
+   ================================================ */
+.card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.card-header {
+  background: var(--color-bg-accent);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-md);
+  margin: calc(-1 * var(--space-md)) calc(-1 * var(--space-md)) var(--space-md);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: var(--space-md);
+}
+
+/* ================================================
+   Section Styles
+   ================================================ */
+.pdf-section { 
+  margin-bottom: var(--space-2xl);
+}
+
+.pdf-section-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  border-bottom: 2px solid var(--color-primary);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pdf-subsection { 
+  margin-bottom: var(--space-xl);
+}
+
+.pdf-subsection-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-secondary);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+/* ================================================
+   Header Section
+   ================================================ */
+.header-section {
+  margin-bottom: var(--space-2xl);
+}
+
+.header-main {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  color: var(--color-bg-primary);
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.character-name {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.header-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.stat-box {
+  background: var(--color-bg-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-box.highlight-box {
+  border-color: var(--color-danger);
+  background: #fef2f2;
+}
+
+.stat-box.success-box {
+  border-color: var(--color-success);
+  background: #f0fdf4;
+}
+
+.stat-box-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-xs);
+}
+
+.stat-box-value {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.header-field {
+  margin-bottom: var(--space-sm);
+  color: var(--color-bg-primary);
+}
+
+.header-field-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+}
+
+.header-field-value {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  margin-left: var(--space-sm);
+}
+
+.physical-description {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.description-field {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.description-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-xs);
+}
+
+.description-value {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ================================================
+   Abilities Section
+   ================================================ */
+.abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.ability-box {
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.ability-box.absent {
+  border-color: var(--color-border);
+  background: var(--color-bg-tertiary);
+  opacity: 0.6;
+}
+
+.ability-name {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-xs);
+}
+
+.ability-value {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: var(--space-sm) 0;
+  line-height: 1;
+}
+
+.ability-bonus {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-light);
+  margin-top: var(--space-xs);
+}
+
+/* ================================================
+   Defenses Section
+   ================================================ */
+.defenses-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.defense-box {
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.defense-name {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-xs);
+}
+
+.defense-value {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: var(--space-sm) 0;
+  line-height: 1;
+}
+
+.defense-breakdown {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+  margin-top: var(--space-xs);
+}
+
+/* ================================================
+   Offense Section (Table)
+   ================================================ */
+.offense-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.offense-table thead {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  color: var(--color-bg-primary);
+}
+
+.offense-table th {
+  padding: var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--color-primary);
+}
+
+.offense-table td {
+  padding: var(--space-md);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border-light);
+}
+
+.offense-table tbody tr {
+  background: var(--color-bg-primary);
+  transition: background-color 0.2s ease;
+}
+
+.offense-table tbody tr:nth-child(even) {
+  background: var(--color-bg-secondary);
+}
+
+.offense-table tbody tr:hover {
+  background: var(--color-bg-accent);
+}
+
+.offense-name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.offense-bonus {
+  text-align: center;
+  font-weight: 600;
+}
+
+.offense-range {
+  text-align: center;
+}
+
+/* ================================================
+   Skills Section
+   ================================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm) var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+
+.skill-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-secondary);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.skill-name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  flex: 1;
+  color: var(--color-text);
+}
+
+.skill-ranks {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+  margin: 0 var(--space-md);
+}
+
+.skill-total {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  min-width: 0.3in;
+  text-align: right;
+  color: var(--color-primary-dark);
+}
+
+/* ================================================
+   Advantages Section
+   ================================================ */
+.advantages-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm) var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+
+.advantage-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-secondary);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.advantage-name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  flex: 1;
+  color: var(--color-text);
+}
+
+.advantage-rank {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-light);
+  margin-left: var(--space-md);
+}
+
+/* ================================================
+   Powers Section
+   ================================================ */
+.powers-list {
+  margin-top: var(--space-lg);
+}
+
+.power-entry {
+  margin-bottom: var(--space-xl);
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.power-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.power-name {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text);
+  flex: 1;
+}
+
+.power-cost {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-left: var(--space-lg);
+  background: var(--color-bg-accent);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+}
+
+.power-effects {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.power-modifiers {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+  font-style: italic;
+  margin-bottom: var(--space-sm);
+  padding-left: var(--space-md);
+}
+
+.power-descriptors {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+  margin-top: var(--space-sm);
+}
+
+.power-description {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border-light);
+  line-height: var(--line-height-relaxed);
+}
+
+/* ================================================
+   Equipment Section
+   ================================================ */
+.equipment-list {
+  margin-top: var(--space-lg);
+}
+
+.equipment-entry {
+  margin-bottom: var(--space-xl);
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ================================================
+   Complications Section
+   ================================================ */
+.complications-list {
+  margin-top: var(--space-lg);
+}
+
+.complication-item {
+  margin-bottom: var(--space-md);
+  padding: var(--space-md);
+  background: #fffbf0;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.complication-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  line-height: var(--line-height-relaxed);
+}
+
+/* ================================================
+   Notes Section
+   ================================================ */
+.notes-section {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  white-space: pre-wrap;
+  padding: var(--space-lg);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-lg);
+  color: var(--color-text);
+}
+
+/* ================================================
+   Power Point Summary Section
+   ================================================ */
+.pp-summary-compact {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-lg);
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.pp-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.pp-breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm);
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-primary-light);
+}
+
+.pp-breakdown-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.pp-breakdown-value {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.pp-summary-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-bg-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+.pp-summary-box.over-budget {
+  border-color: var(--color-danger);
+  background: #fef2f2;
+}
+
+.pp-summary-box.under-budget {
+  border-color: var(--color-success);
+  background: #f0fdf4;
+}
+
+.pp-summary-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-xs);
+}
+
+.pp-summary-value {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+
+.pp-summary-value.positive {
+  color: var(--color-success);
+}
+
+.pp-summary-value.negative {
+  color: var(--color-danger);
+}
+
+.pp-summary-fraction {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+  margin-top: var(--space-sm);
+}
+
+.pp-warning {
+  text-align: center;
+  font-weight: 700;
+  color: var(--color-danger);
+  margin-top: var(--space-md);
+  font-size: var(--font-size-sm);
+}
+
+/* Legacy PP Totals (deprecated - use compact version) */
+.pp-totals {
+  margin-top: var(--space-lg);
+  padding: var(--space-lg);
+  border: 2px solid var(--color-primary-dark);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+}
+
+.pp-totals-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-sm) var(--space-xl);
+  align-items: baseline;
+}
+
+.pp-label {
+  font-size: var(--font-size-sm);
+  text-align: right;
+  color: var(--color-text);
+}
+
+.pp-value {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  text-align: left;
+  color: var(--color-text);
+}
+
+.pp-total-row {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ================================================
+   Badge System
+   ================================================ */
+.badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-accent);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.badge-primary {
+  background: var(--color-primary-light);
+  color: var(--color-bg-primary);
+  border-color: var(--color-primary);
+}
+
+.badge-success {
+  background: var(--color-success);
+  color: var(--color-bg-primary);
+  border-color: var(--color-success);
+}
+
+.badge-warning {
+  background: var(--color-warning);
+  color: var(--color-bg-primary);
+  border-color: var(--color-warning);
+}
+
+.badge-danger {
+  background: var(--color-danger);
+  color: var(--color-bg-primary);
+  border-color: var(--color-danger);
+}
+
+/* ================================================
+   Cost Display
+   ================================================ */
+.cost-summary {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ================================================
+   Print Optimizations
+   ================================================ */
 @media print {
-  body { font-size: 9pt; }
-  .pdf-container { padding: 0.3in; }
-  .no-print { display: none; }
+  body { 
+    font-size: var(--font-size-sm);
+  }
+  
+  .pdf-container { 
+    padding: 0.3in;
+    max-width: 100%;
+  }
+  
+  .no-print { 
+    display: none !important;
+  }
+  
+  /* Adjust colors for better print */
+  .header-main {
+    background: var(--color-primary-dark);
+    color: var(--color-bg-primary);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .stat-box,
+  .ability-box,
+  .defense-box,
+  .power-entry,
+  .equipment-entry {
+    box-shadow: none;
+    border-width: 1px;
+  }
+  
+  .offense-table thead {
+    background: var(--color-primary-dark);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  /* Ensure borders are visible in B&W */
+  .card,
+  .stat-box,
+  .ability-box,
+  .defense-box {
+    border: 1.5px solid var(--color-border);
+  }
+  
+  /* Reduce spacing for print */
+  .pdf-section {
+    margin-bottom: var(--space-xl);
+  }
+  
+  .header-stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+  }
+  
+  /* Page breaks */
+  .page-break { 
+    page-break-after: always;
+  }
+  
+  .pdf-section { 
+    page-break-inside: avoid;
+  }
+  
+  .power-entry,
+  .equipment-entry {
+    page-break-inside: avoid;
+  }
+}
+
+/* ================================================
+   A4 Layout Optimization
+   ================================================ */
+@page {
+  size: A4;
+  margin: 0.5in;
+}
+
+@media screen {
+  /* Screen-only enhancements */
+  .offense-table tbody tr:hover {
+    background: var(--color-bg-accent);
+  }
+  
+  .skill-entry:hover,
+  .advantage-entry:hover {
+    background: var(--color-bg-accent);
+  }
 }
   `;
 }
