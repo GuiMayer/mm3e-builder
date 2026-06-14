@@ -13,7 +13,7 @@ interface MobileDrawerProps {
   onImport: () => void;
   onExportExcel: () => void;
   onExportPDF: () => void;
-  isPdfLoading: boolean;
+  isGeneratingPreview: boolean;
   theme: string;
   onThemeChange: (theme: string) => void;
   themes: Array<{ id: string; label: string }>;
@@ -36,7 +36,7 @@ export function MobileDrawer({
   onImport,
   onExportExcel,
   onExportPDF,
-  isPdfLoading,
+  isGeneratingPreview,
   theme,
   onThemeChange,
   themes,
@@ -119,10 +119,10 @@ export function MobileDrawer({
             <button
               className="mobile-drawer-item"
               onClick={() => handleAction(onExportPDF)}
-              disabled={isPdfLoading}
+              disabled={isGeneratingPreview}
             >
-              {isPdfLoading ? <Loader2 size={20} className="spin" /> : <FileText size={20} />}
-              <span>{isPdfLoading ? t('pdf.generating') : t('menu.exportPdf')}</span>
+              {isGeneratingPreview ? <Loader2 size={20} className="spin" /> : <FileText size={20} />}
+              <span>{isGeneratingPreview ? t('pdf.generating') : t('menu.exportPdf')}</span>
             </button>
           </div>
 

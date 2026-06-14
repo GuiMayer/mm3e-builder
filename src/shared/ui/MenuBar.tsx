@@ -60,7 +60,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   // Hooks
   const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
   const { exportCharacter, handleFileInput, fileInputRef } = useFileOperations();
-  const { exportPDF, confirmAndExportPDF, clearOverflow, pdfOverflow, isPdfLoading } = usePDFExport();
+  const { exportPDF, confirmAndExportPDF, clearOverflow, pdfOverflow, isGeneratingPreview } = usePDFExport();
   const { exportExcel } = useExcelExport();
 
   // Local state
@@ -132,7 +132,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         onImport={() => fileInputRef.current?.click()}
         onExportExcel={exportExcel}
         onExportPDF={exportPDF}
-        isPdfLoading={isPdfLoading}
+        isPdfLoading={isGeneratingPreview}
         theme={theme}
         onThemeChange={setTheme}
         themes={THEMES}
@@ -178,15 +178,15 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         </button>
         <button
           id="btn-export-pdf"
-          className={`menubar-btn menubar-btn--pdf ${isPdfLoading ? 'menubar-btn--loading' : ''}`}
+          className={`menubar-btn menubar-btn--pdf ${isGeneratingPreview ? 'menubar-btn--loading' : ''}`}
           onClick={exportPDF}
-          disabled={isPdfLoading}
+          disabled={isGeneratingPreview}
           title={t('menu.exportPdf')}
         >
-          {isPdfLoading
+          {isGeneratingPreview
             ? <Loader2 size={18} className="spin" />
             : <FileText size={18} />}
-          <span>{isPdfLoading ? t('pdf.generating') : t('menu.exportPdf')}</span>
+          <span>{isGeneratingPreview ? t('pdf.generating') : t('menu.exportPdf')}</span>
         </button>
         <button className="menubar-btn" onClick={() => fileInputRef.current?.click()} title={t('menu.import')}>
           <Upload size={18} /> <span>{t('menu.import')}</span>
