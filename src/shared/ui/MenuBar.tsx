@@ -132,7 +132,7 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
         onImport={() => fileInputRef.current?.click()}
         onExportExcel={exportExcel}
         onExportPDF={exportPDF}
-        isPdfLoading={isGeneratingPreview}
+        isGeneratingPreview={isGeneratingPreview}
         theme={theme}
         onThemeChange={setTheme}
         themes={THEMES}
