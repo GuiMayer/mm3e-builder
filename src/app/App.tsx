@@ -30,6 +30,8 @@ export function App() {
     isGeneratingPreview,
     pdfPreviewHtml,
     pdfCharacterName,
+    customizationOptions,
+    handleCustomizationChange,
     generateAndOpenPdf,
     downloadHtmlFromPreview,
     closePreview,
@@ -83,6 +85,8 @@ export function App() {
           isGenerating={isGeneratingPreview}
           html={pdfPreviewHtml}
           characterName={pdfCharacterName}
+          customizationOptions={customizationOptions}
+          onCustomizationChange={handleCustomizationChange}
           onClose={closePreview}
           onGeneratePdf={generateAndOpenPdf}
           onDownloadHtml={downloadHtmlFromPreview}

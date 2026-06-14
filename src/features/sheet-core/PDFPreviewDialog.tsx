@@ -5,12 +5,16 @@
 
 import { useEffect, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PDFCustomizationPanel } from './PDFCustomizationPanel';
+import type { PDFCustomizationOptions } from '../../services/pdf/types';
 
 interface PDFPreviewDialogProps {
   isOpen: boolean;
   isGenerating: boolean;
   html: string | null;
   characterName: string;
+  customizationOptions: PDFCustomizationOptions;
+  onCustomizationChange: (options: PDFCustomizationOptions) => void;
   onClose: () => void;
   onGeneratePdf: () => Promise<void>;
   onDownloadHtml: () => void;
@@ -21,6 +25,8 @@ export function PDFPreviewDialog({
   isGenerating,
   html,
   characterName,
+  customizationOptions,
+  onCustomizationChange,
   onClose,
   onGeneratePdf,
   onDownloadHtml,
@@ -127,67 +133,70 @@ export function PDFPreviewDialog({
           </button>
         </div>
 
-        {/* Options Section - Reserved for future customization */}
-        <div className="pdf-preview-options">
-          <span className="pdf-preview-options-label">{t('pdf.preview.options')}</span>
-          <div className="pdf-preview-options-placeholder">
-            {/* Future: Font size, page format, sections to include, etc. */}
+        {/* Customization Panel */}
+        <div className="pdf-preview-sidebar">
+          <PDFCustomizationPanel
+            options={customizationOptions}
+            onChange={onCustomizationChange}
+          />
+        </div>
+
+        {/* Main Content Area */}
+        <div className="pdf-preview-content">
+          {/* Control Bar */}
+          <div className="pdf-preview-controls">
+            <button
+              className="pdf-preview-btn pdf-preview-btn--primary"
+              onClick={handleGeneratePdf}
+              disabled={isActionsDisabled || !html}
+            >
+              {isConverting ? (
+                <>
+                  <span className="pdf-preview-spinner" />
+                  {t('pdf.preview.converting')}
+                </>
+              ) : (
+                <>
+                  <span className="pdf-preview-icon">📄</span>
+                  {t('pdf.preview.generatePDF')}
+                </>
+              )}
+            </button>
+            <button
+              className="pdf-preview-btn pdf-preview-btn--secondary"
+              onClick={handleDownloadHtml}
+              disabled={isActionsDisabled || !html}
+            >
+              <span className="pdf-preview-icon">🗂️</span>
+              {t('pdf.preview.downloadHTML')}
+            </button>
           </div>
-        </div>
 
-        {/* Control Bar */}
-        <div className="pdf-preview-controls">
-          <button
-            className="pdf-preview-btn pdf-preview-btn--primary"
-            onClick={handleGeneratePdf}
-            disabled={isActionsDisabled || !html}
-          >
-            {isConverting ? (
-              <>
+          {/* Preview Body */}
+          <div className="pdf-preview-body">
+            {isGenerating ? (
+              <div className="pdf-preview-loading">
                 <span className="pdf-preview-spinner" />
-                {t('pdf.preview.converting')}
-              </>
-            ) : (
-              <>
-                <span className="pdf-preview-icon">📄</span>
-                {t('pdf.preview.generatePDF')}
-              </>
+                <p>{t('pdf.preview.generatingMessage')}</p>
+              </div>
+            ) : html && !iframeLoaded ? (
+              <div className="pdf-preview-loading">
+                <span className="pdf-preview-spinner" />
+                <p>Loading preview...</p>
+              </div>
+            ) : null}
+            
+            {html && (
+              <iframe
+                className="pdf-preview-iframe"
+                srcDoc={html}
+                sandbox="allow-same-origin"
+                title="PDF Preview"
+                onLoad={() => setIframeLoaded(true)}
+                style={{ opacity: iframeLoaded ? 1 : 0 }}
+              />
             )}
-          </button>
-          <button
-            className="pdf-preview-btn pdf-preview-btn--secondary"
-            onClick={handleDownloadHtml}
-            disabled={isActionsDisabled || !html}
-          >
-            <span className="pdf-preview-icon">🗂️</span>
-            {t('pdf.preview.downloadHTML')}
-          </button>
-        </div>
-
-        {/* Preview Body */}
-        <div className="pdf-preview-body">
-          {isGenerating ? (
-            <div className="pdf-preview-loading">
-              <span className="pdf-preview-spinner" />
-              <p>{t('pdf.preview.generatingMessage')}</p>
-            </div>
-          ) : html && !iframeLoaded ? (
-            <div className="pdf-preview-loading">
-              <span className="pdf-preview-spinner" />
-              <p>Loading preview...</p>
-            </div>
-          ) : null}
-          
-          {html && (
-            <iframe
-              className="pdf-preview-iframe"
-              srcDoc={html}
-              sandbox="allow-same-origin"
-              title="PDF Preview"
-              onLoad={() => setIframeLoaded(true)}
-              style={{ opacity: iframeLoaded ? 1 : 0 }}
-            />
-          )}
+          </div>
         </div>
       </div>
 
@@ -209,10 +218,18 @@ export function PDFPreviewDialog({
           border: 1px solid var(--c-border, #333);
           border-radius: var(--r-lg, 12px);
           box-shadow: var(--shadow-xl, 0 20px 60px rgba(0,0,0,0.5));
-          display: flex;
-          flex-direction: column;
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-template-rows: auto 1fr;
           animation: pdf-preview-slide-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
           font-family: var(--f-body, system-ui, sans-serif);
+        }
+
+        @media (min-width: 1024px) {
+          .pdf-preview-modal {
+            grid-template-columns: 320px 1fr;
+            grid-template-rows: auto 1fr;
+          }
         }
 
         @keyframes pdf-preview-fade-in {
@@ -232,12 +249,42 @@ export function PDFPreviewDialog({
         }
 
         .pdf-preview-header {
+          grid-column: 1 / -1;
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: var(--s-lg, 1rem) var(--s-xl, 1.5rem);
           border-bottom: 1px solid var(--c-border, #333);
           flex-shrink: 0;
+        }
+
+        .pdf-preview-sidebar {
+          grid-column: 1;
+          grid-row: 2;
+          border-right: 1px solid var(--c-border, #333);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+
+        @media (max-width: 1023px) {
+          .pdf-preview-sidebar {
+            display: none;
+          }
+        }
+
+        .pdf-preview-content {
+          grid-column: 1 / -1;
+          grid-row: 2;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        }
+
+        @media (min-width: 1024px) {
+          .pdf-preview-content {
+            grid-column: 2;
+          }
         }
 
         .pdf-preview-title {
@@ -282,29 +329,6 @@ export function PDFPreviewDialog({
         .pdf-preview-close-btn:disabled {
           opacity: 0.5;
           cursor: not-allowed;
-        }
-
-        .pdf-preview-options {
-          padding: var(--s-md, 0.75rem) var(--s-xl, 1.5rem);
-          border-bottom: 1px solid var(--c-border, #333);
-          background: var(--c-surface, #252525);
-          flex-shrink: 0;
-          display: none; /* Hidden until we add actual options */
-        }
-
-        .pdf-preview-options-label {
-          font-size: 0.85rem;
-          font-weight: 600;
-          color: var(--c-text-secondary, #999);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-        }
-
-        .pdf-preview-options-placeholder {
-          margin-top: var(--s-sm, 0.5rem);
-          color: var(--c-text-tertiary, #666);
-          font-size: 0.85rem;
-          font-style: italic;
         }
 
         .pdf-preview-controls {

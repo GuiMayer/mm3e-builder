@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
@@ -10,6 +10,8 @@ import type { ISkillDef, IAdvantageDef } from '../../entities/types';
 import { convertHtmlToPdf } from '../../services/pdf/htmlToPdfConverter';
 import { downloadBlob, sanitizeFileName } from '../../services/downloadHelper';
 import { useToast } from './useToast';
+import type { PDFCustomizationOptions } from '../../services/pdf/types';
+import { DEFAULT_CUSTOMIZATION } from '../../services/pdf/types';
 
 /**
  * Hook for managing PDF export with preview modal and toast notifications.
@@ -26,6 +28,7 @@ export function usePDFExport() {
   const [pdfPreviewHtml, setPdfPreviewHtml] = useState<string | null>(null);
   const [pdfCharacterName, setPdfCharacterName] = useState<string>('');
   const [currentToastId, setCurrentToastId] = useState<string | null>(null);
+  const [customizationOptions, setCustomizationOptions] = useState<PDFCustomizationOptions>(DEFAULT_CUSTOMIZATION);
 
   /**
    * Open preview modal and start generating HTML
@@ -94,6 +97,7 @@ export function usePDFExport() {
         modifierDefs: MODIFIER_DEFS,
         skillDefs: skillDefsRecord,
         advantageDefs: advantageDefsRecord,
+        customization: customizationOptions,
       });
       
       if (!result.success) {
@@ -213,6 +217,20 @@ export function usePDFExport() {
     }
   }
 
+  /**
+   * Handle customization changes and regenerate preview
+   */
+  const handleCustomizationChange = useCallback((newOptions: PDFCustomizationOptions) => {
+    setCustomizationOptions(newOptions);
+    
+    // Regenerate preview with new options
+    if (isPreviewOpen) {
+      setIsGeneratingPreview(true);
+      // Trigger regeneration (will use updated state in next render)
+      setTimeout(() => generatePreviewHtml(), 0);
+    }
+  }, [isPreviewOpen]);
+
   return {
     exportPDF,
     confirmAndExportPDF,
@@ -222,6 +240,8 @@ export function usePDFExport() {
     isGeneratingPreview,
     pdfPreviewHtml,
     pdfCharacterName,
+    customizationOptions,
+    handleCustomizationChange,
     generateAndOpenPdf,
     downloadHtmlFromPreview,
     closePreview,
