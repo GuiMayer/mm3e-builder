@@ -663,20 +663,20 @@ body {
 .offense-header {
   display: grid;
   grid-template-columns: 25% 10% 15% 25% 25%;
-  background: var(--color-primary);
-  color: var(--color-bg-primary);
-  font-weight: 700;
-  font-size: var(--font-size-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid var(--color-primary-dark);
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
 .offense-header .offense-col {
   padding: var(--space-md);
-  border-right: 1px solid var(--color-primary-dark);
+  border-right: 1px solid var(--color-border-light);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .offense-header .offense-col:last-child {
