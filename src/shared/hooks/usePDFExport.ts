@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
-import { checkPDFOverflow } from '../../services/pdf/overflowCollector';
-import type { PDFOverflowReport } from '../../services/pdf/overflowCollector';
+import { useAppStore } from '../../store/appStore';
+import { checkPDFOverflow } from '../../services/pdf-legacy';
+import type { PDFOverflowReport } from '../../services/pdf-legacy';
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 
@@ -46,8 +47,17 @@ export function usePDFExport() {
     setPdfOverflow([]);
     
     try {
-      const { fillAndDownloadPDF } = await import('../../services/pdf/pdfFillService');
-      await fillAndDownloadPDF(character);
+      const useLegacy = useAppStore.getState().useLegacyPdfExporter;
+      
+      if (useLegacy) {
+        // Use legacy PDF system (pdf-lib)
+        const { fillAndDownloadPDF } = await import('../../services/pdf-legacy');
+        await fillAndDownloadPDF(character);
+      } else {
+        // Use new HTML-based PDF system
+        const { exportCharacterPDF } = await import('../../services/pdf');
+        await exportCharacterPDF(character);
+      }
     } catch (e) {
       alert(t('errors.exportError') + '\n' + String(e));
     } finally {

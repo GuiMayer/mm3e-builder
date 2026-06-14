@@ -9,7 +9,7 @@ import { useCalculatedPP } from '../hooks/useCalculatedPP';
 import { useFileOperations } from '../hooks/useFileOperations';
 import { usePDFExport } from '../hooks/usePDFExport';
 import { useExcelExport } from '../hooks/useExcelExport';
-import { prefetchPDFTemplate } from '../../services/pdf/pdfTemplateLoader';
+import { prefetchPDFTemplate } from '../../services/pdf-legacy';
 import { PDFOverflowModal } from '../../features/sheet-core/PDFOverflowModal';
 import { MobileDrawer } from './MobileDrawer';
 import { ThemeSelector } from './ThemeSelector';
@@ -50,6 +50,8 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
   const setLanguage = useAppStore((s) => s.setLanguage);
   const validationRules = useAppStore((s) => s.validationRules);
   const setValidationRules = useAppStore((s) => s.setValidationRules);
+  const useLegacyPdfExporter = useAppStore((s) => s.useLegacyPdfExporter);
+  const setUseLegacyPdfExporter = useAppStore((s) => s.setUseLegacyPdfExporter);
   const { character } = useActiveCharacter();
   const { setCampaignMode, resetCharacter } = useCharacterActions();
   const campaignMode = character.campaignMode ?? false;
@@ -273,6 +275,20 @@ export function MenuBar({ activeView, onViewChange }: { activeView: AppView; onV
                   {(validationRules?.enforceDuplicateModifiers ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
                   {t('menu.validationRules.enforceDuplicateModifiers')}: <strong>{(validationRules?.enforceDuplicateModifiers ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
                 </button>
+              </div>
+              <div className="dropdown-divider" />
+              <div className="dropdown-section">
+                <span className="dropdown-label">{t('menu.pdfExporter')}</span>
+                <button 
+                  className="dropdown-item" 
+                  onClick={() => setUseLegacyPdfExporter(!useLegacyPdfExporter)}
+                >
+                  {useLegacyPdfExporter ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.useLegacyPdfExporter')}: <strong>{useLegacyPdfExporter ? t('menu.legacy') : t('menu.new')}</strong>
+                </button>
+                <span className="dropdown-hint">
+                  {t('menu.pdfExporter.hint')}
+                </span>
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">

@@ -349,4 +349,5 @@ export interface IAppPreferences {
   theme: string;
   language: string;
   validationRules?: IValidationRules;         // Optional validation rule overrides
+  useLegacyPdfExporter?: boolean;             // Use legacy PDF system (pdf-lib) instead of new HTML→PDF system
 }

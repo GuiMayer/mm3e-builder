@@ -14,6 +14,7 @@ interface AppStoreState extends IAppPreferences {
   setLanguage: (lang: string) => void;
   setValidationRules: (rules: Partial<IValidationRules>) => void;
   resetValidationRules: () => void;
+  setUseLegacyPdfExporter: (value: boolean) => void;
 }
 
 export const useAppStore = create<AppStoreState>()(
@@ -23,6 +24,7 @@ export const useAppStore = create<AppStoreState>()(
         theme: 'dark-knight',
         language: 'en',
         validationRules: DEFAULT_VALIDATION_RULES,
+        useLegacyPdfExporter: false,
 
         setTheme: (theme) =>
           set(() => {
@@ -47,6 +49,11 @@ export const useAppStore = create<AppStoreState>()(
           set({
             validationRules: DEFAULT_VALIDATION_RULES,
           }),
+
+        setUseLegacyPdfExporter: (value) =>
+          set({
+            useLegacyPdfExporter: value,
+          }),
       }),
       {
         name: 'mm3e-app-preferences',
@@ -56,6 +63,7 @@ export const useAppStore = create<AppStoreState>()(
             language?: string;
             strictMode?: boolean;
             validationRules?: Partial<IValidationRules>;
+            useLegacyPdfExporter?: boolean;
           };
           
           // Migrate from old separate language key if needed
@@ -75,6 +83,11 @@ export const useAppStore = create<AppStoreState>()(
             state.validationRules.enforcePLLimits = false;
           }
           delete state.strictMode;
+          
+          // Ensure useLegacyPdfExporter has default value
+          if (!('useLegacyPdfExporter' in state)) {
+            state.useLegacyPdfExporter = false;
+          }
           
           return state;
         },

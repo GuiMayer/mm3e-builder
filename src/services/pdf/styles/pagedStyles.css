@@ -1,0 +1,94 @@
+/* ================================================
+   Paged.js Print Styles
+   CSS rules for PDF generation with intelligent page breaks
+   ================================================ */
+
+/* ── Page Setup ────────────────────────────────────────── */
+@page {
+  size: letter portrait; /* 8.5" x 11" */
+  margin: 0.5in 0.6in;
+  
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 9pt;
+    color: #666;
+  }
+}
+
+/* First page has no page number */
+@page :first {
+  @bottom-center {
+    content: none;
+  }
+}
+
+/* ── Page Break Rules ──────────────────────────────────── */
+
+/* Prevent breaks inside critical elements */
+.pdf-section,
+.stat-block,
+.power-entry,
+.advantage-entry,
+.skill-group,
+.offense-row,
+.complication-item {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Allow breaks between sections */
+.pdf-section {
+  page-break-after: auto;
+}
+
+/* Force break for major sections if needed */
+.pdf-section.page-break-before {
+  page-break-before: always;
+}
+
+/* ── Orphan & Widow Control ────────────────────────────── */
+p, li, .text-block {
+  orphans: 3;
+  widows: 3;
+}
+
+/* ── Print-specific resets ─────────────────────────────── */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Hide elements that shouldn't print */
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ── Running Headers (optional, for future use) ────────── */
+.character-name-running {
+  string-set: character-name content(text);
+}
+
+@page :left {
+  @top-left {
+    content: string(character-name);
+    font-size: 9pt;
+    color: #666;
+  }
+}
+
+@page :right {
+  @top-right {
+    content: string(character-name);
+    font-size: 9pt;
+    color: #666;
+  }
+}

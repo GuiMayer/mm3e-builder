@@ -6,7 +6,7 @@
 
 import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { PDFOverflowReport } from '../../services/pdf/pdfFillService';
+import type { PDFOverflowReport } from '../../services/pdf-legacy';
 
 interface PDFOverflowModalProps {
   report: PDFOverflowReport[];
