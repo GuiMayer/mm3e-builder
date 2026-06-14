@@ -67,77 +67,40 @@ export async function convertHtmlToPdf(
       }
       
       case 'paged': {
-        // Paged.js renderer: chunks content into pages using CSS Paged Media specs,
-        // then converts to PDF using jsPDF.html() to preserve text selectability
-        console.log('[Paged Renderer] Using Paged.js for CSS Paged Media rendering');
+        // Simplified Paged renderer: Use jsPDF.html() directly with auto-paging
+        // This avoids pagination conflicts and preserves text selectability
+        console.log('[Paged Renderer] Using jsPDF.html() with autoPaging');
         
-        // Import Paged.js Previewer
-        const { Previewer } = await import('pagedjs');
+        const { jsPDF } = await import('jspdf');
+        const pdf = new jsPDF({
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait',
+        });
         
-        // Create a temporary container for Paged.js rendering
-        const tempContainer = document.createElement('div');
-        tempContainer.style.position = 'absolute';
-        tempContainer.style.left = '-9999px';
-        tempContainer.style.width = '210mm'; // A4 width
-        document.body.appendChild(tempContainer);
+        // Single call to jsPDF.html() with auto-paging enabled
+        await new Promise<void>((resolve, reject) => {
+          pdf.html(element, {
+            callback: () => {
+              console.log('[Paged Renderer] PDF generated successfully');
+              resolve();
+            },
+            margin: [5, 5, 5, 5], // [top, right, bottom, left] in mm
+            autoPaging: 'text', // Smart pagination that avoids cutting text
+            x: 0,
+            y: 0,
+            width: 200, // Content width in mm (A4 is 210mm, minus margins)
+            windowWidth: 800, // Virtual window width for rendering
+            html2canvas: {
+              scale: 2,
+              useCORS: true,
+              letterRendering: true,
+              logging: false,
+            },
+          }).catch(reject);
+        });
         
-        try {
-          // Create a previewer instance
-          const previewer = new Previewer();
-          
-          // Render the HTML with Paged.js
-          const flow = await previewer.preview(
-            element.innerHTML,
-            [], // CSS stylesheets array
-            tempContainer
-          );
-          
-          console.log('[Paged Renderer] Content rendered into', flow.total, 'pages');
-          
-          // Get all rendered pages from Paged.js
-          const pages = tempContainer.querySelectorAll('.pagedjs_page');
-          
-          if (!pages.length) {
-            throw new Error('Paged.js did not generate any pages');
-          }
-          
-          // Create PDF using jsPDF
-          const { jsPDF } = await import('jspdf');
-          const pdf = new jsPDF({
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait',
-          });
-          
-          // Process each page: use jsPDF.html() to preserve text selectability
-          for (let i = 0; i < pages.length; i++) {
-            const page = pages[i] as HTMLElement;
-            
-            // Add new page to PDF (except for the first one)
-            if (i > 0) {
-              pdf.addPage();
-            }
-            
-            // Get the page area (without margins)
-            const pageArea = page.querySelector('.pagedjs_page_content') as HTMLElement || page;
-            
-            // Use jsPDF.html() to render HTML as vectors (text stays selectable)
-            await pdf.html(pageArea, {
-              callback: () => {},
-              x: 5, // Small margin
-              y: 5,
-              width: 200, // A4 width minus margins
-              windowWidth: 800, // Viewport width for rendering
-            });
-          }
-          
-          pdfBlob = pdf.output('blob');
-          
-        } finally {
-          // Clean up: remove temporary container
-          document.body.removeChild(tempContainer);
-        }
-        
+        pdfBlob = pdf.output('blob');
         break;
       }
       
