@@ -340,7 +340,7 @@ body {
 .pdf-container {
   max-width: var(--page-width);
   margin: 0 auto;
-  padding: var(--page-padding);
+  padding: 0.3in;
 }
 
 @media print {
@@ -1108,7 +1108,7 @@ body {
   }
   
   .pdf-container { 
-    padding: 0.3in;
+    padding: 0.2in;
     max-width: 100%;
   }
   
@@ -1177,7 +1177,7 @@ body {
    ================================================ */
 @page {
   size: A4;
-  margin: 0.5in;
+  margin: 0.3in;
 }
 
 @media screen {
