@@ -6,6 +6,7 @@ import { checkPDFOverflow } from '../../services/pdf-legacy';
 import type { PDFOverflowReport } from '../../services/pdf-legacy';
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
+import type { ISkillDef, IAdvantageDef } from '../../entities/types';
 
 /**
  * Hook for managing PDF export with overflow detection.
@@ -55,8 +56,40 @@ export function usePDFExport() {
         await fillAndDownloadPDF(character);
       } else {
         // Use new HTML-based PDF system
-        const { exportCharacterPDF } = await import('../../services/pdf');
-        await exportCharacterPDF(character);
+        const { generateCharacterPDF } = await import('../../services/pdf');
+        
+        // Convert arrays to Records
+        const skillDefsRecord: Record<string, ISkillDef> = {};
+        SKILL_DEFS.forEach(skill => {
+          skillDefsRecord[skill.id] = skill;
+        });
+        
+        const advantageDefsRecord: Record<string, IAdvantageDef> = {};
+        ADVANTAGE_DEFS.forEach(adv => {
+          advantageDefsRecord[adv.id] = adv;
+        });
+        
+        const result = await generateCharacterPDF({
+          character,
+          powerDefs: POWER_DEFS,
+          modifierDefs: MODIFIER_DEFS,
+          skillDefs: skillDefsRecord,
+          advantageDefs: advantageDefsRecord,
+        });
+        
+        if (!result.success) {
+          throw new Error(result.error || 'PDF generation failed');
+        }
+        
+        // TODO: Implement HTML to PDF conversion and download
+        // For now, create a temporary HTML file to preview
+        const blob = new Blob([result.html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${character.header.name || 'character'}_sheet.html`;
+        link.click();
+        URL.revokeObjectURL(url);
       }
     } catch (e) {
       alert(t('errors.exportError') + '\n' + String(e));
