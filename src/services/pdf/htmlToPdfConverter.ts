@@ -67,8 +67,8 @@ export async function convertHtmlToPdf(
       }
       
       case 'paged': {
-        // Paged.js renderer uses the Paged.js library to chunk content into pages
-        // following CSS Paged Media specifications
+        // Paged.js renderer: chunks content into pages using CSS Paged Media specs,
+        // then converts to PDF using jsPDF.html() to preserve text selectability
         console.log('[Paged Renderer] Using Paged.js for CSS Paged Media rendering');
         
         // Import Paged.js Previewer
@@ -78,6 +78,7 @@ export async function convertHtmlToPdf(
         const tempContainer = document.createElement('div');
         tempContainer.style.position = 'absolute';
         tempContainer.style.left = '-9999px';
+        tempContainer.style.width = '210mm'; // A4 width
         document.body.appendChild(tempContainer);
         
         try {
@@ -85,24 +86,13 @@ export async function convertHtmlToPdf(
           const previewer = new Previewer();
           
           // Render the HTML with Paged.js
-          // preview(content, stylesheets, renderTo)
           const flow = await previewer.preview(
             element.innerHTML,
-            [], // Can add CSS stylesheets here if needed
+            [], // CSS stylesheets array
             tempContainer
           );
           
           console.log('[Paged Renderer] Content rendered into', flow.total, 'pages');
-          
-          // Now convert each page to PDF using html2canvas + jsPDF
-          const html2canvas = (await import('html2canvas')).default;
-          const { jsPDF } = await import('jspdf');
-          
-          const pdf = new jsPDF({
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait',
-          });
           
           // Get all rendered pages from Paged.js
           const pages = tempContainer.querySelectorAll('.pagedjs_page');
@@ -111,30 +101,34 @@ export async function convertHtmlToPdf(
             throw new Error('Paged.js did not generate any pages');
           }
           
-          // Convert each page to PDF
+          // Create PDF using jsPDF
+          const { jsPDF } = await import('jspdf');
+          const pdf = new jsPDF({
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait',
+          });
+          
+          // Process each page: use jsPDF.html() to preserve text selectability
           for (let i = 0; i < pages.length; i++) {
             const page = pages[i] as HTMLElement;
-            
-            // Capture the page as canvas
-            const canvas = await html2canvas(page, {
-              scale: 2, // High quality
-              useCORS: true,
-              letterRendering: true,
-              logging: false,
-              backgroundColor: '#ffffff',
-            });
             
             // Add new page to PDF (except for the first one)
             if (i > 0) {
               pdf.addPage();
             }
             
-            // Convert canvas to image and add to PDF
-            const imgData = canvas.toDataURL('image/jpeg', 0.95);
-            const imgWidth = 210; // A4 width in mm
-            const imgHeight = 297; // A4 height in mm
+            // Get the page area (without margins)
+            const pageArea = page.querySelector('.pagedjs_page_content') as HTMLElement || page;
             
-            pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+            // Use jsPDF.html() to render HTML as vectors (text stays selectable)
+            await pdf.html(pageArea, {
+              callback: () => {},
+              x: 5, // Small margin
+              y: 5,
+              width: 200, // A4 width minus margins
+              windowWidth: 800, // Viewport width for rendering
+            });
           }
           
           pdfBlob = pdf.output('blob');
