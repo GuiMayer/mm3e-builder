@@ -9,6 +9,11 @@ import { escapeHtml, isPresent } from './utils';
 export interface HeaderSectionData {
   character: ICharacter;
   powerPointsData: {
+    abilitiesCost: number;
+    defensesCost: number;
+    skillsCost: number;
+    advantagesCost: number;
+    powersCost: number;
     totalAvailable: number;
     totalSpent: number;
     remaining: number;
@@ -35,15 +40,81 @@ export function renderHeaderSection(data: HeaderSectionData): string {
       <div class="header-stats">
         ${renderStatBox('Power Level', header.powerLevel || 10)}
         ${renderStatBox('Hero Points', header.heroPoints || 0)}
-        ${renderStatBox('PP Available', powerPointsData.totalAvailable)}
-        ${renderStatBox('PP Remaining', powerPointsData.remaining, powerPointsData.remaining < 0)}
       </div>
     </div>
+    
+    ${renderPowerPointsSummaryCompact(powerPointsData)}
     
     ${renderPhysicalDescription(header)}
     
     ${renderAdditionalInfo(header)}
   `.trim();
+}
+
+/**
+ * Render compact power points summary
+ */
+function renderPowerPointsSummaryCompact(ppData: HeaderSectionData['powerPointsData']): string {
+  const {
+    abilitiesCost,
+    defensesCost,
+    skillsCost,
+    advantagesCost,
+    powersCost,
+    totalAvailable,
+    totalSpent,
+    remaining,
+  } = ppData;
+
+  const isOverbudget = remaining < 0;
+  const isClose = remaining >= 0 && remaining <= Math.floor(totalAvailable * 0.1);
+  
+  let summaryBoxClass = 'pp-summary-box';
+  let valueClass = 'pp-summary-value';
+  
+  if (isOverbudget) {
+    summaryBoxClass += ' over-budget';
+    valueClass += ' negative';
+  } else if (isClose) {
+    summaryBoxClass += ' under-budget';
+    valueClass += ' positive';
+  } else {
+    valueClass += ' positive';
+  }
+
+  return `
+    <div class="pp-summary-compact">
+      <div class="pp-breakdown">
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Abilities</span>
+          <span class="pp-breakdown-value">${abilitiesCost} PP</span>
+        </div>
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Defenses</span>
+          <span class="pp-breakdown-value">${defensesCost} PP</span>
+        </div>
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Skills</span>
+          <span class="pp-breakdown-value">${skillsCost} PP</span>
+        </div>
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Advantages</span>
+          <span class="pp-breakdown-value">${advantagesCost} PP</span>
+        </div>
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Powers</span>
+          <span class="pp-breakdown-value">${powersCost} PP</span>
+        </div>
+      </div>
+      
+      <div class="${summaryBoxClass}">
+        <div class="pp-summary-label">Points Remaining</div>
+        <div class="${valueClass}">${remaining}</div>
+        <div class="pp-summary-fraction">${totalSpent} / ${totalAvailable} PP</div>
+        ${isOverbudget ? '<div class="pp-warning">Over Budget!</div>' : ''}
+      </div>
+    </div>
+  `;
 }
 
 /**

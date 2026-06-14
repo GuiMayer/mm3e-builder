@@ -15,7 +15,74 @@ export interface PowerPointTotalsSectionData {
 }
 
 /**
- * Render the power point totals section
+ * Render compact power point summary for header
+ */
+export function renderPowerPointSummaryCompact(data: PowerPointTotalsSectionData): string {
+  const {
+    abilitiesCost,
+    defensesCost,
+    skillsCost,
+    advantagesCost,
+    powersCost,
+    totalAvailable,
+    totalSpent,
+    remaining,
+  } = data;
+
+  const isOverbudget = remaining < 0;
+  const isClose = remaining >= 0 && remaining <= Math.floor(totalAvailable * 0.1);
+  
+  let summaryBoxClass = 'pp-summary-box';
+  let valueClass = 'pp-summary-value';
+  
+  if (isOverbudget) {
+    summaryBoxClass += ' over-budget';
+    valueClass += ' negative';
+  } else if (isClose) {
+    summaryBoxClass += ' under-budget';
+    valueClass += ' positive';
+  } else {
+    valueClass += ' positive';
+  }
+
+  return `
+    <div class="pp-summary-compact">
+      <div class="pp-breakdown">
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Abilities</span>
+          <span class="pp-breakdown-value">${abilitiesCost} PP</span>
+        </div>
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Defenses</span>
+          <span class="pp-breakdown-value">${defensesCost} PP</span>
+        </div>
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Skills</span>
+          <span class="pp-breakdown-value">${skillsCost} PP</span>
+        </div>
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Advantages</span>
+          <span class="pp-breakdown-value">${advantagesCost} PP</span>
+        </div>
+        <div class="pp-breakdown-item">
+          <span class="pp-breakdown-label">Powers</span>
+          <span class="pp-breakdown-value">${powersCost} PP</span>
+        </div>
+      </div>
+      
+      <div class="${summaryBoxClass}">
+        <div class="pp-summary-label">Points Remaining</div>
+        <div class="${valueClass}">${remaining}</div>
+        <div class="pp-summary-fraction">${totalSpent} / ${totalAvailable} PP</div>
+        ${isOverbudget ? '<div class="pp-warning">Over Budget!</div>' : ''}
+      </div>
+    </div>
+  `.trim();
+}
+
+/**
+ * Render the power point totals section (legacy full version)
+ * Note: This is now deprecated in favor of the compact version in header
  */
 export function renderPowerPointTotalsSection(data: PowerPointTotalsSectionData): string {
   const {
@@ -60,7 +127,7 @@ export function renderPowerPointTotalsSection(data: PowerPointTotalsSectionData)
           <div class="pp-label ${isOverbudget ? 'text-bold' : ''}">Remaining:</div>
           <div class="pp-value ${isOverbudget ? 'text-bold' : ''}">${remaining}</div>
         </div>
-        ${isOverbudget ? `<div class="text-center text-bold" style="color: #cc0000; margin-top: 0.1in;">⚠ Character is over budget!</div>` : ''}
+        ${isOverbudget ? '<div class="text-center text-bold pp-warning">Character is over budget!</div>' : ''}
       </div>
     </div>
   `.trim();

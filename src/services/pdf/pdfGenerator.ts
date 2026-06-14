@@ -15,7 +15,6 @@ import {
   renderEquipmentSection,
   renderComplicationsSection,
   renderNotesSection,
-  renderPowerPointTotalsSection,
 } from './components';
 import {
   calculateAbilitiesCost,
@@ -96,10 +95,15 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     // Generate sections
     const sections: string[] = [];
 
-    // Header
+    // Header (now includes compact PP summary)
     sections.push(renderHeaderSection({
       character,
       powerPointsData: {
+        abilitiesCost,
+        defensesCost,
+        skillsCost,
+        advantagesCost,
+        powersCost,
         totalAvailable,
         totalSpent,
         remaining,
@@ -172,18 +176,6 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     if (notesSection) {
       sections.push(notesSection);
     }
-
-    // Power Point Totals
-    sections.push(renderPowerPointTotalsSection({
-      abilitiesCost,
-      defensesCost,
-      skillsCost,
-      advantagesCost,
-      powersCost,
-      totalAvailable,
-      totalSpent,
-      remaining,
-    }));
 
     // Combine sections
     const bodyContent = sections.filter(s => s.trim().length > 0).join('\n\n');
