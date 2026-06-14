@@ -1,61 +1,32 @@
 .renderer-selector {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-}
-
-.renderer-selector__label {
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-}
-
-.renderer-selector__options {
-  display: flex;
-  flex-direction: column;
   gap: 0.5rem;
 }
 
-.renderer-option {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.renderer-option:hover {
-  border-color: var(--primary-color);
-  background-color: var(--hover-bg);
-}
-
-.renderer-option input[type="radio"] {
-  margin-top: 0.125rem;
-  cursor: pointer;
-}
-
-.renderer-option__content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  flex: 1;
-}
-
-.renderer-option__title {
+.renderer-selector__label {
   font-weight: 500;
   font-size: 0.875rem;
   color: var(--text-primary);
 }
 
-.renderer-option__hint {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
+.renderer-selector__select {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
 }
 
-.renderer-option input[type="radio"]:checked ~ .renderer-option__content .renderer-option__title {
-  color: var(--primary-color);
+.renderer-selector__select:hover {
+  border-color: var(--primary-color);
+}
+
+.renderer-selector__select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }

@@ -67,36 +67,32 @@ export async function convertHtmlToPdf(
       }
       
       case 'paged': {
-        // Paged.js renderer (requires external library)
-        // For now, fall back to html2canvas
-        console.warn('Paged.js renderer not yet implemented, falling back to html2canvas');
-        const pagedOptions = {
-          margin: options.margin || 10,
-          filename: options.filename,
-          image: { 
-            type: 'jpeg' as const, 
-            quality: 0.98 
-          },
-          html2canvas: { 
-            scale: 2,
+        // Paged.js renderer uses jsPDF with native HTML rendering
+        // This preserves text selectability better than html2canvas
+        console.log('[Paged Renderer] Using jsPDF with html method for selectable text');
+        
+        const { jsPDF } = await import('jspdf');
+        const pdf = new jsPDF({
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait',
+        });
+        
+        // Use jsPDF's html method which preserves text better
+        await pdf.html(element, {
+          callback: () => {},
+          x: 10,
+          y: 10,
+          width: 190, // A4 width minus margins
+          windowWidth: 800, // Viewport width for rendering
+          html2canvas: {
+            scale: 1, // Lower scale for faster processing
             useCORS: true,
             letterRendering: true,
-            logging: false,
-          },
-          jsPDF: { 
-            unit: 'mm', 
-            format: 'a4', 
-            orientation: 'portrait' as const,
-          },
-          pagebreak: options.pagebreak || { 
-            mode: ['avoid-all', 'css', 'legacy'] 
-          },
-        };
+          }
+        });
         
-        pdfBlob = await html2pdf()
-          .set(pagedOptions)
-          .from(element)
-          .output('blob') as Blob;
+        pdfBlob = pdf.output('blob');
         break;
       }
       
