@@ -26,7 +26,7 @@ export async function convertHtmlToPdf(
     margin: options.margin || 10,
     filename: options.filename,
     image: { 
-      type: 'jpeg', 
+      type: 'jpeg' as const, 
       quality: 0.98 
     },
     html2canvas: { 
