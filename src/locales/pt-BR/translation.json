@@ -576,6 +576,14 @@
   "pdf.customization.sections.complications": "Incluir Complicações",
   "pdf.customization.sections.equipment": "Incluir Equipamento",
 
+  "pdf.customization.renderer.label": "Renderizador PDF",
+  "pdf.customization.renderer.paged": "Paged.js (Texto Selecionável)",
+  "pdf.customization.renderer.html2canvas": "HTML2Canvas (Imagem)",
+  "pdf.customization.renderer.pagedHint": "Usa diálogo de impressão do navegador. Texto permanece selecionável no PDF.",
+  "pdf.customization.renderer.html2canvasHint": "Download automático. Texto vira imagem.",
+
+  "pdf.toast.printReady": "Preview pronto! Use Ctrl+P ou diálogo de impressão do navegador.",
+
   "error.boundary.title": "Algo deu errado",
   "error.boundary.message": "Ocorreu um erro inesperado. Por favor, tente novamente.",
   "error.boundary.details": "Detalhes do erro",
