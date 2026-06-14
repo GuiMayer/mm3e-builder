@@ -74,9 +74,11 @@ export function usePDFExport() {
   }
 
   /**
-   * Generate HTML for preview (called after modal opens)
+   * Generate HTML for preview with specific customization options
    */
-  async function generatePreviewHtml() {
+  async function generatePreviewHtml(options?: PDFCustomizationOptions) {
+    const customOptions = options || customizationOptions;
+    
     try {
       const { generateCharacterPDF } = await import('../../services/pdf');
       
@@ -97,7 +99,7 @@ export function usePDFExport() {
         modifierDefs: MODIFIER_DEFS,
         skillDefs: skillDefsRecord,
         advantageDefs: advantageDefsRecord,
-        customization: customizationOptions,
+        customization: customOptions,
       });
       
       if (!result.success) {
@@ -220,16 +222,15 @@ export function usePDFExport() {
   /**
    * Handle customization changes and regenerate preview
    */
-  const handleCustomizationChange = useCallback((newOptions: PDFCustomizationOptions) => {
+  const handleCustomizationChange = useCallback(async (newOptions: PDFCustomizationOptions) => {
     setCustomizationOptions(newOptions);
     
-    // Regenerate preview with new options
+    // Regenerate preview with new options immediately
     if (isPreviewOpen) {
       setIsGeneratingPreview(true);
-      // Trigger regeneration (will use updated state in next render)
-      setTimeout(() => generatePreviewHtml(), 0);
+      await generatePreviewHtml(newOptions);
     }
-  }, [isPreviewOpen]);
+  }, [isPreviewOpen, character, currentToastId, t, updateToast]);
 
   return {
     exportPDF,
