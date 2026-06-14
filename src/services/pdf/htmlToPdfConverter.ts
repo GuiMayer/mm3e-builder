@@ -85,12 +85,10 @@ export async function convertHtmlToPdf(
               console.log('[Paged Renderer] PDF generated successfully');
               resolve();
             },
-            margin: [5, 5, 5, 5], // [top, right, bottom, left] in mm
+            margin: 10, // Consistent with html2canvas renderer
             autoPaging: 'text', // Smart pagination that avoids cutting text
-            x: 0,
-            y: 0,
-            width: 200, // Content width in mm (A4 is 210mm, minus margins)
-            windowWidth: 800, // Virtual window width for rendering
+            x: 10,
+            y: 10,
             html2canvas: {
               scale: 2,
               useCORS: true,
