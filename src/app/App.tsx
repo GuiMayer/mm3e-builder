@@ -24,9 +24,11 @@ export function App() {
   
   // PDF export with preview dialog
   const {
+    isPreviewOpen,
+    isGeneratingPreview,
     pdfPreviewHtml,
     pdfCharacterName,
-    downloadPdfFromPreview,
+    generateAndOpenPdf,
     downloadHtmlFromPreview,
     closePreview,
   } = usePDFExport();
@@ -67,11 +69,12 @@ export function App() {
 
         {/* PDF Preview Dialog */}
         <PDFPreviewDialog
-          html={pdfPreviewHtml || ''}
+          isOpen={isPreviewOpen}
+          isGenerating={isGeneratingPreview}
+          html={pdfPreviewHtml}
           characterName={pdfCharacterName}
-          isOpen={!!pdfPreviewHtml}
           onClose={closePreview}
-          onDownloadPdf={downloadPdfFromPreview}
+          onGeneratePdf={generateAndOpenPdf}
           onDownloadHtml={downloadHtmlFromPreview}
         />
       </div>
