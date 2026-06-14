@@ -79,6 +79,8 @@ export function usePDFExport() {
   async function generatePreviewHtml(options?: PDFCustomizationOptions) {
     const customOptions = options || customizationOptions;
     
+    console.log('[usePDFExport] generatePreviewHtml called with options:', customOptions);
+    
     try {
       const { generateCharacterPDF } = await import('../../services/pdf');
       
@@ -93,6 +95,7 @@ export function usePDFExport() {
         advantageDefsRecord[adv.id] = adv;
       });
       
+      console.log('[usePDFExport] Calling generateCharacterPDF...');
       const result = await generateCharacterPDF({
         character,
         powerDefs: POWER_DEFS,
@@ -102,12 +105,15 @@ export function usePDFExport() {
         customization: customOptions,
       });
       
+      console.log('[usePDFExport] generateCharacterPDF result:', { success: result.success, hasHtml: !!result.html, error: result.error });
+      
       if (!result.success) {
         throw new Error(result.error || 'PDF generation failed');
       }
       
       // Store HTML for preview
       setPdfPreviewHtml(result.html);
+      console.log('[usePDFExport] HTML preview set successfully');
       
       // Update toast to success
       if (currentToastId) {
@@ -115,7 +121,7 @@ export function usePDFExport() {
         setCurrentToastId(null);
       }
     } catch (e) {
-      console.error('Error generating preview:', e);
+      console.error('[usePDFExport] Error generating preview:', e);
       
       // Update toast to error
       if (currentToastId) {
@@ -124,6 +130,7 @@ export function usePDFExport() {
       }
       
       // Close modal on error
+      console.log('[usePDFExport] Closing modal due to error');
       setIsPreviewOpen(false);
       setPdfPreviewHtml(null);
     } finally {
