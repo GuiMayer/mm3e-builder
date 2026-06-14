@@ -53,6 +53,10 @@ const FILE_TYPES: Record<string, FileTypeConfig> = {
     description: 'PDF Document',
     accept: { 'application/pdf': ['.pdf'] },
   },
+  html: {
+    description: 'HTML Document',
+    accept: { 'text/html': ['.html'] },
+  },
 };
 
 /**
