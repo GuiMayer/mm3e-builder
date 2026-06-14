@@ -30,20 +30,18 @@ export function renderOffenseSection(data: OffenseSectionData): string {
   return `
     <div class="pdf-section">
       <div class="pdf-section-title">Offense</div>
-      <table class="offense-table">
-        <thead>
-          <tr>
-            <th>Attack</th>
-            <th>Bonus</th>
-            <th>Range</th>
-            <th>Effect</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="offense-container">
+        <div class="offense-header">
+          <div class="offense-col offense-col-attack">Attack</div>
+          <div class="offense-col offense-col-bonus">Bonus</div>
+          <div class="offense-col offense-col-range">Range</div>
+          <div class="offense-col offense-col-effect">Effect</div>
+          <div class="offense-col offense-col-notes">Notes</div>
+        </div>
+        <div class="offense-body">
           ${rowsHtml}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   `.trim();
 }
@@ -53,12 +51,12 @@ export function renderOffenseSection(data: OffenseSectionData): string {
  */
 function renderOffenseRow(entry: IOffenseEntry): string {
   return `
-    <tr class="offense-row">
-      <td class="offense-name">${escapeHtml(entry.name)}</td>
-      <td class="offense-bonus">${escapeHtml(entry.bonus)}</td>
-      <td class="offense-range">${escapeHtml(entry.range)}</td>
-      <td>${escapeHtml(entry.effect)}</td>
-      <td class="text-small">${escapeHtml(entry.notes || '')}</td>
-    </tr>
+    <div class="offense-row">
+      <div class="offense-col offense-col-attack">${escapeHtml(entry.name)}</div>
+      <div class="offense-col offense-col-bonus">${escapeHtml(entry.bonus)}</div>
+      <div class="offense-col offense-col-range">${escapeHtml(entry.range)}</div>
+      <div class="offense-col offense-col-effect">${escapeHtml(entry.effect)}</div>
+      <div class="offense-col offense-col-notes">${escapeHtml(entry.notes || '')}</div>
+    </div>
   `;
 }

@@ -650,106 +650,89 @@ body {
 /* ================================================
    Offense Section (Table)
    ================================================ */
-.offense-table {
+.offense-container {
   width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
   margin-top: var(--space-lg);
-}
-
-.offense-table thead {
-  background: var(--color-bg-primary);
-  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
-.offense-table th {
-  padding: var(--space-md);
-  font-size: var(--font-size-sm);
+.offense-header {
+  display: grid;
+  grid-template-columns: 25% 10% 15% 25% 25%;
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
   font-weight: 700;
-  text-align: left;
+  font-size: var(--font-size-sm);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border: 1.5px solid var(--color-primary);
+  border-bottom: 2px solid var(--color-primary-dark);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
-.offense-table td {
+.offense-header .offense-col {
   padding: var(--space-md);
+  border-right: 1px solid var(--color-primary-dark);
+}
+
+.offense-header .offense-col:last-child {
+  border-right: none;
+}
+
+.offense-body {
+  background: var(--color-bg-primary);
+}
+
+.offense-row {
+  display: grid;
+  grid-template-columns: 25% 10% 15% 25% 25%;
+  border-bottom: 1px solid var(--color-border);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  page-break-inside: avoid;
+}
+
+.offense-row:nth-child(even) {
+  background: var(--color-bg-secondary);
+}
+
+.offense-row:last-child {
+  border-bottom: none;
+}
+
+.offense-row .offense-col {
+  padding: var(--space-md);
+  border-right: 1px solid var(--color-border-light);
   font-size: var(--font-size-sm);
-  border: 1px solid var(--color-border);
-  vertical-align: top;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  display: flex;
+  align-items: flex-start;
 }
 
-.offense-table tbody tr {
-  background: var(--color-bg-primary);
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
+.offense-row .offense-col:last-child {
+  border-right: none;
 }
 
-.offense-table tbody tr:nth-child(even) {
-  background: var(--color-bg-secondary);
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-
-.offense-table tbody tr:hover {
-  background: var(--color-bg-accent);
-}
-
-/* Larguras específicas por coluna */
-.offense-table th:nth-child(1),
-.offense-table td:nth-child(1) {
-  width: 25%;
-}
-
-.offense-table th:nth-child(2),
-.offense-table td:nth-child(2) {
-  width: 10%;
-  text-align: center;
-}
-
-.offense-table th:nth-child(3),
-.offense-table td:nth-child(3) {
-  width: 15%;
-  text-align: center;
-}
-
-.offense-table th:nth-child(4),
-.offense-table td:nth-child(4) {
-  width: 25%;
-}
-
-.offense-table th:nth-child(5),
-.offense-table td:nth-child(5) {
-  width: 25%;
-}
-
-/* Controle de quebra de página */
-.offense-table thead {
-  display: table-header-group; /* Repete header em novas páginas */
-}
-
-.offense-table tbody tr {
-  page-break-inside: avoid; /* Evita quebra no meio de linha */
-}
-
-.offense-name {
+.offense-col-attack {
   font-weight: 600;
   color: var(--color-text);
 }
 
-.offense-bonus {
+.offense-col-bonus,
+.offense-col-range {
   text-align: center;
+  justify-content: center;
   font-weight: 600;
 }
 
-.offense-range {
-  text-align: center;
+.offense-col-notes {
+  color: var(--color-text-secondary);
+  font-size: calc(var(--font-size-sm) * 0.95);
 }
 
 /* ================================================
