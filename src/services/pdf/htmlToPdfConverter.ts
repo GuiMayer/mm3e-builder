@@ -92,7 +92,7 @@ export async function convertHtmlToPdf(
             windowWidth: 816,  // Container CSS width: 8.5in * 96 DPI = 816px
             autoPaging: 'text',
             html2canvas: {
-              scale: 2,        // High quality - jsPDF calculates final scale automatically
+              scale: 0.264,    // Calculated scale for A4: 210mm / 8.5in ≈ 0.264
               useCORS: true,
               letterRendering: true,
               logging: false,
