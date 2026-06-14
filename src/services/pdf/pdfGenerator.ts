@@ -447,12 +447,14 @@ body {
 }
 
 .header-main {
-  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  background: var(--color-primary);
   color: var(--color-bg-primary);
   padding: var(--space-xl);
+  border: 2px solid var(--color-primary-dark);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-xl);
-  box-shadow: var(--shadow-md);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .character-name {
@@ -480,12 +482,12 @@ body {
 
 .stat-box.highlight-box {
   border-color: var(--color-danger);
-  background: #fef2f2;
+  background: var(--color-bg-secondary);
 }
 
 .stat-box.success-box {
   border-color: var(--color-success);
-  background: #f0fdf4;
+  background: var(--color-bg-secondary);
 }
 
 .stat-box-label {
@@ -563,13 +565,13 @@ body {
 }
 
 .ability-box {
-  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  background: var(--color-bg-primary);
   border: 2px solid var(--color-primary);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .ability-box.absent {
@@ -613,12 +615,13 @@ body {
 }
 
 .defense-box {
-  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  background: var(--color-bg-primary);
   border: 2px solid var(--color-secondary);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   text-align: center;
-  box-shadow: var(--shadow-sm);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .defense-name {
@@ -649,14 +652,16 @@ body {
    ================================================ */
 .offense-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   margin-top: var(--space-lg);
-  box-shadow: var(--shadow-sm);
 }
 
 .offense-table thead {
-  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
-  color: var(--color-bg-primary);
+  background: var(--color-bg-primary);
+  color: var(--color-text);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .offense-table th {
@@ -666,26 +671,71 @@ body {
   text-align: left;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border: 1px solid var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .offense-table td {
   padding: var(--space-md);
   font-size: var(--font-size-sm);
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .offense-table tbody tr {
   background: var(--color-bg-primary);
-  transition: background-color 0.2s ease;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .offense-table tbody tr:nth-child(even) {
   background: var(--color-bg-secondary);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .offense-table tbody tr:hover {
   background: var(--color-bg-accent);
+}
+
+/* Larguras específicas por coluna */
+.offense-table th:nth-child(1),
+.offense-table td:nth-child(1) {
+  width: 25%;
+}
+
+.offense-table th:nth-child(2),
+.offense-table td:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+
+.offense-table th:nth-child(3),
+.offense-table td:nth-child(3) {
+  width: 15%;
+  text-align: center;
+}
+
+.offense-table th:nth-child(4),
+.offense-table td:nth-child(4) {
+  width: 25%;
+}
+
+.offense-table th:nth-child(5),
+.offense-table td:nth-child(5) {
+  width: 25%;
+}
+
+/* Controle de quebra de página */
+.offense-table thead {
+  display: table-header-group; /* Repete header em novas páginas */
+}
+
+.offense-table tbody tr {
+  page-break-inside: avoid; /* Evita quebra no meio de linha */
 }
 
 .offense-name {
@@ -788,12 +838,11 @@ body {
 
 .power-entry {
   margin-bottom: var(--space-xl);
-  background: #f9fafb;
-  border: 1px solid #d1d5db;
-  border-left: 4px solid #2c5aa0;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
-  box-shadow: var(--shadow-sm);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
@@ -863,12 +912,11 @@ body {
 
 .equipment-entry {
   margin-bottom: var(--space-xl);
-  background: #f9fafb;
-  border: 1px solid #d1d5db;
-  border-left: 4px solid #6b7a8c;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-secondary);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
-  box-shadow: var(--shadow-sm);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
@@ -883,11 +931,12 @@ body {
 .complication-item {
   margin-bottom: var(--space-md);
   padding: var(--space-md);
-  background: #fffbf0;
+  background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
   border-left: 4px solid var(--color-warning);
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .complication-name {
@@ -967,12 +1016,12 @@ body {
 
 .pp-summary-box.over-budget {
   border-color: var(--color-danger);
-  background: #fef2f2;
+  background: var(--color-bg-secondary);
 }
 
 .pp-summary-box.under-budget {
   border-color: var(--color-success);
-  background: #f0fdf4;
+  background: var(--color-bg-secondary);
 }
 
 .pp-summary-label {

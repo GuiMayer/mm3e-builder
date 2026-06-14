@@ -33,11 +33,11 @@ export function renderOffenseSection(data: OffenseSectionData): string {
       <table class="offense-table">
         <thead>
           <tr>
-            <th style="width: 25%;">Attack</th>
-            <th style="width: 10%;">Bonus</th>
-            <th style="width: 15%;">Range</th>
-            <th style="width: 25%;">Effect</th>
-            <th style="width: 25%;">Notes</th>
+            <th>Attack</th>
+            <th>Bonus</th>
+            <th>Range</th>
+            <th>Effect</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
