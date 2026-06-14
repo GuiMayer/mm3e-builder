@@ -9,98 +9,143 @@ import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../ent
 import type { ISkillDef, IAdvantageDef } from '../../entities/types';
 import { convertHtmlToPdf } from '../../services/pdf/htmlToPdfConverter';
 import { downloadBlob, sanitizeFileName } from '../../services/downloadHelper';
+import { useToast } from './useToast';
 
 /**
- * Hook for managing PDF export with overflow detection.
+ * Hook for managing PDF export with preview modal and toast notifications.
  * Encapsulates PDF generation logic, overflow checking, and modal state.
  */
 export function usePDFExport() {
   const { t } = useTranslation();
   const { character } = useActiveCharacter();
-  const [isPdfLoading, setIsPdfLoading] = useState(false);
+  const { showToast, updateToast, dismissToast } = useToast();
+  
   const [pdfOverflow, setPdfOverflow] = useState<PDFOverflowReport[]>([]);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
   const [pdfPreviewHtml, setPdfPreviewHtml] = useState<string | null>(null);
   const [pdfCharacterName, setPdfCharacterName] = useState<string>('');
+  const [currentToastId, setCurrentToastId] = useState<string | null>(null);
 
   /**
-   * Check for PDF overflow and show modal if needed, otherwise export directly
+   * Open preview modal and start generating HTML
+   * For legacy mode, directly exports without preview
    */
   async function exportPDF() {
-    const offenseEntries = buildOffenseSummary(
-      character,
-      POWER_DEFS,
-      SKILL_DEFS,
-      ADVANTAGE_DEFS,
-      MODIFIER_DEFS
-    );
+    const useLegacy = useAppStore.getState().useLegacyPdfExporter;
     
-    const overflowReport = checkPDFOverflow(character, offenseEntries);
-    
-    if (overflowReport.length > 0) {
-      setPdfOverflow(overflowReport);
+    // Legacy mode: check overflow and export directly
+    if (useLegacy) {
+      const offenseEntries = buildOffenseSummary(
+        character,
+        POWER_DEFS,
+        SKILL_DEFS,
+        ADVANTAGE_DEFS,
+        MODIFIER_DEFS
+      );
+      
+      const overflowReport = checkPDFOverflow(character, offenseEntries);
+      
+      if (overflowReport.length > 0) {
+        setPdfOverflow(overflowReport);
+        return;
+      }
+      
+      await executeLegacyPDFExport();
       return;
     }
     
-    await executePDFExport();
+    // New mode: open modal immediately and generate preview
+    setIsPreviewOpen(true);
+    setIsGeneratingPreview(true);
+    setPdfPreviewHtml(null);
+    setPdfCharacterName(character.header.name || 'character');
+    
+    // Show toast notification
+    const toastId = showToast(t('pdf.toast.generating'), 'loading');
+    setCurrentToastId(toastId);
+    
+    // Generate HTML in background
+    await generatePreviewHtml();
   }
 
   /**
-   * Execute PDF export (called after overflow confirmation or when no overflow)
+   * Generate HTML for preview (called after modal opens)
    */
-  async function executePDFExport() {
-    setIsPdfLoading(true);
-    setPdfOverflow([]);
-    
+  async function generatePreviewHtml() {
     try {
-      const useLegacy = useAppStore.getState().useLegacyPdfExporter;
+      const { generateCharacterPDF } = await import('../../services/pdf');
       
-      if (useLegacy) {
-        // Use legacy PDF system (pdf-lib)
-        const { fillAndDownloadPDF } = await import('../../services/pdf-legacy');
-        await fillAndDownloadPDF(character);
-      } else {
-        // Use new HTML-based PDF system
-        const { generateCharacterPDF } = await import('../../services/pdf');
-        
-        // Convert arrays to Records
-        const skillDefsRecord: Record<string, ISkillDef> = {};
-        SKILL_DEFS.forEach(skill => {
-          skillDefsRecord[skill.id] = skill;
-        });
-        
-        const advantageDefsRecord: Record<string, IAdvantageDef> = {};
-        ADVANTAGE_DEFS.forEach(adv => {
-          advantageDefsRecord[adv.id] = adv;
-        });
-        
-        const result = await generateCharacterPDF({
-          character,
-          powerDefs: POWER_DEFS,
-          modifierDefs: MODIFIER_DEFS,
-          skillDefs: skillDefsRecord,
-          advantageDefs: advantageDefsRecord,
-        });
-        
-        if (!result.success) {
-          throw new Error(result.error || 'PDF generation failed');
-        }
-        
-        // Store HTML for preview
-        setPdfPreviewHtml(result.html);
-        setPdfCharacterName(character.header.name || 'character');
+      // Convert arrays to Records
+      const skillDefsRecord: Record<string, ISkillDef> = {};
+      SKILL_DEFS.forEach(skill => {
+        skillDefsRecord[skill.id] = skill;
+      });
+      
+      const advantageDefsRecord: Record<string, IAdvantageDef> = {};
+      ADVANTAGE_DEFS.forEach(adv => {
+        advantageDefsRecord[adv.id] = adv;
+      });
+      
+      const result = await generateCharacterPDF({
+        character,
+        powerDefs: POWER_DEFS,
+        modifierDefs: MODIFIER_DEFS,
+        skillDefs: skillDefsRecord,
+        advantageDefs: advantageDefsRecord,
+      });
+      
+      if (!result.success) {
+        throw new Error(result.error || 'PDF generation failed');
+      }
+      
+      // Store HTML for preview
+      setPdfPreviewHtml(result.html);
+      
+      // Update toast to success
+      if (currentToastId) {
+        updateToast(currentToastId, t('pdf.toast.ready'), 'success');
+        setCurrentToastId(null);
       }
     } catch (e) {
-      alert(t('errors.exportError') + '\n' + String(e));
+      console.error('Error generating preview:', e);
+      
+      // Update toast to error
+      if (currentToastId) {
+        updateToast(currentToastId, t('pdf.toast.error'), 'error');
+        setCurrentToastId(null);
+      }
+      
+      // Close modal on error
+      setIsPreviewOpen(false);
+      setPdfPreviewHtml(null);
     } finally {
-      setIsPdfLoading(false);
+      setIsGeneratingPreview(false);
     }
   }
 
   /**
-   * Confirm and export PDF despite overflow warnings
+   * Execute legacy PDF export (called after overflow confirmation or when no overflow)
+   */
+  async function executeLegacyPDFExport() {
+    const toastId = showToast(t('pdf.generating'), 'loading');
+    
+    try {
+      const { fillAndDownloadPDF } = await import('../../services/pdf-legacy');
+      await fillAndDownloadPDF(character);
+      
+      updateToast(toastId, t('pdf.toast.downloaded'), 'success');
+    } catch (e) {
+      updateToast(toastId, t('pdf.toast.error'), 'error');
+      console.error('Error exporting PDF:', e);
+    }
+  }
+
+  /**
+   * Confirm and export PDF despite overflow warnings (legacy mode only)
    */
   async function confirmAndExportPDF() {
-    await executePDFExport();
+    await executeLegacyPDFExport();
   }
 
   /**
@@ -111,19 +156,30 @@ export function usePDFExport() {
   }
 
   /**
-   * Download PDF from preview HTML
+   * Generate and open PDF in browser (new behavior for preview modal)
    */
-  async function downloadPdfFromPreview() {
+  async function generateAndOpenPdf() {
     if (!pdfPreviewHtml) return;
     
     const sanitizedName = sanitizeFileName(pdfCharacterName);
     const filename = `${sanitizedName}_sheet.pdf`;
     
+    const toastId = showToast(t('pdf.toast.converting'), 'loading');
+    
     try {
       const pdfBlob = await convertHtmlToPdf(pdfPreviewHtml, { filename });
-      await downloadBlob(pdfBlob, filename);
+      
+      // Open PDF in new browser tab
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      window.open(pdfUrl, '_blank');
+      
+      // Clean up URL after a delay
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
+      
+      updateToast(toastId, t('pdf.toast.downloaded'), 'success');
     } catch (error) {
-      console.error('Error downloading PDF:', error);
+      console.error('Error generating PDF:', error);
+      updateToast(toastId, t('pdf.toast.error'), 'error');
       throw error;
     }
   }
@@ -144,8 +200,16 @@ export function usePDFExport() {
    * Close preview dialog
    */
   function closePreview() {
+    setIsPreviewOpen(false);
     setPdfPreviewHtml(null);
     setPdfCharacterName('');
+    setIsGeneratingPreview(false);
+    
+    // Dismiss any active toast
+    if (currentToastId) {
+      dismissToast(currentToastId);
+      setCurrentToastId(null);
+    }
   }
 
   return {
@@ -153,10 +217,11 @@ export function usePDFExport() {
     confirmAndExportPDF,
     clearOverflow,
     pdfOverflow,
-    isPdfLoading,
+    isPreviewOpen,
+    isGeneratingPreview,
     pdfPreviewHtml,
     pdfCharacterName,
-    downloadPdfFromPreview,
+    generateAndOpenPdf,
     downloadHtmlFromPreview,
     closePreview,
   };
