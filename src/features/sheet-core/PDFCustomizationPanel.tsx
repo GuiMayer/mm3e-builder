@@ -4,8 +4,9 @@
    ================================================ */
 
 import { useTranslation } from 'react-i18next';
-import type { PDFCustomizationOptions, ColorScheme, LayoutMode, FontFamily, FontSize } from '../../services/pdf/types';
+import type { PDFCustomizationOptions, ColorScheme, LayoutMode, FontFamily, FontSize, PDFRenderer } from '../../services/pdf/types';
 import { COLOR_THEMES } from '../../services/pdf/types';
+import { RendererSelector } from '../../components/PDFCustomization/RendererSelector';
 
 interface PDFCustomizationPanelProps {
   options: PDFCustomizationOptions;
@@ -31,6 +32,10 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
     onChange({ ...options, fontSize });
   };
 
+  const handleRendererChange = (renderer: PDFRenderer) => {
+    onChange({ ...options, renderer });
+  };
+
   const handleSectionToggle = (section: 'notes' | 'complications' | 'equipment') => {
     if (section === 'notes') {
       onChange({ ...options, includeNotes: !options.includeNotes });
@@ -44,6 +49,14 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
   return (
     <div className="pdf-customization-panel">
       <h3 className="panel-title">{t('pdf.customization.title')}</h3>
+
+      {/* Renderer Section */}
+      <section className="panel-section">
+        <RendererSelector
+          value={options.renderer || 'html2canvas'}
+          onChange={handleRendererChange}
+        />
+      </section>
 
       {/* Theme Section */}
       <section className="panel-section">
