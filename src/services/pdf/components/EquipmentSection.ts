@@ -38,12 +38,12 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
 
   return `
     <div class="pdf-section">
-      <div class="pdf-section-title">Equipment</div>
+      <div class="pdf-section-title">
+        Equipment
+        <span class="section-cost">${totalCost} PP</span>
+      </div>
       <div class="equipment-list">
         ${equipmentHtml}
-      </div>
-      <div class="text-right text-bold">
-        Total Cost: ${totalCost} PP
       </div>
     </div>
   `.trim();

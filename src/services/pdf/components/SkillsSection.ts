@@ -42,15 +42,17 @@ export function renderSkillsSection(data: SkillsSectionData): string {
   const skillsHtml = sortedSkills
     .map(skill => renderSkillEntry(skill, skillDefs, abilities, absentAbilities))
     .join('');
+  
+  const totalRanks = skills.reduce((sum, s) => sum + s.ranks, 0);
 
   return `
     <div class="pdf-section">
-      <div class="pdf-section-title">Skills</div>
+      <div class="pdf-section-title">
+        Skills
+        <span class="section-cost">${skillsCost} PP (${totalRanks} ranks)</span>
+      </div>
       <div class="skills-grid">
         ${skillsHtml}
-      </div>
-      <div class="text-right text-bold">
-        Total Cost: ${skillsCost} PP (${skills.reduce((sum, s) => sum + s.ranks, 0)} ranks)
       </div>
     </div>
   `.trim();

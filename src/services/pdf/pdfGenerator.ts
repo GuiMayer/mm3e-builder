@@ -384,6 +384,20 @@ body {
   padding-bottom: var(--space-sm);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-cost {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-secondary);
+  background: var(--color-bg-secondary);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .pdf-subsection { 

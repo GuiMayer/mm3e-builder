@@ -40,12 +40,12 @@ export function renderPowersSection(data: PowersSectionData): string {
 
   return `
     <div class="pdf-section">
-      <div class="pdf-section-title">Powers</div>
+      <div class="pdf-section-title">
+        Powers
+        <span class="section-cost">${powersCost} PP</span>
+      </div>
       <div class="powers-list">
         ${powersHtml}
-      </div>
-      <div class="text-right text-bold">
-        Total Cost: ${powersCost} PP
       </div>
     </div>
   `.trim();

@@ -42,12 +42,12 @@ export function renderAdvantagesSection(data: AdvantagesSectionData): string {
 
   return `
     <div class="pdf-section">
-      <div class="pdf-section-title">Advantages</div>
+      <div class="pdf-section-title">
+        Advantages
+        <span class="section-cost">${advantagesCost} PP</span>
+      </div>
       <div class="advantages-list">
         ${advantagesHtml}
-      </div>
-      <div class="text-right text-bold">
-        Total Cost: ${advantagesCost} PP
       </div>
     </div>
   `.trim();
