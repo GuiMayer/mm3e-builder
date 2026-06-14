@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { MenuBar } from '../shared/ui/MenuBar'
 import { SheetView } from '../features/sheet-core/SheetView'
 import { CharacterTabs } from '../features/sheet-core/CharacterTabs'
+import { PDFPreviewDialog } from '../features/sheet-core/PDFPreviewDialog'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 import { useAutoLoadDraftMulti } from '../shared/hooks/useAutoLoadDraftMulti'
+import { usePDFExport } from '../shared/hooks/usePDFExport'
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -19,6 +21,15 @@ export function App() {
   
   // Auto-load character tabs from localStorage on mount
   useAutoLoadDraftMulti();
+  
+  // PDF export with preview dialog
+  const {
+    pdfPreviewHtml,
+    pdfCharacterName,
+    downloadPdfFromPreview,
+    downloadHtmlFromPreview,
+    closePreview,
+  } = usePDFExport();
 
   // Sync <html lang> and <title> with the active i18n language
   useEffect(() => {
@@ -53,6 +64,16 @@ export function App() {
             )}
           </main>
         </ErrorBoundary>
+
+        {/* PDF Preview Dialog */}
+        <PDFPreviewDialog
+          html={pdfPreviewHtml || ''}
+          characterName={pdfCharacterName}
+          isOpen={!!pdfPreviewHtml}
+          onClose={closePreview}
+          onDownloadPdf={downloadPdfFromPreview}
+          onDownloadHtml={downloadHtmlFromPreview}
+        />
       </div>
 
       <style>{`
