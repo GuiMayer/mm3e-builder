@@ -538,6 +538,12 @@
   "pdf.overflowDestination": "→ {{dest}}",
   "pdf.overflowConfirm": "Export PDF anyway",
   "pdf.overflowCancel": "Cancel",
+  "pdf.preview.title": "PDF Preview",
+  "pdf.preview.downloadPDF": "Download PDF",
+  "pdf.preview.downloadHTML": "Download HTML",
+  "pdf.preview.converting": "Converting to PDF...",
+  "pdf.preview.close": "Close Preview",
+  "pdf.preview.error": "Error converting to PDF. Please try downloading HTML instead.",
 
   "error.boundary.title": "Something went wrong",
   "error.boundary.message": "An unexpected error occurred. Please try again.",
