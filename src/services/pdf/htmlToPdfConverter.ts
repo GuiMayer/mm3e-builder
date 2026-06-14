@@ -67,35 +67,37 @@ export async function convertHtmlToPdf(
       }
       
       case 'paged': {
-        // Paged.js renderer uses jsPDF with native HTML rendering
-        // This preserves text selectability better than html2canvas
-        console.log('[Paged Renderer] Using jsPDF with html method for selectable text');
+        // Paged.js renderer: Same as html2canvas but with lower scale for faster rendering
+        // and slightly different settings. Both use html2canvas underneath.
+        console.log('[Paged Renderer] Using html2pdf with optimized settings');
         
-        const { jsPDF } = await import('jspdf');
-        const pdf = new jsPDF({
-          unit: 'mm',
-          format: 'a4',
-          orientation: 'portrait',
-        });
-        
-        // Use jsPDF's html method which preserves text better
-        // The width parameter controls the target width in PDF (mm)
-        // The windowWidth controls the rendering viewport (px)
-        // Larger windowWidth = smaller content scale
-        await pdf.html(element, {
-          callback: () => {},
-          x: 10,
-          y: 10,
-          width: 190, // A4 width minus margins (210mm - 20mm)
-          windowWidth: 1200, // Large viewport to render content at smaller scale
-          html2canvas: {
-            scale: 2, // High DPI for quality
+        const pagedOptions = {
+          margin: options.margin || 10,
+          filename: options.filename,
+          image: { 
+            type: 'jpeg' as const, 
+            quality: 0.95 
+          },
+          html2canvas: { 
+            scale: 1.5, // Lower scale than html2canvas mode for faster processing
             useCORS: true,
             letterRendering: true,
-          }
-        });
+            logging: false,
+          },
+          jsPDF: { 
+            unit: 'mm', 
+            format: 'a4', 
+            orientation: 'portrait' as const,
+          },
+          pagebreak: options.pagebreak || { 
+            mode: ['avoid-all', 'css', 'legacy'] 
+          },
+        };
         
-        pdfBlob = pdf.output('blob');
+        pdfBlob = await html2pdf()
+          .set(pagedOptions)
+          .from(element)
+          .output('blob') as Blob;
         break;
       }
       
