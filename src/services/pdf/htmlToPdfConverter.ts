@@ -79,15 +79,17 @@ export async function convertHtmlToPdf(
         });
         
         // Use jsPDF's html method which preserves text better
-        // windowWidth should match the actual content width to prevent scaling issues
+        // The width parameter controls the target width in PDF (mm)
+        // The windowWidth controls the rendering viewport (px)
+        // Larger windowWidth = smaller content scale
         await pdf.html(element, {
           callback: () => {},
           x: 10,
           y: 10,
           width: 190, // A4 width minus margins (210mm - 20mm)
-          windowWidth: 210 * 3.78, // A4 width in pixels at 96dpi (794px)
+          windowWidth: 1200, // Large viewport to render content at smaller scale
           html2canvas: {
-            scale: 0.75, // Reduce scale to fit content properly on A4
+            scale: 2, // High DPI for quality
             useCORS: true,
             letterRendering: true,
           }
