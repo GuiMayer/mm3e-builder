@@ -90,7 +90,7 @@ export async function convertHtmlToPdf(
             x: 10,
             y: 10,
             html2canvas: {
-              scale: 2,
+              scale: 0.264,
               useCORS: true,
               letterRendering: true,
               logging: false,
