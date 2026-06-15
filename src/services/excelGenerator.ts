@@ -541,8 +541,8 @@ function buildPowersSheet(
         let name = `${locName(def, lang)} ${c.ranks}`;
         
         // Handle variable cost options (e.g., flat costs per rank)
-        if (c.variableCostOption && def.variableCostOptions) {
-          const option = def.variableCostOptions.find(o => o.id === c.variableCostOption);
+        if (c.variableCostOption && (def as any).variableCostOptions) {
+          const option = (def as any).variableCostOptions.find((o: any) => o.id === c.variableCostOption);
           if (option) {
             name += ` [${option.name[lang as keyof typeof option.name] || option.name.en}]`;
           }
@@ -558,10 +558,10 @@ function buildPowersSheet(
       .filter(c => c.fieldValues && Object.keys(c.fieldValues).length > 0)
       .map(c => {
         const def = gameData.powerDefs.find((d) => d.id === c.effectId);
-        if (!def || !def.fields) return null;
-        
-        const vals = Object.entries(c.fieldValues!).map(([key, val]) => {
-          const fieldDef = def.fields?.find(f => f.id === key);
+        if (!def || !(def as any).fields) return null;
+          
+          const vals = Object.entries(c.fieldValues!).map(([key, val]) => {
+            const fieldDef = (def as any).fields?.find((f: any) => f.id === key);
           const fieldName = fieldDef ? (fieldDef.name[lang as keyof typeof fieldDef.name] || fieldDef.name.en) : key;
           
           if (Array.isArray(val)) {
@@ -679,9 +679,9 @@ function buildOffenseSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expor
 
   // Data rows
   let currentRow = 3;
-  char.manualOffenseRows?.forEach((offense) => {
-    const row = ws.getRow(currentRow);
-    row.values = [offense.attack, offense.bonus, offense.range, offense.effect, offense.notes];
+    char.manualOffenseRows?.forEach((offense) => {
+      const row = ws.getRow(currentRow);
+      row.values = [offense.name, offense.bonus, offense.range, offense.effect, offense.notes];
     
     row.getCell(1).font = { bold: true };
     row.getCell(2).alignment = { horizontal: 'center' };
@@ -759,9 +759,9 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
     headerRow.height = 20;
     currentRow++;
 
-    char.equipment.forEach((eq) => {
-      const row = ws.getRow(currentRow);
-      row.values = [eq.name, eq.cost, eq.description];
+      char.equipment.forEach((eq: any) => {
+        const row = ws.getRow(currentRow);
+        row.values = [eq.name, eq.cost, eq.description];
       row.getCell(1).font = { bold: true };
       row.getCell(2).alignment = { horizontal: 'center' };
       row.getCell(3).alignment = { wrapText: true };
