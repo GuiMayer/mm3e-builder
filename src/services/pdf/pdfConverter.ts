@@ -13,9 +13,10 @@ export class PDFConverter implements IPDFConverter {
    * Convert HTML string to PDF blob
    */
   async convertHTMLToPDF(
-    _html: string,
-    _options: PDFGenerationOptions = {}
+    html: string,
+    options: PDFGenerationOptions = {}
   ): Promise<Blob> {
+    console.log(`[PDFConverter] Not implemented. HTML length: ${html.length}, Options:`, options);
     // TODO: Implement actual conversion using html2pdf.js or similar
     // For now, throw an error to indicate it's not yet implemented
     throw new Error(
@@ -34,9 +35,10 @@ export class PDFConverter implements IPDFConverter {
    * Convert HTML element to PDF blob
    */
   async convertElementToPDF(
-    _element: HTMLElement,
-    _options: PDFGenerationOptions = {}
+    element: HTMLElement,
+    options: PDFGenerationOptions = {}
   ): Promise<Blob> {
+    console.log(`[PDFConverter] Not implemented. Element: ${element.tagName}, Options:`, options);
     throw new Error('Element to PDF conversion not yet implemented.');
   }
 }

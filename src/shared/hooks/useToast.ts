@@ -10,7 +10,7 @@ let toastIdCounter = 0;
 
 // Global state for toasts (simple approach without external store)
 let toastState: ToastData[] = [];
-let toastListeners: Array<(toasts: ToastData[]) => void> = [];
+const toastListeners: Array<(toasts: ToastData[]) => void> = [];
 
 function notifyListeners() {
   toastListeners.forEach((listener) => listener([...toastState]));

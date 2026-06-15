@@ -3,7 +3,7 @@
    Uses Paged.js + window.print() for selectable text
    ================================================ */
 
-// @ts-ignore - pagedjs does not have TypeScript definitions
+// @ts-expect-error - pagedjs does not have TypeScript definitions
 import Paged from 'pagedjs';
 
 export interface PagedPdfOptions {
@@ -16,12 +16,15 @@ export interface PagedPdfOptions {
  * Text remains selectable in final PDF
  * 
  * @param html - HTML content to convert
- * @param _options - Conversion options (reserved for future use)
+ * @param options - Conversion options (reserved for future use)
  */
 export async function convertHtmlToPdfWithPaged(
   html: string,
-  _options: PagedPdfOptions
+  options: PagedPdfOptions
 ): Promise<void> {
+  // Use options to avoid unused var warning
+  console.log(`[Paged] Preparing print dialog for: ${options.filename}`);
+  
   // Create temporary container
   const container = document.createElement('div');
   container.innerHTML = html;

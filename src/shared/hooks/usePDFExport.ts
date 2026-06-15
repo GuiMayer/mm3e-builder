@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
@@ -232,7 +232,7 @@ export function usePDFExport() {
   /**
    * Handle customization changes and regenerate preview
    */
-  const handleCustomizationChange = useCallback(async (newOptions: PDFCustomizationOptions) => {
+  async function handleCustomizationChange(newOptions: PDFCustomizationOptions) {
     setCustomizationOptions(newOptions);
     savePDFCustomizationOptions(newOptions);
     
@@ -241,7 +241,7 @@ export function usePDFExport() {
       setIsGeneratingPreview(true);
       await generatePreviewHtml(newOptions);
     }
-  }, [isPreviewOpen, character, currentToastId, t, updateToast]);
+  }
 
   return {
     exportPDF,
