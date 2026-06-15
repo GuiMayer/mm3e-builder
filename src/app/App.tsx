@@ -9,6 +9,7 @@ import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 import { useAutoLoadDraftMulti } from '../shared/hooks/useAutoLoadDraftMulti'
 import { usePDFExport } from '../shared/hooks/usePDFExport'
+import { useAppStore } from '../store/appStore'
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -45,6 +46,12 @@ export function App() {
     document.documentElement.lang = i18n.language
     document.title = t('app.title') + ' — ' + t('app.subtitle')
   }, [i18n.language, t])
+
+  // Apply persisted theme on mount and changes
+  const theme = useAppStore(state => state.theme);
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   return (
     <ErrorBoundary
