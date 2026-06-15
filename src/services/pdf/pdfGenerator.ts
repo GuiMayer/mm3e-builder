@@ -660,53 +660,18 @@ body {
   print-color-adjust: exact;
 }
 
-.offense-header {
+.offense-table {
   display: grid;
   grid-template-columns: 25% 10% 15% 25% 25%;
   background: var(--color-bg-primary);
-  border-bottom: 1px solid var(--color-border);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
-.offense-header .offense-col {
+.offense-table .offense-col {
   padding: var(--space-md);
   border-right: 1px solid var(--color-border-light);
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  color: var(--color-text-light);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.offense-header .offense-col:last-child {
-  border-right: none;
-}
-
-.offense-body {
-  background: var(--color-bg-primary);
-}
-
-.offense-row {
-  display: grid;
-  grid-template-columns: 25% 10% 15% 25% 25%;
   border-bottom: 1px solid var(--color-border);
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-  page-break-inside: avoid;
-}
-
-.offense-row:nth-child(even) {
-  background: var(--color-bg-secondary);
-}
-
-.offense-row:last-child {
-  border-bottom: none;
-}
-
-.offense-row .offense-col {
-  padding: var(--space-md);
-  border-right: 1px solid var(--color-border-light);
   font-size: var(--font-size-sm);
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -714,8 +679,25 @@ body {
   align-items: flex-start;
 }
 
-.offense-row .offense-col:last-child {
+.offense-table .offense-col:nth-child(5n) {
   border-right: none;
+}
+
+.offense-table .offense-header-col {
+  background: var(--color-bg-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.offense-table .offense-col:nth-child(n+6):nth-child(10n+6),
+.offense-table .offense-col:nth-child(n+6):nth-child(10n+7),
+.offense-table .offense-col:nth-child(n+6):nth-child(10n+8),
+.offense-table .offense-col:nth-child(n+6):nth-child(10n+9),
+.offense-table .offense-col:nth-child(n+6):nth-child(10n+10) {
+  background: var(--color-bg-secondary);
 }
 
 .offense-col-attack {
