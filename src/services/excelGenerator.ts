@@ -36,7 +36,8 @@ export interface ExportLabels {
   sheetPowers: string;
   sheetComplications: string;
   sheetEquipment: string;
-  // Headers
+  sheetOffense: string;
+  sheetNotes: string;
   heroName: string;
   player: string;
   identity: string;
@@ -69,17 +70,20 @@ export interface ExportLabels {
   colEffect: string;
   colModifiers: string;
   colNotes: string;
+  colBonus: string;
+  colRange: string;
   colTitle: string;
   colType: string;
   colAlternateEffects: string;
-  // Summary
   section: string;
   spent: string;
   remaining: string;
   totalSpent: string;
-  // Misc
   absent: string;
   dynamic: string;
+  removable: string;
+  easilyRemovable: string;
+  descriptors: string;
   yes: string;
   no: string;
 }
@@ -178,9 +182,19 @@ export async function generateExcel(
   // ── 7. COMPLICATIONS SHEET ──
   buildComplicationsSheet(wb, character, labels);
 
-  // ── 8. EQUIPMENT NOTES SHEET ──
-  if (character.equipmentNotes?.trim()) {
+  // ??? 8. EQUIPMENT SHEET ???
+  if ((character.equipment && character.equipment.length > 0) || character.equipmentNotes?.trim()) {
     buildEquipmentSheet(wb, character, labels);
+  }
+
+  // ?? 9. OFFENSE SHEET ??
+  if (character.manualOffenseRows && character.manualOffenseRows.length > 0) {
+    buildOffenseSheet(wb, character, labels);
+  }
+
+  // ?? 10. NOTES SHEET ??
+  if (character.notes?.trim()) {
+    buildNotesSheet(wb, character, labels);
   }
 
   // ── 9. PP LOG SHEET (Campaign Mode only) ──
@@ -522,16 +536,65 @@ function buildPowersSheet(
     const effectNames = power.components
       .map((c) => {
         const def = gameData.powerDefs.find((d) => d.id === c.effectId);
-        return def ? `${locName(def, lang)} ${c.ranks}` : null;
+        if (!def) return null;
+        
+        let name = `${locName(def, lang)} ${c.ranks}`;
+        
+        // Handle variable cost options (e.g., flat costs per rank)
+        if (c.variableCostOption && def.variableCostOptions) {
+          const option = def.variableCostOptions.find(o => o.id === c.variableCostOption);
+          if (option) {
+            name += ` [${option.name[lang as keyof typeof option.name] || option.name.en}]`;
+          }
+        }
+        
+        return name;
       })
       .filter(Boolean)
       .join(' + ');
 
+    // Handle field values if present (from effect options)
+    const fieldValuesText = power.components
+      .filter(c => c.fieldValues && Object.keys(c.fieldValues).length > 0)
+      .map(c => {
+        const def = gameData.powerDefs.find((d) => d.id === c.effectId);
+        if (!def || !def.fields) return null;
+        
+        const vals = Object.entries(c.fieldValues!).map(([key, val]) => {
+          const fieldDef = def.fields?.find(f => f.id === key);
+          const fieldName = fieldDef ? (fieldDef.name[lang as keyof typeof fieldDef.name] || fieldDef.name.en) : key;
+          
+          if (Array.isArray(val)) {
+            return `${fieldName}: ${val.join(', ')}`;
+          }
+          return `${fieldName}: ${val}`;
+        });
+        
+        return vals.length > 0 ? vals.join(' | ') : null;
+      })
+      .filter(Boolean)
+      .join('\n');
+
     // Collect all modifiers from all components
     const allMods = power.components.flatMap((c) => c.modifiers);
 
+    // Format power name with removable tags
+    let powerName = power.name || '—';
+    if (power.removable === 'removable') powerName += ` (${labels.removable})`;
+    else if (power.removable === 'easily_removable') powerName += ` (${labels.easilyRemovable})`;
+
+    // Format notes with descriptors and field values
+    let notes = power.notes || '';
+    if (power.descriptors && power.descriptors.length > 0) {
+      const descriptorsText = `${labels.descriptors}: [${power.descriptors.join(', ')}]`;
+      notes = notes ? `${descriptorsText}\n\n${notes}` : descriptorsText;
+    }
+    if (fieldValuesText) {
+      notes = notes ? `${fieldValuesText}\n\n${notes}` : fieldValuesText;
+    }
+
     const row = ws.getRow(rowIdx);
-    row.getCell(1).value = power.name || '—';
+    row.getCell(1).value = powerName;
     row.getCell(1).font = { bold: true };
     row.getCell(2).value = effectNames || '—';
     row.getCell(3).value = power.components.length > 1 ? `${power.components.length} effects` : (power.components[0]?.ranks ?? 0);
@@ -539,7 +602,7 @@ function buildPowersSheet(
     row.getCell(4).alignment = { wrapText: true };
     row.getCell(5).value = formatAlternates(power, gameData, lang, labels);
     row.getCell(5).alignment = { wrapText: true };
-    row.getCell(6).value = power.notes || '';
+    row.getCell(6).value = notes;
     row.getCell(6).alignment = { wrapText: true };
     row.getCell(7).value = totalCost;
     row.getCell(7).numFmt = '0 "PP"';
@@ -587,24 +650,159 @@ function buildComplicationsSheet(wb: ExcelJS.Workbook, char: ICharacter, labels:
   autoWidth(ws, 20, 60);
 }
 
+function buildOffenseSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels) {
+  const ws = wb.addWorksheet(labels.sheetOffense);
+
+  // Title row
+  ws.mergeCells('A1:E1');
+  const titleCell = ws.getCell('A1');
+  titleCell.value = labels.sheetOffense;
+  titleCell.font = { bold: true, size: 13, color: { argb: COLORS.headerFill } };
+  ws.getRow(1).height = 22;
+
+  // Header row
+  const headerRow = ws.getRow(2);
+  headerRow.values = [labels.colName, labels.colBonus, labels.colRange, labels.colEffect, labels.colNotes];
+  headerRow.eachCell((cell) => {
+    cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+    cell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: COLORS.headerFill },
+    };
+    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+    cell.border = {
+      bottom: { style: 'thin', color: { argb: COLORS.borderColor } },
+    };
+  });
+  headerRow.height = 20;
+
+  // Data rows
+  let currentRow = 3;
+  char.manualOffenseRows?.forEach((offense) => {
+    const row = ws.getRow(currentRow);
+    row.values = [offense.attack, offense.bonus, offense.range, offense.effect, offense.notes];
+    
+    row.getCell(1).font = { bold: true };
+    row.getCell(2).alignment = { horizontal: 'center' };
+    row.getCell(3).alignment = { horizontal: 'center' };
+    
+    // Notes wrap
+    row.getCell(5).alignment = { wrapText: true };
+    row.getCell(5).font = { size: 10 };
+
+    const borderConfig: Partial<ExcelJS.Borders> = {
+      bottom: { style: 'thin', color: { argb: COLORS.borderColor } }
+    };
+    row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+      if (colNumber <= 5) {
+        cell.border = borderConfig;
+      }
+    });
+
+    currentRow++;
+  });
+
+  autoWidth(ws, 15, 60);
+  ws.getColumn(1).width = 30; // Attack Name
+  ws.getColumn(2).width = 15; // Bonus
+  ws.getColumn(3).width = 15; // Range
+  ws.getColumn(4).width = 30; // Effect
+  ws.getColumn(5).width = 40; // Notes
+}
+
+function buildNotesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels) {
+  const ws = wb.addWorksheet(labels.sheetNotes);
+
+  // Title row
+  ws.mergeCells('A1:A1');
+  const titleCell = ws.getCell('A1');
+  titleCell.value = labels.sheetNotes;
+  titleCell.font = { bold: true, size: 13, color: { argb: COLORS.headerFill } };
+  ws.getRow(1).height = 22;
+
+  // Notes content in a large merged cell
+  ws.mergeCells('A2:H20');
+  const notesCell = ws.getCell('A2');
+  notesCell.value = char.notes;
+  notesCell.alignment = { wrapText: true, vertical: 'top', horizontal: 'left' };
+  notesCell.font = { size: 11 };
+}
+
 function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels) {
   const ws = wb.addWorksheet(labels.sheetEquipment);
 
   // Title row
-  ws.mergeCells('A1:A1');
+  ws.mergeCells('A1:C1');
   const titleCell = ws.getCell('A1');
   titleCell.value = labels.sheetEquipment;
   titleCell.font = { bold: true, size: 13, color: { argb: COLORS.headerFill } };
   ws.getRow(1).height = 22;
 
-  // Notes in a merged tall cell
-  const notesCell = ws.getCell('A2');
-  notesCell.value = char.equipmentNotes;
-  notesCell.alignment = { wrapText: true, vertical: 'top' };
-  notesCell.font = { size: 10 };
-  ws.getRow(2).height = 120;
+  let currentRow = 2;
 
-  ws.getColumn(1).width = 60;
+  if (char.equipment && char.equipment.length > 0) {
+    const headerRow = ws.getRow(currentRow);
+    headerRow.values = [labels.colName, labels.colCost, labels.colNotes];
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: COLORS.headerFill },
+      };
+      cell.alignment = { horizontal: 'center', vertical: 'middle' };
+      cell.border = {
+        bottom: { style: 'thin', color: { argb: COLORS.borderColor } },
+      };
+    });
+    headerRow.height = 20;
+    currentRow++;
+
+    char.equipment.forEach((eq) => {
+      const row = ws.getRow(currentRow);
+      row.values = [eq.name, eq.cost, eq.description];
+      row.getCell(1).font = { bold: true };
+      row.getCell(2).alignment = { horizontal: 'center' };
+      row.getCell(3).alignment = { wrapText: true };
+      row.getCell(3).font = { size: 10 };
+      
+      const borderConfig: Partial<ExcelJS.Borders> = {
+        bottom: { style: 'thin', color: { argb: COLORS.borderColor } }
+      };
+      row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+        if (colNumber <= 3) {
+          cell.border = borderConfig;
+        }
+      });
+      currentRow++;
+    });
+    
+    currentRow++; // Empty row
+  }
+
+  if (char.equipmentNotes?.trim()) {
+    // Title for legacy notes
+    ws.mergeCells(`A${currentRow}:C${currentRow}`);
+    const legacyTitleCell = ws.getCell(`A${currentRow}`);
+    legacyTitleCell.value = labels.colNotes;
+    legacyTitleCell.font = { bold: true, size: 12, color: { argb: COLORS.headerFill } };
+    ws.getRow(currentRow).height = 20;
+    currentRow++;
+
+    // Notes in a merged tall cell
+    ws.mergeCells(`A${currentRow}:C${currentRow}`);
+    const notesCell = ws.getCell(`A${currentRow}`);
+    notesCell.value = char.equipmentNotes;
+    notesCell.alignment = { wrapText: true, vertical: 'top' };
+    notesCell.font = { size: 10 };
+    ws.getRow(currentRow).height = 120;
+  }
+
+  autoWidth(ws, 15, 60);
+  ws.getColumn(1).width = 30; // Name
+  ws.getColumn(2).width = 15; // Cost
+  ws.getColumn(3).width = 60; // Description/Notes
 }
 
 function buildPPLogSheet(wb: ExcelJS.Workbook, char: ICharacter) {
@@ -668,19 +866,20 @@ function formatAlternates(
 ): string {
   if (power.alternateEffects.length === 0) return '—';
   return power.alternateEffects
-    .map((alt) => {
-      // v2 format: components[]
-      const effectNames = alt.components
-        .map((comp) => {
-          const eDef = gameData.powerDefs.find((d) => d.id === comp.effectId);
-          return eDef ? `${locName(eDef, lang)} R${comp.ranks}` : comp.effectId;
-        })
-        .filter(Boolean)
-        .join(' + ');
-      const name = alt.name || effectNames || '—';
-      const cost = calcAlternateEffectCost(alt, gameData.powerDefs, gameData.modifierDefs);
-      const dyn = alt.dynamic ? ` [${labels.dynamic}]` : '';
-      return `${name}: ${effectNames} [${cost}PP]${dyn}`;
-    })
+      .map((alt) => {
+        // v2 format: components[]
+        const effectNames = alt.components
+          .map((comp) => {
+            const eDef = gameData.powerDefs.find((d) => d.id === comp.effectId);
+            return eDef ? `${locName(eDef, lang)} R${comp.ranks}` : comp.effectId;
+          })
+          .filter(Boolean)
+          .join(' + ');
+        const name = alt.name || effectNames || '—';
+        const cost = calcAlternateEffectCost(alt, gameData.powerDefs, gameData.modifierDefs);
+        const dyn = alt.dynamic ? ` [${labels.dynamic}]` : '';
+        const notesStr = alt.notes ? `\n  📝 ${alt.notes}` : '';
+        return `${name}: ${effectNames} [${cost}PP]${dyn}${notesStr}`;
+      })
     .join('\n');
 }
