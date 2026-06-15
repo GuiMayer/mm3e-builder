@@ -11,7 +11,7 @@ import { convertHtmlToPdf } from '../../services/pdf/htmlToPdfConverter';
 import { downloadBlob, sanitizeFileName } from '../../services/downloadHelper';
 import { useToast } from './useToast';
 import type { PDFCustomizationOptions } from '../../services/pdf/types';
-import { DEFAULT_CUSTOMIZATION } from '../../services/pdf/types';
+import { loadPDFCustomizationOptions, savePDFCustomizationOptions } from './usePDFCustomizationStorage';
 
 /**
  * Hook for managing PDF export with preview modal and toast notifications.
@@ -28,7 +28,7 @@ export function usePDFExport() {
   const [pdfPreviewHtml, setPdfPreviewHtml] = useState<string | null>(null);
   const [pdfCharacterName, setPdfCharacterName] = useState<string>('');
   const [currentToastId, setCurrentToastId] = useState<string | null>(null);
-  const [customizationOptions, setCustomizationOptions] = useState<PDFCustomizationOptions>(DEFAULT_CUSTOMIZATION);
+  const [customizationOptions, setCustomizationOptions] = useState<PDFCustomizationOptions>(() => loadPDFCustomizationOptions());
 
   /**
    * Open preview modal and start generating HTML
@@ -234,6 +234,7 @@ export function usePDFExport() {
    */
   const handleCustomizationChange = useCallback(async (newOptions: PDFCustomizationOptions) => {
     setCustomizationOptions(newOptions);
+    savePDFCustomizationOptions(newOptions);
     
     // Regenerate preview with new options immediately
     if (isPreviewOpen) {
