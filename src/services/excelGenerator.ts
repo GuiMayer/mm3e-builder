@@ -541,8 +541,8 @@ function buildPowersSheet(
         let name = `${locName(def, lang)} ${c.ranks}`;
         
         // Handle variable cost options (e.g., flat costs per rank)
-        if (c.variableCostOption && (def as any).variableCostOptions) {
-          const option = (def as any).variableCostOptions.find((o: any) => o.id === c.variableCostOption);
+        if (c.variableCostOption && (def as unknown as Record<string, unknown>).variableCostOptions) {
+          const option = ((def as unknown as Record<string, unknown>).variableCostOptions as Record<string, unknown>[]).find((o: Record<string, unknown>) => o.id === c.variableCostOption);
           if (option) {
             name += ` [${option.name[lang as keyof typeof option.name] || option.name.en}]`;
           }
@@ -558,10 +558,10 @@ function buildPowersSheet(
       .filter(c => c.fieldValues && Object.keys(c.fieldValues).length > 0)
       .map(c => {
         const def = gameData.powerDefs.find((d) => d.id === c.effectId);
-        if (!def || !(def as any).fields) return null;
+        if (!def || !(def as unknown as Record<string, unknown>).fields) return null;
           
           const vals = Object.entries(c.fieldValues!).map(([key, val]) => {
-            const fieldDef = (def as any).fields?.find((f: any) => f.id === key);
+            const fieldDef = ((def as unknown as Record<string, unknown>).fields as Record<string, unknown>[])?.find((f: Record<string, unknown>) => f.id === key);
           const fieldName = fieldDef ? (fieldDef.name[lang as keyof typeof fieldDef.name] || fieldDef.name.en) : key;
           
           if (Array.isArray(val)) {
@@ -759,7 +759,7 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
     headerRow.height = 20;
     currentRow++;
 
-      char.equipment.forEach((eq: any) => {
+      char.equipment.forEach((eq: Record<string, unknown>) => {
         const row = ws.getRow(currentRow);
         row.values = [eq.name, eq.cost, eq.description];
       row.getCell(1).font = { bold: true };
