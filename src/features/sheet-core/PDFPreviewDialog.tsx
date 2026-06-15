@@ -34,6 +34,7 @@ export function PDFPreviewDialog({
   const { t } = useTranslation();
   const [isConverting, setIsConverting] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   // Determine if actions should be disabled
   const isActionsDisabled = isGenerating || isConverting;
@@ -62,14 +63,30 @@ export function PDFPreviewDialog({
     onClose();
   }, [isActionsDisabled, onClose]);
 
+  // Toggle mobile drawer
+  const toggleMobileDrawer = useCallback(() => {
+    setIsMobileDrawerOpen(prev => !prev);
+  }, []);
+
+  // Close mobile drawer
+  const closeMobileDrawer = useCallback(() => {
+    setIsMobileDrawerOpen(false);
+  }, []);
+
   // Handle ESC key
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !isActionsDisabled) {
-        onClose();
+      if (e.key === 'Escape') {
+        if (isMobileDrawerOpen) {
+          // Close drawer first if open
+          closeMobileDrawer();
+        } else if (!isActionsDisabled) {
+          // Close modal if drawer is closed
+          onClose();
+        }
       }
     },
-    [isActionsDisabled, onClose]
+    [isMobileDrawerOpen, isActionsDisabled, onClose, closeMobileDrawer]
   );
 
   // Handle backdrop click
@@ -123,18 +140,44 @@ export function PDFPreviewDialog({
               {characterName}
             </p>
           </div>
-          <button
-            className="pdf-preview-close-btn"
-            onClick={handleClose}
-            disabled={isActionsDisabled}
-            aria-label={t('pdf.preview.close')}
-          >
-            ✕
-          </button>
+          <div className="pdf-preview-header-actions">
+            {/* Mobile Customize Button */}
+            <button
+              className="pdf-preview-customize-btn"
+              onClick={toggleMobileDrawer}
+              aria-label="Customize PDF"
+              aria-expanded={isMobileDrawerOpen}
+            >
+              <span className="customize-icon">⚙️</span>
+              <span className="customize-label">Customize</span>
+            </button>
+            <button
+              className="pdf-preview-close-btn"
+              onClick={handleClose}
+              disabled={isActionsDisabled}
+              aria-label={t('pdf.preview.close')}
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
-        {/* Customization Panel */}
-        <div className="pdf-preview-sidebar">
+        {/* Mobile Drawer Backdrop */}
+        {isMobileDrawerOpen && (
+          <div
+            className="pdf-preview-drawer-backdrop"
+            onClick={closeMobileDrawer}
+            role="presentation"
+            aria-hidden="true"
+          />
+        )}
+
+        {/* Customization Panel (Desktop Sidebar / Mobile Drawer) */}
+        <div className={`pdf-preview-sidebar ${isMobileDrawerOpen ? 'mobile-open' : ''}`}>
+          {/* Mobile Drawer Handle */}
+          <div className="pdf-preview-drawer-handle">
+            <span className="drawer-handle-bar" />
+          </div>
           <PDFCustomizationPanel
             options={customizationOptions}
             onChange={onCustomizationChange}
@@ -267,9 +310,64 @@ export function PDFPreviewDialog({
           flex-direction: column;
         }
 
+        /* Mobile Drawer Backdrop */
+        .pdf-preview-drawer-backdrop {
+          display: none;
+        }
+
         @media (max-width: 1023px) {
           .pdf-preview-sidebar {
-            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-height: 80vh;
+            z-index: 1002;
+            border-right: none;
+            border-top: 1px solid var(--c-border, #333);
+            border-radius: var(--r-lg, 12px) var(--r-lg, 12px) 0 0;
+            background: var(--c-surface-elevated, #1e1e1e);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+          }
+
+          .pdf-preview-sidebar.mobile-open {
+            transform: translateY(0);
+          }
+
+          .pdf-preview-drawer-backdrop {
+            display: block;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 1001;
+            animation: pdf-preview-fade-in 0.2s ease;
+          }
+        }
+
+        /* Drawer Handle */
+        .pdf-preview-drawer-handle {
+          display: none;
+        }
+
+        @media (max-width: 1023px) {
+          .pdf-preview-drawer-handle {
+            display: flex;
+            justify-content: center;
+            padding: 0.75rem 0 0.5rem 0;
+            cursor: pointer;
+            flex-shrink: 0;
+          }
+
+          .drawer-handle-bar {
+            width: 40px;
+            height: 4px;
+            background: var(--c-border, #555);
+            border-radius: 2px;
           }
         }
 
@@ -302,6 +400,53 @@ export function PDFPreviewDialog({
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+        }
+
+        .pdf-preview-header-actions {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .pdf-preview-customize-btn {
+          display: none; /* Hidden on desktop */
+          align-items: center;
+          gap: 0.5rem;
+          background: var(--c-primary, #3b82f6);
+          border: 1px solid var(--c-primary, #3b82f6);
+          color: #fff;
+          font-size: 0.9rem;
+          font-weight: 600;
+          padding: 0.5rem 1rem;
+          border-radius: var(--r-md, 8px);
+          cursor: pointer;
+          transition: all var(--t-fast, 0.15s);
+          flex-shrink: 0;
+        }
+
+        .pdf-preview-customize-btn:hover {
+          background: var(--c-primary-hover, #2563eb);
+          border-color: var(--c-primary-hover, #2563eb);
+        }
+
+        .pdf-preview-customize-btn:active {
+          transform: scale(0.98);
+        }
+
+        .customize-icon {
+          font-size: 1.1rem;
+          line-height: 1;
+        }
+
+        .customize-label {
+          font-family: var(--f-body, system-ui, sans-serif);
+        }
+
+        /* Show customize button on mobile */
+        @media (max-width: 1023px) {
+          .pdf-preview-customize-btn {
+            display: flex;
+          }
         }
 
         .pdf-preview-close-btn {
