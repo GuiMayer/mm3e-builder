@@ -542,9 +542,11 @@ function buildPowersSheet(
         
         // Handle variable cost options (e.g., flat costs per rank)
         if (c.variableCostOption && (def as unknown as Record<string, unknown>).variableCostOptions) {
-          const option = ((def as unknown as Record<string, unknown>).variableCostOptions as Record<string, unknown>[]).find((o: Record<string, unknown>) => o.id === c.variableCostOption);
-          if (option) {
-            name += ` [${option.name[lang as keyof typeof option.name] || option.name.en}]`;
+          const optionsArray = (def as unknown as Record<string, unknown>).variableCostOptions as Array<Record<string, unknown>>;
+          const option = optionsArray.find(o => o.id === c.variableCostOption);
+          if (option && option.name) {
+            const nameObj = option.name as Record<string, string>;
+            name += ` [${nameObj[lang as keyof typeof nameObj] || nameObj.en}]`;
           }
         }
         
@@ -561,8 +563,13 @@ function buildPowersSheet(
         if (!def || !(def as unknown as Record<string, unknown>).fields) return null;
           
           const vals = Object.entries(c.fieldValues!).map(([key, val]) => {
-            const fieldDef = ((def as unknown as Record<string, unknown>).fields as Record<string, unknown>[])?.find((f: Record<string, unknown>) => f.id === key);
-          const fieldName = fieldDef ? (fieldDef.name[lang as keyof typeof fieldDef.name] || fieldDef.name.en) : key;
+            const fieldsArray = (def as unknown as Record<string, unknown>).fields as Array<Record<string, unknown>>;
+            const fieldDef = fieldsArray?.find(f => f.id === key);
+            let fieldName = key;
+            if (fieldDef && fieldDef.name) {
+              const nameObj = fieldDef.name as Record<string, string>;
+              fieldName = nameObj[lang as keyof typeof nameObj] || nameObj.en;
+            }
           
           if (Array.isArray(val)) {
             return `${fieldName}: ${val.join(', ')}`;
@@ -741,7 +748,7 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
 
   let currentRow = 2;
 
-  if (char.equipment && char.equipment.length > 0) {
+  if (char.equipment && Array.isArray(char.equipment) && char.equipment.length > 0) {
     const headerRow = ws.getRow(currentRow);
     headerRow.values = [labels.colName, labels.colCost, labels.colNotes];
     headerRow.eachCell((cell) => {
@@ -759,9 +766,9 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
     headerRow.height = 20;
     currentRow++;
 
-      char.equipment.forEach((eq: Record<string, unknown>) => {
-        const row = ws.getRow(currentRow);
-        row.values = [eq.name, eq.cost, eq.description];
+    (char.equipment as unknown as Array<Record<string, unknown>>).forEach((eq: Record<string, unknown>) => {
+      const row = ws.getRow(currentRow);
+      row.values = [eq.name as string, eq.cost as number, eq.description as string];
       row.getCell(1).font = { bold: true };
       row.getCell(2).alignment = { horizontal: 'center' };
       row.getCell(3).alignment = { wrapText: true };
