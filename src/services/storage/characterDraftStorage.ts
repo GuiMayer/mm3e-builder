@@ -1,13 +1,8 @@
 import { z } from 'zod';
 import { CharacterFileSchema, CharacterSchema } from '../../entities/schemas';
 import type { ICharacter } from '../../entities/types';
-import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import type { CharacterTab } from '../../store/charactersStore';
-import {
-  migrateAdvantages,
-  migrateEquipment,
-  migratePowers,
-} from '../../shared/lib/powerMigration';
+import { normalizeCharacter } from '../character-file/normalizeCharacter';
 
 const LEGACY_DRAFT_KEY = 'mm3e-draft-character';
 const DRAFT_KEY = 'mm3e-draft-characters';
@@ -40,18 +35,6 @@ const DraftMetadataSchema = z.object({
 export type DraftMetadataMulti = z.infer<typeof DraftMetadataSchema>;
 
 let lastSavedSignature = '';
-
-function normalizeCharacter(character: ICharacter): ICharacter {
-  return {
-    ...character,
-    powers: migratePowers(character.powers as unknown[]),
-    equipment: migrateEquipment((character.equipment as unknown[]) ?? []),
-    advantages: migrateAdvantages(
-      (character.advantages as unknown[]) ?? [],
-      ADVANTAGE_DEFS
-    ),
-  };
-}
 
 function toStoredCharacters(tabs: CharacterTab[]) {
   return tabs.map((tab) => ({
