@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
-import { checkPDFOverflow } from '../../services/pdf-legacy';
 import type { PDFOverflowReport } from '../../services/pdf-legacy';
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
@@ -36,10 +35,9 @@ export function usePDFExport() {
    */
   async function exportPDF() {
     const useLegacy = useAppStore.getState().useLegacyPdfExporter;
-    console.log('[usePDFExport] exportPDF called, useLegacy:', useLegacy);
-    
     // Legacy mode: check overflow and export directly
     if (useLegacy) {
+      const { checkPDFOverflow } = await import('../../services/pdf-legacy');
       const offenseEntries = buildOffenseSummary(
         character,
         POWER_DEFS,
@@ -79,8 +77,6 @@ export function usePDFExport() {
   async function generatePreviewHtml(options?: PDFCustomizationOptions) {
     const customOptions = options || customizationOptions;
     
-    console.log('[usePDFExport] generatePreviewHtml called with options:', customOptions);
-    
     try {
       const { generateCharacterPDF } = await import('../../services/pdf');
       
@@ -95,7 +91,6 @@ export function usePDFExport() {
         advantageDefsRecord[adv.id] = adv;
       });
       
-      console.log('[usePDFExport] Calling generateCharacterPDF...');
       const result = await generateCharacterPDF({
         character,
         powerDefs: POWER_DEFS,
@@ -105,16 +100,12 @@ export function usePDFExport() {
         customization: customOptions,
       });
       
-      console.log('[usePDFExport] generateCharacterPDF result:', { success: result.success, hasHtml: !!result.html, error: result.error });
-      
       if (!result.success) {
         throw new Error(result.error || 'PDF generation failed');
       }
       
       // Store HTML for preview
       setPdfPreviewHtml(result.html);
-      console.log('[usePDFExport] HTML preview set successfully');
-      
       // Update toast to success
       if (currentToastId) {
         updateToast(currentToastId, t('pdf.toast.ready'), 'success');
@@ -130,7 +121,6 @@ export function usePDFExport() {
       }
       
       // Close modal on error
-      console.log('[usePDFExport] Closing modal due to error');
       setIsPreviewOpen(false);
       setPdfPreviewHtml(null);
     } finally {

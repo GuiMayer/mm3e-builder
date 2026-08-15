@@ -8,7 +8,6 @@ import { useCharacterActions } from '../hooks/useCharacterActions';
 import { useCalculatedPP } from '../hooks/useCalculatedPP';
 import { useFileOperations } from '../hooks/useFileOperations';
 import { useExcelExport } from '../hooks/useExcelExport';
-import { prefetchPDFTemplate } from '../../services/pdf-legacy';
 import { MobileDrawer } from './MobileDrawer';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
@@ -79,10 +78,13 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     }
   }, [language, i18nInstance]);
 
-  // Pre-fetch PDF template in background on first render
+  // Pre-fetch the legacy template only when that renderer is enabled.
   useEffect(() => {
-    prefetchPDFTemplate();
-  }, []);
+    if (!useLegacyPdfExporter) return;
+    void import('../../services/pdf-legacy').then(({ prefetchPDFTemplate }) => {
+      prefetchPDFTemplate();
+    });
+  }, [useLegacyPdfExporter]);
 
   // Close dropdown on outside click
   useEffect(() => {
