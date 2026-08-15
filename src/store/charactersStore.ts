@@ -1,35 +1,13 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { ICharacter } from '../entities/types';
+import { createDefaultCharacter } from '../entities/characterDefaults';
 
 /* ================================================
    Characters Store — Multi-Character Management
    Manages multiple character tabs simultaneously.
    Each tab contains a character, dirty state, and metadata.
    ================================================ */
-
-const DEFAULT_CHARACTER: ICharacter = {
-  characterId: undefined,
-  header: {
-    name: '',
-    player: '',
-    identity: '',
-    base: '',
-    powerLevel: 10,
-    heroPoints: 1,
-  },
-  abilities: { str: 0, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0 },
-  absentAbilities: [],
-  defenses: { dodge: 0, parry: 0, fortitude: 0, will: 0 },
-  skills: [],
-  advantages: [],
-  powers: [],
-  complications: [],
-  equipmentNotes: '',
-  manualOffenseRows: [],
-  campaignMode: false,
-  ppLog: [],
-};
 
 export interface CharacterTab {
   id: string;
@@ -113,9 +91,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
 
       addCharacter: (character) => {
         const newId = crypto.randomUUID();
-        const baseCharacter = character
-          ? { ...DEFAULT_CHARACTER, ...character }
-          : { ...DEFAULT_CHARACTER };
+        const baseCharacter = createDefaultCharacter(character);
 
         // Ensure character has characterId for cross-device sync
         // If already exists (from import), preserve it

@@ -1,5 +1,6 @@
 import { useCharactersStore } from '../../store/charactersStore';
 import type { ICharacter } from '../../entities/types';
+import { createDefaultCharacter } from '../../entities/characterDefaults';
 
 /* ================================================
    useActiveCharacter Hook
@@ -7,28 +8,7 @@ import type { ICharacter } from '../../entities/types';
    Provides drop-in replacement for useCharStore selectors.
    ================================================ */
 
-const DEFAULT_CHARACTER: ICharacter = {
-  characterId: undefined,
-  header: {
-    name: '',
-    player: '',
-    identity: '',
-    base: '',
-    powerLevel: 10,
-    heroPoints: 1,
-  },
-  abilities: { str: 0, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0 },
-  absentAbilities: [],
-  defenses: { dodge: 0, parry: 0, fortitude: 0, will: 0 },
-  skills: [],
-  advantages: [],
-  powers: [],
-  complications: [],
-  equipmentNotes: '',
-  manualOffenseRows: [],
-  campaignMode: false,
-  ppLog: [],
-};
+const EMPTY_CHARACTER = createDefaultCharacter();
 
 /**
  * Hook to access the currently active character.
@@ -41,7 +21,7 @@ export function useActiveCharacter() {
   });
 
   // Return character or default empty character
-  const character: ICharacter = activeTab?.character ?? DEFAULT_CHARACTER;
+  const character: ICharacter = activeTab?.character ?? EMPTY_CHARACTER;
   const isDirty = activeTab?.isDirty ?? false;
   const characterId = activeTab?.id ?? null;
 

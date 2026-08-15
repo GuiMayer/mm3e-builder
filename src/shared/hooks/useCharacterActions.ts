@@ -3,6 +3,7 @@ import { useCharactersStore } from '../../store/charactersStore';
 import { migratePowers, migrateAdvantages } from '../lib/powerMigration';
 import type { ICharacter, AbilityKey, IPPLogEntry, IManualOffenseRow } from '../../entities/types';
 import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
+import { createDefaultCharacter } from '../../entities/characterDefaults';
 
 /**
  * Hook providing character mutation actions.
@@ -123,30 +124,7 @@ export function useCharacterActions() {
     if (activeId) {
       const active = store.getCharacterById(activeId);
       if (active) {
-        // Reset to default character
-        const DEFAULT_CHARACTER: ICharacter = {
-          header: {
-            name: '',
-            player: '',
-            identity: '',
-            base: '',
-            powerLevel: 10,
-            heroPoints: 1,
-          },
-          abilities: { str: 0, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0 },
-          absentAbilities: [],
-          defenses: { dodge: 0, parry: 0, fortitude: 0, will: 0 },
-          skills: [],
-          advantages: [],
-          powers: [],
-          complications: [],
-          equipmentNotes: '',
-          manualOffenseRows: [],
-          campaignMode: false,
-          ppLog: [],
-        };
-        
-        store.updateCharacter(activeId, DEFAULT_CHARACTER);
+        store.updateCharacter(activeId, createDefaultCharacter());
         // isDirty is already set to true by updateCharacter
         // Auto-save will be triggered automatically after debounce
       }
