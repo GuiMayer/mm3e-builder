@@ -1,0 +1,96 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createDefaultCharacter } from '../entities/characterDefaults';
+import type { CharacterTab } from '../store/charactersStore';
+import {
+  characterDraftStorageKeys,
+  getDraftMetadataMulti,
+  loadDraftMulti,
+  saveDraftMulti,
+} from '../services/storage/characterDraftStorage';
+
+function createStorageMock() {
+  let values: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => values[key] ?? null),
+    setItem: vi.fn((key: string, value: string) => {
+      values[key] = value;
+    }),
+    removeItem: vi.fn((key: string) => {
+      delete values[key];
+    }),
+    clear: vi.fn(() => {
+      values = {};
+    }),
+  };
+}
+
+const storage = createStorageMock();
+Object.defineProperty(globalThis, 'localStorage', { value: storage });
+
+function createTab(id: string, name: string): CharacterTab {
+  return {
+    id,
+    character: createDefaultCharacter({
+      characterId: '3d594650-3436-4e36-a785-6ad065f3c7b4',
+      header: {
+        name,
+        player: '',
+        identity: '',
+        base: '',
+        powerLevel: 10,
+        heroPoints: 1,
+      },
+    }),
+    isDirty: true,
+    label: name,
+    lastModified: 123,
+  };
+}
+
+describe('characterDraftStorage', () => {
+  beforeEach(() => {
+    storage.clear();
+    storage.setItem.mockClear();
+  });
+
+  it('round-trips the established multi-character draft format', () => {
+    const tabs = [createTab('tab-1', 'Hero')];
+
+    expect(saveDraftMulti(tabs, 'tab-1')).toBe(true);
+    const loaded = loadDraftMulti();
+
+    expect(loaded?.activeId).toBe('tab-1');
+    expect(loaded?.tabs).toHaveLength(1);
+    expect(loaded?.tabs[0].character.header.name).toBe('Hero');
+    expect(loaded?.tabs[0].isDirty).toBe(false);
+  });
+
+  it('preserves invalid stored data instead of deleting it', () => {
+    storage.setItem(characterDraftStorageKeys.draft, '{invalid');
+
+    expect(loadDraftMulti()).toBeNull();
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toBe('{invalid');
+    expect(storage.removeItem).not.toHaveBeenCalledWith(
+      characterDraftStorageKeys.draft
+    );
+  });
+
+  it('validates metadata before returning it', () => {
+    storage.setItem(characterDraftStorageKeys.metadata, '{"version":"bad"}');
+
+    expect(getDraftMetadataMulti()).toBeNull();
+  });
+
+  it('persists an active-tab-only change', () => {
+    const tabs = [createTab('tab-1', 'One'), createTab('tab-2', 'Two')];
+    saveDraftMulti(tabs, 'tab-1');
+    storage.setItem.mockClear();
+
+    saveDraftMulti(tabs, 'tab-2');
+
+    expect(storage.setItem).toHaveBeenCalledWith(
+      characterDraftStorageKeys.draft,
+      expect.any(String)
+    );
+  });
+});
