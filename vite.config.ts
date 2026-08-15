@@ -27,7 +27,9 @@ export default defineConfig({
           if (id.includes('i18next')) return 'vendor-i18n';
           if (id.includes('zod')) return 'vendor-validation';
           if (id.includes('zustand')) return 'vendor-state';
-          return 'vendor';
+          // Let the bundler preserve dynamic-import boundaries for the
+          // remaining packages instead of merging them into one large chunk.
+          return;
         },
       },
     },

@@ -6,7 +6,6 @@ import type { PDFOverflowReport } from '../../services/pdf-legacy';
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import type { ISkillDef, IAdvantageDef } from '../../entities/types';
-import { convertHtmlToPdf } from '../../services/pdf/htmlToPdfConverter';
 import { downloadBlob, sanitizeFileName } from '../../services/downloadHelper';
 import { useToast } from './useToast';
 import type { PDFCustomizationOptions } from '../../services/pdf/types';
@@ -171,6 +170,9 @@ export function usePDFExport() {
     const toastId = showToast(t('pdf.toast.converting'), 'loading');
     
     try {
+      const { convertHtmlToPdf } = await import(
+        '../../services/pdf/htmlToPdfConverter'
+      );
       const pdfBlob = await convertHtmlToPdf(pdfPreviewHtml, { 
         filename,
         renderer: customizationOptions.renderer || 'html2canvas'

@@ -7,6 +7,7 @@
     "dev": "vite",
     "typecheck": "tsc -b --noEmit",
     "build": "tsc -b && vite build",
+    "build:verify": "node scripts/verify-static-build.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
