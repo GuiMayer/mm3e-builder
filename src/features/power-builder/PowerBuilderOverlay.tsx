@@ -30,6 +30,12 @@ import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
+import {
+  collectModifierDefinitions,
+  createPowerDraft,
+  findModifierIncompatibilities,
+  getPaletteContext,
+} from './powerBuilderModel';
 
 interface Props {
   existingPower?: ICharacterPower;
@@ -50,14 +56,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   const validationRules = useAppStore((s) => s.validationRules) ?? DEFAULT_VALIDATION_RULES;
 
   // Build initial state — if existing power has legacy format, migration handles it at store level
-  const [power, setPower] = useState<ICharacterPower>(
-    existingPower ?? {
-      id: uuidv4(),
-      name: '',
-      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} }],
-      notes: '',
-      alternateEffects: [],
-    }
+  const [power, setPower] = useState<ICharacterPower>(() =>
+    createPowerDraft(existingPower)
   );
 
   const [paletteFilter, setPaletteFilter] = useState('');
@@ -77,75 +77,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   // All modifier defs (general + power-specific merged for lookup)
   // Includes extras/flaws from AE components so the palette is correct
   // when editing an AE with a different effect than the main power.
-  const allModDefs = useMemo(() => {
-    const specificMods: IModifierDef[] = [];
-    // Main power components
-    power.components.forEach((comp) => {
-      const effect = powerDefs.find((d) => d.id === comp.effectId);
-      if (effect) specificMods.push(...(effect.extras || []), ...(effect.flaws || []));
-    });
-    // AE components (critical: different effects may have different specific mods)
-    power.alternateEffects.forEach((ae) => {
-      ae.components.forEach((comp) => {
-        const effect = powerDefs.find((d) => d.id === comp.effectId);
-        if (effect) specificMods.push(...(effect.extras || []), ...(effect.flaws || []));
-      });
-    });
-    const seen = new Set<string>();
-    return [...modifierDefs, ...specificMods].filter((m) => {
-      if (seen.has(m.id)) return false;
-      seen.add(m.id);
-      return true;
-    });
-  }, [modifierDefs, power.components, power.alternateEffects, powerDefs]);
+  const allModDefs = useMemo(
+    () => collectModifierDefinitions(power, powerDefs, modifierDefs),
+    [modifierDefs, power, powerDefs]
+  );
 
   // Detect modifier incompatibilities for all components
-  const modifierIncompatibilities = useMemo(() => {
-    const incompatibilities: Record<string, string[]> = {};
-    
-    // Check main power components
-    power.components.forEach((comp) => {
-      const appliedModIds = comp.modifiers.map((m) => m.modifierId);
-      comp.modifiers.forEach((applied) => {
-        const def = allModDefs.find((d) => d.id === applied.modifierId);
-        if (!def || !def.incompatibleWith || def.incompatibleWith.length === 0) return;
-        
-        const conflicts = def.incompatibleWith.filter((incompatId) =>
-          appliedModIds.includes(incompatId)
-        );
-        
-        if (conflicts.length > 0) {
-          const key = `${comp.id}:${applied.modifierId}`;
-          incompatibilities[key] = conflicts;
-        }
-      });
-    });
-    
-    // Check AE components
-    power.alternateEffects.forEach((ae) => {
-      ae.components.forEach((comp) => {
-        const appliedModIds = comp.modifiers.map((m) => m.modifierId);
-        comp.modifiers.forEach((applied) => {
-          const def = allModDefs.find((d) => d.id === applied.modifierId);
-          if (!def || !def.incompatibleWith || def.incompatibleWith.length === 0) return;
-          
-          const conflicts = def.incompatibleWith.filter((incompatId) =>
-            appliedModIds.includes(incompatId)
-          );
-          
-          if (conflicts.length > 0) {
-            const key = `${ae.id}:${comp.id}:${applied.modifierId}`;
-            incompatibilities[key] = conflicts;
-          }
-        });
-      });
-    });
-    
-    return incompatibilities;
-  }, [power.components, power.alternateEffects, allModDefs]);
-
-  // Currently selected effect for the active component (used only in component cards)
-  const activeComponent = power.components.find((c) => c.id === activeComponentId);
+  const modifierIncompatibilities = useMemo(
+    () => findModifierIncompatibilities(power, allModDefs),
+    [power, allModDefs]
+  );
 
   // Use cost calculation hook
   const {
@@ -167,15 +108,18 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   });
 
   // Palette context: when an AE is expanded, palette serves that AE's active component
-  const paletteSelectedEffect = useMemo(() => {
-    if (expandedAEId !== null) {
-      const ae = power.alternateEffects.find((a) => a.id === expandedAEId);
-      const compId = activeAEComponentId[expandedAEId] ?? ae?.components[0]?.id;
-      const comp = ae?.components.find((c) => c.id === compId);
-      return comp ? powerDefs.find((d) => d.id === comp.effectId) : undefined;
-    }
-    return activeComponent ? powerDefs.find((d) => d.id === activeComponent.effectId) : undefined;
-  }, [expandedAEId, power.alternateEffects, activeAEComponentId, activeComponent, powerDefs]);
+  const paletteContext = useMemo(
+    () =>
+      getPaletteContext(
+        power,
+        powerDefs,
+        activeComponentId,
+        expandedAEId,
+        activeAEComponentId
+      ),
+    [power, powerDefs, activeComponentId, expandedAEId, activeAEComponentId]
+  );
+  const paletteSelectedEffect = paletteContext.selectedEffect;
 
   const paletteContextName = useMemo(() => {
     if (expandedAEId === null) return null;
@@ -187,14 +131,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   }, [expandedAEId, power.alternateEffects, activeAEComponentId]);
 
   // FAB context label for mobile
-  const fabContextLabel = useMemo(() => {
-    if (expandedAEId !== null) {
-      const ae = power.alternateEffects.find((a) => a.id === expandedAEId);
-      return ae?.name || 'AE';
-    }
-    const effect = paletteSelectedEffect;
-    return effect?.name || 'Main';
-  }, [expandedAEId, power.alternateEffects, paletteSelectedEffect]);
+  const fabContextLabel = paletteContext.fabLabel;
 
   // Define addModifierToComponent before using it in hooks
   const addModifierToComponent = useCallback(
