@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { CharacterFileSchema, CharacterSchema } from '../../entities/schemas';
 import type { ICharacter } from '../../entities/types';
-import type { CharacterTab } from '../../store/charactersStore';
+import type { CharacterTab } from '../../entities/characterTab';
 import { normalizeCharacter } from '../character-file/normalizeCharacter';
 
 const LEGACY_DRAFT_KEY = 'mm3e-draft-character';

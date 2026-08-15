@@ -2,6 +2,12 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { ICharacter } from '../entities/types';
 import { createDefaultCharacter } from '../entities/characterDefaults';
+import {
+  duplicateCharacterWithNewIds,
+  getDuplicateCharacterName,
+} from '../entities/characterOperations';
+import type { CharacterTab } from '../entities/characterTab';
+export type { CharacterTab } from '../entities/characterTab';
 
 /* ================================================
    Characters Store — Multi-Character Management
@@ -9,15 +15,7 @@ import { createDefaultCharacter } from '../entities/characterDefaults';
    Each tab contains a character, dirty state, and metadata.
    ================================================ */
 
-export interface CharacterTab {
-  id: string;
-  character: ICharacter;
-  isDirty: boolean;
-  label: string;
-  lastModified: number;
-}
-
-interface CharactersStoreState {
+export interface CharactersStoreState {
   tabs: CharacterTab[];
   activeCharacterId: string | null;
 
@@ -41,46 +39,6 @@ interface CharactersStoreState {
   // Helpers
   getCharacterById: (id: string) => CharacterTab | undefined;
   getActiveCharacter: () => CharacterTab | undefined;
-}
-
-/**
- * Recursively regenerate all UUIDs in a character's nested structures
- */
-function regenerateNestedUUIDs(character: ICharacter): void {
-  // CRITICAL: Regenerate characterId to prevent sync conflicts
-  character.characterId = crypto.randomUUID();
-
-  // Regenerate power IDs
-  character.powers?.forEach((power) => {
-    power.id = crypto.randomUUID();
-
-    power.components?.forEach((component) => {
-      component.id = crypto.randomUUID();
-    });
-
-    power.alternateEffects?.forEach((ae) => {
-      ae.id = crypto.randomUUID();
-      ae.components?.forEach((component) => {
-        component.id = crypto.randomUUID();
-      });
-    });
-  });
-
-  // Regenerate equipment IDs
-  character.equipment?.forEach((item) => {
-    item.id = crypto.randomUUID();
-
-    item.components?.forEach((component) => {
-      component.id = crypto.randomUUID();
-    });
-
-    item.alternateEffects?.forEach((ae) => {
-      ae.id = crypto.randomUUID();
-      ae.components?.forEach((component) => {
-        component.id = crypto.randomUUID();
-      });
-    });
-  });
 }
 
 export const useCharactersStore = create<CharactersStoreState>()(
@@ -177,42 +135,14 @@ export const useCharactersStore = create<CharactersStoreState>()(
         const source = get().tabs.find((t) => t.id === id);
         if (!source) return '';
 
-        // Deep clone character
-        const clonedCharacter = JSON.parse(
-          JSON.stringify(source.character)
-        ) as ICharacter;
-
-        // Generate smart name for duplicate
-        const baseName = source.label || 'Unnamed Character';
-        let newName = baseName;
-
-        // Check if already has " (Copy)" suffix
-        const copyMatch = baseName.match(/^(.+?)(?: \(Copy(?: (\d+))?\))?$/);
-        if (copyMatch) {
-          const base = copyMatch[1];
-          const allCopies = get()
-            .tabs.filter((t) => t.label.startsWith(base + ' (Copy'))
-            .map((t) => {
-              const match = t.label.match(/\(Copy(?: (\d+))?\)$/);
-              return match ? (match[1] ? parseInt(match[1]) : 1) : 0;
-            });
-
-          const maxCopy = Math.max(0, ...allCopies);
-          const nextNumber = maxCopy + 1;
-
-          if (nextNumber === 1) {
-            newName = `${base} (Copy)`;
-          } else {
-            newName = `${base} (Copy ${nextNumber})`;
-          }
-        } else {
-          newName = `${baseName} (Copy)`;
-        }
-
-        clonedCharacter.header.name = newName;
-
-        // Regenerate all nested UUIDs
-        regenerateNestedUUIDs(clonedCharacter);
+        const newName = getDuplicateCharacterName(
+          source.label,
+          get().tabs.map((tab) => tab.label)
+        );
+        const clonedCharacter = duplicateCharacterWithNewIds(
+          source.character,
+          newName
+        );
 
         // Create new tab
         const newId = crypto.randomUUID();
