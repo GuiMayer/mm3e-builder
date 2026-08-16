@@ -2,10 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { MODIFIER_DEFS, POWER_DEFS } from '../entities/gameDataLoaders';
 import type { ICharacterPower, IModifierDef } from '../entities/types';
 import {
+  applyDescriptor,
   collectModifierDefinitions,
   createPowerDraft,
   findModifierIncompatibilities,
   getPaletteContext,
+  hasDuplicateDescriptor,
+  normalizeDescriptor,
 } from '../features/power-builder/powerBuilderModel';
 
 function createPower(): ICharacterPower {
@@ -95,5 +98,26 @@ describe('powerBuilderModel', () => {
     expect(context.selectedEffect?.id).toBe('flight');
     expect(context.contextName).toBe('Alternate · Comp. 1');
     expect(context.fabLabel).toBe('Alternate');
+  });
+
+  it('normalizes descriptor input before it enters a power', () => {
+    expect(normalizeDescriptor('  Divine\n\tFire  ')).toBe('Divine Fire');
+    expect(normalizeDescriptor('Fire\u0000')).toBe('Fire');
+  });
+
+  it('adds a descriptor and prevents case-insensitive duplicates', () => {
+    const descriptors = ['Magic'];
+
+    expect(applyDescriptor(descriptors, '  Fire  ', null)).toEqual(['Magic', 'Fire']);
+    expect(hasDuplicateDescriptor(descriptors, 'magic')).toBe(true);
+    expect(applyDescriptor(descriptors, 'magic', null)).toEqual(['Magic']);
+  });
+
+  it('replaces the selected descriptor without treating it as its own duplicate', () => {
+    const descriptors = ['Magic', 'Fire'];
+
+    expect(applyDescriptor(descriptors, 'Divine', 0)).toEqual(['Divine', 'Fire']);
+    expect(applyDescriptor(descriptors, 'magic', 0)).toEqual(['magic', 'Fire']);
+    expect(applyDescriptor(descriptors, 'Fire', 0)).toEqual(['Magic', 'Fire']);
   });
 });

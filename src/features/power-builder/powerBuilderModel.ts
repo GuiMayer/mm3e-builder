@@ -21,6 +21,66 @@ export function createPowerDraft(existingPower?: ICharacterPower): ICharacterPow
   };
 }
 
+/**
+ * Descriptors are player-authored labels, so keep them readable and safe to
+ * compare before they enter a character draft. Control characters can arrive
+ * through pasted text, while repeated whitespace makes duplicate detection
+ * unreliable.
+ */
+export function normalizeDescriptor(value: string): string {
+  const withoutControlCharacters = Array.from(value, (character) => {
+    const code = character.charCodeAt(0);
+    return code < 32 || code === 127 ? ' ' : character;
+  }).join('');
+
+  return withoutControlCharacters
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+/**
+ * Finds a descriptor without treating capitalization as a different value.
+ * `excludedIndex` lets an already selected descriptor keep or change its own
+ * capitalization without being considered a duplicate of itself.
+ */
+export function hasDuplicateDescriptor(
+  descriptors: readonly string[],
+  candidate: string,
+  excludedIndex?: number | null
+): boolean {
+  const normalizedCandidate = normalizeDescriptor(candidate).toLocaleLowerCase();
+  if (!normalizedCandidate) return false;
+
+  return descriptors.some(
+    (descriptor, index) =>
+      index !== excludedIndex
+      && normalizeDescriptor(descriptor).toLocaleLowerCase() === normalizedCandidate
+  );
+}
+
+/**
+ * Adds a new descriptor or replaces the descriptor selected in the editor.
+ * Invalid or duplicate values leave the current list untouched.
+ */
+export function applyDescriptor(
+  descriptors: readonly string[],
+  value: string,
+  selectedIndex: number | null
+): string[] {
+  const descriptor = normalizeDescriptor(value);
+  if (!descriptor || hasDuplicateDescriptor(descriptors, descriptor, selectedIndex)) {
+    return [...descriptors];
+  }
+
+  if (selectedIndex !== null && selectedIndex >= 0 && selectedIndex < descriptors.length) {
+    return descriptors.map((current, index) =>
+      index === selectedIndex ? descriptor : current
+    );
+  }
+
+  return [...descriptors, descriptor];
+}
+
 export function collectModifierDefinitions(
   power: ICharacterPower,
   powerDefs: IPowerEffect[],

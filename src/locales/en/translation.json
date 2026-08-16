@@ -167,7 +167,7 @@
   "builder.powerName": "Power Name",
   "builder.powerNamePlaceholder": "e.g., Magic Blast",
   "builder.descriptors": "Descriptors",
-  "builder.descriptorsPlaceholder": "e.g., Fire, Magic, Technology (comma-separated)",
+  "builder.descriptorsPlaceholder": "e.g., Fire",
   "builder.removeDescriptor": "Remove descriptor",
   "builder.ranks": "Ranks",
   "builder.modifiers": "Modifiers (drag from palette)",

@@ -167,7 +167,7 @@
   "builder.powerName": "Nome do Poder",
   "builder.powerNamePlaceholder": "Ex: Rajada Mágica",
   "builder.descriptors": "Descritores",
-  "builder.descriptorsPlaceholder": "Ex: Fogo, Magia, Tecnologia (separados por vírgula)",
+  "builder.descriptorsPlaceholder": "Ex.: Fogo",
   "builder.removeDescriptor": "Remover descritor",
   "builder.ranks": "Ranks",
   "builder.modifiers": "Modificadores (arraste da paleta)",

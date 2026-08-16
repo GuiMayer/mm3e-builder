@@ -482,9 +482,28 @@ h1, h2, h3, h4, h5, h6 {
   transition: all var(--t-fast);
 }
 
-.build-descriptor-tag:hover {
+.build-descriptor-tag:hover,
+.build-descriptor-tag--selected {
   background: var(--c-surface-elevated);
   border-color: var(--c-primary);
+}
+
+.build-descriptor-tag--selected {
+  box-shadow: 0 0 0 1px var(--c-primary-muted);
+}
+
+.build-descriptor-tag-select {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.build-descriptor-tag-select:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
 }
 
 .build-descriptor-tag-remove {
@@ -503,6 +522,17 @@ h1, h2, h3, h4, h5, h6 {
 .build-descriptor-tag-remove:hover {
   background: var(--c-error);
   color: var(--c-text);
+}
+
+.build-descriptor-add {
+  display: flex;
+  flex: 1 1 220px;
+  gap: var(--s-xs);
+}
+
+.build-descriptor-add .build-input {
+  flex: 1;
+  min-width: 120px;
 }
 
 /* ── Power List: Descriptors ── */

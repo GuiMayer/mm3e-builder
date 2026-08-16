@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { v4 as uuidv4 } from 'uuid';
 import type {
@@ -35,6 +35,9 @@ import {
   createPowerDraft,
   findModifierIncompatibilities,
   getPaletteContext,
+  applyDescriptor,
+  hasDuplicateDescriptor,
+  normalizeDescriptor,
 } from './powerBuilderModel';
 
 interface Props {
@@ -59,6 +62,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   const [power, setPower] = useState<ICharacterPower>(() =>
     createPowerDraft(existingPower)
   );
+  const [descriptorInput, setDescriptorInput] = useState('');
+  const [selectedDescriptorIndex, setSelectedDescriptorIndex] = useState<number | null>(null);
+  const descriptorInputRef = useRef<HTMLInputElement>(null);
 
   const [paletteFilter, setPaletteFilter] = useState('');
   const [paletteCollapsed, setPaletteCollapsed] = useState(false);
@@ -70,6 +76,59 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   // AE state: which AE card is expanded + which component within each AE is active
   const [expandedAEId, setExpandedAEId] = useState<string | null>(null);
   const [activeAEComponentId, setActiveAEComponentId] = useState<Record<string, string>>({});
+
+  const descriptors = power.descriptors ?? [];
+  const normalizedDescriptorInput = normalizeDescriptor(descriptorInput);
+  const hasDescriptorConflict = hasDuplicateDescriptor(
+    descriptors,
+    normalizedDescriptorInput,
+    selectedDescriptorIndex
+  );
+  const canApplyDescriptor = Boolean(normalizedDescriptorInput) && !hasDescriptorConflict;
+
+  function focusDescriptorInput(selectText = false) {
+    requestAnimationFrame(() => {
+      descriptorInputRef.current?.focus();
+      if (selectText) descriptorInputRef.current?.select();
+    });
+  }
+
+  function selectDescriptor(index: number) {
+    setSelectedDescriptorIndex(index);
+    setDescriptorInput(descriptors[index] ?? '');
+    focusDescriptorInput(true);
+  }
+
+  function applyCurrentDescriptor() {
+    if (!canApplyDescriptor) return;
+
+    setPower((current) => ({
+      ...current,
+      descriptors: applyDescriptor(
+        current.descriptors ?? [],
+        descriptorInput,
+        selectedDescriptorIndex
+      ),
+    }));
+    setDescriptorInput('');
+    setSelectedDescriptorIndex(null);
+    focusDescriptorInput();
+  }
+
+  function removeDescriptor(index: number) {
+    setPower((current) => ({
+      ...current,
+      descriptors: (current.descriptors ?? []).filter((_, descriptorIndex) => descriptorIndex !== index),
+    }));
+
+    if (selectedDescriptorIndex === index) {
+      setSelectedDescriptorIndex(null);
+      setDescriptorInput('');
+      focusDescriptorInput();
+    } else if (selectedDescriptorIndex !== null && selectedDescriptorIndex > index) {
+      setSelectedDescriptorIndex(selectedDescriptorIndex - 1);
+    }
+  }
 
   // Mobile drawer state
   const { isOpen: drawerOpen, height: drawerHeight, openDrawer, closeDrawer, setHeight: setDrawerHeight } = useMobileDrawer();
@@ -467,41 +526,50 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             {/* Power Descriptors */}
             <div className="build-section">
               <label className="build-label">{t('builder.descriptors')}</label>
-              <div className="build-descriptors">
-                <input
-                  className="build-input"
-                  value={(power.descriptors || []).join(', ')}
-                  onChange={(e) => {
-                    const descriptors = e.target.value
-                      .split(',')
-                      .map((d) => d.trim())
-                      .filter((d) => d.length > 0);
-                    setPower((p) => ({ ...p, descriptors }));
-                  }}
-                  placeholder={t('builder.descriptorsPlaceholder')}
-                />
-              </div>
-              {power.descriptors && power.descriptors.length > 0 && (
-                <div className="build-descriptor-tags">
-                  {power.descriptors.map((desc, idx) => (
-                    <span key={idx} className="build-descriptor-tag">
+              <div className="build-descriptor-tags">
+                {descriptors.map((desc, idx) => (
+                  <div
+                    key={`${desc}-${idx}`}
+                    className={`build-descriptor-tag${selectedDescriptorIndex === idx ? ' build-descriptor-tag--selected' : ''}`}
+                  >
+                    <button
+                      type="button"
+                      className="build-descriptor-tag-select"
+                      onClick={() => selectDescriptor(idx)}
+                      aria-pressed={selectedDescriptorIndex === idx}
+                    >
                       {desc}
-                      <button
-                        className="build-descriptor-tag-remove"
-                        onClick={() => {
-                          setPower((p) => ({
-                            ...p,
-                            descriptors: (p.descriptors || []).filter((_, i) => i !== idx),
-                          }));
-                        }}
-                        title={t('builder.removeDescriptor')}
-                      >
-                        <X size={10} />
-                      </button>
-                    </span>
-                  ))}
+                    </button>
+                    <button
+                      type="button"
+                      className="build-descriptor-tag-remove"
+                      onClick={() => removeDescriptor(idx)}
+                      title={t('builder.removeDescriptor')}
+                      aria-label={`${t('builder.removeDescriptor')}: ${desc}`}
+                    >
+                      <X size={10} />
+                    </button>
+                  </div>
+                ))}
+                <div className="build-descriptor-add">
+                <input
+                  ref={descriptorInputRef}
+                  className="build-input"
+                  value={descriptorInput}
+                  onChange={(e) => setDescriptorInput(e.target.value)}
+                  placeholder={t('builder.descriptorsPlaceholder')}
+                  aria-label={t('builder.descriptors')}
+                />
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={applyCurrentDescriptor}
+                    disabled={!canApplyDescriptor}
+                  >
+                    {t('common.add')}
+                  </Button>
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Effect Components */}
