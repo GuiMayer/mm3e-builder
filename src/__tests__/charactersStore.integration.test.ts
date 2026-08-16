@@ -4,7 +4,11 @@ import { useCharactersStore } from '../store/charactersStore';
 
 describe('charactersStore integration', () => {
   beforeEach(() => {
-    useCharactersStore.setState({ tabs: [], activeCharacterId: null });
+    useCharactersStore.setState({
+      tabs: [],
+      activeCharacterId: null,
+      historyByTabId: {},
+    });
   });
 
   it('creates independent characters and selects the newest tab', () => {
@@ -103,5 +107,81 @@ describe('charactersStore integration', () => {
       activeCharacterId: 'restored',
       tabs: [{ id: 'restored', isDirty: false }],
     });
+    expect(useCharactersStore.getState().historyByTabId).toEqual({});
+  });
+
+  it('undoes and redoes a committed power deletion', () => {
+    const power = {
+      id: 'power-1',
+      name: 'Energy Blast',
+      notes: '',
+      components: [],
+      alternateEffects: [],
+    };
+    const id = useCharactersStore.getState().addCharacter(
+      createDefaultCharacter({ powers: [power] })
+    );
+
+    useCharactersStore.getState().updateCharacter(id, { powers: [] });
+    expect(useCharactersStore.getState().canUndoCharacter(id)).toBe(true);
+    expect(useCharactersStore.getState().getCharacterById(id)?.character.powers).toEqual([]);
+
+    useCharactersStore.getState().undoCharacter(id);
+    expect(useCharactersStore.getState().getCharacterById(id)?.character.powers).toEqual([power]);
+    expect(useCharactersStore.getState().canRedoCharacter(id)).toBe(true);
+
+    useCharactersStore.getState().redoCharacter(id);
+    expect(useCharactersStore.getState().getCharacterById(id)?.character.powers).toEqual([]);
+  });
+
+  it('restores an edited equipment item without affecting another tab', () => {
+    const equipment = {
+      id: 'equipment-1',
+      name: 'Utility Belt',
+      notes: '',
+      components: [],
+      alternateEffects: [],
+    };
+    const firstId = useCharactersStore.getState().addCharacter(
+      createDefaultCharacter({ equipment: [equipment] })
+    );
+    const secondHeader = { ...createDefaultCharacter().header, name: 'Second' };
+    const secondId = useCharactersStore.getState().addCharacter(
+      createDefaultCharacter({ header: secondHeader })
+    );
+
+    useCharactersStore.getState().updateCharacter(firstId, {
+      equipment: [{ ...equipment, name: 'Advanced Utility Belt' }],
+    });
+    useCharactersStore.getState().updateCharacter(secondId, {
+      header: { ...secondHeader, name: 'Changed Second' },
+    });
+    useCharactersStore.getState().undoCharacter(firstId);
+
+    expect(useCharactersStore.getState().getCharacterById(firstId)?.character.equipment).toEqual([
+      equipment,
+    ]);
+    expect(useCharactersStore.getState().getCharacterById(secondId)?.character.header.name).toBe(
+      'Changed Second'
+    );
+  });
+
+  it('keeps a reset as one reversible character change', () => {
+    const beforeResetHeader = {
+      ...createDefaultCharacter().header,
+      name: 'Before Reset',
+    };
+    const id = useCharactersStore.getState().addCharacter(
+      createDefaultCharacter({ header: beforeResetHeader })
+    );
+    const reset = createDefaultCharacter();
+
+    useCharactersStore.getState().updateCharacter(id, reset);
+    expect(useCharactersStore.getState().getCharacterById(id)?.character.header.name).toBe('');
+
+    useCharactersStore.getState().undoCharacter(id);
+    expect(useCharactersStore.getState().getCharacterById(id)?.character.header.name).toBe(
+      'Before Reset'
+    );
   });
 });
