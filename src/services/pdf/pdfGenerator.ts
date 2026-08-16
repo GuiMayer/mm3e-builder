@@ -95,7 +95,9 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       powerDefs,
       Object.values(skillDefs),
       Object.values(advantageDefs),
-      modifierDefs
+      modifierDefs,
+      undefined,
+      resources
     );
 
     // Generate sections

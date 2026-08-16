@@ -10,6 +10,7 @@ import type {
   ISkillDef,
   IAdvantageDef,
   ICharacterPowerComponent,
+  IResource,
 } from '../../entities/types';
 
 /**
@@ -36,7 +37,7 @@ export interface IOffenseEntry {
   requiresAttackCheck: boolean;
   causesResistance: boolean;
   tags: Array<'attack' | 'resistance' | 'area' | 'perception' | 'affects-others' | 'dynamic'>;
-  sourceType: 'power' | 'equipment' | 'manual' | 'unarmed';
+  sourceType: 'power' | 'equipment' | 'resource' | 'manual' | 'unarmed';
   sourceName?: string;
   componentName?: string;
   relationship: 'base' | 'alternate' | 'dynamic-alternate' | 'manual' | 'unarmed';
@@ -247,7 +248,7 @@ function extractNotes(comp: ICharacterPowerComponent): string {
   return flags.join(', ');
 }
 
-type SourceType = 'power' | 'equipment';
+type SourceType = 'power' | 'equipment' | 'resource';
 
 function getResistanceLabel(def: IPowerEffect, comp: ICharacterPowerComponent): string | undefined {
   const configured = comp.fieldValues?.resistance;
@@ -365,7 +366,8 @@ export function buildTargetedEffectProfiles(
   skillDefs: ISkillDef[],
   _advantageDefs: IAdvantageDef[],
   modifierDefs: IModifierDef[] = [],
-  translations?: { unarmed: string; damage: string }
+  translations?: { unarmed: string; damage: string },
+  resources: IResource[] = []
 ): IOffenseEntry[] {
   const entries: IOffenseEntry[] = [];
   const { abilities, skills } = character;
@@ -435,6 +437,16 @@ export function buildTargetedEffectProfiles(
 
   appendSourceProfiles(character.powers, 'power');
   appendSourceProfiles(character.equipment ?? [], 'equipment');
+  for (const link of character.resourceLinks ?? []) {
+    const resource = resources.find((item) => item.id === link.resourceId);
+    if (!resource) continue;
+    const powers = resource.type === 'vehicle'
+      ? resource.systems
+      : resource.type === 'headquarters'
+        ? resource.effects
+        : [resource.power];
+    appendSourceProfiles(powers.map((power) => ({ ...power, name: resource.name || power.name })), 'resource');
+  }
 
   // ── 3. Manual offense rows (F-13) ──────────────────────────────
   for (const row of character.manualOffenseRows ?? []) {

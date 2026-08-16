@@ -197,7 +197,9 @@ export async function generateExcel(
     gameData.powerDefs,
     gameData.skillDefs,
     gameData.advantageDefs,
-    gameData.modifierDefs
+    gameData.modifierDefs,
+    undefined,
+    resources
   );
   buildOffenseSheet(wb, targetedProfiles, labels);
 

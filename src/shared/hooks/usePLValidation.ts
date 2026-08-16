@@ -14,6 +14,7 @@ import {
   type PLViolation,
 } from '../lib/validation';
 import { getActiveValidationRules } from '../lib/validationRules';
+import { useResourcesStore } from '../../store/resourcesStore';
 
 /**
  * Hook that returns current PL violations in real time.
@@ -30,6 +31,7 @@ import { getActiveValidationRules } from '../lib/validationRules';
 export function usePLValidation(): PLViolation[] {
   const { character } = useActiveCharacter();
   const validationRules = useAppStore((s) => s.validationRules);
+  const resources = useResourcesStore((state) => state.resources);
 
   return useMemo(() => {
     // Check if PL limits are enforced
@@ -66,7 +68,7 @@ export function usePLValidation(): PLViolation[] {
 
     // ── Targeted effects (powers, equipment, AEs, manual and unarmed) ───────
     // The sheet, PDF and validation consume this same mechanical derivation.
-    const profiles = buildTargetedEffectProfiles(character, POWER_DEFS, SKILL_DEFS, [], MODIFIER_DEFS);
+    const profiles = buildTargetedEffectProfiles(character, POWER_DEFS, SKILL_DEFS, [], MODIFIER_DEFS, undefined, resources);
     for (const profile of profiles) {
       if (!profile.causesResistance || profile.effectRank === null) continue;
       const label = profile.name || profile.componentName || 'Targeted effect';
@@ -125,5 +127,5 @@ export function usePLValidation(): PLViolation[] {
     }
 
     return violations;
-  }, [character, validationRules]);
+  }, [character, resources, validationRules]);
 }
