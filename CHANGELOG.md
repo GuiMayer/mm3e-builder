@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Separated character defaults and pure character operations from the Zustand store.
 - Split JSON-file processing and local draft persistence into focused services while preserving established localStorage keys and file compatibility.
 - Loaded PDF and Excel export code on demand to reduce the initial production bundle.
+- Added temporary per-character undo/redo for committed sheet changes, including powers and equipment. History is limited to 50 steps and is not persisted.
 
 ### Quality
 - Added tests for character defaults, character operations, multi-character persistence, JSON-file boundaries, and Power Builder state.

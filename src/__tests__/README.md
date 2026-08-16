@@ -2,7 +2,7 @@
 
 Este diretório contém a suíte de testes completa para o MM3e Builder, validando a implementação das regras oficiais do Mutants & Masterminds 3e.
 
-**Estado verificado em 2026-08-15:** 32 arquivos de teste, 544 testes aprovados e 16 testes marcados como `todo`. Execute `npm test -- --run` para obter o estado real; não mantenha contadores manuais por arquivo neste documento.
+**Estado verificado em 2026-08-15:** 33 arquivos de teste, 553 testes aprovados e 16 testes marcados como `todo`. Execute `npm test -- --run` para obter o estado real; não mantenha contadores manuais por arquivo neste documento.
 
 ## Estrutura de Testes
 
@@ -12,7 +12,7 @@ Este diretório contém a suíte de testes completa para o MM3e Builder, validan
 |-------|----------|------|
 | Regras e cálculos | `mathEngine`, `validation`, `altEffects`, `affliction`, `modifierRestrictions` | Custos, limites de PL, arrays e restrições |
 | Dados e importação | `dataIntegrity`, `archetypes`, `semanticValidation`, `characterFile` | Dados JSON, migrações e validação de arquivos |
-| Estado e persistência | `charactersStore.integration`, `characterOperations`, `characterDraftStorage`, `draftAutoLoad` | Abas, operações puras, auto-save e recuperação |
+| Estado e persistência | `charactersStore.integration`, `characterHistory`, `characterOperations`, `characterDraftStorage`, `draftAutoLoad` | Abas, undo/redo temporário, operações puras, auto-save e recuperação |
 | Exportação e interface lógica | `exportCorrections`, `pdfHtmlSafety`, `powerBuilderModel` | PDF, Excel, segurança de HTML e modelo do editor |
 
 ### Testes de Integração

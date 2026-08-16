@@ -59,6 +59,27 @@ The multi-character draft keeps these public keys for compatibility:
 - `mm3e-draft-metadata`
 - `mm3e-draft-character` (legacy migration only)
 
+## Temporary editing history
+
+Undo/redo is a runtime-only concern owned by `charactersStore`. Each tab has an
+independent history keyed by tab ID, while snapshots contain only `ICharacter`
+data. History never enters localStorage, JSON files, PDF, or Excel exports.
+
+- A history stores at most 50 past and 50 future snapshots.
+- Power and equipment changes are recorded when the editor is saved, not while
+  its local draft is being edited.
+- Consecutive updates to the same text or numeric field are grouped for 700 ms.
+- Undo and redo restore a dirty tab so the existing auto-save flow persists the
+  restored character normally.
+- Loading saved tabs starts a fresh history. New and duplicated tabs start
+  empty; removing a tab discards its history.
+- Tab creation, removal, activation, and reordering are deliberately outside
+  this feature's scope.
+
+The UI exposes buttons for all devices plus `Ctrl/Cmd+Z`, `Ctrl/Cmd+Shift+Z`,
+and `Ctrl/Cmd+Y` on desktop. Shortcuts do not override native text editing or
+the Power Builder's unsaved local draft.
+
 ## Adding a character field
 
 1. Add the field to `entities/types.ts`.

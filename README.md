@@ -37,6 +37,7 @@ A modern, fast, and user-friendly character builder for the Mutants & Mastermind
 - **Smart Import** — Import matches existing tabs by characterId to prevent duplicates and merge intelligently.
 - **Duplicate Character** — Clone existing characters with a single click, automatically generating new unique IDs.
 - **Tab Labels** — Shows character name or "Unnamed Character" for easy identification.
+- **Temporary Undo / Redo** — Recover up to 50 committed edits per character tab with buttons or `Ctrl/Cmd+Z`; history stays only in the current browser session.
 
 #### ⚡ Power Builder (v2)
 The Power Builder is the most feature-rich section, built for full M&M 3e rules compliance:
@@ -230,6 +231,7 @@ Um criador de fichas moderno, rápido e focado na facilidade de uso para o siste
 - **Importação Inteligente** — A importação corresponde abas existentes por characterId para prevenir duplicatas e fazer merge inteligente.
 - **Duplicar Personagem** — Clone personagens existentes com um único clique, gerando automaticamente novos IDs únicos.
 - **Rótulos de Aba** — Mostra o nome do personagem ou "Personagem Sem Nome" para fácil identificação.
+- **Desfazer / Refazer temporário** — Recupere até 50 alterações confirmadas por aba com botões ou `Ctrl/Cmd+Z`; o histórico existe apenas na sessão atual do navegador.
 
 #### ⚡ Power Builder (v2)
 O Power Builder é a seção mais completa, construído para máxima conformidade com as regras do M&M 3e:
