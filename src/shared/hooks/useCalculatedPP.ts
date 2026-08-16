@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
+import { useResourcesStore } from '../../store/resourcesStore';
 import {
   calculateAbilitiesCost,
   calculateDefensesCost,
@@ -11,6 +12,7 @@ import {
 } from '../lib/mathEngine';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { getActiveValidationRules } from '../lib/validationRules';
+import { getCharacterResourceEPUsed } from '../lib/resourceCalculations';
 
 /**
  * Hook that reactively calculates total PP spent across all sections.
@@ -20,6 +22,7 @@ import { getActiveValidationRules } from '../lib/validationRules';
 export function useCalculatedPP() {
   const { character } = useActiveCharacter();
   const validationRules = useAppStore((s) => s.validationRules);
+  const resources = useResourcesStore((s) => s.resources);
 
   return useMemo(() => {
     const abilitiesCost = calculateAbilitiesCost(
@@ -54,10 +57,11 @@ export function useCalculatedPP() {
     const equipmentRanks = equipmentAdv?.ranks ?? 0;
     const equipmentEPLimit = equipmentRanks * 5;
     const equipmentItems = character.equipment ?? [];
-    const totalEPUsed = equipmentItems.reduce(
+    const legacyEPUsed = equipmentItems.reduce(
       (sum, item) => sum + calcEquipmentEPCost(item, POWER_DEFS, MODIFIER_DEFS),
       0
     );
+    const totalEPUsed = legacyEPUsed + getCharacterResourceEPUsed(character, resources);
     const isOverEquipmentLimit = activeRules.enforceEquipmentPPLimit && totalEPUsed > equipmentEPLimit;
 
     return {
@@ -77,5 +81,5 @@ export function useCalculatedPP() {
       totalEPUsed,
       isOverEquipmentLimit,
     };
-  }, [character, validationRules]);
+  }, [character, resources, validationRules]);
 }

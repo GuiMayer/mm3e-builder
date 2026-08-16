@@ -14,8 +14,11 @@ import { useAppStore } from '../store/appStore'
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
 );
+const ResourcesView = lazy(() =>
+  import('../features/resources/ResourcesView').then((module) => ({ default: module.ResourcesView }))
+);
 
-export type AppView = 'sheet' | 'references';
+export type AppView = 'sheet' | 'resources' | 'references';
 
 export function App() {
   const { t, i18n } = useTranslation()
@@ -78,6 +81,10 @@ export function App() {
           <main className="app-main">
             {activeView === 'sheet' ? (
               <SheetView />
+            ) : activeView === 'resources' ? (
+              <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
+                <ResourcesView />
+              </Suspense>
             ) : (
               <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
                 <ReferencesView />

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Library } from 'lucide-react';
+import { Archive, Library } from 'lucide-react';
 import type { AppView } from '../../app/App';
 
 interface ViewTabsProps {
@@ -21,6 +21,13 @@ export function ViewTabs({ activeView, onViewChange }: ViewTabsProps) {
         onClick={() => onViewChange('sheet')}
       >
         {t('nav.sheet', { defaultValue: 'Sheet' })}
+      </button>
+      <button
+        className={`menubar-tab ${activeView === 'resources' ? 'menubar-tab--active' : ''}`}
+        onClick={() => onViewChange('resources')}
+      >
+        <Archive size={13} />
+        {t('nav.resources', { defaultValue: 'Resources' })}
       </button>
       <button
         className={`menubar-tab ${activeView === 'references' ? 'menubar-tab--active' : ''}`}

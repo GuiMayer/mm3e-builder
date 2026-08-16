@@ -9,7 +9,7 @@ import { PowersList } from './PowersList';
 import { ComplicationsPanel } from './ComplicationsPanel';
 import { HeaderPanel } from './HeaderPanel';
 import { OffensePanel } from './OffensePanel';
-import { EquipmentNotesPanel } from './EquipmentNotesPanel';
+import { ResourcesPanel } from './ResourcesPanel';
 import { PPLogPanel } from './PPLogPanel';
 import { ConditionsPanel } from './ConditionsPanel';
 import { NotesPanel } from './NotesPanel';
@@ -46,7 +46,7 @@ export function SheetView() {
       <AdvantagesPanel cost={pp.advantagesCost} />
       <PowersList />
       <ComplicationsPanel />
-      <EquipmentNotesPanel />
+      <ResourcesPanel />
       <PPLogPanel />
       <NotesPanel />
 

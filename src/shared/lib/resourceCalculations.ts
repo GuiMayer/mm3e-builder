@@ -1,4 +1,5 @@
 import type {
+  ICharacter,
   ICharacterPower,
   IHeadquartersResource,
   IResource,
@@ -53,4 +54,13 @@ export function getResourceEPCost(resource: IResource): number {
   if (resource.type === 'vehicle') return getVehicleResourceCost(resource);
   if (resource.type === 'headquarters') return getHeadquartersResourceCost(resource);
   return powerCost(resource.power);
+}
+
+export function getCharacterResourceEPUsed(character: ICharacter, resources: IResource[]): number {
+  return (character.resourceLinks ?? []).reduce((total, link) => {
+    if (link.isFree) return total;
+    const resource = resources.find((item) => item.id === link.resourceId);
+    if (!resource) return total;
+    return total + (link.contributionEP ?? getResourceEPCost(resource));
+  }, 0);
 }
