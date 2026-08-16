@@ -138,7 +138,7 @@ export function usePDFExport() {
     
     try {
       const { fillAndDownloadPDF } = await import('../../services/pdf-legacy');
-      await fillAndDownloadPDF(character);
+      await fillAndDownloadPDF(character, resources);
       
       updateToast(toastId, t('pdf.toast.downloaded'), 'success');
     } catch (e) {

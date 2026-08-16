@@ -4,7 +4,7 @@
    All field logic lives in the sections/ modules.
    ================================================ */
 
-import type { ICharacter } from '../../entities/types';
+import type { ICharacter, IResource } from '../../entities/types';
 import { buildOffenseSummary } from '../../shared/lib/offenseSummary';
 import type { IOffenseEntry } from '../../shared/lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
@@ -45,14 +45,16 @@ export type { PDFOverflowReport } from './overflowCollector';
  *
  * @param character - Full character data from charStore
  */
-export async function fillAndDownloadPDF(character: ICharacter): Promise<void> {
+export async function fillAndDownloadPDF(character: ICharacter, resources: IResource[] = []): Promise<void> {
   // ── 1. Derive offense entries (pure function, no React) ───────
   const offenseEntries: IOffenseEntry[] = buildOffenseSummary(
     character,
     POWER_DEFS,
     SKILL_DEFS,
     ADVANTAGE_DEFS,
-    MODIFIER_DEFS
+    MODIFIER_DEFS,
+    undefined,
+    resources
   );
 
   // ── 2. Load fresh template ────────────────────────────────────
@@ -119,7 +121,7 @@ export async function fillAndDownloadPDF(character: ICharacter): Promise<void> {
 
   const { overflowLines: advantageOverflow } = fillAdvantages(form, character, ADVANTAGE_DEFS);
 
-  fillEquipment(form, character);
+  fillEquipment(form, character, resources);
 
   // ── Phase 3: Complications, Notes ────────────────────────
   fillComplications(form, character);
