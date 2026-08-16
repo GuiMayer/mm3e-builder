@@ -93,15 +93,9 @@ export type FontSize = 'small' | 'medium' | 'large';
 export type FontFamily = 'Segoe UI' | 'Arial' | 'Times New Roman' | 'Georgia';
 
 /**
- * PDF renderer options
- */
-export type PDFRenderer = 'paged' | 'html2canvas';
-
-/**
  * PDF customization options
  */
 export interface PDFCustomizationOptions {
-  renderer: PDFRenderer;
   colorScheme: ColorScheme;
   layoutMode: LayoutMode;
   fontFamily: FontFamily;
@@ -160,7 +154,6 @@ export const COLOR_THEMES: Record<ColorScheme, ColorTheme> = {
  * Default customization options
  */
 export const DEFAULT_CUSTOMIZATION: PDFCustomizationOptions = {
-  renderer: 'paged',
   colorScheme: 'default',
   layoutMode: 'normal',
   fontFamily: 'Segoe UI',

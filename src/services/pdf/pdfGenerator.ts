@@ -22,6 +22,8 @@ import {
   calculateSkillsCost,
   calculateAdvantagesCost,
   calcPowerTotalCost,
+  calcToughnessBonus,
+  calcInitiativeBonus,
 } from '../../shared/lib/mathEngine';
 import { buildOffenseSummary } from '../../shared/lib/offenseSummary';
 import type { PDFCustomizationOptions, ColorScheme, LayoutMode, FontFamily, FontSize } from './types';
@@ -80,14 +82,18 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     );
     
     const totalSpent = abilitiesCost + defensesCost + skillsCost + advantagesCost + powersCost;
-    const totalAvailable = character.header.powerLevel * 15;
+    const ppEarned = character.campaignMode
+      ? (character.ppLog ?? []).reduce((sum, entry) => sum + entry.amount, 0)
+      : 0;
+    const totalAvailable = character.header.powerLevel * 15 + ppEarned;
     const remaining = totalAvailable - totalSpent;
 
     // Calculate additional values needed for rendering
     const staValue = character.absentAbilities.includes('sta') ? 0 : character.abilities.sta;
-    const aweValue = character.absentAbilities.includes('awe') ? 0 : character.abilities.awe;
-    const toughnessTotal = staValue; // Toughness is based on Stamina
-    const initiativeTotal = aweValue;
+    const aglValue = character.absentAbilities.includes('agl') ? 0 : character.abilities.agl;
+    const { bonus: toughnessBonus } = calcToughnessBonus(character.powers, character.advantages, powerDefs);
+    const toughnessTotal = staValue + toughnessBonus;
+    const { total: initiativeTotal } = calcInitiativeBonus(aglValue, character.advantages, character.powers, powerDefs);
 
     // Build offense entries
     const offenseEntries = buildOffenseSummary(
@@ -115,6 +121,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
         totalAvailable,
         totalSpent,
         remaining,
+        ppEarned,
       },
     }));
 

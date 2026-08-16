@@ -21,9 +21,9 @@ export function loadPDFCustomizationOptions(): PDFCustomizationOptions {
 
     const parsed = JSON.parse(stored);
     
-    // Validate that all required fields exist
+    // Accept the old renderer setting but intentionally discard it. The
+    // document now always uses the browser's native print-to-PDF path.
     if (
-      typeof parsed.renderer === 'string' &&
       typeof parsed.colorScheme === 'string' &&
       typeof parsed.layoutMode === 'string' &&
       typeof parsed.fontFamily === 'string' &&
@@ -32,7 +32,15 @@ export function loadPDFCustomizationOptions(): PDFCustomizationOptions {
       typeof parsed.includeComplications === 'boolean' &&
       typeof parsed.includeEquipment === 'boolean'
     ) {
-      return parsed;
+      return {
+        colorScheme: parsed.colorScheme,
+        layoutMode: parsed.layoutMode,
+        fontFamily: parsed.fontFamily,
+        fontSize: parsed.fontSize,
+        includeNotes: parsed.includeNotes,
+        includeComplications: parsed.includeComplications,
+        includeEquipment: parsed.includeEquipment,
+      };
     }
 
     // If validation fails, return defaults

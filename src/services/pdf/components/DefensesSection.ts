@@ -22,34 +22,34 @@ export function renderDefensesSection(data: DefensesSectionData): string {
 
   // Calculate base values (ability bonuses)
   const aglValue = absentAbilities.includes('agl') ? 0 : abilities.agl;
-  const dexValue = absentAbilities.includes('dex') ? 0 : abilities.dex;
+  const fgtValue = absentAbilities.includes('fgt') ? 0 : abilities.fgt;
   const staValue = absentAbilities.includes('sta') ? 0 : abilities.sta;
   const aweValue = absentAbilities.includes('awe') ? 0 : abilities.awe;
 
   const defenseList = [
     {
       name: 'Dodge',
-      total: defenses.dodge,
+      total: aglValue + defenses.dodge,
       base: aglValue,
-      bonus: defenses.dodge - aglValue,
+      bonus: defenses.dodge,
     },
     {
       name: 'Parry',
-      total: defenses.parry,
-      base: dexValue,
-      bonus: defenses.parry - dexValue,
+      total: fgtValue + defenses.parry,
+      base: fgtValue,
+      bonus: defenses.parry,
     },
     {
       name: 'Fortitude',
-      total: defenses.fortitude,
+      total: staValue + defenses.fortitude,
       base: staValue,
-      bonus: defenses.fortitude - staValue,
+      bonus: defenses.fortitude,
     },
     {
       name: 'Will',
-      total: defenses.will,
+      total: aweValue + defenses.will,
       base: aweValue,
-      bonus: defenses.will - aweValue,
+      bonus: defenses.will,
     },
     {
       name: 'Toughness',

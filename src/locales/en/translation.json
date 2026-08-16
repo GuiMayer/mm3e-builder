@@ -610,6 +610,7 @@
   "pdf.preview.generatingMessage": "Preparing character sheet preview...",
   "pdf.preview.options": "Options",
   "pdf.preview.generatePDF": "Generate PDF",
+  "pdf.preview.print": "Print / Save as PDF",
   "pdf.preview.downloadHTML": "Download HTML",
   "pdf.preview.converting": "Converting to PDF...",
   "pdf.preview.close": "Close",
@@ -641,12 +642,6 @@
   "pdf.customization.sections.notes": "Include Notes",
   "pdf.customization.sections.complications": "Include Complications",
   "pdf.customization.sections.equipment": "Include Equipment",
-
-  "pdf.customization.renderer.label": "PDF Renderer",
-  "pdf.customization.renderer.paged": "Paged.js (Selectable Text)",
-  "pdf.customization.renderer.html2canvas": "HTML2Canvas (Image)",
-  "pdf.customization.renderer.pagedHint": "Uses browser print dialog. Text remains selectable in PDF.",
-  "pdf.customization.renderer.html2canvasHint": "Downloads directly. Text becomes image.",
 
   "pdf.toast.printReady": "Print preview ready! Use Ctrl+P or browser print dialog.",
 

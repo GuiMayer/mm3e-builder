@@ -71,6 +71,12 @@ function renderPowerEntry(
   const descriptors = power.descriptors && power.descriptors.length > 0
     ? power.descriptors.join(', ')
     : '';
+  const alternates = power.alternateEffects.map((alternate) => {
+    const effects = buildEffectsString({ ...power, components: alternate.components }, powerDefs);
+    const name = alternate.name || effects || 'Alternate Effect';
+    const details = [alternate.dynamic ? 'Dynamic' : '', effects, alternate.notes].filter(Boolean).join(' — ');
+    return `${name}${details ? `: ${details}` : ''}`;
+  });
 
   return `
     <div class="power-entry">
@@ -81,6 +87,9 @@ function renderPowerEntry(
       ${effects ? `<div class="power-effects">${effects}</div>` : ''}
       ${modifiers ? `<div class="power-modifiers">${modifiers}</div>` : ''}
       ${descriptors ? `<div class="power-description text-small">${escapeHtml(descriptors)}</div>` : ''}
+      ${alternates.length > 0 ? `<div class="power-description text-small"><strong>Alternate Effects:</strong> ${escapeHtml(alternates.join(' | '))}</div>` : ''}
+      ${power.activation ? `<div class="power-description text-small">Activation: ${escapeHtml(power.activation)}</div>` : ''}
+      ${power.notes ? `<div class="power-description">${escapeHtml(power.notes)}</div>` : ''}
     </div>
   `;
 }
@@ -102,6 +111,11 @@ function buildEffectsString(power: ICharacter['powers'][0], powerDefs: IPowerEff
     if (comp.ranks && comp.ranks > 0) {
       parts.push(String(comp.ranks));
     }
+    const fields = Object.entries(comp.fieldValues ?? {})
+      .map(([field, value]) => `${field}: ${Array.isArray(value) ? value.join(', ') : value}`);
+    if (fields.length > 0) parts.push(`(${fields.join('; ')})`);
+    const senseTraits = comp.senseTraits?.map((trait) => `${trait.id}${trait.ranks > 1 ? ` ${trait.ranks}` : ''}${trait.detail ? ` (${trait.detail})` : ''}`) ?? [];
+    if (senseTraits.length > 0) parts.push(`[${senseTraits.join(', ')}]`);
     
     return parts.join(' ');
   });
@@ -134,6 +148,12 @@ function buildModifiersString(power: ICharacter['powers'][0], modifierDefs: IMod
     if (mod.ranks && mod.ranks !== 1) {
       parts.push(String(mod.ranks));
     }
+    if (mod.option) parts.push(`(${mod.option})`);
+    const options = Object.entries(mod.options ?? {})
+      .filter(([, value]) => value !== false && value !== '' && value !== 0)
+      .map(([key, value]) => `${key}: ${value}`);
+    if (options.length > 0) parts.push(`(${options.join(', ')})`);
+    if (mod.affectedRanks !== undefined) parts.push(`[${mod.affectedRanks} ranks]`);
     
     return escapeHtml(parts.join(' '));
   });

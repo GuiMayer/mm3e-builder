@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
@@ -28,6 +28,7 @@ export function usePDFExport() {
   const [pdfPreviewHtml, setPdfPreviewHtml] = useState<string | null>(null);
   const [pdfCharacterName, setPdfCharacterName] = useState<string>('');
   const [currentToastId, setCurrentToastId] = useState<string | null>(null);
+  const currentToastIdRef = useRef<string | null>(null);
   const [customizationOptions, setCustomizationOptions] = useState<PDFCustomizationOptions>(() => loadPDFCustomizationOptions());
 
   /**
@@ -67,6 +68,7 @@ export function usePDFExport() {
     // Show toast notification
     const toastId = showToast(t('pdf.toast.generating'), 'loading');
     setCurrentToastId(toastId);
+    currentToastIdRef.current = toastId;
     
     // Generate HTML in background
     await generatePreviewHtml();
@@ -109,17 +111,19 @@ export function usePDFExport() {
       // Store HTML for preview
       setPdfPreviewHtml(result.html);
       // Update toast to success
-      if (currentToastId) {
-        updateToast(currentToastId, t('pdf.toast.ready'), 'success');
+      if (currentToastIdRef.current) {
+        updateToast(currentToastIdRef.current, t('pdf.toast.ready'), 'success');
         setCurrentToastId(null);
+        currentToastIdRef.current = null;
       }
     } catch (e) {
       console.error('[usePDFExport] Error generating preview:', e);
       
       // Update toast to error
-      if (currentToastId) {
-        updateToast(currentToastId, t('pdf.toast.error'), 'error');
+      if (currentToastIdRef.current) {
+        updateToast(currentToastIdRef.current, t('pdf.toast.error'), 'error');
         setCurrentToastId(null);
+        currentToastIdRef.current = null;
       }
       
       // Close modal on error
@@ -161,38 +165,26 @@ export function usePDFExport() {
     setPdfOverflow([]);
   }
 
-  /**
-   * Generate and open PDF in browser (new behavior for preview modal)
-   */
-  async function generateAndOpenPdf() {
+  /** Open the document in a native print window, preserving selectable text. */
+  function printCharacterSheet() {
     if (!pdfPreviewHtml) return;
-    
-    const sanitizedName = sanitizeFileName(pdfCharacterName);
-    const filename = `${sanitizedName}_sheet.pdf`;
-    
-    const toastId = showToast(t('pdf.toast.converting'), 'loading');
-    
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      showToast(t('pdf.preview.error'), 'error');
+      return;
+    }
     try {
-      const { convertHtmlToPdf } = await import(
-        '../../services/pdf/htmlToPdfConverter'
-      );
-      const pdfBlob = await convertHtmlToPdf(pdfPreviewHtml, { 
-        filename,
-        renderer: customizationOptions.renderer || 'html2canvas'
-      });
-      
-      // Open PDF in new browser tab
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-      window.open(pdfUrl, '_blank');
-      
-      // Clean up URL after a delay
-      setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
-      
-      updateToast(toastId, t('pdf.toast.downloaded'), 'success');
+      printWindow.addEventListener('load', () => {
+        printWindow.focus();
+        printWindow.print();
+      }, { once: true });
+      printWindow.document.open();
+      printWindow.document.write(pdfPreviewHtml);
+      printWindow.document.close();
+      showToast(t('pdf.toast.printReady'), 'success');
     } catch (error) {
       console.error('Error generating PDF:', error);
-      updateToast(toastId, t('pdf.toast.error'), 'error');
-      throw error;
+      showToast(t('pdf.toast.error'), 'error');
     }
   }
 
@@ -222,6 +214,7 @@ export function usePDFExport() {
       dismissToast(currentToastId);
       setCurrentToastId(null);
     }
+    currentToastIdRef.current = null;
   }
 
   /**
@@ -249,7 +242,7 @@ export function usePDFExport() {
     pdfCharacterName,
     customizationOptions,
     handleCustomizationChange,
-    generateAndOpenPdf,
+    printCharacterSheet,
     downloadHtmlFromPreview,
     closePreview,
   };

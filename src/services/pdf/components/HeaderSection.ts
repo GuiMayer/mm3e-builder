@@ -17,6 +17,7 @@ export interface HeaderSectionData {
     totalAvailable: number;
     totalSpent: number;
     remaining: number;
+    ppEarned: number;
   };
 }
 
@@ -33,7 +34,7 @@ export function renderHeaderSection(data: HeaderSectionData): string {
         <div class="character-name">${escapeHtml(header.name || 'Unnamed Hero')}</div>
         
         ${renderHeaderField('Player', header.player)}
-        ${renderHeaderField('Identity', header.identity)}
+        ${renderHeaderField('Identity', header.identity ? `${header.identity}${header.identityType ? ` (${header.identityType})` : ''}` : '')}
         ${renderHeaderField('Base of Operations', header.base)}
       </div>
       
@@ -64,6 +65,7 @@ function renderPowerPointsSummaryCompact(ppData: HeaderSectionData['powerPointsD
     totalAvailable,
     totalSpent,
     remaining,
+    ppEarned,
   } = ppData;
 
   const isOverbudget = remaining < 0;
@@ -89,6 +91,7 @@ function renderPowerPointsSummaryCompact(ppData: HeaderSectionData['powerPointsD
           <span class="pp-breakdown-label">Abilities</span>
           <span class="pp-breakdown-value">${abilitiesCost} PP</span>
         </div>
+        ${ppEarned !== 0 ? `<div class="pp-breakdown-item"><span class="pp-breakdown-label">Campaign Adjustment</span><span class="pp-breakdown-value">${ppEarned > 0 ? '+' : ''}${ppEarned} PP</span></div>` : ''}
         <div class="pp-breakdown-item">
           <span class="pp-breakdown-label">Defenses</span>
           <span class="pp-breakdown-value">${defensesCost} PP</span>

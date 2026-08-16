@@ -5,7 +5,7 @@
 
 import type { ICharacter, IPowerEffect, IModifierDef, IResource } from '../../../entities/types';
 import { escapeHtml } from './utils';
-import { calcPowerTotalCost } from '../../../shared/lib/mathEngine';
+import { calcEquipmentEPCost, calcPowerTotalCost } from '../../../shared/lib/mathEngine';
 import { getResourceEPCost } from '../../../shared/lib/resourceCalculations';
 
 export interface EquipmentSectionData {
@@ -28,10 +28,11 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
 
   const linkedResources = (character.resourceLinks ?? []).flatMap((link) => {
     const resource = resources.find((item) => item.id === link.resourceId);
-    return resource ? [{ resource, isFree: link.isFree }] : [];
+    return resource ? [{ resource, isFree: link.isFree, contributionEP: link.contributionEP }] : [];
   });
+  const legacyEquipment = character.equipment ?? [];
 
-  if (equipment.length === 0 && linkedResources.length === 0) {
+  if (equipment.length === 0 && legacyEquipment.length === 0 && linkedResources.length === 0 && !character.equipmentNotes?.trim()) {
     return ''; // No section if no equipment
   }
 
@@ -39,32 +40,62 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
     .map(item => renderEquipmentEntry(item, powerDefs, modifierDefs))
     .join('');
 
-  const totalCost = equipment.reduce((sum, item) => 
+  const deviceCost = equipment.reduce((sum, item) =>
     sum + calcPowerTotalCost(item, powerDefs, modifierDefs), 0
-  ) + linkedResources.reduce((sum, entry) => sum + (entry.isFree ? 0 : getResourceEPCost(entry.resource)), 0);
+  );
+  const resourceCost = legacyEquipment.reduce((sum, item) => sum + calcEquipmentEPCost(item, powerDefs, modifierDefs), 0)
+    + linkedResources.reduce((sum, entry) => sum + (entry.isFree ? 0 : entry.contributionEP ?? getResourceEPCost(entry.resource)), 0);
+  const costLabel = [deviceCost > 0 ? `${deviceCost} PP` : '', resourceCost > 0 ? `${resourceCost} EP` : ''].filter(Boolean).join(' · ') || '0 EP';
 
   return `
     <div class="pdf-section">
       <div class="pdf-section-title">
-        Equipment
-        <span class="section-cost">${totalCost} PP</span>
+        Devices &amp; Resources
+        <span class="section-cost">${costLabel}</span>
       </div>
       <div class="equipment-list">
         ${equipmentHtml}
-        ${linkedResources.map((entry) => renderResourceEntry(entry.resource, entry.isFree)).join('')}
+        ${legacyEquipment.map((item) => renderLegacyEquipmentEntry(item, powerDefs, modifierDefs)).join('')}
+        ${linkedResources.map((entry) => renderResourceEntry(entry.resource, entry.isFree, entry.contributionEP, powerDefs, modifierDefs)).join('')}
+        ${character.equipmentNotes?.trim() ? `<div class="power-description">${escapeHtml(character.equipmentNotes)}</div>` : ''}
       </div>
     </div>
   `.trim();
 }
 
-function renderResourceEntry(resource: IResource, isFree: boolean): string {
-  const cost = isFree ? 0 : getResourceEPCost(resource);
+function renderResourceEntry(resource: IResource, isFree: boolean, contributionEP: number | undefined, powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]): string {
+  const cost = isFree ? 0 : contributionEP ?? getResourceEPCost(resource);
+  const type = resource.type.charAt(0).toUpperCase() + resource.type.slice(1);
   const traits = resource.type === 'vehicle'
-    ? `${resource.size}; STR ${resource.strength}; Speed ${resource.speed}; Defense ${resource.defense}; Toughness ${resource.toughness}`
+    ? [`${resource.size}`, `STR ${resource.strength}`, `Speed ${resource.speed}`, `Defense ${resource.defense}`, `Toughness ${resource.toughness}`, formatFeatures(resource.features), formatPowerList('Systems', resource.systems, powerDefs, modifierDefs)]
     : resource.type === 'headquarters'
-      ? `${resource.size}; Toughness ${resource.toughness}`
-      : resource.power.components.map((component) => component.effectId).filter(Boolean).join(', ');
-  return `<div class="equipment-entry"><div class="power-header"><div class="power-name">${escapeHtml(resource.name || 'Unnamed Resource')}</div><div class="power-cost">${cost} EP${isFree ? ' (Free)' : ''}</div></div><div class="power-effects">${escapeHtml(traits)}</div>${resource.notes ? `<div class="power-description text-small">${escapeHtml(resource.notes)}</div>` : ''}</div>`;
+      ? [`${resource.size}`, `Toughness ${resource.toughness}`, formatFeatures(resource.features), formatPowerList('Effects', resource.effects, powerDefs, modifierDefs)]
+      : [formatPower(resource.power, powerDefs, modifierDefs)];
+  return `<div class="equipment-entry"><div class="power-header"><div class="power-name">${escapeHtml(resource.name || 'Unnamed Resource')} <span class="text-muted">(${escapeHtml(type)})</span></div><div class="power-cost">${cost} EP${isFree ? ' (Free)' : contributionEP !== undefined ? ' (Shared)' : ''}</div></div><div class="power-effects">${escapeHtml(traits.filter(Boolean).join(' · '))}</div>${resource.notes ? `<div class="power-description text-small">${escapeHtml(resource.notes)}</div>` : ''}</div>`;
+}
+
+function formatFeatures(features: { name: string; ranks?: number; notes?: string }[]): string {
+  if (features.length === 0) return '';
+  return `Features: ${features.map((feature) => `${feature.name}${feature.ranks && feature.ranks > 1 ? ` ${feature.ranks}` : ''}${feature.notes ? ` (${feature.notes})` : ''}`).join(', ')}`;
+}
+
+function formatPowerList(label: string, powers: ICharacter['powers'], powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]): string {
+  if (powers.length === 0) return '';
+  return `${label}: ${powers.map((power) => formatPower(power, powerDefs, modifierDefs)).join(' | ')}`;
+}
+
+function formatPower(power: ICharacter['powers'][0], powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]): string {
+  const effects = buildEffectsString(power, powerDefs);
+  const modifiers = power.components.flatMap((component) => component.modifiers).map((modifier) => {
+    const definition = modifierDefs.find((item) => item.id === modifier.modifierId);
+    return `${definition?.name ?? modifier.modifierId}${modifier.ranks !== 1 ? ` ${modifier.ranks}` : ''}${modifier.option ? ` (${modifier.option})` : ''}`;
+  });
+  const alternates = power.alternateEffects.map((alternate) => alternate.name || buildEffectsString({ ...power, components: alternate.components }, powerDefs));
+  return [power.name, effects, modifiers.length > 0 ? `Modifiers: ${modifiers.join(', ')}` : '', alternates.length > 0 ? `Alternates: ${alternates.join(', ')}` : '', power.notes].filter(Boolean).join(' — ');
+}
+
+function renderLegacyEquipmentEntry(item: ICharacter['powers'][0], powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]): string {
+  return `<div class="equipment-entry"><div class="power-header"><div class="power-name">${escapeHtml(item.name || 'Unnamed Equipment')} <span class="text-muted">(Equipment)</span></div><div class="power-cost">${calcEquipmentEPCost(item, powerDefs, modifierDefs)} EP</div></div><div class="power-effects">${escapeHtml(formatPower(item, powerDefs, modifierDefs))}</div></div>`;
 }
 
 /**

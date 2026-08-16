@@ -78,7 +78,8 @@ function renderSkillEntry(
     abilityBonus = abilities[linkedAbility as keyof typeof abilities] || 0;
   }
 
-  const total = skill.ranks + abilityBonus;
+  const otherBonus = skill.otherBonus ?? 0;
+  const total = skill.ranks + abilityBonus + otherBonus;
   
   // Add subtype if present
   const displayName = skill.subtype ? `${skillName} (${skill.subtype})` : skillName;
@@ -86,7 +87,7 @@ function renderSkillEntry(
   return `
     <div class="skill-entry">
       <span class="skill-name">${escapeHtml(displayName)}</span>
-      <span class="skill-ranks">${skill.ranks} ranks</span>
+      <span class="skill-ranks">${skill.ranks} ranks${otherBonus !== 0 ? `, ${otherBonus > 0 ? '+' : ''}${otherBonus} other` : ''}</span>
       <span class="skill-total">${formatBonus(total)}</span>
     </div>
   `;

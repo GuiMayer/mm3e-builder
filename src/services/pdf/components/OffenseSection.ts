@@ -46,11 +46,18 @@ export function renderOffenseSection(data: OffenseSectionData): string {
  * Render a single offense row
  */
 function renderOffenseRow(entry: IOffenseEntry): string {
+  const notes = [
+    entry.resistance,
+    entry.relationship === 'alternate' ? 'Alternate Effect' : entry.relationship === 'dynamic-alternate' ? 'Dynamic Alternate Effect' : '',
+    entry.sourceType === 'resource' ? 'Resource' : entry.sourceType === 'equipment' ? 'Equipment' : '',
+    entry.tags.join(', '),
+    entry.notes,
+  ].filter(Boolean).join(' · ');
   return `
       <div class="offense-col offense-col-attack">${escapeHtml(entry.name)}</div>
       <div class="offense-col offense-col-bonus">${escapeHtml(entry.bonus)}</div>
       <div class="offense-col offense-col-range">${escapeHtml(entry.range)}</div>
       <div class="offense-col offense-col-effect">${escapeHtml(entry.effect)}</div>
-      <div class="offense-col offense-col-notes">${escapeHtml(entry.notes || '')}</div>
+      <div class="offense-col offense-col-notes">${escapeHtml(notes)}</div>
   `;
 }

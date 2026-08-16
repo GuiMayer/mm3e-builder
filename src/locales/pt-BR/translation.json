@@ -610,6 +610,7 @@
   "pdf.preview.generatingMessage": "Preparando visualização da ficha...",
   "pdf.preview.options": "Opções",
   "pdf.preview.generatePDF": "Gerar PDF",
+  "pdf.preview.print": "Imprimir / Salvar como PDF",
   "pdf.preview.downloadHTML": "Baixar HTML",
   "pdf.preview.converting": "Convertendo para PDF...",
   "pdf.preview.close": "Fechar",
@@ -641,12 +642,6 @@
   "pdf.customization.sections.notes": "Incluir Notas",
   "pdf.customization.sections.complications": "Incluir Complicações",
   "pdf.customization.sections.equipment": "Incluir Equipamento",
-
-  "pdf.customization.renderer.label": "Renderizador PDF",
-  "pdf.customization.renderer.paged": "Paged.js (Texto Selecionável)",
-  "pdf.customization.renderer.html2canvas": "HTML2Canvas (Imagem)",
-  "pdf.customization.renderer.pagedHint": "Usa diálogo de impressão do navegador. Texto permanece selecionável no PDF.",
-  "pdf.customization.renderer.html2canvasHint": "Download automático. Texto vira imagem.",
 
   "pdf.toast.printReady": "Preview pronto! Use Ctrl+P ou diálogo de impressão do navegador.",
 
