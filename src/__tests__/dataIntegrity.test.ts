@@ -262,15 +262,15 @@ describe('modifiers.json — RAW semantic rules', () => {
     expect(ids).toEqual(['dodge', 'fortitude', 'parry', 'will']);
   });
 
-  it('Alternate Resistance subtype costs match RAW (Will+1, Fortitude+2, Dodge+1, Parry+1)', () => {
+  it('Alternate Resistance keeps the selected defense separate from its GM-set +0/+1 cost', () => {
     const altRes = modifiers.find((m) => m.id === 'alternate_resistance');
     const altResWithSubtypes = altRes as ModifierWithSubtypes;
     const subtypes = altResWithSubtypes.subtypes!;
     const byId = Object.fromEntries(subtypes.map((s) => [s.id, s.costValue]));
-    expect(byId['will']).toBe(1);
-    expect(byId['fortitude']).toBe(2);
-    expect(byId['dodge']).toBe(1);
-    expect(byId['parry']).toBe(1);
+    expect(byId['will']).toBe(0);
+    expect(byId['fortitude']).toBe(0);
+    expect(byId['dodge']).toBe(0);
+    expect(byId['parry']).toBe(0);
   });
 });
 
