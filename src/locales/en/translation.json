@@ -49,7 +49,7 @@
 
   "tabs.newCharacter": "New Character",
   "tabs.closeCharacter": "Close Tab",
-  "tabs.closeConfirm": "Close this character? Unsaved changes will be lost.",
+  "tabs.closeConfirm": "Close this character? You can undo this action until you refresh the page.",
   "tabs.duplicateCharacter": "Duplicate Character",
   "tabs.unnamed": "Unnamed Character",
   "tabs.reorderHint": "Drag tabs to reorder",

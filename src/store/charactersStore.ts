@@ -8,6 +8,7 @@ import {
 } from '../entities/characterOperations';
 import {
   areCharactersEqual,
+  CHARACTER_HISTORY_LIMIT,
   createCharacterHistory,
   recordCharacterHistory,
   redoCharacterHistory,
@@ -16,6 +17,25 @@ import {
 import type { CharacterHistory, CharacterHistoryOptions } from '../entities/characterHistory';
 import type { CharacterTab } from '../entities/characterTab';
 export type { CharacterTab } from '../entities/characterTab';
+
+interface ClosedTabHistoryEntry {
+  tab: CharacterTab;
+  index: number;
+  characterHistory: CharacterHistory;
+}
+
+interface ClosedTabHistory {
+  past: ClosedTabHistoryEntry[];
+  future: ClosedTabHistoryEntry[];
+}
+
+function createClosedTabHistory(): ClosedTabHistory {
+  return { past: [], future: [] };
+}
+
+function clearClosedTabHistory(): ClosedTabHistory {
+  return createClosedTabHistory();
+}
 
 /* ================================================
    Characters Store — Multi-Character Management
@@ -28,6 +48,8 @@ export interface CharactersStoreState {
   activeCharacterId: string | null;
   /** Runtime-only history keyed by tab ID. It is deliberately not persisted. */
   historyByTabId: Record<string, CharacterHistory>;
+  /** Recently closed tabs are reversible only during the current browser session. */
+  closedTabHistory: ClosedTabHistory;
 
   // Core operations
   addCharacter: (character?: Partial<ICharacter>) => string;
@@ -47,6 +69,10 @@ export interface CharactersStoreState {
   clearCharacterHistory: (id: string) => void;
   canUndoCharacter: (id: string) => boolean;
   canRedoCharacter: (id: string) => boolean;
+  undoClosedTab: () => void;
+  redoClosedTab: () => void;
+  canUndoClosedTab: () => boolean;
+  canRedoClosedTab: () => boolean;
 
   // Bulk operations
   loadCharacters: (tabs: CharacterTab[], activeId: string | null) => void;
@@ -68,6 +94,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
       tabs: [],
       activeCharacterId: null,
       historyByTabId: {},
+      closedTabHistory: createClosedTabHistory(),
 
       addCharacter: (character) => {
         const newId = crypto.randomUUID();
@@ -95,6 +122,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
             ...state.historyByTabId,
             [newId]: createCharacterHistory(),
           },
+          closedTabHistory: clearClosedTabHistory(),
         }));
 
         return newId;
@@ -102,7 +130,11 @@ export const useCharactersStore = create<CharactersStoreState>()(
 
       removeCharacter: (id) => {
         set((state) => {
-          const newTabs = state.tabs.filter((t) => t.id !== id);
+          const tabIndex = state.tabs.findIndex((tab) => tab.id === id);
+          if (tabIndex === -1) return {};
+
+          const closedTab = state.tabs[tabIndex];
+          const newTabs = state.tabs.filter((tab) => tab.id !== id);
           const historyByTabId = { ...state.historyByTabId };
           delete historyByTabId[id];
           let newActiveId = state.activeCharacterId;
@@ -112,10 +144,19 @@ export const useCharactersStore = create<CharactersStoreState>()(
             newActiveId = newTabs.length > 0 ? newTabs[0].id : null;
           }
 
+          const closedEntry: ClosedTabHistoryEntry = {
+            tab: closedTab,
+            index: tabIndex,
+            characterHistory: state.historyByTabId[id] ?? createCharacterHistory(),
+          };
+          const past = [...state.closedTabHistory.past, closedEntry]
+            .slice(-CHARACTER_HISTORY_LIMIT);
+
           return {
             tabs: newTabs,
             activeCharacterId: newActiveId,
             historyByTabId,
+            closedTabHistory: { past, future: [] },
           };
         });
       },
@@ -171,6 +212,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
               ...state.historyByTabId,
               [id]: history,
             },
+            closedTabHistory: clearClosedTabHistory(),
           };
         });
       },
@@ -205,6 +247,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
             ...state.historyByTabId,
             [newId]: createCharacterHistory(),
           },
+          closedTabHistory: clearClosedTabHistory(),
         }));
 
         return newId;
@@ -216,7 +259,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
             .map((id) => state.tabs.find((t) => t.id === id))
             .filter((t): t is CharacterTab => t !== undefined);
 
-          return { tabs: orderedTabs };
+          return { tabs: orderedTabs, closedTabHistory: clearClosedTabHistory() };
         });
       },
 
@@ -295,11 +338,73 @@ export const useCharactersStore = create<CharactersStoreState>()(
 
       canRedoCharacter: (id) => (get().historyByTabId[id]?.future.length ?? 0) > 0,
 
+      undoClosedTab: () => {
+        set((state) => {
+          const entry = state.closedTabHistory.past.at(-1);
+          if (!entry || state.tabs.some((tab) => tab.id === entry.tab.id)) return {};
+
+          const tabs = [...state.tabs];
+          tabs.splice(Math.min(entry.index, tabs.length), 0, entry.tab);
+
+          return {
+            tabs,
+            activeCharacterId: entry.tab.id,
+            historyByTabId: {
+              ...state.historyByTabId,
+              [entry.tab.id]: entry.characterHistory,
+            },
+            closedTabHistory: {
+              past: state.closedTabHistory.past.slice(0, -1),
+              future: [...state.closedTabHistory.future, entry],
+            },
+          };
+        });
+      },
+
+      redoClosedTab: () => {
+        set((state) => {
+          const entry = state.closedTabHistory.future.at(-1);
+          if (!entry) return {};
+
+          const tabIndex = state.tabs.findIndex((tab) => tab.id === entry.tab.id);
+          if (tabIndex === -1) return {};
+
+          const tab = state.tabs[tabIndex];
+          const tabs = state.tabs.filter((candidate) => candidate.id !== entry.tab.id);
+          const historyByTabId = { ...state.historyByTabId };
+          delete historyByTabId[entry.tab.id];
+          const redoneEntry: ClosedTabHistoryEntry = {
+            ...entry,
+            tab,
+            index: tabIndex,
+            characterHistory: state.historyByTabId[entry.tab.id] ?? entry.characterHistory,
+          };
+
+          return {
+            tabs,
+            activeCharacterId: state.activeCharacterId === entry.tab.id
+              ? tabs[0]?.id ?? null
+              : state.activeCharacterId,
+            historyByTabId,
+            closedTabHistory: {
+              past: [...state.closedTabHistory.past, redoneEntry]
+                .slice(-CHARACTER_HISTORY_LIMIT),
+              future: state.closedTabHistory.future.slice(0, -1),
+            },
+          };
+        });
+      },
+
+      canUndoClosedTab: () => get().closedTabHistory.past.length > 0,
+
+      canRedoClosedTab: () => get().closedTabHistory.future.length > 0,
+
       loadCharacters: (tabs, activeId) => {
         set({
           tabs,
           activeCharacterId: activeId,
           historyByTabId: {},
+          closedTabHistory: clearClosedTabHistory(),
         });
       },
 
@@ -308,6 +413,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
           tabs,
           activeCharacterId: activeId,
           historyByTabId: {},
+          closedTabHistory: clearClosedTabHistory(),
         });
       },
 
@@ -316,6 +422,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
           tabs: [],
           activeCharacterId: null,
           historyByTabId: {},
+          closedTabHistory: clearClosedTabHistory(),
         });
       },
 

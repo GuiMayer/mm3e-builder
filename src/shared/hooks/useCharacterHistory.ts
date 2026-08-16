@@ -41,17 +41,35 @@ export function useCharacterHistory() {
   );
   const undoCharacter = useCharactersStore((state) => state.undoCharacter);
   const redoCharacter = useCharactersStore((state) => state.redoCharacter);
+  const hasClosedTabToUndo = useCharactersStore(
+    (state) => state.closedTabHistory.past.length > 0
+  );
+  const hasClosedTabToRedo = useCharactersStore(
+    (state) => state.closedTabHistory.future.length > 0
+  );
+  const undoClosedTab = useCharactersStore((state) => state.undoClosedTab);
+  const redoClosedTab = useCharactersStore((state) => state.redoClosedTab);
 
-  const canUndo = (history?.past.length ?? 0) > 0;
-  const canRedo = (history?.future.length ?? 0) > 0;
+  const canUndoCharacter = (history?.past.length ?? 0) > 0;
+  const canRedoCharacter = (history?.future.length ?? 0) > 0;
+  const canUndo = hasClosedTabToUndo || canUndoCharacter;
+  const canRedo = hasClosedTabToRedo || canRedoCharacter;
 
   const undo = useCallback(() => {
+    if (hasClosedTabToUndo) {
+      undoClosedTab();
+      return;
+    }
     if (activeCharacterId) undoCharacter(activeCharacterId);
-  }, [activeCharacterId, undoCharacter]);
+  }, [activeCharacterId, hasClosedTabToUndo, undoCharacter, undoClosedTab]);
 
   const redo = useCallback(() => {
+    if (hasClosedTabToRedo) {
+      redoClosedTab();
+      return;
+    }
     if (activeCharacterId) redoCharacter(activeCharacterId);
-  }, [activeCharacterId, redoCharacter]);
+  }, [activeCharacterId, hasClosedTabToRedo, redoCharacter, redoClosedTab]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

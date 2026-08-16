@@ -30,12 +30,7 @@ export function CharacterTabs() {
   const handleCloseTab = (e: React.MouseEvent, characterId: string) => {
     e.stopPropagation();
     
-    const tab = tabs.find((t) => t.id === characterId);
-    if (tab && tab.isDirty) {
-      if (!window.confirm(t('tabs.closeConfirm'))) {
-        return;
-      }
-    }
+    if (!window.confirm(t('tabs.closeConfirm'))) return;
     
     removeCharacter(characterId);
   };
@@ -114,6 +109,7 @@ export function CharacterTabs() {
                 {tab.isDirty && <span className="character-tab-dirty">•</span>}
               </span>
               <button
+                type="button"
                 className="character-tab-close"
                 onClick={(e) => handleCloseTab(e, tab.id)}
                 title={t('tabs.closeCharacter')}

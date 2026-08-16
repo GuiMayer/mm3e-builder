@@ -8,6 +8,7 @@ describe('charactersStore integration', () => {
       tabs: [],
       activeCharacterId: null,
       historyByTabId: {},
+      closedTabHistory: { past: [], future: [] },
     });
   });
 
@@ -120,6 +121,50 @@ describe('charactersStore integration', () => {
 
     expect(useCharactersStore.getState().activeCharacterId).toBe(firstId);
     expect(useCharactersStore.getState().tabs.every((tab) => !tab.isDirty)).toBe(true);
+  });
+
+  it('reopens a closed tab through the temporary undo history', () => {
+    const firstId = useCharactersStore.getState().addCharacter(
+      createDefaultCharacter({ header: { ...createDefaultCharacter().header, name: 'First' } })
+    );
+    const secondId = useCharactersStore.getState().addCharacter(
+      createDefaultCharacter({ header: { ...createDefaultCharacter().header, name: 'Second' } })
+    );
+    useCharactersStore.getState().removeCharacter(secondId);
+
+    expect(useCharactersStore.getState().tabs.map((tab) => tab.id)).toEqual([firstId]);
+    expect(useCharactersStore.getState().canUndoClosedTab()).toBe(true);
+
+    useCharactersStore.getState().undoClosedTab();
+
+    expect(useCharactersStore.getState().tabs.map((tab) => tab.id)).toEqual([firstId, secondId]);
+    expect(useCharactersStore.getState().activeCharacterId).toBe(secondId);
+    expect(useCharactersStore.getState().canRedoClosedTab()).toBe(true);
+  });
+
+  it('reapplies a closed tab after reopening it', () => {
+    const firstId = useCharactersStore.getState().addCharacter();
+    const secondId = useCharactersStore.getState().addCharacter();
+    useCharactersStore.getState().removeCharacter(secondId);
+    useCharactersStore.getState().undoClosedTab();
+
+    useCharactersStore.getState().redoClosedTab();
+
+    expect(useCharactersStore.getState().tabs.map((tab) => tab.id)).toEqual([firstId]);
+    expect(useCharactersStore.getState().activeCharacterId).toBe(firstId);
+    expect(useCharactersStore.getState().canUndoClosedTab()).toBe(true);
+  });
+
+  it('clears the closed-tab redo history after editing a reopened character', () => {
+    const id = useCharactersStore.getState().addCharacter();
+    useCharactersStore.getState().removeCharacter(id);
+    useCharactersStore.getState().undoClosedTab();
+
+    useCharactersStore.getState().updateCharacter(id, {
+      header: { name: 'Restored hero' },
+    } as Partial<ReturnType<typeof createDefaultCharacter>>);
+
+    expect(useCharactersStore.getState().canRedoClosedTab()).toBe(false);
   });
 
   it('undoes and redoes a committed power deletion', () => {
