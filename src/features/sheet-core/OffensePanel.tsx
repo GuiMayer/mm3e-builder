@@ -206,9 +206,11 @@ export function OffensePanel() {
         .targeted-effects-empty { color: var(--c-text-muted); font-size: .84rem; font-style: italic; margin: 0; padding: var(--s-md); text-align: center; }
         .targeted-add-btn { align-items: center; background: transparent; border: 0; color: var(--c-text-muted); cursor: pointer; display: flex; font: inherit; font-size: .78rem; gap: var(--s-xs); justify-content: center; padding: var(--s-sm); width: 100%; }
         .targeted-add-btn:hover { background: var(--c-primary-muted); color: var(--c-primary); }
-        .targeted-manual-editor { align-items: end; display: grid; gap: var(--s-xs); grid-template-columns: minmax(110px, 1fr) 72px 105px minmax(120px, 1fr) minmax(100px, 1fr) auto; padding: var(--s-sm); }
-        .targeted-input, .targeted-select { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-sm); color: var(--c-text); font: inherit; font-size: .78rem; min-width: 0; padding: 4px 6px; width: 100%; }
-        .targeted-input:focus, .targeted-select:focus { border-color: var(--c-primary); outline: none; }
+        .targeted-manual-editor { align-items: end; display: grid; gap: var(--s-xs); grid-template-columns: minmax(110px, 1fr) 114px 105px minmax(120px, 1fr) minmax(100px, 1fr) auto; padding: var(--s-sm); }
+        .targeted-input, .targeted-select, .targeted-bonus-input { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-sm); color: var(--c-text); font: inherit; font-size: .78rem; min-width: 0; padding: 4px 6px; }
+        .targeted-input, .targeted-select { width: 100%; }
+        .targeted-bonus-input { text-align: center; width: 48px; }
+        .targeted-input:focus, .targeted-select:focus, .targeted-bonus-input:focus { border-color: var(--c-primary); outline: none; }
         .targeted-editor-actions { display: flex; gap: 2px; }
         .targeted-icon-btn { align-items: center; background: transparent; border: 0; border-radius: var(--r-sm); color: var(--c-text-muted); cursor: pointer; display: flex; padding: 5px; }
         .targeted-icon-btn:hover { background: var(--c-surface-elevated); color: var(--c-text); }
@@ -220,7 +222,7 @@ export function OffensePanel() {
           .targeted-profile-tags { grid-column: 1 / -1; }
           .targeted-manual-editor { grid-template-columns: 1fr 1fr; padding: var(--s-md); }
           .targeted-manual-editor > :nth-child(1), .targeted-manual-editor > :nth-child(4), .targeted-manual-editor > :nth-child(5), .targeted-editor-actions { grid-column: 1 / -1; }
-          .targeted-input, .targeted-select { min-height: var(--touch-target-min); }
+          .targeted-input, .targeted-select, .targeted-bonus-input { min-height: var(--touch-target-min); }
           .targeted-icon-btn { min-height: var(--touch-target-min); min-width: var(--touch-target-min); justify-content: center; }
         }
       `}</style>
@@ -297,7 +299,7 @@ function ManualEditor({ draft, onDraftChange, onSave, onCancel, t }: {
   return (
     <div className="targeted-manual-editor">
       <input className="targeted-input" value={draft.name} onChange={(event) => onDraftChange({ ...draft, name: event.target.value })} placeholder={t('offense.custom.name')} aria-label={t('offense.custom.name')} autoFocus />
-      <NumberInput variant="medium" className="targeted-input" value={draft.bonus} onChange={(bonus) => onDraftChange({ ...draft, bonus })} aria-label={t('offense.bonus')} />
+      <NumberInput variant="medium" className="targeted-bonus-input" value={draft.bonus} onChange={(bonus) => onDraftChange({ ...draft, bonus })} aria-label={t('offense.bonus')} />
       <select className="targeted-select" value={draft.range} onChange={(event) => onDraftChange({ ...draft, range: event.target.value as IManualOffenseRow['range'] })} aria-label={t('offense.range')}>
         <option value="close">{t('offense.range_close')}</option><option value="ranged">{t('offense.range_ranged')}</option><option value="perception">{t('offense.range_perception')}</option>
       </select>
