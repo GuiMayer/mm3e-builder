@@ -9,6 +9,7 @@ import type { TFunction } from 'i18next';
 
 interface VariableCostSelectorProps {
   options: IVariableCostOption[];
+  costType?: 'per_rank' | 'flat';
   selected: string | undefined;
   onChange: (optionName: string) => void;
   t: TFunction;
@@ -17,6 +18,7 @@ interface VariableCostSelectorProps {
 
 export function VariableCostSelector({
   options,
+  costType = 'per_rank',
   selected,
   onChange,
   t,
@@ -41,7 +43,7 @@ export function VariableCostSelector({
               {opt.name}
             </span>
             <span className="cost-option-cost">
-              {opt.cost} PP/rank
+              {opt.cost} PP{costType === 'per_rank' ? '/rank' : ''}
             </span>
           </label>
         ))}

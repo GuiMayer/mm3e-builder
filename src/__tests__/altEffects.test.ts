@@ -262,6 +262,14 @@ describe('migrateAlternateEffect', () => {
 // ══════════════════════════════════════════════════════
 
 describe('migratePower', () => {
+  it('normalizes an old multi-rank Immunity package to its legal fixed rank', () => {
+    const result = migrateAlternateEffect({
+      id: 'ae-immunity', name: 'Old Immunity', dynamic: false, notes: '',
+      components: [{ id: 'c1', effectId: 'immunity', ranks: 10, modifiers: [], variableCostOption: 'Life support' }],
+    } as Record<string, unknown>);
+    expect(result.components[0].ranks).toBe(1);
+  });
+
   it('v1 AE migrates correctly via migrateAlternateEffect', () => {
     const v1AE = {
       id: 'ae-1', name: 'Flight', dynamic: false, notes: '',

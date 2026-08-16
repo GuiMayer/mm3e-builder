@@ -619,6 +619,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                           value={comp.effectId}
                           onChange={(effectId) => updateComponent(comp.id, {
                             effectId,
+                            ranks: 1,
                             variableCostOption: undefined,
                             fieldValues: {},
                           })}
@@ -640,6 +641,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                           }
                           onClick={(e) => e.stopPropagation()}
                           min={1}
+                          disabled={effectDef?.variableCost?.costType === 'flat'}
                         />
                       </div>
                     </div>
@@ -648,8 +650,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                       <div onClick={(e) => e.stopPropagation()}>
                         <VariableCostSelector
                           options={effectDef.variableCost.options}
+                          costType={effectDef.variableCost.costType}
                           selected={comp.variableCostOption}
-                          onChange={(optionName) => updateComponent(comp.id, { variableCostOption: optionName })}
+                          onChange={(optionName) => updateComponent(comp.id, {
+                            variableCostOption: optionName,
+                            ...(effectDef.variableCost?.costType === 'flat' ? { ranks: 1 } : {}),
+                          })}
                           t={t}
                           name={`variable-cost-${comp.id}`}
                         />

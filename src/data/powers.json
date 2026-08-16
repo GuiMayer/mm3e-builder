@@ -1623,6 +1623,7 @@
     "duration": "permanent",
     "description": "You are immune to certain effects, automatically succeeding on resistance checks. Assign ranks to effects: 1 rank (aging, disease, poison, one environment, etc.), 2 ranks (critical hits, suffocation), 5 ranks (alteration, sensory Affliction, a Damage descriptor), 10 ranks (common descriptor, life support), 20 ranks (very common descriptor), 30 ranks (all Fortitude/Will effects), 80 ranks (all Toughness effects).",
     "variableCost": {
+      "costType": "flat",
       "options": [
         {
           "name": "Aging / Disease / Poison / One environment",

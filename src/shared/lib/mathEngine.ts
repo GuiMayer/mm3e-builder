@@ -19,7 +19,7 @@ import type {
  * Returns the point amount (positive = extra, negative = flaw).
  */
 export function calcModifierCost(applied: IAppliedModifier, def: IModifierDef): number {
-  if (def.costType === 'flat') return def.costValue;
+  if (def.costType === 'flat') return def.costValue * (def.maxRanks && def.maxRanks > 1 ? applied.ranks : 1);
   if (def.costType === 'flat_ranked') return def.costValue * applied.ranks;
   // per_rank: contributes to the per-rank total, not a fixed amount here
   return 0;
@@ -107,8 +107,10 @@ export function calculateCostPerRank(
     return { costPerRank: perRankSum, isFractional: false, ranksPerPP: 1 };
   }
 
-  // Fractional: 1 PP per N ranks
-  const ranksPerPP = 2 - perRankSum;
+  // Fractional costs can be printed as 1 PP per 2 ranks (for example,
+  // Enhanced Skill). Preserve that exact half-cost case; flaws below it use
+  // the normal 1 PP per 2/3/... ranks progression.
+  const ranksPerPP = perRankSum > 0 ? 1 / perRankSum : 2 - perRankSum;
   return { costPerRank: 1, isFractional: true, ranksPerPP };
 }
 
@@ -125,7 +127,9 @@ export function calculateFlatCost(
   for (const applied of appliedModifiers) {
     const def = modifierDefs.find((m) => m.id === applied.modifierId);
     if (!def) continue;
-    if (def.costType === 'flat') flatSum += def.costValue;
+    if (def.costType === 'flat') {
+      flatSum += def.costValue * (def.maxRanks && def.maxRanks > 1 ? applied.ranks : 1);
+    }
     else if (def.costType === 'flat_ranked') flatSum += def.costValue * applied.ranks;
   }
 
@@ -144,13 +148,15 @@ export function calcComponentCost(
 ): number {
   // Determine base cost: use variable cost option if selected, otherwise use baseCost
   let baseCost = effectDef.baseCost;
+  let fixedPackageCost: number | undefined;
   
   if (effectDef.variableCost && component.variableCostOption) {
     const selectedOption = effectDef.variableCost.options.find(
       opt => opt.name === component.variableCostOption
     );
     if (selectedOption) {
-      baseCost = selectedOption.cost;
+      if (effectDef.variableCost.costType === 'flat') fixedPackageCost = selectedOption.cost;
+      else baseCost = selectedOption.cost;
     }
   }
 
@@ -166,6 +172,12 @@ export function calcComponentCost(
     rankCost = Math.ceil(component.ranks / ranksPerPP);
   } else {
     rankCost = costPerRank * component.ranks;
+  }
+
+  if (fixedPackageCost !== undefined) {
+    // A selected package has one printed base cost. Per-rank modifiers still
+    // affect that cost because they modify the complete effect.
+    rankCost = fixedPackageCost * (costPerRank / effectDef.baseCost);
   }
 
   const flatCost = calculateFlatCost(component.modifiers, modifierDefs);
@@ -283,7 +295,7 @@ export function getComponentCostBreakdown(
       if (effectiveCost > 0) perRankExtras += effectiveCost;
       else perRankFlaws += Math.abs(effectiveCost);
     } else if (def.costType === 'flat') {
-      flatCost += def.costValue;
+      flatCost += def.costValue * (def.maxRanks && def.maxRanks > 1 ? applied.ranks : 1);
     } else if (def.costType === 'flat_ranked') {
       flatCost += def.costValue * applied.ranks;
     }
@@ -291,27 +303,34 @@ export function getComponentCostBreakdown(
 
   // Determine base cost: use variable cost option if selected, otherwise use baseCost
   let baseCost = effectDef.baseCost;
+  let fixedPackageCost: number | undefined;
   
   if (effectDef.variableCost && component.variableCostOption) {
     const selectedOption = effectDef.variableCost.options.find(
       opt => opt.name === component.variableCostOption
     );
     if (selectedOption) {
-      baseCost = selectedOption.cost;
+      if (effectDef.variableCost.costType === 'flat') fixedPackageCost = selectedOption.cost;
+      else baseCost = selectedOption.cost;
     }
   }
 
   const rawCostPerRank = baseCost + perRankSum;
   const isFractional = rawCostPerRank < 1;
-  const ranksPerPP = isFractional ? 2 - rawCostPerRank : 1;
+  const ranksPerPP = isFractional
+    ? (rawCostPerRank > 0 ? 1 / rawCostPerRank : 2 - rawCostPerRank)
+    : 1;
   const costPerRank = Math.max(1, rawCostPerRank);
-  const rankCost = isFractional
+  let rankCost = isFractional
     ? Math.ceil(component.ranks / ranksPerPP)
     : costPerRank * component.ranks;
+  if (fixedPackageCost !== undefined) {
+    rankCost = fixedPackageCost * (rawCostPerRank / effectDef.baseCost);
+  }
   const total = Math.max(1, rankCost + flatCost);
 
   return {
-    base: baseCost,
+    base: fixedPackageCost ?? baseCost,
     selectedVariableCost: component.variableCostOption || null,
     perRankExtras,
     perRankFlaws,

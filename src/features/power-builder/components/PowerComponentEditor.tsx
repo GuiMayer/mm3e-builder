@@ -115,6 +115,7 @@ export function PowerComponentEditor({
       {effectDef && effectDef.variableCost && effectDef.variableCost.options.length > 0 && (
         <VariableCostSelector
           options={effectDef.variableCost.options}
+          costType={effectDef.variableCost.costType}
           selected={component.variableCostOption}
           onChange={(optionName: string) => onUpdateComponent({ variableCostOption: optionName })}
           t={t}

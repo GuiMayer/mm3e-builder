@@ -8,6 +8,22 @@ import type { ICharacterPower, IAlternateEffect, IAppliedModifier, ICharacterPow
 const DEFAULT_SUBTYPE = 'Unspecified';
 
 /**
+ * Corrects persisted representations that the older UI could produce but the
+ * rules do not support. Immunity selections are complete fixed-cost packages,
+ * so the old mutable component rank never represented another legal rank.
+ */
+function migrateComponent(raw: ICharacterPowerComponent): ICharacterPowerComponent {
+  if (raw.effectId === 'immunity' && raw.variableCostOption && raw.ranks !== 1) {
+    return { ...raw, ranks: 1 };
+  }
+  return raw;
+}
+
+function migrateComponents(rawComponents: unknown[]): ICharacterPowerComponent[] {
+  return rawComponents.map((component) => migrateComponent(component as ICharacterPowerComponent));
+}
+
+/**
  * Factory for a safe, empty AE fallback — used when input is malformed.
  * Preserves the id if present so array slots remain stable.
  */
@@ -41,7 +57,10 @@ export function migrateAlternateEffect(raw: unknown): IAlternateEffect {
 
   // v2 format: components[] present
   if (Array.isArray(obj.components)) {
-    return obj as unknown as IAlternateEffect;
+    return {
+      ...(obj as unknown as IAlternateEffect),
+      components: migrateComponents(obj.components),
+    };
   }
 
   // v1 format: must have effectId to be a valid legacy AE
@@ -83,6 +102,7 @@ export function migratePower(raw: Record<string, unknown>): ICharacterPower {
   if (Array.isArray(raw.components)) {
     return {
       ...(raw as unknown as ICharacterPower),
+      components: migrateComponents(raw.components),
       alternateEffects: migratedAEs,
     };
   }
@@ -128,7 +148,7 @@ export function migrateEquipmentItem(raw: Record<string, unknown>): ICharacterPo
   return {
     id: (raw.id as string) ?? uuidv4(),
     name: (raw.name as string) ?? '',
-    components: (raw.components as ICharacterPowerComponent[]) ?? [],
+    components: migrateComponents((raw.components as unknown[]) ?? []),
     notes: (raw.notes as string) ?? '',
     alternateEffects: migratedAEs,
     removable: 'none', // Equipment EP cost does not use removable discount

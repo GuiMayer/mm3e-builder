@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  calcComponentCost,
   calculateCostPerRank,
   calculatePowerCost,
   calculateArrayCost,
@@ -119,6 +120,44 @@ describe('mathEngine', () => {
 
     it('adds 1 PP when the base effect is Dynamic', () => {
       expect(calculateArrayCost(20, 1, 1, true)).toBe(23);
+    });
+  });
+
+  describe('variable and ranked-flat costs', () => {
+    const enhancedSkill = {
+      id: 'enhanced-trait', name: 'Enhanced Trait', baseCost: 1, type: 'general',
+      action: 'free', range: 'personal', duration: 'sustained', description: '',
+      variableCost: { options: [{ name: 'Enhanced Skill', cost: 0.5 }] }, extras: [], flaws: [],
+    } as unknown as import('../entities/types').IPowerEffect;
+    const immunity = {
+      id: 'immunity', name: 'Immunity', baseCost: 1, type: 'defense',
+      action: 'none', range: 'personal', duration: 'permanent', description: '',
+      variableCost: { costType: 'flat', options: [{ name: 'Life support', cost: 10 }] }, extras: [], flaws: [],
+    } as unknown as import('../entities/types').IPowerEffect;
+
+    it('charges Enhanced Skill at one point per two ranks', () => {
+      expect(calcComponentCost(
+        { id: 'c1', effectId: 'enhanced-trait', ranks: 2, modifiers: [], variableCostOption: 'Enhanced Skill' },
+        enhancedSkill,
+        MODS,
+      )).toBe(1);
+    });
+
+    it('uses a selected Immunity package once rather than once per component rank', () => {
+      expect(calcComponentCost(
+        { id: 'c1', effectId: 'immunity', ranks: 1, modifiers: [], variableCostOption: 'Life support' },
+        immunity,
+        MODS,
+      )).toBe(10);
+    });
+
+    it('scales ranked flat modifiers by their modifier ranks', () => {
+      const subtle = { id: 'subtle', name: 'Subtle', category: 'extra', costType: 'flat', costValue: 1, maxRanks: 2, description: '', incompatibleWith: [] } as IModifierDef;
+      expect(calcComponentCost(
+        { id: 'c1', effectId: 'damage', ranks: 10, modifiers: [{ modifierId: 'subtle', ranks: 2 }] },
+        { id: 'damage', name: 'Damage', baseCost: 1, type: 'attack', action: 'standard', range: 'close', duration: 'instant', description: '', variableCost: null, extras: [], flaws: [] },
+        [subtle],
+      )).toBe(12);
     });
   });
 

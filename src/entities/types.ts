@@ -60,6 +60,14 @@ export interface IVariableCostOption {
   cost: number;
 }
 
+/**
+ * Some effects express their selected cost as a complete package rather than
+ * a price per effect rank (for example, Immunity 10). Keeping that distinction
+ * on the definition prevents the UI and cost engine from treating a package as
+ * "10 PP/rank".
+ */
+export type VariableCostType = 'per_rank' | 'flat';
+
 // ── Modifier Subtype (for modifiers with variable cost per chosen option) ──
 // e.g. Alternate Resistance: Will (+1/rank), Fortitude (+2/rank), Dodge (+1/rank)
 export interface IModifierSubtype {
@@ -101,7 +109,7 @@ export interface IPowerEffect {
   description: string;
   longDescription?: string;
   enhancesDefense?: string;      // technical debt flag: effect boosts a defense/resistance
-  variableCost: { options: IVariableCostOption[] } | null;
+  variableCost: { options: IVariableCostOption[]; costType?: VariableCostType } | null;
   configurableFields?: IConfigurableField[];  // NEW: configurable fields at acquisition
   extras: IModifierDef[];        // power-specific extras
   flaws: IModifierDef[];         // power-specific flaws
