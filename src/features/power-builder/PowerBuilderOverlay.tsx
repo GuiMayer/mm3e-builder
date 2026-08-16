@@ -484,12 +484,15 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             <div className="build-section">
               <label className="build-label">{t('builder.powerName')}</label>
               <div className="build-name-row">
-                <input
+                    <input
                   className="build-input"
                   value={power.name}
                   onChange={(e) => setPower((p) => ({ ...p, name: e.target.value }))}
                   placeholder={t('builder.powerNamePlaceholder')}
-                />
+                    />
+                    <select className="build-input build-input--small" value={power.activation ?? ''} onChange={(e) => setPower((current) => ({ ...current, activation: e.target.value === 'move' || e.target.value === 'standard' ? e.target.value : undefined }))} aria-label="Activation">
+                      <option value="">Activation: none</option><option value="move">Activation: move (−1 PP)</option><option value="standard">Activation: standard (−2 PP)</option>
+                    </select>
                 {!equipmentMode && (power.removable === 'removable' || power.removable === 'easily_removable') && (
                   <span
                     className="build-removable-badge"

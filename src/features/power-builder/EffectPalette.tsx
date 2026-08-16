@@ -49,6 +49,7 @@ export function EffectPalette({
       // enforces their cap and Dynamic pricing. Do not add this flat modifier
       // directly to a component.
       m.id !== 'alternate_effect' &&
+      m.id !== 'activation' &&
       (m.name.toLowerCase().includes(lowerFilter) || m.description.toLowerCase().includes(lowerFilter))
   );
   const generalFlaws = modifierDefs.filter(

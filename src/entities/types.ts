@@ -228,6 +228,8 @@ export interface ICharacterPower {
   alternateEffects: IAlternateEffect[];
   /** Dynamic base effect in an Alternate Effect array (+1 PP). */
   baseDynamic?: boolean;
+  /** Activation is a flat flaw on the whole power, never on one component. */
+  activation?: 'move' | 'standard';
   removable?: 'none' | 'removable' | 'easily_removable'; // F-06: device discount
 }
 

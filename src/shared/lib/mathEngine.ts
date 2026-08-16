@@ -413,9 +413,11 @@ export function calcPowerTotalCost(
     dynamicCount,
     power.baseDynamic === true,
   );
-  const discount = calcRemovableDiscount(arrayCost, power.removable);
+  const activationDiscount = power.activation === 'standard' ? 2 : power.activation === 'move' ? 1 : 0;
+  const adjustedArrayCost = Math.max(1, arrayCost - activationDiscount);
+  const discount = calcRemovableDiscount(adjustedArrayCost, power.removable);
   // A flat flaw cannot reduce a power's final cost below 1 PP.
-  return Math.max(1, arrayCost - discount);
+  return Math.max(1, adjustedArrayCost - discount);
 }
 
 /**

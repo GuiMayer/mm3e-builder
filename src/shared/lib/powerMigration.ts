@@ -20,7 +20,20 @@ function migrateComponent(raw: ICharacterPowerComponent): ICharacterPowerCompone
 }
 
 function migrateComponents(rawComponents: unknown[]): ICharacterPowerComponent[] {
-  return rawComponents.map((component) => migrateComponent(component as ICharacterPowerComponent));
+  return rawComponents.map((component) => {
+    const normalized = migrateComponent(component as ICharacterPowerComponent);
+    return normalized.modifiers.some((modifier) => modifier.modifierId === 'activation')
+      ? { ...normalized, modifiers: normalized.modifiers.filter((modifier) => modifier.modifierId !== 'activation') }
+      : normalized;
+  });
+}
+
+function migrateActivation(rawComponents: unknown[]): 'move' | 'standard' | undefined {
+  const activation = rawComponents
+    .flatMap((component) => (component as ICharacterPowerComponent).modifiers ?? [])
+    .filter((modifier) => modifier.modifierId === 'activation');
+  if (activation.length === 0) return undefined;
+  return activation.some((modifier) => modifier.ranks >= 2) ? 'standard' : 'move';
 }
 
 /**
@@ -100,10 +113,12 @@ export function migratePower(raw: Record<string, unknown>): ICharacterPower {
 
   // Already in new format
   if (Array.isArray(raw.components)) {
+    const activation = (raw as unknown as ICharacterPower).activation ?? migrateActivation(raw.components);
     return {
       ...(raw as unknown as ICharacterPower),
       components: migrateComponents(raw.components),
       alternateEffects: migratedAEs,
+      ...(activation ? { activation } : {}),
     };
   }
 
