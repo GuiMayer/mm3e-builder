@@ -122,6 +122,9 @@ function validateCoreModifierApplicability(
 
   for (const modifier of component.modifiers) {
     const modifierPath = `${path}.modifiers.${modifier.modifierId}`;
+    const trigger = typeof modifier.options?.trigger === 'string'
+      ? modifier.options.trigger.trim()
+      : '';
 
     if (modifier.modifierId === 'affects_others' && effectDef.range !== 'personal') {
       issues.push(issue(modifierPath, 'Affects Others can only modify a Personal effect.'));
@@ -133,6 +136,17 @@ function validateCoreModifierApplicability(
       && effectDef.action !== 'free'
     ) {
       issues.push(issue(modifierPath, 'Reaction can only modify an effect with a standard or free default action.'));
+    }
+
+    if (
+      (modifier.modifierId === 'reaction' || modifier.modifierId === 'triggered')
+      && !trigger
+    ) {
+      issues.push(issue(modifierPath, `${modifier.modifierId === 'reaction' ? 'Reaction' : 'Triggered'} requires a triggering circumstance.`));
+    }
+
+    if (modifier.modifierId === 'triggered' && effectDef.duration !== 'instant') {
+      issues.push(issue(modifierPath, 'Triggered can only modify an Instant effect.'));
     }
 
     if (

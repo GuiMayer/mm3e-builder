@@ -330,6 +330,18 @@ export function AltEffectCard({
                                 <option value="advantageous">{t('builder.alternateResistanceAdvantageous')}</option>
                               </select>
                             )}
+                            {(def.id === 'reaction' || def.id === 'triggered') && (
+                              <input
+                                className="applied-mod-option"
+                                value={(applied.options?.trigger as string) ?? ''}
+                                onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                  ...applied.options,
+                                  trigger: e.target.value,
+                                })}
+                                placeholder={t('builder.triggerPlaceholder')}
+                                aria-label={t('builder.trigger')}
+                              />
+                            )}
                             {/* Subtype selector (e.g. Alternate Resistance) */}
                             {def.subtypes && def.subtypes.length > 0 && (
                               <select

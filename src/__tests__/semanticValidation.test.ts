@@ -103,6 +103,27 @@ describe('validatePowerForSave', () => {
     ]));
   });
 
+  it('requires a trigger for Reaction and Triggered', () => {
+    const power = makePower([]);
+    power.components[0].modifiers = [
+      { modifierId: 'reaction', ranks: 1 },
+      { modifierId: 'triggered', ranks: 1 },
+    ];
+
+    const issues = validatePowerForSave(power, DEFAULT_VALIDATION_RULES, {
+      powerDefs: [DAMAGE_EFFECT],
+      modifierDefs: [
+        { id: 'reaction', name: 'Reaction', category: 'extra', costType: 'per_rank', costValue: 3, description: '', incompatibleWith: [] },
+        { id: 'triggered', name: 'Triggered', category: 'extra', costType: 'flat_ranked', costValue: 1, description: '', incompatibleWith: [] },
+      ],
+    });
+
+    expect(issues).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'components.0.modifiers.reaction' }),
+      expect.objectContaining({ path: 'components.0.modifiers.triggered' }),
+    ]));
+  });
+
   it('warns when an alternate effect name is empty', () => {
     const issues = validatePowerForSave(makePower(['']), DEFAULT_VALIDATION_RULES, {
       powerDefs: [DAMAGE_EFFECT],

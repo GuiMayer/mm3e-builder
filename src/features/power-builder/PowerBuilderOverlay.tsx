@@ -825,6 +825,20 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                   <option value="advantageous">{t('builder.alternateResistanceAdvantageous')}</option>
                                 </select>
                               )}
+                              {(def.id === 'reaction' || def.id === 'triggered') && (
+                                <input
+                                  className="applied-mod-option"
+                                  value={(applied.options?.trigger as string) ?? ''}
+                                  onChange={(e) => {
+                                    updateModifierOptions(comp.id, applied.modifierId, {
+                                      ...applied.options,
+                                      trigger: e.target.value,
+                                    });
+                                  }}
+                                  placeholder={t('builder.triggerPlaceholder')}
+                                  aria-label={t('builder.trigger')}
+                                />
+                              )}
                               {/* Subtype selector for modifiers with variable cost (e.g. Alternate Resistance) */}
                               {def.subtypes && def.subtypes.length > 0 && (
                                 <select
