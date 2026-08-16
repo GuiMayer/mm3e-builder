@@ -20,6 +20,7 @@ interface AltEffectCardProps {
   ae: IAlternateEffect;
   aeIdx: number;
   cost: number;
+  cap: number;
   validation: { valid: boolean; overageBy: number };
   isExpanded: boolean;
   onToggleExpand: () => void;
@@ -45,7 +46,7 @@ interface AltEffectCardProps {
 }
 
 export function AltEffectCard({
-  ae, aeIdx, cost, validation, isExpanded, onToggleExpand,
+  ae, aeIdx, cost, cap, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
   allEffects, allModDefs, modifierIncompatibilities,
   activeId,
@@ -71,7 +72,7 @@ export function AltEffectCard({
           placeholder={`AE ${aeIdx + 1}`}
         />
         <span className={`ae-cost-badge ${valid ? 'ae-cost-badge--ok' : 'ae-cost-badge--over'}`}>
-          {valid ? '✅' : '⚠️'} {cost}pp
+          {valid ? '✅' : '⚠️'} {cost}/{cap}pp
           {!valid && <span className="ae-overage"> {t('builder.aeOverageLabel', { overageBy })}</span>}
         </span>
         <label

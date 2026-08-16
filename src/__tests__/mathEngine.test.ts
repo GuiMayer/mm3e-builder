@@ -260,6 +260,18 @@ describe('mathEngine', () => {
       expect(calcPowerTotalCost(power, POWER_DEFS, MODS)).toBe(16);
     });
 
+    it('applies Activation before calculating a Removable discount', () => {
+      const power: ICharacterPower = {
+        id: 'p-activation', name: 'Activated device',
+        components: [{ id: 'c1', effectId: 'damage', ranks: 7, modifiers: [] }],
+        notes: '', alternateEffects: [],
+        activation: 'standard',
+        removable: 'removable',
+      };
+      // 7 PP − 2 PP (standard activation) = 5 PP; Removable then reduces it by 1 PP.
+      expect(calcPowerTotalCost(power, POWER_DEFS, MODS)).toBe(4);
+    });
+
     it('total never goes below 0', () => {
       const power: ICharacterPower = {
         id: 'p3', name: 'Tiny Gadget',

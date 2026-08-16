@@ -155,6 +155,7 @@ export function EffectPalette({
         <button
           className={`palette-tab ${activeTab === 'specific' ? 'palette-tab--active palette-tab--specific' : ''} ${!selectedEffect ? 'palette-tab--disabled' : ''}`}
           onClick={() => selectedEffect && setActiveTab('specific')}
+          disabled={!selectedEffect}
           title={!selectedEffect ? t('palette.noSpecificEffect') : undefined}
         >
           <Zap size={12} /> {t('palette.specific')} ({specificCount})
@@ -294,6 +295,7 @@ export function EffectPalette({
         .palette-tab--active.palette-tab--flaw { color: var(--c-error); border-color: var(--c-error); }
         .palette-tab--active.palette-tab--specific { color: #f59e0b; border-color: #f59e0b; }
         .palette-tab--disabled { opacity: 0.4; cursor: not-allowed; }
+        .palette-tab:disabled { cursor: not-allowed; }
 
         .palette-list-container {
           flex: 1; overflow-y: auto; padding: var(--s-sm) var(--s-md);

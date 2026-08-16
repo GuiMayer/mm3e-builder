@@ -14,6 +14,7 @@ import {
   calcEquipmentEPCost,
   validateAECost,
   calcRemovableDiscount,
+  calcPowerTotalCost,
 } from '../../../shared/lib/mathEngine';
 import { validateAttackEffect, type PLViolation } from '../../../shared/lib/validation';
 import { getActiveValidationRules } from '../../../shared/lib/validationRules';
@@ -74,16 +75,25 @@ export function usePowerCostCalculation({
     [mainCost, power.alternateEffects.length, dynamicCount, power.baseDynamic]
   );
 
-  // Calculate removable discount
-  const removableDiscount = useMemo(
-    () => calcRemovableDiscount(arrayCost, power.removable),
-    [arrayCost, power.removable]
+  // Activation is a power-level flat flaw. Keep the unadjusted array cost for
+  // the component breakdown, then apply it before calculating Removable.
+  const activationDiscount = power.activation === 'standard' ? 2 : power.activation === 'move' ? 1 : 0;
+  const adjustedArrayCost = useMemo(
+    () => Math.max(1, arrayCost - activationDiscount),
+    [arrayCost, activationDiscount]
   );
 
-  // Calculate total cost
+  // Calculate removable discount
+  const removableDiscount = useMemo(
+    () => calcRemovableDiscount(adjustedArrayCost, power.removable),
+    [adjustedArrayCost, power.removable]
+  );
+
+  // Use the shared total calculator so the builder always matches sheets,
+  // exports and persisted powers.
   const totalCost = useMemo(
-    () => Math.max(1, arrayCost - removableDiscount),
-    [arrayCost, removableDiscount]
+    () => calcPowerTotalCost(power, powerDefs, allModDefs),
+    [power, powerDefs, allModDefs]
   );
 
   const equipmentEPCost = useMemo(
@@ -167,6 +177,7 @@ export function usePowerCostCalculation({
     componentCosts,
     mainCost,
     arrayCost,
+    activationDiscount,
     removableDiscount,
     totalCost,
     equipmentEPCost,

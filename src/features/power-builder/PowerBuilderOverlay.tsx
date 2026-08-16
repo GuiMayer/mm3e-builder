@@ -154,6 +154,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     componentCosts,
     mainCost,
     arrayCost,
+    activationDiscount,
     removableDiscount,
     totalCost,
     equipmentEPCost,
@@ -587,7 +588,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   <Plus size={12} /> {t('builder.addLinkedEffect')}
                 </button>
               </div>
-              {power.components.length === 1 && (
+              {!hasEffect && (
+                <p className="builder-draft-guidance" role="status">
+                  <Info size={14} /> {t('builder.selectEffectToStart')}
+                </p>
+              )}
+              {hasEffect && power.components.length === 1 && (
                 <p className="builder-relationship-hint">{t('builder.linkedEffectHint')}</p>
               )}
 
@@ -1000,6 +1006,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   ae={ae}
                   aeIdx={aeIdx}
                   cost={aeCosts[aeIdx] ?? 0}
+                  cap={mainCost}
                   validation={aeValidations[aeIdx] ?? { valid: true, overageBy: 0 }}
                   isExpanded={expandedAEId === ae.id}
                   onToggleExpand={() => setExpandedAEId((prev) => prev === ae.id ? null : ae.id)}
@@ -1062,6 +1069,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               <span className="cost-comp-item">
                 <span className="cost-comp-name">{t('builder.arrayCost')}</span>
                 <span className="cost-comp-val">{arrayCost - mainCost}pp</span>
+              </span>
+            )}
+            {activationDiscount > 0 && (
+              <span className="cost-comp-item">
+                <span className="cost-comp-name">{t('builder.activation')}</span>
+                <span className="cost-comp-val">−{activationDiscount}pp</span>
               </span>
             )}
           </div>
@@ -1230,6 +1243,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         }
         .builder-save-hint { align-self: center; color: var(--c-text-muted); font-size: 0.72rem; }
         .builder-relationship-hint { margin: 0; color: var(--c-text-muted); font-size: 0.78rem; line-height: 1.45; }
+        .builder-draft-guidance {
+          display: flex; align-items: center; gap: 6px; margin: 0;
+          color: var(--c-primary); font-size: 0.8rem; line-height: 1.45;
+          background: var(--c-primary-muted); border-radius: var(--r-sm); padding: var(--s-sm);
+        }
 
         /* Component Cards */
         .component-card {
