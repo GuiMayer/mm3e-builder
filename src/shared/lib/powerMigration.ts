@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 import type { ICharacterPower, IAlternateEffect, IAppliedModifier, ICharacterPowerComponent, ICharacterAdvantage, IAdvantageDef } from '../../entities/types';
+import { createId } from './identity';
 
 /**
  * Default subtype used when migrating legacy advantages that require a subtype but don't have one.
@@ -35,7 +35,7 @@ function migrateComponent(raw: unknown): ICharacterPowerComponent | null {
   const candidate = raw as Record<string, unknown>;
   const normalized: ICharacterPowerComponent = {
     ...(candidate as unknown as ICharacterPowerComponent),
-    id: typeof candidate.id === 'string' ? candidate.id : uuidv4(),
+    id: typeof candidate.id === 'string' ? candidate.id : createId(),
     effectId: typeof candidate.effectId === 'string' ? candidate.effectId : '',
     ranks: typeof candidate.ranks === 'number' && Number.isInteger(candidate.ranks) && candidate.ranks >= 0
       ? candidate.ranks
@@ -79,7 +79,7 @@ function migrateActivation(rawComponents: unknown[]): 'move' | 'standard' | unde
 function safeFallbackAE(raw: unknown): IAlternateEffect {
   const id = typeof raw === 'object' && raw !== null && 'id' in raw
     ? String((raw as Record<string, unknown>).id)
-    : uuidv4();
+    : createId();
   const name = typeof raw === 'object' && raw !== null && 'name' in raw
     ? String((raw as Record<string, unknown>).name)
     : '';
@@ -115,11 +115,11 @@ export function migrateAlternateEffect(raw: unknown): IAlternateEffect {
   // v1 format: must have effectId to be a valid legacy AE
   if (typeof obj.effectId === 'string' && obj.effectId.length > 0) {
     return {
-      id: (obj.id as string) ?? uuidv4(),
+      id: (obj.id as string) ?? createId(),
       name: (obj.name as string) ?? '',
       components: [
         {
-          id: uuidv4(),
+          id: createId(),
           effectId: obj.effectId,
           ranks: (obj.ranks as number) ?? 1,
           modifiers: migrateModifiers(obj.modifiers),
@@ -164,11 +164,11 @@ export function migratePower(raw: Record<string, unknown>): ICharacterPower {
   const legacyModifiers = migrateModifiers(raw.modifiers);
 
   return {
-    id: (raw.id as string) ?? uuidv4(),
+    id: (raw.id as string) ?? createId(),
     name: (raw.name as string) ?? '',
     components: [
       {
-        id: uuidv4(),
+        id: createId(),
         effectId: legacyEffectId,
         ranks: legacyRanks,
         modifiers: legacyModifiers,
@@ -202,7 +202,7 @@ export function migrateEquipmentItem(raw: Record<string, unknown>): ICharacterPo
   );
 
   return {
-    id: (raw.id as string) ?? uuidv4(),
+    id: (raw.id as string) ?? createId(),
     name: (raw.name as string) ?? '',
     components: migrateComponents((raw.components as unknown[]) ?? []),
     notes: (raw.notes as string) ?? '',

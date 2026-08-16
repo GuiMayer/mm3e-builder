@@ -1,16 +1,16 @@
-import { v4 as uuidv4 } from 'uuid';
 import type {
   ICharacterPower,
   IModifierDef,
   IPowerEffect,
 } from '../../entities/types';
+import { createId } from '../../shared/lib/identity';
 
 export function createPowerDraft(existingPower?: ICharacterPower): ICharacterPower {
   return existingPower ?? {
-    id: uuidv4(),
+    id: createId(),
     name: '',
     components: [{
-      id: uuidv4(),
+      id: createId(),
       effectId: '',
       ranks: 1,
       modifiers: [],

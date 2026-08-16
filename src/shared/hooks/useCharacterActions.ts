@@ -4,6 +4,7 @@ import { migratePowers, migrateAdvantages } from '../lib/powerMigration';
 import type { ICharacter, AbilityKey, IPPLogEntry, IManualOffenseRow } from '../../entities/types';
 import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import { createDefaultCharacter } from '../../entities/characterDefaults';
+import { createId } from '../lib/identity';
 
 const getCharactersStore = useCharactersStore.getState;
 
@@ -114,7 +115,7 @@ export function useCharacterActions() {
     
     // Ensure imported character has characterId
     if (!migratedCharacter.characterId) {
-      migratedCharacter.characterId = crypto.randomUUID();
+      migratedCharacter.characterId = createId();
     }
     
     getCharactersStore().addCharacter(migratedCharacter);
@@ -215,7 +216,7 @@ export function useCharacterActions() {
 
     const newEntry: IPPLogEntry = {
       ...entry,
-      id: crypto.randomUUID(),
+      id: createId(),
     };
 
     const ppLog = active.character.ppLog || [];

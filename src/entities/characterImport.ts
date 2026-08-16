@@ -4,6 +4,7 @@ import {
   duplicateCharacterWithNewIds,
   getDuplicateCharacterName,
 } from './characterOperations';
+import { createId } from '../shared/lib/identity';
 
 /** Finds every open tab representing a persisted character identity. */
 export function findCharacterIdentityMatches(
@@ -20,7 +21,7 @@ export function ensureImportedCharacterIdentity(
 ): ICharacter {
   return character.characterId
     ? character
-    : { ...character, characterId: crypto.randomUUID() };
+    : { ...character, characterId: createId() };
 }
 
 /**

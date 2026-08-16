@@ -6,6 +6,7 @@ import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useTranslation } from 'react-i18next';
 import type { IManualOffenseRow } from '../../entities/types';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { createId } from '../../shared/lib/identity';
 
 type EffectFilter = 'all' | 'attack' | 'resistance' | 'area' | 'affects-others';
 
@@ -71,7 +72,7 @@ export function OffensePanel() {
 
   function saveNew() {
     if (!draft.name.trim() || !draft.effect.trim()) return;
-    setManualOffenseRows([...manualRows, { ...draft, id: crypto.randomUUID() }]);
+    setManualOffenseRows([...manualRows, { ...draft, id: createId() }]);
     setAddingNew(false);
   }
 

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import type {
   IEquipmentItem,
   IModifierDef,
@@ -15,6 +14,7 @@ import { Button } from '../../shared/ui/Button';
 import { useAppStore } from '../../store/appStore';
 import { X, Save, Plus, Trash2 } from 'lucide-react';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
+import { createId } from '../../shared/lib/identity';
 
 interface Props {
   existingItem?: IEquipmentItem;
@@ -32,9 +32,9 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
   // Build initial state
   const [item, setItem] = useState<IEquipmentItem>(
     existingItem ?? {
-      id: uuidv4(),
+      id: createId(),
       name: '',
-      components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [] }],
+      components: [{ id: createId(), effectId: '', ranks: 1, modifiers: [] }],
       notes: '',
       alternateEffects: [],
     }
@@ -79,7 +79,7 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
       ...item,
       components: [
         ...item.components,
-        { id: uuidv4(), effectId: '', ranks: 1, modifiers: [] },
+        { id: createId(), effectId: '', ranks: 1, modifiers: [] },
       ],
     });
   };

@@ -4,6 +4,7 @@ import type { ICharacter } from '../../entities/types';
 import type { CharacterTab } from '../../entities/characterTab';
 import { normalizeCharacter } from '../character-file/normalizeCharacter';
 import { createDefaultCharacter } from '../../entities/characterDefaults';
+import { createId } from '../../shared/lib/identity';
 
 const LEGACY_DRAFT_KEY = 'mm3e-draft-character';
 const DRAFT_KEY = 'mm3e-draft-characters';
@@ -345,7 +346,7 @@ function migrateLegacyDraft(): {
     return null;
   }
 
-  const id = crypto.randomUUID();
+  const id = createId();
   const character = normalizeCharacter(result.data.character as ICharacter);
   if (!character.characterId) character.characterId = id;
 

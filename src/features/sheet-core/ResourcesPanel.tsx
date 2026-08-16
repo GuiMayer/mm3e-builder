@@ -6,6 +6,7 @@ import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { getResourceEPCost } from '../../shared/lib/resourceCalculations';
+import { createId } from '../../shared/lib/identity';
 
 export function ResourcesPanel() {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export function ResourcesPanel() {
 
   function addLink() {
     if (!selectedResourceId || links.some((link) => link.resourceId === selectedResourceId)) return;
-    setResourceLinks([...links, { id: crypto.randomUUID(), resourceId: selectedResourceId, isFree: false }]);
+    setResourceLinks([...links, { id: createId(), resourceId: selectedResourceId, isFree: false }]);
     setSelectedResourceId('');
   }
 

@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { Archive, Edit3, Plus, Trash2, Wand2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterPower, IHeadquartersResource, IResource, IResourceFeature, IVehicleResource, ResourceType } from '../../entities/types';
@@ -10,6 +9,7 @@ import { getResourceEPCost, getVehicleBaseTraits } from '../../shared/lib/resour
 import { Button } from '../../shared/ui/Button';
 import { Modal } from '../../shared/ui/Modal';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { createId } from '../../shared/lib/identity';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 
 const RESOURCE_TYPES: ResourceType[] = ['gadget', 'gear', 'vehicle', 'headquarters', 'custom'];
@@ -19,16 +19,16 @@ type PowerTarget = { resource: IResource; index?: number };
 type EditingResource = { resource: IResource; isNew: boolean };
 
 function blankPower(): ICharacterPower {
-  return { id: uuidv4(), name: '', components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} }], notes: '', alternateEffects: [] };
+  return { id: createId(), name: '', components: [{ id: createId(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} }], notes: '', alternateEffects: [] };
 }
 function makeResource(type: ResourceType): IResource {
-  const base = { id: uuidv4(), type, name: '', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+  const base = { id: createId(), type, name: '', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
   if (type === 'vehicle') { const traits = getVehicleBaseTraits('medium'); return { ...base, type, size: 'medium', strength: traits.strength, speed: 0, defense: traits.defense, toughness: traits.toughness, features: [], systems: [] }; }
   if (type === 'headquarters') return { ...base, type, size: 'small', toughness: 6, features: [], effects: [] };
   return { ...base, type, power: blankPower() };
 }
 function featuresToText(features: IResourceFeature[]) { return features.map((feature) => `${feature.name}${feature.ranks && feature.ranks > 1 ? ` x${feature.ranks}` : ''}`).join('\n'); }
-function textToFeatures(text: string): IResourceFeature[] { return text.split('\n').map((line) => line.trim()).filter(Boolean).map((line) => { const match = line.match(/^(.*?)(?:\s*[x×]\s*(\d+))?$/i); return { id: uuidv4(), name: match?.[1]?.trim() || line, ranks: match?.[2] ? Number(match[2]) : 1 }; }); }
+function textToFeatures(text: string): IResourceFeature[] { return text.split('\n').map((line) => line.trim()).filter(Boolean).map((line) => { const match = line.match(/^(.*?)(?:\s*[x×]\s*(\d+))?$/i); return { id: createId(), name: match?.[1]?.trim() || line, ranks: match?.[2] ? Number(match[2]) : 1 }; }); }
 
 export function ResourcesView() {
   const { t } = useTranslation();

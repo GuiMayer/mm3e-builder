@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
 import type {
   ICharacterPower,
   ICharacterPowerComponent,
 } from '../../../entities/types';
+import { createId } from '../../../shared/lib/identity';
 
 /* ================================================
    usePowerComponents Hook
@@ -21,7 +21,7 @@ export function usePowerComponents({
   
   function addComponent() {
     const newComp: ICharacterPowerComponent = {
-      id: uuidv4(),
+      id: createId(),
       effectId: '',
       ranks: 1,
       modifiers: [],

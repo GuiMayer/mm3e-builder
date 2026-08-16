@@ -1,10 +1,10 @@
-import { v4 as uuidv4 } from 'uuid';
 import type {
   ICharacterPower,
   IAlternateEffect,
   IPowerEffect,
   ICharacterPowerComponent,
 } from '../../../entities/types';
+import { createId } from '../../../shared/lib/identity';
 
 interface UseAlternateEffectsParams {
   setPower: React.Dispatch<React.SetStateAction<ICharacterPower>>;
@@ -37,8 +37,8 @@ export function useAlternateEffects({
   setActiveAEComponentId,
 }: UseAlternateEffectsParams) {
   function addAlternateEffect() {
-    const newAEId = uuidv4();
-    const newComponentId = uuidv4();
+    const newAEId = createId();
+    const newComponentId = createId();
     const newAE: IAlternateEffect = {
       id: newAEId,
       name: '',
@@ -85,7 +85,7 @@ export function useAlternateEffects({
   // ── AE Component CRUD ──
 
   function addAEComponent(aeId: string) {
-    const newComp: ICharacterPowerComponent = { id: uuidv4(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} };
+    const newComp: ICharacterPowerComponent = { id: createId(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} };
     setPower((p) => ({
       ...p,
       alternateEffects: p.alternateEffects.map((ae) =>

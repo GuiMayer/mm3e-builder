@@ -16,6 +16,7 @@ import {
 } from '../entities/characterHistory';
 import type { CharacterHistory, CharacterHistoryOptions } from '../entities/characterHistory';
 import type { CharacterTab } from '../entities/characterTab';
+import { createId } from '../shared/lib/identity';
 export type { CharacterTab } from '../entities/characterTab';
 
 interface ClosedTabHistoryEntry {
@@ -125,7 +126,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
       closedTabHistory: createClosedTabHistory(),
 
       addCharacter: (character) => {
-        const newId = crypto.randomUUID();
+        const newId = createId();
         const baseCharacter = createDefaultCharacter(character);
 
         // Ensure character has characterId for cross-device sync
@@ -263,7 +264,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
         );
 
         // Create new tab
-        const newId = crypto.randomUUID();
+        const newId = createId();
         const newTab: CharacterTab = {
           id: newId,
           character: clonedCharacter,

@@ -1,6 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
-import { v4 as uuidv4 } from 'uuid';
 import type {
   ICharacterPower,
   IModifierDef,
@@ -16,6 +15,7 @@ import { usePowerCostCalculation } from './hooks/usePowerCostCalculation';
 import { ModifierDropzone } from './components/ModifierDropzone';
 import { MobileModifierDrawer } from './components/MobileModifierDrawer';
 import { ModifierDrawerFAB } from './components/ModifierDrawerFAB';
+import { createId } from '../../shared/lib/identity';
 import { useMobileDrawer } from './hooks/useMobileDrawer';
 import { X, Save, Plus, Zap, Info, AlertTriangle, Shield } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
@@ -361,7 +361,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
   function addComponent() {
     const newComp: ICharacterPowerComponent = {
-      id: uuidv4(),
+      id: createId(),
       effectId: '',
       ranks: 1,
       modifiers: [],

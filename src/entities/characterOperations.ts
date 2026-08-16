@@ -1,4 +1,5 @@
 import type { ICharacter } from './types';
+import { createId } from '../shared/lib/identity';
 
 export function getDuplicateCharacterName(
   sourceName: string,
@@ -26,32 +27,50 @@ export function duplicateCharacterWithNewIds(
 ): ICharacter {
   const clone = JSON.parse(JSON.stringify(character)) as ICharacter;
   clone.header.name = name;
-  clone.characterId = crypto.randomUUID();
+  clone.characterId = createId();
 
   for (const power of clone.powers ?? []) {
-    power.id = crypto.randomUUID();
+    power.id = createId();
     for (const component of power.components ?? []) {
-      component.id = crypto.randomUUID();
+      component.id = createId();
     }
     for (const alternate of power.alternateEffects ?? []) {
-      alternate.id = crypto.randomUUID();
+      alternate.id = createId();
       for (const component of alternate.components ?? []) {
-        component.id = crypto.randomUUID();
+        component.id = createId();
       }
     }
   }
 
   for (const item of clone.equipment ?? []) {
-    item.id = crypto.randomUUID();
+    item.id = createId();
     for (const component of item.components ?? []) {
-      component.id = crypto.randomUUID();
+      component.id = createId();
     }
     for (const alternate of item.alternateEffects ?? []) {
-      alternate.id = crypto.randomUUID();
+      alternate.id = createId();
       for (const component of alternate.components ?? []) {
-        component.id = crypto.randomUUID();
+        component.id = createId();
       }
     }
+  }
+
+  const alternateSetIds = new Map<string, string>();
+  for (const link of clone.resourceLinks ?? []) {
+    link.id = createId();
+    if (link.alternateSetId) {
+      const replacementId = alternateSetIds.get(link.alternateSetId) ?? createId();
+      alternateSetIds.set(link.alternateSetId, replacementId);
+      link.alternateSetId = replacementId;
+    }
+  }
+
+  for (const row of clone.manualOffenseRows ?? []) {
+    row.id = createId();
+  }
+
+  for (const entry of clone.ppLog ?? []) {
+    entry.id = createId();
   }
 
   return clone;
