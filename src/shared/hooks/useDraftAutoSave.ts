@@ -10,12 +10,16 @@ import { saveDraftMulti } from '../../services/fileService';
 export function useDraftAutoSave() {
   const tabs = useCharactersStore((s) => s.tabs);
   const activeId = useCharactersStore((s) => s.activeCharacterId);
+  const isDraftHydrated = useCharactersStore((s) => s.isDraftHydrated);
   const markCharacterClean = useCharactersStore((s) => s.markCharacterClean);
   const timerRef = useRef<number | null>(null);
   const dirtyTabsRef = useRef<Set<string>>(new Set());
   const hasObservedInitialStateRef = useRef(false);
 
   useEffect(() => {
+    // Never replace persisted data before the startup loader has established
+    // whether it was restored, migrated, or needs user recovery.
+    if (!isDraftHydrated) return;
     // The first render happens before the multi-character draft has been
     // restored. Skipping it prevents an empty store from replacing a saved or
     // corrupted draft. Every later tab or selection change is persistable.
@@ -53,5 +57,5 @@ export function useDraftAutoSave() {
         clearTimeout(timerRef.current);
       }
     };
-  }, [tabs, activeId, markCharacterClean]);
+  }, [tabs, activeId, isDraftHydrated, markCharacterClean]);
 }

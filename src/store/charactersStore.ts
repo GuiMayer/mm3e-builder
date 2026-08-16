@@ -46,6 +46,8 @@ function clearClosedTabHistory(): ClosedTabHistory {
 export interface CharactersStoreState {
   tabs: CharacterTab[];
   activeCharacterId: string | null;
+  /** Autosave is disabled until persisted data was loaded or conclusively absent. */
+  isDraftHydrated: boolean;
   /** Runtime-only history keyed by tab ID. It is deliberately not persisted. */
   historyByTabId: Record<string, CharacterHistory>;
   /** Recently closed tabs are reversible only during the current browser session. */
@@ -78,6 +80,7 @@ export interface CharactersStoreState {
   loadCharacters: (tabs: CharacterTab[], activeId: string | null) => void;
   loadTabs: (tabs: CharacterTab[], activeId: string | null) => void;
   clearAllCharacters: () => void;
+  setDraftHydrated: (hydrated: boolean) => void;
 
   // Dirty state management
   markCharacterDirty: (id: string) => void;
@@ -93,6 +96,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
     (set, get) => ({
       tabs: [],
       activeCharacterId: null,
+      isDraftHydrated: false,
       historyByTabId: {},
       closedTabHistory: createClosedTabHistory(),
 
@@ -425,6 +429,8 @@ export const useCharactersStore = create<CharactersStoreState>()(
           closedTabHistory: clearClosedTabHistory(),
         });
       },
+
+      setDraftHydrated: (hydrated) => set({ isDraftHydrated: hydrated }),
 
       markCharacterDirty: (id) => {
         set((state) => ({

@@ -3,10 +3,13 @@ import { CharacterFileSchema, CharacterSchema } from '../../entities/schemas';
 import type { ICharacter } from '../../entities/types';
 import type { CharacterTab } from '../../entities/characterTab';
 import { normalizeCharacter } from '../character-file/normalizeCharacter';
+import { createDefaultCharacter } from '../../entities/characterDefaults';
 
 const LEGACY_DRAFT_KEY = 'mm3e-draft-character';
 const DRAFT_KEY = 'mm3e-draft-characters';
 const DRAFT_METADATA_KEY = 'mm3e-draft-metadata';
+const DRAFT_BACKUP_KEY = 'mm3e-draft-characters-backup-v1';
+const LEGACY_DRAFT_BACKUP_KEY = 'mm3e-draft-character-backup-v1';
 const DRAFT_VERSION = 1;
 
 const StoredCharacterTabSchema = z.object({
@@ -35,6 +38,12 @@ const DraftMetadataSchema = z.object({
 export type DraftMetadataMulti = z.infer<typeof DraftMetadataSchema>;
 
 let lastSavedSignature = '';
+
+/** Keep the pre-migration payload intact. Local data is never discarded by an upgrade. */
+function preserveBackup(sourceKey: string, backupKey: string): void {
+  const original = localStorage.getItem(sourceKey);
+  if (original && !localStorage.getItem(backupKey)) localStorage.setItem(backupKey, original);
+}
 
 function toStoredCharacters(tabs: CharacterTab[]) {
   return tabs.map((tab) => ({
@@ -81,6 +90,7 @@ export function saveDraftMulti(
   if (signature === lastSavedSignature) return true;
 
   try {
+    preserveBackup(DRAFT_KEY, DRAFT_BACKUP_KEY);
     const draft = {
       version: DRAFT_VERSION,
       activeCharacterId,
@@ -123,7 +133,7 @@ function parseMultiCharacterDraft(stored: string): CharacterTab[] | null {
   const result = MultiCharacterDraftSchema.safeParse(parsedJson);
   if (!result.success) {
     console.error('[loadDraftMulti] Draft validation failed:', result.error);
-    return null;
+    return parseCompatibleMultiCharacterDraft(parsedJson);
   }
 
   if (result.data.version !== DRAFT_VERSION) {
@@ -143,6 +153,36 @@ function parseMultiCharacterDraft(stored: string): CharacterTab[] | null {
   );
 }
 
+/**
+ * Older browser drafts can be structurally sound while failing a newly-added
+ * strict field. Recover their stable character data, then let normal
+ * normalization upgrade individual powers and equipment.
+ */
+function parseCompatibleMultiCharacterDraft(raw: unknown): CharacterTab[] | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const draft = raw as { characters?: unknown };
+  if (!Array.isArray(draft.characters)) return null;
+  const tabs: CharacterTab[] = [];
+  for (const rawTab of draft.characters) {
+    if (!rawTab || typeof rawTab !== 'object') return null;
+    const tab = rawTab as { id?: unknown; character?: unknown; label?: unknown; lastModified?: unknown };
+    if (typeof tab.id !== 'string' || !tab.character || typeof tab.character !== 'object') return null;
+    const characterData = tab.character as Partial<ICharacter>;
+    if (!characterData.header || !characterData.abilities || !characterData.defenses) return null;
+    const character = normalizeCharacter(createDefaultCharacter(characterData));
+    if (!character.characterId) character.characterId = tab.id;
+    tabs.push({
+      id: tab.id,
+      character,
+      label: typeof tab.label === 'string' ? tab.label : character.header.name || 'Unnamed Character',
+      isDirty: true,
+      lastModified: typeof tab.lastModified === 'number' ? tab.lastModified : Date.now(),
+    });
+  }
+  console.warn(`[loadDraftMulti] Recovered ${tabs.length} compatible legacy tab(s).`);
+  return addMissingCharacterIds(tabs);
+}
+
 /** Loads and validates the current draft, falling back to the legacy format. */
 export function loadDraftMulti(): {
   tabs: CharacterTab[];
@@ -154,10 +194,13 @@ export function loadDraftMulti(): {
   const tabs = parseMultiCharacterDraft(stored);
   if (!tabs) return null;
 
-  const parsed = MultiCharacterDraftSchema.safeParse(JSON.parse(stored));
-  if (!parsed.success) return null;
-
-  const savedActiveId = parsed.data.activeCharacterId;
+  let savedActiveId: string | null = null;
+  try {
+    const parsed = MultiCharacterDraftSchema.safeParse(JSON.parse(stored));
+    if (parsed.success) savedActiveId = parsed.data.activeCharacterId;
+  } catch {
+    // parseMultiCharacterDraft already reports malformed JSON.
+  }
   const activeId = savedActiveId && tabs.some((tab) => tab.id === savedActiveId)
     ? savedActiveId
     : tabs[0]?.id ?? null;
@@ -166,6 +209,12 @@ export function loadDraftMulti(): {
   // the autosave hook will persist the corrected selection after hydration.
   lastSavedSignature = createDraftSignature(tabs, savedActiveId);
   return { tabs, activeId };
+}
+
+/** True when a persisted draft needs to be restored or recovered before saving. */
+export function hasStoredDraft(): boolean {
+  return typeof localStorage !== 'undefined'
+    && (localStorage.getItem(DRAFT_KEY) !== null || localStorage.getItem(LEGACY_DRAFT_KEY) !== null);
 }
 
 function migrateLegacyDraft(): {
@@ -203,8 +252,7 @@ function migrateLegacyDraft(): {
 
   if (!saveDraftMulti([tab], id)) return null;
 
-  localStorage.removeItem(LEGACY_DRAFT_KEY);
-  localStorage.removeItem(`${LEGACY_DRAFT_KEY}-metadata`);
+  preserveBackup(LEGACY_DRAFT_KEY, LEGACY_DRAFT_BACKUP_KEY);
   localStorage.setItem('mm3e-multi-char-migrated', 'true');
   return { tabs: [tab], activeId: id };
 }
@@ -233,4 +281,6 @@ export const characterDraftStorageKeys = {
   draft: DRAFT_KEY,
   metadata: DRAFT_METADATA_KEY,
   legacyDraft: LEGACY_DRAFT_KEY,
+  backup: DRAFT_BACKUP_KEY,
+  legacyBackup: LEGACY_DRAFT_BACKUP_KEY,
 } as const;

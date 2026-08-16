@@ -15,5 +15,6 @@ export {
   clearDraftMulti,
   getDraftMetadataMulti,
   loadDraftMulti,
+  hasStoredDraft,
   saveDraftMulti,
 } from './storage/characterDraftStorage';

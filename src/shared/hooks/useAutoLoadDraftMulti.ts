@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { loadDraftMulti } from '../../services/fileService';
+import { hasStoredDraft, loadDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
@@ -19,6 +19,7 @@ const INSTANCE_KEY = 'mm3e-app-instance-active';
 export function useAutoLoadDraftMulti() {
   const hasRunRef = useRef(false);
   const loadTabs = useCharactersStore((s) => s.loadTabs);
+  const setDraftHydrated = useCharactersStore((s) => s.setDraftHydrated);
 
   useEffect(() => {
     // Prevent double-run in React StrictMode
@@ -53,19 +54,18 @@ export function useAutoLoadDraftMulti() {
           return result.resources.length > 0 ? { ...tab, character: result.character, isDirty: true } : tab;
         });
         loadTabs(migrated, draft.activeId);
+        setDraftHydrated(true);
         console.log(`[useAutoLoadDraftMulti] Loaded ${draft.tabs.length} character(s)`);
-      } else {
+      } else if (!hasStoredDraft()) {
+        setDraftHydrated(true);
         console.log('[useAutoLoadDraftMulti] No draft found, starting fresh');
+      } else {
+        console.error('[useAutoLoadDraftMulti] Stored draft was not recovered; autosave remains disabled to protect it.');
       }
     } catch (error) {
       console.error('[useAutoLoadDraftMulti] Failed to load draft:', error);
-      // If draft is corrupted, start fresh
-      try {
-        localStorage.removeItem('mm3e-draft-multi');
-        localStorage.removeItem('mm3e-draft-metadata');
-      } catch {
-        // Ignore cleanup errors
-      }
+      // Keep the original payload intact. A future migration or manual export
+      // is safer than silently replacing a draft that failed to load.
     }
 
     // Set up heartbeat to keep instance marker fresh
@@ -90,7 +90,7 @@ export function useAutoLoadDraftMulti() {
       window.removeEventListener('beforeunload', cleanup);
       cleanup();
     };
-  }, [loadTabs]);
+  }, [loadTabs, setDraftHydrated]);
 
   // This hook has no return value - it's a side-effect only
 }
