@@ -3,28 +3,35 @@
    Powers marked as removable equipment
    ================================================ */
 
-import type { ICharacter, IPowerEffect, IModifierDef } from '../../../entities/types';
+import type { ICharacter, IPowerEffect, IModifierDef, IResource } from '../../../entities/types';
 import { escapeHtml } from './utils';
 import { calcPowerTotalCost } from '../../../shared/lib/mathEngine';
+import { getResourceEPCost } from '../../../shared/lib/resourceCalculations';
 
 export interface EquipmentSectionData {
   character: ICharacter;
   powerDefs: IPowerEffect[];
   modifierDefs: IModifierDef[];
+  resources?: IResource[];
 }
 
 /**
  * Render the equipment section
  */
 export function renderEquipmentSection(data: EquipmentSectionData): string {
-  const { character, powerDefs, modifierDefs } = data;
+  const { character, powerDefs, modifierDefs, resources = [] } = data;
   
   // Filter equipment (powers with removable flag)
   const equipment = character.powers.filter(p => 
     p.removable === 'removable' || p.removable === 'easily_removable'
   );
 
-  if (equipment.length === 0) {
+  const linkedResources = (character.resourceLinks ?? []).flatMap((link) => {
+    const resource = resources.find((item) => item.id === link.resourceId);
+    return resource ? [{ resource, isFree: link.isFree }] : [];
+  });
+
+  if (equipment.length === 0 && linkedResources.length === 0) {
     return ''; // No section if no equipment
   }
 
@@ -34,7 +41,7 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
 
   const totalCost = equipment.reduce((sum, item) => 
     sum + calcPowerTotalCost(item, powerDefs, modifierDefs), 0
-  );
+  ) + linkedResources.reduce((sum, entry) => sum + (entry.isFree ? 0 : getResourceEPCost(entry.resource)), 0);
 
   return `
     <div class="pdf-section">
@@ -44,9 +51,20 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
       </div>
       <div class="equipment-list">
         ${equipmentHtml}
+        ${linkedResources.map((entry) => renderResourceEntry(entry.resource, entry.isFree)).join('')}
       </div>
     </div>
   `.trim();
+}
+
+function renderResourceEntry(resource: IResource, isFree: boolean): string {
+  const cost = isFree ? 0 : getResourceEPCost(resource);
+  const traits = resource.type === 'vehicle'
+    ? `${resource.size}; STR ${resource.strength}; Speed ${resource.speed}; Defense ${resource.defense}; Toughness ${resource.toughness}`
+    : resource.type === 'headquarters'
+      ? `${resource.size}; Toughness ${resource.toughness}`
+      : resource.power.components.map((component) => component.effectId).filter(Boolean).join(', ');
+  return `<div class="equipment-entry"><div class="power-header"><div class="power-name">${escapeHtml(resource.name || 'Unnamed Resource')}</div><div class="power-cost">${cost} EP${isFree ? ' (Free)' : ''}</div></div><div class="power-effects">${escapeHtml(traits)}</div>${resource.notes ? `<div class="power-description text-small">${escapeHtml(resource.notes)}</div>` : ''}</div>`;
 }
 
 /**

@@ -62,7 +62,12 @@ export function useCalculatedPP() {
       0
     );
     const totalEPUsed = legacyEPUsed + getCharacterResourceEPUsed(character, resources);
-    const isOverEquipmentLimit = activeRules.enforceEquipmentPPLimit && totalEPUsed > equipmentEPLimit;
+  // Resources never reject an association. Equipment spending is surfaced as a
+  // warning only while budget validation is active (and the optional EP rule
+  // itself is enabled), matching the rest of the permissive sheet workflow.
+  const isOverEquipmentLimit = activeRules.enforcePPBudget
+    && activeRules.enforceEquipmentPPLimit
+    && totalEPUsed > equipmentEPLimit;
 
     return {
       abilitiesCost,

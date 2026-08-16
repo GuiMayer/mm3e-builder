@@ -10,6 +10,7 @@ import { downloadBlob, sanitizeFileName } from '../../services/downloadHelper';
 import { useToast } from './useToast';
 import type { PDFCustomizationOptions } from '../../services/pdf/types';
 import { loadPDFCustomizationOptions, savePDFCustomizationOptions } from './usePDFCustomizationStorage';
+import { useResourcesStore } from '../../store/resourcesStore';
 
 /**
  * Hook for managing PDF export with preview modal and toast notifications.
@@ -18,6 +19,7 @@ import { loadPDFCustomizationOptions, savePDFCustomizationOptions } from './useP
 export function usePDFExport() {
   const { t } = useTranslation();
   const { character } = useActiveCharacter();
+  const resources = useResourcesStore((state) => state.resources);
   const { showToast, updateToast, dismissToast } = useToast();
   
   const [pdfOverflow, setPdfOverflow] = useState<PDFOverflowReport[]>([]);
@@ -97,6 +99,7 @@ export function usePDFExport() {
         skillDefs: skillDefsRecord,
         advantageDefs: advantageDefsRecord,
         customization: customOptions,
+        resources,
       });
       
       if (!result.success) {
@@ -148,7 +151,7 @@ export function usePDFExport() {
    * Confirm and export PDF despite overflow warnings (legacy mode only)
    */
   async function confirmAndExportPDF() {
-    await executeLegacyPDFExport();
+      await executeLegacyPDFExport();
   }
 
   /**

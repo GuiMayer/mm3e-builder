@@ -3,7 +3,7 @@
    Orchestrates all PDF components and generates HTML
    ================================================ */
 
-import type { ICharacter, IPowerEffect, IModifierDef, ISkillDef, IAdvantageDef } from '../../entities/types';
+import type { ICharacter, IPowerEffect, IModifierDef, ISkillDef, IAdvantageDef, IResource } from '../../entities/types';
 import {
   renderHeaderSection,
   renderAbilitiesSection,
@@ -35,6 +35,7 @@ export interface PDFGeneratorOptions {
   advantageDefs: Record<string, IAdvantageDef>;
   includeStyles?: boolean;  // Whether to include inline styles
   customization?: PDFCustomizationOptions;  // Customization options for PDF appearance
+  resources?: IResource[];
 }
 
 export interface PDFGenerationResult {
@@ -56,6 +57,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       advantageDefs,
       includeStyles = true,
       customization = DEFAULT_CUSTOMIZATION,
+      resources = [],
     } = options;
 
     // Calculate costs
@@ -161,6 +163,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
         character,
         powerDefs,
         modifierDefs,
+        resources,
       });
       if (equipmentSection) {
         sections.push(equipmentSection);

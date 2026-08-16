@@ -5,6 +5,7 @@ import {
   buildExcelGameDataRefs,
   buildExcelLabels,
 } from '../../services/excelExportConfig';
+import { useResourcesStore } from '../../store/resourcesStore';
 
 /**
  * Hook for managing Excel export with localized labels.
@@ -13,6 +14,7 @@ import {
 export function useExcelExport() {
   const { t, i18n } = useTranslation();
   const { character } = useActiveCharacter();
+  const resources = useResourcesStore((state) => state.resources);
   const [isExcelLoading, setIsExcelLoading] = useState(false);
   const [excelError, setExcelError] = useState<string | null>(null);
 
@@ -29,7 +31,7 @@ export function useExcelExport() {
       const lang = i18n.language;
 
       const { generateExcel } = await import('../../services/excelGenerator');
-      await generateExcel(character, labels, gameData, lang);
+      await generateExcel(character, labels, gameData, lang, resources);
     } catch (err) {
       console.error('Excel export failed:', err);
       const errorMsg = t('errors.exportError');

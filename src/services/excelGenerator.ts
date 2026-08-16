@@ -13,6 +13,7 @@ import type {
   IAdvantageDef,
   ISkillDef,
   ICharacterPower,
+  IResource,
 } from '../entities/types';
 import {
   calcAlternateEffectCost,
@@ -24,6 +25,7 @@ import {
 } from '../shared/lib/mathEngine';
 import { buildTargetedEffectProfiles, type IOffenseEntry } from '../shared/lib/offenseSummary';
 import { downloadBlob, sanitizeFileName } from './downloadHelper';
+import { getResourceEPCost } from '../shared/lib/resourceCalculations';
 
 // ── Types for pre-localized labels ──
 
@@ -157,6 +159,7 @@ export async function generateExcel(
   labels: ExportLabels,
   gameData: GameDataRefs,
   language: string
+  , resources: IResource[] = []
 ): Promise<void> {
   const wb = new ExcelJS.Workbook();
   wb.creator = 'M&M 3e Builder';
@@ -184,8 +187,8 @@ export async function generateExcel(
   buildComplicationsSheet(wb, character, labels);
 
   // ??? 8. EQUIPMENT SHEET ???
-  if ((character.equipment && character.equipment.length > 0) || character.equipmentNotes?.trim()) {
-    buildEquipmentSheet(wb, character, labels);
+  if ((character.equipment && character.equipment.length > 0) || character.equipmentNotes?.trim() || (character.resourceLinks?.length ?? 0) > 0) {
+    buildEquipmentSheet(wb, character, labels, resources);
   }
 
   // ?? 9. TARGETED EFFECTS SHEET ??
@@ -755,7 +758,7 @@ function buildNotesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportL
   notesCell.font = { size: 11 };
 }
 
-function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels) {
+function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, resources: IResource[]) {
   const ws = wb.addWorksheet(labels.sheetEquipment);
 
   // Title row
@@ -805,6 +808,23 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
     });
     
     currentRow++; // Empty row
+  }
+
+  const linkedResources = (char.resourceLinks ?? []).flatMap((link) => {
+    const resource = resources.find((item) => item.id === link.resourceId);
+    return resource ? [{ resource, isFree: link.isFree }] : [];
+  });
+  if (linkedResources.length > 0) {
+    const headerRow = ws.getRow(currentRow++);
+    headerRow.values = [labels.colName, labels.colCost, labels.colNotes];
+    headerRow.eachCell((cell) => { cell.font = { bold: true, color: { argb: 'FFFFFFFF' } }; cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: COLORS.headerFill } }; });
+    for (const { resource, isFree } of linkedResources) {
+      const detail = resource.type === 'vehicle' ? `${resource.type}: ${resource.size}, STR ${resource.strength}, Speed ${resource.speed}, Defense ${resource.defense}, Toughness ${resource.toughness}` : resource.type === 'headquarters' ? `${resource.type}: ${resource.size}, Toughness ${resource.toughness}` : `${resource.type}: ${resource.power.components.map((component) => component.effectId).filter(Boolean).join(', ')}`;
+      const row = ws.getRow(currentRow++);
+      row.values = [resource.name || 'Unnamed resource', `${isFree ? 0 : getResourceEPCost(resource)} EP${isFree ? ' (Free)' : ''}`, `${detail}${resource.notes ? `\n${resource.notes}` : ''}`];
+      row.getCell(1).font = { bold: true }; row.getCell(2).alignment = { horizontal: 'center' }; row.getCell(3).alignment = { wrapText: true };
+    }
+    currentRow++;
   }
 
   if (char.equipmentNotes?.trim()) {
