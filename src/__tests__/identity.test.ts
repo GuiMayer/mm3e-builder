@@ -19,6 +19,7 @@ describe('identity', () => {
 
     expect(isUuid(first)).toBe(true);
     expect(uuidVersion(first)).toBe(5);
+    expect(first).toBe('48c374a6-0ff5-50db-ab30-b1d051f217af');
     expect(retry).toBe(first);
     expect(differentScope).not.toBe(first);
   });

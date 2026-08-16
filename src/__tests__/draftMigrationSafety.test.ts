@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createDefaultCharacter } from '../entities/characterDefaults';
+import type { IResource } from '../entities/types';
 import { characterDraftStorageKeys, hasStoredDraft, loadDraftMulti, saveDraftMulti } from '../services/storage/characterDraftStorage';
 import { isRecoveredCharacterDraft, migrateDraftResources } from '../shared/hooks/useAutoLoadDraftMulti';
 
@@ -93,6 +94,102 @@ describe('draft migration safety', () => {
     expect(loaded?.tabs[1].character.equipment).toEqual([]);
     expect(loaded?.tabs[1].character.advantages).toEqual([]);
     expect(loaded?.tabs[1].character.resourceLinks).toEqual([]);
+  });
+
+  it('preserves identities from the published v1.10 draft while adding Resources', () => {
+    const publishedCharacter = createDefaultCharacter({
+      characterId: '3d594650-3436-4e36-a785-6ad065f3c7b4',
+      powers: [{
+        id: 'published-power-id',
+        name: 'Damage',
+        descriptors: ['Fire'],
+        components: [{
+          id: 'published-power-component-id',
+          effectId: 'damage',
+          ranks: 8,
+          modifiers: [],
+        }],
+        notes: '',
+        alternateEffects: [],
+      }],
+      equipment: [{
+        id: 'published-equipment-id',
+        name: 'Utility Belt',
+        components: [{
+          id: 'published-equipment-component-id',
+          effectId: 'damage',
+          ranks: 2,
+          modifiers: [],
+        }],
+        notes: '',
+        alternateEffects: [],
+      }],
+      manualOffenseRows: [{
+        id: 'published-offense-id',
+        name: 'Throw',
+        bonus: 6,
+        range: 'ranged',
+        effect: 'Damage 4',
+        notes: '',
+      }],
+      ppLog: [{
+        id: 'published-pp-log-id',
+        date: '2026-08-15',
+        amount: 1,
+        note: 'Session',
+      }],
+    });
+    delete publishedCharacter.resourceLinks;
+
+    const characterWithoutId = createDefaultCharacter();
+    delete characterWithoutId.characterId;
+    delete characterWithoutId.resourceLinks;
+
+    const publishedTabId = '298e7a8d-d920-4acf-9ad2-8f735b9ec805';
+    const noCharacterIdTabId = 'e4d7d3af-9189-452e-aac7-160b30344336';
+    const sourcePayload = JSON.stringify({
+      version: 1,
+      activeCharacterId: publishedTabId,
+      characters: [
+        { id: publishedTabId, character: publishedCharacter, label: 'Published hero', lastModified: 1 },
+        { id: noCharacterIdTabId, character: characterWithoutId, label: 'Older hero', lastModified: 2 },
+      ],
+      savedAt: '2026-08-15T00:00:00.000Z',
+    });
+    localStorage.setItem(characterDraftStorageKeys.draft, sourcePayload);
+
+    const loaded = loadDraftMulti();
+
+    expect(localStorage.getItem(characterDraftStorageKeys.draft)).toBe(sourcePayload);
+    expect(loaded?.activeId).toBe(publishedTabId);
+    expect(loaded?.tabs).toHaveLength(2);
+    expect(loaded?.tabs[0].id).toBe(publishedTabId);
+    expect(loaded?.tabs[0].character.characterId).toBe(publishedCharacter.characterId);
+    expect(loaded?.tabs[0].character.powers[0].id).toBe('published-power-id');
+    expect(loaded?.tabs[0].character.powers[0].components[0].id).toBe('published-power-component-id');
+    expect(loaded?.tabs[0].character.equipment?.[0].id).toBe('published-equipment-id');
+    expect(loaded?.tabs[0].character.manualOffenseRows?.[0].id).toBe('published-offense-id');
+    expect(loaded?.tabs[0].character.ppLog?.[0].id).toBe('published-pp-log-id');
+    expect(loaded?.tabs[1].character.characterId).toBe(noCharacterIdTabId);
+
+    let persistedResources: IResource[] = [];
+    const migrated = migrateDraftResources(loaded!.tabs, (resources) => {
+      persistedResources = resources;
+      return true;
+    });
+
+    expect(migrated.resourcesPersisted).toBe(true);
+    expect(migrated.tabs[0].id).toBe(publishedTabId);
+    expect(migrated.tabs[0].character.characterId).toBe(publishedCharacter.characterId);
+    expect(migrated.tabs[0].character.powers[0].id).toBe('published-power-id');
+    expect(migrated.tabs[0].character.manualOffenseRows?.[0].id).toBe('published-offense-id');
+    expect(migrated.tabs[0].character.ppLog?.[0].id).toBe('published-pp-log-id');
+    expect(migrated.tabs[0].character.equipment).toEqual([]);
+    expect(migrated.tabs[0].character.resourceLinks).toHaveLength(1);
+    expect(persistedResources).toHaveLength(1);
+    expect(persistedResources[0].type).toBe('gear');
+    if (persistedResources[0].type !== 'gear') throw new Error('Expected migrated Equipment to become Gear.');
+    expect(persistedResources[0].power.components[0].id).toBe('published-equipment-component-id');
   });
 
   it('keeps legacy Equipment untouched when Resources cannot be persisted', () => {
