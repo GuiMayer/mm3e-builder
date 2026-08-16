@@ -19,7 +19,7 @@ export function renderOffenseSection(data: OffenseSectionData): string {
   if (offenseEntries.length === 0) {
     return `
       <div class="pdf-section">
-        <div class="pdf-section-title">Offense</div>
+        <div class="pdf-section-title">Targeted Effects</div>
         <p class="text-muted">No offense entries defined.</p>
       </div>
     `.trim();
@@ -29,7 +29,7 @@ export function renderOffenseSection(data: OffenseSectionData): string {
 
   return `
     <div class="pdf-section">
-      <div class="pdf-section-title">Offense</div>
+      <div class="pdf-section-title">Targeted Effects</div>
       <div class="offense-table">
         <div class="offense-col offense-header-col offense-col-attack">Attack</div>
         <div class="offense-col offense-header-col offense-col-bonus">Bonus</div>

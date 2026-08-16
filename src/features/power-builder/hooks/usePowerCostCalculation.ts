@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import type {
   ICharacterPower,
   ICharacter,
-  ICharacterPowerComponent,
   IPowerEffect,
   IModifierDef,
   IValidationRules,
@@ -16,9 +15,9 @@ import {
   calcRemovableDiscount,
   calcPowerTotalCost,
 } from '../../../shared/lib/mathEngine';
-import { validateAttackEffect, type PLViolation } from '../../../shared/lib/validation';
+import { validateAttackEffect } from '../../../shared/lib/validation';
 import { getActiveValidationRules } from '../../../shared/lib/validationRules';
-import { calcAttackBonus } from '../../../shared/lib/offenseSummary';
+import { buildTargetedEffectProfiles } from '../../../shared/lib/offenseSummary';
 import { SKILL_DEFS, MODIFIER_DEFS } from '../../../entities/gameDataLoaders';
 
 /* ================================================
@@ -117,61 +116,45 @@ export function usePowerCostCalculation({
     return aeCosts.map((cost) => validateAECost(cost, mainCost));
   }, [aeCosts, mainCost, validationRules]);
 
-  // PL violation check: attack bonus + rank <= PL*2, or no-roll rank <= PL.
-  const plViolation = useMemo(() => {
+  // PL validation uses the same component classification as Targeted Effects.
+  const plViolation = (() => {
     const activeRules = getActiveValidationRules(validationRules);
     if (!activeRules.enforcePLLimits) return null;
 
-    const validateComponent = (
-      component: ICharacterPowerComponent,
-      label: string
-    ): PLViolation | null => {
-      const effectDef = powerDefs.find((d) => d.id === component.effectId);
-      if (!effectDef || effectDef.type !== 'attack') return null;
+    const profiles = buildTargetedEffectProfiles(
+      { ...character, powers: [power], equipment: [] },
+      powerDefs,
+      SKILL_DEFS,
+      [],
+      allModDefs.length > 0 ? allModDefs : MODIFIER_DEFS
+    ).filter((profile) => profile.sourceType === 'power' && profile.causesResistance && profile.effectRank !== null);
 
-      const { value: attackBonus, isNoRoll } = calcAttackBonus(
-        effectDef.range,
-        label,
-        component,
-        character,
-        SKILL_DEFS,
-        MODIFIER_DEFS
-      );
-
-      if (isNoRoll) {
-        if (component.ranks <= powerLevel) return null;
+    for (const profile of profiles) {
+      const rank = profile.effectRank;
+      if (rank === null) continue;
+      const label = profile.name || profile.componentName || 'Power';
+      if (!profile.requiresAttackCheck) {
+        if (rank <= powerLevel) continue;
         return {
           rule: 'pl.attack',
-          formula: `${label} [no-roll]: rank ${component.ranks} > PL ${powerLevel}`,
-          actual: component.ranks,
+          formula: `${label} [no attack roll]: rank ${rank} > PL ${powerLevel}`,
+          actual: rank,
           limit: powerLevel,
         };
       }
 
-      const atkVal = attackBonus ?? 0;
-      const violation = validateAttackEffect(atkVal, component.ranks, powerLevel);
-      if (!violation) return null;
-      return {
-        ...violation,
-        formula: `${label}: ${atkVal} + ${component.ranks} = ${atkVal + component.ranks} > ${powerLevel * 2}`,
-      };
-    };
-
-    for (const component of power.components) {
-      const violation = validateComponent(component, power.name || 'Power');
-      if (violation) return violation;
-    }
-
-    for (const ae of power.alternateEffects) {
-      for (const component of ae.components) {
-        const label = `${power.name || 'Power'} (AE: ${ae.name || 'AE'})`;
-        const violation = validateComponent(component, label);
-        if (violation) return violation;
+      const attackBonus = profile.bonusValue ?? 0;
+      const violation = validateAttackEffect(attackBonus, rank, powerLevel);
+      if (violation) {
+        return {
+          ...violation,
+          formula: `${label}: ${attackBonus} + ${rank} = ${attackBonus + rank} > ${powerLevel * 2}`,
+        };
       }
     }
 
     return null;
-  }, [character, power.name, power.components, power.alternateEffects, powerDefs, powerLevel, validationRules]);
+  })();
 
   return {
     componentCosts,

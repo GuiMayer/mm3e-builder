@@ -22,6 +22,7 @@ import {
   calculateSkillsCost,
   calculateAdvantagesCost,
 } from '../shared/lib/mathEngine';
+import { buildTargetedEffectProfiles, type IOffenseEntry } from '../shared/lib/offenseSummary';
 import { downloadBlob, sanitizeFileName } from './downloadHelper';
 
 // ── Types for pre-localized labels ──
@@ -187,10 +188,15 @@ export async function generateExcel(
     buildEquipmentSheet(wb, character, labels);
   }
 
-  // ?? 9. OFFENSE SHEET ??
-  if (character.manualOffenseRows && character.manualOffenseRows.length > 0) {
-    buildOffenseSheet(wb, character, labels);
-  }
+  // ?? 9. TARGETED EFFECTS SHEET ??
+  const targetedProfiles = buildTargetedEffectProfiles(
+    character,
+    gameData.powerDefs,
+    gameData.skillDefs,
+    gameData.advantageDefs,
+    gameData.modifierDefs
+  );
+  buildOffenseSheet(wb, targetedProfiles, labels);
 
   // ?? 10. NOTES SHEET ??
   if (character.notes?.trim()) {
@@ -657,7 +663,7 @@ function buildComplicationsSheet(wb: ExcelJS.Workbook, char: ICharacter, labels:
   autoWidth(ws, 20, 60);
 }
 
-function buildOffenseSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels) {
+function buildOffenseSheet(wb: ExcelJS.Workbook, profiles: IOffenseEntry[], labels: ExportLabels) {
   const ws = wb.addWorksheet(labels.sheetOffense);
 
   // Title row
@@ -686,9 +692,22 @@ function buildOffenseSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expor
 
   // Data rows
   let currentRow = 3;
-    char.manualOffenseRows?.forEach((offense) => {
+    profiles.forEach((profile) => {
       const row = ws.getRow(currentRow);
-      row.values = [offense.name, offense.bonus, offense.range, offense.effect, offense.notes];
+      const source = profile.sourceName || profile.name;
+      const relation = profile.relationship === 'alternate' ? ' ↳' : profile.relationship === 'dynamic-alternate' ? ' ↳ Dynamic' : '';
+      const notes = [
+        profile.tags.join(', '),
+        profile.resistance,
+        profile.notes,
+      ].filter(Boolean).join(' · ');
+      row.values = [
+        `${source}${relation}`,
+        profile.requiresAttackCheck ? profile.bonus : '—',
+        profile.range,
+        profile.effect,
+        notes,
+      ];
     
     row.getCell(1).font = { bold: true };
     row.getCell(2).alignment = { horizontal: 'center' };

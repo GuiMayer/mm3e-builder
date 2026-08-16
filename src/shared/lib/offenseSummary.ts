@@ -41,6 +41,7 @@ export interface IOffenseEntry {
   componentName?: string;
   relationship: 'base' | 'alternate' | 'dynamic-alternate' | 'manual' | 'unarmed';
   resistance?: string;
+  effectRank: number | null;
 }
 
 export function parseEffectRank(effect: string): number | null {
@@ -349,6 +350,7 @@ function createComponentProfile(
     componentName: def.name,
     relationship,
     resistance: interaction.causesResistance ? getResistanceLabel(def, comp) : undefined,
+    effectRank: comp.ranks,
   };
 }
 
@@ -406,6 +408,7 @@ export function buildTargetedEffectProfiles(
       componentName: translations?.damage ?? 'Damage',
       relationship: 'unarmed',
       resistance: `Toughness DC ${15 + abilities.str}`,
+      effectRank: abilities.str,
     });
   }
 
@@ -456,6 +459,7 @@ export function buildTargetedEffectProfiles(
       componentName: row.name,
       relationship: 'manual',
       resistance: parseEffectRank(row.effect) === null ? undefined : `Resistance DC ${10 + parseEffectRank(row.effect)!}`,
+      effectRank: parseEffectRank(row.effect),
     });
   }
 

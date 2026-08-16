@@ -3,7 +3,7 @@ import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
 import { POWER_DEFS, SKILL_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { calcToughnessBonus } from '../lib/mathEngine';
-import { calcAttackBonus, parseEffectRank } from '../lib/offenseSummary';
+import { buildTargetedEffectProfiles } from '../lib/offenseSummary';
 import {
   validateDodgeToughness,
   validateParryToughness,
@@ -64,119 +64,31 @@ export function usePLValidation(): PLViolation[] {
     const v3 = validateFortitudeWill(fortitudeTotal, willTotal, pl);
     if (v3) violations.push(v3);
 
-    // ── Attack-type power components (main powers + AEs) ──────────
-    for (const power of character.powers) {
-      // Validate main power components
-      const attackComponents = power.components.filter((comp) => {
-        const def = POWER_DEFS.find((d) => d.id === comp.effectId);
-        return def?.type === 'attack';
-      });
+    // ── Targeted effects (powers, equipment, AEs, manual and unarmed) ───────
+    // The sheet, PDF and validation consume this same mechanical derivation.
+    const profiles = buildTargetedEffectProfiles(character, POWER_DEFS, SKILL_DEFS, [], MODIFIER_DEFS);
+    for (const profile of profiles) {
+      if (!profile.causesResistance || profile.effectRank === null) continue;
+      const label = profile.name || profile.componentName || 'Targeted effect';
 
-      if (attackComponents.length > 0) {
-        const primaryComp = attackComponents.reduce((a, b) => (a.ranks >= b.ranks ? a : b));
-        const primaryDef  = POWER_DEFS.find((d) => d.id === primaryComp.effectId)!;
-        const highestRank = primaryComp.ranks;
-
-        // F-12: use real derived attack bonus
-        const { value: attackBonus, isNoRoll } = calcAttackBonus(
-          primaryDef.range,
-          power.name,
-          primaryComp,
-          character,
-          SKILL_DEFS,
-          MODIFIER_DEFS
-        );
-
-        // No-roll attacks (perception/area) cap at PL (not 2×PL)
-        if (isNoRoll) {
-          if (highestRank > pl) {
-            violations.push({
-              rule: 'pl.attack',
-              formula: `${power.name || 'Power'} [no-roll]: rank ${highestRank} > PL ${pl}`,
-              actual: highestRank,
-              limit: pl,
-            });
-          }
-        } else {
-          const atkVal = attackBonus ?? 0;
-          const v = validateAttackEffect(atkVal, highestRank, pl);
-          if (v) {
-            violations.push({
-              ...v,
-              formula: `${power.name || 'Power'}: ${atkVal} + ${highestRank} = ${atkVal + highestRank} > ${pl * 2}`,
-            });
-          }
-        }
-      }
-
-      // Validate Alternate Effects
-      if (power.alternateEffects) {
-        for (const ae of power.alternateEffects) {
-          const aeAttackComponents = ae.components.filter((comp) => {
-            const def = POWER_DEFS.find((d) => d.id === comp.effectId);
-            return def?.type === 'attack';
-          });
-
-          if (aeAttackComponents.length === 0) continue;
-
-          const primaryComp = aeAttackComponents.reduce((a, b) => (a.ranks >= b.ranks ? a : b));
-          const primaryDef  = POWER_DEFS.find((d) => d.id === primaryComp.effectId)!;
-          const highestRank = primaryComp.ranks;
-
-          const { value: attackBonus, isNoRoll } = calcAttackBonus(
-            primaryDef.range,
-            ae.name,
-            primaryComp,
-            character,
-            SKILL_DEFS,
-            MODIFIER_DEFS
-          );
-
-          // No-roll attacks (perception/area) cap at PL (not 2×PL)
-          if (isNoRoll) {
-            if (highestRank > pl) {
-              violations.push({
-                rule: 'pl.attack',
-                formula: `${power.name} (AE: ${ae.name}) [no-roll]: rank ${highestRank} > PL ${pl}`,
-                actual: highestRank,
-                limit: pl,
-              });
-            }
-          } else {
-            const atkVal = attackBonus ?? 0;
-            const v = validateAttackEffect(atkVal, highestRank, pl);
-            if (v) {
-              violations.push({
-                ...v,
-                formula: `${power.name} (AE: ${ae.name}): ${atkVal} + ${highestRank} = ${atkVal + highestRank} > ${pl * 2}`,
-              });
-            }
-          }
-        }
-      }
-    }
-
-    for (const row of character.manualOffenseRows ?? []) {
-      const rank = parseEffectRank(row.effect);
-      if (rank === null) continue;
-
-      if (row.range === 'perception') {
-        if (rank > pl) {
+      if (!profile.requiresAttackCheck) {
+        if (profile.effectRank > pl) {
           violations.push({
             rule: 'pl.attack',
-            formula: `${row.name || 'Manual attack'} [no-roll]: rank ${rank} > PL ${pl}`,
-            actual: rank,
+            formula: `${label} [no attack roll]: rank ${profile.effectRank} > PL ${pl}`,
+            actual: profile.effectRank,
             limit: pl,
           });
         }
         continue;
       }
 
-      const v = validateAttackEffect(row.bonus, rank, pl);
-      if (v) {
+      const attackBonus = profile.bonusValue ?? 0;
+      const violation = validateAttackEffect(attackBonus, profile.effectRank, pl);
+      if (violation) {
         violations.push({
-          ...v,
-          formula: `${row.name || 'Manual attack'}: ${row.bonus} + ${rank} = ${row.bonus + rank} > ${pl * 2}`,
+          ...violation,
+          formula: `${label}: ${attackBonus} + ${profile.effectRank} = ${attackBonus + profile.effectRank} > ${pl * 2}`,
         });
       }
     }
