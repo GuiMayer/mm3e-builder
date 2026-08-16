@@ -82,6 +82,29 @@ describe('characterDraftStorage', () => {
     );
   });
 
+  it('keeps autosave usable by moving an unreadable Draft before replacement', () => {
+    const unreadable = '{invalid';
+    storage.setItem(characterDraftStorageKeys.draft, unreadable);
+    expect(loadDraftMulti()).toBeNull();
+
+    expect(saveDraftMulti([createTab('tab-recovered', 'New session')], 'tab-recovered')).toBe(true);
+
+    expect(storage.getItem(characterDraftStorageKeys.recovery)).toBe(unreadable);
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toContain('New session');
+  });
+
+  it('refuses replacement if a different recovery Draft would be overwritten', () => {
+    storage.setItem(characterDraftStorageKeys.draft, '{invalid');
+    storage.setItem(characterDraftStorageKeys.recovery, '{older-invalid');
+    expect(loadDraftMulti()).toBeNull();
+
+    expect(saveDraftMulti([createTab('tab-blocked', 'Blocked')], 'tab-blocked')).toBe(false);
+
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toBe('{invalid');
+    expect(storage.getItem(characterDraftStorageKeys.recovery)).toBe('{older-invalid');
+    expect(getLastDraftSaveError()).toBe('draft.saveError.recoveryFailed');
+  });
+
   it('validates metadata before returning it', () => {
     storage.setItem(characterDraftStorageKeys.metadata, '{"version":"bad"}');
 

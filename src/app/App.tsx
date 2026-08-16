@@ -7,12 +7,12 @@ import { PDFPreviewDialog } from '../features/sheet-core/PDFPreviewDialog'
 import { PDFOverflowModal } from '../features/sheet-core/PDFOverflowModal'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
-import { useAutoLoadDraftMulti } from '../shared/hooks/useAutoLoadDraftMulti'
 import { usePDFExport } from '../shared/hooks/usePDFExport'
 import { useAppStore } from '../store/appStore'
 import { AppDialogProvider } from '../shared/ui/AppDialog'
 import { DraftStorageStatus } from '../shared/ui/DraftStorageStatus'
 import { DraftPersistenceController } from '../shared/ui/DraftPersistenceController'
+import { DraftStartupController } from '../shared/ui/DraftStartupController'
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -26,9 +26,6 @@ export type AppView = 'sheet' | 'resources' | 'references';
 export function App() {
   const { t, i18n } = useTranslation()
   const [activeView, setActiveView] = useState<AppView>('sheet');
-  
-  // Auto-load character tabs from localStorage on mount
-  useAutoLoadDraftMulti();
   
   // PDF export with preview dialog
   const {
@@ -70,6 +67,7 @@ export function App() {
       }}
     >
       <AppDialogProvider>
+      <DraftStartupController />
       <DraftPersistenceController />
       <DraftStorageStatus />
       <div className="app-root">

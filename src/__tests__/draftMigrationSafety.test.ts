@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createDefaultCharacter } from '../entities/characterDefaults';
 import { characterDraftStorageKeys, hasStoredDraft, loadDraftMulti, saveDraftMulti } from '../services/storage/characterDraftStorage';
-import { isRecoveredCharacterDraft } from '../shared/hooks/useAutoLoadDraftMulti';
+import { isRecoveredCharacterDraft, migrateDraftResources } from '../shared/hooks/useAutoLoadDraftMulti';
 
 const localStorageMock = (() => {
   let values: Record<string, string> = {};
@@ -93,5 +93,33 @@ describe('draft migration safety', () => {
     expect(loaded?.tabs[1].character.equipment).toEqual([]);
     expect(loaded?.tabs[1].character.advantages).toEqual([]);
     expect(loaded?.tabs[1].character.resourceLinks).toEqual([]);
+  });
+
+  it('keeps legacy Equipment untouched when Resources cannot be persisted', () => {
+    const character = createDefaultCharacter({
+      equipment: [{ id: 'legacy-item', name: 'Utility Belt', components: [], notes: '', alternateEffects: [] }],
+    });
+    const tab = { id: 'tab-equipment', character, label: 'Hero', isDirty: false, lastModified: 1 };
+
+    const result = migrateDraftResources([tab], () => false);
+
+    expect(result.resourcesPersisted).toBe(false);
+    expect(result.tabs[0]).toBe(tab);
+    expect(result.tabs[0].character.equipment).toHaveLength(1);
+    expect(result.tabs[0].character.resourceLinks).toEqual([]);
+  });
+
+  it('converts legacy Equipment only after Resources are persisted', () => {
+    const character = createDefaultCharacter({
+      equipment: [{ id: 'legacy-item', name: 'Utility Belt', components: [], notes: '', alternateEffects: [] }],
+    });
+    const tab = { id: 'tab-equipment', character, label: 'Hero', isDirty: false, lastModified: 1 };
+
+    const result = migrateDraftResources([tab], () => true);
+
+    expect(result.resourcesPersisted).toBe(true);
+    expect(result.tabs[0].character.equipment).toEqual([]);
+    expect(result.tabs[0].character.resourceLinks).toHaveLength(1);
+    expect(result.tabs[0].isDirty).toBe(true);
   });
 });

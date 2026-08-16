@@ -84,7 +84,7 @@ export function sanitizeFileName(name: string): string {
  * @param blob      - The file content as a Blob
  * @param fileName  - Suggested file name with extension (e.g. "hero.xlsx")
  */
-export async function downloadBlob(blob: Blob, fileName: string): Promise<void> {
+export async function downloadBlob(blob: Blob, fileName: string): Promise<boolean> {
   const ext = fileName.split('.').pop()?.toLowerCase() ?? '';
   const fileType = FILE_TYPES[ext];
 
@@ -102,10 +102,10 @@ export async function downloadBlob(blob: Blob, fileName: string): Promise<void> 
       const writable = await handle.createWritable();
       await writable.write(blob);
       await writable.close();
-      return;
+      return true;
     } catch (err: unknown) {
       // User pressed Cancel → abort silently
-      if (err instanceof DOMException && err.name === 'AbortError') return;
+      if (err instanceof DOMException && err.name === 'AbortError') return false;
       // Other errors → fall through to legacy method
       console.warn('showSaveFilePicker failed, falling back to legacy download:', err);
     }
@@ -125,5 +125,6 @@ export async function downloadBlob(blob: Blob, fileName: string): Promise<void> 
     document.body.removeChild(anchor);
     URL.revokeObjectURL(url);
   }, 150);
+  return true;
 }
 

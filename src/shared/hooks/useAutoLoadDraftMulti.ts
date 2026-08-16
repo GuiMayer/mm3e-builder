@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
-import { hasStoredDraft, loadDraftMulti } from '../../services/fileService';
+import { hasStoredDraft, loadDraftMulti, preserveStoredDraftBeforeNextSave } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
+import type { CharacterTab } from '../../entities/characterTab';
+import type { IResource } from '../../entities/types';
 
 const INSTANCE_KEY = 'mm3e-app-instance-active';
 
@@ -11,6 +13,26 @@ export function isRecoveredCharacterDraft(
   draft: ReturnType<typeof loadDraftMulti>
 ): draft is NonNullable<ReturnType<typeof loadDraftMulti>> {
   return draft !== null;
+}
+
+export function migrateDraftResources(
+  tabs: CharacterTab[],
+  persistResources: (resources: IResource[]) => boolean
+): { tabs: CharacterTab[]; resourcesPersisted: boolean } {
+  const migrationResults = tabs.map((tab) => ({
+    tab,
+    migration: migrateLegacyEquipmentToResources(tab.character),
+  }));
+  const resources = migrationResults.flatMap((result) => result.migration.resources);
+  const resourcesPersisted = resources.length === 0 || persistResources(resources);
+  return {
+    resourcesPersisted,
+    tabs: resourcesPersisted
+      ? migrationResults.map(({ tab, migration }) => migration.resources.length > 0
+        ? { ...tab, character: migration.character, isDirty: true }
+        : tab)
+      : tabs,
+  };
 }
 
 /**
@@ -23,13 +45,14 @@ export function isRecoveredCharacterDraft(
  * - Manages instance heartbeat to prevent conflicts
  * - Returns metadata for UI notification (tab count, last modified)
  */
-export function useAutoLoadDraftMulti() {
+export function useAutoLoadDraftMulti(enabled = true) {
   const hasRunRef = useRef(false);
   const loadTabs = useCharactersStore((s) => s.loadTabs);
   const setDraftHydrated = useCharactersStore((s) => s.setDraftHydrated);
   const setDraftLoadError = useCharactersStore((s) => s.setDraftLoadError);
 
   useEffect(() => {
+    if (!enabled) return;
     // Prevent double-run in React StrictMode
     if (hasRunRef.current) {
       return;
@@ -57,28 +80,34 @@ export function useAutoLoadDraftMulti() {
     try {
       const draft = loadDraftMulti();
       if (isRecoveredCharacterDraft(draft)) {
-        const migrated = draft.tabs.map((tab) => {
-          const result = migrateLegacyEquipmentToResources(tab.character);
-          if (result.resources.length > 0) useResourcesStore.getState().upsertResources(result.resources);
-          return result.resources.length > 0 ? { ...tab, character: result.character, isDirty: true } : tab;
-        });
-        loadTabs(migrated, draft.activeId);
+        const migration = migrateDraftResources(
+          draft.tabs,
+          (resources) => useResourcesStore.getState().upsertResources(resources)
+        );
+        loadTabs(migration.tabs, draft.activeId);
         setDraftHydrated(true);
-        setDraftLoadError(null);
+        setDraftLoadError(migration.resourcesPersisted ? null : 'draft.recovery.resourceWriteFailed');
         console.log(`[useAutoLoadDraftMulti] Loaded ${draft.tabs.length} character(s)`);
       } else if (!hasStoredDraft()) {
         setDraftHydrated(true);
         setDraftLoadError(null);
         console.log('[useAutoLoadDraftMulti] No draft found, starting fresh');
       } else {
-        console.error('[useAutoLoadDraftMulti] Stored draft was not recovered; autosave remains disabled to protect it.');
+        // Keep autosave usable. The storage service moves the unreadable source
+        // to a verified recovery key immediately before the first replacement.
+        loadTabs([], null);
+        setDraftHydrated(true);
+        console.error('[useAutoLoadDraftMulti] Stored draft was not recovered; it will be preserved before the next save.');
         setDraftLoadError('draft.recovery.unrecoverable');
       }
     } catch (error) {
       console.error('[useAutoLoadDraftMulti] Failed to load draft:', error);
+      preserveStoredDraftBeforeNextSave();
+      loadTabs([], null);
+      setDraftHydrated(true);
       setDraftLoadError('draft.recovery.unreadable');
-      // Keep the original payload intact. A future migration or manual export
-      // is safer than silently replacing a draft that failed to load.
+      // Unexpected reads still leave the original key intact. New work can be
+      // saved; normal write failures remain visible through the save dialog.
     }
 
     // Set up heartbeat to keep instance marker fresh
@@ -103,7 +132,7 @@ export function useAutoLoadDraftMulti() {
       window.removeEventListener('beforeunload', cleanup);
       cleanup();
     };
-  }, [loadTabs, setDraftHydrated, setDraftLoadError]);
+  }, [enabled, loadTabs, setDraftHydrated, setDraftLoadError]);
 
   // This hook has no return value - it's a side-effect only
 }

@@ -29,6 +29,23 @@ describe('Resources domain', () => {
     expect(migrateLegacyEquipmentToResources(result.character).resources).toEqual([]);
   });
 
+  it('uses stable IDs when an interrupted Equipment migration is retried', () => {
+    const character = createDefaultCharacter({
+      characterId: '3d594650-3436-4e36-a785-6ad065f3c7b4',
+      equipment: [{ id: 'old-item', name: 'Legacy belt', components: [], notes: '', alternateEffects: [] }],
+    });
+
+    const first = migrateLegacyEquipmentToResources(character);
+    const retry = migrateLegacyEquipmentToResources(character);
+
+    if (first.resources[0].type !== 'gear' || retry.resources[0].type !== 'gear') {
+      throw new Error('Expected legacy Equipment to migrate as Gear.');
+    }
+    expect(retry.resources[0].id).toBe(first.resources[0].id);
+    expect(retry.resources[0].power.id).toBe(first.resources[0].power.id);
+    expect(retry.character.resourceLinks?.[0].id).toBe(first.character.resourceLinks?.[0].id);
+  });
+
   it('includes linked resource effects in the shared Targeted Effects derivation', () => {
     const character = createDefaultCharacter({ resourceLinks: [{ id: 'link-1', resourceId: 'blaster', isFree: false }] });
     const blaster: IResource = { ...gear, id: 'blaster', name: 'Blaster', power: { ...gear.power, components: [{ id: 'component-1', effectId: 'damage', ranks: 5, modifiers: [] }] } };

@@ -17,6 +17,7 @@ export {
   getLastDraftSaveError,
   loadDraftMulti,
   hasStoredDraft,
+  preserveStoredDraftBeforeNextSave,
   saveDraftMulti,
   replaceDraftMulti,
 } from './storage/characterDraftStorage';

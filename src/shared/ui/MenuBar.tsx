@@ -23,9 +23,8 @@ import { useResourcesStore } from '../../store/resourcesStore';
 import { parseDraftBundle, parseResourceLibrary, serializeDraftBundle, serializeResourceLibrary } from '../../services/draftTransfer';
 import { downloadBlob } from '../../services/downloadHelper';
 import { useAppDialog } from './appDialogContext';
+import { parseDraftStorageSnapshot, restoreDraftStorageSnapshot } from '../../services/storage/draftUpdateBackup';
 
-const APP_VERSION = __APP_VERSION__;
-const UPDATE_NOTICE_KEY = 'mm3e-draft-export-notice-version';
 const IMPORT_BACKUP_KEY = 'mm3e-draft-import-backup-v1';
 
 const THEMES = [
@@ -101,7 +100,6 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   const dropdownRef = useRef<HTMLDivElement>(null);
   const draftInputRef = useRef<HTMLInputElement>(null);
   const resourceInputRef = useRef<HTMLInputElement>(null);
-  const updateNoticeStartedRef = useRef(false);
   const dialog = useAppDialog();
 
   // Ensure i18n is synced with store on mount
@@ -123,28 +121,6 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       prefetchPDFTemplate();
     });
   }, [useLegacyPdfExporter]);
-
-  useEffect(() => {
-    if (updateNoticeStartedRef.current || (tabs.length === 0 && resources.length === 0) || localStorage.getItem(UPDATE_NOTICE_KEY) === APP_VERSION) return;
-    updateNoticeStartedRef.current = true;
-    void (async () => {
-      const shouldExport = await dialog.confirm({
-        title: t('draft.updateTitle'),
-        message: t('draft.updateMessage'),
-        confirmLabel: t('draft.export'),
-        cancelLabel: t('draft.continue'),
-      });
-      if (shouldExport) {
-        try {
-          await handleExportDraft();
-        } catch {
-          await dialog.alert({ title: t('draft.export'), message: t('draft.exportError') });
-          return;
-        }
-      }
-      localStorage.setItem(UPDATE_NOTICE_KEY, APP_VERSION);
-    })();
-  }, [dialog, handleExportDraft, resources.length, t, tabs.length]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -180,13 +156,22 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     event.target.value = '';
     if (!file) return;
     try {
-      const bundle = parseDraftBundle(await file.text());
+      const text = await file.text();
+      const snapshot = parseDraftStorageSnapshot(text);
+      if (snapshot) {
+        if (!await dialog.confirm({ title: t('draft.restoreTitle'), message: t('draft.restoreSnapshotMessage'), confirmLabel: t('draft.restoreAction'), danger: true })) return;
+        localStorage.setItem(IMPORT_BACKUP_KEY, JSON.stringify({ exportedAt: new Date().toISOString(), draft: localStorage.getItem('mm3e-draft-characters'), resources: localStorage.getItem('mm3e-resource-library') }));
+        if (!restoreDraftStorageSnapshot(snapshot)) throw new I18nError('draft.error.storageWrite');
+        window.location.reload();
+        return;
+      }
+      const bundle = parseDraftBundle(text);
       const characters = t('draft.characterCount', { count: bundle.tabs.length });
       const resourceCount = t('resources.count', { count: bundle.resources.length });
       if (!await dialog.confirm({ title: t('draft.restoreTitle'), message: t('draft.restoreMessage', { characters, resources: resourceCount }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
       localStorage.setItem(IMPORT_BACKUP_KEY, JSON.stringify({ exportedAt: new Date().toISOString(), draft: localStorage.getItem('mm3e-draft-characters'), resources: localStorage.getItem('mm3e-resource-library') }));
       const previousTabs = tabs, previousActiveId = activeCharacterId, previousResources = resources;
-      replaceResources(bundle.resources);
+      if (!replaceResources(bundle.resources)) throw new I18nError('draft.error.storageWrite');
       if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) { replaceResources(previousResources); replaceDraftMulti(previousTabs, previousActiveId); throw new I18nError('draft.error.storageWrite'); }
       loadTabs(bundle.tabs, bundle.activeId);
       setDraftHydrated(true);
@@ -207,7 +192,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       const warning = missingLinks ? t('resources.missingLinksWarning', { count: missingLinks }) : '';
       if (!await dialog.confirm({ title: t('resources.restoreTitle'), message: t('resources.restoreMessage', { count: imported.length, warning }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
       localStorage.setItem('mm3e-resource-library-import-backup-v1', JSON.stringify({ exportedAt: new Date().toISOString(), resources: localStorage.getItem('mm3e-resource-library') }));
-      replaceResources(imported);
+      if (!replaceResources(imported)) throw new I18nError('resources.error.storageWrite');
     } catch (error) { await dialog.alert({ title: t('resources.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('resources.importFailed') }); }
   }
 

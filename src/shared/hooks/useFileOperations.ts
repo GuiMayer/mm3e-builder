@@ -63,9 +63,12 @@ export function useFileOperations() {
     try {
       const char = await importCharacterJSON(file);
       const appendixResources = await importResourceAppendix(file);
-      if (appendixResources.length > 0) useResourcesStore.getState().upsertResources(appendixResources);
       const migrated = migrateLegacyEquipmentToResources(char);
-      if (migrated.resources.length > 0) useResourcesStore.getState().upsertResources(migrated.resources);
+      const resourcesToPersist = [...appendixResources, ...migrated.resources];
+      if (resourcesToPersist.length > 0
+        && !useResourcesStore.getState().upsertResources(resourcesToPersist)) {
+        throw new I18nError('resources.error.storageWrite');
+      }
       const matchingTabs = findCharacterIdentityMatches(
         useCharactersStore.getState().tabs,
         migrated.character.characterId

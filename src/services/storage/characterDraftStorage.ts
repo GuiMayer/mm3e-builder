@@ -10,6 +10,8 @@ const DRAFT_KEY = 'mm3e-draft-characters';
 const DRAFT_METADATA_KEY = 'mm3e-draft-metadata';
 const DRAFT_BACKUP_KEY = 'mm3e-draft-characters-backup-v1';
 const LEGACY_DRAFT_BACKUP_KEY = 'mm3e-draft-character-backup-v1';
+const DRAFT_RECOVERY_KEY = 'mm3e-draft-recovery-v1';
+const LEGACY_DRAFT_RECOVERY_KEY = 'mm3e-draft-character-recovery-v1';
 const DRAFT_VERSION = 1;
 
 const StoredCharacterTabSchema = z.object({
@@ -38,7 +40,47 @@ const DraftMetadataSchema = z.object({
 export type DraftMetadataMulti = z.infer<typeof DraftMetadataSchema>;
 
 let lastSavedSignature = '';
-let lastDraftSaveError: 'draft.saveError.storageFull' | 'draft.saveError.writeFailed' | null = null;
+type DraftSaveError = 'draft.saveError.storageFull' | 'draft.saveError.writeFailed' | 'draft.saveError.recoveryFailed';
+let lastDraftSaveError: DraftSaveError | null = null;
+let draftNeedsRecoveryBeforeSave = false;
+
+function quarantineUnreadableMultiDraft(): boolean {
+  if (!draftNeedsRecoveryBeforeSave) return true;
+  let stored: string | null;
+  let existingRecovery: string | null;
+  try {
+    stored = localStorage.getItem(DRAFT_KEY);
+    existingRecovery = localStorage.getItem(DRAFT_RECOVERY_KEY);
+  } catch (error) {
+    console.error('[saveDraftMulti] Could not inspect unreadable draft:', error);
+    return false;
+  }
+  if (stored === null) {
+    draftNeedsRecoveryBeforeSave = false;
+    return true;
+  }
+
+  if (existingRecovery !== null && existingRecovery !== stored) return false;
+
+  try {
+    // Move instead of copy to avoid temporarily doubling storage usage.
+    localStorage.removeItem(DRAFT_KEY);
+    localStorage.setItem(DRAFT_RECOVERY_KEY, stored);
+    if (localStorage.getItem(DRAFT_RECOVERY_KEY) !== stored) {
+      throw new Error('Recovery verification failed.');
+    }
+    draftNeedsRecoveryBeforeSave = false;
+    return true;
+  } catch (error) {
+    console.error('[saveDraftMulti] Could not preserve unreadable draft:', error);
+    try {
+      localStorage.setItem(DRAFT_KEY, stored);
+    } catch (rollbackError) {
+      console.error('[saveDraftMulti] Could not restore unreadable draft:', rollbackError);
+    }
+    return false;
+  }
+}
 
 function toStoredCharacters(tabs: CharacterTab[]) {
   return tabs.map((tab) => ({
@@ -81,6 +123,10 @@ export function saveDraftMulti(
   tabs: CharacterTab[],
   activeCharacterId: string | null
 ): boolean {
+  if (!quarantineUnreadableMultiDraft()) {
+    lastDraftSaveError = 'draft.saveError.recoveryFailed';
+    return false;
+  }
   const signature = createDraftSignature(tabs, activeCharacterId);
   if (signature === lastSavedSignature) {
     try {
@@ -153,7 +199,7 @@ export function saveDraftMulti(
 }
 
 /** The last storage failure, used to surface an actionable autosave message. */
-export function getLastDraftSaveError(): 'draft.saveError.storageFull' | 'draft.saveError.writeFailed' | null {
+export function getLastDraftSaveError(): DraftSaveError | null {
   return lastDraftSaveError;
 }
 
@@ -245,7 +291,10 @@ export function loadDraftMulti(): {
   if (!stored) return migrateLegacyDraft();
 
   const parsed = parseMultiCharacterDraft(stored);
-  if (!parsed) return null;
+  if (!parsed) {
+    draftNeedsRecoveryBeforeSave = true;
+    return null;
+  }
 
   const activeId = parsed.savedActiveId && parsed.tabs.some((tab) => tab.id === parsed.savedActiveId)
     ? parsed.savedActiveId
@@ -263,6 +312,16 @@ export function loadDraftMulti(): {
 export function hasStoredDraft(): boolean {
   return typeof localStorage !== 'undefined'
     && (localStorage.getItem(DRAFT_KEY) !== null || localStorage.getItem(LEGACY_DRAFT_KEY) !== null);
+}
+
+/** Ensures an unexpected startup failure cannot overwrite the current source. */
+export function preserveStoredDraftBeforeNextSave(): void {
+  draftNeedsRecoveryBeforeSave = true;
+  try {
+    if (localStorage.getItem(DRAFT_KEY) === null) draftNeedsRecoveryBeforeSave = false;
+  } catch {
+    // Stay conservative: the later save must verify preservation first.
+  }
 }
 
 function migrateLegacyDraft(): {
@@ -322,9 +381,12 @@ export function clearDraftMulti(): void {
   localStorage.removeItem(DRAFT_BACKUP_KEY);
   localStorage.removeItem(LEGACY_DRAFT_KEY);
   localStorage.removeItem(LEGACY_DRAFT_BACKUP_KEY);
+  localStorage.removeItem(DRAFT_RECOVERY_KEY);
+  localStorage.removeItem(LEGACY_DRAFT_RECOVERY_KEY);
   localStorage.removeItem(`${LEGACY_DRAFT_KEY}-metadata`);
   lastSavedSignature = '';
   lastDraftSaveError = null;
+  draftNeedsRecoveryBeforeSave = false;
 }
 
 /** Replaces the character draft after an external backup was fully validated. */
@@ -339,4 +401,6 @@ export const characterDraftStorageKeys = {
   legacyDraft: LEGACY_DRAFT_KEY,
   backup: DRAFT_BACKUP_KEY,
   legacyBackup: LEGACY_DRAFT_BACKUP_KEY,
+  recovery: DRAFT_RECOVERY_KEY,
+  legacyRecovery: LEGACY_DRAFT_RECOVERY_KEY,
 } as const;
