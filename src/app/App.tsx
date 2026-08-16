@@ -88,11 +88,11 @@ export function App() {
             {activeView === 'sheet' ? (
               <SheetView />
             ) : activeView === 'resources' ? (
-              <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
+              <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
                 <ResourcesView />
               </Suspense>
             ) : (
-              <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
+              <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
                 <ReferencesView />
               </Suspense>
             )}

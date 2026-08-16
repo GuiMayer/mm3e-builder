@@ -38,7 +38,7 @@ const DraftMetadataSchema = z.object({
 export type DraftMetadataMulti = z.infer<typeof DraftMetadataSchema>;
 
 let lastSavedSignature = '';
-let lastDraftSaveError: string | null = null;
+let lastDraftSaveError: 'draft.saveError.storageFull' | 'draft.saveError.writeFailed' | null = null;
 
 function toStoredCharacters(tabs: CharacterTab[]) {
   return tabs.map((tab) => ({
@@ -145,15 +145,15 @@ export function saveDraftMulti(
       console.error('[saveDraftMulti] Failed to restore the previous local draft:', rollbackError);
     }
     lastDraftSaveError = error instanceof DOMException && error.name === 'QuotaExceededError'
-      ? 'Browser storage is full. Free storage space or export and clear older drafts before trying again.'
-      : 'The browser could not save this Draft. Your changes remain marked as unsaved.';
+      ? 'draft.saveError.storageFull'
+      : 'draft.saveError.writeFailed';
     console.error('[saveDraftMulti] Failed to save local draft:', error);
     return false;
   }
 }
 
 /** The last storage failure, used to surface an actionable autosave message. */
-export function getLastDraftSaveError(): string | null {
+export function getLastDraftSaveError(): 'draft.saveError.storageFull' | 'draft.saveError.writeFailed' | null {
   return lastDraftSaveError;
 }
 

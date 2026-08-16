@@ -137,7 +137,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
 
     // Validate required subtype
     if (def.subtypeRequired && !subtypeInput.trim()) {
-      await dialog.alert({ title: 'Advantage', message: t('advantages.subtypeRequired') });
+      await dialog.alert({ title: t('advantages.alertTitle'), message: t('advantages.subtypeRequired') });
       return;
     }
 

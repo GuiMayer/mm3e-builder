@@ -109,7 +109,7 @@ export function MobileDrawer({
       <div className="mobile-drawer" role="dialog" aria-modal="true">
         <div className="mobile-drawer-header">
           <h2 className="mobile-drawer-title">{t('menu.settings')}</h2>
-          <button className="mobile-drawer-close" onClick={onClose} aria-label="Close menu">
+          <button className="mobile-drawer-close" onClick={onClose} aria-label={t('menu.close')}>
             <X size={24} />
           </button>
         </div>
@@ -117,7 +117,7 @@ export function MobileDrawer({
         <div className="mobile-drawer-content">
           {/* Actions Section */}
           <div className="mobile-drawer-section">
-            <span className="mobile-drawer-label">{t('menu.actions') || 'Actions'}</span>
+            <span className="mobile-drawer-label">{t('menu.actions')}</span>
             <button
               className="mobile-drawer-item"
               onClick={() => handleAction(onUndo)}
@@ -254,14 +254,14 @@ export function MobileDrawer({
 
           {/* Clear Draft Section */}
           <div className="mobile-drawer-section">
-            <span className="mobile-drawer-label">Draft Management</span>
-            <button className="mobile-drawer-item" onClick={() => handleAction(onExportDraft)}><Download size={20} /><span>Export Draft</span></button>
-            <button className="mobile-drawer-item" onClick={() => handleAction(onImportDraft)}><Upload size={20} /><span>Import Draft</span></button>
+            <span className="mobile-drawer-label">{t('draft.management')}</span>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onExportDraft)}><Download size={20} /><span>{t('draft.export')}</span></button>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onImportDraft)}><Upload size={20} /><span>{t('draft.import')}</span></button>
             <button className="mobile-drawer-item mobile-drawer-item--danger" onClick={onClearDraft}>
               <Trash2 size={20} />
-              <span>{t('menu.clearDraft.action')}</span>
+              <span>{t('draft.clearAction')}</span>
             </button>
-            <span className="mobile-drawer-hint">{t('menu.clearDraft.hint')}</span>
+            <span className="mobile-drawer-hint">{t('draft.managementHint')}</span>
           </div>
         </div>
       </div>

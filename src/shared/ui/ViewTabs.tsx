@@ -20,21 +20,21 @@ export function ViewTabs({ activeView, onViewChange }: ViewTabsProps) {
         className={`menubar-tab ${activeView === 'sheet' ? 'menubar-tab--active' : ''}`}
         onClick={() => onViewChange('sheet')}
       >
-        {t('nav.sheet', { defaultValue: 'Sheet' })}
+        {t('nav.sheet')}
       </button>
       <button
         className={`menubar-tab ${activeView === 'resources' ? 'menubar-tab--active' : ''}`}
         onClick={() => onViewChange('resources')}
       >
         <Archive size={13} />
-        {t('nav.resources', { defaultValue: 'Resources' })}
+        {t('nav.resources')}
       </button>
       <button
         className={`menubar-tab ${activeView === 'references' ? 'menubar-tab--active' : ''}`}
         onClick={() => onViewChange('references')}
       >
         <Library size={13} />
-        {t('nav.references', { defaultValue: 'References' })}
+        {t('nav.references')}
       </button>
 
       <style>{`

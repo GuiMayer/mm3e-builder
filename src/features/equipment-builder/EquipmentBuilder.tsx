@@ -96,41 +96,41 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
   // Handle save
   const handleSave = async () => {
     if (!item.name.trim()) {
-      await dialog.alert({ title: 'Equipment', message: t('equipment.nameRequired') || 'Equipment name is required' });
+      await dialog.alert({ title: t('equipment.alertTitle'), message: t('equipment.builder.nameRequired') });
       return;
     }
     onSave(item);
   };
 
   return (
-    <Modal isOpen onClose={onClose} title={t('equipment.builder') || 'Equipment Builder'}>
+    <Modal isOpen onClose={onClose} title={t('equipment.builder.title')}>
       <div className="equipment-builder">
         {/* Header: Name and Cost Summary */}
         <div className="builder-header">
           <div className="form-group">
-            <label htmlFor="equipment-name">{t('equipment.name') || 'Name'}</label>
+            <label htmlFor="equipment-name">{t('equipment.builder.name')}</label>
             <input
               id="equipment-name"
               type="text"
               value={item.name}
               onChange={handleNameChange}
-              placeholder={t('equipment.namePlaceholder') || 'e.g., Utility Belt, Armor Suit'}
+              placeholder={t('equipment.builder.namePlaceholder')}
               className="form-input"
             />
           </div>
 
           <div className="cost-summary">
             <div className="cost-item">
-              <span className="cost-label">{t('equipment.baseCost') || 'Base Cost'}:</span>
+              <span className="cost-label">{t('equipment.builder.baseCost')}:</span>
               <span className="cost-value">{baseCost} PP</span>
             </div>
             <div className="cost-item">
-              <span className="cost-label">{t('equipment.equipmentPoints') || 'Equipment Points'}:</span>
+              <span className="cost-label">{t('equipment.builder.equipmentPoints')}:</span>
               <span className="cost-value">{equipmentPoints} EP</span>
             </div>
             {(item.alternateEffects?.length ?? 0) > 0 && (
               <div className="cost-item">
-                <span className="cost-label">{t('equipment.totalEP') || 'Total EP'}:</span>
+                <span className="cost-label">{t('equipment.builder.totalEP')}:</span>
                 <span className="cost-value">{totalEP} EP</span>
               </div>
             )}
@@ -139,7 +139,7 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
 
         {/* Components Section */}
         <div className="components-section">
-          <h3>{t('equipment.components') || 'Components'}</h3>
+          <h3>{t('equipment.builder.components')}</h3>
           {item.components.map((comp, idx) => {
             const effectDef = powerDefs.find((d) => d.id === comp.effectId);
             const costResult = componentCosts[idx];
@@ -148,13 +148,13 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
               <div key={comp.id} className="component-card">
                 <div className="component-header">
                   <span className="component-label">
-                    {effectDef?.name || t('equipment.selectEffect') || 'Select Effect'}
+                    {effectDef?.name || t('equipment.builder.selectEffect')}
                   </span>
                   {item.components.length > 1 && (
                     <button
                       onClick={() => handleRemoveComponent(comp.id)}
                       className="btn-icon"
-                      title={t('equipment.removeComponent') || 'Remove Component'}
+                      title={t('equipment.builder.removeComponent')}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -163,7 +163,7 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
 
                 <div className="component-body">
                   <div className="form-group">
-                    <label>{t('equipment.ranks') || 'Ranks'}</label>
+                    <label>{t('equipment.builder.ranks')}</label>
                     <NumberInput
                       value={comp.ranks}
                       onChange={(val) => handleRankChange(comp.id, val)}
@@ -174,7 +174,7 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
 
                   {costResult && (
                     <div className="component-cost">
-                      <span>{t('equipment.cost') || 'Cost'}: {costResult.total} PP</span>
+                      <span>{t('equipment.builder.cost')}: {costResult.total} PP</span>
                     </div>
                   )}
                 </div>
@@ -184,18 +184,18 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
 
           <Button onClick={handleAddComponent} variant="secondary" size="sm">
             <Plus size={16} />
-            {t('equipment.addComponent') || 'Add Component'}
+            {t('equipment.builder.addComponent')}
           </Button>
         </div>
 
         {/* Notes Section */}
         <div className="notes-section">
-          <label htmlFor="equipment-notes">{t('equipment.notes') || 'Notes'}</label>
+          <label htmlFor="equipment-notes">{t('equipment.builder.notes')}</label>
           <textarea
             id="equipment-notes"
             value={item.notes || ''}
             onChange={handleNotesChange}
-            placeholder={t('equipment.notesPlaceholder') || 'Optional notes about this equipment'}
+            placeholder={t('equipment.builder.notesPlaceholder')}
             rows={3}
             className="form-textarea"
           />
@@ -205,11 +205,11 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
         <div className="builder-actions">
           <Button onClick={onClose} variant="secondary">
             <X size={16} />
-            {t('common.cancel') || 'Cancel'}
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleSave} variant="primary">
             <Save size={16} />
-            {t('common.save') || 'Save'}
+            {t('common.save')}
           </Button>
         </div>
       </div>

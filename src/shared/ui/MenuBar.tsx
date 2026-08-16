@@ -17,8 +17,7 @@ import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
 import { Settings, Download, Upload, Eraser, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu, Undo2, Redo2 } from 'lucide-react';
 import i18n from '../../locales';
-import { clearDraftMulti } from '../../services/fileService';
-import { replaceDraftMulti, saveDraftMulti } from '../../services/fileService';
+import { clearDraftMulti, I18nError, replaceDraftMulti, saveDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { parseDraftBundle, parseResourceLibrary, serializeDraftBundle, serializeResourceLibrary } from '../../services/draftTransfer';
@@ -129,18 +128,23 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     if (updateNoticeStartedRef.current || (tabs.length === 0 && resources.length === 0) || localStorage.getItem(UPDATE_NOTICE_KEY) === APP_VERSION) return;
     updateNoticeStartedRef.current = true;
     void (async () => {
-      const shouldExport = await dialog.confirm({ title: 'Update detected', message: 'A new app version was detected. Export a Draft backup before continuing, in case a future migration needs recovery.', confirmLabel: 'Export Draft', cancelLabel: 'Continue' });
+      const shouldExport = await dialog.confirm({
+        title: t('draft.updateTitle'),
+        message: t('draft.updateMessage'),
+        confirmLabel: t('draft.export'),
+        cancelLabel: t('draft.continue'),
+      });
       if (shouldExport) {
         try {
           await handleExportDraft();
         } catch {
-          await dialog.alert({ title: 'Export Draft', message: 'Could not export the Draft backup. Please try again from Settings.' });
+          await dialog.alert({ title: t('draft.export'), message: t('draft.exportError') });
           return;
         }
       }
       localStorage.setItem(UPDATE_NOTICE_KEY, APP_VERSION);
     })();
-  }, [dialog, handleExportDraft, resources.length, tabs.length]);
+  }, [dialog, handleExportDraft, resources.length, t, tabs.length]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -168,7 +172,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   }
 
   function handleClearDraft() {
-    void dialog.confirm({ title: 'Clear all local data', message: 'This removes every saved item and preference for this app from this browser. This cannot be undone.', confirmLabel: 'Clear all data', danger: true, requireAcknowledgement: true, acknowledgementLabel: 'I understand that this cannot be undone.' }).then((confirmed) => { if (confirmed) { localStorage.clear(); clearDraftMulti(); window.location.reload(); } });
+    void dialog.confirm({ title: t('draft.clearTitle'), message: t('draft.clearMessage'), confirmLabel: t('draft.clearAction'), danger: true, requireAcknowledgement: true, acknowledgementLabel: t('draft.clearAcknowledgement') }).then((confirmed) => { if (confirmed) { localStorage.clear(); clearDraftMulti(); window.location.reload(); } });
   }
 
   async function handleDraftImport(event: React.ChangeEvent<HTMLInputElement>) {
@@ -177,14 +181,16 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     if (!file) return;
     try {
       const bundle = parseDraftBundle(await file.text());
-      if (!await dialog.confirm({ title: 'Restore Draft', message: `Restore ${bundle.tabs.length} character(s) and ${bundle.resources.length} Resource(s)? This replaces the current Draft.`, confirmLabel: 'Restore', danger: true })) return;
+      const characters = t('draft.characterCount', { count: bundle.tabs.length });
+      const resourceCount = t('resources.count', { count: bundle.resources.length });
+      if (!await dialog.confirm({ title: t('draft.restoreTitle'), message: t('draft.restoreMessage', { characters, resources: resourceCount }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
       localStorage.setItem(IMPORT_BACKUP_KEY, JSON.stringify({ exportedAt: new Date().toISOString(), draft: localStorage.getItem('mm3e-draft-characters'), resources: localStorage.getItem('mm3e-resource-library') }));
       const previousTabs = tabs, previousActiveId = activeCharacterId, previousResources = resources;
       replaceResources(bundle.resources);
-      if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) { replaceResources(previousResources); replaceDraftMulti(previousTabs, previousActiveId); throw new Error('Storage write failed.'); }
+      if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) { replaceResources(previousResources); replaceDraftMulti(previousTabs, previousActiveId); throw new I18nError('draft.error.storageWrite'); }
       loadTabs(bundle.tabs, bundle.activeId);
       setDraftHydrated(true);
-    } catch (error) { await dialog.alert({ title: 'Import Draft', message: error instanceof Error ? error.message : 'Could not import Draft.' }); }
+    } catch (error) { await dialog.alert({ title: t('draft.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('draft.importFailed') }); }
   }
 
   async function handleExportResources() {
@@ -198,11 +204,11 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       const imported = parseResourceLibrary(await file.text());
       const importedIds = new Set(imported.map((resource) => resource.id));
       const missingLinks = tabs.flatMap((tab) => tab.character.resourceLinks ?? []).filter((link) => !importedIds.has(link.resourceId)).length;
-      const warning = missingLinks ? ` It will leave ${missingLinks} existing character association(s) without a matching library item.` : '';
-      if (!await dialog.confirm({ title: 'Restore Resources', message: `Restore ${imported.length} Resource(s)? This replaces the current library.${warning}`, confirmLabel: 'Restore', danger: true })) return;
+      const warning = missingLinks ? t('resources.missingLinksWarning', { count: missingLinks }) : '';
+      if (!await dialog.confirm({ title: t('resources.restoreTitle'), message: t('resources.restoreMessage', { count: imported.length, warning }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
       localStorage.setItem('mm3e-resource-library-import-backup-v1', JSON.stringify({ exportedAt: new Date().toISOString(), resources: localStorage.getItem('mm3e-resource-library') }));
       replaceResources(imported);
-    } catch (error) { await dialog.alert({ title: 'Import Resources', message: error instanceof Error ? error.message : 'Could not import Resources.' }); }
+    } catch (error) { await dialog.alert({ title: t('resources.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('resources.importFailed') }); }
   }
 
   async function handleClearCharacter() {
@@ -259,7 +265,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         <button
           className="menubar-hamburger"
           onClick={() => setDrawerOpen(true)}
-          aria-label="Open menu"
+          aria-label={t('menu.open')}
         >
           <Menu size={24} />
         </button>
@@ -395,7 +401,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
                   onClick={() => setUseLegacyPdfExporter(!useLegacyPdfExporter)}
                 >
                   {useLegacyPdfExporter ? <Shield size={14} /> : <ShieldOff size={14} />}
-                  {t('menu.useLegacyPdfExporter')}: <strong>{useLegacyPdfExporter ? t('menu.legacy') : t('menu.new')}</strong>
+                  {t('menu.useLegacyPdfExporter')}: <strong>{useLegacyPdfExporter ? t('menu.legacy') : t('menu.pdfExporter.new')}</strong>
                 </button>
                 <span className="dropdown-hint">
                   {t('menu.pdfExporter.hint')}
@@ -408,11 +414,11 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">
-                <span className="dropdown-label">Draft Management</span>
-                <button className="dropdown-item" onClick={handleExportDraft}><Download size={14} /> Export Draft</button>
-                <button className="dropdown-item" onClick={() => draftInputRef.current?.click()}><Upload size={14} /> Import Draft</button>
-                <button className="dropdown-item dropdown-item--danger" onClick={handleClearDraft}><Trash2 size={14} /> Clear Draft</button>
-                <span className="dropdown-hint">Exports or restores every character and Resource.</span>
+                <span className="dropdown-label">{t('draft.management')}</span>
+                <button className="dropdown-item" onClick={handleExportDraft}><Download size={14} /> {t('draft.export')}</button>
+                <button className="dropdown-item" onClick={() => draftInputRef.current?.click()}><Upload size={14} /> {t('draft.import')}</button>
+                <button className="dropdown-item dropdown-item--danger" onClick={handleClearDraft}><Trash2 size={14} /> {t('draft.clearAction')}</button>
+                <span className="dropdown-hint">{t('draft.managementHint')}</span>
               </div>
             </div>
           )}

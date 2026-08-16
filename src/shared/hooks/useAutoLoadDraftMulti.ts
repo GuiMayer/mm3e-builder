@@ -72,11 +72,11 @@ export function useAutoLoadDraftMulti() {
         console.log('[useAutoLoadDraftMulti] No draft found, starting fresh');
       } else {
         console.error('[useAutoLoadDraftMulti] Stored draft was not recovered; autosave remains disabled to protect it.');
-        setDraftLoadError('The saved Draft could not be recovered, so autosave is disabled to avoid replacing it.');
+        setDraftLoadError('draft.recovery.unrecoverable');
       }
     } catch (error) {
       console.error('[useAutoLoadDraftMulti] Failed to load draft:', error);
-      setDraftLoadError('The saved Draft could not be read, so autosave is disabled to avoid replacing it.');
+      setDraftLoadError('draft.recovery.unreadable');
       // Keep the original payload intact. A future migration or manual export
       // is safer than silently replacing a draft that failed to load.
     }

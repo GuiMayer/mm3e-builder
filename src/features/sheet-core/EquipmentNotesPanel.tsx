@@ -68,7 +68,7 @@ export function EquipmentNotesPanel() {
     const item = equipment[index];
     const msg = t('equipment.deleteConfirm', { name: item.name }) || `Delete ${item.name}?`;
     
-    if (await dialog.confirm({ title: 'Delete equipment', message: msg, confirmLabel: 'Delete', danger: true })) {
+    if (await dialog.confirm({ title: t('equipment.deleteTitle'), message: msg, confirmLabel: t('common.delete'), danger: true })) {
       setEquipment(equipment.filter((_, i) => i !== index));
     }
   }
@@ -210,7 +210,7 @@ export function EquipmentNotesPanel() {
 
       {/* Power Builder Overlay — reused for equipment */}
       {builderOpen && (
-        <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
+        <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
           <PowerBuilderOverlay
             existingPower={getEditPower()}
             onSave={handleSaveEquipment}

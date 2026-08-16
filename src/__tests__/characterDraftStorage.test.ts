@@ -144,6 +144,6 @@ describe('characterDraftStorage', () => {
     expect(saveDraftMulti([createTab('tab-5', 'Five')], 'tab-5')).toBe(false);
     expect(storage.getItem(characterDraftStorageKeys.draft)).toBe(oldDraft);
     expect(storage.getItem(characterDraftStorageKeys.metadata)).toBe(oldMetadata);
-    expect(getLastDraftSaveError()).toContain('storage is full');
+    expect(getLastDraftSaveError()).toBe('draft.saveError.storageFull');
   });
 });

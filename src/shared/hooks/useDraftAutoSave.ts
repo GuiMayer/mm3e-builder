@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCharactersStore } from '../../store/charactersStore';
 import { getLastDraftSaveError, saveDraftMulti } from '../../services/fileService';
 import { useAppDialog } from '../ui/appDialogContext';
@@ -9,6 +10,7 @@ import { useAppDialog } from '../ui/appDialogContext';
  * Resets isDirty flag for all saved tabs after successful save.
  */
 export function useDraftAutoSave() {
+  const { t } = useTranslation();
   const tabs = useCharactersStore((s) => s.tabs);
   const activeId = useCharactersStore((s) => s.activeCharacterId);
   const isDraftHydrated = useCharactersStore((s) => s.isDraftHydrated);
@@ -44,10 +46,11 @@ export function useDraftAutoSave() {
         acknowledgePersisted(pendingRevisions);
         shownSaveErrorRef.current = null;
       } else {
-        const message = getLastDraftSaveError() ?? 'The browser could not save this Draft. Your changes remain marked as unsaved.';
+        const errorKey = getLastDraftSaveError() ?? 'draft.saveError.writeFailed';
+        const message = t(errorKey);
         if (shownSaveErrorRef.current !== message) {
           shownSaveErrorRef.current = message;
-          void dialog.alert({ title: 'Draft not saved', message });
+          void dialog.alert({ title: t('draft.saveErrorTitle'), message });
         }
       }
 
@@ -59,5 +62,5 @@ export function useDraftAutoSave() {
         clearTimeout(timerRef.current);
       }
     };
-  }, [tabs, activeId, acknowledgePersisted, dialog, isDraftHydrated]);
+  }, [tabs, activeId, acknowledgePersisted, dialog, isDraftHydrated, t]);
 }

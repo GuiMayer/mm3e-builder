@@ -33,34 +33,34 @@ export function ResourcesPanel() {
   return (
     <section className="panel resources-panel">
       <div className="panel-header">
-        <h2 className="panel-title"><Package size={15} /> {t('resources.characterTitle', { defaultValue: 'Resources' })}</h2>
+        <h2 className="panel-title"><Package size={15} /> {t('resources.characterTitle')}</h2>
         <span className={`panel-cost ${isOverEquipmentLimit ? 'panel-cost--error' : ''}`}>{totalEPUsed} / {equipmentEPLimit} EP</span>
       </div>
-      <p className="resources-panel__hint">{t('resources.characterHint', { defaultValue: 'Associate library items with this character. GM-granted items stay visible but cost 0 EP.' })}</p>
+      <p className="resources-panel__hint">{t('resources.characterHint')}</p>
 
-      {isOverEquipmentLimit && <div className="resources-panel__warning">{t('resources.overBudget', { defaultValue: 'Equipment Point budget exceeded. The resource remains available; adjust Equipment ranks if this limit is enforced.' })}</div>}
+      {isOverEquipmentLimit && <div className="resources-panel__warning">{t('resources.overBudget')}</div>}
 
       <div className="resources-panel__list">
         {links.map((link) => {
           const resource = resources.find((item) => item.id === link.resourceId);
-          if (!resource) return <div className="resources-panel__missing" key={link.id}>{t('resources.missing', { defaultValue: 'Missing library resource' })}<button onClick={() => removeLink(link.id)} aria-label={t('common.remove')}><Trash2 size={14} /></button></div>;
+          if (!resource) return <div className="resources-panel__missing" key={link.id}>{t('resources.missing')}<button onClick={() => removeLink(link.id)} aria-label={t('common.remove')}><Trash2 size={14} /></button></div>;
           const cost = link.isFree ? 0 : link.contributionEP ?? getResourceEPCost(resource);
           return (
             <article className="resources-panel__item" key={link.id}>
-              <div className="resources-panel__item-main"><strong>{resource.name || t('resources.unnamed', { defaultValue: 'Unnamed resource' })}</strong><span>{resource.type}</span></div>
-              <label className="resources-panel__free"><input type="checkbox" checked={link.isFree} onChange={(event) => updateLink(link.id, { isFree: event.target.checked })} /> {t('resources.free', { defaultValue: 'Free / GM-granted' })}</label>
+              <div className="resources-panel__item-main"><strong>{resource.name || t('resources.unnamed')}</strong><span>{t(`resources.type.${resource.type}`)}</span></div>
+              <label className="resources-panel__free"><input type="checkbox" checked={link.isFree} onChange={(event) => updateLink(link.id, { isFree: event.target.checked })} /> {t('resources.free')}</label>
               <strong className="resources-panel__cost">{cost} EP</strong>
               <button className="resources-panel__remove" onClick={() => removeLink(link.id)} title={t('common.remove')} aria-label={t('common.remove')}><Trash2 size={14} /></button>
             </article>
           );
         })}
-        {links.length === 0 && <p className="resources-panel__empty">{t('resources.empty', { defaultValue: 'No resources associated yet.' })}</p>}
+        {links.length === 0 && <p className="resources-panel__empty">{t('resources.empty')}</p>}
       </div>
 
       <div className="resources-panel__add">
-        <select value={selectedResourceId} onChange={(event) => setSelectedResourceId(event.target.value)} aria-label={t('resources.add', { defaultValue: 'Add resource' })}>
-          <option value="">{t('resources.select', { defaultValue: 'Select a library resource…' })}</option>
-          {resources.filter((resource) => !links.some((link) => link.resourceId === resource.id)).map((resource) => <option value={resource.id} key={resource.id}>{resource.name || 'Unnamed'} — {resource.type}</option>)}
+        <select value={selectedResourceId} onChange={(event) => setSelectedResourceId(event.target.value)} aria-label={t('resources.add')}>
+          <option value="">{t('resources.select')}</option>
+          {resources.filter((resource) => !links.some((link) => link.resourceId === resource.id)).map((resource) => <option value={resource.id} key={resource.id}>{resource.name || t('resources.unnamed')} — {t(`resources.type.${resource.type}`)}</option>)}
         </select>
         <button onClick={addLink} disabled={!selectedResourceId}><Plus size={15} /> {t('common.add')}</button>
       </div>

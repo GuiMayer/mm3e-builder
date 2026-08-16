@@ -47,7 +47,7 @@ export function PowersList() {
       ? t('powers.deleteConfirmWithAlt', { name: power.name, count: altCount })
       : t('powers.deleteConfirm', { name: power.name });
 
-    if (await dialog.confirm({ title: 'Delete power', message: msg, confirmLabel: 'Delete', danger: true })) {
+    if (await dialog.confirm({ title: t('powers.deleteTitle'), message: msg, confirmLabel: t('common.delete'), danger: true })) {
       setPowers(powers.filter((_, i) => i !== index));
     }
   }
@@ -163,7 +163,7 @@ export function PowersList() {
       </button>
 
       {builderOpen && (
-        <Suspense fallback={<div className="panel">{t('common.loading', { defaultValue: 'Loading...' })}</div>}>
+        <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
           <PowerBuilderOverlay
             existingPower={editIndex !== null ? powers[editIndex] : undefined}
             onSave={handleSavePower}

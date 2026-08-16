@@ -434,7 +434,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       const names = invalidAEs.map((v, index) => v.ae.name || `AE ${index + 1}`).join(', ');
       const confirmed = await dialog.confirm({
         title: t('builder.title'),
-        message: `${invalidAEs.length} efeito(s) alternativo(s) excedem o limite de ${mainCost}PP: ${names}.\nSalvar mesmo assim?`,
+        message: t('builder.saveInvalidAEsConfirm', { count: invalidAEs.length, cap: mainCost, names }),
         confirmLabel: t('common.save'),
       });
       if (!confirmed) return;

@@ -37,7 +37,7 @@ export function CharacterTabs() {
   const handleCloseTab = async (e: React.MouseEvent, characterId: string) => {
     e.stopPropagation();
     
-    if (!await dialog.confirm({ title: 'Close character', message: t('tabs.closeConfirm'), confirmLabel: 'Close', danger: true })) return;
+    if (!await dialog.confirm({ title: t('tabs.closeTitle'), message: t('tabs.closeConfirm'), confirmLabel: t('tabs.closeAction'), danger: true })) return;
     
     removeCharacter(characterId);
   };

@@ -1,9 +1,11 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { DialogContext, type DialogOptions } from './appDialogContext';
 
 export function AppDialogProvider({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
   const [dialog, setDialog] = useState<(DialogOptions & { resolve: (value: boolean) => void; kind: 'confirm' | 'alert' }) | null>(null);
   const [acknowledged, setAcknowledged] = useState(false);
   const close = useCallback((value: boolean) => {
@@ -22,19 +24,19 @@ export function AppDialogProvider({ children }: { children: ReactNode }) {
   return (
     <DialogContext.Provider value={api}>
       {children}
-      <Modal isOpen={Boolean(dialog)} onClose={() => close(false)} title={dialog?.title ?? 'Confirmation'} compact>
+      <Modal isOpen={Boolean(dialog)} onClose={() => close(false)} title={dialog?.title ?? t('dialog.confirmation')} compact>
         <div className="app-dialog">
           <p>{dialog?.message}</p>
           {dialog?.requireAcknowledgement && (
             <label className="app-dialog__check">
               <input type="checkbox" checked={acknowledged} onChange={(event) => setAcknowledged(event.target.checked)} />
-              <span>{dialog.acknowledgementLabel ?? 'I understand.'}</span>
+              <span>{dialog.acknowledgementLabel ?? t('dialog.acknowledge')}</span>
             </label>
           )}
           <div className="app-dialog__actions">
-            {dialog?.kind === 'confirm' && <Button variant="ghost" onClick={() => close(false)}>{dialog.cancelLabel ?? 'Cancel'}</Button>}
+            {dialog?.kind === 'confirm' && <Button variant="ghost" onClick={() => close(false)}>{dialog.cancelLabel ?? t('common.cancel')}</Button>}
             <Button variant={dialog?.danger ? 'danger' : 'primary'} disabled={Boolean(dialog?.requireAcknowledgement && !acknowledged)} onClick={() => close(true)}>
-              {dialog?.confirmLabel ?? 'OK'}
+              {dialog?.confirmLabel ?? t('common.ok')}
             </Button>
           </div>
         </div>

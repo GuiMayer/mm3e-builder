@@ -43,7 +43,7 @@ export function PPLogPanel() {
   }
 
   async function handleRemove(entryId: string) {
-    const confirmed = await dialog.confirm({ title: 'Remove PP entry', message: t('ppLog.confirmRemove'), confirmLabel: 'Remove', danger: true });
+    const confirmed = await dialog.confirm({ title: t('ppLog.removeTitle'), message: t('ppLog.confirmRemove'), confirmLabel: t('common.remove'), danger: true });
     if (confirmed) {
       removePPLogEntry(entryId);
     }

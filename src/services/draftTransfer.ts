@@ -4,6 +4,7 @@ import type { IResource } from '../entities/types';
 import { CharacterSchema } from '../entities/schemas';
 import { ResourceLibrarySchema } from './storage/resourceLibraryStorage';
 import { normalizeCharacter } from './character-file/normalizeCharacter';
+import { I18nError } from './character-file/errors';
 
 const MANIFEST = 'mm3e-draft';
 const RESOURCE_MANIFEST = 'mm3e-resources';
@@ -22,23 +23,23 @@ export function serializeDraftBundle(tabs: CharacterTab[], activeId: string | nu
 
 export function parseDraftBundle(text: string): DraftBundle {
   const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-  if (!lines.length) throw new Error('Draft file is empty.');
-  const records = lines.map((line, index) => { try { return JSON.parse(line) as unknown; } catch { throw new Error(`Invalid JSON on line ${index + 1}.`); } });
+  if (!lines.length) throw new I18nError('draft.error.empty');
+  const records = lines.map((line, index) => { try { return JSON.parse(line) as unknown; } catch { throw new I18nError('draft.error.invalidJson', { line: String(index + 1) }); } });
   const manifest = ManifestSchema.safeParse(records[0]);
-  if (!manifest.success) throw new Error('This is not a supported Draft export.');
+  if (!manifest.success) throw new I18nError('draft.error.unsupported');
   const tabs: CharacterTab[] = [];
   const resources: IResource[] = [];
   for (const record of records.slice(1)) {
     const tab = TabSchema.safeParse(record);
     if (tab.success) { tabs.push({ ...tab.data.tab, character: normalizeCharacter(tab.data.tab.character as unknown as CharacterTab['character']), isDirty: false }); continue; }
     const resourceLine = ResourceLineSchema.safeParse(record);
-    if (!resourceLine.success) throw new Error('The Draft contains an invalid record.');
+    if (!resourceLine.success) throw new I18nError('draft.error.invalidRecord');
     const resource = ResourceLibrarySchema.safeParse({ version: 1, items: [resourceLine.data.resource] });
-    if (!resource.success) throw new Error('The Draft contains an invalid Resource.');
+    if (!resource.success) throw new I18nError('draft.error.invalidResource');
     resources.push(resource.data.items[0] as unknown as IResource);
   }
   const ids = new Set<string>();
-  if (tabs.some((tab) => ids.has(tab.id) || !ids.add(tab.id))) throw new Error('The Draft contains duplicate character tabs.');
+  if (tabs.some((tab) => ids.has(tab.id) || !ids.add(tab.id))) throw new I18nError('draft.error.duplicateTabs');
   const activeId = manifest.data.activeCharacterId && ids.has(manifest.data.activeCharacterId) ? manifest.data.activeCharacterId : tabs[0]?.id ?? null;
   return { tabs, activeId, resources };
 }
@@ -49,9 +50,9 @@ export function serializeResourceLibrary(resources: IResource[]): string {
 
 export function parseResourceLibrary(text: string): IResource[] {
   const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-  if (!lines.length) throw new Error('Resource file is empty.');
-  const records = lines.map((line, index) => { try { return JSON.parse(line) as unknown; } catch { throw new Error(`Invalid JSON on line ${index + 1}.`); } });
+  if (!lines.length) throw new I18nError('resources.error.empty');
+  const records = lines.map((line, index) => { try { return JSON.parse(line) as unknown; } catch { throw new I18nError('draft.error.invalidJson', { line: String(index + 1) }); } });
   const manifest = z.object({ type: z.literal('manifest'), format: z.literal(RESOURCE_MANIFEST), version: z.literal(1) }).safeParse(records[0]);
-  if (!manifest.success) throw new Error('This is not a supported Resource export.');
-  return records.slice(1).map((record) => { const line = ResourceLineSchema.safeParse(record); if (!line.success) throw new Error('The file contains an invalid Resource record.'); const result = ResourceLibrarySchema.safeParse({ version: 1, items: [line.data.resource] }); if (!result.success) throw new Error('The file contains an invalid Resource.'); return result.data.items[0] as unknown as IResource; });
+  if (!manifest.success) throw new I18nError('resources.error.unsupported');
+  return records.slice(1).map((record) => { const line = ResourceLineSchema.safeParse(record); if (!line.success) throw new I18nError('resources.error.invalidRecord'); const result = ResourceLibrarySchema.safeParse({ version: 1, items: [line.data.resource] }); if (!result.success) throw new I18nError('resources.error.invalidResource'); return result.data.items[0] as unknown as IResource; });
 }
