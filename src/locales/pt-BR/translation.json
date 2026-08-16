@@ -49,7 +49,7 @@
 
   "tabs.newCharacter": "Novo Personagem",
   "tabs.closeCharacter": "Fechar Aba",
-  "tabs.closeConfirm": "Fechar este personagem? Você poderá desfazer esta ação até recarregar a página.",
+  "tabs.closeConfirm": "Fechar este personagem? Você poderá desfazer imediatamente, antes de fazer outra alteração ou recarregar a página.",
   "tabs.duplicateCharacter": "Duplicar Personagem",
   "tabs.unnamed": "Personagem Sem Nome",
   "tabs.reorderHint": "Arraste as abas para reordenar",
