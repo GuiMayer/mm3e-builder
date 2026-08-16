@@ -126,7 +126,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   }, [useLegacyPdfExporter]);
 
   useEffect(() => {
-    if (updateNoticeStartedRef.current || tabs.length === 0 || localStorage.getItem(UPDATE_NOTICE_KEY) === APP_VERSION) return;
+    if (updateNoticeStartedRef.current || (tabs.length === 0 && resources.length === 0) || localStorage.getItem(UPDATE_NOTICE_KEY) === APP_VERSION) return;
     updateNoticeStartedRef.current = true;
     void (async () => {
       const shouldExport = await dialog.confirm({ title: 'Update detected', message: 'A new app version was detected. Export a Draft backup before continuing, in case a future migration needs recovery.', confirmLabel: 'Export Draft', cancelLabel: 'Continue' });
@@ -140,7 +140,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       }
       localStorage.setItem(UPDATE_NOTICE_KEY, APP_VERSION);
     })();
-  }, [dialog, handleExportDraft, tabs.length]);
+  }, [dialog, handleExportDraft, resources.length, tabs.length]);
 
   // Close dropdown on outside click
   useEffect(() => {
