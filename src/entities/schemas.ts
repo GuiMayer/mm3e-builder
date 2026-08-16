@@ -13,6 +13,12 @@ const AppliedModifierSchema = z.object({
   isPowerSpecific: z.boolean().optional(),
   option: z.string().optional(),
   options: z.record(z.string(), z.any()).optional(),
+  affectedRanks: z.number().int().min(1).optional(),
+});
+
+const SenseTraitPurchaseSchema = z.object({
+  id: z.string(), ranks: z.number().int().min(1), senseType: z.string().optional(),
+  scope: z.enum(['sense', 'type']).optional(), detail: z.string().optional(),
 });
 
 const FieldValueSchema = z.union([z.string(), z.array(z.string())]);
@@ -24,6 +30,7 @@ const CharacterPowerComponentSchema = z.object({
   modifiers: z.array(AppliedModifierSchema),
   variableCostOption: z.string().optional(),
   fieldValues: z.record(z.string(), FieldValueSchema).optional(),
+  senseTraits: z.array(SenseTraitPurchaseSchema).optional(),
 });
 
 // Accept both v2 (components[]) and v1 legacy (effectId + ranks) formats

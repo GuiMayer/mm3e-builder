@@ -29,6 +29,7 @@ import { DEFAULT_VALIDATION_RULES } from '../../shared/lib/validationRules';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
+import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
 import { getPerRankModifierCost } from '../../shared/lib/mathEngine';
 import {
@@ -625,6 +626,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                             ranks: 1,
                             variableCostOption: undefined,
                             fieldValues: {},
+                            senseTraits: effectId === 'senses' ? [] : undefined,
                           })}
                           allEffects={powerDefs}
                           t={t}
@@ -676,6 +678,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                           t={t}
                         />
                       </div>
+                    )}
+                    {comp.effectId === 'senses' && comp.senseTraits !== undefined && (
+                      <SenseTraitsEditor traits={comp.senseTraits} onChange={(senseTraits) => updateComponent(comp.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })} />
                     )}
 
                     {/* Effect info strip */}

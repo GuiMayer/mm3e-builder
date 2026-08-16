@@ -13,6 +13,7 @@ import type {
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
+import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { getComponentCostBreakdown, getPerRankModifierCost } from '../../shared/lib/mathEngine';
 
 interface AltEffectCardProps {
@@ -144,6 +145,7 @@ export function AltEffectCard({
                           ranks: 1,
                           variableCostOption: undefined,
                           fieldValues: {},
+                          senseTraits: effectId === 'senses' ? [] : undefined,
                         })}
                         allEffects={allEffects}
                         t={t}
@@ -193,6 +195,9 @@ export function AltEffectCard({
                         t={t}
                       />
                     </div>
+                  )}
+                  {comp.effectId === 'senses' && comp.senseTraits !== undefined && (
+                    <SenseTraitsEditor traits={comp.senseTraits} onChange={(senseTraits) => onUpdateComponent(comp.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })} />
                   )}
 
                   {/* Effect info tags */}

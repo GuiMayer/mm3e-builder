@@ -193,6 +193,17 @@ export interface IAppliedModifier {
   isPowerSpecific?: boolean;     // modifier comes from power's own extras/flaws list
   option?: string;               // selected sub-option (e.g. "Burst" for Area)
   options?: Record<string, boolean | number | string>; // flexible flags; string used for subtypeId
+  /** Number of effect ranks modified; omitted means every rank (legacy-safe). */
+  affectedRanks?: number;
+}
+
+/** A discrete trait purchased as part of the Senses effect. */
+export interface ISenseTraitPurchase {
+  id: string;
+  ranks: number;
+  senseType?: string;
+  scope?: 'sense' | 'type';
+  detail?: string;
 }
 
 // ── Power Component (a single effect within a power) ──
@@ -203,6 +214,8 @@ export interface ICharacterPowerComponent {
   modifiers: IAppliedModifier[];
   variableCostOption?: string;   // selected variable cost option name (for effects like Affliction, Illusion)
   fieldValues?: Record<string, string | string[]>;  // NEW: configurable field values { "resistance": "fortitude", "sense_types": ["visual", "auditory"] }
+  /** Present only for the structured Senses builder. Absence preserves legacy Senses ranks. */
+  senseTraits?: ISenseTraitPurchase[];
 }
 
 // ── Alternate Effect (nested inside a power) ──
