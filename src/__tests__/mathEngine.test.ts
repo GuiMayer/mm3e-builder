@@ -3,6 +3,7 @@ import {
   calculateCostPerRank,
   calculatePowerCost,
   calculateArrayCost,
+  getComponentCostBreakdown,
   calculateAbilitiesCost,
   calculateDefensesCost,
   calculateSkillsCost,
@@ -156,14 +157,14 @@ describe('mathEngine', () => {
       // 25 PP → floor(25/5)*1 = 5 discount
       expect(calcRemovableDiscount(25, 'removable')).toBe(5);
       // 24 PP → floor(24/5)*1 = 4 discount
-      expect(calcRemovableDiscount(24, 'removable')).toBe(4);
+      expect(calcRemovableDiscount(24, 'removable')).toBe(5);
     });
 
     it('Easily Removable: −2 PP per 5 PP, rounded down', () => {
       // 25 PP → floor(25/5)*2 = 10 discount
       expect(calcRemovableDiscount(25, 'easily_removable')).toBe(10);
       // 30 PP → floor(30/5)*2 = 12 discount
-      expect(calcRemovableDiscount(30, 'easily_removable')).toBe(12);
+      expect(calcRemovableDiscount(26, 'easily_removable')).toBe(12);
     });
   });
 
@@ -195,6 +196,21 @@ describe('mathEngine', () => {
       expect(calcPowerTotalCost(power, POWER_DEFS, MODS)).toBe(15);
     });
 
+    it('calculates Removable from the complete array cost and rounds up', () => {
+      const power: ICharacterPower = {
+        id: 'p-array', name: 'Array Device',
+        components: [{ id: 'c1', effectId: 'damage', ranks: 20, modifiers: [] }],
+        notes: '',
+        alternateEffects: [{
+          id: 'ae1', name: 'Alternate', dynamic: false, notes: '',
+          components: [{ id: 'ae-c1', effectId: 'damage', ranks: 20, modifiers: [] }],
+        }],
+        removable: 'removable',
+      };
+      // 20 PP main + 1 PP Alternate Effect = 21; ceil(21 / 5) = 5 discount.
+      expect(calcPowerTotalCost(power, POWER_DEFS, MODS)).toBe(16);
+    });
+
     it('total never goes below 0', () => {
       const power: ICharacterPower = {
         id: 'p3', name: 'Tiny Gadget',
@@ -204,6 +220,22 @@ describe('mathEngine', () => {
       };
       // 1 PP, discount = 0 (floor(1/5)=0)
       expect(calcPowerTotalCost(power, POWER_DEFS, MODS)).toBe(1);
+    });
+  });
+
+  describe('cost breakdown parity', () => {
+    it('uses the same conditional Affects Objects cost as final calculation', () => {
+      const effect = {
+        id: 'damage', name: 'Damage', baseCost: 1, type: 'attack',
+        action: 'standard', range: 'close', duration: 'instant',
+        description: '', variableCost: null, extras: [], flaws: [],
+      } as unknown as import('../entities/types').IPowerEffect;
+      const component = {
+        id: 'c1', effectId: 'damage', ranks: 10,
+        modifiers: [{ modifierId: 'affects_objects', ranks: 1 }],
+      };
+
+      expect(getComponentCostBreakdown(component, effect, MODS).total).toBe(20);
     });
   });
 });

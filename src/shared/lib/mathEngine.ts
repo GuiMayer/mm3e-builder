@@ -239,12 +239,18 @@ export function getComponentCostBreakdown(
   let perRankFlaws = 0;
   let flatCost = 0;
 
+  let perRankSum = 0;
+
   for (const applied of component.modifiers) {
     const def = modifierDefs.find((m) => m.id === applied.modifierId);
     if (!def) continue;
     if (def.costType === 'per_rank') {
-      if (def.costValue > 0) perRankExtras += def.costValue;
-      else perRankFlaws += Math.abs(def.costValue);
+      // Keep the breakdown on the same rule path as calcComponentCost().
+      // Some modifiers (for example Affects Objects) have a conditional cost.
+      const effectiveCost = getPerRankModifierCost(applied, def);
+      perRankSum += effectiveCost;
+      if (effectiveCost > 0) perRankExtras += effectiveCost;
+      else perRankFlaws += Math.abs(effectiveCost);
     } else if (def.costType === 'flat') {
       flatCost += def.costValue;
     } else if (def.costType === 'flat_ranked') {
@@ -264,7 +270,7 @@ export function getComponentCostBreakdown(
     }
   }
 
-  const rawCostPerRank = baseCost + perRankExtras - perRankFlaws;
+  const rawCostPerRank = baseCost + perRankSum;
   const isFractional = rawCostPerRank < 1;
   const ranksPerPP = isFractional ? 2 - rawCostPerRank : 1;
   const costPerRank = Math.max(1, rawCostPerRank);
@@ -330,7 +336,7 @@ export function calculateAdvantagesCost(advantages: { ranks: number }[]): number
  *
  * Formula: arrayCost − removableDiscount
  *   arrayCost = calculateArrayCost(mainCost, altCount, dynamicCount)
- *   removableDiscount = calcRemovableDiscount(mainCost, power.removable)
+ *   removableDiscount = calcRemovableDiscount(arrayCost, power.removable)
  */
 export function calcPowerTotalCost(
   power: ICharacterPower,
@@ -343,8 +349,9 @@ export function calcPowerTotalCost(
   }, 0);
   const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
   const arrayCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
-  const discount = calcRemovableDiscount(mainCost, power.removable);
-  return Math.max(0, arrayCost - discount);
+  const discount = calcRemovableDiscount(arrayCost, power.removable);
+  // A flat flaw cannot reduce a power's final cost below 1 PP.
+  return Math.max(1, arrayCost - discount);
 }
 
 /**
@@ -455,17 +462,18 @@ export function calcInitiativeBonus(
  * Calculate the PP discount for Removable / Easily Removable powers.
  *
  * Official rule:
- *   Removable:        −1 PP per 5 PP of main component cost (rounded down)
- *   Easily Removable: −2 PP per 5 PP of main component cost (rounded down)
+ *   Removable:        −1 PP per 5 PP of the power's final cost (rounded up)
+ *   Easily Removable: −2 PP per 5 PP of the power's final cost (rounded up)
  *
- * Only mainCost is used (not AE additions), as per the rulebook.
+ * The input includes the Alternate Effect flat costs, because Removable applies
+ * to the power as a whole rather than to individual components.
  * Returns 0 if removable is undefined or 'none'.
  */
 export function calcRemovableDiscount(
-  mainCost: number,
+  finalPowerCost: number,
   removable: 'none' | 'removable' | 'easily_removable' | undefined
 ): number {
   if (!removable || removable === 'none') return 0;
   const factor = removable === 'easily_removable' ? 2 : 1;
-  return Math.floor(mainCost / 5) * factor;
+  return Math.ceil(finalPowerCost / 5) * factor;
 }

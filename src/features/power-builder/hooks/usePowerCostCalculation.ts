@@ -76,13 +76,13 @@ export function usePowerCostCalculation({
 
   // Calculate removable discount
   const removableDiscount = useMemo(
-    () => calcRemovableDiscount(mainCost, power.removable),
-    [mainCost, power.removable]
+    () => calcRemovableDiscount(arrayCost, power.removable),
+    [arrayCost, power.removable]
   );
 
   // Calculate total cost
   const totalCost = useMemo(
-    () => Math.max(0, arrayCost - removableDiscount),
+    () => Math.max(1, arrayCost - removableDiscount),
     [arrayCost, removableDiscount]
   );
 

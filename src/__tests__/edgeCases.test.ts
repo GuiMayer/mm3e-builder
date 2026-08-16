@@ -325,8 +325,8 @@ describe('Large Rank Values', () => {
 
 describe('Removable Discount Edge Cases', () => {
   it('power < 5 PP: no discount', () => {
-    expect(calcRemovableDiscount(4, 'removable')).toBe(0);
-    expect(calcRemovableDiscount(4, 'easily_removable')).toBe(0);
+    expect(calcRemovableDiscount(4, 'removable')).toBe(1);
+    expect(calcRemovableDiscount(4, 'easily_removable')).toBe(2);
   });
 
   it('power = 5 PP: 1 PP discount (removable)', () => {
@@ -338,7 +338,7 @@ describe('Removable Discount Edge Cases', () => {
   });
 
   it('power = 24 PP: 4 PP discount (removable)', () => {
-    expect(calcRemovableDiscount(24, 'removable')).toBe(4); // floor(24/5) = 4
+    expect(calcRemovableDiscount(24, 'removable')).toBe(5); // ceil(24/5) = 5
   });
 
   it('power = 25 PP: 5 PP discount (removable)', () => {
