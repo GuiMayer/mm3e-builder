@@ -31,11 +31,26 @@ export interface IOffenseEntry {
   isManual: boolean;        // true = custom attack row from IManualOffenseRow
   isNoRoll: boolean;        // true = perception/area range, no attack check
   parentId?: string;        // parent power id when isAE = true
+  /** Mechanical classification for the Targeted Effects view. */
+  interaction: 'attack' | 'resistance' | 'targeted';
+  requiresAttackCheck: boolean;
+  causesResistance: boolean;
+  tags: Array<'attack' | 'resistance' | 'area' | 'perception' | 'affects-others' | 'dynamic'>;
+  sourceType: 'power' | 'equipment' | 'manual' | 'unarmed';
+  sourceName?: string;
+  componentName?: string;
+  relationship: 'base' | 'alternate' | 'dynamic-alternate' | 'manual' | 'unarmed';
+  resistance?: string;
 }
 
 export function parseEffectRank(effect: string): number | null {
-  const match = effect.match(/\b(\d+)\b(?!.*\b\d+\b)/);
+  const match = effect.match(/\b(?:damage|affliction|nullify|weaken)\s+(\d+)/i)
+    ?? effect.match(/\b(\d+)\b/);
   return match ? Number(match[1]) : null;
+}
+
+function hasModifier(comp: ICharacterPowerComponent, modifierId: string): boolean {
+  return comp.modifiers.some((modifier) => modifier.modifierId === modifierId);
 }
 
 /**
@@ -50,7 +65,7 @@ function getEffectiveRange(
   let effectiveRange = baseRange;
 
   // 1. Affects Others changes Personal to Close
-  if (effectiveRange === 'personal' && hasAffectOthers(comp, modifierDefs)) {
+  if (effectiveRange === 'personal' && (hasAffectOthers(comp, modifierDefs) || hasAttackExtra(comp))) {
     effectiveRange = 'close';
   }
 
@@ -85,8 +100,7 @@ function hasAreaExtra(
 ): boolean {
   return comp.modifiers.some((m) => {
     const def = modifierDefs.find((d) => d.id === m.modifierId);
-    // Area extras have ids like 'burst_area', 'cone_area', 'line_area', 'cloud_area', 'shapeable_area'
-    return def?.id.includes('area') ?? false;
+    return def?.id === 'area' || def?.id.endsWith('_area') === true;
   });
 }
 
@@ -97,8 +111,18 @@ function hasAffectOthers(
 ): boolean {
   return comp.modifiers.some((m) => {
     const def = modifierDefs.find((d) => d.id === m.modifierId);
-    return def?.id === 'affect_others';
+    return def?.id === 'affects_others';
   });
+}
+
+/** The Attack extra makes a non-attack effect require an attack check. */
+function hasAttackExtra(comp: ICharacterPowerComponent): boolean {
+  return hasModifier(comp, 'attack');
+}
+
+/** Power-specific Resistible flaws use ids such as resistible_illusion. */
+function hasResistibleModifier(comp: ICharacterPowerComponent): boolean {
+  return comp.modifiers.some((modifier) => modifier.modifierId === 'resistible' || modifier.modifierId.startsWith('resistible_'));
 }
 
 /** Ranks of 'Accurate' extra on a component (+2 to attack per rank). */
@@ -110,7 +134,22 @@ function getAccurateBonus(
     const def = modifierDefs.find((d) => d.id === m.modifierId);
     return def?.id === 'accurate';
   });
-  return acc ? acc.ranks * 2 : 0;
+  const inaccurate = comp.modifiers.find((m) => {
+    const def = modifierDefs.find((d) => d.id === m.modifierId);
+    return def?.id === 'inaccurate';
+  });
+  return (acc?.ranks ?? 0) * 2 - (inaccurate?.ranks ?? 0) * 2;
+}
+
+function getInaccuratePenalty(
+  comp: ICharacterPowerComponent,
+  modifierDefs: IModifierDef[]
+): number {
+  const inaccurate = comp.modifiers.find((m) => {
+    const def = modifierDefs.find((d) => d.id === m.modifierId);
+    return def?.id === 'inaccurate';
+  });
+  return (inaccurate?.ranks ?? 0) * 2;
 }
 
 /**
@@ -146,6 +185,8 @@ export function calcAttackBonus(
   }
 
   const accurate = getAccurateBonus(component, modifierDefs);
+  const inaccuratePenalty = getInaccuratePenalty(component, modifierDefs);
+  const accurateBonus = accurate + inaccuratePenalty;
   const parts: string[] = [];
 
   if (effectiveRange === 'close') {
@@ -165,7 +206,8 @@ export function calcAttackBonus(
     const skillRanks = skillEntry?.ranks ?? 0;
     if (skillRanks > 0) parts.push(`Close Combat: ${powerName} ${skillRanks}`);
 
-    if (accurate > 0) parts.push(`Accurate ${accurate}`);
+    if (accurateBonus > 0) parts.push(`Accurate ${accurateBonus}`);
+    if (inaccuratePenalty > 0) parts.push(`Inaccurate -${inaccuratePenalty}`);
 
     const total = base + closeAdvRanks + skillRanks + accurate;
     return { value: total, breakdown: parts.join(' + '), isNoRoll: false };
@@ -186,7 +228,8 @@ export function calcAttackBonus(
   const skillRanks = skillEntry?.ranks ?? 0;
   if (skillRanks > 0) parts.push(`Ranged Combat: ${powerName} ${skillRanks}`);
 
-  if (accurate > 0) parts.push(`Accurate ${accurate}`);
+  if (accurateBonus > 0) parts.push(`Accurate ${accurateBonus}`);
+  if (inaccuratePenalty > 0) parts.push(`Inaccurate -${inaccuratePenalty}`);
 
   const total = base + rangedAdvRanks + skillRanks + accurate;
   return { value: total, breakdown: parts.join(' + '), isNoRoll: false };
@@ -203,31 +246,118 @@ function extractNotes(comp: ICharacterPowerComponent): string {
   return flags.join(', ');
 }
 
-/**
- * Determine if a component qualifies as an "attack" for the offense table.
- *
- * F-12 rule (per user directive and M&M 3e):
- * - effect type === 'attack'  (Damage, Affliction, Weaken, Nullify) → always attack
- * - any effect type + 'affect_others' extra → becomes an attack against the target
- */
-function isAttackComponent(
+type SourceType = 'power' | 'equipment';
+
+function getResistanceLabel(def: IPowerEffect, comp: ICharacterPowerComponent): string | undefined {
+  const configured = comp.fieldValues?.resistance;
+  const configuredValue = typeof configured === 'string' ? configured : undefined;
+  const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+
+  if (def.id === 'damage') return `Toughness DC ${15 + comp.ranks}`;
+  if (def.id === 'nullify') return `${hasModifier(comp, 'alternate_resistance') ? 'Fortitude' : 'Will'} DC ${10 + comp.ranks}`;
+  if (configuredValue) return `${capitalize(configuredValue)} DC ${10 + comp.ranks}`;
+  if (hasResistibleModifier(comp) || def.type === 'attack' || hasAttackExtra(comp)) return `Resistance DC ${10 + comp.ranks}`;
+  return undefined;
+}
+
+function getInteraction(
+  def: IPowerEffect,
   comp: ICharacterPowerComponent,
-  powerDefs: IPowerEffect[],
   modifierDefs: IModifierDef[]
-): boolean {
-  const def = powerDefs.find((d) => d.id === comp.effectId);
-  if (!def) return false;
-  if (def.type === 'attack') return true;
-  if (hasAffectOthers(comp, modifierDefs)) return true;
-  return false;
+): { interaction: IOffenseEntry['interaction']; requiresAttackCheck: boolean; causesResistance: boolean; isNoRoll: boolean } | null {
+  const hasAttack = def.type === 'attack' || hasAttackExtra(comp);
+  const hasArea = hasAreaExtra(comp, modifierDefs);
+  const effectiveRange = getEffectiveRange(def.range, comp, modifierDefs);
+  const causesResistance = hasAttack || hasResistibleModifier(comp);
+
+  if (hasAttack) {
+    const isNoRoll = hasArea || effectiveRange === 'perception';
+    return {
+      interaction: isNoRoll ? 'resistance' : 'attack',
+      requiresAttackCheck: !isNoRoll,
+      causesResistance: true,
+      isNoRoll,
+    };
+  }
+
+  if (causesResistance) {
+    return { interaction: 'resistance', requiresAttackCheck: false, causesResistance: true, isNoRoll: true };
+  }
+
+  if (hasAffectOthers(comp, modifierDefs)) {
+    return { interaction: 'targeted', requiresAttackCheck: false, causesResistance: false, isNoRoll: true };
+  }
+
+  return null;
+}
+
+function getTags(
+  interaction: IOffenseEntry['interaction'],
+  comp: ICharacterPowerComponent,
+  effectiveRange: string,
+  modifierDefs: IModifierDef[],
+  dynamic: boolean
+): IOffenseEntry['tags'] {
+  const tags: IOffenseEntry['tags'] = [];
+  if (interaction === 'attack') tags.push('attack');
+  if (interaction === 'resistance') tags.push('resistance');
+  if (hasAreaExtra(comp, modifierDefs)) tags.push('area');
+  if (effectiveRange === 'perception') tags.push('perception');
+  if (hasAffectOthers(comp, modifierDefs)) tags.push('affects-others');
+  if (dynamic) tags.push('dynamic');
+  return tags;
+}
+
+function createComponentProfile(
+  character: ICharacter,
+  def: IPowerEffect,
+  comp: ICharacterPowerComponent,
+  skillDefs: ISkillDef[],
+  modifierDefs: IModifierDef[],
+  source: { id: string; name: string; type: SourceType },
+  relationship: Extract<IOffenseEntry['relationship'], 'base' | 'alternate' | 'dynamic-alternate'>,
+  alternateName?: string
+): IOffenseEntry | null {
+  const interaction = getInteraction(def, comp, modifierDefs);
+  if (!interaction) return null;
+
+  const effectiveRange = getEffectiveRange(def.range, comp, modifierDefs);
+  const profileName = alternateName || source.name || def.name;
+  const bonus = interaction.requiresAttackCheck
+    ? calcAttackBonus(def.range, profileName, comp, character, skillDefs, modifierDefs)
+    : { value: null, breakdown: interaction.causesResistance ? 'No attack check' : 'Targeted effect', isNoRoll: true };
+
+  return {
+    id: `${source.type}:${source.id}:${relationship}:${comp.id}`,
+    name: profileName,
+    bonus: bonus.value === null ? '—' : `+${bonus.value}`,
+    bonusValue: bonus.value,
+    bonusBreakdown: bonus.breakdown,
+    range: effectiveRange,
+    effect: `${def.name} ${comp.ranks}`,
+    notes: extractNotes(comp),
+    isAE: relationship !== 'base',
+    isManual: false,
+    isNoRoll: interaction.isNoRoll,
+    parentId: relationship === 'base' ? undefined : source.id,
+    interaction: interaction.interaction,
+    requiresAttackCheck: interaction.requiresAttackCheck,
+    causesResistance: interaction.causesResistance,
+    tags: getTags(interaction.interaction, comp, effectiveRange, modifierDefs, relationship === 'dynamic-alternate'),
+    sourceType: source.type,
+    sourceName: source.name || def.name,
+    componentName: def.name,
+    relationship,
+    resistance: interaction.causesResistance ? getResistanceLabel(def, comp) : undefined,
+  };
 }
 
 /**
- * Build the complete offense summary from a character's current state.
- *
- * Pure function — no React, no store. Safe to call in PDF generator.
+ * Builds factual target-effect profiles from every source that can be applied
+ * to another character. It deliberately does not infer an "offensive" or
+ * "support" intent: filters are based only on roll, resistance and modifiers.
  */
-export function buildOffenseSummary(
+export function buildTargetedEffectProfiles(
   character: ICharacter,
   powerDefs: IPowerEffect[],
   skillDefs: ISkillDef[],
@@ -267,103 +397,41 @@ export function buildOffenseSummary(
       isAE: false,
       isManual: false,
       isNoRoll: false,
+      interaction: 'attack',
+      requiresAttackCheck: true,
+      causesResistance: true,
+      tags: ['attack', 'resistance'],
+      sourceType: 'unarmed',
+      sourceName: translations?.unarmed ?? 'Unarmed',
+      componentName: translations?.damage ?? 'Damage',
+      relationship: 'unarmed',
+      resistance: `Toughness DC ${15 + abilities.str}`,
     });
   }
 
-  // ── 2. Powers with attack-type (or Affect Others) components ───
-  for (const power of character.powers) {
-    const attackComps = power.components.filter((comp) =>
-      isAttackComponent(comp, powerDefs, modifierDefs)
-    );
-
-    if (attackComps.length === 0) continue;
-
-    const primaryComp = attackComps.reduce((a, b) => (a.ranks >= b.ranks ? a : b));
-    const primaryDef  = powerDefs.find((d) => d.id === primaryComp.effectId)!;
-
-    const { value: bonusValue, breakdown, isNoRoll } = calcAttackBonus(
-      primaryDef.range,
-      power.name,
-      primaryComp,
-      character,
-      skillDefs,
-      modifierDefs
-    );
-
-    // Calculate effective range for display (calcAttackBonus already uses it internally)
-    const effectiveRange = getEffectiveRange(primaryDef.range, primaryComp, modifierDefs);
-
-    const effectStr = attackComps
-      .map((comp) => {
-        const def = powerDefs.find((d) => d.id === comp.effectId);
-        return def ? `${def.name} ${comp.ranks}` : '';
-      })
-      .filter(Boolean)
-      .join(' + ');
-
-    const resistedNote = isNoRoll && effectiveRange === 'perception' ? 'Resisted by Will' : '';
-
-    entries.push({
-      id: power.id,
-      name: power.name || primaryDef.name,
-      bonus: bonusValue === null ? '—' : `+${bonusValue}`,
-      bonusValue,
-      bonusBreakdown: breakdown,
-      range: effectiveRange, // Use effective range for display
-      effect: effectStr,
-      notes: [extractNotes(primaryComp), resistedNote].filter(Boolean).join(', '),
-      isAE: false,
-      isManual: false,
-      isNoRoll,
-    });
-
-    // AE sub-rows
-    for (const ae of power.alternateEffects) {
-      const aeAttackComps = ae.components.filter((comp) =>
-        isAttackComponent(comp, powerDefs, modifierDefs)
-      );
-
-      if (aeAttackComps.length === 0) continue;
-
-      const aePrimary    = aeAttackComps.reduce((a, b) => (a.ranks >= b.ranks ? a : b));
-      const aePrimaryDef = powerDefs.find((d) => d.id === aePrimary.effectId)!;
-
-      const { value: aeBonus, breakdown: aeBreakdown, isNoRoll: aeNoRoll } = calcAttackBonus(
-        aePrimaryDef.range,
-        ae.name,
-        aePrimary,
-        character,
-        skillDefs,
-        modifierDefs
-      );
-
-      // Calculate effective range for AE display
-      const aeEffectiveRange = getEffectiveRange(aePrimaryDef.range, aePrimary, modifierDefs);
-
-      const aeEffect = aeAttackComps
-        .map((comp) => {
-          const def = powerDefs.find((d) => d.id === comp.effectId);
-          return def ? `${def.name} ${comp.ranks}` : '';
-        })
-        .filter(Boolean)
-        .join(' + ');
-
-      entries.push({
-        id: ae.id,
-        name: ae.name,
-        bonus: aeBonus === null ? '—' : `+${aeBonus}`,
-        bonusValue: aeBonus,
-        bonusBreakdown: aeBreakdown,
-        range: aeEffectiveRange,
-        effect: aeEffect,
-        notes: extractNotes(aePrimary),
-        isAE: true,
-        isManual: false,
-        isNoRoll: aeNoRoll,
-        parentId: power.id,
-      });
+  const appendSourceProfiles = (sourcePowers: ICharacter['powers'], sourceType: SourceType) => {
+    for (const sourcePower of sourcePowers) {
+      const source = { id: sourcePower.id, name: sourcePower.name, type: sourceType };
+      for (const comp of sourcePower.components) {
+        const def = powerDefs.find((effect) => effect.id === comp.effectId);
+        if (!def) continue;
+        const profile = createComponentProfile(character, def, comp, skillDefs, modifierDefs, source, 'base');
+        if (profile) entries.push(profile);
+      }
+      for (const ae of sourcePower.alternateEffects ?? []) {
+        const relationship = ae.dynamic ? 'dynamic-alternate' : 'alternate';
+        for (const comp of ae.components) {
+          const def = powerDefs.find((effect) => effect.id === comp.effectId);
+          if (!def) continue;
+          const profile = createComponentProfile(character, def, comp, skillDefs, modifierDefs, source, relationship, ae.name);
+          if (profile) entries.push(profile);
+        }
+      }
     }
-  }
+  };
+
+  appendSourceProfiles(character.powers, 'power');
+  appendSourceProfiles(character.equipment ?? [], 'equipment');
 
   // ── 3. Manual offense rows (F-13) ──────────────────────────────
   for (const row of character.manualOffenseRows ?? []) {
@@ -379,8 +447,20 @@ export function buildOffenseSummary(
       isAE: false,
       isManual: true,
       isNoRoll: row.range === 'perception',
+      interaction: row.range === 'perception' ? 'resistance' : 'attack',
+      requiresAttackCheck: row.range !== 'perception',
+      causesResistance: true,
+      tags: row.range === 'perception' ? ['resistance', 'perception'] : ['attack', 'resistance'],
+      sourceType: 'manual',
+      sourceName: row.name,
+      componentName: row.name,
+      relationship: 'manual',
+      resistance: parseEffectRank(row.effect) === null ? undefined : `Resistance DC ${10 + parseEffectRank(row.effect)!}`,
     });
   }
 
   return entries;
 }
+
+/** Legacy export kept so existing PDF callers remain compatible. */
+export const buildOffenseSummary = buildTargetedEffectProfiles;
