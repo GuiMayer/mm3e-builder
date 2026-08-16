@@ -149,6 +149,7 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
         <div className="checkbox-group">
           <label className="checkbox-label">
             <input
+              className="app-checkbox"
               type="checkbox"
               checked={options.includeNotes}
               onChange={() => handleSectionToggle('notes')}
@@ -157,6 +158,7 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
           </label>
           <label className="checkbox-label">
             <input
+              className="app-checkbox"
               type="checkbox"
               checked={options.includeComplications}
               onChange={() => handleSectionToggle('complications')}
@@ -165,6 +167,7 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
           </label>
           <label className="checkbox-label">
             <input
+              className="app-checkbox"
               type="checkbox"
               checked={options.includeEquipment}
               onChange={() => handleSectionToggle('equipment')}
@@ -350,12 +353,7 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
           background: var(--c-surface, #282828);
         }
 
-        .checkbox-label input[type="checkbox"] {
-          width: 18px;
-          height: 18px;
-          cursor: pointer;
-          accent-color: var(--c-primary, #3b82f6);
-        }
+        .checkbox-label .app-checkbox { cursor: pointer; }
 
         .checkbox-label span {
           font-size: 0.85rem;

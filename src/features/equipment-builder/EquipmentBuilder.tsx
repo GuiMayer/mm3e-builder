@@ -115,7 +115,7 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
               value={item.name}
               onChange={handleNameChange}
               placeholder={t('equipment.builder.namePlaceholder')}
-              className="form-input"
+              className="app-input form-input"
             />
           </div>
 
@@ -197,7 +197,7 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
             onChange={handleNotesChange}
             placeholder={t('equipment.builder.notesPlaceholder')}
             rows={3}
-            className="form-textarea"
+            className="app-textarea form-textarea"
           />
         </div>
 

@@ -17,7 +17,7 @@ export function RendererSelector({ value, onChange }: RendererSelectorProps) {
       </label>
       <select
         id="renderer-select"
-        className="renderer-selector__select"
+        className="app-select renderer-selector__select"
         value={value}
         onChange={(e) => onChange(e.target.value as PDFRenderer)}
       >

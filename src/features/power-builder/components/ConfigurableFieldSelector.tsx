@@ -37,7 +37,7 @@ export function ConfigurableFieldSelector({
             <select
               value={(values[field.id] as string) || ''}
               onChange={(e) => onChange(field.id, e.target.value)}
-              className="field-dropdown"
+              className="app-select field-dropdown"
             >
               <option value="">
                 {t('builder.selectOption')}
@@ -56,7 +56,7 @@ export function ConfigurableFieldSelector({
               value={(values[field.id] as string) || ''}
               onChange={(e) => onChange(field.id, e.target.value)}
               placeholder={field.placeholder}
-              className="field-text-input"
+              className="app-input field-text-input"
             />
           )}
 
@@ -69,6 +69,7 @@ export function ConfigurableFieldSelector({
                 return (
                   <label key={opt.value} className="multiselect-option">
                     <input
+                      className="app-checkbox"
                       type="checkbox"
                       checked={isChecked}
                       onChange={(e) => {

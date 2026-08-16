@@ -29,7 +29,7 @@ export function AppDialogProvider({ children }: { children: ReactNode }) {
           <p>{dialog?.message}</p>
           {dialog?.requireAcknowledgement && (
             <label className="app-dialog__check">
-              <input type="checkbox" checked={acknowledged} onChange={(event) => setAcknowledged(event.target.checked)} />
+              <input className="app-checkbox" type="checkbox" checked={acknowledged} onChange={(event) => setAcknowledged(event.target.checked)} />
               <span>{dialog.acknowledgementLabel ?? t('dialog.acknowledge')}</span>
             </label>
           )}
@@ -46,10 +46,6 @@ export function AppDialogProvider({ children }: { children: ReactNode }) {
           .app-dialog__actions { display:flex; gap:var(--s-sm); justify-content:flex-end; }
           .app-dialog__check { align-items:center; border:1px solid var(--c-border); border-radius:var(--r-sm); color:var(--c-text); cursor:pointer; display:flex; gap:var(--s-sm); padding:var(--s-sm); }
           .app-dialog__check:hover { border-color:var(--c-primary); }
-          .app-dialog__check input { appearance:none; background:var(--c-surface-elevated); border:1px solid var(--c-border); border-radius:var(--r-sm); display:grid; height:18px; margin:0; place-content:center; width:18px; }
-          .app-dialog__check input::before { background:var(--c-text-inverse); clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0,43% 62%); content:''; height:11px; transform:scale(0); width:11px; }
-          .app-dialog__check input:checked { background:var(--c-primary); border-color:var(--c-primary); }
-          .app-dialog__check input:checked::before { transform:scale(1); }
         `}</style>
       </Modal>
     </DialogContext.Provider>

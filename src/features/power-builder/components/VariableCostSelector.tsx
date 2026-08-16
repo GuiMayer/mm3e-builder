@@ -33,6 +33,7 @@ export function VariableCostSelector({
         {options.map((opt) => (
           <label key={opt.name} className="cost-option-radio">
             <input
+              className="app-radio"
               type="radio"
               name={name ?? 'variable-cost'}
               value={opt.name}

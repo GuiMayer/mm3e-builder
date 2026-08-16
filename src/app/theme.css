@@ -192,6 +192,87 @@ body {
   transition: background-color var(--t-normal), color var(--t-normal);
 }
 
+/* ── Shared form controls ── */
+.app-input,
+.app-select,
+.app-textarea {
+  background: var(--c-surface-elevated);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  color: var(--c-text);
+  font: inherit;
+  padding: var(--s-sm) var(--s-md);
+}
+
+.app-select { cursor: pointer; }
+.app-textarea { line-height: 1.5; resize: vertical; }
+
+.app-input:focus,
+.app-select:focus,
+.app-textarea:focus {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 2px var(--c-primary-muted);
+  outline: none;
+}
+
+.app-checkbox,
+.app-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--c-surface-elevated);
+  border: 1px solid var(--c-border);
+  cursor: pointer;
+  display: inline-grid;
+  flex: 0 0 auto;
+  height: 18px;
+  margin: 0;
+  place-content: center;
+  transition: background var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+  width: 18px;
+}
+
+.app-checkbox { border-radius: var(--r-sm); }
+.app-radio { border-radius: 50%; }
+
+.app-checkbox::before {
+  background: var(--c-text-inverse);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0, 43% 62%);
+  content: '';
+  height: 11px;
+  transform: scale(0);
+  transition: transform var(--t-fast);
+  width: 11px;
+}
+
+.app-radio::before {
+  background: var(--c-text-inverse);
+  border-radius: 50%;
+  content: '';
+  height: 8px;
+  transform: scale(0);
+  transition: transform var(--t-fast);
+  width: 8px;
+}
+
+.app-checkbox:checked,
+.app-radio:checked {
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+}
+
+.app-checkbox:checked::before,
+.app-radio:checked::before { transform: scale(1); }
+
+.app-checkbox:focus-visible,
+.app-radio:focus-visible {
+  box-shadow: 0 0 0 2px var(--c-primary-muted);
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
+
+.app-checkbox:disabled,
+.app-radio:disabled { cursor: not-allowed; opacity: 0.5; }
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--f-heading);
   font-weight: 700;

@@ -792,7 +792,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                     {def.options.map((opt) => <option key={opt.label} value={opt.label}>{opt.label}</option>)}
                                   </select>
                                   {def.id === 'area' && applied.option === 'Perception' && (
-                                    <label className="applied-mod-check"><input type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => updateModifierOptions(comp.id, applied.modifierId, { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
+                                    <label className="applied-mod-check"><input className="app-checkbox" type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => updateModifierOptions(comp.id, applied.modifierId, { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
                                   )}
                                 </>
                               )}
@@ -800,6 +800,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                               {def.id === 'affects_objects' && (
                                 <label className="applied-mod-checkbox">
                                   <input
+                                    className="app-checkbox"
                                     type="checkbox"
                                     checked={applied.options?.affectsOnlyObjects === true}
                                     onChange={(e) => {
@@ -816,6 +817,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                               {def.id === 'affects_others' && (
                                 <label className="applied-mod-checkbox">
                                   <input
+                                    className="app-checkbox"
                                     type="checkbox"
                                     checked={applied.options?.affectsOnlyOthers === true}
                                     onChange={(e) => {
@@ -831,6 +833,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                               {def.id === 'side_effect' && (
                                 <label className="applied-mod-checkbox">
                                   <input
+                                    className="app-checkbox"
                                     type="checkbox"
                                     checked={applied.options?.sideEffectAlways === true}
                                     onChange={(e) => {
@@ -994,6 +997,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               {power.alternateEffects.some((ae) => ae.dynamic) && (
                 <label className="applied-mod-checkbox">
                   <input
+                    className="app-checkbox"
                     type="checkbox"
                     checked={power.baseDynamic === true}
                     onChange={(e) => setPower((current) => ({

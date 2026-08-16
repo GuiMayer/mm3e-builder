@@ -218,6 +218,7 @@ export function PowerComponentEditor({
                 {def.id === 'affects_objects' && (
                   <label className="applied-mod-checkbox">
                     <input
+                      className="app-checkbox"
                       type="checkbox"
                       checked={applied.options?.affectsOnlyObjects === true}
                       onChange={(e) => {

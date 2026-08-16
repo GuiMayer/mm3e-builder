@@ -119,7 +119,7 @@ export function NumberInput({
       
       <input
         type="number"
-        className={className}
+        className={`number-input-field ${className}`.trim()}
         value={value}
         onChange={handleInputChange}
         disabled={disabled}
@@ -164,6 +164,22 @@ export function NumberInput({
           border-left: none !important;
           border-right: none !important;
           border-radius: 0 !important;
+        }
+
+        .number-input-field {
+          background: var(--c-surface-elevated);
+          border: 1px solid var(--c-border);
+          color: var(--c-text);
+          font: inherit;
+          min-width: 0;
+          padding: var(--s-xs) var(--s-sm);
+          text-align: center;
+        }
+
+        .number-input-field:focus {
+          border-color: var(--c-primary);
+          box-shadow: 0 0 0 2px var(--c-primary-muted);
+          outline: none;
         }
 
         .number-input-btn {

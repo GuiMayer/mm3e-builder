@@ -85,7 +85,7 @@ export function ResourcesPanel() {
           return (
             <article className="resources-panel__item" key={link.id}>
               <div className="resources-panel__item-main"><strong>{resource.name || t('resources.unnamed')}</strong><span>{t(`resources.type.${resource.type}`)}</span></div>
-              <label className="resources-panel__free"><input type="checkbox" checked={link.isFree} onChange={(event) => updateLink(link.id, { isFree: event.target.checked })} /> {t('resources.free')}</label>
+              <label className="resources-panel__free"><input className="app-checkbox" type="checkbox" checked={link.isFree} onChange={(event) => updateLink(link.id, { isFree: event.target.checked })} /> {t('resources.free')}</label>
               <strong className="resources-panel__cost">{cost} EP</strong>
               <button className="resources-panel__remove" onClick={() => removeLink(link.id)} title={t('common.remove')} aria-label={t('common.remove')}><Trash2 size={14} /></button>
             </article>
