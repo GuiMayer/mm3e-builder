@@ -145,6 +145,26 @@ export function calculateFlatCost(
   return flatSum;
 }
 
+/** Calculates per-rank cost in groups when a modifier covers only some ranks. */
+function calculatePartialRankCost(component: ICharacterPowerComponent, baseCost: number, modifierDefs: IModifierDef[], effectAction?: string): number {
+  const groups = new Map<string, { count: number; modifiers: IAppliedModifier[] }>();
+  for (let rank = 1; rank <= component.ranks; rank += 1) {
+    const modifiers = component.modifiers.filter((modifier) => {
+      const definition = modifierDefs.find((item) => item.id === modifier.modifierId);
+      const affectedRanks = modifier.affectedRanks ?? (typeof modifier.options?.affectedRanks === 'number' ? modifier.options.affectedRanks : undefined);
+      return definition?.costType === 'per_rank' && (affectedRanks === undefined || rank <= affectedRanks);
+    });
+    const key = modifiers.map((modifier) => `${modifier.modifierId}:${modifier.ranks}:${modifier.option ?? ''}:${JSON.stringify(modifier.options ?? {})}`).join('|');
+    const group = groups.get(key);
+    if (group) group.count += 1;
+    else groups.set(key, { count: 1, modifiers });
+  }
+  return [...groups.values()].reduce((total, group) => {
+    const pricing = calculateCostPerRank(baseCost, group.modifiers, modifierDefs, effectAction);
+    return total + (pricing.isFractional ? Math.ceil(group.count / pricing.ranksPerPP) : pricing.costPerRank * group.count);
+  }, 0);
+}
+
 /**
  * Calculate total PP cost for a single power component.
  * Formula: ((baseCost + per_rank_extras − per_rank_flaws) × ranks) + flat_mods
@@ -176,8 +196,14 @@ export function calcComponentCost(
     effectDef.action,
   );
 
+  const hasPartialModifier = component.modifiers.some((modifier) => {
+    const affectedRanks = modifier.affectedRanks ?? (typeof modifier.options?.affectedRanks === 'number' ? modifier.options.affectedRanks : undefined);
+    return affectedRanks !== undefined && affectedRanks < component.ranks;
+  });
   let rankCost: number;
-  if (isFractional) {
+  if (hasPartialModifier) {
+    rankCost = calculatePartialRankCost(component, baseCost, modifierDefs, effectDef.action);
+  } else if (isFractional) {
     rankCost = Math.ceil(component.ranks / ranksPerPP);
   } else {
     rankCost = costPerRank * component.ranks;

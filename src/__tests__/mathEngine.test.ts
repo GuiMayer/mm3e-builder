@@ -159,6 +159,11 @@ describe('mathEngine', () => {
         [subtle],
       )).toBe(12);
     });
+
+    it('charges a modifier only for the effect ranks it covers', () => {
+      const damage = { id: 'damage', name: 'Damage', baseCost: 1, type: 'attack', action: 'standard', range: 'ranged', duration: 'instant', description: '', variableCost: null, extras: [], flaws: [] } as unknown as import('../entities/types').IPowerEffect;
+      expect(calcComponentCost({ id: 'c1', effectId: 'damage', ranks: 7, modifiers: [{ modifierId: 'ranged', ranks: 1 }, { modifierId: 'area', ranks: 1, affectedRanks: 4 }] }, damage, MODS)).toBe(18);
+    });
   });
 
   describe('calculateAbilitiesCost', () => {

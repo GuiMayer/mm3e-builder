@@ -744,6 +744,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                   max={def.maxRanks}
                                 />
                               )}
+                              {def.costType === 'per_rank' && (
+                                <NumberInput variant="small" className="applied-mod-ranks" value={typeof applied.options?.affectedRanks === 'number' ? applied.options.affectedRanks : comp.ranks} onChange={(value) => updateModifierOptions(comp.id, applied.modifierId, { ...applied.options, affectedRanks: Math.max(1, Math.min(comp.ranks, value)) })} min={1} max={comp.ranks} aria-label="Effect ranks affected" />
+                              )}
                               {def.costType !== 'per_rank' && (
                                 <NumberInput
                                   variant="small"
