@@ -25,6 +25,8 @@ function buildGroups(profiles: IOffenseEntry[]): EffectGroup[] {
   for (const profile of profiles) {
     const id = profile.sourceType === 'unarmed'
       ? 'unarmed'
+      : profile.sourceType === 'manual'
+      ? 'manual'
       : `${profile.sourceType}:${profile.sourceName ?? profile.id}`;
     const existing = groups.get(id);
     if (existing) {
@@ -33,7 +35,7 @@ function buildGroups(profiles: IOffenseEntry[]): EffectGroup[] {
     }
     groups.set(id, {
       id,
-      label: profile.sourceName ?? profile.name,
+      label: profile.sourceType === 'manual' ? '' : profile.sourceName ?? profile.name,
       sourceType: profile.sourceType,
       profiles: [profile],
     });
@@ -121,7 +123,7 @@ export function OffensePanel() {
           <section key={group.id} className={`targeted-source targeted-source--${group.sourceType}`}>
             <div className="targeted-source-header">
               <span className="targeted-source-type">{t(`targeted.source.${group.sourceType}`)}</span>
-              <h3>{group.label}</h3>
+              <h3>{group.sourceType === 'manual' ? t('targeted.manualTitle') : group.label}</h3>
               <span className="targeted-source-count">{group.profiles.length}</span>
             </div>
 
