@@ -754,20 +754,19 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                               )}
                               {/* Sub-option dropdown */}
                               {def.options && def.options.length > 0 && (
-                                <select
-                                  className="applied-mod-option"
-                                  value={applied.option ?? ''}
-                                  onChange={(e) =>
-                                    updateModifierOption(comp.id, applied.modifierId, e.target.value)
-                                  }
-                                >
-                                  <option value="">Shape...</option>
-                                  {def.options.map((opt) => (
-                                    <option key={opt.label} value={opt.label}>
-                                      {opt.label}
-                                    </option>
-                                  ))}
-                                </select>
+                                <>
+                                  <select
+                                    className="applied-mod-option"
+                                    value={applied.option ?? ''}
+                                    onChange={(e) => updateModifierOption(comp.id, applied.modifierId, e.target.value)}
+                                  >
+                                    <option value="">Shape...</option>
+                                    {def.options.map((opt) => <option key={opt.label} value={opt.label}>{opt.label}</option>)}
+                                  </select>
+                                  {def.id === 'area' && applied.option === 'Perception' && (
+                                    <label className="applied-mod-check"><input type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => updateModifierOptions(comp.id, applied.modifierId, { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
+                                  )}
+                                </>
                               )}
                               {/* Conditional checkbox for Affects Objects */}
                               {def.id === 'affects_objects' && (

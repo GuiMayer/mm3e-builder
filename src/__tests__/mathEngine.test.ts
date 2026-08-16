@@ -331,5 +331,12 @@ describe('mathEngine', () => {
         sideEffect,
       )).toBe(-2);
     });
+
+    it('prices expanded and Perception Areas correctly', () => {
+      const area = { id: 'area', name: 'Area', category: 'extra', costType: 'per_rank', costValue: 1, maxRanks: 20, description: '', incompatibleWith: [] } as IModifierDef;
+      expect(getPerRankModifierCost({ modifierId: 'area', ranks: 3, option: 'Burst' }, area)).toBe(3);
+      expect(getPerRankModifierCost({ modifierId: 'area', ranks: 1, option: 'Perception' }, area)).toBe(2);
+      expect(getPerRankModifierCost({ modifierId: 'area', ranks: 1, option: 'Perception', options: { includesSenseDependent: true } }, area)).toBe(1);
+    });
   });
 });

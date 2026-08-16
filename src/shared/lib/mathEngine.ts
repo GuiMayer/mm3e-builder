@@ -67,6 +67,15 @@ export function getPerRankModifierCost(
     return applied.options?.sideEffectAlways === true ? -2 : -1;
   }
 
+  // Area may be purchased repeatedly to expand its dimensions. Perception
+  // Area includes Sense-Dependent at no additional cost; without it, the
+  // Perception shape costs +2/rank rather than the usual +1/rank.
+  if (def.id === 'area') {
+    const isPerception = applied.option === 'Perception';
+    const includesSenseDependent = applied.options?.includesSenseDependent === true;
+    return applied.ranks + (isPerception && !includesSenseDependent ? 1 : 0);
+  }
+
   // ── Modifiers with subtypes (e.g. Alternate Resistance) ────────────────────
   // If def has subtypes and the user chose one, use that subtype's costValue.
   if (def.subtypes && def.subtypes.length > 0) {

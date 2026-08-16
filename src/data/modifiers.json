@@ -162,6 +162,7 @@
         "category":  "extra",
         "costType":  "per_rank",
         "costValue":  1,
+        "maxRanks":  20,
         "description":  "The effect covers an area. Choose shape; targets resist with Dodge.",
         "longDescription":  "The effect covers an area rather than a single target. Targets in the area make a Dodge resistance check (DC 10 + rank) to avoid half effect (or no effect on success, GM\u0027s choice). Choose a shape: Burst (sphere), Cloud (lingering), Cone, Cylinder, Line, Perception (affects all perceiving targets), or Shapeable.",
         "options":  [
