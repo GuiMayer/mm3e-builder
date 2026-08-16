@@ -7,6 +7,7 @@ import { useEffect, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PDFCustomizationPanel } from './PDFCustomizationPanel';
 import type { PDFCustomizationOptions } from '../../services/pdf/types';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 interface PDFPreviewDialogProps {
   isOpen: boolean;
@@ -16,7 +17,7 @@ interface PDFPreviewDialogProps {
   customizationOptions: PDFCustomizationOptions;
   onCustomizationChange: (options: PDFCustomizationOptions) => void;
   onClose: () => void;
-  onPrint: () => void;
+  onGeneratePdf: () => Promise<void>;
   onDownloadHtml: () => void;
 }
 
@@ -28,18 +29,30 @@ export function PDFPreviewDialog({
   customizationOptions,
   onCustomizationChange,
   onClose,
-  onPrint,
+  onGeneratePdf,
   onDownloadHtml,
 }: PDFPreviewDialogProps) {
   const { t } = useTranslation();
-  const isConverting = false;
-  const [loadedHtml, setLoadedHtml] = useState<string | null>(null);
+  const dialog = useAppDialog();
+  const [isConverting, setIsConverting] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   // Determine if actions should be disabled
-  const isActionsDisabled = isGenerating;
+  const isActionsDisabled = isGenerating || isConverting;
 
-  const handleGeneratePdf = useCallback(() => onPrint(), [onPrint]);
+  // Handle PDF generation with loading state
+  const handleGeneratePdf = useCallback(async () => {
+    setIsConverting(true);
+    try {
+      await onGeneratePdf();
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      await dialog.alert({ title: t('pdf.preview.title'), message: t('pdf.preview.error') });
+    } finally {
+      setIsConverting(false);
+    }
+  }, [dialog, onGeneratePdf, t]);
 
   // Handle HTML download
   const handleDownloadHtml = useCallback(() => {
@@ -93,7 +106,12 @@ export function PDFPreviewDialog({
     }
   }, [isOpen, handleKeyDown]);
 
-  const iframeLoaded = loadedHtml === html;
+  // Reset iframe loaded state when HTML changes
+  useEffect(() => {
+    if (html) {
+      setIframeLoaded(false);
+    }
+  }, [html]);
 
   if (!isOpen) return null;
 
@@ -185,7 +203,7 @@ export function PDFPreviewDialog({
               ) : (
                 <>
                   <span className="pdf-preview-icon">📄</span>
-                  {t('pdf.preview.print')}
+                  {t('pdf.preview.generatePDF')}
                 </>
               )}
             </button>
@@ -219,7 +237,7 @@ export function PDFPreviewDialog({
                 srcDoc={html}
                 sandbox="allow-same-origin"
                 title="PDF Preview"
-                onLoad={() => setLoadedHtml(html)}
+                onLoad={() => setIframeLoaded(true)}
                 style={{ opacity: iframeLoaded ? 1 : 0 }}
               />
             )}

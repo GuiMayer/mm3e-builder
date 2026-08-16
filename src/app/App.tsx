@@ -36,7 +36,7 @@ export function App() {
     pdfCharacterName,
     customizationOptions,
     handleCustomizationChange,
-    printCharacterSheet,
+    generateAndOpenPdf,
     downloadHtmlFromPreview,
     closePreview,
     pdfOverflow,
@@ -106,7 +106,7 @@ export function App() {
           customizationOptions={customizationOptions}
           onCustomizationChange={handleCustomizationChange}
           onClose={closePreview}
-          onPrint={printCharacterSheet}
+          onGeneratePdf={generateAndOpenPdf}
           onDownloadHtml={downloadHtmlFromPreview}
         />
 

@@ -22,7 +22,7 @@ export function loadPDFCustomizationOptions(): PDFCustomizationOptions {
     const parsed = JSON.parse(stored);
     
     // Accept the old renderer setting but intentionally discard it. The
-    // document now always uses the browser's native print-to-PDF path.
+    // document now always uses the single jsPDF.html() export path.
     if (
       typeof parsed.colorScheme === 'string' &&
       typeof parsed.layoutMode === 'string' &&
