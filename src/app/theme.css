@@ -526,13 +526,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .build-descriptor-add {
   display: flex;
-  flex: 1 1 220px;
+  flex: 0 1 auto;
   gap: var(--s-xs);
 }
 
 .build-descriptor-add .build-input {
-  flex: 1;
-  min-width: 120px;
+  width: clamp(140px, 20vw, 220px);
 }
 
 /* ── Power List: Descriptors ── */

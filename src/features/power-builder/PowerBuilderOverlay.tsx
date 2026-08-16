@@ -566,7 +566,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                     onClick={applyCurrentDescriptor}
                     disabled={!canApplyDescriptor}
                   >
-                    {t('common.add')}
+                    {selectedDescriptorIndex === null ? t('common.add') : t('common.edit')}
                   </Button>
                 </div>
               </div>
