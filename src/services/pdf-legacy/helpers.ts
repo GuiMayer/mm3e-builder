@@ -120,7 +120,7 @@ export function fmtOffenseEntry(entry: IOffenseEntry): { main: string; desc: str
   const rangeLabel = rangeLabelMap[entry.range] ?? entry.range;
 
   // No-roll attacks (Area, Perception range)
-  if (entry.isNoRoll || entry.range === 'perception') {
+  if ((entry.isNoRoll || entry.range === 'perception') && entry.causesResistance) {
     const effectType = detectEffectType(entry.effect);
     const rank = extractRank(entry.effect);
     if (rank !== null) {
@@ -129,6 +129,12 @@ export function fmtOffenseEntry(entry: IOffenseEntry): { main: string; desc: str
       const main = `${rangeLabel}, ${entry.effect} (DC ${dc} ${res})`;
       return { main, desc: entry.notes };
     }
+    return { main: `${rangeLabel}, ${entry.effect}`, desc: entry.notes };
+  }
+
+  // Affects Others and similar targeted effects can have no attack roll and
+  // no resistance check. Keep their profile visible without inventing a DC.
+  if (entry.isNoRoll) {
     return { main: `${rangeLabel}, ${entry.effect}`, desc: entry.notes };
   }
 
