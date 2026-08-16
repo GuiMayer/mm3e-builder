@@ -43,6 +43,7 @@ export function createDefaultCharacter(
     powers: overrides.powers ?? [],
     complications: overrides.complications ?? [],
     equipmentNotes: overrides.equipmentNotes ?? '',
+    resourceLinks: overrides.resourceLinks ?? [],
     manualOffenseRows: overrides.manualOffenseRows ?? [],
     campaignMode: overrides.campaignMode ?? false,
     ppLog: overrides.ppLog ?? [],

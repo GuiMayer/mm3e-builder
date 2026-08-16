@@ -56,6 +56,7 @@ export function sanitizeCharacterForExport(
       : [],
     equipmentNotes: character.equipmentNotes || '',
     equipment: Array.isArray(character.equipment) ? character.equipment : [],
+    resourceLinks: Array.isArray(character.resourceLinks) ? character.resourceLinks : [],
     notes: character.notes,
     manualOffenseRows: character.manualOffenseRows,
     campaignMode: character.campaignMode || false,

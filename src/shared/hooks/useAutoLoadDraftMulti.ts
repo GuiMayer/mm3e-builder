@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { loadDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
+import { useResourcesStore } from '../../store/resourcesStore';
+import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
 
 const INSTANCE_KEY = 'mm3e-app-instance-active';
 
@@ -45,7 +47,12 @@ export function useAutoLoadDraftMulti() {
     try {
       const draft = loadDraftMulti();
       if (draft && draft.tabs.length > 0) {
-        loadTabs(draft.tabs, draft.activeId);
+        const migrated = draft.tabs.map((tab) => {
+          const result = migrateLegacyEquipmentToResources(tab.character);
+          if (result.resources.length > 0) useResourcesStore.getState().upsertResources(result.resources);
+          return result.resources.length > 0 ? { ...tab, character: result.character, isDirty: true } : tab;
+        });
+        loadTabs(migrated, draft.activeId);
         console.log(`[useAutoLoadDraftMulti] Loaded ${draft.tabs.length} character(s)`);
       } else {
         console.log('[useAutoLoadDraftMulti] No draft found, starting fresh');

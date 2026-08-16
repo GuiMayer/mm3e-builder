@@ -258,6 +258,77 @@ export interface IEquipmentItem {
   alternateEffects?: IAlternateEffect[];   // For equipment arrays (e.g., utility belt)
 }
 
+// ── Resource Library ──
+// Resources are reusable items kept outside individual characters. Equipment
+// is one resource category; vehicles and headquarters carry their own traits.
+export type ResourceType = 'gadget' | 'gear' | 'vehicle' | 'headquarters' | 'custom';
+
+export interface IResourceFeature {
+  id: string;
+  name: string;
+  ranks?: number;
+  notes?: string;
+}
+
+export interface IResourceBase {
+  id: string;
+  type: ResourceType;
+  name: string;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Gadgets, mundane gear and custom items reuse the established power model. */
+export interface IPowerResource extends IResourceBase {
+  type: 'gadget' | 'gear' | 'custom';
+  power: ICharacterPower;
+}
+
+export type VehicleSize = 'medium' | 'large' | 'huge' | 'gargantuan' | 'colossal' | 'awesome';
+
+export interface IVehicleResource extends IResourceBase {
+  type: 'vehicle';
+  size: VehicleSize;
+  strength: number;
+  speed: number;
+  defense: number;
+  toughness: number;
+  features: IResourceFeature[];
+  systems: ICharacterPower[];
+}
+
+export type HeadquartersSize =
+  | 'miniscule' | 'fine' | 'diminutive' | 'tiny' | 'small' | 'medium'
+  | 'large' | 'huge' | 'gargantuan' | 'colossal' | 'awesome';
+
+export interface IHeadquartersResource extends IResourceBase {
+  type: 'headquarters';
+  size: HeadquartersSize;
+  toughness: number;
+  features: IResourceFeature[];
+  effects: ICharacterPower[];
+}
+
+export type IResource = IPowerResource | IVehicleResource | IHeadquartersResource;
+
+/** A character owns a link, rather than a copy, to a library resource. */
+export interface ICharacterResourceLink {
+  id: string;
+  resourceId: string;
+  /** GM-granted resources remain visible, but do not consume Equipment Points. */
+  isFree: boolean;
+  /** Optional EP share for team-owned resources; absent means full calculated cost. */
+  contributionEP?: number;
+  /** Resources in the same set use Alternate Equipment pricing. */
+  alternateSetId?: string;
+}
+
+export interface IResourceAppendix {
+  version: number;
+  items: IResource[];
+}
+
 // ── Complication Type ──
 export type ComplicationType =
   | 'motivation' | 'enemy' | 'identity' | 'relationship'
@@ -323,6 +394,7 @@ export interface ICharacter {
   complications: IComplication[];
   equipmentNotes: string;        // F-09: free-text equipment block (v1.0, kept for migration)
   equipment?: ICharacterPower[]; // F-15: equipment items are powers with 'easily_removable'
+  resourceLinks?: ICharacterResourceLink[];
   notes?: string;                // F-14: background & notes
   manualOffenseRows?: IManualOffenseRow[]; // F-13: custom attack rows
   campaignMode?: boolean;        // F-17: opt-in PP advancement tracking (default: false)
@@ -335,6 +407,7 @@ export interface ICharacterFile {
   exportedAt: string;
   language?: string;
   character: ICharacter;
+  appendix?: { resources?: IResourceAppendix };
 }
 
 // ── Validation Rule Configuration ──

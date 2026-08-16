@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
-import { exportCharacterJSON, importCharacterJSON, I18nError, saveDraftMulti } from '../../services/fileService';
+import { exportCharacterJSON, importCharacterJSON, importResourceAppendix, I18nError, saveDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
+import { useResourcesStore } from '../../store/resourcesStore';
 import type { ICharacter } from '../../entities/types';
 import type { CharacterTab } from '../../entities/characterTab';
 import {
@@ -10,6 +11,7 @@ import {
   ensureImportedCharacterIdentity,
   findCharacterIdentityMatches,
 } from '../../entities/characterImport';
+import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
 
 export interface PendingCharacterImport {
   character: ICharacter;
@@ -23,6 +25,7 @@ export interface PendingCharacterImport {
 export function useFileOperations() {
   const { t, i18n } = useTranslation();
   const { character } = useActiveCharacter();
+  const resources = useResourcesStore((state) => state.resources);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isImporting, setIsImporting] = useState(false);
   const [pendingImport, setPendingImport] = useState<PendingCharacterImport | null>(null);
@@ -44,7 +47,10 @@ export function useFileOperations() {
     const activeId = useCharactersStore.getState().activeCharacterId;
     saveDraftMulti(tabs, activeId);
     
-    exportCharacterJSON(character, i18n.language);
+    const linkedResources = resources.filter((resource) =>
+      (character.resourceLinks ?? []).some((link) => link.resourceId === resource.id)
+    );
+    exportCharacterJSON(character, i18n.language, undefined, linkedResources);
   }
 
   /**
@@ -54,15 +60,19 @@ export function useFileOperations() {
     setIsImporting(true);
     try {
       const char = await importCharacterJSON(file);
+      const appendixResources = await importResourceAppendix(file);
+      if (appendixResources.length > 0) useResourcesStore.getState().upsertResources(appendixResources);
+      const migrated = migrateLegacyEquipmentToResources(char);
+      if (migrated.resources.length > 0) useResourcesStore.getState().upsertResources(migrated.resources);
       const matchingTabs = findCharacterIdentityMatches(
         useCharactersStore.getState().tabs,
-        char.characterId
+        migrated.character.characterId
       );
 
       if (matchingTabs.length === 0) {
-        openImportedCharacter(char);
+        openImportedCharacter(migrated.character);
       } else {
-        setPendingImport({ character: char, matchingTabs });
+        setPendingImport({ character: migrated.character, matchingTabs });
       }
     } catch (err) {
       if (err instanceof I18nError) {

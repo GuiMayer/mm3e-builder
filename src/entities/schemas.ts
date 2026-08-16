@@ -166,6 +166,14 @@ const PPLogEntrySchema = z.object({
   note: z.string(),
 });
 
+const CharacterResourceLinkSchema = z.object({
+  id: z.string(),
+  resourceId: z.string().uuid(),
+  isFree: z.boolean(),
+  contributionEP: z.number().int().min(0).optional(),
+  alternateSetId: z.string().optional(),
+});
+
 // F-15: Equipment Item — now uses same schema as powers (ICharacterPower)
 // Old format (IEquipmentItem with optional notes/AEs) is also accepted for migration
 const EquipmentItemSchema = z.union([
@@ -194,6 +202,7 @@ export const CharacterSchema = z.object({
   complications: z.array(ComplicationSchema),
   equipmentNotes: z.string().default(''),  // F-09: optional in old files, defaults to ''
   equipment: z.array(EquipmentItemSchema).optional().default([]), // F-15: structured equipment
+  resourceLinks: z.array(CharacterResourceLinkSchema).optional().default([]),
   notes: z.string().optional(),            // F-14: background & notes
   manualOffenseRows: z.array(ManualOffenseRowSchema).optional(), // F-13
   campaignMode: z.boolean().optional(),    // F-17: opt-in mode (default off)
@@ -205,6 +214,7 @@ export const CharacterFileSchema = z.object({
   exportedAt: z.string(),
   language: z.string().optional(),
   character: CharacterSchema,
+  appendix: z.object({ resources: z.unknown().optional() }).optional(),
 });
 
 export type CharacterFileInferred = z.infer<typeof CharacterFileSchema>;

@@ -168,6 +168,12 @@ export function useCharacterActions() {
     getCharactersStore().updateCharacter(activeId, { equipment });
   }, []);
 
+  const setResourceLinks = useCallback((resourceLinks: NonNullable<ICharacter['resourceLinks']>) => {
+    const activeId = getCharactersStore().activeCharacterId;
+    if (!activeId) return;
+    getCharactersStore().updateCharacter(activeId, { resourceLinks });
+  }, []);
+
   const setEquipmentNotes = useCallback((notes: string) => {
     const activeId = getCharactersStore().activeCharacterId;
     if (!activeId) return;
@@ -250,6 +256,7 @@ export function useCharacterActions() {
     setPowers,
     setComplications,
     setEquipment,
+    setResourceLinks,
     setEquipmentNotes,
     setNotes,
     setManualOffenseRows,

@@ -12,6 +12,7 @@ export function normalizeCharacter(character: ICharacter): ICharacter {
     ...character,
     powers: migratePowers(character.powers as unknown[]),
     equipment: migrateEquipment((character.equipment as unknown[]) ?? []),
+    resourceLinks: character.resourceLinks ?? [],
     advantages: migrateAdvantages(
       (character.advantages as unknown[]) ?? [],
       ADVANTAGE_DEFS
