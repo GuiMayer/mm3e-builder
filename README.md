@@ -85,14 +85,15 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 - **Instant access** — No need to flip through rulebooks during character creation or gameplay.
 
 #### 📄 Export to PDF
-- **Fills the official M&M 3e fillable character sheet** (`MnM3_charsheet_color_fillable.pdf`) with all 211 fields using `pdf-lib` — 100% client-side, no backend.
+- **Default exporter:** generates the character sheet through the new browser-only HTML-to-PDF workflow, loaded on demand.
+- **Legacy exporter (optional):** fills the official M&M 3e fillable character sheet (`MnM3_charsheet_color_fillable.pdf`) with all 211 fields using `pdf-lib` — 100% client-side, no backend.
 - Page 1: Header, Abilities, Defenses, Initiative, Offense table (Attack 1–4 with auto-calculated DCs), compact Skills/Advantages/Powers summaries, Notes & Conditions.
 - Page 2: Structured skills grid (Ab / Ra / Total per skill), Close Combat & Ranged Combat subtypes, Expertise subtypes, Advantages 1–11, Equipment 1–10, Complications 1–11, Notes 1–7.
 - **Campaign Mode support** — Correctly calculates PP totals including PP Log adjustments when in Campaign Mode.
 - **Accurate stat calculations** — Toughness (STA + ranks) and Initiative (AGL bonus) calculated correctly.
-- **Overflow handling** — When a character exceeds the sheet's fixed limits (e.g. > 4 attacks, > 11 advantages), a detailed modal warns the user before export and redirects excess items to the Notes fields.
-- Text is **fully selectable** in any PDF reader — no screenshot or image-based rendering.
-- PDF template is pre-fetched in the background on app load for near-instant exports.
+- **Legacy overflow handling** — When the legacy sheet exceeds its fixed limits (e.g. > 4 attacks, > 11 advantages), a detailed modal warns the user before export and redirects excess items to the Notes fields.
+- The legacy PDF has **fully selectable text** in any PDF reader — no screenshot or image-based rendering.
+- The legacy template is fetched only after selecting the legacy exporter, keeping the default initial load smaller.
 
 #### 📤 Export to Excel
 - Full character sheet exported to a styled `.xlsx` workbook with 8 sections: Summary, Abilities, Defenses, Skills, Advantages, Powers, Complications, and PP Log (when in Campaign Mode).
@@ -164,7 +165,7 @@ Before a single commit, I produced a complete engineering specification covering
 - Implemented every file, component, hook, and service according to the spec
 - Produced zero architectural surprises — because there was no room for improvisation
 
-> For the full engineering specification, see **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)**.
+> For the current engineering reference, see **[Refined architecture](./docs/ARCHITECTURE_REFINED.md)**. The former [engineering plan](./docs/ARCHITECTURE.md) is retained as a historical record.
 
 This project has **absolutely no intention of making a profit** or infringing on the copyrights of Green Ronin Publishing, the creators of M&M 3e. This is purely a fan-made project for the TTRPG community.
 
@@ -277,14 +278,15 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 - **Acesso instantâneo** — Não é necessário folhear livros de regras durante criação de personagem ou jogo.
 
 #### 📄 Exportar como PDF
-- **Preenche a ficha oficial fillable do M&M 3e** (`MnM3_charsheet_color_fillable.pdf`) com todos os 211 campos usando `pdf-lib` — 100% no browser, sem backend.
+- **Exportador padrão:** gera a ficha pelo novo fluxo HTML-para-PDF no navegador, carregado sob demanda.
+- **Exportador legado (opcional):** preenche a ficha oficial fillable do M&M 3e (`MnM3_charsheet_color_fillable.pdf`) com todos os 211 campos usando `pdf-lib` — 100% no browser, sem backend.
 - Página 1: Cabeçalho, Atributos, Defesas, Iniciativa, tabela de Offense (Attack 1–4 com DCs calculados automaticamente), resumos compactos de Perícias/Vantagens/Poderes, Notes & Conditions.
 - Página 2: Grade estruturada de perícias (Hab / Ra / Total por perícia), subtypes de Combate Corpo-a-Corpo e à Distância, subtypes de Especialidade, Vantagens 1–11, Equipamento 1–10, Complicações 1–11, Notas 1–7.
 - **Suporte a Modo Campanha** — Calcula corretamente totais de PP incluindo ajustes do Registro de PP quando em Modo Campanha.
 - **Cálculos precisos de stats** — Resistência (VIG + ranks) e Iniciativa (bônus de AGL) calculados corretamente.
-- **Tratamento de overflow** — Quando um personagem excede os limites fixos da ficha (ex: > 4 ataques, > 11 vantagens), um modal detalhado avisa o usuário antes de exportar e redireciona o excedente para os campos de Notas.
-- Texto **completamente selecionável** em qualquer leitor de PDF — sem screenshot ou renderização por imagem.
-- Template do PDF é pré-carregado em segundo plano ao iniciar o app para exports quase instantâneos.
+- **Tratamento de overflow do legado** — Quando a ficha legada excede seus limites fixos (ex: > 4 ataques, > 11 vantagens), um modal detalhado avisa o usuário antes de exportar e redireciona o excedente para os campos de Notas.
+- O PDF legado tem texto **completamente selecionável** em qualquer leitor de PDF — sem screenshot ou renderização por imagem.
+- O template legado é carregado apenas após selecionar esse exportador, reduzindo o carregamento inicial padrão.
 
 #### 📤 Exportar para Excel
 - Ficha completa exportada para um arquivo `.xlsx` estilizado com 8 abas: Resumo, Atributos, Defesas, Perícias, Vantagens, Poderes, Complicações e Registro de PP (quando em Modo Campanha).
@@ -356,7 +358,7 @@ Antes de um único commit, produzi uma especificação de engenharia completa co
 - Implementou cada arquivo, componente, hook e serviço conforme a especificação
 - Produziu zero surpresas arquiteturais — porque não havia espaço para improvisação
 
-> Para a especificação de engenharia completa, veja **[ARCHITECTURE_PT.md](./docs/ARCHITECTURE_PT.md)**.
+> Para a referência de engenharia atual, veja **[Arquitetura refinada](./docs/ARCHITECTURE_REFINED.md)** (em inglês). O antigo [plano de engenharia](./docs/ARCHITECTURE_PT.md) foi mantido apenas como registro histórico.
 
 O projeto **não possui intenção nenhuma de lucrar** ou de infringir os direitos autorais da Green Ronin Publishing, criadores do M&M 3e. Este é um projeto feito de fã para a comunidade de RPG.
 

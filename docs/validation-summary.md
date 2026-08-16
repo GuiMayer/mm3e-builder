@@ -1,5 +1,7 @@
 # Resumo da Validação de Modificadores M&M 3E
 
+> **Resumo histórico de validação.** As métricas abaixo foram registradas antes da versão atual e não devem ser usadas como contagem vigente de modificadores ou testes. Para verificar o estado atual, execute a suíte e consulte os dados em `src/data/`.
+
 ## Visão Geral
 
 Este documento resume a validação completa dos modificadores do sistema M&M 3E implementados no projeto. A validação foi dividida em 3 fases, cada uma com testes específicos para garantir a conformidade com as regras oficiais do jogo.

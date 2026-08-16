@@ -1,9 +1,15 @@
-# Gerenciador de Fichas e Construtor de Poderes — Mutants & Masterminds 3e
+# Plano de engenharia histórico — Gerenciador de Fichas e Construtor de Poderes
+
+> **Documento histórico.** Este é o plano de engenharia anterior à implementação, mantido apenas como contexto de decisões. Ele não representa a árvore ou o comportamento atual do código e não deve ser usado como ponto de partida para novas funcionalidades.
+>
+> Use a [Arquitetura refinada](./ARCHITECTURE_REFINED.md) para o escopo atual do produto, responsabilidades dos módulos, regras de persistência e arquivos, compatibilidade e verificações. O documento está em inglês.
+>
+> Em especial, o projeto atual usa `charactersStore.ts` (não `charStore.ts`), módulos específicos em `services/storage` e `services/character-file`, e serviços de exportação sob demanda. PDF e Excel já estão implementados; undo/redo não faz parte do escopo atual.
 
 Plano de engenharia para o criador de fichas de M&M 3e, com foco no Power Builder visual. Arquitetura escalável, princípios S.O.L.I.D. aplicados na prática e faseamento claro de entregas.
 
 > [!IMPORTANT]
-> Este documento foi refatorado com base em análise crítica rigorosa. Todas as lacunas identificadas foram corrigidas. Aguardo aprovação final para iniciar a execução.
+> Este plano antecede a implementação atual e suas fases de entrega foram superadas.
 
 ---
 

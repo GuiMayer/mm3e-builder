@@ -1,5 +1,7 @@
 # RESUMO EXECUTIVO - Auditoria Completa MM3E Builder v1.4.1
 
+> **Resumo histórico.** Este documento resume a auditoria da versão 1.4.1, em 14/05/2026. Ele não representa o estado atual do produto; consulte [ARCHITECTURE_REFINED.md](./ARCHITECTURE_REFINED.md), o changelog e a suíte de testes para informações vigentes.
+
 **Data**: 14/05/2026  
 **Versão Auditada**: 1.4.1  
 **Status**: ✅ **APROVADO PARA PRODUÇÃO**

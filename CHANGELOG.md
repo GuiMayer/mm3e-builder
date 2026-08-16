@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Changed
+- Refined the internal architecture without changing the public product scope: the application remains static, local-first, and deployable to GitHub Pages.
+- Separated character defaults and pure character operations from the Zustand store.
+- Split JSON-file processing and local draft persistence into focused services while preserving established localStorage keys and file compatibility.
+- Loaded PDF and Excel export code on demand to reduce the initial production bundle.
+
+### Quality
+- Added tests for character defaults, character operations, multi-character persistence, JSON-file boundaries, and Power Builder state.
+- Added strict type checking and static-build verification to the standard quality gates.
+- Limited GitHub Pages deployment to pushes to `main`; pull requests run verification only.
+
+### Documentation
+- Established `docs/ARCHITECTURE_REFINED.md` as the current architecture reference.
+
+---
+
 ## [1.10.0] - 2026-06-13
 
 ### Added

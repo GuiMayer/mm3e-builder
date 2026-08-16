@@ -1,5 +1,7 @@
 # Estado Atual do Power Builder e Roadmap Feature-Complete
 
+> **Avaliação histórica (v1.9.0).** Este roadmap foi congelado para preservar o diagnóstico daquela versão. Não use seus estados de implementação, contagens de testes ou próximos passos como descrição do produto atual. Para a arquitetura atual, consulte [ARCHITECTURE_REFINED.md](./ARCHITECTURE_REFINED.md).
+
 **Data de atualizacao:** 17 de maio de 2026  
 **Versao analisada:** 1.9.0 (commits recentes: f169a0f, 7b104d9, fcc7cf7)  
 **Escopo:** criador de poderes/equipamentos em `src/features/power-builder/`, validacoes puras em `src/shared/lib/`, calculos globais em `src/shared/hooks/`, dados em `src/data/` e tipos em `src/entities/`.

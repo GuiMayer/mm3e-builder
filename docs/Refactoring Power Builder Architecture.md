@@ -1,5 +1,7 @@
 # Chat Conversation
 
+> **Registro histórico de uma conversa de implementação.** Este arquivo não é documentação de arquitetura nem guia de manutenção. Ele contém resultados e caminhos locais de uma versão anterior; consulte [ARCHITECTURE_REFINED.md](./ARCHITECTURE_REFINED.md) e o código atual para trabalho novo.
+
 Note: _This is purely the output of the chat conversation and does not contain any raw data, codebase snippets, etc. used to generate the output._
 
 ### User Input

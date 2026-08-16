@@ -1,5 +1,7 @@
 # Análise Arquitetural Completa - MM3E Character Builder
 
+> **Registro histórico.** Esta análise e este plano de sprints descrevem uma versão anterior do projeto. As referências a `charStore.ts`, `DashboardBar.tsx`, scripts ausentes e exportações pendentes não refletem o código atual. Para decisões novas, use [ARCHITECTURE_REFINED.md](./ARCHITECTURE_REFINED.md).
+
 ## 📋 Resumo Executivo
 
 O projeto apresenta uma arquitetura **sólida e bem estruturada** (nota 8/10), com separação clara de responsabilidades, bom uso de TypeScript, e padrões consistentes. No entanto, existem **problemas estruturais significativos** que impactam manutenibilidade e escalabilidade.

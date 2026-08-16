@@ -1,5 +1,7 @@
 # Índice da Auditoria - MM3E Builder v1.4.1
 
+> **Auditoria histórica.** Este índice documenta a auditoria de 14/05/2026 para a versão 1.4.1. Suas métricas, pendências e número de testes não representam a versão atual. Mantenha-o como evidência histórica; consulte [ARCHITECTURE_REFINED.md](./ARCHITECTURE_REFINED.md) e a suíte de testes para o estado atual.
+
 **Data**: 14/05/2026  
 **Versão Auditada**: 1.4.1
 

@@ -2,30 +2,26 @@
 
 Este diretório contém a suíte de testes completa para o MM3e Builder, validando a implementação das regras oficiais do Mutants & Masterminds 3e.
 
+**Estado verificado em 2026-08-15:** 32 arquivos de teste, 544 testes aprovados e 16 testes marcados como `todo`. Execute `npm test -- --run` para obter o estado real; não mantenha contadores manuais por arquivo neste documento.
+
 ## Estrutura de Testes
 
 ### Testes de Lógica de Negócio
 
-| Arquivo | Testes | Foco | Referência |
-|---------|--------|------|------------|
-| `mathEngine.test.ts` | 209 | Cálculos de custos de poderes | Hero's Handbook p.149-200 |
-| `validation.test.ts` | 61 | Limites de PL (trade-offs) | Hero's Handbook p.24 |
-| `altEffects.test.ts` | 290 | Arrays e Alternate Effects | Hero's Handbook p.136 |
-| `powerBuilder.test.ts` | 750 | Builds reais de personagens | Hero's Handbook |
-| `modifierRestrictions.test.ts` | 18 | Restrições de modificadores | Modifiers p.187 |
-| `officialBuilds.test.ts` | 28 | Arquétipos oficiais | Hero's Handbook p.34-53 |
-| `affliction.test.ts` | 36 | Validação de Affliction | Powers p.15-23 |
-| `edgeCases.test.ts` | 49 | Edge cases e limites | Modifiers p.59-86 |
-| `absentAbilities.test.ts` | 17 | Habilidades ausentes | Hero's Handbook p.16-17 |
-| `parameterModifiers.test.ts` | 23 | Range/Duration/Action | Modifiers p.187-200 |
+| Grupo | Exemplos | Foco |
+|-------|----------|------|
+| Regras e cálculos | `mathEngine`, `validation`, `altEffects`, `affliction`, `modifierRestrictions` | Custos, limites de PL, arrays e restrições |
+| Dados e importação | `dataIntegrity`, `archetypes`, `semanticValidation`, `characterFile` | Dados JSON, migrações e validação de arquivos |
+| Estado e persistência | `charactersStore.integration`, `characterOperations`, `characterDraftStorage`, `draftAutoLoad` | Abas, operações puras, auto-save e recuperação |
+| Exportação e interface lógica | `exportCorrections`, `pdfHtmlSafety`, `powerBuilderModel` | PDF, Excel, segurança de HTML e modelo do editor |
 
 ### Testes de Integração
 
-| Arquivo | Testes | Foco |
-|---------|--------|------|
-| `dataIntegrity.test.ts` | - | Integridade de dados JSON |
-| `archetypes.test.ts` | - | Validação de arquétipos |
-| `fileService.test.ts` | - | Serviços de arquivo |
+| Arquivo | Foco |
+|---------|------|
+| `fileService.test.ts` e `characterFile.integration.test.ts` | Compatibilidade do ponto de entrada e processamento de arquivos |
+| `charactersStore.integration.test.ts` | Fluxos de abas de personagens |
+| `characterDraftStorage.test.ts` | Persistência e recuperação local |
 
 ## Executando os Testes
 
@@ -252,11 +248,9 @@ it('debugs calculation', () => {
 
 - [Vitest Documentation](https://vitest.dev/)
 - [M&M 3e SRD](https://www.d20herosrd.com/)
-- [Hero's Handbook](docs/sources/Mutants & Masterminds 3 - Heros Handbook Deluxe.md)
-- [Rules Coverage Report](../docs/testing/rules-coverage-report.md)
+- [Hero's Handbook](../../docs/sources/Mutants%20%26%20Masterminds%203%20-%20Heros%20Handbook%20Deluxe.md)
+- [Rules Coverage Report](../../docs/testing/rules-coverage-report.md)
 
 ---
 
-**Última atualização:** 2026-05-10  
-**Testes totais:** 1481  
-**Cobertura de regras:** 84%
+**Última atualização:** 2026-08-15

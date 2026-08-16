@@ -152,18 +152,19 @@ new panel, allowing players to migrate their free-text content manually. It is n
 it becomes the legacy notes tab when the full system is added.
 
 ```typescript
-// v1.0 shape (current)
+// Current shape
 ICharacter.equipmentNotes: string
 
-// v1.1 shape (future — backward compatible)
+// Future extension — backward compatible
 ICharacter.equipmentNotes: string            // now displayed in the "Notes" tab
 ICharacter.equipment?: IEquipmentItem[]
 ICharacter.vehicles?: IVehicle[]
 ICharacter.headquarters?: IHeadquarters[]
 ```
 
-The `charStore.ts` will gain `setEquipment`, `setVehicles`, `setHeadquarters` actions
-following the same encapsulation pattern as `setSkills`, `setPowers`, `setAdvantages`.
+The multi-character `charactersStore.ts` should evolve through its `updateCharacter`
+action (or a focused entity operation if reuse is needed), without reintroducing the
+removed single-character `charStore.ts`.
 
 A new pure function `calcEquipmentBudget(advantages, advantageDefs)` will be added to
 `mathEngine.ts` for PDF and Excel compatibility.
@@ -173,7 +174,7 @@ A new pure function `calcEquipmentBudget(advantages, advantageDefs)` will be add
 ## FX-04 · Character Notes & Background
 
 **Original plan ID:** F-14 (notes portion), FX-02 (illustration — see above)
-**Status:** F-14 (text notes) is **actively being implemented in Tier 4** — only the illustration portion is deferred.
+**Status:** Text notes are implemented. Illustration support remains deferred.
 
 > The general notes field (`character.notes?: string`) is part of the active Tier 4 plan under F-14.
 > It will be a collapsible "Background & Notes" panel at the bottom of the sheet.
@@ -183,11 +184,11 @@ A new pure function `calcEquipmentBudget(advantages, advantageDefs)` will be add
 ## FX-05 · PP Advancement Tracking
 
 **Original plan ID:** F-17
-**Status:** F-17 is **actively being implemented in Tier 4** as an **opt-in "Campaign Mode" toggle**.
+**Status:** Implemented as an opt-in **Campaign Mode** toggle with a PP log.
 
 > When Campaign Mode is OFF (default), PP = PL × 15 as today — zero visual impact.
 > When ON, a PP log accordion expands with award entries. PP = PL × 15 + Σ ppLog.
 
 ---
 
-*Last updated: 2026-04-05 — v1.0 release*
+*Last updated: 2026-08-15 — compatibility notes revised after the architecture refactor*

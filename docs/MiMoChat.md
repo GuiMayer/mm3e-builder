@@ -1,3 +1,5 @@
+> **Registro histórico de conversa.** Este arquivo preserva uma sessão anterior de implementação. Não é guia de arquitetura, nem retrata necessariamente o código atual. Consulte [ARCHITECTURE_REFINED.md](./ARCHITECTURE_REFINED.md) para decisões técnicas vigentes.
+
 prossiga com o plano de implementação
 Entendido. Vou prosseguir com a implementação das tarefas restantes.
 

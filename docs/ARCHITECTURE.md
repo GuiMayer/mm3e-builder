@@ -1,9 +1,15 @@
-# Character Sheet Manager & Power Builder — Mutants & Masterminds 3e
+# Historical engineering plan — Character Sheet Manager & Power Builder
+
+> **Historical document.** This is the pre-implementation engineering plan, retained for design context only. It is not a map of the current codebase and must not be used as the starting point for new work.
+>
+> Use [Refined architecture](./ARCHITECTURE_REFINED.md) for the current product boundary, module responsibilities, persistence and file-processing rules, compatibility policy, and verification gates.
+>
+> In particular, the current project uses `charactersStore.ts` (not `charStore.ts`), focused `services/storage` and `services/character-file` modules, and on-demand export services. PDF and Excel export are implemented; undo/redo is not part of the current scope.
 
 Engineering plan for the M&M 3e character builder, focused on the visual Power Builder. Scalable architecture, SOLID principles applied in practice, and a clear phased delivery schedule.
 
 > [!IMPORTANT]
-> This document was refactored based on rigorous critical analysis. All identified gaps have been addressed. Awaiting final approval to begin execution.
+> This plan predates the current implementation and its delivery phases have already been superseded.
 
 ---
 
