@@ -8,6 +8,7 @@ import { calcPowerTotalCost } from '../../shared/lib/mathEngine';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Plus, Edit3, Trash2, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 const PowerBuilderOverlay = lazy(() =>
   import('../power-builder/PowerBuilderOverlay').then((module) => ({ default: module.PowerBuilderOverlay }))
@@ -23,6 +24,7 @@ export function PowersList() {
   const powers = character.powers;
   const [builderOpen, setBuilderOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const dialog = useAppDialog();
 
 
 
@@ -38,14 +40,14 @@ export function PowersList() {
     setEditIndex(null);
   }
 
-  function handleDeletePower(index: number) {
+  async function handleDeletePower(index: number) {
     const power = powers[index];
     const altCount = power.alternateEffects.length;
     const msg = altCount > 0
       ? t('powers.deleteConfirmWithAlt', { name: power.name, count: altCount })
       : t('powers.deleteConfirm', { name: power.name });
 
-    if (confirm(msg)) {
+    if (await dialog.confirm({ title: 'Delete power', message: msg, confirmLabel: 'Delete', danger: true })) {
       setPowers(powers.filter((_, i) => i !== index));
     }
   }

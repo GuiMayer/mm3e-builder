@@ -10,6 +10,7 @@ import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 import { useAutoLoadDraftMulti } from '../shared/hooks/useAutoLoadDraftMulti'
 import { usePDFExport } from '../shared/hooks/usePDFExport'
 import { useAppStore } from '../store/appStore'
+import { AppDialogProvider } from '../shared/ui/AppDialog'
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -66,6 +67,7 @@ export function App() {
         }
       }}
     >
+      <AppDialogProvider>
       <div className="app-root">
         <MenuBar 
           activeView={activeView} 
@@ -115,6 +117,7 @@ export function App() {
           />
         )}
       </div>
+      </AppDialogProvider>
 
       <style>{`
         /* Global mobile UX improvements */

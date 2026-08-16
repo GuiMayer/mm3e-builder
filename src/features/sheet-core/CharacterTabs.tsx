@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useCharactersStore } from '../../store/charactersStore';
 import { Copy, Plus, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 export function CharacterTabs() {
   const { t } = useTranslation();
@@ -12,6 +13,7 @@ export function CharacterTabs() {
   const duplicateCharacter = useCharactersStore((s) => s.duplicateCharacter);
   const removeCharacter = useCharactersStore((s) => s.removeCharacter);
   const reorderTabs = useCharactersStore((s) => s.reorderTabs);
+  const dialog = useAppDialog();
 
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
@@ -32,10 +34,10 @@ export function CharacterTabs() {
   };
 
   // Handle close tab
-  const handleCloseTab = (e: React.MouseEvent, characterId: string) => {
+  const handleCloseTab = async (e: React.MouseEvent, characterId: string) => {
     e.stopPropagation();
     
-    if (!window.confirm(t('tabs.closeConfirm'))) return;
+    if (!await dialog.confirm({ title: 'Close character', message: t('tabs.closeConfirm'), confirmLabel: 'Close', danger: true })) return;
     
     removeCharacter(characterId);
   };

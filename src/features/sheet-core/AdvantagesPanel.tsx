@@ -10,6 +10,7 @@ import { Button } from '../../shared/ui/Button';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 const ADVANTAGE_TYPES: AdvantageType[] = ['combat', 'fortune', 'general', 'skill'];
 
@@ -20,6 +21,7 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
   const { character } = useActiveCharacter();
   const { setAdvantages } = useCharacterActions();
   const advantages = character.advantages;
+  const dialog = useAppDialog();
 
   const [showSelector, setShowSelector] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -128,14 +130,14 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
     }
   }
 
-  function confirmSubtype() {
+  async function confirmSubtype() {
     if (!subtypeModal) return;
     const def = advantageDefs.find((d) => d.id === subtypeModal.defId);
     if (!def) return;
 
     // Validate required subtype
     if (def.subtypeRequired && !subtypeInput.trim()) {
-      alert(t('advantages.subtypeRequired'));
+      await dialog.alert({ title: 'Advantage', message: t('advantages.subtypeRequired') });
       return;
     }
 

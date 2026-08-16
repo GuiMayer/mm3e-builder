@@ -4,6 +4,7 @@ import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 /**
  * F-17: PP Advancement Log Panel
@@ -21,6 +22,7 @@ export function PPLogPanel() {
   const [formDate, setFormDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [formAmount, setFormAmount] = useState<number | ''>(5);
   const [formNote, setFormNote] = useState('');
+  const dialog = useAppDialog();
 
   if (!character.campaignMode) return null;
 
@@ -40,8 +42,8 @@ export function PPLogPanel() {
     setFormOpen(false);
   }
 
-  function handleRemove(entryId: string) {
-    const confirmed = window.confirm(t('ppLog.confirmRemove'));
+  async function handleRemove(entryId: string) {
+    const confirmed = await dialog.confirm({ title: 'Remove PP entry', message: t('ppLog.confirmRemove'), confirmLabel: 'Remove', danger: true });
     if (confirmed) {
       removePPLogEntry(entryId);
     }

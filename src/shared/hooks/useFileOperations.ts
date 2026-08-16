@@ -12,6 +12,7 @@ import {
   findCharacterIdentityMatches,
 } from '../../entities/characterImport';
 import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
+import { useAppDialog } from '../ui/appDialogContext';
 
 export interface PendingCharacterImport {
   character: ICharacter;
@@ -24,6 +25,7 @@ export interface PendingCharacterImport {
  */
 export function useFileOperations() {
   const { t, i18n } = useTranslation();
+  const dialog = useAppDialog();
   const { character } = useActiveCharacter();
   const resources = useResourcesStore((state) => state.resources);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -76,9 +78,9 @@ export function useFileOperations() {
       }
     } catch (err) {
       if (err instanceof I18nError) {
-        alert(t(err.i18nKey, err.i18nParams));
+        await dialog.alert({ title: t('errors.importError'), message: t(err.i18nKey, err.i18nParams) });
       } else {
-        alert(t('errors.importError'));
+        await dialog.alert({ title: t('errors.importError'), message: t('errors.importError') });
       }
       throw err;
     } finally {

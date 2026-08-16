@@ -14,6 +14,7 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 import { Button } from '../../shared/ui/Button';
 import { useAppStore } from '../../store/appStore';
 import { X, Save, Plus, Trash2 } from 'lucide-react';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 interface Props {
   existingItem?: IEquipmentItem;
@@ -26,6 +27,7 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
   const powerDefs = useLocalizedData(POWER_DEFS) as IPowerEffect[];
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
   const validationRules = useAppStore((s) => s.validationRules);
+  const dialog = useAppDialog();
 
   // Build initial state
   const [item, setItem] = useState<IEquipmentItem>(
@@ -92,9 +94,9 @@ export function EquipmentBuilder({ existingItem, onSave, onClose }: Props) {
   };
 
   // Handle save
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!item.name.trim()) {
-      alert(t('equipment.nameRequired') || 'Equipment name is required');
+      await dialog.alert({ title: 'Equipment', message: t('equipment.nameRequired') || 'Equipment name is required' });
       return;
     }
     onSave(item);

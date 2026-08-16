@@ -8,6 +8,7 @@ import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { calcEquipmentEPCost } from '../../shared/lib/mathEngine';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 const PowerBuilderOverlay = lazy(() =>
   import('../power-builder/PowerBuilderOverlay').then((module) => ({ default: module.PowerBuilderOverlay }))
@@ -32,6 +33,7 @@ export function EquipmentNotesPanel() {
   const { setEquipment } = useCharacterActions();
   const equipmentRaw = character.equipment;
   const equipment = equipmentRaw ?? [];
+  const dialog = useAppDialog();
   
   const [builderOpen, setBuilderOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
@@ -62,11 +64,11 @@ export function EquipmentNotesPanel() {
     setEditIndex(null);
   }
 
-  function handleDeleteEquipment(index: number) {
+  async function handleDeleteEquipment(index: number) {
     const item = equipment[index];
     const msg = t('equipment.deleteConfirm', { name: item.name }) || `Delete ${item.name}?`;
     
-    if (confirm(msg)) {
+    if (await dialog.confirm({ title: 'Delete equipment', message: msg, confirmLabel: 'Delete', danger: true })) {
       setEquipment(equipment.filter((_, i) => i !== index));
     }
   }

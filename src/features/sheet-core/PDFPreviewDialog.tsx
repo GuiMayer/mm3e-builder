@@ -7,6 +7,7 @@ import { useEffect, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PDFCustomizationPanel } from './PDFCustomizationPanel';
 import type { PDFCustomizationOptions } from '../../services/pdf/types';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 interface PDFPreviewDialogProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ export function PDFPreviewDialog({
   onDownloadHtml,
 }: PDFPreviewDialogProps) {
   const { t } = useTranslation();
+  const dialog = useAppDialog();
   const [isConverting, setIsConverting] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
@@ -46,11 +48,11 @@ export function PDFPreviewDialog({
       await onGeneratePdf();
     } catch (error) {
       console.error('Error generating PDF:', error);
-      alert(t('pdf.preview.error'));
+      await dialog.alert({ title: t('pdf.preview.title'), message: t('pdf.preview.error') });
     } finally {
       setIsConverting(false);
     }
-  }, [onGeneratePdf, t]);
+  }, [dialog, onGeneratePdf, t]);
 
   // Handle HTML download
   const handleDownloadHtml = useCallback(() => {

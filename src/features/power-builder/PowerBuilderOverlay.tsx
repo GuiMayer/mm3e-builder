@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { Modal } from '../../shared/ui/Modal';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { Button } from '../../shared/ui/Button';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
 import { DEFAULT_VALIDATION_RULES } from '../../shared/lib/validationRules';
@@ -52,6 +53,7 @@ interface Props {
 
 export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentMode }: Props) {
   const { t } = useTranslation();
+  const dialog = useAppDialog();
   const powerDefs = useLocalizedData(POWER_DEFS) as IPowerEffect[];
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
 
@@ -387,13 +389,13 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     }));
   }
 
-  function handleSave() {
+  async function handleSave() {
     // Filter out empty components (components without an effect selected)
     const validComponents = power.components.filter((c) => c.effectId !== '');
     
     // Check if there's at least one valid component
     if (validComponents.length === 0) {
-      alert(t('builder.noEffectError'));
+      await dialog.alert({ title: t('builder.title'), message: t('builder.noEffectError') });
       return;
     }
 
@@ -419,7 +421,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
     if (saveIssues.length > 0) {
       const firstIssue = saveIssues[0];
-      alert(`${firstIssue.path}: ${firstIssue.message}`);
+      await dialog.alert({ title: t('builder.title'), message: `${firstIssue.path}: ${firstIssue.message}` });
       return;
     }
 
@@ -430,9 +432,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     
     if (invalidAEs.length > 0) {
       const names = invalidAEs.map((v, index) => v.ae.name || `AE ${index + 1}`).join(', ');
-      const confirmed = window.confirm(
-        `${invalidAEs.length} efeito(s) alternativo(s) excedem o limite de ${mainCost}PP: ${names}.\nSalvar mesmo assim?`
-      );
+      const confirmed = await dialog.confirm({
+        title: t('builder.title'),
+        message: `${invalidAEs.length} efeito(s) alternativo(s) excedem o limite de ${mainCost}PP: ${names}.\nSalvar mesmo assim?`,
+        confirmLabel: t('common.save'),
+      });
       if (!confirmed) return;
     }
 

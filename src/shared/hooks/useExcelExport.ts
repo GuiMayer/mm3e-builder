@@ -6,6 +6,7 @@ import {
   buildExcelLabels,
 } from '../../services/excelExportConfig';
 import { useResourcesStore } from '../../store/resourcesStore';
+import { useAppDialog } from '../ui/appDialogContext';
 
 /**
  * Hook for managing Excel export with localized labels.
@@ -13,6 +14,7 @@ import { useResourcesStore } from '../../store/resourcesStore';
  */
 export function useExcelExport() {
   const { t, i18n } = useTranslation();
+  const dialog = useAppDialog();
   const { character } = useActiveCharacter();
   const resources = useResourcesStore((state) => state.resources);
   const [isExcelLoading, setIsExcelLoading] = useState(false);
@@ -36,7 +38,7 @@ export function useExcelExport() {
       console.error('Excel export failed:', err);
       const errorMsg = t('errors.exportError');
       setExcelError(errorMsg);
-      alert(errorMsg);
+      await dialog.alert({ title: t('errors.exportError'), message: errorMsg });
     } finally {
       setIsExcelLoading(false);
     }

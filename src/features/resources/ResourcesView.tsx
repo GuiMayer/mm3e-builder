@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import type { ICharacterPower, IHeadquartersResource, IResource, IResourceFeature, IVehicleResource, ResourceType } from '../../entities/types';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { useCharactersStore } from '../../store/charactersStore';
+import { useAppDialog } from '../../shared/ui/appDialogContext';
 import { getResourceEPCost, getVehicleBaseTraits } from '../../shared/lib/resourceCalculations';
 import { Button } from '../../shared/ui/Button';
 import { Modal } from '../../shared/ui/Modal';
@@ -33,12 +34,16 @@ export function ResourcesView() {
   const tabs = useCharactersStore((state) => state.tabs);
   const [editing, setEditing] = useState<IResource | null>(null);
   const [powerTarget, setPowerTarget] = useState<PowerTarget | null>(null);
+  const dialog = useAppDialog();
   const ordered = useMemo(() => [...resources].sort((a, b) => a.name.localeCompare(b.name)), [resources]);
   const save = (resource: IResource) => { updateResource({ ...resource, updatedAt: new Date().toISOString() }); setEditing(null); };
-  const deleteResource = (resource: IResource) => {
+  const deleteResource = async (resource: IResource) => {
     const uses = tabs.filter((tab) => (tab.character.resourceLinks ?? []).some((link) => link.resourceId === resource.id)).length;
-    if (uses) return window.alert(t('resources.deleteInUse', { defaultValue: `This resource is associated with ${uses} open character tab(s). Remove those associations before deleting it.` }));
-    if (window.confirm(t('resources.deleteConfirm', { defaultValue: `Delete “${resource.name || 'Unnamed resource'}” from the library?` }))) removeResource(resource.id);
+    if (uses) {
+      await dialog.alert({ title: 'Resource in use', message: t('resources.deleteInUse', { defaultValue: `This resource is associated with ${uses} open character tab(s). Remove those associations before deleting it.` }) });
+      return;
+    }
+    if (await dialog.confirm({ title: 'Delete resource', message: t('resources.deleteConfirm', { defaultValue: `Delete “${resource.name || 'Unnamed resource'}” from the library?` }), confirmLabel: 'Delete', danger: true })) removeResource(resource.id);
   };
   const currentPower = powerTarget && (powerTarget.resource.type === 'vehicle' ? powerTarget.index === undefined ? undefined : powerTarget.resource.systems[powerTarget.index] : powerTarget.resource.type === 'headquarters' ? powerTarget.index === undefined ? undefined : powerTarget.resource.effects[powerTarget.index] : powerTarget.resource.power);
   const savePower = (power: ICharacterPower) => {

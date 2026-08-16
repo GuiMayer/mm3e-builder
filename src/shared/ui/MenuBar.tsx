@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { AppView } from '../../app/App';
 
@@ -23,7 +23,7 @@ import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { parseDraftBundle, parseResourceLibrary, serializeDraftBundle, serializeResourceLibrary } from '../../services/draftTransfer';
 import { downloadBlob } from '../../services/downloadHelper';
-import { Modal } from './Modal';
+import { useAppDialog } from './appDialogContext';
 
 const APP_VERSION = __APP_VERSION__;
 const UPDATE_NOTICE_KEY = 'mm3e-draft-export-notice-version';
@@ -99,12 +99,11 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   // Local state
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [clearDraftOpen, setClearDraftOpen] = useState(false);
-  const [clearDraftChecked, setClearDraftChecked] = useState(false);
-  const [updateNoticeOpen, setUpdateNoticeOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const draftInputRef = useRef<HTMLInputElement>(null);
   const resourceInputRef = useRef<HTMLInputElement>(null);
+  const updateNoticeStartedRef = useRef(false);
+  const dialog = useAppDialog();
 
   // Ensure i18n is synced with store on mount
   useEffect(() => {
@@ -114,6 +113,11 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   }, [language, i18nInstance]);
 
   // Pre-fetch the legacy template only when that renderer is enabled.
+  const handleExportDraft = useCallback(async () => {
+    saveDraftMulti(tabs, activeCharacterId);
+    await downloadBlob(new Blob([serializeDraftBundle(tabs, activeCharacterId, resources)], { type: 'application/x-ndjson' }), `mm3e-draft-${new Date().toISOString().slice(0, 10)}.jsonl`);
+  }, [activeCharacterId, resources, tabs]);
+
   useEffect(() => {
     if (!useLegacyPdfExporter) return;
     void import('../../services/pdf-legacy').then(({ prefetchPDFTemplate }) => {
@@ -122,8 +126,21 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   }, [useLegacyPdfExporter]);
 
   useEffect(() => {
-    if (tabs.length > 0 && localStorage.getItem(UPDATE_NOTICE_KEY) !== APP_VERSION) setUpdateNoticeOpen(true);
-  }, [tabs.length]);
+    if (updateNoticeStartedRef.current || tabs.length === 0 || localStorage.getItem(UPDATE_NOTICE_KEY) === APP_VERSION) return;
+    updateNoticeStartedRef.current = true;
+    void (async () => {
+      const shouldExport = await dialog.confirm({ title: 'Update detected', message: 'A new app version was detected. Export a Draft backup before continuing, in case a future migration needs recovery.', confirmLabel: 'Export Draft', cancelLabel: 'Continue' });
+      if (shouldExport) {
+        try {
+          await handleExportDraft();
+        } catch {
+          await dialog.alert({ title: 'Export Draft', message: 'Could not export the Draft backup. Please try again from Settings.' });
+          return;
+        }
+      }
+      localStorage.setItem(UPDATE_NOTICE_KEY, APP_VERSION);
+    })();
+  }, [dialog, handleExportDraft, tabs.length]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -141,23 +158,17 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     i18nInstance.changeLanguage(lang);
   }
 
-  function handleCampaignModeToggle() {
+  async function handleCampaignModeToggle() {
     // If trying to disable Campaign Mode, ask for confirmation
     if (campaignMode && !hasLogEntries) {
-      const confirmed = window.confirm(t('menu.campaignMode.confirmDisable'));
+      const confirmed = await dialog.confirm({ message: t('menu.campaignMode.confirmDisable') });
       if (!confirmed) return;
     }
     setCampaignMode(!campaignMode);
   }
 
   function handleClearDraft() {
-    setClearDraftChecked(false);
-    setClearDraftOpen(true);
-  }
-
-  async function handleExportDraft() {
-    saveDraftMulti(tabs, activeCharacterId);
-    await downloadBlob(new Blob([serializeDraftBundle(tabs, activeCharacterId, resources)], { type: 'application/x-ndjson' }), `mm3e-draft-${new Date().toISOString().slice(0, 10)}.jsonl`);
+    void dialog.confirm({ title: 'Clear all local data', message: 'This removes every saved item and preference for this app from this browser. This cannot be undone.', confirmLabel: 'Clear all data', danger: true, requireAcknowledgement: true, acknowledgementLabel: 'I understand that this cannot be undone.' }).then((confirmed) => { if (confirmed) { localStorage.clear(); clearDraftMulti(); window.location.reload(); } });
   }
 
   async function handleDraftImport(event: React.ChangeEvent<HTMLInputElement>) {
@@ -166,14 +177,14 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     if (!file) return;
     try {
       const bundle = parseDraftBundle(await file.text());
-      if (!window.confirm(`Restore ${bundle.tabs.length} character(s) and ${bundle.resources.length} Resource(s)? This replaces the current Draft.`)) return;
+      if (!await dialog.confirm({ title: 'Restore Draft', message: `Restore ${bundle.tabs.length} character(s) and ${bundle.resources.length} Resource(s)? This replaces the current Draft.`, confirmLabel: 'Restore', danger: true })) return;
       localStorage.setItem(IMPORT_BACKUP_KEY, JSON.stringify({ exportedAt: new Date().toISOString(), draft: localStorage.getItem('mm3e-draft-characters'), resources: localStorage.getItem('mm3e-resource-library') }));
       const previousTabs = tabs, previousActiveId = activeCharacterId, previousResources = resources;
       replaceResources(bundle.resources);
       if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) { replaceResources(previousResources); replaceDraftMulti(previousTabs, previousActiveId); throw new Error('Storage write failed.'); }
       loadTabs(bundle.tabs, bundle.activeId);
       setDraftHydrated(true);
-    } catch (error) { alert(error instanceof Error ? error.message : 'Could not import Draft.'); }
+    } catch (error) { await dialog.alert({ title: 'Import Draft', message: error instanceof Error ? error.message : 'Could not import Draft.' }); }
   }
 
   async function handleExportResources() {
@@ -188,16 +199,14 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       const importedIds = new Set(imported.map((resource) => resource.id));
       const missingLinks = tabs.flatMap((tab) => tab.character.resourceLinks ?? []).filter((link) => !importedIds.has(link.resourceId)).length;
       const warning = missingLinks ? ` It will leave ${missingLinks} existing character association(s) without a matching library item.` : '';
-      if (!window.confirm(`Restore ${imported.length} Resource(s)? This replaces the current library.${warning}`)) return;
+      if (!await dialog.confirm({ title: 'Restore Resources', message: `Restore ${imported.length} Resource(s)? This replaces the current library.${warning}`, confirmLabel: 'Restore', danger: true })) return;
       localStorage.setItem('mm3e-resource-library-import-backup-v1', JSON.stringify({ exportedAt: new Date().toISOString(), resources: localStorage.getItem('mm3e-resource-library') }));
       replaceResources(imported);
-    } catch (error) { alert(error instanceof Error ? error.message : 'Could not import Resources.'); }
+    } catch (error) { await dialog.alert({ title: 'Import Resources', message: error instanceof Error ? error.message : 'Could not import Resources.' }); }
   }
 
-  function dismissUpdateNotice() { localStorage.setItem(UPDATE_NOTICE_KEY, APP_VERSION); setUpdateNoticeOpen(false); }
-
-  function handleClearCharacter() {
-    const confirmed = window.confirm(t('menu.clear.confirm'));
+  async function handleClearCharacter() {
+    const confirmed = await dialog.confirm({ message: t('menu.clear.confirm'), danger: true });
     if (!confirmed) return;
     resetCharacter();
   }
@@ -700,8 +709,6 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         }
       `}</style>
       </header>
-      <Modal isOpen={clearDraftOpen} onClose={() => setClearDraftOpen(false)} title="Clear all local data" compact><div className="draft-confirm"><p>This removes every saved item and preference for this app from this browser. This cannot be undone.</p><label><input type="checkbox" checked={clearDraftChecked} onChange={(event) => setClearDraftChecked(event.target.checked)} /> I understand that this cannot be undone.</label><div><button onClick={() => setClearDraftOpen(false)}>Cancel</button><button className="draft-confirm__danger" disabled={!clearDraftChecked} onClick={() => { localStorage.clear(); clearDraftMulti(); window.location.reload(); }}>Clear all data</button></div></div><style>{`.draft-confirm{display:flex;flex-direction:column;gap:var(--s-md)}.draft-confirm p{margin:0;color:var(--c-text-secondary)}.draft-confirm label{display:flex;gap:var(--s-sm);align-items:flex-start}.draft-confirm>div{display:flex;justify-content:flex-end;gap:var(--s-sm)}.draft-confirm button{padding:var(--s-sm) var(--s-md);border-radius:var(--r-sm);border:1px solid var(--c-border);background:var(--c-surface-elevated);color:var(--c-text);cursor:pointer}.draft-confirm__danger{background:var(--c-error)!important;color:#fff!important;border-color:var(--c-error)!important}.draft-confirm button:disabled{opacity:.45;cursor:not-allowed}`}</style></Modal>
-      <Modal isOpen={updateNoticeOpen} onClose={dismissUpdateNotice} title="Update detected" compact><div className="draft-confirm"><p>A new app version was detected. Export a Draft backup before continuing, in case a future migration needs recovery.</p><div><button onClick={dismissUpdateNotice}>Continue</button><button className="draft-confirm__danger" onClick={async () => { await handleExportDraft(); dismissUpdateNotice(); }}>Export Draft</button></div></div></Modal>
     </>
   );
 }
