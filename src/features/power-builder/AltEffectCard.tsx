@@ -13,7 +13,7 @@ import type {
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
-import { getComponentCostBreakdown } from '../../shared/lib/mathEngine';
+import { getComponentCostBreakdown, getPerRankModifierCost } from '../../shared/lib/mathEngine';
 
 interface AltEffectCardProps {
   ae: IAlternateEffect;
@@ -238,6 +238,18 @@ export function AltEffectCard({
                             className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                           >
                             <span className="applied-mod-name">{def.name}</span>
+                            {def.costType === 'per_rank' && (def.maxRanks ?? 1) > 1 && (
+                              <NumberInput
+                                variant="small"
+                                className="applied-mod-ranks"
+                                value={applied.ranks}
+                                onChange={(value) =>
+                                  onUpdateModifierRanks(comp.id, applied.modifierId, value)
+                                }
+                                min={1}
+                                max={def.maxRanks}
+                              />
+                            )}
                             {def.costType !== 'per_rank' && (
                               <NumberInput
                                 variant="small"
@@ -266,6 +278,58 @@ export function AltEffectCard({
                                 ))}
                               </select>
                             )}
+                            {def.id === 'affects_objects' && (
+                              <label className="applied-mod-checkbox">
+                                <input
+                                  type="checkbox"
+                                  checked={applied.options?.affectsOnlyObjects === true}
+                                  onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                    ...applied.options,
+                                    affectsOnlyObjects: e.target.checked,
+                                  })}
+                                />
+                                {t('builder.affectsOnlyObjects')}
+                              </label>
+                            )}
+                            {def.id === 'affects_others' && (
+                              <label className="applied-mod-checkbox">
+                                <input
+                                  type="checkbox"
+                                  checked={applied.options?.affectsOnlyOthers === true}
+                                  onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                    ...applied.options,
+                                    affectsOnlyOthers: e.target.checked,
+                                  })}
+                                />
+                                {t('builder.affectsOnlyOthers')}
+                              </label>
+                            )}
+                            {def.id === 'side_effect' && (
+                              <label className="applied-mod-checkbox">
+                                <input
+                                  type="checkbox"
+                                  checked={applied.options?.sideEffectAlways === true}
+                                  onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                    ...applied.options,
+                                    sideEffectAlways: e.target.checked,
+                                  })}
+                                />
+                                {t('builder.sideEffectAlways')}
+                              </label>
+                            )}
+                            {def.id === 'alternate_resistance' && (
+                              <select
+                                className="applied-mod-subtype"
+                                value={(applied.options?.alternateResistanceCost as string) ?? 'equal'}
+                                onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                  ...applied.options,
+                                  alternateResistanceCost: e.target.value,
+                                })}
+                              >
+                                <option value="equal">{t('builder.alternateResistanceEqual')}</option>
+                                <option value="advantageous">{t('builder.alternateResistanceAdvantageous')}</option>
+                              </select>
+                            )}
                             {/* Subtype selector (e.g. Alternate Resistance) */}
                             {def.subtypes && def.subtypes.length > 0 && (
                               <select
@@ -290,12 +354,7 @@ export function AltEffectCard({
                             <span className="applied-mod-cost">
                               {(() => {
                                 if (def.costType === 'per_rank') {
-                                  let effectiveCost = def.costValue;
-                                  if (def.subtypes && def.subtypes.length > 0) {
-                                    const sid = applied.options?.subtypeId as string | undefined;
-                                    const sub = sid ? def.subtypes.find((s) => s.id === sid) : undefined;
-                                    if (sub) effectiveCost = sub.costValue;
-                                  }
+                                  const effectiveCost = getPerRankModifierCost(applied, def, effectDef?.action);
                                   return `${effectiveCost >= 0 ? '+' : ''}${effectiveCost}/rank`;
                                 }
                                 if (modCostPP !== null) {

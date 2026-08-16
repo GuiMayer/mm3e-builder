@@ -31,7 +31,11 @@ export function calcModifierCost(applied: IAppliedModifier, def: IModifierDef): 
  *   - "Affects Objects" (+1/rank both; +0/rank only objects)
  *   - "Alternate Resistance" — cost depends on chosen defense subtype
  */
-function getPerRankModifierCost(applied: IAppliedModifier, def: IModifierDef): number {
+export function getPerRankModifierCost(
+  applied: IAppliedModifier,
+  def: IModifierDef,
+  effectAction?: string
+): number {
   // ── Affects Objects ────────────────────────────────────────────────────────
   if (def.id === 'affects_objects') {
     // +1/rank if affects both characters and objects (default)
@@ -40,20 +44,44 @@ function getPerRankModifierCost(applied: IAppliedModifier, def: IModifierDef): n
     return isOnlyObjects ? 0 : 1;
   }
 
+  // Affects Others costs +1/rank when the user can also use the effect,
+  // and +0/rank only when it affects others exclusively.
+  if (def.id === 'affects_others') {
+    return applied.options?.affectsOnlyOthers === true ? 0 : 1;
+  }
+
+  // The source defines Alternate Resistance by its relative advantage, not
+  // by a fixed defense table. Keep the chosen resistance as metadata and
+  // let the GM decide whether it is more advantageous.
+  if (def.id === 'alternate_resistance') {
+    return applied.options?.alternateResistanceCost === 'advantageous' ? 1 : 0;
+  }
+
+  // Reaction is derived from the effect's printed default action.
+  if (def.id === 'reaction') {
+    return effectAction === 'free' ? 1 : 3;
+  }
+
+  // Side Effect is worth -2/rank only when it always occurs.
+  if (def.id === 'side_effect') {
+    return applied.options?.sideEffectAlways === true ? -2 : -1;
+  }
+
   // ── Modifiers with subtypes (e.g. Alternate Resistance) ────────────────────
   // If def has subtypes and the user chose one, use that subtype's costValue.
   if (def.subtypes && def.subtypes.length > 0) {
     const subtypeId = applied.options?.subtypeId as string | undefined;
     if (subtypeId) {
       const sub = def.subtypes.find((s) => s.id === subtypeId);
-      if (sub) return sub.costValue;
+    if (sub) return sub.costValue;
     }
     // No subtype chosen yet → fall back to def.costValue (0 for alternate_resistance)
     return def.costValue;
   }
 
   // Default behavior
-  return def.costValue;
+  const multiplier = def.maxRanks && def.maxRanks > 1 ? applied.ranks : 1;
+  return def.costValue * multiplier;
 }
 
 /**
@@ -64,14 +92,15 @@ function getPerRankModifierCost(applied: IAppliedModifier, def: IModifierDef): n
 export function calculateCostPerRank(
   baseCost: number,
   appliedModifiers: IAppliedModifier[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  effectAction?: string
 ): { costPerRank: number; isFractional: boolean; ranksPerPP: number } {
   let perRankSum = baseCost;
 
   for (const applied of appliedModifiers) {
     const def = modifierDefs.find((m) => m.id === applied.modifierId);
     if (!def || def.costType !== 'per_rank') continue;
-    perRankSum += getPerRankModifierCost(applied, def);
+    perRankSum += getPerRankModifierCost(applied, def, effectAction);
   }
 
   if (perRankSum >= 1) {
@@ -128,7 +157,8 @@ export function calcComponentCost(
   const { costPerRank, isFractional, ranksPerPP } = calculateCostPerRank(
     baseCost,
     component.modifiers,
-    modifierDefs
+    modifierDefs,
+    effectDef.action,
   );
 
   let rankCost: number;
@@ -247,7 +277,7 @@ export function getComponentCostBreakdown(
     if (def.costType === 'per_rank') {
       // Keep the breakdown on the same rule path as calcComponentCost().
       // Some modifiers (for example Affects Objects) have a conditional cost.
-      const effectiveCost = getPerRankModifierCost(applied, def);
+      const effectiveCost = getPerRankModifierCost(applied, def, effectDef.action);
       perRankSum += effectiveCost;
       if (effectiveCost > 0) perRankExtras += effectiveCost;
       else perRankFlaws += Math.abs(effectiveCost);

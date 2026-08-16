@@ -82,9 +82,9 @@
         "name":  "Affects Others",
         "category":  "extra",
         "costType":  "per_rank",
-        "costValue":  0,
+        "costValue":  1,
         "description":  "A personal effect can also be used on a touched target.",
-        "longDescription":  "+0/rank if the effect still works on you as well; +1/rank if it only works on others. Range becomes touch (close) rather than personal.",
+        "longDescription":  "+1/rank if the effect still works on you as well; +0/rank if it only works on others. Range becomes touch (close) rather than personal.",
         "incompatibleWith":  [
 
                              ],
@@ -92,7 +92,7 @@
                      "pt-BR":  {
                                    "name":  "Afeta Outros",
                                    "description":  "Efeito pessoal pode ser usado em outro alvo por toque.",
-                                   "longDescription":  "+0/rank se ainda funciona em você; +1/rank se funciona somente em outros. Alcance passa a ser toque (perto) em vez de pessoal."
+                                   "longDescription":  "+1/rank se ainda funciona em você; +0/rank se funciona somente em outros. Alcance passa a ser toque (perto) em vez de pessoal."
                                }
                  }
     },
@@ -122,27 +122,27 @@
         "costType":  "per_rank",
         "costValue":  0,
         "description":  "The effect is resisted by a different defense than normal. Choose which defense from the list below.",
-        "longDescription":  "+0/rank if the alternate resistance is equally easy to overcome; +1/rank if it\u0027s harder (e.g. Will instead of Fortitude); +2/rank for Fortitude instead of Toughness.",
+        "longDescription":  "+0/rank if the alternate resistance offers no real increase in effectiveness; +1/rank if it is generally lower and therefore more advantageous. The GM determines which applies.",
         "subtypes":  [
                          {
                              "id":  "will",
                              "label":  "Will",
-                             "costValue":  1
+                             "costValue":  0
                          },
                          {
                              "id":  "fortitude",
                              "label":  "Fortitude",
-                             "costValue":  2
+                             "costValue":  0
                          },
                          {
                              "id":  "dodge",
                              "label":  "Dodge",
-                             "costValue":  1
+                             "costValue":  0
                          },
                          {
                              "id":  "parry",
                              "label":  "Parry",
-                             "costValue":  1
+                             "costValue":  0
                          }
                      ],
         "incompatibleWith":  [
@@ -152,7 +152,7 @@
                      "pt-BR":  {
                                    "name":  "Resistência Alternativa",
                                    "description":  "O efeito é resistido por uma defesa diferente do normal. Escolha a defesa na lista abaixo.",
-                                   "longDescription":  "+0/rank se a resistência alternativa é igualmente fácil; +1/rank se for mais difícil (ex: Vontade no lugar de Fortitude); +2/rank para Fortitude no lugar de Resistência."
+                                   "longDescription":  "+0/rank sem aumento real de eficácia; +1/rank se a resistência for geralmente mais vantajosa. O GM decide qual se aplica."
                                }
                  }
     },
@@ -996,6 +996,7 @@
         "category":  "flaw",
         "costType":  "per_rank",
         "costValue":  -1,
+        "maxRanks":  3,
         "description":  "Using the effect requires a longer action than normal (-1/rank per step up).",
         "longDescription":  "Each step up in action type (free→move→standard→full round) is -1/rank. For example, changing a free action effect to a standard action is -2/rank (-1 for move, -1 more for standard). Full round is -3/rank from free.",
         "incompatibleWith":  [
@@ -1093,6 +1094,7 @@
         "category":  "flaw",
         "costType":  "per_rank",
         "costValue":  -1,
+        "maxRanks":  2,
         "description":  "Drops the effect\u0027s range one step per rank (perception→ranged→close).",
         "longDescription":  "Each rank reduces range by one step: perception→ranged, ranged→close. Cost is -1/rank of the power per step down. Effects already at close range cannot reduce further with this flaw.",
         "incompatibleWith":  [

@@ -30,6 +30,7 @@ import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
+import { getPerRankModifierCost } from '../../shared/lib/mathEngine';
 import {
   collectModifierDefinitions,
   createPowerDraft,
@@ -717,6 +718,18 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                               className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${applied.isPowerSpecific ? 'applied-mod--specific' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                             >
                               <span className="applied-mod-name">{def.name}</span>
+                              {def.costType === 'per_rank' && (def.maxRanks ?? 1) > 1 && (
+                                <NumberInput
+                                  variant="small"
+                                  className="applied-mod-ranks"
+                                  value={applied.ranks}
+                                  onChange={(value) =>
+                                    updateModifierRanks(comp.id, applied.modifierId, value)
+                                  }
+                                  min={1}
+                                  max={def.maxRanks}
+                                />
+                              )}
                               {def.costType !== 'per_rank' && (
                                 <NumberInput
                                   variant="small"
@@ -767,6 +780,51 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                   {t('builder.affectsOnlyObjects')}
                                 </label>
                               )}
+                              {def.id === 'affects_others' && (
+                                <label className="applied-mod-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    checked={applied.options?.affectsOnlyOthers === true}
+                                    onChange={(e) => {
+                                      updateModifierOptions(comp.id, applied.modifierId, {
+                                        ...applied.options,
+                                        affectsOnlyOthers: e.target.checked,
+                                      });
+                                    }}
+                                  />
+                                  {t('builder.affectsOnlyOthers')}
+                                </label>
+                              )}
+                              {def.id === 'side_effect' && (
+                                <label className="applied-mod-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    checked={applied.options?.sideEffectAlways === true}
+                                    onChange={(e) => {
+                                      updateModifierOptions(comp.id, applied.modifierId, {
+                                        ...applied.options,
+                                        sideEffectAlways: e.target.checked,
+                                      });
+                                    }}
+                                  />
+                                  {t('builder.sideEffectAlways')}
+                                </label>
+                              )}
+                              {def.id === 'alternate_resistance' && (
+                                <select
+                                  className="applied-mod-subtype"
+                                  value={(applied.options?.alternateResistanceCost as string) ?? 'equal'}
+                                  onChange={(e) => {
+                                    updateModifierOptions(comp.id, applied.modifierId, {
+                                      ...applied.options,
+                                      alternateResistanceCost: e.target.value,
+                                    });
+                                  }}
+                                >
+                                  <option value="equal">{t('builder.alternateResistanceEqual')}</option>
+                                  <option value="advantageous">{t('builder.alternateResistanceAdvantageous')}</option>
+                                </select>
+                              )}
                               {/* Subtype selector for modifiers with variable cost (e.g. Alternate Resistance) */}
                               {def.subtypes && def.subtypes.length > 0 && (
                                 <select
@@ -792,15 +850,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                 {(() => {
                                   // Show effective cost, accounting for active subtype
                                   if (def.costType === 'per_rank') {
-                                    let effectiveCost = def.costValue;
-                                    if (def.subtypes && def.subtypes.length > 0) {
-                                      const sid = applied.options?.subtypeId as string | undefined;
-                                      const sub = sid ? def.subtypes.find((s) => s.id === sid) : undefined;
-                                      if (sub) effectiveCost = sub.costValue;
-                                    }
-                                    if (def.id === 'affects_objects') {
-                                      effectiveCost = applied.options?.affectsOnlyObjects === true ? 0 : 1;
-                                    }
+                                    const effectiveCost = getPerRankModifierCost(applied, def, effectDef?.action);
                                     return `${effectiveCost >= 0 ? '+' : ''}${effectiveCost}/rank`;
                                   }
                                   if (modCostPP !== null) {

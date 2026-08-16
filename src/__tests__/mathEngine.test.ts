@@ -4,6 +4,7 @@ import {
   calculatePowerCost,
   calculateArrayCost,
   getComponentCostBreakdown,
+  getPerRankModifierCost,
   calculateAbilitiesCost,
   calculateDefensesCost,
   calculateSkillsCost,
@@ -236,6 +237,56 @@ describe('mathEngine', () => {
       };
 
       expect(getComponentCostBreakdown(component, effect, MODS).total).toBe(20);
+    });
+  });
+
+  describe('conditional modifier costs', () => {
+    const affectsOthers = {
+      id: 'affects_others', name: 'Affects Others', category: 'extra',
+      costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [],
+    } as IModifierDef;
+    const alternateResistance = {
+      id: 'alternate_resistance', name: 'Alternate Resistance', category: 'extra',
+      costType: 'per_rank', costValue: 0, description: '', incompatibleWith: [],
+    } as IModifierDef;
+    const reaction = {
+      id: 'reaction', name: 'Reaction', category: 'extra',
+      costType: 'per_rank', costValue: 3, description: '', incompatibleWith: [],
+    } as IModifierDef;
+    const sideEffect = {
+      id: 'side_effect', name: 'Side Effect', category: 'flaw',
+      costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [],
+    } as IModifierDef;
+    const increasedRange = {
+      id: 'increased_range', name: 'Increased Range', category: 'extra',
+      costType: 'per_rank', costValue: 1, maxRanks: 2, description: '', incompatibleWith: [],
+    } as IModifierDef;
+
+    it('uses the RAW alternatives for Affects Others and Alternate Resistance', () => {
+      expect(getPerRankModifierCost({ modifierId: 'affects_others', ranks: 1 }, affectsOthers)).toBe(1);
+      expect(getPerRankModifierCost(
+        { modifierId: 'affects_others', ranks: 1, options: { affectsOnlyOthers: true } },
+        affectsOthers,
+      )).toBe(0);
+      expect(getPerRankModifierCost(
+        { modifierId: 'alternate_resistance', ranks: 1, options: { alternateResistanceCost: 'advantageous' } },
+        alternateResistance,
+      )).toBe(1);
+    });
+
+    it('derives Reaction from the printed default action', () => {
+      const applied = { modifierId: 'reaction', ranks: 1 };
+      expect(getPerRankModifierCost(applied, reaction, 'free')).toBe(1);
+      expect(getPerRankModifierCost(applied, reaction, 'standard')).toBe(3);
+    });
+
+    it('supports ranked range changes and both Side Effect costs', () => {
+      expect(getPerRankModifierCost({ modifierId: 'increased_range', ranks: 2 }, increasedRange)).toBe(2);
+      expect(getPerRankModifierCost({ modifierId: 'side_effect', ranks: 1 }, sideEffect)).toBe(-1);
+      expect(getPerRankModifierCost(
+        { modifierId: 'side_effect', ranks: 1, options: { sideEffectAlways: true } },
+        sideEffect,
+      )).toBe(-2);
     });
   });
 });
