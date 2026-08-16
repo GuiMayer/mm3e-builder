@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createDefaultCharacter } from '../entities/characterDefaults';
 import type { IResource } from '../entities/types';
-import { parseDraftBundle, serializeDraftBundle } from '../services/draftTransfer';
+import { parseDraftBundle, parseResourceLibrary, serializeDraftBundle, serializeResourceLibrary } from '../services/draftTransfer';
 
 const resource: IResource = { id: '4e842e63-57fb-46ba-bce3-58264d1fc591', type: 'gear', name: 'Scanner', notes: '', createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z', power: { id: 'power-1', name: 'Scanner', components: [], notes: '', alternateEffects: [] } };
 
@@ -16,5 +16,9 @@ describe('Draft JSONL transfer', () => {
 
   it('rejects invalid records before any storage operation can occur', () => {
     expect(() => parseDraftBundle('{"type":"manifest"}\n{"type":"resource","resource":{}}')).toThrow();
+  });
+
+  it('round-trips a standalone Resource library JSONL', () => {
+    expect(parseResourceLibrary(serializeResourceLibrary([resource]))).toEqual([resource]);
   });
 });

@@ -34,7 +34,7 @@ export function getHistoryShortcut(event: KeyboardEvent): HistoryShortcut {
  * ignore editable fields and unsaved modal editors so browser text undo and the
  * Power Builder's local draft keep their expected behavior.
  */
-export function useCharacterHistory() {
+export function useCharacterHistory(enabled = true) {
   const activeCharacterId = useCharactersStore((state) => state.activeCharacterId);
   const history = useCharactersStore((state) =>
     activeCharacterId ? state.historyByTabId[activeCharacterId] : undefined
@@ -52,8 +52,8 @@ export function useCharacterHistory() {
 
   const canUndoCharacter = (history?.past.length ?? 0) > 0;
   const canRedoCharacter = (history?.future.length ?? 0) > 0;
-  const canUndo = hasClosedTabToUndo || canUndoCharacter;
-  const canRedo = hasClosedTabToRedo || canRedoCharacter;
+  const canUndo = enabled && (hasClosedTabToUndo || canUndoCharacter);
+  const canRedo = enabled && (hasClosedTabToRedo || canRedoCharacter);
 
   const undo = useCallback(() => {
     if (hasClosedTabToUndo) {

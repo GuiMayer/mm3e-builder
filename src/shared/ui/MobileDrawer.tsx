@@ -32,6 +32,9 @@ interface MobileDrawerProps {
   onClearDraft: () => void;
   onExportDraft: () => void;
   onImportDraft: () => void;
+  actionsDisabled: boolean;
+  canClear: boolean;
+  canExportDocuments: boolean;
 }
 
 export function MobileDrawer({
@@ -61,6 +64,9 @@ export function MobileDrawer({
   onClearDraft,
   onExportDraft,
   onImportDraft,
+  actionsDisabled,
+  canClear,
+  canExportDocuments,
 }: MobileDrawerProps) {
   const { t } = useTranslation();
 
@@ -115,7 +121,7 @@ export function MobileDrawer({
             <button
               className="mobile-drawer-item"
               onClick={() => handleAction(onUndo)}
-              disabled={!canUndo}
+              disabled={!canUndo || actionsDisabled}
             >
               <Undo2 size={20} />
               <span>{t('menu.undo')}</span>
@@ -123,31 +129,31 @@ export function MobileDrawer({
             <button
               className="mobile-drawer-item"
               onClick={() => handleAction(onRedo)}
-              disabled={!canRedo}
+              disabled={!canRedo || actionsDisabled}
             >
               <Redo2 size={20} />
               <span>{t('menu.redo')}</span>
             </button>
-            <button className="mobile-drawer-item" onClick={() => handleAction(onClear)}>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onClear)} disabled={!canClear}>
               <Eraser size={20} />
               <span>{t('menu.clear')}</span>
             </button>
-            <button className="mobile-drawer-item" onClick={() => handleAction(onExport)}>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onExport)} disabled={actionsDisabled}>
               <Download size={20} />
               <span>{t('menu.export')}</span>
             </button>
-            <button className="mobile-drawer-item" onClick={() => handleAction(onImport)}>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onImport)} disabled={actionsDisabled}>
               <Upload size={20} />
               <span>{t('menu.import')}</span>
             </button>
-            <button className="mobile-drawer-item" onClick={() => handleAction(onExportExcel)}>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onExportExcel)} disabled={!canExportDocuments}>
               <FileSpreadsheet size={20} />
               <span>{t('menu.exportExcel')}</span>
             </button>
             <button
               className="mobile-drawer-item"
               onClick={() => handleAction(onExportPDF)}
-              disabled={isGeneratingPreview}
+              disabled={isGeneratingPreview || !canExportDocuments}
             >
               {isGeneratingPreview ? <Loader2 size={20} className="spin" /> : <FileText size={20} />}
               <span>{isGeneratingPreview ? t('pdf.generating') : t('menu.exportPdf')}</span>

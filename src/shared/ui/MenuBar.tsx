@@ -7,6 +7,7 @@ import { useActiveCharacter } from '../hooks/useActiveCharacter';
 import { useCharacterActions } from '../hooks/useCharacterActions';
 import { useCalculatedPP } from '../hooks/useCalculatedPP';
 import { useCharacterHistory } from '../hooks/useCharacterHistory';
+import { useResourceHistory } from '../hooks/useResourceHistory';
 import { useFileOperations } from '../hooks/useFileOperations';
 import { useExcelExport } from '../hooks/useExcelExport';
 import { MobileDrawer } from './MobileDrawer';
@@ -20,7 +21,7 @@ import { clearDraftMulti } from '../../services/fileService';
 import { replaceDraftMulti, saveDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
-import { parseDraftBundle, serializeDraftBundle } from '../../services/draftTransfer';
+import { parseDraftBundle, parseResourceLibrary, serializeDraftBundle, serializeResourceLibrary } from '../../services/draftTransfer';
 import { downloadBlob } from '../../services/downloadHelper';
 import { Modal } from './Modal';
 
@@ -81,7 +82,9 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   
   // Hooks
   const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
-  const { canUndo, canRedo, undo, redo } = useCharacterHistory();
+  const characterHistory = useCharacterHistory(activeView === 'sheet');
+  const resourceHistory = useResourceHistory(activeView === 'resources');
+  const history = activeView === 'resources' ? resourceHistory : characterHistory;
   const {
     exportCharacter,
     handleFileInput,
@@ -101,6 +104,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   const [updateNoticeOpen, setUpdateNoticeOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const draftInputRef = useRef<HTMLInputElement>(null);
+  const resourceInputRef = useRef<HTMLInputElement>(null);
 
   // Ensure i18n is synced with store on mount
   useEffect(() => {
@@ -172,6 +176,24 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     } catch (error) { alert(error instanceof Error ? error.message : 'Could not import Draft.'); }
   }
 
+  async function handleExportResources() {
+    await downloadBlob(new Blob([serializeResourceLibrary(resources)], { type: 'application/x-ndjson' }), `mm3e-resources-${new Date().toISOString().slice(0, 10)}.jsonl`);
+  }
+
+  async function handleResourceImport(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]; event.target.value = '';
+    if (!file) return;
+    try {
+      const imported = parseResourceLibrary(await file.text());
+      const importedIds = new Set(imported.map((resource) => resource.id));
+      const missingLinks = tabs.flatMap((tab) => tab.character.resourceLinks ?? []).filter((link) => !importedIds.has(link.resourceId)).length;
+      const warning = missingLinks ? ` It will leave ${missingLinks} existing character association(s) without a matching library item.` : '';
+      if (!window.confirm(`Restore ${imported.length} Resource(s)? This replaces the current library.${warning}`)) return;
+      localStorage.setItem('mm3e-resource-library-import-backup-v1', JSON.stringify({ exportedAt: new Date().toISOString(), resources: localStorage.getItem('mm3e-resource-library') }));
+      replaceResources(imported);
+    } catch (error) { alert(error instanceof Error ? error.message : 'Could not import Resources.'); }
+  }
+
   function dismissUpdateNotice() { localStorage.setItem(UPDATE_NOTICE_KEY, APP_VERSION); setUpdateNoticeOpen(false); }
 
   function handleClearCharacter() {
@@ -187,12 +209,12 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         onClear={handleClearCharacter}
-        onUndo={undo}
-        onRedo={redo}
-        canUndo={canUndo}
-        canRedo={canRedo}
-        onExport={exportCharacter}
-        onImport={() => fileInputRef.current?.click()}
+        onUndo={history.undo}
+        onRedo={history.redo}
+        canUndo={history.canUndo}
+        canRedo={history.canRedo}
+        onExport={activeView === 'resources' ? handleExportResources : exportCharacter}
+        onImport={() => activeView === 'resources' ? resourceInputRef.current?.click() : fileInputRef.current?.click()}
         onExportExcel={exportExcel}
         onExportPDF={onExportPDF}
         isGeneratingPreview={isGeneratingPreview}
@@ -210,6 +232,9 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         onClearDraft={handleClearDraft}
         onExportDraft={handleExportDraft}
         onImportDraft={() => draftInputRef.current?.click()}
+        actionsDisabled={activeView === 'references'}
+        canClear={activeView === 'sheet'}
+        canExportDocuments={activeView === 'sheet'}
       />
 
       <CharacterImportConflictDialog
@@ -241,8 +266,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       <nav className="menubar-actions">
         <button
           className="menubar-btn"
-          onClick={undo}
-          disabled={!canUndo}
+          onClick={history.undo}
+          disabled={!history.canUndo}
           title={`${t('menu.undo')} (Ctrl+Z)`}
           aria-label={`${t('menu.undo')} (Ctrl+Z)`}
         >
@@ -250,27 +275,27 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         </button>
         <button
           className="menubar-btn"
-          onClick={redo}
-          disabled={!canRedo}
+          onClick={history.redo}
+          disabled={!history.canRedo}
           title={`${t('menu.redo')} (Ctrl+Shift+Z)`}
           aria-label={`${t('menu.redo')} (Ctrl+Shift+Z)`}
         >
           <Redo2 size={18} /> <span>{t('menu.redo')}</span>
         </button>
-        <button className="menubar-btn" onClick={handleClearCharacter} title={t('menu.clear')}>
+        <button className="menubar-btn" onClick={handleClearCharacter} disabled={activeView !== 'sheet'} title={t('menu.clear')}>
           <Eraser size={18} /> <span>{t('menu.clear')}</span>
         </button>
-        <button className="menubar-btn" onClick={exportCharacter} title={t('menu.export')}>
+        <button className="menubar-btn" onClick={activeView === 'resources' ? handleExportResources : exportCharacter} disabled={activeView === 'references'} title={t('menu.export')}>
           <Download size={18} /> <span>{t('menu.export')}</span>
         </button>
-        <button className="menubar-btn menubar-btn--excel" onClick={exportExcel} title={t('menu.exportExcel')}>
+        <button className="menubar-btn menubar-btn--excel" onClick={exportExcel} disabled={activeView !== 'sheet'} title={t('menu.exportExcel')}>
           <FileSpreadsheet size={18} /> <span>{t('menu.exportExcel')}</span>
         </button>
         <button
           id="btn-export-pdf"
           className={`menubar-btn menubar-btn--pdf ${isGeneratingPreview ? 'menubar-btn--loading' : ''}`}
           onClick={onExportPDF}
-          disabled={isGeneratingPreview}
+          disabled={isGeneratingPreview || activeView !== 'sheet'}
           title={t('menu.exportPdf')}
         >
           {isGeneratingPreview
@@ -278,7 +303,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
             : <FileText size={18} />}
           <span>{isGeneratingPreview ? t('pdf.generating') : t('menu.exportPdf')}</span>
         </button>
-        <button className="menubar-btn" onClick={() => fileInputRef.current?.click()} title={t('menu.import')}>
+        <button className="menubar-btn" onClick={() => activeView === 'resources' ? resourceInputRef.current?.click() : fileInputRef.current?.click()} disabled={activeView === 'references'} title={t('menu.import')}>
           <Upload size={18} /> <span>{t('menu.import')}</span>
         </button>
         <input
@@ -289,6 +314,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           style={{ display: 'none' }}
         />
         <input ref={draftInputRef} type="file" accept=".jsonl,application/x-ndjson" onChange={handleDraftImport} style={{ display: 'none' }} />
+        <input ref={resourceInputRef} type="file" accept=".jsonl,application/x-ndjson" onChange={handleResourceImport} style={{ display: 'none' }} />
 
         {/* Settings Dropdown */}
         <div className="menubar-dropdown-wrapper" ref={dropdownRef}>
