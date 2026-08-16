@@ -48,6 +48,8 @@ export interface CharactersStoreState {
   activeCharacterId: string | null;
   /** Autosave is disabled until persisted data was loaded or conclusively absent. */
   isDraftHydrated: boolean;
+  /** Explains why autosave is intentionally blocked after a protected load failure. */
+  draftLoadError: string | null;
   /** Runtime-only history keyed by tab ID. It is deliberately not persisted. */
   historyByTabId: Record<string, CharacterHistory>;
   /** Recently closed tabs are reversible only during the current browser session. */
@@ -81,6 +83,7 @@ export interface CharactersStoreState {
   loadTabs: (tabs: CharacterTab[], activeId: string | null) => void;
   clearAllCharacters: () => void;
   setDraftHydrated: (hydrated: boolean) => void;
+  setDraftLoadError: (error: string | null) => void;
 
   // Dirty state management
   markCharacterDirty: (id: string) => void;
@@ -97,6 +100,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
       tabs: [],
       activeCharacterId: null,
       isDraftHydrated: false,
+      draftLoadError: null,
       historyByTabId: {},
       closedTabHistory: createClosedTabHistory(),
 
@@ -431,6 +435,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
       },
 
       setDraftHydrated: (hydrated) => set({ isDraftHydrated: hydrated }),
+      setDraftLoadError: (error) => set({ draftLoadError: error }),
 
       markCharacterDirty: (id) => {
         set((state) => ({

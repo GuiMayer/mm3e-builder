@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useCharactersStore } from '../../store/charactersStore';
-import { saveDraftMulti } from '../../services/fileService';
+import { getLastDraftSaveError, saveDraftMulti } from '../../services/fileService';
+import { useAppDialog } from '../ui/appDialogContext';
 
 /**
  * Hook that auto-saves all character tabs to localStorage on every change.
@@ -12,8 +13,10 @@ export function useDraftAutoSave() {
   const activeId = useCharactersStore((s) => s.activeCharacterId);
   const isDraftHydrated = useCharactersStore((s) => s.isDraftHydrated);
   const markCharacterClean = useCharactersStore((s) => s.markCharacterClean);
+  const dialog = useAppDialog();
   const timerRef = useRef<number | null>(null);
   const dirtyTabsRef = useRef<Set<string>>(new Set());
+  const shownSaveErrorRef = useRef<string | null>(null);
 
   useEffect(() => {
     // Never replace persisted data before the startup loader has established
@@ -46,6 +49,13 @@ export function useDraftAutoSave() {
         // Mark all dirty tabs as clean
         dirtyTabsRef.current.forEach((id) => markCharacterClean(id));
         dirtyTabsRef.current.clear();
+        shownSaveErrorRef.current = null;
+      } else {
+        const message = getLastDraftSaveError() ?? 'The browser could not save this Draft. Your changes remain marked as unsaved.';
+        if (shownSaveErrorRef.current !== message) {
+          shownSaveErrorRef.current = message;
+          void dialog.alert({ title: 'Draft not saved', message });
+        }
       }
 
       timerRef.current = null;
@@ -56,5 +66,5 @@ export function useDraftAutoSave() {
         clearTimeout(timerRef.current);
       }
     };
-  }, [tabs, activeId, isDraftHydrated, markCharacterClean]);
+  }, [tabs, activeId, dialog, isDraftHydrated, markCharacterClean]);
 }

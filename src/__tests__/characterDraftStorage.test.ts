@@ -4,6 +4,7 @@ import type { CharacterTab } from '../store/charactersStore';
 import {
   characterDraftStorageKeys,
   getDraftMetadataMulti,
+  getLastDraftSaveError,
   loadDraftMulti,
   saveDraftMulti,
 } from '../services/storage/characterDraftStorage';
@@ -110,5 +111,33 @@ describe('characterDraftStorage', () => {
     saveDraftMulti(tabs, null);
 
     expect(loadDraftMulti()?.activeId).toBe('tab-3');
+  });
+
+  it('removes obsolete full-draft backups after a successful save', () => {
+    storage.setItem(characterDraftStorageKeys.backup, 'old draft');
+    storage.setItem(characterDraftStorageKeys.legacyBackup, 'old legacy draft');
+
+    expect(saveDraftMulti([createTab('tab-4', 'Four')], 'tab-4')).toBe(true);
+    expect(storage.getItem(characterDraftStorageKeys.backup)).toBeNull();
+    expect(storage.getItem(characterDraftStorageKeys.legacyBackup)).toBeNull();
+  });
+
+  it('restores the previous draft when a partial write fails', () => {
+    const oldDraft = JSON.stringify({ version: 1, activeCharacterId: 'old', characters: [], savedAt: 'old' });
+    const oldMetadata = JSON.stringify({ version: 1, characterCount: 0, activeCharacterName: 'Old', characterNames: [], totalSize: 1, savedAt: 'old' });
+    storage.setItem(characterDraftStorageKeys.draft, oldDraft);
+    storage.setItem(characterDraftStorageKeys.metadata, oldMetadata);
+    const baseSetItem = storage.setItem.getMockImplementation();
+    storage.setItem.mockImplementation((key: string, value: string) => {
+      if (key === characterDraftStorageKeys.metadata && value !== oldMetadata) {
+        throw new DOMException('Quota exceeded', 'QuotaExceededError');
+      }
+      baseSetItem?.(key, value);
+    });
+
+    expect(saveDraftMulti([createTab('tab-5', 'Five')], 'tab-5')).toBe(false);
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toBe(oldDraft);
+    expect(storage.getItem(characterDraftStorageKeys.metadata)).toBe(oldMetadata);
+    expect(getLastDraftSaveError()).toContain('storage is full');
   });
 });

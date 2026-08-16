@@ -20,6 +20,7 @@ export function useAutoLoadDraftMulti() {
   const hasRunRef = useRef(false);
   const loadTabs = useCharactersStore((s) => s.loadTabs);
   const setDraftHydrated = useCharactersStore((s) => s.setDraftHydrated);
+  const setDraftLoadError = useCharactersStore((s) => s.setDraftLoadError);
 
   useEffect(() => {
     // Prevent double-run in React StrictMode
@@ -56,15 +57,19 @@ export function useAutoLoadDraftMulti() {
         });
         loadTabs(migrated, draft.activeId);
         setDraftHydrated(true);
+        setDraftLoadError(null);
         console.log(`[useAutoLoadDraftMulti] Loaded ${draft.tabs.length} character(s)`);
       } else if (!hasStoredDraft()) {
         setDraftHydrated(true);
+        setDraftLoadError(null);
         console.log('[useAutoLoadDraftMulti] No draft found, starting fresh');
       } else {
         console.error('[useAutoLoadDraftMulti] Stored draft was not recovered; autosave remains disabled to protect it.');
+        setDraftLoadError('The saved Draft could not be recovered, so autosave is disabled to avoid replacing it.');
       }
     } catch (error) {
       console.error('[useAutoLoadDraftMulti] Failed to load draft:', error);
+      setDraftLoadError('The saved Draft could not be read, so autosave is disabled to avoid replacing it.');
       // Keep the original payload intact. A future migration or manual export
       // is safer than silently replacing a draft that failed to load.
     }
@@ -91,7 +96,7 @@ export function useAutoLoadDraftMulti() {
       window.removeEventListener('beforeunload', cleanup);
       cleanup();
     };
-  }, [loadTabs, setDraftHydrated]);
+  }, [loadTabs, setDraftHydrated, setDraftLoadError]);
 
   // This hook has no return value - it's a side-effect only
 }

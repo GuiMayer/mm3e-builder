@@ -38,12 +38,7 @@ const DraftMetadataSchema = z.object({
 export type DraftMetadataMulti = z.infer<typeof DraftMetadataSchema>;
 
 let lastSavedSignature = '';
-
-/** Keep the pre-migration payload intact. Local data is never discarded by an upgrade. */
-function preserveBackup(sourceKey: string, backupKey: string): void {
-  const original = localStorage.getItem(sourceKey);
-  if (original && !localStorage.getItem(backupKey)) localStorage.setItem(backupKey, original);
-}
+let lastDraftSaveError: string | null = null;
 
 function toStoredCharacters(tabs: CharacterTab[]) {
   return tabs.map((tab) => ({
@@ -87,10 +82,25 @@ export function saveDraftMulti(
   activeCharacterId: string | null
 ): boolean {
   const signature = createDraftSignature(tabs, activeCharacterId);
-  if (signature === lastSavedSignature) return true;
+  if (signature === lastSavedSignature) {
+    try {
+      localStorage.removeItem(DRAFT_BACKUP_KEY);
+      localStorage.removeItem(LEGACY_DRAFT_BACKUP_KEY);
+    } catch (cleanupError) {
+      console.warn('[saveDraftMulti] Could not remove obsolete draft backups:', cleanupError);
+    }
+    lastDraftSaveError = null;
+    return true;
+  }
+
+  let previousDraft: string | null = null;
+  let previousMetadata: string | null = null;
+  let snapshotTaken = false;
 
   try {
-    preserveBackup(DRAFT_KEY, DRAFT_BACKUP_KEY);
+    previousDraft = localStorage.getItem(DRAFT_KEY);
+    previousMetadata = localStorage.getItem(DRAFT_METADATA_KEY);
+    snapshotTaken = true;
     const draft = {
       version: DRAFT_VERSION,
       activeCharacterId,
@@ -110,15 +120,41 @@ export function saveDraftMulti(
       savedAt: new Date().toISOString(),
     };
 
+    // Earlier versions kept a second full copy of the active draft. Remove
+    // those obsolete backups before writing so they cannot exhaust quota.
+    // The current draft remains available for rollback until this write ends.
+    localStorage.removeItem(DRAFT_BACKUP_KEY);
+    localStorage.removeItem(LEGACY_DRAFT_BACKUP_KEY);
+
     // Update the in-memory signature only after both durable writes succeed.
     localStorage.setItem(DRAFT_KEY, json);
     localStorage.setItem(DRAFT_METADATA_KEY, JSON.stringify(metadata));
     lastSavedSignature = signature;
+    lastDraftSaveError = null;
     return true;
   } catch (error) {
+    // localStorage has no transactions. Restore the previously durable pair
+    // when a partial write fails, so a failed save never replaces a good one.
+    try {
+      if (!snapshotTaken) throw error;
+      if (previousDraft === null) localStorage.removeItem(DRAFT_KEY);
+      else localStorage.setItem(DRAFT_KEY, previousDraft);
+      if (previousMetadata === null) localStorage.removeItem(DRAFT_METADATA_KEY);
+      else localStorage.setItem(DRAFT_METADATA_KEY, previousMetadata);
+    } catch (rollbackError) {
+      console.error('[saveDraftMulti] Failed to restore the previous local draft:', rollbackError);
+    }
+    lastDraftSaveError = error instanceof DOMException && error.name === 'QuotaExceededError'
+      ? 'Browser storage is full. Free storage space or export and clear older drafts before trying again.'
+      : 'The browser could not save this Draft. Your changes remain marked as unsaved.';
     console.error('[saveDraftMulti] Failed to save local draft:', error);
     return false;
   }
+}
+
+/** The last storage failure, used to surface an actionable autosave message. */
+export function getLastDraftSaveError(): string | null {
+  return lastDraftSaveError;
 }
 
 function parseMultiCharacterDraft(stored: string): CharacterTab[] | null {
@@ -252,7 +288,6 @@ function migrateLegacyDraft(): {
 
   if (!saveDraftMulti([tab], id)) return null;
 
-  preserveBackup(LEGACY_DRAFT_KEY, LEGACY_DRAFT_BACKUP_KEY);
   localStorage.setItem('mm3e-multi-char-migrated', 'true');
   return { tabs: [tab], activeId: id };
 }
@@ -272,9 +307,12 @@ export function getDraftMetadataMulti(): DraftMetadataMulti | null {
 export function clearDraftMulti(): void {
   localStorage.removeItem(DRAFT_KEY);
   localStorage.removeItem(DRAFT_METADATA_KEY);
+  localStorage.removeItem(DRAFT_BACKUP_KEY);
   localStorage.removeItem(LEGACY_DRAFT_KEY);
+  localStorage.removeItem(LEGACY_DRAFT_BACKUP_KEY);
   localStorage.removeItem(`${LEGACY_DRAFT_KEY}-metadata`);
   lastSavedSignature = '';
+  lastDraftSaveError = null;
 }
 
 /** Replaces the character draft after an external backup was fully validated. */

@@ -11,6 +11,7 @@ import { useAutoLoadDraftMulti } from '../shared/hooks/useAutoLoadDraftMulti'
 import { usePDFExport } from '../shared/hooks/usePDFExport'
 import { useAppStore } from '../store/appStore'
 import { AppDialogProvider } from '../shared/ui/AppDialog'
+import { DraftStorageStatus } from '../shared/ui/DraftStorageStatus'
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -68,6 +69,7 @@ export function App() {
       }}
     >
       <AppDialogProvider>
+      <DraftStorageStatus />
       <div className="app-root">
         <MenuBar 
           activeView={activeView} 
