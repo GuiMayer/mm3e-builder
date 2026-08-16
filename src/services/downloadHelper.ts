@@ -43,6 +43,10 @@ const FILE_TYPES: Record<string, FileTypeConfig> = {
     description: 'JSON File',
     accept: { 'application/json': ['.json'] },
   },
+  jsonl: {
+    description: 'JSON Lines File',
+    accept: { 'application/x-ndjson': ['.jsonl'] },
+  },
   xlsx: {
     description: 'Excel Spreadsheet',
     accept: {

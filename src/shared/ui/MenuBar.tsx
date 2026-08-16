@@ -16,7 +16,17 @@ import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
 import { Settings, Download, Upload, Eraser, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu, Undo2, Redo2 } from 'lucide-react';
 import i18n from '../../locales';
-import { clearDraftMulti, getDraftMetadataMulti } from '../../services/fileService';
+import { clearDraftMulti } from '../../services/fileService';
+import { replaceDraftMulti, saveDraftMulti } from '../../services/fileService';
+import { useCharactersStore } from '../../store/charactersStore';
+import { useResourcesStore } from '../../store/resourcesStore';
+import { parseDraftBundle, serializeDraftBundle } from '../../services/draftTransfer';
+import { downloadBlob } from '../../services/downloadHelper';
+import { Modal } from './Modal';
+
+const APP_VERSION = '1.11.0';
+const UPDATE_NOTICE_KEY = 'mm3e-draft-export-notice-version';
+const IMPORT_BACKUP_KEY = 'mm3e-draft-import-backup-v1';
 
 const THEMES = [
   { id: 'dark-knight', label: 'Dark Knight' },
@@ -59,6 +69,12 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   const useLegacyPdfExporter = useAppStore((s) => s.useLegacyPdfExporter);
   const setUseLegacyPdfExporter = useAppStore((s) => s.setUseLegacyPdfExporter);
   const { character } = useActiveCharacter();
+  const tabs = useCharactersStore((s) => s.tabs);
+  const activeCharacterId = useCharactersStore((s) => s.activeCharacterId);
+  const loadTabs = useCharactersStore((s) => s.loadTabs);
+  const setDraftHydrated = useCharactersStore((s) => s.setDraftHydrated);
+  const resources = useResourcesStore((s) => s.resources);
+  const replaceResources = useResourcesStore((s) => s.replaceResources);
   const { setCampaignMode, resetCharacter } = useCharacterActions();
   const campaignMode = character.campaignMode ?? false;
   const hasLogEntries = (character.ppLog ?? []).length > 0;
@@ -80,7 +96,11 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   // Local state
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [clearDraftOpen, setClearDraftOpen] = useState(false);
+  const [clearDraftChecked, setClearDraftChecked] = useState(false);
+  const [updateNoticeOpen, setUpdateNoticeOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const draftInputRef = useRef<HTMLInputElement>(null);
 
   // Ensure i18n is synced with store on mount
   useEffect(() => {
@@ -96,6 +116,10 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       prefetchPDFTemplate();
     });
   }, [useLegacyPdfExporter]);
+
+  useEffect(() => {
+    if (tabs.length > 0 && localStorage.getItem(UPDATE_NOTICE_KEY) !== APP_VERSION) setUpdateNoticeOpen(true);
+  }, [tabs.length]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -123,14 +147,32 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   }
 
   function handleClearDraft() {
-    const metadata = getDraftMetadataMulti();
-    const characterName = metadata?.activeCharacterName || t('draftNotification.unnamedCharacter');
-    const confirmed = window.confirm(t('menu.clearDraft.confirm', { name: characterName }));
-    if (confirmed) {
-      clearDraftMulti();
-      alert(t('menu.clearDraft.success'));
-    }
+    setClearDraftChecked(false);
+    setClearDraftOpen(true);
   }
+
+  async function handleExportDraft() {
+    saveDraftMulti(tabs, activeCharacterId);
+    await downloadBlob(new Blob([serializeDraftBundle(tabs, activeCharacterId, resources)], { type: 'application/x-ndjson' }), `mm3e-draft-${new Date().toISOString().slice(0, 10)}.jsonl`);
+  }
+
+  async function handleDraftImport(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    try {
+      const bundle = parseDraftBundle(await file.text());
+      if (!window.confirm(`Restore ${bundle.tabs.length} character(s) and ${bundle.resources.length} Resource(s)? This replaces the current Draft.`)) return;
+      localStorage.setItem(IMPORT_BACKUP_KEY, JSON.stringify({ exportedAt: new Date().toISOString(), draft: localStorage.getItem('mm3e-draft-characters'), resources: localStorage.getItem('mm3e-resource-library') }));
+      const previousTabs = tabs, previousActiveId = activeCharacterId, previousResources = resources;
+      replaceResources(bundle.resources);
+      if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) { replaceResources(previousResources); replaceDraftMulti(previousTabs, previousActiveId); throw new Error('Storage write failed.'); }
+      loadTabs(bundle.tabs, bundle.activeId);
+      setDraftHydrated(true);
+    } catch (error) { alert(error instanceof Error ? error.message : 'Could not import Draft.'); }
+  }
+
+  function dismissUpdateNotice() { localStorage.setItem(UPDATE_NOTICE_KEY, APP_VERSION); setUpdateNoticeOpen(false); }
 
   function handleClearCharacter() {
     const confirmed = window.confirm(t('menu.clear.confirm'));
@@ -166,6 +208,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         validationRules={validationRules}
         onValidationRulesChange={setValidationRules}
         onClearDraft={handleClearDraft}
+        onExportDraft={handleExportDraft}
+        onImportDraft={() => draftInputRef.current?.click()}
       />
 
       <CharacterImportConflictDialog
@@ -244,6 +288,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           onChange={handleFileInput}
           style={{ display: 'none' }}
         />
+        <input ref={draftInputRef} type="file" accept=".jsonl,application/x-ndjson" onChange={handleDraftImport} style={{ display: 'none' }} />
 
         {/* Settings Dropdown */}
         <div className="menubar-dropdown-wrapper" ref={dropdownRef}>
@@ -277,21 +322,6 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
                   {hasLogEntries && campaignMode 
                     ? t('menu.campaignMode.clearLogFirst')
                     : t('menu.campaignMode.hint')}
-                </span>
-              </div>
-              <div className="dropdown-divider" />
-              <div className="dropdown-section">
-                <span className="dropdown-label">{t('menu.clearDraft.label')}</span>
-                <button
-                  className="dropdown-item dropdown-item--danger"
-                  onClick={handleClearDraft}
-                  title={t('menu.clearDraft.hint')}
-                >
-                  <Trash2 size={14} />
-                  {t('menu.clearDraft.action')}
-                </button>
-                <span className="dropdown-hint">
-                  {t('menu.clearDraft.hint')}
                 </span>
               </div>
               <div className="dropdown-divider" />
@@ -340,6 +370,14 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
               <div className="dropdown-section">
                 <span className="dropdown-label">{t('menu.language')}</span>
                 <LanguageSelector language={language} onLanguageChange={handleLanguageChange} languages={LANGUAGES} />
+              </div>
+              <div className="dropdown-divider" />
+              <div className="dropdown-section">
+                <span className="dropdown-label">Draft Management</span>
+                <button className="dropdown-item" onClick={handleExportDraft}><Download size={14} /> Export Draft</button>
+                <button className="dropdown-item" onClick={() => draftInputRef.current?.click()}><Upload size={14} /> Import Draft</button>
+                <button className="dropdown-item dropdown-item--danger" onClick={handleClearDraft}><Trash2 size={14} /> Clear Draft</button>
+                <span className="dropdown-hint">Exports or restores every character and Resource.</span>
               </div>
             </div>
           )}
@@ -636,6 +674,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         }
       `}</style>
       </header>
+      <Modal isOpen={clearDraftOpen} onClose={() => setClearDraftOpen(false)} title="Clear all local data" compact><div className="draft-confirm"><p>This removes every saved item and preference for this app from this browser. This cannot be undone.</p><label><input type="checkbox" checked={clearDraftChecked} onChange={(event) => setClearDraftChecked(event.target.checked)} /> I understand that this cannot be undone.</label><div><button onClick={() => setClearDraftOpen(false)}>Cancel</button><button className="draft-confirm__danger" disabled={!clearDraftChecked} onClick={() => { localStorage.clear(); clearDraftMulti(); window.location.reload(); }}>Clear all data</button></div></div><style>{`.draft-confirm{display:flex;flex-direction:column;gap:var(--s-md)}.draft-confirm p{margin:0;color:var(--c-text-secondary)}.draft-confirm label{display:flex;gap:var(--s-sm);align-items:flex-start}.draft-confirm>div{display:flex;justify-content:flex-end;gap:var(--s-sm)}.draft-confirm button{padding:var(--s-sm) var(--s-md);border-radius:var(--r-sm);border:1px solid var(--c-border);background:var(--c-surface-elevated);color:var(--c-text);cursor:pointer}.draft-confirm__danger{background:var(--c-error)!important;color:#fff!important;border-color:var(--c-error)!important}.draft-confirm button:disabled{opacity:.45;cursor:not-allowed}`}</style></Modal>
+      <Modal isOpen={updateNoticeOpen} onClose={dismissUpdateNotice} title="Update detected" compact><div className="draft-confirm"><p>A new app version was detected. Export a Draft backup before continuing, in case a future migration needs recovery.</p><div><button onClick={dismissUpdateNotice}>Continue</button><button className="draft-confirm__danger" onClick={async () => { await handleExportDraft(); dismissUpdateNotice(); }}>Export Draft</button></div></div></Modal>
     </>
   );
 }

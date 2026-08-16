@@ -17,4 +17,5 @@ export {
   loadDraftMulti,
   hasStoredDraft,
   saveDraftMulti,
+  replaceDraftMulti,
 } from './storage/characterDraftStorage';

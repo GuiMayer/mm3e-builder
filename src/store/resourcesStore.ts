@@ -8,6 +8,8 @@ interface ResourcesStoreState {
   updateResource: (resource: IResource) => void;
   upsertResources: (resources: IResource[]) => void;
   removeResource: (id: string) => void;
+  replaceResources: (resources: IResource[]) => void;
+  resetResources: () => void;
   getResource: (id: string) => IResource | undefined;
 }
 
@@ -26,5 +28,7 @@ export const useResourcesStore = create<ResourcesStoreState>()((set, get) => ({
     return persist([...byId.values()]);
   }),
   removeResource: (id) => set((state) => persist(state.resources.filter((resource) => resource.id !== id))),
+  replaceResources: (resources) => set(() => persist(resources)),
+  resetResources: () => set({ resources: [] }),
   getResource: (id) => get().resources.find((resource) => resource.id === id),
 }));

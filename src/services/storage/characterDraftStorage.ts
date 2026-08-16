@@ -277,6 +277,12 @@ export function clearDraftMulti(): void {
   lastSavedSignature = '';
 }
 
+/** Replaces the character draft after an external backup was fully validated. */
+export function replaceDraftMulti(tabs: CharacterTab[], activeId: string | null): boolean {
+  lastSavedSignature = '';
+  return saveDraftMulti(tabs, activeId);
+}
+
 export const characterDraftStorageKeys = {
   draft: DRAFT_KEY,
   metadata: DRAFT_METADATA_KEY,

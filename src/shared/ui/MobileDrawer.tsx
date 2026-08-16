@@ -30,6 +30,8 @@ interface MobileDrawerProps {
   validationRules: IValidationRules | undefined;
   onValidationRulesChange: (rules: Partial<IValidationRules>) => void;
   onClearDraft: () => void;
+  onExportDraft: () => void;
+  onImportDraft: () => void;
 }
 
 export function MobileDrawer({
@@ -57,6 +59,8 @@ export function MobileDrawer({
   validationRules,
   onValidationRulesChange,
   onClearDraft,
+  onExportDraft,
+  onImportDraft,
 }: MobileDrawerProps) {
   const { t } = useTranslation();
 
@@ -244,7 +248,9 @@ export function MobileDrawer({
 
           {/* Clear Draft Section */}
           <div className="mobile-drawer-section">
-            <span className="mobile-drawer-label">{t('menu.clearDraft.label')}</span>
+            <span className="mobile-drawer-label">Draft Management</span>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onExportDraft)}><Download size={20} /><span>Export Draft</span></button>
+            <button className="mobile-drawer-item" onClick={() => handleAction(onImportDraft)}><Upload size={20} /><span>Import Draft</span></button>
             <button className="mobile-drawer-item mobile-drawer-item--danger" onClick={onClearDraft}>
               <Trash2 size={20} />
               <span>{t('menu.clearDraft.action')}</span>
