@@ -66,6 +66,12 @@ describe('characterDraftStorage', () => {
     expect(loaded?.tabs[0].isDirty).toBe(false);
   });
 
+  it('loads an intentionally empty draft as a valid hydrated state', () => {
+    expect(saveDraftMulti([], null)).toBe(true);
+
+    expect(loadDraftMulti()).toEqual({ tabs: [], activeId: null });
+  });
+
   it('preserves invalid stored data instead of deleting it', () => {
     storage.setItem(characterDraftStorageKeys.draft, '{invalid');
 

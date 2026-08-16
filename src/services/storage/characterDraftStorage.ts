@@ -157,7 +157,19 @@ export function getLastDraftSaveError(): string | null {
   return lastDraftSaveError;
 }
 
-function parseMultiCharacterDraft(stored: string): CharacterTab[] | null {
+interface ParsedMultiCharacterDraft {
+  tabs: CharacterTab[];
+  savedActiveId: string | null;
+  needsRewrite: boolean;
+}
+
+function getCompatibleActiveId(raw: unknown): string | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const activeId = (raw as { activeCharacterId?: unknown }).activeCharacterId;
+  return typeof activeId === 'string' ? activeId : null;
+}
+
+function parseMultiCharacterDraft(stored: string): ParsedMultiCharacterDraft | null {
   let parsedJson: unknown;
   try {
     parsedJson = JSON.parse(stored);
@@ -169,7 +181,10 @@ function parseMultiCharacterDraft(stored: string): CharacterTab[] | null {
   const result = MultiCharacterDraftSchema.safeParse(parsedJson);
   if (!result.success) {
     console.error('[loadDraftMulti] Draft validation failed:', result.error);
-    return parseCompatibleMultiCharacterDraft(parsedJson);
+    const tabs = parseCompatibleMultiCharacterDraft(parsedJson);
+    return tabs
+      ? { tabs, savedActiveId: getCompatibleActiveId(parsedJson), needsRewrite: true }
+      : null;
   }
 
   if (result.data.version !== DRAFT_VERSION) {
@@ -178,15 +193,17 @@ function parseMultiCharacterDraft(stored: string): CharacterTab[] | null {
     console.warn(`[loadDraftMulti] Unknown version ${result.data.version}`);
   }
 
-  return addMissingCharacterIds(
-    result.data.characters.map((storedTab) => ({
+  return {
+    tabs: addMissingCharacterIds(result.data.characters.map((storedTab) => ({
       id: storedTab.id,
       character: normalizeCharacter(storedTab.character as ICharacter),
       label: storedTab.label,
       isDirty: false,
       lastModified: storedTab.lastModified,
-    }))
-  );
+    }))),
+    savedActiveId: result.data.activeCharacterId,
+    needsRewrite: false,
+  };
 }
 
 /**
@@ -227,24 +244,19 @@ export function loadDraftMulti(): {
   const stored = localStorage.getItem(DRAFT_KEY);
   if (!stored) return migrateLegacyDraft();
 
-  const tabs = parseMultiCharacterDraft(stored);
-  if (!tabs) return null;
+  const parsed = parseMultiCharacterDraft(stored);
+  if (!parsed) return null;
 
-  let savedActiveId: string | null = null;
-  try {
-    const parsed = MultiCharacterDraftSchema.safeParse(JSON.parse(stored));
-    if (parsed.success) savedActiveId = parsed.data.activeCharacterId;
-  } catch {
-    // parseMultiCharacterDraft already reports malformed JSON.
-  }
-  const activeId = savedActiveId && tabs.some((tab) => tab.id === savedActiveId)
-    ? savedActiveId
-    : tabs[0]?.id ?? null;
+  const activeId = parsed.savedActiveId && parsed.tabs.some((tab) => tab.id === parsed.savedActiveId)
+    ? parsed.savedActiveId
+    : parsed.tabs[0]?.id ?? null;
 
   // Keep the signature of the stored data. If the active tab needed recovery,
   // the autosave hook will persist the corrected selection after hydration.
-  lastSavedSignature = createDraftSignature(tabs, savedActiveId);
-  return { tabs, activeId };
+  lastSavedSignature = parsed.needsRewrite
+    ? ''
+    : createDraftSignature(parsed.tabs, parsed.savedActiveId);
+  return { tabs: parsed.tabs, activeId };
 }
 
 /** True when a persisted draft needs to be restored or recovered before saving. */

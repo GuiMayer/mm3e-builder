@@ -6,6 +6,13 @@ import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
 
 const INSTANCE_KEY = 'mm3e-app-instance-active';
 
+/** A recovered draft may intentionally contain no character tabs. */
+export function isRecoveredCharacterDraft(
+  draft: ReturnType<typeof loadDraftMulti>
+): draft is NonNullable<ReturnType<typeof loadDraftMulti>> {
+  return draft !== null;
+}
+
 /**
  * Hook that auto-loads character tabs from localStorage on app mount.
  * 
@@ -49,7 +56,7 @@ export function useAutoLoadDraftMulti() {
     // Try to load draft tabs
     try {
       const draft = loadDraftMulti();
-      if (draft && draft.tabs.length > 0) {
+      if (isRecoveredCharacterDraft(draft)) {
         const migrated = draft.tabs.map((tab) => {
           const result = migrateLegacyEquipmentToResources(tab.character);
           if (result.resources.length > 0) useResourcesStore.getState().upsertResources(result.resources);

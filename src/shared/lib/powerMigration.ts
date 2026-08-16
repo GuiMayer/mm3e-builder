@@ -12,25 +12,61 @@ const DEFAULT_SUBTYPE = 'Unspecified';
  * rules do not support. Immunity selections are complete fixed-cost packages,
  * so the old mutable component rank never represented another legal rank.
  */
-function migrateComponent(raw: ICharacterPowerComponent): ICharacterPowerComponent {
-  if (raw.effectId === 'immunity' && raw.variableCostOption && raw.ranks !== 1) {
-    return { ...raw, ranks: 1 };
-  }
-  return raw;
+function migrateModifiers(raw: unknown): IAppliedModifier[] {
+  if (!Array.isArray(raw)) return [];
+
+  return raw.flatMap((modifier) => {
+    if (!modifier || typeof modifier !== 'object') return [];
+    const candidate = modifier as Record<string, unknown>;
+    if (typeof candidate.modifierId !== 'string') return [];
+
+    return [{
+      ...(candidate as unknown as IAppliedModifier),
+      modifierId: candidate.modifierId,
+      ranks: typeof candidate.ranks === 'number' && Number.isInteger(candidate.ranks) && candidate.ranks >= 1
+        ? candidate.ranks
+        : 1,
+    }];
+  });
 }
 
-function migrateComponents(rawComponents: unknown[]): ICharacterPowerComponent[] {
-  return rawComponents.map((component) => {
-    const normalized = migrateComponent(component as ICharacterPowerComponent);
+function migrateComponent(raw: unknown): ICharacterPowerComponent | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const candidate = raw as Record<string, unknown>;
+  const normalized: ICharacterPowerComponent = {
+    ...(candidate as unknown as ICharacterPowerComponent),
+    id: typeof candidate.id === 'string' ? candidate.id : uuidv4(),
+    effectId: typeof candidate.effectId === 'string' ? candidate.effectId : '',
+    ranks: typeof candidate.ranks === 'number' && Number.isInteger(candidate.ranks) && candidate.ranks >= 0
+      ? candidate.ranks
+      : 1,
+    modifiers: migrateModifiers(candidate.modifiers),
+  };
+
+  if (normalized.effectId === 'immunity' && normalized.variableCostOption && normalized.ranks !== 1) {
+    return { ...normalized, ranks: 1 };
+  }
+  return normalized;
+}
+
+function migrateComponents(rawComponents: unknown): ICharacterPowerComponent[] {
+  if (!Array.isArray(rawComponents)) return [];
+
+  return rawComponents.flatMap((component) => {
+    const normalized = migrateComponent(component);
+    if (!normalized) return [];
     return normalized.modifiers.some((modifier) => modifier.modifierId === 'activation')
-      ? { ...normalized, modifiers: normalized.modifiers.filter((modifier) => modifier.modifierId !== 'activation') }
-      : normalized;
+      ? [{ ...normalized, modifiers: normalized.modifiers.filter((modifier) => modifier.modifierId !== 'activation') }]
+      : [normalized];
   });
 }
 
 function migrateActivation(rawComponents: unknown[]): 'move' | 'standard' | undefined {
   const activation = rawComponents
-    .flatMap((component) => (component as ICharacterPowerComponent).modifiers ?? [])
+    .flatMap((component) => {
+      if (!component || typeof component !== 'object') return [];
+      return migrateModifiers((component as Record<string, unknown>).modifiers);
+    })
     .filter((modifier) => modifier.modifierId === 'activation');
   if (activation.length === 0) return undefined;
   return activation.some((modifier) => modifier.ranks >= 2) ? 'standard' : 'move';
@@ -86,7 +122,7 @@ export function migrateAlternateEffect(raw: unknown): IAlternateEffect {
           id: uuidv4(),
           effectId: obj.effectId,
           ranks: (obj.ranks as number) ?? 1,
-          modifiers: (obj.modifiers as IAppliedModifier[]) ?? [],
+          modifiers: migrateModifiers(obj.modifiers),
         },
       ],
       dynamic: (obj.dynamic as boolean) ?? false,
@@ -107,7 +143,7 @@ export function migrateAlternateEffect(raw: unknown): IAlternateEffect {
  */
 export function migratePower(raw: Record<string, unknown>): ICharacterPower {
   // Migrate alternateEffects regardless of power format
-  const migratedAEs = ((raw.alternateEffects as unknown[]) ?? []).map((ae) =>
+  const migratedAEs = (Array.isArray(raw.alternateEffects) ? raw.alternateEffects : []).map((ae) =>
     migrateAlternateEffect(ae as Record<string, unknown>)
   );
 
@@ -125,7 +161,7 @@ export function migratePower(raw: Record<string, unknown>): ICharacterPower {
   // Legacy format: effectId + ranks + modifiers at top level
   const legacyEffectId = (raw.effectId as string) ?? '';
   const legacyRanks = (raw.ranks as number) ?? 1;
-  const legacyModifiers = (raw.modifiers as IAppliedModifier[]) ?? [];
+  const legacyModifiers = migrateModifiers(raw.modifiers);
 
   return {
     id: (raw.id as string) ?? uuidv4(),
@@ -147,7 +183,12 @@ export function migratePower(raw: Record<string, unknown>): ICharacterPower {
  * Migrate all powers in a character.
  */
 export function migratePowers(rawPowers: unknown[]): ICharacterPower[] {
-  return rawPowers.map((p) => migratePower(p as Record<string, unknown>));
+  if (!Array.isArray(rawPowers)) return [];
+  return rawPowers.flatMap((power) =>
+    power && typeof power === 'object'
+      ? [migratePower(power as Record<string, unknown>)]
+      : []
+  );
 }
 
 /**
@@ -156,7 +197,7 @@ export function migratePowers(rawPowers: unknown[]): ICharacterPower[] {
  */
 export function migrateEquipmentItem(raw: Record<string, unknown>): ICharacterPower {
   // Migrate alternateEffects if present
-  const migratedAEs = ((raw.alternateEffects as unknown[]) ?? []).map((ae) =>
+  const migratedAEs = (Array.isArray(raw.alternateEffects) ? raw.alternateEffects : []).map((ae) =>
     migrateAlternateEffect(ae as Record<string, unknown>)
   );
 
@@ -175,7 +216,11 @@ export function migrateEquipmentItem(raw: Record<string, unknown>): ICharacterPo
  */
 export function migrateEquipment(rawEquipment: unknown[]): ICharacterPower[] {
   if (!Array.isArray(rawEquipment)) return [];
-  return rawEquipment.map((e) => migrateEquipmentItem(e as Record<string, unknown>));
+  return rawEquipment.flatMap((equipment) =>
+    equipment && typeof equipment === 'object'
+      ? [migrateEquipmentItem(equipment as Record<string, unknown>)]
+      : []
+  );
 }
 
 /**
@@ -220,5 +265,9 @@ export function migrateAdvantages(
   advantageDefs?: readonly IAdvantageDef[]
 ): ICharacterAdvantage[] {
   if (!Array.isArray(rawAdvantages)) return [];
-  return rawAdvantages.map((a) => migrateAdvantage(a as Record<string, unknown>, advantageDefs));
+  return rawAdvantages.flatMap((advantage) =>
+    advantage && typeof advantage === 'object'
+      ? [migrateAdvantage(advantage as Record<string, unknown>, advantageDefs)]
+      : []
+  );
 }
