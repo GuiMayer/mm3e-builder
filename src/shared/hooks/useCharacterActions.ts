@@ -23,6 +23,8 @@ export function useCharacterActions() {
 
     getCharactersStore().updateCharacter(activeId, {
       header: { ...active.character.header, ...partial },
+    }, {
+      group: `header:${Object.keys(partial).sort().join(',')}`,
     });
   }, []);
 
@@ -35,7 +37,7 @@ export function useCharacterActions() {
 
     getCharactersStore().updateCharacter(activeId, {
       abilities: { ...active.character.abilities, [key]: value },
-    });
+    }, { group: `abilities:${key}` });
   }, []);
 
   const toggleAbsentAbility = useCallback((key: AbilityKey) => {
@@ -68,7 +70,7 @@ export function useCharacterActions() {
 
     getCharactersStore().updateCharacter(activeId, {
       defenses: { ...active.character.defenses, [key]: value },
-    });
+    }, { group: `defenses:${key}` });
   }, []);
 
   const loadCharacter = useCallback((character: ICharacter) => {
@@ -170,14 +172,18 @@ export function useCharacterActions() {
     const activeId = getCharactersStore().activeCharacterId;
     if (!activeId) return;
 
-    getCharactersStore().updateCharacter(activeId, { equipmentNotes: notes });
+    getCharactersStore().updateCharacter(
+      activeId,
+      { equipmentNotes: notes },
+      { group: 'equipment-notes' }
+    );
   }, []);
 
   const setNotes = useCallback((notes: string) => {
     const activeId = getCharactersStore().activeCharacterId;
     if (!activeId) return;
 
-    getCharactersStore().updateCharacter(activeId, { notes });
+    getCharactersStore().updateCharacter(activeId, { notes }, { group: 'notes' });
   }, []);
 
   const setManualOffenseRows = useCallback((rows: IManualOffenseRow[]) => {
@@ -253,4 +259,3 @@ export function useCharacterActions() {
     markClean,
   };
 }
-
