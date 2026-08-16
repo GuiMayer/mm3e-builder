@@ -6,13 +6,14 @@ import { useAppStore } from '../../store/appStore';
 import { useActiveCharacter } from '../hooks/useActiveCharacter';
 import { useCharacterActions } from '../hooks/useCharacterActions';
 import { useCalculatedPP } from '../hooks/useCalculatedPP';
+import { useCharacterHistory } from '../hooks/useCharacterHistory';
 import { useFileOperations } from '../hooks/useFileOperations';
 import { useExcelExport } from '../hooks/useExcelExport';
 import { MobileDrawer } from './MobileDrawer';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
-import { Settings, Download, Upload, Eraser, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu } from 'lucide-react';
+import { Settings, Download, Upload, Eraser, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu, Undo2, Redo2 } from 'lucide-react';
 import i18n from '../../locales';
 import { clearDraftMulti, getDraftMetadataMulti } from '../../services/fileService';
 
@@ -63,6 +64,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   
   // Hooks
   const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
+  const { canUndo, canRedo, undo, redo } = useCharacterHistory();
   const { exportCharacter, handleFileInput, fileInputRef } = useFileOperations();
   const { exportExcel } = useExcelExport();
 
@@ -134,6 +136,10 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         onClear={handleClearCharacter}
+        onUndo={undo}
+        onRedo={redo}
+        canUndo={canUndo}
+        canRedo={canRedo}
         onExport={exportCharacter}
         onImport={() => fileInputRef.current?.click()}
         onExportExcel={exportExcel}
@@ -173,6 +179,24 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       </div>
 
       <nav className="menubar-actions">
+        <button
+          className="menubar-btn"
+          onClick={undo}
+          disabled={!canUndo}
+          title={`${t('menu.undo')} (Ctrl+Z)`}
+          aria-label={`${t('menu.undo')} (Ctrl+Z)`}
+        >
+          <Undo2 size={18} /> <span>{t('menu.undo')}</span>
+        </button>
+        <button
+          className="menubar-btn"
+          onClick={redo}
+          disabled={!canRedo}
+          title={`${t('menu.redo')} (Ctrl+Shift+Z)`}
+          aria-label={`${t('menu.redo')} (Ctrl+Shift+Z)`}
+        >
+          <Redo2 size={18} /> <span>{t('menu.redo')}</span>
+        </button>
         <button className="menubar-btn" onClick={handleClearCharacter} title={t('menu.clear')}>
           <Eraser size={18} /> <span>{t('menu.clear')}</span>
         </button>

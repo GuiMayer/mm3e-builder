@@ -1,6 +1,8 @@
 {
   "app.title": "M&M 3e Builder",
   "menu.actions": "Actions",
+  "menu.undo": "Undo",
+  "menu.redo": "Redo",
   "menu.clear": "Clear",
   "menu.clear.confirm": "Clear the current sheet? All unsaved data will be lost.",
   "menu.new": "New",

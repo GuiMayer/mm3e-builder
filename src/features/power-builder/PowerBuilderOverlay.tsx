@@ -382,7 +382,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
 
   return (
-    <div className="builder-overlay">
+    <div className="builder-overlay" data-history-shortcuts-disabled>
       <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         {/* Top Bar */}
         <div className="builder-topbar">

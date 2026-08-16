@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { X, Eraser, Download, Upload, FileSpreadsheet, FileText, BookOpen, Shield, ShieldOff, Trash2, Loader2 } from 'lucide-react';
+import { X, Eraser, Download, Upload, FileSpreadsheet, FileText, BookOpen, Shield, ShieldOff, Trash2, Loader2, Undo2, Redo2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
@@ -9,6 +9,10 @@ interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onClear: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
   onExport: () => void;
   onImport: () => void;
   onExportExcel: () => void;
@@ -32,6 +36,10 @@ export function MobileDrawer({
   isOpen,
   onClose,
   onClear,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
   onExport,
   onImport,
   onExportExcel,
@@ -100,6 +108,22 @@ export function MobileDrawer({
           {/* Actions Section */}
           <div className="mobile-drawer-section">
             <span className="mobile-drawer-label">{t('menu.actions') || 'Actions'}</span>
+            <button
+              className="mobile-drawer-item"
+              onClick={() => handleAction(onUndo)}
+              disabled={!canUndo}
+            >
+              <Undo2 size={20} />
+              <span>{t('menu.undo')}</span>
+            </button>
+            <button
+              className="mobile-drawer-item"
+              onClick={() => handleAction(onRedo)}
+              disabled={!canRedo}
+            >
+              <Redo2 size={20} />
+              <span>{t('menu.redo')}</span>
+            </button>
             <button className="mobile-drawer-item" onClick={() => handleAction(onClear)}>
               <Eraser size={20} />
               <span>{t('menu.clear')}</span>
