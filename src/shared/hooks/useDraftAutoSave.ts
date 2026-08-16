@@ -13,14 +13,19 @@ export function useDraftAutoSave() {
   const markCharacterClean = useCharactersStore((s) => s.markCharacterClean);
   const timerRef = useRef<number | null>(null);
   const dirtyTabsRef = useRef<Set<string>>(new Set());
+  const hasObservedInitialStateRef = useRef(false);
 
   useEffect(() => {
-    // Find all dirty tabs
-    const dirtyTabs = tabs.filter((t) => t.isDirty);
-
-    if (dirtyTabs.length === 0) {
+    // The first render happens before the multi-character draft has been
+    // restored. Skipping it prevents an empty store from replacing a saved or
+    // corrupted draft. Every later tab or selection change is persistable.
+    if (!hasObservedInitialStateRef.current) {
+      hasObservedInitialStateRef.current = true;
       return;
     }
+
+    // Find all dirty tabs
+    const dirtyTabs = tabs.filter((t) => t.isDirty);
 
     // Track which tabs need saving
     dirtyTabs.forEach((t) => dirtyTabsRef.current.add(t.id));

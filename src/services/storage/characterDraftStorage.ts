@@ -157,8 +157,14 @@ export function loadDraftMulti(): {
   const parsed = MultiCharacterDraftSchema.safeParse(JSON.parse(stored));
   if (!parsed.success) return null;
 
-  const activeId = parsed.data.activeCharacterId;
-  lastSavedSignature = createDraftSignature(tabs, activeId);
+  const savedActiveId = parsed.data.activeCharacterId;
+  const activeId = savedActiveId && tabs.some((tab) => tab.id === savedActiveId)
+    ? savedActiveId
+    : tabs[0]?.id ?? null;
+
+  // Keep the signature of the stored data. If the active tab needed recovery,
+  // the autosave hook will persist the corrected selection after hydration.
+  lastSavedSignature = createDraftSignature(tabs, savedActiveId);
   return { tabs, activeId };
 }
 

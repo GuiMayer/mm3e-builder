@@ -93,4 +93,22 @@ describe('characterDraftStorage', () => {
       expect.any(String)
     );
   });
+
+  it('falls back to the first tab when the saved active tab no longer exists', () => {
+    const tabs = [createTab('tab-1', 'One'), createTab('tab-2', 'Two')];
+
+    saveDraftMulti(tabs, 'missing-tab');
+    const loaded = loadDraftMulti();
+
+    expect(loaded?.activeId).toBe('tab-1');
+    expect(loaded?.tabs.map((tab) => tab.id)).toEqual(['tab-1', 'tab-2']);
+  });
+
+  it('falls back to the first tab when a populated draft has no active tab', () => {
+    const tabs = [createTab('tab-3', 'Three')];
+
+    saveDraftMulti(tabs, null);
+
+    expect(loadDraftMulti()?.activeId).toBe('tab-3');
+  });
 });

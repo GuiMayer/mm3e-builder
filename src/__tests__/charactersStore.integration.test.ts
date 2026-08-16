@@ -110,6 +110,18 @@ describe('charactersStore integration', () => {
     expect(useCharactersStore.getState().historyByTabId).toEqual({});
   });
 
+  it('changes the active tab without marking either character dirty', () => {
+    const firstId = useCharactersStore.getState().addCharacter();
+    const secondId = useCharactersStore.getState().addCharacter();
+    useCharactersStore.getState().markCharacterClean(firstId);
+    useCharactersStore.getState().markCharacterClean(secondId);
+
+    useCharactersStore.getState().setActiveCharacter(firstId);
+
+    expect(useCharactersStore.getState().activeCharacterId).toBe(firstId);
+    expect(useCharactersStore.getState().tabs.every((tab) => !tab.isDirty)).toBe(true);
+  });
+
   it('undoes and redoes a committed power deletion', () => {
     const power = {
       id: 'power-1',
