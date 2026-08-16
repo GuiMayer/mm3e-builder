@@ -45,6 +45,10 @@ export function EffectPalette({
   const generalExtras = modifierDefs.filter(
     (m) =>
       m.category === 'extra' &&
+      // Arrays are edited in the dedicated Alternate Effects section, which
+      // enforces their cap and Dynamic pricing. Do not add this flat modifier
+      // directly to a component.
+      m.id !== 'alternate_effect' &&
       (m.name.toLowerCase().includes(lowerFilter) || m.description.toLowerCase().includes(lowerFilter))
   );
   const generalFlaws = modifierDefs.filter(

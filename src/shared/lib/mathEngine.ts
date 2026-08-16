@@ -207,10 +207,11 @@ export function calculatePowerCost(
 export function calculateArrayCost(
   mainPowerCost: number,
   alternateEffectCount: number,
-  dynamicCount: number
+  dynamicCount: number,
+  baseDynamic = false
 ): number {
   const staticAlts = alternateEffectCount - dynamicCount;
-  return mainPowerCost + staticAlts * 1 + dynamicCount * 2;
+  return mainPowerCost + staticAlts + dynamicCount * 2 + (baseDynamic ? 1 : 0);
 }
 
 /**
@@ -378,7 +379,12 @@ export function calcPowerTotalCost(
     return def ? sum + calcComponentCost(comp, def, modifierDefs) : sum;
   }, 0);
   const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
-  const arrayCost = calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount);
+  const arrayCost = calculateArrayCost(
+    mainCost,
+    power.alternateEffects.length,
+    dynamicCount,
+    power.baseDynamic === true,
+  );
   const discount = calcRemovableDiscount(arrayCost, power.removable);
   // A flat flaw cannot reduce a power's final cost below 1 PP.
   return Math.max(1, arrayCost - discount);

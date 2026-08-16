@@ -50,6 +50,59 @@ function makePower(alternateEffectNames: string[]): ICharacterPower {
 }
 
 describe('validatePowerForSave', () => {
+  it('rejects a Dynamic base without a Dynamic Alternate Effect', () => {
+    const power = { ...makePower([]), baseDynamic: true };
+    const issues = validatePowerForSave(power, DEFAULT_VALIDATION_RULES, {
+      powerDefs: [DAMAGE_EFFECT],
+      modifierDefs: MODIFIER_DEFS,
+    });
+
+    expect(issues).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'baseDynamic', severity: 'error' }),
+    ]));
+  });
+
+  it('rejects Permanent effects and direct Alternate Effect modifiers in arrays', () => {
+    const power = makePower(['Alternate']);
+    power.components[0].modifiers = [{ modifierId: 'permanent_flaw', ranks: 1 }];
+    power.alternateEffects[0].components[0].modifiers = [{ modifierId: 'alternate_effect', ranks: 1 }];
+
+    const issues = validatePowerForSave(power, DEFAULT_VALIDATION_RULES, {
+      powerDefs: [DAMAGE_EFFECT],
+      modifierDefs: [
+        ...MODIFIER_DEFS,
+        { id: 'permanent_flaw', name: 'Permanent', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
+        { id: 'alternate_effect', name: 'Alternate Effect', category: 'extra', costType: 'flat', costValue: 1, description: '', incompatibleWith: [] },
+      ],
+    });
+
+    expect(issues).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'components.0.modifiers.permanent_flaw' }),
+      expect.objectContaining({ path: 'alternateEffects.0.components.0.modifiers.alternate_effect' }),
+    ]));
+  });
+
+  it('rejects modifiers whose applicability conflicts with the source rules', () => {
+    const power = makePower([]);
+    power.components[0].modifiers = [
+      { modifierId: 'affects_others', ranks: 1 },
+      { modifierId: 'reduced_range', ranks: 1 },
+    ];
+
+    const issues = validatePowerForSave(power, DEFAULT_VALIDATION_RULES, {
+      powerDefs: [DAMAGE_EFFECT],
+      modifierDefs: [
+        { id: 'affects_others', name: 'Affects Others', category: 'extra', costType: 'per_rank', costValue: 1, description: '', incompatibleWith: [] },
+        { id: 'reduced_range', name: 'Reduced Range', category: 'flaw', costType: 'per_rank', costValue: -1, description: '', incompatibleWith: [] },
+      ],
+    });
+
+    expect(issues).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'components.0.modifiers.affects_others' }),
+      expect.objectContaining({ path: 'components.0.modifiers.reduced_range' }),
+    ]));
+  });
+
   it('warns when an alternate effect name is empty', () => {
     const issues = validatePowerForSave(makePower(['']), DEFAULT_VALIDATION_RULES, {
       powerDefs: [DAMAGE_EFFECT],

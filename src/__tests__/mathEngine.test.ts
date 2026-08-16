@@ -116,6 +116,10 @@ describe('mathEngine', () => {
     it('main 20 PP + 2 static alts + 1 dynamic = 24 PP', () => {
       expect(calculateArrayCost(20, 3, 1)).toBe(24);
     });
+
+    it('adds 1 PP when the base effect is Dynamic', () => {
+      expect(calculateArrayCost(20, 1, 1, true)).toBe(23);
+    });
   });
 
   describe('calculateAbilitiesCost', () => {

@@ -103,6 +103,98 @@ function validatePowerComponentForSave(
     issues.push(issue(`${path}.modifiers.${violation.modifierId}`, violation.message));
   }
 
+  issues.push(...validateCoreModifierApplicability(component, effectDef, path));
+
+  return issues;
+}
+
+function hasModifier(component: ICharacterPowerComponent, modifierId: string): boolean {
+  return component.modifiers.some((modifier) => modifier.modifierId === modifierId);
+}
+
+/** Rules whose applicability is explicit and does not require GM judgment. */
+function validateCoreModifierApplicability(
+  component: ICharacterPowerComponent,
+  effectDef: IPowerEffect,
+  path: string,
+): SemanticValidationIssue[] {
+  const issues: SemanticValidationIssue[] = [];
+
+  for (const modifier of component.modifiers) {
+    const modifierPath = `${path}.modifiers.${modifier.modifierId}`;
+
+    if (modifier.modifierId === 'affects_others' && effectDef.range !== 'personal') {
+      issues.push(issue(modifierPath, 'Affects Others can only modify a Personal effect.'));
+    }
+
+    if (
+      modifier.modifierId === 'reaction'
+      && effectDef.action !== 'standard'
+      && effectDef.action !== 'free'
+    ) {
+      issues.push(issue(modifierPath, 'Reaction can only modify an effect with a standard or free default action.'));
+    }
+
+    if (
+      modifier.modifierId === 'reduced_range'
+      && effectDef.range !== 'ranged'
+      && effectDef.range !== 'perception'
+    ) {
+      issues.push(issue(modifierPath, 'Reduced Range only applies to Ranged or Perception effects.'));
+    }
+
+    if (modifier.modifierId === 'increased_range' && effectDef.range === 'perception') {
+      issues.push(issue(modifierPath, 'Increased Range cannot increase a Perception-range effect.'));
+    }
+  }
+
+  return issues;
+}
+
+/**
+ * Enforce array constraints that are objective in the source rules. Subjective
+ * array theme and GM approval remain outside automatic validation.
+ */
+function validateArrayRules(power: ICharacterPower): SemanticValidationIssue[] {
+  const issues: SemanticValidationIssue[] = [];
+  const hasDynamicAlternate = power.alternateEffects.some((alternate) => alternate.dynamic);
+  const hasArray = power.alternateEffects.length > 0;
+
+  if (power.baseDynamic && !hasDynamicAlternate) {
+    issues.push(issue(
+      'baseDynamic',
+      'The base effect can only be Dynamic when the array has a Dynamic Alternate Effect.',
+    ));
+  }
+
+  const validateArrayComponent = (
+    component: ICharacterPowerComponent,
+    componentPath: string,
+  ) => {
+    if (hasModifier(component, 'alternate_effect')) {
+      issues.push(issue(
+        `${componentPath}.modifiers.alternate_effect`,
+        'Use the Alternate Effects section to create an array; do not apply Alternate Effect directly to a component.',
+      ));
+    }
+    if (hasArray && hasModifier(component, 'permanent_flaw')) {
+      issues.push(issue(
+        `${componentPath}.modifiers.permanent_flaw`,
+        'Permanent effects cannot be part of an Alternate Effect array.',
+      ));
+    }
+  };
+
+  for (const [componentIndex, component] of power.components.entries()) {
+    validateArrayComponent(component, `components.${componentIndex}`);
+  }
+
+  for (const [alternateIndex, alternate] of power.alternateEffects.entries()) {
+    for (const [componentIndex, component] of alternate.components.entries()) {
+      validateArrayComponent(component, `alternateEffects.${alternateIndex}.components.${componentIndex}`);
+    }
+  }
+
   return issues;
 }
 
@@ -155,6 +247,8 @@ export function validatePowerForSave(
         ));
       });
   });
+
+  issues.push(...validateArrayRules(power));
 
   return issues;
 }

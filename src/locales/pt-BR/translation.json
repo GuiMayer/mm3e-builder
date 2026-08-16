@@ -264,6 +264,7 @@
   "builder.sideEffectAlways": "Efeito colateral sempre ocorre",
   "builder.alternateResistanceEqual": "Sem vantagem clara (+0/rank)",
   "builder.alternateResistanceAdvantageous": "Resistência mais vantajosa (+1/rank)",
+  "builder.dynamicBase": "Tornar o efeito-base Dinâmico (+1 PP)",
   "builder.filterAll": "Todos",
   "builder.filterAttack": "Ataque",
   "builder.filterDefense": "Defesa",

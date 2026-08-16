@@ -218,6 +218,8 @@ export interface ICharacterPower {
   components: ICharacterPowerComponent[];
   notes: string;
   alternateEffects: IAlternateEffect[];
+  /** Dynamic base effect in an Alternate Effect array (+1 PP). */
+  baseDynamic?: boolean;
   removable?: 'none' | 'removable' | 'easily_removable'; // F-06: device discount
 }
 

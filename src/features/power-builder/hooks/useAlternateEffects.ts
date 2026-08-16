@@ -58,15 +58,28 @@ export function useAlternateEffects({
   }
 
   function removeAlternateEffect(id: string) {
-    setPower((p) => ({ ...p, alternateEffects: p.alternateEffects.filter((a) => a.id !== id) }));
+    setPower((p) => {
+      const alternateEffects = p.alternateEffects.filter((a) => a.id !== id);
+      return {
+        ...p,
+        alternateEffects,
+        baseDynamic: alternateEffects.some((a) => a.dynamic) ? p.baseDynamic : false,
+      };
+    });
     if (expandedAEId === id) setExpandedAEId(null);
   }
 
   function updateAlternateEffect(id: string, update: Partial<IAlternateEffect>) {
-    setPower((p) => ({
-      ...p,
-      alternateEffects: p.alternateEffects.map((a) => a.id === id ? { ...a, ...update } : a),
-    }));
+    setPower((p) => {
+      const alternateEffects = p.alternateEffects.map((a) =>
+        a.id === id ? { ...a, ...update } : a
+      );
+      return {
+        ...p,
+        alternateEffects,
+        baseDynamic: alternateEffects.some((a) => a.dynamic) ? p.baseDynamic : false,
+      };
+    });
   }
 
   // ── AE Component CRUD ──

@@ -941,6 +941,19 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   <Info size={11} /> {t('builder.altRuleNote')}
                 </div>
               )}
+              {power.alternateEffects.some((ae) => ae.dynamic) && (
+                <label className="applied-mod-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={power.baseDynamic === true}
+                    onChange={(e) => setPower((current) => ({
+                      ...current,
+                      baseDynamic: e.target.checked,
+                    }))}
+                  />
+                  {t('builder.dynamicBase')}
+                </label>
+              )}
               {power.alternateEffects.map((ae, aeIdx) => (
                 <AltEffectCard
                   key={ae.id}

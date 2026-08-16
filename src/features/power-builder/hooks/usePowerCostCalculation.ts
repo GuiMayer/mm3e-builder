@@ -70,8 +70,8 @@ export function usePowerCostCalculation({
   );
 
   const arrayCost = useMemo(
-    () => calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount),
-    [mainCost, power.alternateEffects.length, dynamicCount]
+    () => calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount, power.baseDynamic === true),
+    [mainCost, power.alternateEffects.length, dynamicCount, power.baseDynamic]
   );
 
   // Calculate removable discount

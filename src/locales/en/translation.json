@@ -264,6 +264,7 @@
   "builder.sideEffectAlways": "Side effect always occurs",
   "builder.alternateResistanceEqual": "No clear advantage (+0/rank)",
   "builder.alternateResistanceAdvantageous": "More advantageous resistance (+1/rank)",
+  "builder.dynamicBase": "Make the base effect Dynamic (+1 PP)",
   "builder.filterAll": "All",
   "builder.filterAttack": "Attack",
   "builder.filterDefense": "Defense",

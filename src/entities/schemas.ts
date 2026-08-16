@@ -58,6 +58,7 @@ const CharacterPowerSchema = z.union([
     components: z.array(CharacterPowerComponentSchema),
     notes: z.string(),
     alternateEffects: z.array(AlternateEffectSchema),
+    baseDynamic: z.boolean().optional(),
     removable: z.enum(['none', 'removable', 'easily_removable']).optional(),
   }),
   // Legacy format (will be migrated at load time)
@@ -70,6 +71,7 @@ const CharacterPowerSchema = z.union([
     modifiers: z.array(AppliedModifierSchema),
     notes: z.string(),
     alternateEffects: z.array(AlternateEffectSchema),
+    baseDynamic: z.boolean().optional(),
     removable: z.enum(['none', 'removable', 'easily_removable']).optional(),
   }),
 ]);
