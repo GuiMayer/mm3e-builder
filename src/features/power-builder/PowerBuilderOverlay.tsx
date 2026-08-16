@@ -153,6 +153,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   const {
     componentCosts,
     mainCost,
+    arrayCost,
     removableDiscount,
     totalCost,
     equipmentEPCost,
@@ -458,6 +459,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             >
               <Save size={14} /> {t('builder.save')}
             </button>
+            {!hasEffect && <span className="builder-save-hint">{t('builder.selectEffectToSave')}</span>}
             <button className="builder-action-btn builder-close-btn" onClick={onClose}>
               <X size={14} /> {t('builder.close')}
             </button>
@@ -582,9 +584,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               <div className="build-section-header">
                 <label className="build-label">{t('builder.component')}</label>
                 <button className="build-add-comp-btn" onClick={addComponent}>
-                  <Plus size={12} /> {t('builder.addComponent')}
+                  <Plus size={12} /> {t('builder.addLinkedEffect')}
                 </button>
               </div>
+              {power.components.length === 1 && (
+                <p className="builder-relationship-hint">{t('builder.linkedEffectHint')}</p>
+              )}
 
               {power.components.map((comp, idx) => {
                 const effectDef = powerDefs.find((d) => d.id === comp.effectId);
@@ -600,7 +605,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                     {/* Component header */}
                     <div className="component-header">
                       <span className="component-label">
-                        {idx === 0 ? t('builder.mainEffect') : t('builder.effectN', { n: idx + 1 })}
+                        {idx === 0
+                          ? (power.alternateEffects.length > 0 ? t('builder.baseEffect') : t('builder.mainEffect'))
+                          : t('builder.linkedComponent', { n: idx + 1 })}
                       </span>
                       {costInfo.total > 0 && (
                         <span className="component-cost">{costInfo.total} PP</span>
@@ -971,6 +978,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   <Info size={11} /> {t('builder.altRuleNote')}
                 </div>
               )}
+              {power.alternateEffects.length === 0 && (
+                <p className="builder-relationship-hint">{t('builder.alternateEffectHint')}</p>
+              )}
               {power.alternateEffects.some((ae) => ae.dynamic) && (
                 <label className="applied-mod-checkbox">
                   <input
@@ -1048,6 +1058,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                 </span>
               );
             })}
+            {power.alternateEffects.length > 0 && (
+              <span className="cost-comp-item">
+                <span className="cost-comp-name">{t('builder.arrayCost')}</span>
+                <span className="cost-comp-val">{arrayCost - mainCost}pp</span>
+              </span>
+            )}
           </div>
           <div className="cost-total">
             {!equipmentMode && removableDiscount > 0 && (
@@ -1128,6 +1144,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           background: var(--c-bg);
           display: flex; flex-direction: column;
           animation: fadeIn 0.2s ease;
+          overflow: hidden;
         }
         .builder-topbar {
           display: flex; align-items: center; justify-content: space-between;
@@ -1153,10 +1170,10 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         .builder-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .builder-close-btn:hover { border-color: var(--c-error); color: var(--c-error); }
 
-        .builder-body { flex: 1; display: flex; overflow: hidden; }
+        .builder-body { flex: 1; display: flex; overflow: hidden; min-width: 0; }
         .builder-workspace {
           flex: 1; padding: var(--s-lg); overflow-y: auto;
-          display: flex; flex-direction: column; gap: var(--s-md);
+          display: flex; flex-direction: column; gap: var(--s-md); min-width: 0;
         }
 
         .build-section { display: flex; flex-direction: column; gap: var(--s-xs); }
@@ -1211,6 +1228,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           border-radius: var(--r-full); border: 1px solid rgba(74, 222, 128, 0.3);
           margin-top: var(--s-xs);
         }
+        .builder-save-hint { align-self: center; color: var(--c-text-muted); font-size: 0.72rem; }
+        .builder-relationship-hint { margin: 0; color: var(--c-text-muted); font-size: 0.78rem; line-height: 1.45; }
 
         /* Component Cards */
         .component-card {
@@ -1406,6 +1425,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           .builder-workspace {
             width: 100%;
             height: 100%;
+            min-width: 0;
+            padding: var(--s-md);
           }
           .builder-topbar {
             padding: var(--s-sm) var(--s-md);
@@ -1413,6 +1434,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           .builder-topbar-title {
             font-size: 0.9rem;
           }
+          .builder-topbar-actions { min-width: 0; }
+          .builder-save-hint { display: none; }
+          .build-name-row,
+          .build-row { flex-direction: column; align-items: stretch !important; gap: var(--s-sm); min-width: 0; }
+          .build-name-row .build-input,
+          .build-section--flex { min-width: 0; width: 100%; }
+          .build-name-row .build-input--small { width: 100%; text-align: left; }
+          .build-row > .build-section:not(.build-section--flex) { align-self: flex-start; }
+          .component-card, .ae-card, .ae-comp-card { min-width: 0; }
+          .build-dropzone { min-width: 0; }
           .builder-footer {
             flex-direction: column;
             gap: var(--s-sm);
