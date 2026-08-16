@@ -12,6 +12,7 @@ import { usePDFExport } from '../shared/hooks/usePDFExport'
 import { useAppStore } from '../store/appStore'
 import { AppDialogProvider } from '../shared/ui/AppDialog'
 import { DraftStorageStatus } from '../shared/ui/DraftStorageStatus'
+import { DraftPersistenceController } from '../shared/ui/DraftPersistenceController'
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -69,6 +70,7 @@ export function App() {
       }}
     >
       <AppDialogProvider>
+      <DraftPersistenceController />
       <DraftStorageStatus />
       <div className="app-root">
         <MenuBar 

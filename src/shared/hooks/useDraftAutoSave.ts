@@ -12,10 +12,9 @@ export function useDraftAutoSave() {
   const tabs = useCharactersStore((s) => s.tabs);
   const activeId = useCharactersStore((s) => s.activeCharacterId);
   const isDraftHydrated = useCharactersStore((s) => s.isDraftHydrated);
-  const markCharacterClean = useCharactersStore((s) => s.markCharacterClean);
+  const acknowledgePersisted = useCharactersStore((s) => s.acknowledgePersisted);
   const dialog = useAppDialog();
   const timerRef = useRef<number | null>(null);
-  const dirtyTabsRef = useRef<Set<string>>(new Set());
   const shownSaveErrorRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -26,15 +25,11 @@ export function useDraftAutoSave() {
     // first character. Any hydrated non-empty draft is safe to reconcile.
     if (tabs.length === 0) return;
 
-    // Find all dirty tabs
-    const dirtyTabs = tabs.filter((t) => t.isDirty);
-
-    // The first hydrated state can contain a safe migration or a recovered
-    // active-tab selection. saveDraftMulti's signature guard keeps an
-    // unchanged clean draft as a no-op, while persisting either correction.
-
-    // Track which tabs need saving
-    dirtyTabs.forEach((t) => dirtyTabsRef.current.add(t.id));
+    // Capture the exact revisions included in this write. A later edit gets a
+    // newer revision and cannot be marked clean by this older save.
+    const pendingRevisions = tabs
+      .filter((tab) => tab.isDirty)
+      .map((tab) => ({ id: tab.id, revision: tab.revision ?? 1 }));
 
     // Clear existing timer
     if (timerRef.current) {
@@ -46,9 +41,7 @@ export function useDraftAutoSave() {
       const success = saveDraftMulti(tabs, activeId);
 
       if (success) {
-        // Mark all dirty tabs as clean
-        dirtyTabsRef.current.forEach((id) => markCharacterClean(id));
-        dirtyTabsRef.current.clear();
+        acknowledgePersisted(pendingRevisions);
         shownSaveErrorRef.current = null;
       } else {
         const message = getLastDraftSaveError() ?? 'The browser could not save this Draft. Your changes remain marked as unsaved.';
@@ -66,5 +59,5 @@ export function useDraftAutoSave() {
         clearTimeout(timerRef.current);
       }
     };
-  }, [tabs, activeId, dialog, isDraftHydrated, markCharacterClean]);
+  }, [tabs, activeId, acknowledgePersisted, dialog, isDraftHydrated]);
 }

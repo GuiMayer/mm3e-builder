@@ -123,6 +123,22 @@ describe('charactersStore integration', () => {
     expect(useCharactersStore.getState().tabs.every((tab) => !tab.isDirty)).toBe(true);
   });
 
+  it('only clears a character when the persisted revision still matches', () => {
+    const id = useCharactersStore.getState().addCharacter();
+    const initialRevision = useCharactersStore.getState().getCharacterById(id)?.revision;
+
+    useCharactersStore.getState().updateCharacter(id, {
+      header: { name: 'Changed after save started' },
+    } as Partial<ReturnType<typeof createDefaultCharacter>>);
+
+    useCharactersStore.getState().acknowledgePersisted([{ id, revision: initialRevision ?? 1 }]);
+    expect(useCharactersStore.getState().getCharacterById(id)?.isDirty).toBe(true);
+
+    const latestRevision = useCharactersStore.getState().getCharacterById(id)?.revision;
+    useCharactersStore.getState().acknowledgePersisted([{ id, revision: latestRevision ?? 2 }]);
+    expect(useCharactersStore.getState().getCharacterById(id)?.isDirty).toBe(false);
+  });
+
   it('reopens a closed tab through the temporary undo history', () => {
     const firstId = useCharactersStore.getState().addCharacter(
       createDefaultCharacter({ header: { ...createDefaultCharacter().header, name: 'First' } })

@@ -37,6 +37,25 @@ function clearClosedTabHistory(): ClosedTabHistory {
   return createClosedTabHistory();
 }
 
+function getRevision(tab: CharacterTab): number {
+  return tab.revision ?? (tab.isDirty ? 1 : 0);
+}
+
+function getPersistedRevision(tab: CharacterTab): number {
+  return tab.persistedRevision ?? (tab.isDirty ? 0 : getRevision(tab));
+}
+
+function normalizeTabRuntimeState(tab: CharacterTab): CharacterTab {
+  const revision = getRevision(tab);
+  const persistedRevision = getPersistedRevision(tab);
+  return { ...tab, revision, persistedRevision, isDirty: revision !== persistedRevision };
+}
+
+function markTabDirty(tab: CharacterTab): CharacterTab {
+  const revision = getRevision(tab) + 1;
+  return { ...tab, revision, persistedRevision: getPersistedRevision(tab), isDirty: true };
+}
+
 /* ================================================
    Characters Store — Multi-Character Management
    Manages multiple character tabs simultaneously.
@@ -88,6 +107,7 @@ export interface CharactersStoreState {
   // Dirty state management
   markCharacterDirty: (id: string) => void;
   markCharacterClean: (id: string) => void;
+  acknowledgePersisted: (revisions: ReadonlyArray<{ id: string; revision: number }>) => void;
 
   // Helpers
   getCharacterById: (id: string) => CharacterTab | undefined;
@@ -121,6 +141,8 @@ export const useCharactersStore = create<CharactersStoreState>()(
           isDirty: true, // New characters should be auto-saved immediately
           label: baseCharacter.header?.name || 'Unnamed Character',
           lastModified: Date.now(),
+          revision: 1,
+          persistedRevision: 0,
         };
 
         set((state) => ({
@@ -208,6 +230,8 @@ export const useCharactersStore = create<CharactersStoreState>()(
             ...tab,
             character: updatedCharacter,
             label: updatedCharacter.header.name || 'Unnamed Character',
+            revision: getRevision(tab) + 1,
+            persistedRevision: getPersistedRevision(tab),
             isDirty: true,
             lastModified: Date.now(),
           };
@@ -246,6 +270,8 @@ export const useCharactersStore = create<CharactersStoreState>()(
           label: newName,
           isDirty: true,
           lastModified: Date.now(),
+          revision: 1,
+          persistedRevision: 0,
         };
 
         set((state) => ({
@@ -286,6 +312,8 @@ export const useCharactersStore = create<CharactersStoreState>()(
             ...tab,
             character: result.character,
             label: result.character.header.name || 'Unnamed Character',
+            revision: getRevision(tab) + 1,
+            persistedRevision: getPersistedRevision(tab),
             isDirty: true,
             lastModified: Date.now(),
           };
@@ -317,6 +345,8 @@ export const useCharactersStore = create<CharactersStoreState>()(
             ...tab,
             character: result.character,
             label: result.character.header.name || 'Unnamed Character',
+            revision: getRevision(tab) + 1,
+            persistedRevision: getPersistedRevision(tab),
             isDirty: true,
             lastModified: Date.now(),
           };
@@ -352,14 +382,15 @@ export const useCharactersStore = create<CharactersStoreState>()(
           if (!entry || state.tabs.some((tab) => tab.id === entry.tab.id)) return {};
 
           const tabs = [...state.tabs];
-          tabs.splice(Math.min(entry.index, tabs.length), 0, entry.tab);
+          const reopenedTab = markTabDirty(entry.tab);
+          tabs.splice(Math.min(entry.index, tabs.length), 0, reopenedTab);
 
           return {
             tabs,
-            activeCharacterId: entry.tab.id,
+            activeCharacterId: reopenedTab.id,
             historyByTabId: {
               ...state.historyByTabId,
-              [entry.tab.id]: entry.characterHistory,
+              [reopenedTab.id]: entry.characterHistory,
             },
             closedTabHistory: {
               past: state.closedTabHistory.past.slice(0, -1),
@@ -409,7 +440,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
 
       loadCharacters: (tabs, activeId) => {
         set({
-          tabs,
+          tabs: tabs.map(normalizeTabRuntimeState),
           activeCharacterId: activeId,
           historyByTabId: {},
           closedTabHistory: clearClosedTabHistory(),
@@ -418,7 +449,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
 
       loadTabs: (tabs, activeId) => {
         set({
-          tabs,
+          tabs: tabs.map(normalizeTabRuntimeState),
           activeCharacterId: activeId,
           historyByTabId: {},
           closedTabHistory: clearClosedTabHistory(),
@@ -440,7 +471,7 @@ export const useCharactersStore = create<CharactersStoreState>()(
       markCharacterDirty: (id) => {
         set((state) => ({
           tabs: state.tabs.map((tab) =>
-            tab.id === id ? { ...tab, isDirty: true } : tab
+            tab.id === id ? markTabDirty(tab) : tab
           ),
         }));
       },
@@ -448,9 +479,26 @@ export const useCharactersStore = create<CharactersStoreState>()(
       markCharacterClean: (id) => {
         set((state) => ({
           tabs: state.tabs.map((tab) =>
-            tab.id === id ? { ...tab, isDirty: false } : tab
+            tab.id === id
+              ? { ...tab, persistedRevision: getRevision(tab), isDirty: false }
+              : tab
           ),
         }));
+      },
+
+      acknowledgePersisted: (revisions) => {
+        if (revisions.length === 0) return;
+        const persistedById = new Map(revisions.map((entry) => [entry.id, entry.revision]));
+        set((state) => {
+          let changed = false;
+          const tabs = state.tabs.map((tab) => {
+            const persistedRevision = persistedById.get(tab.id);
+            if (persistedRevision === undefined || getRevision(tab) !== persistedRevision) return tab;
+            changed = true;
+            return { ...tab, persistedRevision, isDirty: false };
+          });
+          return changed ? { tabs } : {};
+        });
       },
 
       getCharacterById: (id) => {

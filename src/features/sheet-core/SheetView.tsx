@@ -1,4 +1,3 @@
-import { useDraftAutoSave } from '../../shared/hooks/useDraftAutoSave';
 import { usePLValidation } from '../../shared/hooks/usePLValidation';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { AbilitiesPanel } from './AbilitiesPanel';
@@ -17,7 +16,6 @@ import { useTranslation } from 'react-i18next';
 
 export function SheetView() {
   const { t } = useTranslation();
-  useDraftAutoSave();
   const violations = usePLValidation();
   const pp = useCalculatedPP();
 
