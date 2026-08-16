@@ -34,10 +34,11 @@ export function useAutoLoadDraftMulti() {
     if (instanceActive) {
       const timestamp = parseInt(instanceActive, 10);
       const timeDiff = now - timestamp;
-      // If another instance was active in the last 2 seconds, skip loading
+      // The marker is advisory: skipping initialization here leaves this tab
+      // with autosave disabled forever. Loading the latest durable draft is
+      // safe and lets each tab work normally.
       if (timeDiff < 2000) {
-        console.log('[useAutoLoadDraftMulti] Another instance detected, skipping auto-load');
-        return;
+        console.log('[useAutoLoadDraftMulti] Another instance detected, loading the latest saved draft');
       }
     }
 
