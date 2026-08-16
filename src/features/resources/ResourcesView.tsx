@@ -14,6 +14,7 @@ import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 
 const labels: Record<ResourceType, string> = { gadget: 'Gadget', gear: 'Gear', vehicle: 'Vehicle', headquarters: 'Headquarters', custom: 'Custom' };
 type PowerTarget = { resource: IResource; index?: number };
+type EditingResource = { resource: IResource; isNew: boolean };
 
 function blankPower(): ICharacterPower {
   return { id: uuidv4(), name: '', components: [{ id: uuidv4(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} }], notes: '', alternateEffects: [] };
@@ -32,11 +33,16 @@ export function ResourcesView() {
   const resources = useResourcesStore((state) => state.resources);
   const { addResource, updateResource, removeResource } = useResourcesStore();
   const tabs = useCharactersStore((state) => state.tabs);
-  const [editing, setEditing] = useState<IResource | null>(null);
+  const [editing, setEditing] = useState<EditingResource | null>(null);
   const [powerTarget, setPowerTarget] = useState<PowerTarget | null>(null);
   const dialog = useAppDialog();
   const ordered = useMemo(() => [...resources].sort((a, b) => a.name.localeCompare(b.name)), [resources]);
-  const save = (resource: IResource) => { updateResource({ ...resource, updatedAt: new Date().toISOString() }); setEditing(null); };
+  const save = (resource: IResource) => {
+    const savedResource = { ...resource, updatedAt: new Date().toISOString() };
+    if (editing?.isNew) addResource(savedResource);
+    else updateResource(savedResource);
+    setEditing(null);
+  };
   const deleteResource = async (resource: IResource) => {
     const uses = tabs.filter((tab) => (tab.character.resourceLinks ?? []).some((link) => link.resourceId === resource.id)).length;
     if (uses) {
@@ -55,9 +61,9 @@ export function ResourcesView() {
     setPowerTarget(null);
   };
   return <div className="resources-view">
-    <header className="resources-view__header"><div><h1><Archive size={21} /> {t('resources.title', { defaultValue: 'Resources' })}</h1><p>{t('resources.libraryHint', { defaultValue: 'Reusable Gadgets, Gear, Vehicles, Headquarters, and custom resources. Associate them from a character sheet.' })}</p></div><div className="resources-view__new">{(Object.keys(labels) as ResourceType[]).map((type) => <Button key={type} size="sm" variant="secondary" onClick={() => { const resource = makeResource(type); addResource(resource); setEditing(resource); }}><Plus size={14} /> {labels[type]}</Button>)}</div></header>
-    <div className="resources-view__grid">{ordered.map((resource) => <ResourceCard key={resource.id} resource={resource} onEdit={() => setEditing(resource)} onDelete={() => deleteResource(resource)} onPower={(index) => setPowerTarget({ resource, index })} onRemovePower={(index) => { if (resource.type === 'vehicle') updateResource({ ...resource, systems: resource.systems.filter((_, i) => i !== index), updatedAt: new Date().toISOString() }); if (resource.type === 'headquarters') updateResource({ ...resource, effects: resource.effects.filter((_, i) => i !== index), updatedAt: new Date().toISOString() }); }} />)}{!ordered.length && <div className="resources-view__empty">{t('resources.libraryEmpty', { defaultValue: 'Your resource library is empty. Add a resource to start building it.' })}</div>}</div>
-    {editing && <ResourceEditor resource={editing} onClose={() => setEditing(null)} onSave={save} />}
+    <header className="resources-view__header"><div><h1><Archive size={21} /> {t('resources.title', { defaultValue: 'Resources' })}</h1><p>{t('resources.libraryHint', { defaultValue: 'Reusable Gadgets, Gear, Vehicles, Headquarters, and custom resources. Associate them from a character sheet.' })}</p></div><div className="resources-view__new">{(Object.keys(labels) as ResourceType[]).map((type) => <Button key={type} size="sm" variant="secondary" onClick={() => setEditing({ resource: makeResource(type), isNew: true })}><Plus size={14} /> {labels[type]}</Button>)}</div></header>
+    <div className="resources-view__grid">{ordered.map((resource) => <ResourceCard key={resource.id} resource={resource} onEdit={() => setEditing({ resource, isNew: false })} onDelete={() => deleteResource(resource)} onPower={(index) => setPowerTarget({ resource, index })} onRemovePower={(index) => { if (resource.type === 'vehicle') updateResource({ ...resource, systems: resource.systems.filter((_, i) => i !== index), updatedAt: new Date().toISOString() }); if (resource.type === 'headquarters') updateResource({ ...resource, effects: resource.effects.filter((_, i) => i !== index), updatedAt: new Date().toISOString() }); }} />)}{!ordered.length && <div className="resources-view__empty">{t('resources.libraryEmpty', { defaultValue: 'Your resource library is empty. Add a resource to start building it.' })}</div>}</div>
+    {editing && <ResourceEditor resource={editing.resource} onClose={() => setEditing(null)} onSave={save} />}
     {powerTarget && <PowerBuilderOverlay existingPower={currentPower ?? undefined} equipmentMode onSave={savePower} onClose={() => setPowerTarget(null)} />}
     <style>{`.resources-view { margin:0 auto; max-width:1200px; padding:var(--s-lg); }.resources-view__header { display:flex; gap:var(--s-lg); justify-content:space-between; margin-bottom:var(--s-xl); }.resources-view h1 { align-items:center; display:flex; font-size:1.4rem; gap:var(--s-sm); margin:0 0 var(--s-xs); }.resources-view__header p { color:var(--c-text-muted); margin:0; max-width:650px; }.resources-view__new { align-content:flex-start; display:flex; flex-wrap:wrap; gap:var(--s-xs); justify-content:flex-end; }.resources-view__grid { display:grid; gap:var(--s-md); grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); }.resources-view__empty { border:1px dashed var(--c-border); border-radius:var(--r-md); color:var(--c-text-muted); grid-column:1/-1; padding:var(--s-xl); text-align:center; }@media(max-width:700px){.resources-view{padding:var(--s-md)}.resources-view__header{flex-direction:column}.resources-view__new{justify-content:flex-start}}`}</style>
   </div>;
