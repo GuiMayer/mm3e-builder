@@ -9,20 +9,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes yet._
+
+---
+
+## [1.11.0] - 2026-08-16
+
+### Added
+- **Resources Library**: Added a reusable library for Gadgets, Gear, Vehicles, Headquarters, and custom resources. Characters now link to library items instead of copying them, with Equipment Point calculation and a GM-granted/free toggle.
+- **Vehicle and Headquarters resources**: Added structured sizes, traits, features, systems/effects, and Power Builder integration for Vehicles and Headquarters.
+- **Targeted Effects view**: Replaced the attack-only presentation with a grouped view of attack rolls, resistance-based effects, areas, Perception effects, Affects Others effects, linked resource effects, and custom entries.
+- **Draft and Resource transfer**: Added JSONL export/import for the complete Draft (characters, open tabs, active tab, and Resources) and for the Resource library by itself.
+- **Update safety backup**: When a new application version can migrate existing local data, the user can export a pre-update JSONL snapshot before migration continues.
+- **Per-character undo/redo refinements**: Added restoration of recently closed character tabs, continued field-edit grouping, and independent runtime-only history for the Resource library.
+- **Power Builder refinements**: Added multi-descriptor editing, structured Senses trait purchases, partial modifier ranks, conditional modifier costs, and further fixed, fractional, and variable-cost rule support.
+
 ### Changed
-- Refined the internal architecture without changing the public product scope: the application remains static, local-first, and deployable to GitHub Pages.
-- Separated character defaults and pure character operations from the Zustand store.
-- Split JSON-file processing and local draft persistence into focused services while preserving established localStorage keys and file compatibility.
-- Loaded PDF and Excel export code on demand to reduce the initial production bundle.
-- Added temporary per-character undo/redo for committed sheet changes, including powers and equipment. History is limited to 50 steps and is not persisted.
+- **Architecture**: Refined the internal architecture without changing the public product scope: the application remains static, local-first, and deployable to GitHub Pages. Character defaults, operations, file processing, draft persistence, editor models, and exports now have focused boundaries.
+- **Identity and import behavior**: Centralized UUID generation across characters, tabs, and Resources. Imports resolve identity conflicts without replacing an existing character unintentionally.
+- **Persistence**: Draft saves now use revision-aware, transactional writes. Legacy drafts and legacy equipment are preserved, recoverable, and migrated only after validation.
+- **PDF export**: The default exporter uses `jsPDF.html()` with selectable text and measured pagination. It keeps supported entries together when possible, while the official fillable PDF remains available as the legacy exporter.
+- **UI consistency**: Replaced browser-native confirmation prompts with themed application dialogs; standardized form controls and translated the new Resource, recovery, and dialog flows in English and Brazilian Portuguese.
+- **Build and deploy**: PDF and Excel code remains loaded on demand; static-build verification and deployment safeguards are part of the standard pipeline.
 
 ### Quality
-- Added tests for character defaults, character operations, multi-character persistence, JSON-file boundaries, and Power Builder state.
-- Added strict type checking and static-build verification to the standard quality gates.
-- Limited GitHub Pages deployment to pushes to `main`; pull requests run verification only.
+- Expanded the automated suite to 42 test files and 626 passing tests, covering character and Resource persistence, migrations, identity, imports, histories, targeted effects, Power Builder behavior, PDF safety, and pagination.
+- Kept strict type checking, linting, production build, and static-build verification as release gates.
 
 ### Documentation
-- Established `docs/ARCHITECTURE_REFINED.md` as the current architecture reference.
+- Updated the README, architecture guide, and future-expansions roadmap for the current Resource, draft, export, and PDF behavior.
 
 ---
 
@@ -425,6 +440,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Key Feature | Schema Version |
 |---------|------|-------------|----------------|
+| 1.11.0 | 2026-08-16 | Resources, draft recovery, Targeted Effects, and PDF export | 2.0.0 |
 | 1.10.0 | 2026-06-13 | Multi-Character Tabs + Advantage Subtypes | 2.0.0 |
 | 1.9.0 | 2026-05-14 | Empty Component Detection | 2.0.0 |
 | 1.8.0 | 2026-05-14 | Power Descriptors + Variable Cost | 2.0.0 |
@@ -488,6 +504,7 @@ If you encounter issues, please report at: https://github.com/GuiMayer/mm3e-buil
 
 ---
 
+[1.11.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.7.0...v1.8.0

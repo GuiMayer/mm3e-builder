@@ -1,194 +1,121 @@
 # MM3e Builder — Future Expansions
 
-This file documents features that are **intentionally deferred** from the current implementation scope.
-Each item includes the rationale for deferral, the UX vision, and the architecture notes needed
-for the current code to remain compatible when the feature is eventually implemented.
+This document records intentionally deferred work. It describes the codebase at
+**v1.11.0** (2026-08-16), not the original pre-release feature plan.
+
+The product remains a static, local-first application. A backend, user accounts,
+and mandatory cloud synchronization are outside the current scope.
 
 ---
 
-## ~~FX-01~~ · PDF Export — ✅ Implemented in v1.0
+## Delivered foundation
 
-**Original plan ID:** F-23  
-**Shipped:** v1.0 (2026-04)
+The following former expansion areas are now part of the product and are no
+longer roadmap items:
 
-### What was delivered
-The official M&M 3e fillable PDF (`MnM3_charsheet_color_fillable.pdf`) is now filled programmatically
-using `pdf-lib`. All 211 fields across 3 pages are covered:
+- **PDF export:** the default selectable-text HTML-to-PDF export and the
+  official fillable-PDF exporter are both available.
+- **Campaign PP tracking:** Campaign Mode and the PP log are available.
+- **Character notes:** the character notes field is available.
+- **Resource library:** Gadgets, Gear, Vehicles, Headquarters, and custom
+  resources are managed outside a character and linked to it by UUID.
+- **Vehicle and Headquarters basics:** structured sizes, traits, features, and
+  systems/effects are available in the Resource library.
+- **Draft protection:** automatic local drafts, JSONL export/import, a
+  pre-update backup prompt, and recovery safeguards are available.
 
-- **Page 1:** Header (Hero, Player, Identity, Base, Group, PL, PP Earned/Spent/Total, Age, Gender,
-  Height, Weight, Eyes, Hair, Hero Points, Public/Secret checkboxes), Abilities (8 fields +
-  `fmtAbility()` for absent abilities), Defenses (Dodge, Parry, Fortitude, Will, Toughness,
-  Initiative), Offense table (Attack 1–4, Offense 1–4 with auto-calculated DC, Description 1–4),
-  compact Skills/Advantages/Powers text blocks, Notes and Conditions.
-- **Page 2:** Structured skill grid (13 fixed skills + Close Combat 1–3 + Ranged Combat 1–3 +
-  Expertise 1–4), Advantages 1–11, Equipment 1–10, Complications 1–11 (`[Type]: Description`
-  format), Notes 1–7 (character.notes + advantage overflow).
-- **Overflow modal:** When limits are exceeded (> 4 attacks, > 11 advantages, > 11 complications,
-  > 18 powers, > 3 CC/RC subtypes, > 4 Expertise subtypes), a modal warns the user and lists the
-  overflowing items with their destination field.
-
-### Architecture delivered
-Highly modular: `pdfFillService.ts` is a pure orchestrator (< 145 lines) that delegates to
-10 independent section modules under `src/services/pdf/sections/`. Each module is a single
-pure function — testable without a real PDF. `overflowCollector.ts` and `helpers.ts` are
-fully isolated utilities with zero cross-module dependencies.
-
-> See `src/services/pdf/` for the full implementation.
+The Resource library intentionally keeps free/GM-granted resources visible on a
+character sheet while assigning them zero EP cost. This is a table decision, not
+a rules restriction imposed by the application.
 
 ---
 
 ## FX-02 · Character Illustration
 
-**Original plan ID:** F-18
-**Priority when tackled:** Low
-**Effort estimate:** ~3h
+**Priority:** Low
 
 ### Vision
-An avatar/image area in `HeaderPanel` (the existing `<User>` icon placeholder).
-Strategy: **URL-based first** — user pastes an image link (`header.imageUrl?: string`).
-Base64 in-save encoding is v2.0+ only (file size concerns).
 
-When set:
-- The `<User>` icon is replaced by the thumbnail (64×64, `object-fit: contain`).
-- Clicking the thumbnail opens a popover with a URL input field and a "clear" button.
-- A click-to-expand modal shows the full image.
-- Graceful fallback: if URL fails to load (broken link), falls back to `<User>` icon silently.
+Add an optional character illustration to the sheet header. Start with a URL so
+character files stay small; any embedded-image design must account for file size
+and export compatibility.
 
-### Architecture note
-`ICharacterHeader` gains `imageUrl?: string` — optional, backward compatible.
-The PDF generator (FX-01) will render `imageUrl` in the header of page 1 if present.
+### Compatibility notes
 
-### Files to create when implemented
-- `src/entities/types.ts` — `imageUrl?` on `ICharacterHeader`
-- `src/entities/schemas.ts` — `z.string().url().optional()`
-- `src/features/sheet-core/HeaderPanel.tsx` — avatar popover + image render
+- Add an optional `imageUrl` field to the character header and its runtime
+  schema/default factory.
+- Preserve the current text-only header when no image is present.
+- Treat externally hosted images as optional: failed loads must fall back to the
+  standard header without blocking the sheet or an export.
 
 ---
 
-## FX-03 · Full Equipment System (EP Tracker, Vehicles & HQ)
+## FX-03 · Resource library enrichment
 
-**Original plan IDs:** F-15 (EP tracker), F-21 (Vehicles), F-22 (HQ)
-**Priority when tackled:** Medium (post-v1.0)
-**Effort estimate:** ~24h total (all three implemented together in a single `EquipmentPanel` refactor)
+**Priority:** Medium, after real community use identifies the highest-value data
+and workflows.
 
-### Current implementation (v1.0)
-Equipment is implemented as a single **free-text block** (`character.equipmentNotes: string`),
-preserving content without any structure. This is sufficient for recording what a character carries.
-See current `EquipmentNotesPanel` component.
+### Current state
 
-### Full vision (v1.1+)
+The library already supports resource types, character links, EP calculations,
+free/GM-granted resources, Vehicle traits, Headquarters traits, linked effects,
+JSON appendices, JSONL library transfer, and PDF/Excel inclusion.
 
-**Tab layout:** `[Items] [Vehicles] [HQ] [Notes]` within a single expanded `EquipmentPanel`.
+### Deferred possibilities
 
----
+- Curated templates or reference data for common Gear, Vehicles, and
+  Headquarters features.
+- Dedicated UI controls for shared EP contributions and Alternate Equipment
+  sets; the persisted link model already reserves `contributionEP` and
+  `alternateSetId` for these cases.
+- Richer presentation and print layouts for large Vehicle or Headquarters
+  collections.
 
-**Equipment Items (F-15):**
-Structured list of items purchased with Equipment Points (EP).
-
-- EP budget auto-calculated: `calcEquipmentBudget(advantages, advantageDefs)` → finds Equipment advantage ranks × 5.
-- Budget bar: always-visible `EP used / EP budget` display + progress bar (green → red as limit approached).
-- Item list: `[Name] [EP cost] [×]` inline rows. "Add item" as an inline form row at the bottom.
-- Inline EP cost visible at a glance — no detail modal needed for simple items.
-
-```typescript
-interface IEquipmentItem {
-  id: string;
-  name: string;
-  epCost: number;
-  description?: string;
-}
-// ICharacter gains: equipment?: IEquipmentItem[]
-```
+These should remain optional helpers. The current application deliberately
+allows tables to decide which resources are free and does not attempt to make
+arbitrary GM rulings.
 
 ---
 
-**Vehicles (F-21):**
-Standard M&M 3e vehicle stat block within the Vehicles tab.
+## FX-04 · Desktop file storage and optional folder sync
 
-Each vehicle has: Name, Size, Strength, Speed rank, Defense, Toughness.
-Stat inputs use the same stepper UI as Abilities/Defenses for consistency.
+**Priority:** Deferred product exploration
 
-```typescript
-interface IVehicle {
-  id: string;
-  name: string;
-  size: number;         // −2 to +8 (colossal)
-  strength: number;
-  speedRank: number;
-  defense: number;
-  toughness: number;
-  notes?: string;
-}
-// ICharacter gains: vehicles?: IVehicle[]
-```
+### Vision
 
----
+A future desktop wrapper could save the same versioned draft bundle to a local
+folder chosen by the user. That folder could be synchronized by Google Drive,
+OneDrive, Dropbox, or another file-sync tool without introducing a project-owned
+cloud backend.
 
-**Headquarters (F-22):**
-M&M 3e HQ schema within the HQ tab.
+### Scope boundary
 
-- HQ: Size, Toughness + EP-purchased feature checklist.
-- Feature list (each costs 1 EP): Communications, Computer, Defense System, Dock, Garage,
-  Gym, Hangar, Infirmary, Laboratory, Living Space, Personnel, Pool, Power System,
-  Security System, Workshop.
-
-```typescript
-interface IHeadquarters {
-  id: string;
-  name: string;
-  size: number;
-  toughness: number;
-  features: string[];   // list of selected feature IDs
-  notes?: string;
-}
-// ICharacter gains: headquarters?: IHeadquarters[]
-```
+- Keep the web version on `localStorage` and JSON/JSONL transfer.
+- Introduce a storage adapter rather than replacing the character domain or
+  current migrations.
+- Use atomic local writes and backup files.
+- Treat simultaneous edits on multiple devices as a file-level conflict to be
+  resolved explicitly; do not add real-time collaboration or CRDTs without a
+  demonstrated need.
 
 ---
 
-### Architecture compatibility (current code)
-The current `equipmentNotes: string` field is **preserved** and displayed as the "Notes" tab in the
-new panel, allowing players to migrate their free-text content manually. It is not removed —
-it becomes the legacy notes tab when the full system is added.
+## FX-05 · Rules coverage and data review
 
-```typescript
-// Current shape
-ICharacter.equipmentNotes: string
+**Priority:** Ongoing
 
-// Future extension — backward compatible
-ICharacter.equipmentNotes: string            // now displayed in the "Notes" tab
-ICharacter.equipment?: IEquipmentItem[]
-ICharacter.vehicles?: IVehicle[]
-ICharacter.headquarters?: IHeadquarters[]
-```
+M&M 3e has broad edge-case coverage. The builder supports the current catalog,
+cost models, validation, and Power Builder workflows, but rule/data verification
+remains continuous work.
 
-The multi-character `charactersStore.ts` should evolve through its `updateCharacter`
-action (or a focused entity operation if reuse is needed), without reintroducing the
-removed single-character `charStore.ts`.
+When expanding a rule:
 
-A new pure function `calcEquipmentBudget(advantages, advantageDefs)` will be added to
-`mathEngine.ts` for PDF and Excel compatibility.
+1. Verify the source material and the JSON definitions.
+2. Preserve compatible imported characters through normalization/migration.
+3. Add calculation, validation, and import/export coverage.
+4. Keep generic modifiers available by default; restrict only modifiers that
+   are explicitly power-specific.
 
 ---
 
-## FX-04 · Character Notes & Background
-
-**Original plan ID:** F-14 (notes portion), FX-02 (illustration — see above)
-**Status:** Text notes are implemented. Illustration support remains deferred.
-
-> The general notes field (`character.notes?: string`) is part of the active Tier 4 plan under F-14.
-> It will be a collapsible "Background & Notes" panel at the bottom of the sheet.
-
----
-
-## FX-05 · PP Advancement Tracking
-
-**Original plan ID:** F-17
-**Status:** Implemented as an opt-in **Campaign Mode** toggle with a PP log.
-
-> When Campaign Mode is OFF (default), PP = PL × 15 as today — zero visual impact.
-> When ON, a PP log accordion expands with award entries. PP = PL × 15 + Σ ppLog.
-
----
-
-*Last updated: 2026-08-15 — compatibility notes revised after the architecture refactor*
+*Last updated: 2026-08-16 — v1.11.0 release documentation.*

@@ -1,11 +1,21 @@
 # Documentation guide
 
+## Current release
+
+The current application release is **v1.11.0** (2026-08-16). Its principal
+changes are the Resource library, Targeted Effects, safer Draft persistence and
+transfer, Power Builder/rule refinements, centralized identity, and the
+selectable-text PDF workflow. See the [changelog](../CHANGELOG.md) for the
+complete release record.
+
 ## Current references
 
 - [Refined architecture](./ARCHITECTURE_REFINED.md) is the authoritative guide for product scope, module boundaries, persistence, import/export compatibility, and verification gates.
 - [Project README](../README.md) describes the user-facing capabilities and local setup.
 - [Contributing guide](../CONTRIBUTING.md) explains translation and data contributions.
 - [Changelog](../CHANGELOG.md) records released changes and work awaiting release.
+- [Future expansions](../FUTURE_EXPANSIONS.md) records deferred product work and
+  distinguishes it from functionality delivered in v1.11.0.
 - [Test suite guide](../src/__tests__/README.md) explains how to run and extend tests.
 
 ## Historical records

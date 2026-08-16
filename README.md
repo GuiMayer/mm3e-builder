@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.10.0
+# Mutants & Masterminds 3e Character Builder — v1.11.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -37,7 +37,7 @@ A modern, fast, and user-friendly character builder for the Mutants & Mastermind
 - **Smart Import** — Import matches existing tabs by characterId to prevent duplicates and merge intelligently.
 - **Duplicate Character** — Clone existing characters with a single click, automatically generating new unique IDs.
 - **Tab Labels** — Shows character name or "Unnamed Character" for easy identification.
-- **Temporary Undo / Redo** — Recover up to 50 committed edits per character tab with buttons or `Ctrl/Cmd+Z`; history stays only in the current browser session.
+- **Temporary Undo / Redo** — Recover up to 50 committed edits per character tab with buttons or `Ctrl/Cmd+Z`; recently closed tabs can also be restored. Editing history stays only in the current browser session.
 
 #### ⚡ Power Builder (v2)
 The Power Builder is the most feature-rich section, built for full M&M 3e rules compliance:
@@ -48,7 +48,8 @@ The Power Builder is the most feature-rich section, built for full M&M 3e rules 
 - **Power-Specific Modifiers** — 45+ power-specific modifiers (Accurate, Affects Corporeal, Alternate Resistance, etc.) with automatic UI filtering to show only relevant modifiers per power. Verified against official M&M 3e Hero's Handbook with 92.5% accuracy rate.
 - **Per-modifier rank control** — Modifiers with ranked costs (e.g. Burst Area) have a rank spinner. Options-based modifiers (e.g. Affects Corporeal shape) have an inline dropdown.
 - **Real-time cost display** — Footer shows cost breakdown per component and a running total for the entire array (base + alternates).
-- **Power name and notes** — Free-form fields for flavor text, descriptors (Fire, Magic, etc.), and GM notes.
+- **Power name and notes** — Free-form fields for flavor text, multiple editable descriptors (Fire, Magic, etc.), and GM notes.
+- **Structured Senses and cost controls** — Supports structured Senses trait purchases, partial modifier ranks, conditional costs, and supported fixed, fractional, and variable effect costs.
 - **Strict Mode** — Optional PL cap enforcement that validates Attack + Damage and Defense + Toughness bounds per-power.
 
 #### 🔀 Alternate Effects (Arrays) — v2
@@ -69,6 +70,18 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 - Cards display each power with component effects, applied modifier tags, and individual AE tags showing "↪ [Name] ⚡" for dynamic slots.
 - Edit button re-opens the Power Builder with the existing power pre-loaded.
 
+#### 🎯 Targeted Effects
+- **Mechanical profiles** — Presents every relevant attack roll, resistance-based effect, area, Perception effect, Affects Others effect, and custom entry in one place.
+- **Clear hierarchy** — Groups profiles by their source power, alternate effect, resource, or manual entry instead of imposing arbitrary offensive/support labels.
+- **Useful filters** — Filter by attack, resistance, area, and Affects Others; custom entries keep their manually configured roll values.
+
+#### 📦 Resources Library
+- **Reusable resources** — Manage Gadgets, Gear, Vehicles, Headquarters, and custom items in a dedicated library.
+- **Character associations** — Link a library resource to a character without copying it. Linked items are included in PP/EP calculations, targeted effects, PDF, Excel, and JSON exports.
+- **GM-granted items** — A resource can remain visible on the sheet while costing 0 EP, leaving that table decision to the GM.
+- **Structured Vehicles and Headquarters** — Vehicle traits, sizes, features, systems, headquarters features, and effects use the same underlying character-power model where applicable.
+- **Independent history and transfer** — Resources have their own temporary undo/redo history and can be imported/exported as JSONL.
+
 #### ✅ Validation System
 - **Modular validation engine** — 8-phase validation system covering all M&M 3e core rules.
 - **PL limits enforcement** — Validates Attack + Damage ≤ 2×PL and Dodge + Toughness ≤ 2×PL per official rules.
@@ -86,21 +99,21 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 - **Instant access** — No need to flip through rulebooks during character creation or gameplay.
 
 #### 📄 Export to PDF
-- **Default exporter:** generates the character sheet through the new browser-only HTML-to-PDF workflow, loaded on demand.
+- **Default exporter:** generates a browser-only HTML-to-PDF sheet through `jsPDF.html()`, loaded on demand. Text remains selectable and supported cards/rows are kept together across pages when possible.
 - **Legacy exporter (optional):** fills the official M&M 3e fillable character sheet (`MnM3_charsheet_color_fillable.pdf`) with all 211 fields using `pdf-lib` — 100% client-side, no backend.
 - Page 1: Header, Abilities, Defenses, Initiative, Offense table (Attack 1–4 with auto-calculated DCs), compact Skills/Advantages/Powers summaries, Notes & Conditions.
 - Page 2: Structured skills grid (Ab / Ra / Total per skill), Close Combat & Ranged Combat subtypes, Expertise subtypes, Advantages 1–11, Equipment 1–10, Complications 1–11, Notes 1–7.
 - **Campaign Mode support** — Correctly calculates PP totals including PP Log adjustments when in Campaign Mode.
 - **Accurate stat calculations** — Toughness (STA + ranks) and Initiative (AGL bonus) calculated correctly.
 - **Legacy overflow handling** — When the legacy sheet exceeds its fixed limits (e.g. > 4 attacks, > 11 advantages), a detailed modal warns the user before export and redirects excess items to the Notes fields.
-- The legacy PDF has **fully selectable text** in any PDF reader — no screenshot or image-based rendering.
+- Both exporters keep text selectable in standard PDF readers; the legacy template is useful when the official layout is preferred.
 - The legacy template is fetched only after selecting the legacy exporter, keeping the default initial load smaller.
 
 #### 📤 Export to Excel
 - Full character sheet exported to a styled `.xlsx` workbook with 8 sections: Summary, Abilities, Defenses, Skills, Advantages, Powers, Complications, and PP Log (when in Campaign Mode).
 - **PP Log sheet** — When in Campaign Mode, includes a dedicated sheet showing full award/deduction history with running totals and color-coded positive/negative adjustments.
 - **Accurate calculations** — Total PP includes PP Log adjustments, Toughness and Initiative stats included in Defenses sheet.
-- Color-coded cells, PP totals, and alternate effects listed per power.
+- Color-coded cells, PP totals, alternate effects listed per power, and linked Resources in the equipment export.
 
 #### 🌐 Internationalization (i18n)
 - **Dual-layer architecture**: UI strings via `react-i18next` (`translation.json`), game data via `i18n` fields in JSON data files.
@@ -108,14 +121,23 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 - Language can be switched at runtime from the top menu bar without page reload.
 
 #### 💾 Save / Load
-- Characters saved to `localStorage` automatically.
-- Import/Export via JSON file — character schema is versioned with automatic migration for older saves.
+- Characters and Resources are saved to `localStorage` automatically with revision-aware writes and explicit recovery behavior when storage fails.
+- Import/Export via versioned JSON files; linked Resources travel in a character-file appendix and older saves are migrated automatically.
+- **Draft backup** — Export or restore all open character tabs, the active tab, and Resources as JSONL. Before an update migrates stored data, the app offers a one-time pre-update backup export.
 
 ---
 
 ### 📋 Version History
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
+
+#### v1.11.0 (2026-08-16)
+- Resources Library with Gadgets, Gear, Vehicles, Headquarters, and character associations
+- Targeted Effects view for rolls and resisted effects from powers, alternate effects, resources, and custom entries
+- JSONL Draft/Resource backup and restore, pre-update export safety, transactional draft persistence, and centralized UUIDs
+- Multi-descriptor editing, structured Senses traits, power-cost refinements, and Resources in PDF/Excel/JSON exports
+- Default selectable-text PDF workflow with measured pagination, plus a themed dialog and form-control pass
+- 626 automated tests across 42 test files
 
 #### v1.10.0 (2026-06-13)
 - Multi-Character Tabs System with drag-and-drop and per-tab auto-save
@@ -189,6 +211,7 @@ The architecture allows you to quickly contribute new localizations without deep
 - **@dnd-kit** — Drag-and-Drop (modifiers palette)
 - **React-i18next** — UI Internationalization
 - **ExcelJS** — Advanced Sheet Exporting
+- **jsPDF** — Default selectable-text HTML-to-PDF export
 - **pdf-lib** — Official fillable PDF character sheet export
 - **Zod** — Runtime schema validation & versioned migrations
 
@@ -231,7 +254,7 @@ Um criador de fichas moderno, rápido e focado na facilidade de uso para o siste
 - **Importação Inteligente** — A importação corresponde abas existentes por characterId para prevenir duplicatas e fazer merge inteligente.
 - **Duplicar Personagem** — Clone personagens existentes com um único clique, gerando automaticamente novos IDs únicos.
 - **Rótulos de Aba** — Mostra o nome do personagem ou "Personagem Sem Nome" para fácil identificação.
-- **Desfazer / Refazer temporário** — Recupere até 50 alterações confirmadas por aba com botões ou `Ctrl/Cmd+Z`; o histórico existe apenas na sessão atual do navegador.
+- **Desfazer / Refazer temporário** — Recupere até 50 alterações confirmadas por aba com botões ou `Ctrl/Cmd+Z`; abas fechadas recentemente também podem ser restauradas. O histórico existe apenas na sessão atual do navegador.
 
 #### ⚡ Power Builder (v2)
 O Power Builder é a seção mais completa, construído para máxima conformidade com as regras do M&M 3e:
@@ -242,7 +265,8 @@ O Power Builder é a seção mais completa, construído para máxima conformidad
 - **Modificadores Específicos de Poder** — 45+ modificadores específicos de poder (Preciso, Afeta Incorpóreo, Resistência Alternativa, etc.) com filtragem automática na UI para mostrar apenas modificadores relevantes por poder. Verificado contra o Hero's Handbook oficial do M&M 3e com taxa de precisão de 92,5%.
 - **Controle de rank por modificador** — Modificadores com custo ranqueado (ex: Área em Rajada) possuem um controle de ranks. Modificadores com opções (ex: Afeta Incorpóreo) têm dropdown embutido.
 - **Custo em tempo real** — Rodapé exibe custo por componente e total da array completa (base + alternativos).
-- **Nome e notas do poder** — Campos livres para flavor text, descritores (Fogo, Magia, etc.) e anotações de mestre.
+- **Nome e notas do poder** — Campos livres para flavor text, múltiplos descritores editáveis (Fogo, Magia, etc.) e anotações de mestre.
+- **Sentidos e custos estruturados** — Suporta compras estruturadas de traços de Sentidos, ranks parciais de modificadores, custos condicionais e os custos fixos, fracionários e variáveis compatíveis.
 - **Modo Estrito** — Validação opcional dos limites de PL que verifica Ataque + Dano e Defesa + Resistência por poder.
 
 #### 🔀 Efeitos Alternativos (Arrays) — v2
@@ -263,6 +287,18 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 - Cards exibem cada poder com efeitos dos componentes, tags dos modificadores aplicados e tags individuais de AE mostrando "↪ [Nome] ⚡" para slots dinâmicos.
 - Botão de edição reabre o Power Builder com o poder existente pré-carregado.
 
+#### 🎯 Efeitos Direcionados
+- **Perfis mecânicos** — Reúne ataques, efeitos com resistência, áreas, efeitos por Percepção, efeitos que Afetam Outros e entradas personalizadas.
+- **Hierarquia clara** — Agrupa perfis pelo poder, efeito alternativo, Resource ou entrada manual de origem, sem impor categorias arbitrárias de ofensivo/suporte.
+- **Filtros úteis** — Filtre por ataque, resistência, área e Afeta Outros; entradas personalizadas preservam o valor de rolagem configurado.
+
+#### 📦 Biblioteca de Resources
+- **Resources reutilizáveis** — Gerencie Gadgets, Gear, Vehicles, Headquarters e itens personalizados em uma biblioteca própria.
+- **Associação à ficha** — Associe um Resource da biblioteca ao personagem sem copiá-lo. Itens associados entram no cálculo de PP/EP, Efeitos Direcionados e exportações de PDF, Excel e JSON.
+- **Itens gratuitos concedidos pelo mestre** — Um Resource concedido pelo mestre continua visível na ficha sem custo de EP, deixando essa decisão de mesa a cargo do mestre.
+- **Vehicles e Headquarters estruturados** — Traços, tamanhos, features, systems e efeitos usam o mesmo modelo de poderes do personagem quando aplicável.
+- **Histórico e transferência independentes** — Resources têm seu próprio desfazer/refazer temporário e importação/exportação em JSONL.
+
 #### ✅ Sistema de Validação
 - **Motor de validação modular** — Sistema de validação em 8 fases cobrindo todas as regras principais do M&M 3e.
 - **Aplicação de limites de NP** — Valida Ataque + Dano ≤ 2×NP e Esquiva + Resistência ≤ 2×NP conforme regras oficiais.
@@ -280,21 +316,21 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 - **Acesso instantâneo** — Não é necessário folhear livros de regras durante criação de personagem ou jogo.
 
 #### 📄 Exportar como PDF
-- **Exportador padrão:** gera a ficha pelo novo fluxo HTML-para-PDF no navegador, carregado sob demanda.
+- **Exportador padrão:** gera a ficha no navegador por HTML-para-PDF com `jsPDF.html()`, carregado sob demanda. O texto permanece selecionável e cards/linhas compatíveis são mantidos juntos entre páginas quando possível.
 - **Exportador legado (opcional):** preenche a ficha oficial fillable do M&M 3e (`MnM3_charsheet_color_fillable.pdf`) com todos os 211 campos usando `pdf-lib` — 100% no browser, sem backend.
 - Página 1: Cabeçalho, Atributos, Defesas, Iniciativa, tabela de Offense (Attack 1–4 com DCs calculados automaticamente), resumos compactos de Perícias/Vantagens/Poderes, Notes & Conditions.
 - Página 2: Grade estruturada de perícias (Hab / Ra / Total por perícia), subtypes de Combate Corpo-a-Corpo e à Distância, subtypes de Especialidade, Vantagens 1–11, Equipamento 1–10, Complicações 1–11, Notas 1–7.
 - **Suporte a Modo Campanha** — Calcula corretamente totais de PP incluindo ajustes do Registro de PP quando em Modo Campanha.
 - **Cálculos precisos de stats** — Resistência (VIG + ranks) e Iniciativa (bônus de AGL) calculados corretamente.
 - **Tratamento de overflow do legado** — Quando a ficha legada excede seus limites fixos (ex: > 4 ataques, > 11 vantagens), um modal detalhado avisa o usuário antes de exportar e redireciona o excedente para os campos de Notas.
-- O PDF legado tem texto **completamente selecionável** em qualquer leitor de PDF — sem screenshot ou renderização por imagem.
+- Ambos os exportadores mantêm texto selecionável em leitores de PDF comuns; o template legado é útil quando o layout oficial é preferido.
 - O template legado é carregado apenas após selecionar esse exportador, reduzindo o carregamento inicial padrão.
 
 #### 📤 Exportar para Excel
 - Ficha completa exportada para um arquivo `.xlsx` estilizado com 8 abas: Resumo, Atributos, Defesas, Perícias, Vantagens, Poderes, Complicações e Registro de PP (quando em Modo Campanha).
 - **Aba de Registro de PP** — Quando em Modo Campanha, inclui uma aba dedicada mostrando histórico completo de concessões/deduções com totais acumulados e ajustes positivos/negativos coloridos.
 - **Cálculos precisos** — PP total inclui ajustes do Registro de PP, stats de Resistência e Iniciativa incluídos na aba de Defesas.
-- Células coloridas, totais de PP e efeitos alternativos listados por poder.
+- Células coloridas, totais de PP, efeitos alternativos listados por poder e Resources associados na exportação de equipamento.
 
 #### 🌐 Internacionalização (i18n)
 - **Arquitetura em duas camadas**: strings da UI via `react-i18next` (`translation.json`), dados do jogo via campos `i18n` nos arquivos JSON.
@@ -302,14 +338,23 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 - O idioma pode ser trocado em tempo real no menu superior sem recarregar a página.
 
 #### 💾 Salvar / Carregar
-- Personagens salvos automaticamente no `localStorage`.
-- Import/Export via arquivo JSON — o schema do personagem é versionado com migração automática para saves antigos.
+- Personagens e Resources são salvos automaticamente no `localStorage` com escritas orientadas por revisão e recuperação explícita quando o armazenamento falha.
+- Import/Export por arquivos JSON versionados; Resources associados viajam em um apêndice do arquivo de personagem e saves antigos são migrados automaticamente.
+- **Backup do Draft** — Exporte ou restaure todas as abas, a aba ativa e os Resources em JSONL. Antes de uma atualização migrar dados locais, o app oferece uma exportação preventiva única.
 
 ---
 
 ### 📋 Histórico de Versões
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
+
+#### v1.11.0 (2026-08-16)
+- Biblioteca de Resources com Gadgets, Gear, Vehicles, Headquarters e associações aos personagens
+- Efeitos Direcionados para rolagens e efeitos resistidos de poderes, efeitos alternativos, Resources e entradas personalizadas
+- Backup/restauração de Draft e Resources em JSONL, exportação preventiva, persistência transacional e UUIDs centralizados
+- Múltiplos descritores, traços estruturados de Sentidos, refinamentos de custo e Resources em exportações PDF/Excel/JSON
+- Fluxo padrão de PDF com texto selecionável e paginação medida, além de padronização de diálogos e controles de formulário
+- 626 testes automatizados em 42 arquivos de teste
 
 #### v1.10.0 (2026-06-13)
 - Sistema de Abas Multi-Personagem com drag-and-drop e auto-save por aba
@@ -381,6 +426,7 @@ Leia **[CONTRIBUTING.md](./CONTRIBUTING.md)** para saber como:
 - **@dnd-kit** — Drag-and-Drop (paleta de modificadores)
 - **React-i18next** — Internacionalização da UI
 - **ExcelJS** — Exportação avançada da ficha
+- **jsPDF** — Exportação padrão HTML-para-PDF com texto selecionável
 - **pdf-lib** — Exportação da ficha oficial fillable em PDF
 - **Zod** — Validação de schema em runtime e migrações versionadas
 

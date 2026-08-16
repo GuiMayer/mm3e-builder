@@ -16,31 +16,54 @@ operations. Code here must not depend on React, Zustand, DOM APIs, or storage.
 
 ### `store`
 
-Owns current UI/application state. Zustand actions coordinate immutable state
-updates but delegate reusable character transformations to `entities`.
+Owns current UI/application state. `charactersStore` coordinates immutable tab
+updates and delegates reusable character transformations to `entities`.
+`resourcesStore` owns the independent Resource library and its runtime-only
+history.
 
 ### `services/storage`
 
-Owns browser persistence and established localStorage keys. All external data is
-validated before entering the store. Invalid drafts are preserved rather than
-deleted automatically.
+Owns browser persistence, draft recovery, and established localStorage keys.
+All external data is validated before entering a store. Invalid drafts are
+preserved rather than deleted automatically, and a failed write must not mark a
+tab as persisted.
 
 ### `services/character-file`
 
-Owns JSON import, normalization, semantic validation, sanitization, and export.
-The `fileService.ts` facade remains for source compatibility; new code should
-import the focused module it needs.
+Owns JSON import, normalization, semantic validation, sanitization, and export,
+including the Resource appendix linked to a character file. The `fileService.ts`
+facade remains for source compatibility; new code should import the focused
+module it needs.
 
 ### `features`
 
 Owns user workflows and presentation. Complex editors may expose a colocated
 pure model module, as the Power Builder does, without moving transient editor
-state into a global store.
+state into a global store. The Resource library and the Targeted Effects view
+reuse the shared character-power model instead of defining parallel effect
+formats.
 
 ### Export services
 
 PDF and Excel generation remain browser-only and are loaded on demand. User
 text embedded in generated HTML must pass through `escapeHtml` or `nl2br`.
+The default PDF path renders once through `jsPDF.html()`; pagination may measure
+a disposable DOM copy, but only a clean render tree is passed to jsPDF.
+
+## Resource library
+
+Resources are reusable items stored outside individual characters. Supported
+types are Gadget, Gear, Vehicle, Headquarters, and Custom. A character keeps
+only a link to a resource, not a second copy of it.
+
+- `resourceId` is the stable UUID of the library item.
+- `isFree` keeps GM-granted resources visible while charging 0 EP.
+- `contributionEP` and `alternateSetId` are persisted extension points for
+  shared ownership and Alternate Equipment pricing.
+- Character JSON can include a Resource appendix so linked items travel with a
+  character import/export without forcing unrelated library items into the file.
+- The library can be transferred independently or together with the full Draft
+  through JSONL.
 
 ## Persisted character pipeline
 
@@ -58,12 +81,20 @@ The multi-character draft keeps these public keys for compatibility:
 - `mm3e-draft-characters`
 - `mm3e-draft-metadata`
 - `mm3e-draft-character` (legacy migration only)
+- `mm3e-resource-library`
+
+Before a release changes persisted data, startup can capture a pre-update JSONL
+snapshot. Draft loading and migration are gated until that one-time backup
+prompt is resolved. Recovery copies are retained when a legacy or unreadable
+draft cannot be safely replaced.
 
 ## Temporary editing history
 
-Undo/redo is a runtime-only concern owned by `charactersStore`. Each tab has an
-independent history keyed by tab ID, while snapshots contain only `ICharacter`
-data. History never enters localStorage, JSON files, PDF, or Excel exports.
+Undo/redo is runtime-only. `charactersStore` maintains one independent history
+per tab, plus a separate recent-close history. `resourcesStore` maintains its
+own independent Resource-library history. Character snapshots contain only
+`ICharacter` data; no history enters localStorage, JSON files, PDF, or Excel
+exports.
 
 - A history stores at most 50 past and 50 future snapshots.
 - Power and equipment changes are recorded when the editor is saved, not while
@@ -72,9 +103,10 @@ data. History never enters localStorage, JSON files, PDF, or Excel exports.
 - Undo and redo restore a dirty tab so the existing auto-save flow persists the
   restored character normally.
 - Loading saved tabs starts a fresh history. New and duplicated tabs start
-  empty; removing a tab discards its history.
-- Tab creation, removal, activation, and reordering are deliberately outside
-  this feature's scope.
+  empty.
+- Closing a tab is reversible for the current browser session; restoring it
+  also restores its editing history. Creating, duplicating, editing, or
+  reordering tabs clears the recent-close history.
 
 The UI exposes buttons for all devices plus `Ctrl/Cmd+Z`, `Ctrl/Cmd+Shift+Z`,
 and `Ctrl/Cmd+Y` on desktop. Shortcuts do not override native text editing or
