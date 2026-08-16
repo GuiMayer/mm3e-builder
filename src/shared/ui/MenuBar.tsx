@@ -10,6 +10,7 @@ import { useCharacterHistory } from '../hooks/useCharacterHistory';
 import { useFileOperations } from '../hooks/useFileOperations';
 import { useExcelExport } from '../hooks/useExcelExport';
 import { MobileDrawer } from './MobileDrawer';
+import { CharacterImportConflictDialog } from './CharacterImportConflictDialog';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
@@ -65,7 +66,15 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   // Hooks
   const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
   const { canUndo, canRedo, undo, redo } = useCharacterHistory();
-  const { exportCharacter, handleFileInput, fileInputRef } = useFileOperations();
+  const {
+    exportCharacter,
+    handleFileInput,
+    fileInputRef,
+    pendingImport,
+    updateCharacterFromPendingImport,
+    openPendingImportAsCopy,
+    cancelPendingImport,
+  } = useFileOperations();
   const { exportExcel } = useExcelExport();
 
   // Local state
@@ -157,6 +166,13 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         validationRules={validationRules}
         onValidationRulesChange={setValidationRules}
         onClearDraft={handleClearDraft}
+      />
+
+      <CharacterImportConflictDialog
+        pendingImport={pendingImport}
+        onUpdate={updateCharacterFromPendingImport}
+        onOpenAsCopy={openPendingImportAsCopy}
+        onCancel={cancelPendingImport}
       />
 
       <header className="menubar">

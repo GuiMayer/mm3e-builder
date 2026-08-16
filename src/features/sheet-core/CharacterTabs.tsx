@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useCharactersStore } from '../../store/charactersStore';
-import { Plus, X } from 'lucide-react';
+import { Copy, Plus, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 export function CharacterTabs() {
@@ -9,6 +9,7 @@ export function CharacterTabs() {
   const activeCharacterId = useCharactersStore((s) => s.activeCharacterId);
   const setActiveCharacter = useCharactersStore((s) => s.setActiveCharacter);
   const addCharacter = useCharactersStore((s) => s.addCharacter);
+  const duplicateCharacter = useCharactersStore((s) => s.duplicateCharacter);
   const removeCharacter = useCharactersStore((s) => s.removeCharacter);
   const reorderTabs = useCharactersStore((s) => s.reorderTabs);
 
@@ -24,6 +25,10 @@ export function CharacterTabs() {
   // Handle new character
   const handleNewCharacter = () => {
     addCharacter();
+  };
+
+  const handleDuplicateCharacter = () => {
+    if (activeCharacterId) duplicateCharacter(activeCharacterId);
   };
 
   // Handle close tab
@@ -123,7 +128,17 @@ export function CharacterTabs() {
       </div>
 
       <button
-        className="character-tabs-new"
+        className="character-tabs-action character-tabs-action--duplicate"
+        onClick={handleDuplicateCharacter}
+        disabled={!activeCharacterId}
+        title={t('tabs.duplicateCharacter')}
+        aria-label={t('tabs.duplicateCharacter')}
+      >
+        <Copy size={15} />
+      </button>
+
+      <button
+        className="character-tabs-action character-tabs-action--new"
         onClick={handleNewCharacter}
         title={t('tabs.newCharacter')}
         aria-label={t('tabs.newCharacter')}
@@ -244,7 +259,7 @@ export function CharacterTabs() {
           color: var(--c-text-inverse);
         }
 
-        .character-tabs-new {
+        .character-tabs-action {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -258,14 +273,32 @@ export function CharacterTabs() {
           flex-shrink: 0;
         }
 
-        .character-tabs-new:hover {
+        .character-tabs-action--new {
+          background: var(--c-primary);
+          color: var(--c-text-inverse);
+        }
+
+        .character-tabs-action--new:hover {
           background: var(--c-primary-hover);
           transform: scale(1.05);
         }
 
-        .character-tabs-new:active {
+        .character-tabs-action--duplicate {
+          background: var(--c-surface-elevated);
+          border: 1px solid var(--c-border);
+          color: var(--c-text-secondary);
+        }
+
+        .character-tabs-action--duplicate:hover:not(:disabled) {
+          border-color: var(--c-primary);
+          color: var(--c-primary);
+        }
+
+        .character-tabs-action:active:not(:disabled) {
           transform: scale(0.95);
         }
+
+        .character-tabs-action:disabled { cursor: not-allowed; opacity: .45; }
 
         /* Mobile optimizations */
         @media (max-width: 768px) {

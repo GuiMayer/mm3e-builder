@@ -1,9 +1,20 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
-import { useCharacterActions } from './useCharacterActions';
 import { exportCharacterJSON, importCharacterJSON, I18nError, saveDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
+import type { ICharacter } from '../../entities/types';
+import type { CharacterTab } from '../../entities/characterTab';
+import {
+  duplicateImportedCharacter,
+  ensureImportedCharacterIdentity,
+  findCharacterIdentityMatches,
+} from '../../entities/characterImport';
+
+export interface PendingCharacterImport {
+  character: ICharacter;
+  matchingTabs: CharacterTab[];
+}
 
 /**
  * Hook for managing character file operations (import/export JSON).
@@ -12,9 +23,15 @@ import { useCharactersStore } from '../../store/charactersStore';
 export function useFileOperations() {
   const { t, i18n } = useTranslation();
   const { character } = useActiveCharacter();
-  const { loadCharacter } = useCharacterActions();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isImporting, setIsImporting] = useState(false);
+  const [pendingImport, setPendingImport] = useState<PendingCharacterImport | null>(null);
+
+  function openImportedCharacter(importedCharacter: ICharacter) {
+    useCharactersStore.getState().addCharacter(
+      ensureImportedCharacterIdentity(importedCharacter)
+    );
+  }
 
   /**
    * Export current character as JSON file
@@ -37,7 +54,16 @@ export function useFileOperations() {
     setIsImporting(true);
     try {
       const char = await importCharacterJSON(file);
-      loadCharacter(char);
+      const matchingTabs = findCharacterIdentityMatches(
+        useCharactersStore.getState().tabs,
+        char.characterId
+      );
+
+      if (matchingTabs.length === 0) {
+        openImportedCharacter(char);
+      } else {
+        setPendingImport({ character: char, matchingTabs });
+      }
     } catch (err) {
       if (err instanceof I18nError) {
         alert(t(err.i18nKey, err.i18nParams));
@@ -72,6 +98,29 @@ export function useFileOperations() {
     fileInputRef.current?.click();
   }
 
+  function updateCharacterFromPendingImport(tabId: string) {
+    const pending = pendingImport;
+    if (!pending) return;
+
+    const store = useCharactersStore.getState();
+    if (store.getCharacterById(tabId)) {
+      store.updateCharacter(tabId, pending.character);
+      store.setActiveCharacter(tabId);
+    } else {
+      openImportedCharacter(pending.character);
+    }
+    setPendingImport(null);
+  }
+
+  function openPendingImportAsCopy() {
+    const pending = pendingImport;
+    if (!pending) return;
+
+    const existingNames = useCharactersStore.getState().tabs.map((tab) => tab.label);
+    openImportedCharacter(duplicateImportedCharacter(pending.character, existingNames));
+    setPendingImport(null);
+  }
+
   return {
     exportCharacter,
     importCharacter,
@@ -79,5 +128,9 @@ export function useFileOperations() {
     triggerFileInput,
     fileInputRef,
     isImporting,
+    pendingImport,
+    updateCharacterFromPendingImport,
+    openPendingImportAsCopy,
+    cancelPendingImport: () => setPendingImport(null),
   };
 }

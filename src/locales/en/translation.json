@@ -57,6 +57,11 @@
   "tabs.copyLabel": " (Copy)",
   "tabs.copyOfCopy": " (Copy {{number}})",
 
+  "characterImport.conflict.title": "Character already open",
+  "characterImport.conflict.description": "This file has the same character identity as {{count}} open tab. Choose which tab to update, or open an independent copy.",
+  "characterImport.conflict.update": "Update {{name}}",
+  "characterImport.conflict.openCopy": "Open as new copy",
+
   "header.heroName": "Hero Name",
   "header.player": "Player",
   "header.identity": "Identity",
