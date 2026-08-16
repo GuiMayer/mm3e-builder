@@ -24,7 +24,7 @@ import { parseDraftBundle, serializeDraftBundle } from '../../services/draftTran
 import { downloadBlob } from '../../services/downloadHelper';
 import { Modal } from './Modal';
 
-const APP_VERSION = '1.11.0';
+const APP_VERSION = __APP_VERSION__;
 const UPDATE_NOTICE_KEY = 'mm3e-draft-export-notice-version';
 const IMPORT_BACKUP_KEY = 'mm3e-draft-import-backup-v1';
 
