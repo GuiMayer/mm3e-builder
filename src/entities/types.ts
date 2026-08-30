@@ -74,6 +74,7 @@ export interface IModifierSubtype {
   id: string;
   label: string;
   costValue: number;   // overrides the parent modifier's costValue
+  i18n?: Record<string, { label?: string }>;
 }
 
 // ── Modifier Definition (from modifiers.json or powers.json extras/flaws) ──
@@ -84,6 +85,8 @@ export interface IModifierDef {
   costType: CostType;
   costValue: number;
   maxRanks?: number;             // max ranks purchasable (e.g. Indirect=4, Accurate=PL)
+  /** A per-rank modifier that may be applied more than once. */
+  repeatable?: boolean;
   description: string;
   longDescription?: string;      // full rulebook text
   options?: { label: string; notes: string }[];  // sub-options (e.g. Area shapes)
@@ -189,7 +192,7 @@ export interface ICharacterAdvantage {
 // ── Applied Modifier (on a power component) ──
 export interface IAppliedModifier {
   modifierId: string;
-  ranks: number;                 // flat_ranked: ranks of the MODIFIER; per_rank: always 1
+  ranks: number;                 // modifier ranks; per_rank only scales when its definition is repeatable
   isPowerSpecific?: boolean;     // modifier comes from power's own extras/flaws list
   option?: string;               // selected sub-option (e.g. "Burst" for Area)
   options?: Record<string, boolean | number | string>; // flexible flags; string used for subtypeId

@@ -9,6 +9,8 @@ import {
   type AfflictionConfig,
 } from '../shared/lib/afflictionValidation';
 import { DEFAULT_VALIDATION_RULES } from '../shared/lib/validationRules';
+import { POWER_DEFS, MODIFIER_DEFS } from '../entities/gameDataLoaders';
+import { calcComponentCost } from '../shared/lib/mathEngine';
 
 /* ================================================
    Affliction Validation Tests
@@ -448,60 +450,43 @@ describe('Real-World Affliction Examples', () => {
 // ══════════════════════════════════════════════════════
 
 describe('Affliction Cost Calculation (Hero\'s Handbook p.149)', () => {
-  it('1-degree Affliction costs 1 PP/rank', () => {
-    // Affliction rank 10, 1 degree
-    // Expected: 1 PP/rank × 10 ranks = 10 PP
-    // Note: This is the base cost - user doesn't need to do anything special
-    expect(1 * 10).toBe(10);
+  const affliction = POWER_DEFS.find((effect) => effect.id === 'affliction')!;
+
+  it('prices all three resistance degrees at the same 1 PP/rank base cost', () => {
+    const legacyOptions = [
+      '1 degree (dazed/entranced/fatigued/hindered/impaired/vulnerable)',
+      '2 degrees (add compelled/defenseless/disabled/exhausted/immobile/prone/stunned)',
+      '3 degrees (add asleep/controlled/incapacitated/paralyzed/transformed/unaware)',
+    ];
+
+    for (const variableCostOption of legacyOptions) {
+      expect(calcComponentCost({
+        id: 'affliction', effectId: 'affliction', ranks: 10, modifiers: [], variableCostOption,
+      }, affliction, MODIFIER_DEFS)).toBe(10);
+    }
   });
 
-  it('2-degree Affliction costs 2 PP/rank', () => {
-    // Affliction rank 10, 2 degrees
-    // Expected: 2 PP/rank × 10 ranks = 20 PP
-    // Note: User must understand to multiply baseCost by number of degrees
-    expect(2 * 10).toBe(20);
+  it('prices Cumulative and repeated Extra Condition applications through the catalog', () => {
+    expect(calcComponentCost({
+      id: 'cumulative', effectId: 'affliction', ranks: 10,
+      modifiers: [{ modifierId: 'cumulative', ranks: 1, isPowerSpecific: true }],
+    }, affliction, MODIFIER_DEFS)).toBe(20);
+
+    expect(calcComponentCost({
+      id: 'extra-condition', effectId: 'affliction', ranks: 10,
+      modifiers: [{ modifierId: 'extra_condition', ranks: 2, isPowerSpecific: true }],
+    }, affliction, MODIFIER_DEFS)).toBe(30);
   });
 
-  it('3-degree Affliction costs 3 PP/rank', () => {
-    // Affliction rank 10, 3 degrees
-    // Expected: 3 PP/rank × 10 ranks = 30 PP
-    // Note: Full Affliction with all three degrees
-    expect(3 * 10).toBe(30);
-  });
+  it('prices one or two applications of Limited Degree as fractional tiers', () => {
+    expect(calcComponentCost({
+      id: 'two-degrees', effectId: 'affliction', ranks: 10,
+      modifiers: [{ modifierId: 'limited_degree', ranks: 1, isPowerSpecific: true }],
+    }, affliction, MODIFIER_DEFS)).toBe(5);
 
-  it('Affliction with modifiers applies to base cost per degree', () => {
-    // Affliction rank 10, 2 degrees, +1/rank extra (Cumulative)
-    // Base for 1 degree: (1 + 1) × 10 = 20 PP
-    // For 2 degrees: user creates with baseCost 2, so (2 + 1) × 10 = 30 PP
-    // Note: Modifiers apply to the per-rank cost, then multiply by degrees
-    const baseCostPerDegree = 1;
-    const extraModifier = 1; // +1/rank
-    const ranks = 10;
-    const degrees = 2;
-    
-    const costPerRankWithModifier = baseCostPerDegree + extraModifier;
-    const totalForOneDegree = costPerRankWithModifier * ranks;
-    const totalForTwoDegrees = (baseCostPerDegree * degrees + extraModifier) * ranks;
-    
-    expect(totalForOneDegree).toBe(20); // 1 degree with +1/rank
-    expect(totalForTwoDegrees).toBe(30); // 2 degrees with +1/rank
-  });
-
-  it('validates cost examples from Hero\'s Handbook', () => {
-    // Example 1: Poison (3 degrees, rank 8)
-    // fatigued -> exhausted -> incapacitated
-    expect(3 * 8).toBe(24);
-    
-    // Example 2: Mind Control (3 degrees, rank 10)
-    // dazed -> compelled -> controlled
-    expect(3 * 10).toBe(30);
-    
-    // Example 3: Stun (2 degrees, rank 6)
-    // dazed -> stunned
-    expect(2 * 6).toBe(12);
-    
-    // Example 4: Simple Daze (1 degree, rank 5)
-    // dazed only
-    expect(1 * 5).toBe(5);
+    expect(calcComponentCost({
+      id: 'one-degree', effectId: 'affliction', ranks: 10,
+      modifiers: [{ modifierId: 'limited_degree', ranks: 2, isPowerSpecific: true }],
+    }, affliction, MODIFIER_DEFS)).toBe(4);
   });
 });

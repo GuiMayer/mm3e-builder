@@ -7,23 +7,8 @@
     "action": "standard",
     "range": "close",
     "duration": "instant",
-    "description": "Imposes debilitating conditions on a target. Cost: 1 PP/rank per degree of condition (1 degree = 1 PP/rank, 2 degrees = 2 PP/rank, 3 degrees = 3 PP/rank). Choose conditions for each degree at acquisition. Target resists with Fortitude or Will. Higher degrees replace lower ones.",
-    "variableCost": {
-      "options": [
-        {
-          "name": "1 degree (dazed/entranced/fatigued/hindered/impaired/vulnerable)",
-          "cost": 1
-        },
-        {
-          "name": "2 degrees (add compelled/defenseless/disabled/exhausted/immobile/prone/stunned)",
-          "cost": 2
-        },
-        {
-          "name": "3 degrees (add asleep/controlled/incapacitated/paralyzed/transformed/unaware)",
-          "cost": 3
-        }
-      ]
-    },
+    "description": "Imposes debilitating conditions on a target for 1 PP/rank. Choose one condition for each of the three possible degrees of failure when the effect is acquired. Target resists with Fortitude or Will. Higher-degree conditions replace lower ones.",
+    "variableCost": null,
     "configurableFields": [
       {
         "id": "resistance",
@@ -52,10 +37,10 @@
     "i18n": {
       "pt-BR": {
         "name": "Aflição",
-        "description": "Impõe condições debilitantes ao alvo. Custo: 1 PP/rank por grau de condição (1 grau = 1 PP/rank, 2 graus = 2 PP/rank, 3 graus = 3 PP/rank). Escolha condições para cada grau na aquisição. Alvo resiste com Fortitude ou Vontade. Graus superiores substituem os inferiores."
+        "description": "Impõe condições debilitantes ao alvo por 1 PP/rank. Escolha uma condição para cada um dos três graus possíveis de falha ao adquirir o efeito. O alvo resiste com Fortitude ou Vontade. Condições de graus superiores substituem as inferiores."
       }
     },
-    "longDescription": "Affliction attacks impose debilitating conditions. The base cost is 1 PP/rank per degree of condition you purchase. A 1-degree Affliction costs 1 PP/rank and imposes one first-degree condition (dazed, entranced, fatigued, hindered, impaired, or vulnerable). A 2-degree Affliction costs 2 PP/rank and imposes a first-degree condition on one degree of failure and a second-degree condition (compelled, defenseless, disabled, exhausted, immobile, prone, or stunned) on two degrees of failure. A 3-degree Affliction costs 3 PP/rank and adds a third-degree condition (asleep, controlled, incapacitated, paralyzed, transformed, or unaware) on three degrees of failure. Higher degree conditions replace lower ones. Target resists with Fortitude or Will (chosen at acquisition). Reference: Hero's Handbook p.149",
+    "longDescription": "Affliction attacks impose debilitating conditions and always have a base cost of 1 PP/rank. Choose one condition for each degree of failure when the effect is acquired: first degree (dazed, entranced, fatigued, hindered, impaired, or vulnerable), second degree (compelled, defenseless, disabled, exhausted, immobile, prone, or stunned), and third degree (asleep, controlled, incapacitated, paralyzed, transformed, or unaware). These are resistance-check results, not separately purchased cost tiers. Higher-degree conditions replace lower ones. Target resists with Fortitude or Will (chosen at acquisition). Reference: Hero's Handbook p.149",
     "enhancesDefense": null,
     "extras": [
       {
@@ -81,6 +66,7 @@
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
+        "repeatable": true,
         "description": "Add an additional condition option at one degree of the Affliction.",
         "longDescription": "Each rank adds one additional condition option at any one degree of the Affliction. The attacker chooses which condition applies when the effect succeeds.",
         "incompatibleWith": [],
@@ -156,6 +142,8 @@
         "category": "flaw",
         "costType": "per_rank",
         "costValue": -1,
+        "maxRanks": 2,
+        "repeatable": true,
         "description": "The Affliction only has one or two degrees instead of three.",
         "longDescription": "A Limited Degree Affliction inflicts conditions from only one (-2/rank) or two (-1/rank) degrees rather than three. Choose which degrees at acquisition.",
         "incompatibleWith": [],
@@ -2515,6 +2503,7 @@
         "category": "flaw",
         "costType": "per_rank",
         "costValue": -1,
+        "repeatable": true,
         "description": "You can only move a particular type of object or material, such as only metals, plants, rock, water, etc.",
         "longDescription": "You can only move a particular type of object or material, such as only metals, plants, rock, water, and so forth. The GM may allow a –2 cost per rank flaw for a particularly limited type of material, such as only precious metals, leaves, sand, or petroleum.",
         "incompatibleWith": [],
@@ -3594,7 +3583,7 @@
         "id": "increased_mass",
         "name": "Increased Mass",
         "category": "extra",
-        "costType": "flat",
+        "costType": "flat_ranked",
         "costValue": 1,
         "description": "You can carry additional mass when you teleport equal to your rank in this extra.",
         "incompatibleWith": [],
@@ -3721,6 +3710,38 @@
         "costType": "per_rank",
         "costValue": 1,
         "description": "Change configuration faster (Move +1, Free +2, Reaction +3).",
+        "subtypes": [
+          {
+            "id": "move",
+            "label": "Move Action",
+            "costValue": 1,
+            "i18n": {
+              "pt-BR": {
+                "label": "Ação de Movimento"
+              }
+            }
+          },
+          {
+            "id": "free",
+            "label": "Free Action",
+            "costValue": 2,
+            "i18n": {
+              "pt-BR": {
+                "label": "Ação Livre"
+              }
+            }
+          },
+          {
+            "id": "reaction",
+            "label": "Reaction",
+            "costValue": 3,
+            "i18n": {
+              "pt-BR": {
+                "label": "Reação"
+              }
+            }
+          }
+        ],
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {

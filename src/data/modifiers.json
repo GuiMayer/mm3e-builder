@@ -376,6 +376,8 @@
         "category":  "extra",
         "costType":  "per_rank",
         "costValue":  1,
+        "maxRanks":  3,
+        "repeatable":  true,
         "description":  "Moves duration up one step: instant→concentration→sustained→continuous.",
         "longDescription":  "Each rank moves the effect\u0027s duration up one step: instant→concentration→sustained→continuous. +1/rank for each step. An effect made continuous with this modifier cannot be turned off voluntarily unless Reversible is also applied.",
         "incompatibleWith":  [
@@ -1017,6 +1019,7 @@
         "category":  "flaw",
         "costType":  "per_rank",
         "costValue":  -1,
+        "repeatable":  true,
         "description":  "The effect only works in specific situations (about half the time).",
         "longDescription":  "The effect is not effective all the time—either only usable in certain situations or only on certain things. As a general rule, the effect must lose about half its usefulness. Examples: Only While Singing, Only Against Fire, Only on Men.",
         "incompatibleWith":  [

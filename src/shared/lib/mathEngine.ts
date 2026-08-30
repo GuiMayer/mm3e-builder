@@ -68,6 +68,16 @@ export function calcModifierCost(applied: IAppliedModifier, def: IModifierDef): 
 }
 
 /**
+ * Whether repeated applications change a per-rank modifier's pricing tier.
+ * `maxRanks` remains a backward-compatible signal for definitions that
+ * already exposed a rank selector before `repeatable` existed.
+ */
+export function isRepeatablePerRankModifier(def: IModifierDef): boolean {
+  return def.costType === 'per_rank'
+    && (def.repeatable === true || (def.maxRanks !== undefined && def.maxRanks > 1));
+}
+
+/**
  * Calculate the cost contribution for a single per-rank modifier with conditional logic.
  * Handles edge cases like:
  *   - "Affects Objects" (+1/rank both; +0/rank only objects)
@@ -126,12 +136,17 @@ export function getPerRankModifierCost(
       const sub = def.subtypes.find((s) => s.id === subtypeId);
     if (sub) return sub.costValue;
     }
+    // Older Variable Action records encoded Move/Free/Reaction as ranks 1/2/3.
+    // Keep those JSONs untouched while pricing them according to the source.
+    if (def.id === 'action_variable') {
+      return Math.max(1, Math.min(3, applied.ranks));
+    }
     // No subtype chosen yet → fall back to def.costValue (0 for alternate_resistance)
     return def.costValue;
   }
 
   // Default behavior
-  const multiplier = def.maxRanks && def.maxRanks > 1 ? applied.ranks : 1;
+  const multiplier = isRepeatablePerRankModifier(def) ? applied.ranks : 1;
   return def.costValue * multiplier;
 }
 
