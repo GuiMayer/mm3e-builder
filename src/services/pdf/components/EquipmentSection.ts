@@ -5,6 +5,7 @@
 
 import type { ICharacter, IPowerEffect, IModifierDef, IResource } from '../../../entities/types';
 import { escapeHtml } from './utils';
+import { resolveModifierDefinition } from '../../../shared/lib/rulesCatalog';
 import { calcEquipmentEPCost, calcPowerTotalCost } from '../../../shared/lib/mathEngine';
 import { getResourceEPCost } from '../../../shared/lib/resourceCalculations';
 
@@ -86,9 +87,14 @@ function formatPowerList(label: string, powers: ICharacter['powers'], powerDefs:
 
 function formatPower(power: ICharacter['powers'][0], powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]): string {
   const effects = buildEffectsString(power, powerDefs);
-  const modifiers = power.components.flatMap((component) => component.modifiers).map((modifier) => {
-    const definition = modifierDefs.find((item) => item.id === modifier.modifierId);
-    return `${definition?.name ?? modifier.modifierId}${modifier.ranks !== 1 ? ` ${modifier.ranks}` : ''}${modifier.option ? ` (${modifier.option})` : ''}`;
+  const modifiers = power.components.flatMap((component) => {
+    const effectDef = powerDefs.find((definition) => definition.id === component.effectId);
+    return component.modifiers.map((modifier) => {
+      const definition = effectDef
+        ? resolveModifierDefinition(modifier, effectDef, modifierDefs).definition
+        : undefined;
+      return `${definition?.name ?? modifier.modifierId}${modifier.ranks !== 1 ? ` ${modifier.ranks}` : ''}${modifier.option ? ` (${modifier.option})` : ''}`;
+    });
   });
   const alternates = power.alternateEffects.map((alternate) => alternate.name || buildEffectsString({ ...power, components: alternate.components }, powerDefs));
   return [power.name, effects, modifiers.length > 0 ? `Modifiers: ${modifiers.join(', ')}` : '', alternates.length > 0 ? `Alternates: ${alternates.join(', ')}` : '', power.notes].filter(Boolean).join(' — ');

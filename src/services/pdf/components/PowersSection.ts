@@ -3,9 +3,10 @@
    List of powers with effects and modifiers
    ================================================ */
 
-import type { ICharacter, IPowerEffect, IModifierDef, IAppliedModifier } from '../../../entities/types';
+import type { ICharacter, IPowerEffect, IModifierDef } from '../../../entities/types';
 import { escapeHtml } from './utils';
 import { calcPowerTotalCost } from '../../../shared/lib/mathEngine';
+import { resolveModifierDefinition } from '../../../shared/lib/rulesCatalog';
 
 export interface PowersSectionData {
   character: ICharacter;
@@ -65,7 +66,7 @@ function renderPowerEntry(
   const effects = buildEffectsString(power, powerDefs);
   
   // Build modifiers string
-  const modifiers = buildModifiersString(power, modifierDefs);
+  const modifiers = buildModifiersString(power, powerDefs, modifierDefs);
   
   // Build descriptors string
   const descriptors = power.descriptors && power.descriptors.length > 0
@@ -126,22 +127,24 @@ function buildEffectsString(power: ICharacter['powers'][0], powerDefs: IPowerEff
 /**
  * Build modifiers string
  */
-function buildModifiersString(power: ICharacter['powers'][0], modifierDefs: IModifierDef[]): string {
-  // Collect all modifiers from all components
-  const allModifiers: IAppliedModifier[] = [];
-  
-  power.components.forEach(comp => {
-    if (comp.modifiers && comp.modifiers.length > 0) {
-      allModifiers.push(...comp.modifiers);
-    }
+function buildModifiersString(
+  power: ICharacter['powers'][0],
+  powerDefs: IPowerEffect[],
+  modifierDefs: IModifierDef[]
+): string {
+  const allModifiers = power.components.flatMap((component) => {
+    const effectDef = powerDefs.find((definition) => definition.id === component.effectId);
+    return component.modifiers.map((modifier) => ({ modifier, effectDef }));
   });
 
   if (allModifiers.length === 0) {
     return '';
   }
 
-  const modifierStrings = allModifiers.map(mod => {
-    const modDef = modifierDefs.find(d => d.id === mod.modifierId);
+  const modifierStrings = allModifiers.map(({ modifier: mod, effectDef }) => {
+    const modDef = effectDef
+      ? resolveModifierDefinition(mod, effectDef, modifierDefs).definition
+      : undefined;
     const modName = modDef?.name || mod.modifierId;
     const parts: string[] = [modName];
     

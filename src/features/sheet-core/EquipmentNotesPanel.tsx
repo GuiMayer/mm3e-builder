@@ -9,6 +9,7 @@ import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { calcEquipmentEPCost } from '../../shared/lib/mathEngine';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
+import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 
 const PowerBuilderOverlay = lazy(() =>
   import('../power-builder/PowerBuilderOverlay').then((module) => ({ default: module.PowerBuilderOverlay }))
@@ -136,7 +137,10 @@ export function EquipmentNotesPanel() {
 
             const appliedModNames = item.components.flatMap((comp) =>
               comp.modifiers.map((m) => {
-                const md = modifierDefs.find((d) => d.id === m.modifierId);
+                const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
+                const md = effectDef
+                  ? resolveModifierDefinition(m, effectDef, modifierDefs).definition
+                  : undefined;
                 return md ? md.name : m.modifierId;
               })
             );

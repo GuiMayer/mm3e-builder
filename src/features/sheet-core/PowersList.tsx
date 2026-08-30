@@ -9,6 +9,7 @@ import { Tooltip } from '../../shared/ui/Tooltip';
 import { Plus, Edit3, Trash2, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
+import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 
 const PowerBuilderOverlay = lazy(() =>
   import('../power-builder/PowerBuilderOverlay').then((module) => ({ default: module.PowerBuilderOverlay }))
@@ -90,7 +91,10 @@ export function PowersList() {
 
           const appliedModNames = power.components.flatMap((comp) =>
             comp.modifiers.map((m) => {
-              const md = modifierDefs.find((d) => d.id === m.modifierId);
+              const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
+              const md = effectDef
+                ? resolveModifierDefinition(m, effectDef, modifierDefs).definition
+                : undefined;
               return md ? md.name : m.modifierId;
             })
           );

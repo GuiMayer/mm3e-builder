@@ -9,14 +9,10 @@ import { buildOffenseSummary } from '../../shared/lib/offenseSummary';
 import type { IOffenseEntry } from '../../shared/lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import {
-  calculateAbilitiesCost,
-  calculateDefensesCost,
-  calculateSkillsCost,
-  calculateAdvantagesCost,
-  calcPowerTotalCost,
   calcToughnessBonus,
   calcInitiativeBonus,
 } from '../../shared/lib/mathEngine';
+import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
 
 import { loadPDFTemplate } from './pdfTemplateLoader';
 import { sliceWithOverflow } from './helpers';
@@ -62,21 +58,21 @@ export async function fillAndDownloadPDF(character: ICharacter, resources: IReso
   const form   = pdfDoc.getForm();
 
   // ── 3. Derive calculated PP values ────────────────────────────
-  const abilitiesCost   = calculateAbilitiesCost(character.abilities, character.absentAbilities);
-  const defensesCost    = calculateDefensesCost(character.defenses);
-  const totalSkillRanks = character.skills.reduce((s, sk) => s + sk.ranks, 0);
-  const skillsCost      = calculateSkillsCost(totalSkillRanks);
-  const advantagesCost  = calculateAdvantagesCost(character.advantages);
-  const powersCost      = character.powers.reduce(
-    (s, p) => s + calcPowerTotalCost(p, POWER_DEFS, MODIFIER_DEFS),
-    0
+  const {
+    abilitiesCost,
+    defensesCost,
+    skillsCost,
+    advantagesCost,
+    powersCost,
+    totalSpent,
+    totalAvailable,
+    remaining,
+  } = calculateCharacterPointSummary(
+    character,
+    resources,
+    POWER_DEFS,
+    MODIFIER_DEFS
   );
-  const totalSpent     = abilitiesCost + defensesCost + skillsCost + advantagesCost + powersCost;
-  const ppEarned       = character.campaignMode
-    ? (character.ppLog ?? []).reduce((s, e) => s + e.amount, 0)
-    : 0;
-  const totalAvailable = character.header.powerLevel * 15 + ppEarned;
-  const remaining      = totalAvailable - totalSpent;
 
   // ── 4. Derive toughness and initiative ────────────────────────
   const staValue = character.absentAbilities.includes('sta') ? 0 : character.abilities.sta;

@@ -11,6 +11,7 @@ import type {
   IPowerEffect,
 } from '../../entities/types';
 import type { IValidationRules } from '../../entities/types';
+import { resolveModifierDefinition } from './rulesCatalog';
 
 export interface ModifierViolation {
   type: 'incompatible' | 'duplicate_modifier' | 'max_ranks' | 'accurate_pl_cap' | 'power_specific';
@@ -214,20 +215,27 @@ export function validateComponentModifiers(
   powerLevel: number = 10
 ): ModifierViolation[] {
   const violations: ModifierViolation[] = [];
+  const resolvedModifierDefs = component.modifiers
+    .map((applied) => resolveModifierDefinition(
+      applied,
+      effectDef,
+      modifierDefs
+    ).definition)
+    .filter((definition): definition is IModifierDef => definition !== undefined);
 
   // Check incompatible modifiers
   if (validationRules.enforceIncompatibleModifiers) {
-    violations.push(...validateIncompatibleModifiers(component.modifiers, modifierDefs));
+    violations.push(...validateIncompatibleModifiers(component.modifiers, resolvedModifierDefs));
   }
 
   // Check duplicate modifier entries
   if (validationRules.enforceDuplicateModifiers) {
-    violations.push(...validateDuplicateModifiers(component.modifiers, modifierDefs));
+    violations.push(...validateDuplicateModifiers(component.modifiers, resolvedModifierDefs));
   }
 
   // Check max ranks
   if (validationRules.enforceModifierMaxRanks) {
-    violations.push(...validateModifierMaxRanks(component.modifiers, modifierDefs));
+    violations.push(...validateModifierMaxRanks(component.modifiers, resolvedModifierDefs));
   }
 
   // Check Accurate PL cap

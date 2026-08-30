@@ -7,7 +7,6 @@
 import ExcelJS from 'exceljs';
 import type {
   ICharacter,
-  IAppliedModifier,
   IModifierDef,
   IPowerEffect,
   IAdvantageDef,
@@ -17,15 +16,20 @@ import type {
 } from '../entities/types';
 import {
   calcAlternateEffectCost,
-  calcPowerTotalCost,
   calculateAbilitiesCost,
   calculateDefensesCost,
   calculateSkillsCost,
   calculateAdvantagesCost,
+  getPerRankModifierCost,
 } from '../shared/lib/mathEngine';
+import {
+  calculateCharacterPointSummary,
+  type CharacterPointSummary,
+} from '../shared/lib/pointSummary';
 import { buildTargetedEffectProfiles, type IOffenseEntry } from '../shared/lib/offenseSummary';
 import { downloadBlob, sanitizeFileName } from './downloadHelper';
 import { getResourceEPCost } from '../shared/lib/resourceCalculations';
+import { resolveModifierDefinition } from '../shared/lib/rulesCatalog';
 
 // ── Types for pre-localized labels ──
 
@@ -164,9 +168,15 @@ export async function generateExcel(
   const wb = new ExcelJS.Workbook();
   wb.creator = 'M&M 3e Builder';
   wb.created = new Date();
+  const pointSummary = calculateCharacterPointSummary(
+    character,
+    resources,
+    gameData.powerDefs,
+    gameData.modifierDefs
+  );
 
   // ── 1. SUMMARY SHEET ──
-  buildSummarySheet(wb, character, labels, gameData);
+  buildSummarySheet(wb, character, labels, pointSummary);
 
   // ── 2. ABILITIES SHEET ──
   buildAbilitiesSheet(wb, character, labels);
@@ -181,7 +191,7 @@ export async function generateExcel(
   buildAdvantagesSheet(wb, character, labels, gameData, language);
 
   // ── 6. POWERS SHEET ──
-  buildPowersSheet(wb, character, labels, gameData, language);
+  buildPowersSheet(wb, character, labels, gameData, language, pointSummary);
 
   // ── 7. COMPLICATIONS SHEET ──
   buildComplicationsSheet(wb, character, labels);
@@ -230,7 +240,7 @@ function buildSummarySheet(
   wb: ExcelJS.Workbook,
   char: ICharacter,
   labels: ExportLabels,
-  gameData: GameDataRefs
+  pointSummary: CharacterPointSummary
 ) {
   const ws = wb.addWorksheet(labels.sheetSummary, { properties: { tabColor: { argb: '6C63FF' } } });
 
@@ -272,21 +282,15 @@ function buildSummarySheet(
   });
 
   // PP Summary
-  const abCost = calculateAbilitiesCost(char.abilities, char.absentAbilities);
-  const defCost = calculateDefensesCost(char.defenses);
-  const totalSkillRanks = char.skills.reduce((s, sk) => s + sk.ranks, 0);
-  const skCost = calculateSkillsCost(totalSkillRanks);
-  const advCost = calculateAdvantagesCost(char.advantages);
-  const pwrCost = char.powers.reduce(
-    (sum, p) => sum + calcPowerTotalCost(p, gameData.powerDefs, gameData.modifierDefs),
-    0
-  );
-  const totalSpent = abCost + defCost + skCost + advCost + pwrCost;
-  // Include PP earned in campaign mode
-  const ppEarned = char.campaignMode
-    ? (char.ppLog ?? []).reduce((s, e) => s + e.amount, 0)
-    : 0;
-  const totalAvailable = char.header.powerLevel * 15 + ppEarned;
+  const {
+    abilitiesCost: abCost,
+    defensesCost: defCost,
+    skillsCost: skCost,
+    advantagesCost: advCost,
+    powersCost: pwrCost,
+    totalSpent,
+    totalAvailable,
+  } = pointSummary;
 
   const summaryStart = 11;
   const headerRow = ws.getRow(summaryStart);
@@ -522,7 +526,8 @@ function buildPowersSheet(
   char: ICharacter,
   labels: ExportLabels,
   gameData: GameDataRefs,
-  lang: string
+  lang: string,
+  pointSummary: CharacterPointSummary
 ) {
   const ws = wb.addWorksheet(labels.sheetPowers, { properties: { tabColor: { argb: 'FF2D6B' } } });
 
@@ -540,8 +545,8 @@ function buildPowersSheet(
 
   let rowIdx = 2;
 
-  char.powers.forEach((power) => {
-    const totalCost = calcPowerTotalCost(power, gameData.powerDefs, gameData.modifierDefs);
+  char.powers.forEach((power, powerIndex) => {
+    const totalCost = pointSummary.powerPricing[powerIndex]?.total ?? 0;
 
     // Build effect display from all components
     const effectNames = power.components
@@ -593,9 +598,6 @@ function buildPowersSheet(
       .filter(Boolean)
       .join('\n');
 
-    // Collect all modifiers from all components
-    const allMods = power.components.flatMap((c) => c.modifiers);
-
     // Format power name with removable tags
     let powerName = power.name || '—';
     if (power.removable === 'removable') powerName += ` (${labels.removable})`;
@@ -616,7 +618,7 @@ function buildPowersSheet(
     row.getCell(1).font = { bold: true };
     row.getCell(2).value = effectNames || '—';
     row.getCell(3).value = power.components.length > 1 ? `${power.components.length} effects` : (power.components[0]?.ranks ?? 0);
-    row.getCell(4).value = formatModifiers(allMods, gameData.modifierDefs, lang);
+    row.getCell(4).value = formatPowerModifiers(power, gameData, lang);
     row.getCell(4).alignment = { wrapText: true };
     row.getCell(5).value = formatAlternates(power, gameData, lang, labels);
     row.getCell(5).alignment = { wrapText: true };
@@ -633,11 +635,7 @@ function buildPowersSheet(
   const totalRow = ws.getRow(rowIdx);
   totalRow.getCell(1).value = 'Total';
   totalRow.getCell(1).font = { bold: true, size: 11 };
-  const totalPP = char.powers.reduce(
-    (sum, p) => sum + calcPowerTotalCost(p, gameData.powerDefs, gameData.modifierDefs),
-    0
-  );
-  totalRow.getCell(7).value = totalPP;
+  totalRow.getCell(7).value = pointSummary.powersCost;
   totalRow.getCell(7).font = { bold: true, size: 11 };
   totalRow.getCell(7).numFmt = '0 "PP"';
 
@@ -888,18 +886,31 @@ function buildPPLogSheet(wb: ExcelJS.Workbook, char: ICharacter) {
 
 // ── Helper: format modifier list as text ──
 
-function formatModifiers(mods: IAppliedModifier[], defs: IModifierDef[], lang: string): string {
-  if (mods.length === 0) return '—';
-  return mods
-    .map((m) => {
-      const def = defs.find((d) => d.id === m.modifierId);
-      if (!def) return m.modifierId;
+function formatPowerModifiers(power: ICharacterPower, gameData: GameDataRefs, lang: string): string {
+  const modifiers = power.components.flatMap((component) => {
+    const effectDef = gameData.powerDefs.find(
+      (definition) => definition.id === component.effectId
+    );
+    return component.modifiers.map((applied) => ({ applied, effectDef }));
+  });
+  if (modifiers.length === 0) return '—';
+  return modifiers
+    .map(({ applied, effectDef }) => {
+      const def = effectDef
+        ? resolveModifierDefinition(applied, effectDef, gameData.modifierDefs).definition
+        : undefined;
+      if (!def) return applied.modifierId;
       const name = locName(def, lang);
-      const sign = def.costValue >= 0 ? '+' : '';
+      const costValue = def.costType === 'per_rank'
+        ? getPerRankModifierCost(applied, def, effectDef?.action)
+        : def.costValue;
+      const sign = costValue >= 0 ? '+' : '';
       const costStr = def.costType === 'per_rank'
-        ? `${sign}${def.costValue}/rank`
-        : `${sign}${def.costValue} flat`;
-      return m.ranks > 1 ? `${name} ×${m.ranks} (${costStr})` : `${name} (${costStr})`;
+        ? `${sign}${costValue}/rank`
+        : `${sign}${costValue} flat`;
+      return applied.ranks > 1
+        ? `${name} ×${applied.ranks} (${costStr})`
+        : `${name} (${costStr})`;
     })
     .join(', ');
 }

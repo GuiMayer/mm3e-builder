@@ -17,14 +17,10 @@ import {
   renderNotesSection,
 } from './components';
 import {
-  calculateAbilitiesCost,
-  calculateDefensesCost,
-  calculateSkillsCost,
-  calculateAdvantagesCost,
-  calcPowerTotalCost,
   calcToughnessBonus,
   calcInitiativeBonus,
 } from '../../shared/lib/mathEngine';
+import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
 import { buildOffenseSummary } from '../../shared/lib/offenseSummary';
 import type { PDFCustomizationOptions, ColorScheme, LayoutMode, FontFamily, FontSize } from './types';
 import { DEFAULT_CUSTOMIZATION, COLOR_THEMES, SPACING_SCALES, FONT_SIZE_SCALES } from './types';
@@ -62,31 +58,22 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       resources = [],
     } = options;
 
-    // Calculate costs
-    const abilitiesCost = calculateAbilitiesCost(character.abilities, character.absentAbilities);
-    const defensesCost = calculateDefensesCost(character.defenses);
-    
-    // Calculate total skill ranks
-    const totalSkillRanks = character.skills.reduce((sum, skill) => sum + skill.ranks, 0);
-    const skillsCost = calculateSkillsCost(totalSkillRanks);
-    
-    // Calculate advantages cost
-    const advantagesCost = calculateAdvantagesCost(
-      character.advantages.map(adv => ({ ranks: adv.ranks || 1 }))
+    const {
+      abilitiesCost,
+      defensesCost,
+      skillsCost,
+      advantagesCost,
+      powersCost,
+      totalSpent,
+      ppEarned,
+      totalAvailable,
+      remaining,
+    } = calculateCharacterPointSummary(
+      character,
+      resources,
+      powerDefs,
+      modifierDefs
     );
-    
-    // Calculate powers cost
-    const powersCost = character.powers.reduce(
-      (sum, power) => sum + calcPowerTotalCost(power, powerDefs, modifierDefs),
-      0
-    );
-    
-    const totalSpent = abilitiesCost + defensesCost + skillsCost + advantagesCost + powersCost;
-    const ppEarned = character.campaignMode
-      ? (character.ppLog ?? []).reduce((sum, entry) => sum + entry.amount, 0)
-      : 0;
-    const totalAvailable = character.header.powerLevel * 15 + ppEarned;
-    const remaining = totalAvailable - totalSpent;
 
     // Calculate additional values needed for rendering
     const staValue = character.absentAbilities.includes('sta') ? 0 : character.abilities.sta;

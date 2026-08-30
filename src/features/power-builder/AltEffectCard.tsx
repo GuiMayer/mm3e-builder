@@ -15,6 +15,7 @@ import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
 import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { getComponentCostBreakdown, getPerRankModifierCost } from '../../shared/lib/mathEngine';
+import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 
 interface AltEffectCardProps {
   ae: IAlternateEffect;
@@ -28,6 +29,7 @@ interface AltEffectCardProps {
   onSetActiveComp: (id: string) => void;
   allEffects: IPowerEffect[];
   allModDefs: IModifierDef[];
+  genericModifierDefs: IModifierDef[];
   modifierIncompatibilities: Record<string, string[]>;
 
   activeId: string | null;
@@ -48,7 +50,7 @@ interface AltEffectCardProps {
 export function AltEffectCard({
   ae, aeIdx, cost, cap, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
-  allEffects, allModDefs, modifierIncompatibilities,
+  allEffects, allModDefs, genericModifierDefs, modifierIncompatibilities,
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
   onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption, onUpdateModifierOptions,
@@ -110,7 +112,9 @@ export function AltEffectCard({
           {/* Component cards */}
           {ae.components.map((comp, cIdx) => {
             const effectDef = allEffects.find((d) => d.id === comp.effectId);
-            const costBreakdown = effectDef ? getComponentCostBreakdown(comp, effectDef, allModDefs) : null;
+            const costBreakdown = effectDef
+              ? getComponentCostBreakdown(comp, effectDef, genericModifierDefs)
+              : null;
             const isActiveComp = comp.id === activeCompId;
             const droppableId = `dropzone-ae::${ae.id}::${comp.id}`;
 
@@ -231,7 +235,9 @@ export function AltEffectCard({
                         <span className="dropzone-placeholder">{t('builder.dropHere')}</span>
                       )}
                       {comp.modifiers.map((applied) => {
-                        const def = allModDefs.find((d) => d.id === applied.modifierId);
+                        const def = effectDef
+                          ? resolveModifierDefinition(applied, effectDef, genericModifierDefs).definition
+                          : undefined;
                         if (!def) return null;
                         const modCostPP =
                           def.costType === 'flat'
@@ -414,7 +420,14 @@ export function AltEffectCard({
                         value=""
                         onChange={(e) => {
                           if (e.target.value) {
-                            onAddModifier(comp.id, e.target.value);
+                            const isPowerSpecific = effectDef
+                              ? [...effectDef.extras, ...effectDef.flaws].some(
+                                  (definition) => definition.id === e.target.value
+                                ) && !genericModifierDefs.some(
+                                  (definition) => definition.id === e.target.value
+                                )
+                              : false;
+                            onAddModifier(comp.id, e.target.value, isPowerSpecific);
                             e.currentTarget.value = '';
                           }
                         }}

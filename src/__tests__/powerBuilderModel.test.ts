@@ -81,7 +81,7 @@ describe('powerBuilderModel', () => {
       },
     ];
 
-    expect(findModifierIncompatibilities(power, definitions)).toEqual({
+    expect(findModifierIncompatibilities(power, POWER_DEFS, definitions)).toEqual({
       'main-component:first': ['second'],
     });
   });

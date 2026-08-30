@@ -4,6 +4,8 @@ import type {
   IHeadquartersResource,
   IResource,
   IVehicleResource,
+  IModifierDef,
+  IPowerEffect,
 } from '../../entities/types';
 import { calcEquipmentEPCost } from './mathEngine';
 import { MODIFIER_DEFS, POWER_DEFS } from '../../entities/gameDataLoaders';
@@ -22,15 +24,23 @@ const HEADQUARTERS_SIZE_COST: Record<IHeadquartersResource['size'], number> = {
   medium: 1, large: 2, huge: 3, gargantuan: 4, colossal: 5, awesome: 6,
 };
 
-function powerCost(power: ICharacterPower): number {
-  return calcEquipmentEPCost(power, POWER_DEFS, MODIFIER_DEFS);
+function powerCost(
+  power: ICharacterPower,
+  powerDefs: IPowerEffect[] = POWER_DEFS,
+  modifierDefs: IModifierDef[] = MODIFIER_DEFS
+): number {
+  return calcEquipmentEPCost(power, powerDefs, modifierDefs);
 }
 
 export function getVehicleBaseTraits(size: IVehicleResource['size']) {
   return VEHICLE_BASES[size];
 }
 
-export function getVehicleResourceCost(resource: IVehicleResource): number {
+export function getVehicleResourceCost(
+  resource: IVehicleResource,
+  powerDefs: IPowerEffect[] = POWER_DEFS,
+  modifierDefs: IModifierDef[] = MODIFIER_DEFS
+): number {
   const base = VEHICLE_BASES[resource.size];
   const traits = base.size
     + Math.max(0, resource.strength - base.strength)
@@ -38,7 +48,10 @@ export function getVehicleResourceCost(resource: IVehicleResource): number {
     + Math.max(0, resource.defense - base.defense)
     + Math.max(0, resource.toughness - base.toughness)
     + resource.features.reduce((total, feature) => total + (feature.ranks ?? 1), 0);
-  return Math.max(0, traits + resource.systems.reduce((total, system) => total + powerCost(system), 0));
+  return Math.max(0, traits + resource.systems.reduce(
+    (total, system) => total + powerCost(system, powerDefs, modifierDefs),
+    0
+  ));
 }
 
 export function getHeadquartersResourceCost(resource: IHeadquartersResource): number {
@@ -50,17 +63,26 @@ export function getHeadquartersResourceCost(resource: IHeadquartersResource): nu
   return Math.max(0, traits);
 }
 
-export function getResourceEPCost(resource: IResource): number {
-  if (resource.type === 'vehicle') return getVehicleResourceCost(resource);
+export function getResourceEPCost(
+  resource: IResource,
+  powerDefs: IPowerEffect[] = POWER_DEFS,
+  modifierDefs: IModifierDef[] = MODIFIER_DEFS
+): number {
+  if (resource.type === 'vehicle') return getVehicleResourceCost(resource, powerDefs, modifierDefs);
   if (resource.type === 'headquarters') return getHeadquartersResourceCost(resource);
-  return powerCost(resource.power);
+  return powerCost(resource.power, powerDefs, modifierDefs);
 }
 
-export function getCharacterResourceEPUsed(character: ICharacter, resources: IResource[]): number {
+export function getCharacterResourceEPUsed(
+  character: ICharacter,
+  resources: IResource[],
+  powerDefs: IPowerEffect[] = POWER_DEFS,
+  modifierDefs: IModifierDef[] = MODIFIER_DEFS
+): number {
   return (character.resourceLinks ?? []).reduce((total, link) => {
     if (link.isFree) return total;
     const resource = resources.find((item) => item.id === link.resourceId);
     if (!resource) return total;
-    return total + (link.contributionEP ?? getResourceEPCost(resource));
+    return total + (link.contributionEP ?? getResourceEPCost(resource, powerDefs, modifierDefs));
   }, 0);
 }

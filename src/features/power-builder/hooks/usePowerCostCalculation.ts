@@ -7,13 +7,9 @@ import type {
   IValidationRules,
 } from '../../../entities/types';
 import {
-  calculateArrayCost,
-  getComponentCostBreakdown,
-  calcAlternateEffectCost,
-  calcEquipmentEPCost,
+  type ComponentCostBreakdown,
+  calculatePowerPricing,
   validateAECost,
-  calcRemovableDiscount,
-  calcPowerTotalCost,
 } from '../../../shared/lib/mathEngine';
 import { validateAttackEffect } from '../../../shared/lib/validation';
 import { getActiveValidationRules } from '../../../shared/lib/validationRules';
@@ -28,7 +24,7 @@ import { SKILL_DEFS, MODIFIER_DEFS } from '../../../entities/gameDataLoaders';
 interface UsePowerCostCalculationProps {
   power: ICharacterPower;
   powerDefs: IPowerEffect[];
-  allModDefs: IModifierDef[];
+  modifierDefs: IModifierDef[];
   powerLevel: number;
   validationRules?: Partial<IValidationRules>;
   character: ICharacter;
@@ -36,75 +32,29 @@ interface UsePowerCostCalculationProps {
 
 interface ComponentCostResult {
   total: number;
-  breakdown: ReturnType<typeof getComponentCostBreakdown> | null;
+  breakdown: ComponentCostBreakdown | null;
 }
 
 export function usePowerCostCalculation({
   power,
   powerDefs,
-  allModDefs,
+  modifierDefs,
   powerLevel,
   validationRules,
   character,
 }: UsePowerCostCalculationProps) {
-  // Calculate costs per component
-  const componentCosts = useMemo<ComponentCostResult[]>(() => {
-    return power.components.map((comp) => {
-      const effectDef = powerDefs.find((d) => d.id === comp.effectId);
-      if (!effectDef) return { total: 0, breakdown: null };
-      const breakdown = getComponentCostBreakdown(comp, effectDef, allModDefs);
-      return { total: breakdown.total, breakdown };
-    });
-  }, [power.components, powerDefs, allModDefs]);
-
-  // Calculate main cost (sum of all component costs)
-  const mainCost = useMemo(
-    () => componentCosts.reduce((sum, c) => sum + c.total, 0),
-    [componentCosts]
+  const pricing = useMemo(
+    () => calculatePowerPricing(power, powerDefs, modifierDefs),
+    [power, powerDefs, modifierDefs]
   );
-
-  // Calculate array cost
-  const dynamicCount = useMemo(
-    () => power.alternateEffects.filter((a) => a.dynamic).length,
-    [power.alternateEffects]
-  );
-
-  const arrayCost = useMemo(
-    () => calculateArrayCost(mainCost, power.alternateEffects.length, dynamicCount, power.baseDynamic === true),
-    [mainCost, power.alternateEffects.length, dynamicCount, power.baseDynamic]
-  );
-
-  // Activation is a power-level flat flaw. Keep the unadjusted array cost for
-  // the component breakdown, then apply it before calculating Removable.
-  const activationDiscount = power.activation === 'standard' ? 2 : power.activation === 'move' ? 1 : 0;
-  const adjustedArrayCost = useMemo(
-    () => Math.max(1, arrayCost - activationDiscount),
-    [arrayCost, activationDiscount]
-  );
-
-  // Calculate removable discount
-  const removableDiscount = useMemo(
-    () => calcRemovableDiscount(adjustedArrayCost, power.removable),
-    [adjustedArrayCost, power.removable]
-  );
-
-  // Use the shared total calculator so the builder always matches sheets,
-  // exports and persisted powers.
-  const totalCost = useMemo(
-    () => calcPowerTotalCost(power, powerDefs, allModDefs),
-    [power, powerDefs, allModDefs]
-  );
-
-  const equipmentEPCost = useMemo(
-    () => calcEquipmentEPCost(power, powerDefs, allModDefs),
-    [power, powerDefs, allModDefs]
-  );
-
-  // Calculate AE costs
-  const aeCosts = useMemo(
-    () => power.alternateEffects.map((ae) => calcAlternateEffectCost(ae, powerDefs, allModDefs)),
-    [power.alternateEffects, powerDefs, allModDefs]
-  );
+  const componentCosts = pricing.components as ComponentCostResult[];
+  const mainCost = pricing.mainCost;
+  const arrayCost = pricing.arrayCost;
+  const activationDiscount = pricing.activationDiscount;
+  const removableDiscount = pricing.removableDiscount;
+  const totalCost = pricing.total;
+  const equipmentEPCost = pricing.equipmentTotal;
+  const aeCosts = pricing.alternateEffects.map((alternateEffect) => alternateEffect.total);
 
   // Validate AE costs against main cost cap
   const aeValidations = useMemo(() => {
@@ -126,7 +76,7 @@ export function usePowerCostCalculation({
       powerDefs,
       SKILL_DEFS,
       [],
-      allModDefs.length > 0 ? allModDefs : MODIFIER_DEFS
+      modifierDefs.length > 0 ? modifierDefs : MODIFIER_DEFS
     ).filter((profile) => profile.sourceType === 'power' && profile.causesResistance && profile.effectRank !== null);
 
     for (const profile of profiles) {
@@ -167,5 +117,6 @@ export function usePowerCostCalculation({
     aeCosts,
     aeValidations,
     plViolation,
+    pricingDiagnostics: pricing.diagnostics,
   };
 }

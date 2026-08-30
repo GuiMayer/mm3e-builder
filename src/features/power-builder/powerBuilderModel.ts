@@ -4,6 +4,7 @@ import type {
   IPowerEffect,
 } from '../../entities/types';
 import { createId } from '../../shared/lib/identity';
+import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 
 export function createPowerDraft(existingPower?: ICharacterPower): ICharacterPower {
   return existingPower ?? {
@@ -107,18 +108,25 @@ export function collectModifierDefinitions(
 
 export function findModifierIncompatibilities(
   power: ICharacterPower,
-  modifierDefs: IModifierDef[]
+  powerDefs: IPowerEffect[],
+  genericModifierDefs: IModifierDef[]
 ): Record<string, string[]> {
   const result: Record<string, string[]> = {};
   const inspect = (
     prefix: string,
     component: ICharacterPower['components'][number]
   ) => {
+    const effectDef = powerDefs.find(
+      (definition) => definition.id === component.effectId
+    );
+    if (!effectDef) return;
     const appliedIds = component.modifiers.map((modifier) => modifier.modifierId);
     for (const applied of component.modifiers) {
-      const definition = modifierDefs.find(
-        (modifier) => modifier.id === applied.modifierId
-      );
+      const definition = resolveModifierDefinition(
+        applied,
+        effectDef,
+        genericModifierDefs
+      ).definition;
       const conflicts = definition?.incompatibleWith.filter((id) => appliedIds.includes(id));
       if (conflicts?.length) result[`${prefix}${applied.modifierId}`] = conflicts;
     }

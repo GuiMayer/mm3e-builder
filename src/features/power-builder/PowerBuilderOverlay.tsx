@@ -33,6 +33,7 @@ import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelecto
 import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
 import { getPerRankModifierCost } from '../../shared/lib/mathEngine';
+import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 import {
   collectModifierDefinitions,
   createPowerDraft,
@@ -147,8 +148,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
   // Detect modifier incompatibilities for all components
   const modifierIncompatibilities = useMemo(
-    () => findModifierIncompatibilities(power, allModDefs),
-    [power, allModDefs]
+    () => findModifierIncompatibilities(power, powerDefs, modifierDefs),
+    [power, powerDefs, modifierDefs]
   );
 
   // Use cost calculation hook
@@ -166,7 +167,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   } = usePowerCostCalculation({
     power,
     powerDefs,
-    allModDefs,
+    modifierDefs,
     powerLevel,
     validationRules,
     character,
@@ -416,7 +417,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
     const saveIssues = validatePowerForSave(cleanPower, validationRules, {
       powerDefs,
-      modifierDefs: allModDefs,
+      modifierDefs,
     }).filter((validationIssue) => validationIssue.severity === 'error');
 
     if (saveIssues.length > 0) {
@@ -725,7 +726,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                           <span className="dropzone-placeholder">{t('builder.dropHere')}</span>
                         )}
                         {comp.modifiers.map((applied) => {
-                          const def = allModDefs.find((d) => d.id === applied.modifierId);
+                          const def = effectDef
+                            ? resolveModifierDefinition(applied, effectDef, modifierDefs).definition
+                            : undefined;
                           if (!def) return null;
 
                           const modCostPP =
@@ -1022,6 +1025,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   onSetActiveComp={(compId) => setActiveAEComponentId((prev) => ({ ...prev, [ae.id]: compId }))}
                   allEffects={powerDefs}
                   allModDefs={allModDefs}
+                  genericModifierDefs={modifierDefs}
                   modifierIncompatibilities={modifierIncompatibilities}
 
                   activeId={activeId}
