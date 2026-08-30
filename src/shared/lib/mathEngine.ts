@@ -13,6 +13,48 @@ import type {
   IAlternateEffect,
   IPowerEffect,
 } from '../../entities/types';
+import { resolveModifierDefinition } from './rulesCatalog';
+
+export type PricingDiagnosticCode =
+  | 'unknown-effect'
+  | 'unknown-modifier'
+  | 'ambiguous-modifier';
+
+export interface PricingDiagnostic {
+  code: PricingDiagnosticCode;
+  id: string;
+  message: string;
+}
+
+export interface RankCostGroup {
+  fromRank: number;
+  toRank: number;
+  rankCount: number;
+  costPerRank: number;
+  isFractional: boolean;
+  ranksPerPP: number;
+  subtotal: number;
+}
+
+export interface ComponentCostBreakdown {
+  base: number;
+  selectedVariableCost: string | null;
+  perRankExtras: number;
+  perRankFlaws: number;
+  costPerRank: number;
+  rankCost: number;
+  flatCost: number;
+  total: number;
+  isFractional: boolean;
+  ranksPerPP: number;
+  rankGroups: RankCostGroup[];
+  diagnostics: PricingDiagnostic[];
+}
+
+interface ResolvedAppliedModifier {
+  applied: IAppliedModifier;
+  definition: IModifierDef;
+}
 
 /**
  * Calculate the cost contributed by a single applied modifier to one component.
@@ -104,22 +146,23 @@ export function calculateCostPerRank(
   modifierDefs: IModifierDef[],
   effectAction?: string
 ): { costPerRank: number; isFractional: boolean; ranksPerPP: number } {
-  let perRankSum = baseCost;
+  let pricingTier = baseCost > 0 && baseCost < 1
+    ? 2 - (1 / baseCost)
+    : baseCost;
 
   for (const applied of appliedModifiers) {
     const def = modifierDefs.find((m) => m.id === applied.modifierId);
     if (!def || def.costType !== 'per_rank') continue;
-    perRankSum += getPerRankModifierCost(applied, def, effectAction);
+    pricingTier += getPerRankModifierCost(applied, def, effectAction);
   }
 
-  if (perRankSum >= 1) {
-    return { costPerRank: perRankSum, isFractional: false, ranksPerPP: 1 };
+  if (pricingTier >= 1) {
+    return { costPerRank: pricingTier, isFractional: false, ranksPerPP: 1 };
   }
 
-  // Fractional costs can be printed as 1 PP per 2 ranks (for example,
-  // Enhanced Skill). Preserve that exact half-cost case; flaws below it use
-  // the normal 1 PP per 2/3/... ranks progression.
-  const ranksPerPP = perRankSum > 0 ? 1 / perRankSum : 2 - perRankSum;
+  // MM3e fractional costs use discrete ratio tiers. A printed 1 PP per 2
+  // ranks starts at tier 0; every -1/rank flaw advances it to 1:3, 1:4, etc.
+  const ranksPerPP = 2 - pricingTier;
   return { costPerRank: 1, isFractional: true, ranksPerPP };
 }
 
@@ -145,43 +188,92 @@ export function calculateFlatCost(
   return flatSum;
 }
 
-/** Calculates per-rank cost in groups when a modifier covers only some ranks. */
-function calculatePartialRankCost(component: ICharacterPowerComponent, baseCost: number, modifierDefs: IModifierDef[], effectAction?: string): number {
-  const groups = new Map<string, { count: number; modifiers: IAppliedModifier[] }>();
-  for (let rank = 1; rank <= component.ranks; rank += 1) {
-    const modifiers = component.modifiers.filter((modifier) => {
-      const definition = modifierDefs.find((item) => item.id === modifier.modifierId);
-      const affectedRanks = modifier.affectedRanks ?? (typeof modifier.options?.affectedRanks === 'number' ? modifier.options.affectedRanks : undefined);
-      return definition?.costType === 'per_rank' && (affectedRanks === undefined || rank <= affectedRanks);
-    });
-    const key = modifiers.map((modifier) => `${modifier.modifierId}:${modifier.ranks}:${modifier.option ?? ''}:${JSON.stringify(modifier.options ?? {})}`).join('|');
-    const group = groups.get(key);
-    if (group) group.count += 1;
-    else groups.set(key, { count: 1, modifiers });
+function getAffectedRanks(applied: IAppliedModifier): number | undefined {
+  return applied.affectedRanks
+    ?? (typeof applied.options?.affectedRanks === 'number'
+      ? applied.options.affectedRanks
+      : undefined);
+}
+
+function getTierPricing(
+  baseCost: number,
+  modifiers: readonly ResolvedAppliedModifier[],
+  effectAction?: string
+): { costPerRank: number; isFractional: boolean; ranksPerPP: number } {
+  let pricingTier = baseCost > 0 && baseCost < 1
+    ? 2 - (1 / baseCost)
+    : baseCost;
+
+  for (const { applied, definition } of modifiers) {
+    if (definition.costType !== 'per_rank') continue;
+    pricingTier += getPerRankModifierCost(applied, definition, effectAction);
   }
-  return [...groups.values()].reduce((total, group) => {
-    const pricing = calculateCostPerRank(baseCost, group.modifiers, modifierDefs, effectAction);
-    return total + (pricing.isFractional ? Math.ceil(group.count / pricing.ranksPerPP) : pricing.costPerRank * group.count);
-  }, 0);
+
+  return pricingTier >= 1
+    ? { costPerRank: pricingTier, isFractional: false, ranksPerPP: 1 }
+    : { costPerRank: 1, isFractional: true, ranksPerPP: 2 - pricingTier };
+}
+
+function priceRanks(
+  rankCount: number,
+  pricing: { costPerRank: number; isFractional: boolean; ranksPerPP: number }
+): number {
+  return pricing.isFractional
+    ? Math.ceil(rankCount / pricing.ranksPerPP)
+    : pricing.costPerRank * rankCount;
+}
+
+function resolveComponentModifiers(
+  component: ICharacterPowerComponent,
+  effectDef: IPowerEffect,
+  genericModifierDefs: readonly IModifierDef[]
+): { modifiers: ResolvedAppliedModifier[]; diagnostics: PricingDiagnostic[] } {
+  const modifiers: ResolvedAppliedModifier[] = [];
+  const diagnostics: PricingDiagnostic[] = [];
+
+  for (const applied of component.modifiers) {
+    const resolution = resolveModifierDefinition(applied, effectDef, genericModifierDefs);
+    if (!resolution.definition) {
+      diagnostics.push({
+        code: 'unknown-modifier',
+        id: applied.modifierId,
+        message: `Unknown modifier "${applied.modifierId}" on effect "${effectDef.id}".`,
+      });
+      continue;
+    }
+    if (resolution.ambiguous) {
+      diagnostics.push({
+        code: 'ambiguous-modifier',
+        id: applied.modifierId,
+        message: `Legacy modifier "${applied.modifierId}" matches generic and power-specific rules; generic pricing was preserved.`,
+      });
+    }
+    modifiers.push({ applied, definition: resolution.definition });
+  }
+
+  return { modifiers, diagnostics };
 }
 
 /**
- * Calculate total PP cost for a single power component.
- * Formula: ((baseCost + per_rank_extras − per_rank_flaws) × ranks) + flat_mods
- * Minimum cost: 1 PP.
+ * The canonical component pricing result used by totals and UI breakdowns.
+ * It resolves effect-specific modifiers, partial ranks, fractional tiers and
+ * fixed-cost packages on one code path.
  */
-export function calcComponentCost(
+export function calculateComponentPricing(
   component: ICharacterPowerComponent,
   effectDef: IPowerEffect,
-  modifierDefs: IModifierDef[]
-): number {
-  // Determine base cost: use variable cost option if selected, otherwise use baseCost
+  genericModifierDefs: IModifierDef[]
+): ComponentCostBreakdown {
+  const resolved = resolveComponentModifiers(component, effectDef, genericModifierDefs);
+  const perRankModifiers = resolved.modifiers.filter(
+    ({ definition }) => definition.costType === 'per_rank'
+  );
+
   let baseCost = effectDef.baseCost;
   let fixedPackageCost: number | undefined;
-  
   if (effectDef.variableCost && component.variableCostOption) {
     const selectedOption = effectDef.variableCost.options.find(
-      opt => opt.name === component.variableCostOption
+      (option) => option.name === component.variableCostOption
     );
     if (selectedOption) {
       if (effectDef.variableCost.costType === 'flat') fixedPackageCost = selectedOption.cost;
@@ -189,34 +281,95 @@ export function calcComponentCost(
     }
   }
 
-  const { costPerRank, isFractional, ranksPerPP } = calculateCostPerRank(
-    baseCost,
-    component.modifiers,
-    modifierDefs,
-    effectDef.action,
-  );
-
-  const hasPartialModifier = component.modifiers.some((modifier) => {
-    const affectedRanks = modifier.affectedRanks ?? (typeof modifier.options?.affectedRanks === 'number' ? modifier.options.affectedRanks : undefined);
-    return affectedRanks !== undefined && affectedRanks < component.ranks;
-  });
-  let rankCost: number;
-  if (hasPartialModifier) {
-    rankCost = calculatePartialRankCost(component, baseCost, modifierDefs, effectDef.action);
-  } else if (isFractional) {
-    rankCost = Math.ceil(component.ranks / ranksPerPP);
-  } else {
-    rankCost = costPerRank * component.ranks;
+  let perRankExtras = 0;
+  let perRankFlaws = 0;
+  for (const { applied, definition } of perRankModifiers) {
+    const effectiveCost = getPerRankModifierCost(applied, definition, effectDef.action);
+    if (effectiveCost > 0) perRankExtras += effectiveCost;
+    else perRankFlaws += Math.abs(effectiveCost);
   }
+
+  const fullRankPricing = getTierPricing(baseCost, perRankModifiers, effectDef.action);
+  const rankGroups: RankCostGroup[] = [];
 
   if (fixedPackageCost !== undefined) {
-    // A selected package has one printed base cost. Per-rank modifiers still
-    // affect that cost because they modify the complete effect.
-    rankCost = fixedPackageCost * (costPerRank / effectDef.baseCost);
+    const packageRanks = effectDef.baseCost > 0
+      ? fixedPackageCost / effectDef.baseCost
+      : fixedPackageCost;
+    const subtotal = priceRanks(packageRanks, fullRankPricing);
+    rankGroups.push({
+      fromRank: 1,
+      toRank: Math.max(1, component.ranks),
+      rankCount: packageRanks,
+      ...fullRankPricing,
+      subtotal,
+    });
+  } else {
+    let previousKey: string | null = null;
+    let currentGroup: {
+      fromRank: number;
+      toRank: number;
+      modifiers: ResolvedAppliedModifier[];
+    } | null = null;
+
+    for (let rank = 1; rank <= component.ranks; rank += 1) {
+      const activeModifiers = perRankModifiers.filter(({ applied }) => {
+        const affectedRanks = getAffectedRanks(applied);
+        return affectedRanks === undefined || rank <= affectedRanks;
+      });
+      const key = activeModifiers.map(({ applied, definition }) =>
+        `${definition.id}:${applied.ranks}:${applied.option ?? ''}:${JSON.stringify(applied.options ?? {})}`
+      ).join('|');
+
+      if (currentGroup && key === previousKey) {
+        currentGroup.toRank = rank;
+      } else {
+        currentGroup = { fromRank: rank, toRank: rank, modifiers: activeModifiers };
+        const pricing = getTierPricing(baseCost, activeModifiers, effectDef.action);
+        rankGroups.push({
+          fromRank: rank,
+          toRank: rank,
+          rankCount: 1,
+          ...pricing,
+          subtotal: priceRanks(1, pricing),
+        });
+      }
+      previousKey = key;
+
+      const latest = rankGroups.at(-1);
+      if (latest) {
+        latest.toRank = currentGroup.toRank;
+        latest.rankCount = latest.toRank - latest.fromRank + 1;
+        latest.subtotal = priceRanks(latest.rankCount, latest);
+      }
+    }
   }
 
-  const flatCost = calculateFlatCost(component.modifiers, modifierDefs);
-  return Math.max(1, rankCost + flatCost);
+  const rankCost = rankGroups.reduce((total, group) => total + group.subtotal, 0);
+  const flatCost = resolved.modifiers.reduce((total, { applied, definition }) =>
+    total + calcModifierCost(applied, definition), 0);
+  const total = Math.max(1, rankCost + flatCost);
+
+  return {
+    base: fixedPackageCost ?? baseCost,
+    selectedVariableCost: component.variableCostOption || null,
+    perRankExtras,
+    perRankFlaws,
+    ...fullRankPricing,
+    rankCost,
+    flatCost,
+    total,
+    rankGroups,
+    diagnostics: resolved.diagnostics,
+  };
+}
+
+export function calcComponentCost(
+  component: ICharacterPowerComponent,
+  effectDef: IPowerEffect,
+  modifierDefs: IModifierDef[]
+): number {
+  return calculateComponentPricing(component, effectDef, modifierDefs).total;
 }
 
 /**
@@ -261,6 +414,90 @@ export function calculateArrayCost(
   return mainPowerCost + staticAlts + dynamicCount * 2 + (baseDynamic ? 1 : 0);
 }
 
+export interface PricedPowerComponent {
+  componentId: string;
+  effectId: string;
+  breakdown: ComponentCostBreakdown | null;
+  total: number;
+}
+
+export interface AlternateEffectPricing {
+  alternateEffectId: string;
+  components: PricedPowerComponent[];
+  total: number;
+  diagnostics: PricingDiagnostic[];
+}
+
+export interface PowerPricing {
+  components: PricedPowerComponent[];
+  alternateEffects: AlternateEffectPricing[];
+  mainCost: number;
+  arrayCost: number;
+  activationDiscount: number;
+  adjustedArrayCost: number;
+  removableDiscount: number;
+  total: number;
+  equipmentTotal: number;
+  diagnostics: PricingDiagnostic[];
+}
+
+function calculateComponentListPricing(
+  components: ICharacterPowerComponent[],
+  powerDefs: IPowerEffect[],
+  modifierDefs: IModifierDef[]
+): { components: PricedPowerComponent[]; total: number; diagnostics: PricingDiagnostic[] } {
+  const diagnostics: PricingDiagnostic[] = [];
+  const pricedComponents = components.map((component): PricedPowerComponent => {
+    const effectDef = powerDefs.find((definition) => definition.id === component.effectId);
+    if (!effectDef) {
+      diagnostics.push({
+        code: 'unknown-effect',
+        id: component.effectId,
+        message: `Unknown effect "${component.effectId}".`,
+      });
+      return {
+        componentId: component.id,
+        effectId: component.effectId,
+        breakdown: null,
+        total: 0,
+      };
+    }
+
+    const breakdown = calculateComponentPricing(component, effectDef, modifierDefs);
+    diagnostics.push(...breakdown.diagnostics);
+    return {
+      componentId: component.id,
+      effectId: component.effectId,
+      breakdown,
+      total: breakdown.total,
+    };
+  });
+
+  return {
+    components: pricedComponents,
+    total: pricedComponents.reduce((sum, component) => sum + component.total, 0),
+    diagnostics,
+  };
+}
+
+export function calculateAlternateEffectPricing(
+  alternateEffect: IAlternateEffect,
+  powerDefs: IPowerEffect[],
+  modifierDefs: IModifierDef[]
+): AlternateEffectPricing {
+  const pricing = calculateComponentListPricing(
+    alternateEffect.components,
+    powerDefs,
+    modifierDefs
+  );
+  return {
+    alternateEffectId: alternateEffect.id,
+    components: pricing.components,
+    total: Math.max(1, pricing.total),
+    diagnostics: pricing.diagnostics,
+  };
+}
+
 /**
  * Calculate the total PP cost of an Alternate Effect (sum of all its components).
  * An AE can have multiple components (Linked Powers within a single array slot).
@@ -271,12 +508,7 @@ export function calcAlternateEffectCost(
   powerDefs: IPowerEffect[],
   modifierDefs: IModifierDef[]
 ): number {
-  const raw = ae.components.reduce((sum, comp) => {
-    const effectDef = powerDefs.find((d) => d.id === comp.effectId);
-    if (!effectDef) return sum;
-    return sum + calcComponentCost(comp, effectDef, modifierDefs);
-  }, 0);
-  return Math.max(1, raw);
+  return calculateAlternateEffectPricing(ae, powerDefs, modifierDefs).total;
 }
 
 /**
@@ -301,81 +533,8 @@ export function getComponentCostBreakdown(
   component: ICharacterPowerComponent,
   effectDef: IPowerEffect,
   modifierDefs: IModifierDef[]
-): {
-  base: number;
-  selectedVariableCost: string | null;
-  perRankExtras: number;
-  perRankFlaws: number;
-  costPerRank: number;
-  rankCost: number;
-  flatCost: number;
-  total: number;
-  isFractional: boolean;
-  ranksPerPP: number;
-} {
-  let perRankExtras = 0;
-  let perRankFlaws = 0;
-  let flatCost = 0;
-
-  let perRankSum = 0;
-
-  for (const applied of component.modifiers) {
-    const def = modifierDefs.find((m) => m.id === applied.modifierId);
-    if (!def) continue;
-    if (def.costType === 'per_rank') {
-      // Keep the breakdown on the same rule path as calcComponentCost().
-      // Some modifiers (for example Affects Objects) have a conditional cost.
-      const effectiveCost = getPerRankModifierCost(applied, def, effectDef.action);
-      perRankSum += effectiveCost;
-      if (effectiveCost > 0) perRankExtras += effectiveCost;
-      else perRankFlaws += Math.abs(effectiveCost);
-    } else if (def.costType === 'flat') {
-      flatCost += def.costValue * (def.maxRanks && def.maxRanks > 1 ? applied.ranks : 1);
-    } else if (def.costType === 'flat_ranked') {
-      flatCost += def.costValue * applied.ranks;
-    }
-  }
-
-  // Determine base cost: use variable cost option if selected, otherwise use baseCost
-  let baseCost = effectDef.baseCost;
-  let fixedPackageCost: number | undefined;
-  
-  if (effectDef.variableCost && component.variableCostOption) {
-    const selectedOption = effectDef.variableCost.options.find(
-      opt => opt.name === component.variableCostOption
-    );
-    if (selectedOption) {
-      if (effectDef.variableCost.costType === 'flat') fixedPackageCost = selectedOption.cost;
-      else baseCost = selectedOption.cost;
-    }
-  }
-
-  const rawCostPerRank = baseCost + perRankSum;
-  const isFractional = rawCostPerRank < 1;
-  const ranksPerPP = isFractional
-    ? (rawCostPerRank > 0 ? 1 / rawCostPerRank : 2 - rawCostPerRank)
-    : 1;
-  const costPerRank = Math.max(1, rawCostPerRank);
-  let rankCost = isFractional
-    ? Math.ceil(component.ranks / ranksPerPP)
-    : costPerRank * component.ranks;
-  if (fixedPackageCost !== undefined) {
-    rankCost = fixedPackageCost * (rawCostPerRank / effectDef.baseCost);
-  }
-  const total = Math.max(1, rankCost + flatCost);
-
-  return {
-    base: fixedPackageCost ?? baseCost,
-    selectedVariableCost: component.variableCostOption || null,
-    perRankExtras,
-    perRankFlaws,
-    costPerRank,
-    rankCost,
-    flatCost,
-    total,
-    isFractional,
-    ranksPerPP,
-  };
+): ComponentCostBreakdown {
+  return calculateComponentPricing(component, effectDef, modifierDefs);
 }
 
 /**
@@ -428,22 +587,52 @@ export function calcPowerTotalCost(
   powerDefs: IPowerEffect[],
   modifierDefs: IModifierDef[]
 ): number {
-  const mainCost = power.components.reduce((sum, comp) => {
-    const def = powerDefs.find((d) => d.id === comp.effectId);
-    return def ? sum + calcComponentCost(comp, def, modifierDefs) : sum;
-  }, 0);
-  const dynamicCount = power.alternateEffects.filter((a) => a.dynamic).length;
+  return calculatePowerPricing(power, powerDefs, modifierDefs).total;
+}
+
+export function calculatePowerPricing(
+  power: ICharacterPower,
+  powerDefs: IPowerEffect[],
+  modifierDefs: IModifierDef[]
+): PowerPricing {
+  const main = calculateComponentListPricing(power.components, powerDefs, modifierDefs);
+  const alternateEffects = power.alternateEffects.map((alternateEffect) =>
+    calculateAlternateEffectPricing(alternateEffect, powerDefs, modifierDefs)
+  );
+  const dynamicCount = power.alternateEffects.filter(
+    (alternateEffect) => alternateEffect.dynamic
+  ).length;
   const arrayCost = calculateArrayCost(
-    mainCost,
+    main.total,
     power.alternateEffects.length,
     dynamicCount,
-    power.baseDynamic === true,
+    power.baseDynamic === true
   );
-  const activationDiscount = power.activation === 'standard' ? 2 : power.activation === 'move' ? 1 : 0;
+  const activationDiscount = power.activation === 'standard'
+    ? 2
+    : power.activation === 'move'
+      ? 1
+      : 0;
   const adjustedArrayCost = Math.max(1, arrayCost - activationDiscount);
-  const discount = calcRemovableDiscount(adjustedArrayCost, power.removable);
-  // A flat flaw cannot reduce a power's final cost below 1 PP.
-  return Math.max(1, adjustedArrayCost - discount);
+  const removableDiscount = calcRemovableDiscount(adjustedArrayCost, power.removable);
+
+  return {
+    components: main.components,
+    alternateEffects,
+    mainCost: main.total,
+    arrayCost,
+    activationDiscount,
+    adjustedArrayCost,
+    removableDiscount,
+    total: Math.max(1, adjustedArrayCost - removableDiscount),
+    // Equipment uses the same array and Activation rules, but Removable is
+    // inherent in Equipment Points and must not be discounted a second time.
+    equipmentTotal: adjustedArrayCost,
+    diagnostics: [
+      ...main.diagnostics,
+      ...alternateEffects.flatMap((alternateEffect) => alternateEffect.diagnostics),
+    ],
+  };
 }
 
 /**
@@ -461,14 +650,7 @@ export function calcEquipmentEPCost(
   powerDefs: IPowerEffect[],
   modifierDefs: IModifierDef[]
 ): number {
-  const mainCost = item.components.reduce((sum, comp) => {
-    const def = powerDefs.find((d) => d.id === comp.effectId);
-    return def ? sum + calcComponentCost(comp, def, modifierDefs) : sum;
-  }, 0);
-  const dynamicCount = item.alternateEffects.filter((a) => a.dynamic).length;
-  const arrayCost = calculateArrayCost(mainCost, item.alternateEffects.length, dynamicCount);
-  // No removable discount for equipment — it's inherent in the EP system
-  return Math.max(1, arrayCost);
+  return calculatePowerPricing(item, powerDefs, modifierDefs).equipmentTotal;
 }
 
 // ── Derived Stats (pure — usable by PDF generator and React hooks alike) ────
