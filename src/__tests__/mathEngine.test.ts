@@ -6,6 +6,8 @@ import {
   calculateArrayCost,
   getComponentCostBreakdown,
   getPerRankModifierCost,
+  getSelectedModifierSubtypeId,
+  isRankedModifier,
   calculateAbilitiesCost,
   calculateDefensesCost,
   calculateSkillsCost,
@@ -354,6 +356,25 @@ describe('mathEngine', () => {
       expect(getPerRankModifierCost({ modifierId: 'area', ranks: 3, option: 'Burst' }, area)).toBe(3);
       expect(getPerRankModifierCost({ modifierId: 'area', ranks: 1, option: 'Perception' }, area)).toBe(2);
       expect(getPerRankModifierCost({ modifierId: 'area', ranks: 1, option: 'Perception', options: { includesSenseDependent: true } }, area)).toBe(1);
+    });
+
+    it('distinguishes repeatable modifiers and resolves legacy Variable Action tiers', () => {
+      expect(isRankedModifier({
+        id: 'limited', name: 'Limited', category: 'flaw', costType: 'per_rank',
+        costValue: -1, repeatable: true, description: '', incompatibleWith: [],
+      })).toBe(true);
+      expect(isRankedModifier(sideEffect)).toBe(false);
+
+      const actionVariable = {
+        id: 'action_variable', name: 'Action', category: 'extra', costType: 'per_rank',
+        costValue: 1, description: '', incompatibleWith: [],
+      } as IModifierDef;
+      expect(getSelectedModifierSubtypeId({ modifierId: 'action_variable', ranks: 1 }, actionVariable)).toBe('move');
+      expect(getSelectedModifierSubtypeId({ modifierId: 'action_variable', ranks: 2 }, actionVariable)).toBe('free');
+      expect(getSelectedModifierSubtypeId({ modifierId: 'action_variable', ranks: 3 }, actionVariable)).toBe('reaction');
+      expect(getSelectedModifierSubtypeId({
+        modifierId: 'action_variable', ranks: 1, options: { subtypeId: 'free' },
+      }, actionVariable)).toBe('free');
     });
   });
 });

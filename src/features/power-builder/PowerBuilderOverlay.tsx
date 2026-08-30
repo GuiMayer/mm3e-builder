@@ -31,8 +31,9 @@ import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
 import { SenseTraitsEditor } from './components/SenseTraitsEditor';
+import { ModifierParameterControls } from './components/ModifierParameterControls';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
-import { getPerRankModifierCost } from '../../shared/lib/mathEngine';
+import { isRankedModifier } from '../../shared/lib/mathEngine';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 import {
   collectModifierDefinitions,
@@ -228,6 +229,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           if (comp.id !== componentId) return comp;
           const already = comp.modifiers.find((m) => m.modifierId === modId);
           if (already) {
+            const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
+            const modifierDef = effectDef
+              ? resolveModifierDefinition(already, effectDef, modifierDefs).definition
+              : undefined;
+            if (!modifierDef || !isRankedModifier(modifierDef)) return comp;
             return {
               ...comp,
               modifiers: comp.modifiers.map((m) =>
@@ -245,7 +251,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         }),
       }));
     },
-    [equipmentMode, powerDefs]
+    [equipmentMode, modifierDefs, powerDefs]
   );
 
   // ── AE CRUD — delegado ao hook useAlternateEffects ──
@@ -264,6 +270,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   } = useAlternateEffects({
     setPower,
     powerDefs,
+    modifierDefs,
     expandedAEId,
     setExpandedAEId,
     setActiveAEComponentId,
@@ -732,16 +739,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                             : undefined;
                           if (!def) return null;
 
-                          const modCostPP =
-                            def.costType === 'flat'
-                              ? def.costValue
-                              : def.costType === 'flat_ranked'
-                              ? def.costValue * applied.ranks
-                              : null; // per_rank shown differently
-
-                          const overPL =
-                            def.maxRanks !== undefined && applied.ranks > def.maxRanks;
-
                           // Check for incompatibilities
                           const incompatKey = `${comp.id}:${applied.modifierId}`;
                           const conflicts = modifierIncompatibilities[incompatKey] || [];
@@ -753,37 +750,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                               className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${applied.isPowerSpecific ? 'applied-mod--specific' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                             >
                               <span className="applied-mod-name">{def.name}</span>
-                              {def.costType === 'per_rank' && (def.maxRanks ?? 1) > 1 && (
-                                <NumberInput
-                                  variant="small"
-                                  className="applied-mod-ranks"
-                                  value={applied.ranks}
-                                  onChange={(value) =>
-                                    updateModifierRanks(comp.id, applied.modifierId, value)
-                                  }
-                                  min={1}
-                                  max={def.maxRanks}
-                                />
-                              )}
-                              {def.costType === 'per_rank' && (
-                                <NumberInput variant="small" className="applied-mod-ranks" value={typeof applied.options?.affectedRanks === 'number' ? applied.options.affectedRanks : comp.ranks} onChange={(value) => updateModifierOptions(comp.id, applied.modifierId, { ...applied.options, affectedRanks: Math.max(1, Math.min(comp.ranks, value)) })} min={1} max={comp.ranks} aria-label="Effect ranks affected" />
-                              )}
-                              {def.costType !== 'per_rank' && (
-                                <NumberInput
-                                  variant="small"
-                                  className="applied-mod-ranks"
-                                  value={applied.ranks}
-                                  onChange={(value) =>
-                                    updateModifierRanks(
-                                      comp.id,
-                                      applied.modifierId,
-                                      value
-                                    )
-                                  }
-                                  min={1}
-                                  max={def.maxRanks ?? undefined}
-                                />
-                              )}
+                              <ModifierParameterControls
+                                applied={applied}
+                                definition={def}
+                                effectRanks={comp.ranks}
+                                effectAction={effectDef?.action}
+                                onRanksChange={(value) => updateModifierRanks(comp.id, applied.modifierId, value)}
+                                onOptionsChange={(options) => updateModifierOptions(comp.id, applied.modifierId, options)}
+                              />
                               {/* Sub-option dropdown */}
                               {def.options && def.options.length > 0 && (
                                 <>
@@ -878,45 +852,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                   placeholder={t('builder.triggerPlaceholder')}
                                   aria-label={t('builder.trigger')}
                                 />
-                              )}
-                              {/* Subtype selector for modifiers with variable cost (e.g. Alternate Resistance) */}
-                              {def.subtypes && def.subtypes.length > 0 && (
-                                <select
-                                  className="applied-mod-subtype"
-                                  value={(applied.options?.subtypeId as string) ?? ''}
-                                  onChange={(e) => {
-                                    updateModifierOptions(comp.id, applied.modifierId, {
-                                      ...applied.options,
-                                      subtypeId: e.target.value,
-                                    });
-                                  }}
-                                  title={t('builder.subtypeLabel')}
-                                >
-                                  <option value="">{t('builder.subtypeNone')}</option>
-                                  {def.subtypes.map((sub) => (
-                                    <option key={sub.id} value={sub.id}>
-                                      {sub.label} (+{sub.costValue}/rank)
-                                    </option>
-                                  ))}
-                                </select>
-                              )}
-                              <span className="applied-mod-cost">
-                                {(() => {
-                                  // Show effective cost, accounting for active subtype
-                                  if (def.costType === 'per_rank') {
-                                    const effectiveCost = getPerRankModifierCost(applied, def, effectDef?.action);
-                                    return `${effectiveCost >= 0 ? '+' : ''}${effectiveCost}/rank`;
-                                  }
-                                  if (modCostPP !== null) {
-                                    return `${modCostPP > 0 ? '+' : ''}${modCostPP}pp`;
-                                  }
-                                  return '';
-                                })()}
-                              </span>
-                              {overPL && (
-                                <span className="applied-mod-overlimit" title={t('builder.plWarning')}>
-                                  ⚠️
-                                </span>
                               )}
                               {hasIncompatibility && (
                                 <span 

@@ -77,6 +77,26 @@ export function isRepeatablePerRankModifier(def: IModifierDef): boolean {
     && (def.repeatable === true || (def.maxRanks !== undefined && def.maxRanks > 1));
 }
 
+/** True when the Builder should expose and increment modifier ranks. */
+export function isRankedModifier(def: IModifierDef): boolean {
+  return def.costType === 'flat_ranked'
+    || (def.costType === 'flat' && def.maxRanks !== undefined && def.maxRanks > 1)
+    || isRepeatablePerRankModifier(def);
+}
+
+/** Resolve the explicit subtype or the rank-based legacy Variable Action tier. */
+export function getSelectedModifierSubtypeId(
+  applied: IAppliedModifier,
+  def: IModifierDef,
+): string {
+  const explicitSubtype = applied.options?.subtypeId;
+  if (typeof explicitSubtype === 'string' && explicitSubtype) return explicitSubtype;
+  if (def.id !== 'action_variable') return '';
+  if (applied.ranks >= 3) return 'reaction';
+  if (applied.ranks === 2) return 'free';
+  return 'move';
+}
+
 /**
  * Calculate the cost contribution for a single per-rank modifier with conditional logic.
  * Handles edge cases like:

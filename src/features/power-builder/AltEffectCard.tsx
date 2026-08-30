@@ -14,7 +14,8 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
 import { SenseTraitsEditor } from './components/SenseTraitsEditor';
-import { getComponentCostBreakdown, getPerRankModifierCost } from '../../shared/lib/mathEngine';
+import { ModifierParameterControls } from './components/ModifierParameterControls';
+import { getComponentCostBreakdown } from '../../shared/lib/mathEngine';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 
 interface AltEffectCardProps {
@@ -247,13 +248,6 @@ export function AltEffectCard({
                           ? resolveModifierDefinition(applied, effectDef, genericModifierDefs).definition
                           : undefined;
                         if (!def) return null;
-                        const modCostPP =
-                          def.costType === 'flat'
-                            ? def.costValue
-                            : def.costType === 'flat_ranked'
-                            ? def.costValue * applied.ranks
-                            : null;
-                        
                         // Check for incompatibilities
                         const incompatKey = `${ae.id}:${comp.id}:${applied.modifierId}`;
                         const conflicts = modifierIncompatibilities[incompatKey] || [];
@@ -265,33 +259,14 @@ export function AltEffectCard({
                             className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                           >
                             <span className="applied-mod-name">{def.name}</span>
-                            {def.costType === 'per_rank' && (def.maxRanks ?? 1) > 1 && (
-                              <NumberInput
-                                variant="small"
-                                className="applied-mod-ranks"
-                                value={applied.ranks}
-                                onChange={(value) =>
-                                  onUpdateModifierRanks(comp.id, applied.modifierId, value)
-                                }
-                                min={1}
-                                max={def.maxRanks}
-                              />
-                            )}
-                            {def.costType === 'per_rank' && (
-                              <NumberInput variant="small" className="applied-mod-ranks" value={typeof applied.options?.affectedRanks === 'number' ? applied.options.affectedRanks : comp.ranks} onChange={(value) => onUpdateModifierOptions(comp.id, applied.modifierId, { ...applied.options, affectedRanks: Math.max(1, Math.min(comp.ranks, value)) })} min={1} max={comp.ranks} aria-label="Effect ranks affected" />
-                            )}
-                            {def.costType !== 'per_rank' && (
-                              <NumberInput
-                                variant="small"
-                                className="applied-mod-ranks"
-                                value={applied.ranks}
-                                onChange={(value) =>
-                                  onUpdateModifierRanks(comp.id, applied.modifierId, value)
-                                }
-                                min={1}
-                                max={def.maxRanks ?? undefined}
-                              />
-                            )}
+                            <ModifierParameterControls
+                              applied={applied}
+                              definition={def}
+                              effectRanks={comp.ranks}
+                              effectAction={effectDef?.action}
+                              onRanksChange={(value) => onUpdateModifierRanks(comp.id, applied.modifierId, value)}
+                              onOptionsChange={(options) => onUpdateModifierOptions(comp.id, applied.modifierId, options)}
+                            />
                             {def.options && def.options.length > 0 && (
                               <>
                                 <select className="applied-mod-option" value={applied.option ?? ''} onChange={(e) => onUpdateModifierOption(comp.id, applied.modifierId, e.target.value)}>
@@ -370,39 +345,6 @@ export function AltEffectCard({
                                 aria-label={t('builder.trigger')}
                               />
                             )}
-                            {/* Subtype selector (e.g. Alternate Resistance) */}
-                            {def.subtypes && def.subtypes.length > 0 && (
-                              <select
-                                className="applied-mod-subtype"
-                                value={(applied.options?.subtypeId as string) ?? ''}
-                                onChange={(e) => {
-                                  onUpdateModifierOptions(comp.id, applied.modifierId, {
-                                    ...applied.options,
-                                    subtypeId: e.target.value,
-                                  });
-                                }}
-                                title={t('builder.subtypeLabel')}
-                              >
-                                <option value="">{t('builder.subtypeNone')}</option>
-                                {def.subtypes.map((sub) => (
-                                  <option key={sub.id} value={sub.id}>
-                                    {sub.label} (+{sub.costValue}/rank)
-                                  </option>
-                                ))}
-                              </select>
-                            )}
-                            <span className="applied-mod-cost">
-                              {(() => {
-                                if (def.costType === 'per_rank') {
-                                  const effectiveCost = getPerRankModifierCost(applied, def, effectDef?.action);
-                                  return `${effectiveCost >= 0 ? '+' : ''}${effectiveCost}/rank`;
-                                }
-                                if (modCostPP !== null) {
-                                  return `${modCostPP > 0 ? '+' : ''}${modCostPP}pp`;
-                                }
-                                return '';
-                              })()}
-                            </span>
                             {hasIncompatibility && (
                               <span 
                                 className="applied-mod-incompatible-warning" 

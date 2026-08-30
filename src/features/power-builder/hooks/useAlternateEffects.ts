@@ -3,13 +3,17 @@ import type {
   IAlternateEffect,
   IPowerEffect,
   ICharacterPowerComponent,
+  IModifierDef,
 } from '../../../entities/types';
 import { createId } from '../../../shared/lib/identity';
+import { isRankedModifier } from '../../../shared/lib/mathEngine';
+import { resolveModifierDefinition } from '../../../shared/lib/rulesCatalog';
 
 interface UseAlternateEffectsParams {
   setPower: React.Dispatch<React.SetStateAction<ICharacterPower>>;
   /** Needed by addModifierToAEComponent to detect power-specific mods */
   powerDefs: IPowerEffect[];
+  modifierDefs: IModifierDef[];
   /** Read by removeAlternateEffect to clear expanded state when the open AE is deleted */
   expandedAEId: string | null;
   setExpandedAEId: (id: string | null) => void;
@@ -32,6 +36,7 @@ function getNextAlternateEffectName(alternateEffects: IAlternateEffect[]): strin
 export function useAlternateEffects({
   setPower,
   powerDefs,
+  modifierDefs,
   expandedAEId,
   setExpandedAEId,
   setActiveAEComponentId,
@@ -138,6 +143,11 @@ export function useAlternateEffects({
             if (comp.id !== compId) return comp;
             const already = comp.modifiers.find((m) => m.modifierId === modId);
             if (already) {
+              const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
+              const modifierDef = effectDef
+                ? resolveModifierDefinition(already, effectDef, modifierDefs).definition
+                : undefined;
+              if (!modifierDef || !isRankedModifier(modifierDef)) return comp;
               return {
                 ...comp,
                 modifiers: comp.modifiers.map((m) =>
