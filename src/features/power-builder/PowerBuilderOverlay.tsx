@@ -164,6 +164,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     aeCosts,
     aeValidations,
     plViolation,
+    pricingDiagnostics,
   } = usePowerCostCalculation({
     power,
     powerDefs,
@@ -940,27 +941,29 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                     {/* Cost breakdown for this component */}
                     {costInfo.breakdown && costInfo.total > 0 && (
                       <div className="component-breakdown">
-                        {costInfo.breakdown.isFractional ? (
-                          <span className="fractional-cost-line">
-                            <span className="fractional-cost-badge">
-                              1 PP / {costInfo.breakdown.ranksPerPP} ranks
-                            </span>
-                            {' '}({comp.ranks} ranks = {costInfo.breakdown.rankCost} PP)
-                            {costInfo.breakdown.flatCost !== 0 ? ` + ${costInfo.breakdown.flatCost} flat` : ''}
-                            {' = '}<strong>{costInfo.breakdown.total} PP</strong>
+                        {costInfo.breakdown.rankGroups.map((group, groupIndex) => (
+                          <span key={`${group.fromRank}-${group.toRank}`} className={group.isFractional ? 'fractional-cost-line' : undefined}>
+                            {effectDef?.variableCost?.costType === 'flat'
+                              ? `${costInfo.breakdown?.selectedVariableCost ?? effectDef?.name ?? comp.effectId}: `
+                              : `R${group.fromRank}${group.toRank > group.fromRank ? `–${group.toRank}` : ''}: `}
+                            {group.isFractional ? (
+                              <>
+                                <span className="fractional-cost-badge">1 PP / {group.ranksPerPP} ranks</span>
+                                {' '}× {group.rankCount} = {group.subtotal} PP
+                              </>
+                            ) : (
+                              <>{group.costPerRank} PP/rank × {group.rankCount} = {group.subtotal} PP</>
+                            )}
+                            {groupIndex < costInfo.breakdown!.rankGroups.length - 1 ? ' + ' : ''}
                           </span>
-                        ) : costInfo.breakdown.perRankExtras > 0 || costInfo.breakdown.perRankFlaws > 0 ? (
-                          <span>
-                            ({costInfo.breakdown.base} + {costInfo.breakdown.perRankExtras} − {costInfo.breakdown.perRankFlaws}) × {comp.ranks} = {costInfo.breakdown.rankCost}
-                            {costInfo.breakdown.flatCost !== 0 ? ` + ${costInfo.breakdown.flatCost} flat` : ''}
-                            {' = '}<strong>{costInfo.breakdown.total} PP</strong>
-                          </span>
-                        ) : (
-                          <span>
-                            {costInfo.breakdown.base}/rank × {comp.ranks} = {costInfo.breakdown.rankCost}
-                            {costInfo.breakdown.flatCost !== 0 ? ` + ${costInfo.breakdown.flatCost} flat` : ''}
-                            {' = '}<strong>{costInfo.breakdown.total} PP</strong>
-                          </span>
+                        ))}
+                        {costInfo.breakdown.flatCost !== 0 && (
+                          <span>{costInfo.breakdown.rankGroups.length > 0 ? ' + ' : ''}{costInfo.breakdown.flatCost} flat</span>
+                        )}
+                        {(costInfo.breakdown.rankGroups.length !== 1
+                          || costInfo.breakdown.flatCost !== 0
+                          || costInfo.breakdown.total !== costInfo.breakdown.rankCost) && (
+                          <span>{' = '}<strong>{costInfo.breakdown.total} PP</strong></span>
                         )}
                       </div>
                     )}
@@ -1103,6 +1106,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             <div className="pl-violation-banner">
               <AlertTriangle size={13} />
               <span>{t('validation.attackDamage')} — {plViolation.formula} (max {plViolation.limit})</span>
+            </div>
+          )}
+          {pricingDiagnostics.length > 0 && (
+            <div className="pl-violation-banner" title={pricingDiagnostics.map((diagnostic) => diagnostic.message).join('\n')}>
+              <AlertTriangle size={13} />
+              <span>{t('builder.pricingDataWarning', { count: pricingDiagnostics.length })}</span>
             </div>
           )}
         </div>

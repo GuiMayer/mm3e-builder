@@ -216,14 +216,22 @@ export function AltEffectCard({
                     </div>
                   )}
 
-                  {costBreakdown?.isFractional && (
-                    <div className="component-breakdown component-breakdown--fractional">
-                      <span className="fractional-cost-badge">
-                        1 PP / {costBreakdown.ranksPerPP} ranks
-                      </span>
-                      <span>
-                        {comp.ranks} ranks = <strong>{costBreakdown.total} PP</strong>
-                      </span>
+                  {costBreakdown && (
+                    <div className={`component-breakdown ${costBreakdown.rankGroups.some((group) => group.isFractional) ? 'component-breakdown--fractional' : ''}`}>
+                      {costBreakdown.rankGroups.map((group, groupIndex) => (
+                        <span key={`${group.fromRank}-${group.toRank}`}>
+                          R{group.fromRank}{group.toRank > group.fromRank ? `–${group.toRank}` : ''}:{' '}
+                          {group.isFractional
+                            ? `1 PP / ${group.ranksPerPP} ranks × ${group.rankCount}`
+                            : `${group.costPerRank} PP/rank × ${group.rankCount}`}
+                          {' = '}{group.subtotal} PP{groupIndex < costBreakdown.rankGroups.length - 1 ? ' + ' : ''}
+                        </span>
+                      ))}
+                      {(costBreakdown.rankGroups.length !== 1
+                        || costBreakdown.flatCost !== 0
+                        || costBreakdown.total !== costBreakdown.rankCost) && (
+                        <span>{' = '}<strong>{costBreakdown.total} PP</strong></span>
+                      )}
                     </div>
                   )}
 

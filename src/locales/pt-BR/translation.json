@@ -778,6 +778,7 @@
 
   "calculationUpdate.title": "Cálculo de pontos corrigido",
   "calculationUpdate.message": "Corrigimos custos específicos, parciais e fracionários. Builder, ficha e exportações agora usam o mesmo total. Os dados dos personagens não foram alterados.",
+  "builder.pricingDataWarning": "{{count}} referência salva de cálculo não pôde ser identificada. Selecione novamente o efeito ou modificador afetado.",
 
   "menu.clearDraft.label": "Gerenciamento de Rascunho",
   "menu.clearDraft.action": "Limpar Rascunho",

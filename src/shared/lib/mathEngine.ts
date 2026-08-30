@@ -450,11 +450,13 @@ function calculateComponentListPricing(
   const pricedComponents = components.map((component): PricedPowerComponent => {
     const effectDef = powerDefs.find((definition) => definition.id === component.effectId);
     if (!effectDef) {
-      diagnostics.push({
-        code: 'unknown-effect',
-        id: component.effectId,
-        message: `Unknown effect "${component.effectId}".`,
-      });
+      if (component.effectId) {
+        diagnostics.push({
+          code: 'unknown-effect',
+          id: component.effectId,
+          message: `Unknown effect "${component.effectId}".`,
+        });
+      }
       return {
         componentId: component.id,
         effectId: component.effectId,

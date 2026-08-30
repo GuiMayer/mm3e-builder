@@ -159,4 +159,10 @@ describe('canonical pricing parity', () => {
     ]));
     expect(JSON.stringify(value)).toBe(before);
   });
+
+  it('does not report the intentionally empty effect slot of a new draft', () => {
+    const draft = power(component('', 1));
+
+    expect(calculatePowerPricing(draft, POWER_DEFS, MODIFIER_DEFS).diagnostics).toEqual([]);
+  });
 });

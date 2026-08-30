@@ -778,6 +778,7 @@
 
   "calculationUpdate.title": "Point calculation fixed",
   "calculationUpdate.message": "Power-specific, partial-rank, and fractional costs were fixed. The Builder, sheet, and exports now use the same total. Your character data was not changed.",
+  "builder.pricingDataWarning": "{{count}} saved pricing reference could not be resolved. Re-select the affected effect or modifier.",
 
   "menu.clearDraft.label": "Draft Management",
   "menu.clearDraft.action": "Clear Draft",
