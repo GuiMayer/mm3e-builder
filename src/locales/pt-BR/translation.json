@@ -776,6 +776,9 @@
   "draft.saveError.writeFailed": "O navegador não conseguiu salvar este Rascunho. Suas alterações continuam marcadas como não salvas.",
   "draft.saveError.recoveryFailed": "O novo Rascunho não foi salvo porque o Rascunho anterior ilegível não pôde ser movido com segurança para recuperação. Exporte a cópia de recuperação e tente novamente.",
 
+  "calculationUpdate.title": "Cálculo de pontos corrigido",
+  "calculationUpdate.message": "Corrigimos custos específicos, parciais e fracionários. Builder, ficha e exportações agora usam o mesmo total. Os dados dos personagens não foram alterados.",
+
   "menu.clearDraft.label": "Gerenciamento de Rascunho",
   "menu.clearDraft.action": "Limpar Rascunho",
   "menu.clearDraft.hint": "Remover rascunho salvo do armazenamento do navegador",

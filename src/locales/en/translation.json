@@ -776,6 +776,9 @@
   "draft.saveError.writeFailed": "The browser could not save this Draft. Your changes remain marked as unsaved.",
   "draft.saveError.recoveryFailed": "The new Draft was not saved because the previous unreadable Draft could not be moved safely to recovery. Export the recovery copy and try again.",
 
+  "calculationUpdate.title": "Point calculation fixed",
+  "calculationUpdate.message": "Power-specific, partial-rank, and fractional costs were fixed. The Builder, sheet, and exports now use the same total. Your character data was not changed.",
+
   "menu.clearDraft.label": "Draft Management",
   "menu.clearDraft.action": "Clear Draft",
   "menu.clearDraft.hint": "Remove saved draft from browser storage",

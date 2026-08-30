@@ -13,6 +13,7 @@ import { AppDialogProvider } from '../shared/ui/AppDialog'
 import { DraftStorageStatus } from '../shared/ui/DraftStorageStatus'
 import { DraftPersistenceController } from '../shared/ui/DraftPersistenceController'
 import { DraftStartupController } from '../shared/ui/DraftStartupController'
+import { PointCalculationUpdateNotice } from '../shared/ui/PointCalculationUpdateNotice'
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -70,6 +71,7 @@ export function App() {
       <DraftStartupController />
       <DraftPersistenceController />
       <DraftStorageStatus />
+      <PointCalculationUpdateNotice />
       <div className="app-root">
         <MenuBar 
           activeView={activeView} 

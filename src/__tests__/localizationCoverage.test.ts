@@ -69,6 +69,8 @@ describe('localization coverage', () => {
       'resources.restoreMessage_one',
       'resources.restoreMessage_other',
       'draft.updateTitle',
+      'calculationUpdate.title',
+      'calculationUpdate.message',
       'draft.clearAcknowledgement',
       'draft.recovery.unrecoverable',
       'draft.saveError.storageFull',
