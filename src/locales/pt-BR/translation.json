@@ -779,7 +779,7 @@
   "draft.saveError.recoveryFailed": "O novo Rascunho não foi salvo porque o Rascunho anterior ilegível não pôde ser movido com segurança para recuperação. Exporte a cópia de recuperação e tente novamente.",
 
   "calculationUpdate.title": "Cálculo de pontos corrigido",
-  "calculationUpdate.message": "Corrigimos custos específicos, parciais e fracionários. Builder, ficha e exportações agora usam o mesmo total. Os dados dos personagens não foram alterados.",
+  "calculationUpdate.message": "Corrigimos os custos de Aflição, Massa Aumentada de Teleporte e Ação de Variável. Os dados dos personagens não foram alterados, mas alguns totais podem ter mudado.",
   "builder.pricingDataWarning": "{{count}} referência salva de cálculo não pôde ser identificada. Selecione novamente o efeito ou modificador afetado.",
 
   "menu.clearDraft.label": "Gerenciamento de Rascunho",

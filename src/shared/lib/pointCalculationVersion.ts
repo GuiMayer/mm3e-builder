@@ -5,7 +5,7 @@ import type { IResource } from '../../entities/types';
  * Independent from the app version: bump only when persisted builds may be
  * priced differently. Ordinary releases must not repeat the notice.
  */
-export const POINT_CALCULATION_REVISION = '2';
+export const POINT_CALCULATION_REVISION = '3';
 export const POINT_CALCULATION_NOTICE_KEY = 'mm3e:point-calculation-revision';
 
 export interface PointCalculationNoticeState {

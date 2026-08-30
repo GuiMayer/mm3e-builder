@@ -71,6 +71,10 @@ describe('point calculation revision notice', () => {
     })).toBe(true);
     expect(shouldShowPointCalculationNotice({
       ...state,
+      storedRevision: '2',
+    })).toBe(true);
+    expect(shouldShowPointCalculationNotice({
+      ...state,
       storedRevision: POINT_CALCULATION_REVISION,
     })).toBe(false);
   });
