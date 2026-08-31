@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { IAlternateEffect, ICharacterPower, ICharacterPowerComponent } from '../entities/types';
 import { MODIFIER_DEFS, POWER_DEFS } from '../entities/gameDataLoaders';
-import { calcComponentCost, calcPowerTotalCost } from '../shared/lib/mathEngine';
+import { calcComponentCost, calcPowerTotalCost, calcToughnessBonus } from '../shared/lib/mathEngine';
 
 const effect = (id: string) => POWER_DEFS.find((definition) => definition.id === id)!;
 
@@ -126,5 +126,25 @@ describe('audited community build pricing regressions', () => {
       id: 'tiring-legacy-ranks', effectId: 'damage', ranks: 10,
       modifiers: [{ modifierId: 'tiring', ranks: 3 }],
     }, damage, MODIFIER_DEFS)).toBe(5);
+  });
+
+  it('represents Impervious Toughness without increasing Toughness itself', () => {
+    const component: ICharacterPowerComponent = {
+      id: 'impervious-toughness',
+      effectId: 'impervious-resistance',
+      ranks: 12,
+      modifiers: [],
+      fieldValues: { resistance: 'toughness' },
+    };
+    const power: ICharacterPower = {
+      id: 'rocky-form',
+      name: 'Rocky Form',
+      notes: '',
+      components: [component],
+      alternateEffects: [],
+    };
+
+    expect(calcComponentCost(component, effect('impervious-resistance'), MODIFIER_DEFS)).toBe(12);
+    expect(calcToughnessBonus([power], [], POWER_DEFS)).toEqual({ bonus: 0, breakdown: [] });
   });
 });

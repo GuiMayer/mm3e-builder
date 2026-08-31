@@ -1,5 +1,6 @@
 import type { IConfigurableField } from '../../../entities/types';
 import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 /* ================================================
    ConfigurableFieldSelector Component
@@ -20,6 +21,9 @@ export function ConfigurableFieldSelector({
   onChange,
   t,
 }: ConfigurableFieldSelectorProps) {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage ?? i18n.language;
+
   if (!fields || fields.length === 0) {
     return null;
   }
@@ -29,7 +33,7 @@ export function ConfigurableFieldSelector({
       {fields.map((field) => (
         <div key={field.id} className="configurable-field">
           <label className="build-label">
-            {field.label}
+            {field.i18n?.[language]?.label ?? field.label}
             {field.required && <span className="required-indicator"> *</span>}
           </label>
 
@@ -44,7 +48,7 @@ export function ConfigurableFieldSelector({
               </option>
               {field.options?.map((opt) => (
                 <option key={opt.value} value={opt.value}>
-                  {opt.label}
+                  {opt.i18n?.[language]?.label ?? opt.label}
                 </option>
               ))}
             </select>
@@ -79,9 +83,13 @@ export function ConfigurableFieldSelector({
                         onChange(field.id, newValues);
                       }}
                     />
-                    <span className="option-label">{opt.label}</span>
+                    <span className="option-label">
+                      {opt.i18n?.[language]?.label ?? opt.label}
+                    </span>
                     {opt.description && (
-                      <span className="option-description">{opt.description}</span>
+                      <span className="option-description">
+                        {opt.i18n?.[language]?.description ?? opt.description}
+                      </span>
                     )}
                   </label>
                 );
@@ -92,7 +100,10 @@ export function ConfigurableFieldSelector({
           {/* Show option descriptions for dropdown */}
           {field.control === 'dropdown' && values[field.id] && (
             <div className="field-description">
-              {field.options?.find((opt) => opt.value === values[field.id])?.description}
+              {(() => {
+                const option = field.options?.find((opt) => opt.value === values[field.id]);
+                return option?.i18n?.[language]?.description ?? option?.description;
+              })()}
             </div>
           )}
         </div>

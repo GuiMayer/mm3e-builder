@@ -1749,6 +1749,97 @@
     ]
   },
   {
+    "id": "impervious-resistance",
+    "name": "Impervious Resistance",
+    "type": "defense",
+    "baseCost": 1,
+    "action": "none",
+    "range": "personal",
+    "duration": "permanent",
+    "description": "Applies Impervious ranks to an existing resistance, usually Toughness. This utility effect costs 1 PP/rank and does not increase the selected resistance or grant Protection.",
+    "variableCost": null,
+    "configurableFields": [
+      {
+        "id": "resistance",
+        "label": "Resistance",
+        "control": "dropdown",
+        "required": true,
+        "options": [
+          {
+            "value": "toughness",
+            "label": "Toughness",
+            "description": "The usual resistance for Impervious, including Toughness provided by Stamina.",
+            "i18n": {
+              "pt-BR": {
+                "label": "Resistência",
+                "description": "A resistência usual para Impenetrável, incluindo Resistência concedida por Vigor."
+              }
+            }
+          },
+          {
+            "value": "fortitude",
+            "label": "Fortitude",
+            "description": "Requires GM approval when Impervious applies to this resistance.",
+            "i18n": {
+              "pt-BR": {
+                "label": "Fortitude",
+                "description": "Requer aprovação do mestre quando Impenetrável se aplica a esta resistência."
+              }
+            }
+          },
+          {
+            "value": "will",
+            "label": "Will",
+            "description": "Requires GM approval when Impervious applies to this resistance.",
+            "i18n": {
+              "pt-BR": {
+                "label": "Vontade",
+                "description": "Requer aprovação do mestre quando Impenetrável se aplica a esta resistência."
+              }
+            }
+          },
+          {
+            "value": "dodge",
+            "label": "Dodge",
+            "description": "Requires GM approval when Impervious applies to this defense.",
+            "i18n": {
+              "pt-BR": {
+                "label": "Esquiva",
+                "description": "Requer aprovação do mestre quando Impenetrável se aplica a esta defesa."
+              }
+            }
+          },
+          {
+            "value": "parry",
+            "label": "Parry",
+            "description": "Requires GM approval when Impervious applies to this defense.",
+            "i18n": {
+              "pt-BR": {
+                "label": "Aparar",
+                "description": "Requer aprovação do mestre quando Impenetrável se aplica a esta defesa."
+              }
+            }
+          }
+        ],
+        "i18n": {
+          "pt-BR": {
+            "label": "Resistência"
+          }
+        }
+      }
+    ],
+    "i18n": {
+      "pt-BR": {
+        "name": "Resistência Impenetrável",
+        "description": "Aplica ranks de Impenetrável a uma resistência existente, normalmente Resistência. Este efeito utilitário custa 1 PP/rank e não aumenta a resistência selecionada nem concede Proteção."
+      }
+    },
+    "longDescription": "Impervious is normally purchased as an extra on a resistance. This utility effect represents Impervious bought directly for an existing resistance, such as Toughness from Stamina, where there is no separate Protection effect to carry the modifier. Each rank costs 1 PP. It records the Impervious threshold only and never increases the underlying resistance.",
+    "enhancesDefense": null,
+    "extras": [],
+    "flaws": []
+  },
+  {
     "id": "insubstantial",
     "name": "Insubstantial",
     "type": "general",
