@@ -13,6 +13,7 @@ import type {
   IResource,
 } from '../../entities/types';
 import { getEffectiveAbilityRank, isStrengthBasedDamage } from './abilityRanks';
+import { resolveEffectiveRange } from './effectParameters';
 
 /**
  * A single row in the Offense panel table.
@@ -54,46 +55,6 @@ export function parseEffectRank(effect: string): number | null {
 
 function hasModifier(comp: ICharacterPowerComponent, modifierId: string): boolean {
   return comp.modifiers.some((modifier) => modifier.modifierId === modifierId);
-}
-
-/**
- * Calculate the effective range of a component, accounting for modifiers.
- * Rules: Increased Range moves range up one step per rank: close → ranged → perception.
- */
-function getEffectiveRange(
-  baseRange: string,
-  comp: ICharacterPowerComponent,
-  modifierDefs: IModifierDef[]
-): string {
-  let effectiveRange = baseRange;
-
-  // 1. Affects Others changes Personal to Close
-  if (effectiveRange === 'personal' && (hasAffectOthers(comp, modifierDefs) || hasAttackExtra(comp))) {
-    effectiveRange = 'close';
-  }
-
-  // 2. Find Increased Range or Reduced Range modifiers
-  let rangeShift = 0;
-  for (const m of comp.modifiers) {
-    const def = modifierDefs.find((d) => d.id === m.modifierId);
-    if (def?.id === 'increased_range') rangeShift += m.ranks;
-    if (def?.id === 'reduced_range')   rangeShift -= m.ranks;
-  }
-
-  if (rangeShift === 0) {
-    return effectiveRange;
-  }
-
-  const rangeSteps = ['close', 'ranged', 'perception'];
-  const currentIndex = rangeSteps.indexOf(effectiveRange);
-
-  if (currentIndex === -1) {
-    // Other ranges (like Personal) not affected by Range modifiers
-    return effectiveRange;
-  }
-
-  const newIndex = Math.max(0, Math.min(currentIndex + rangeShift, rangeSteps.length - 1));
-  return rangeSteps[newIndex];
 }
 
 /** Check if a component has the Area extra (any variant) — makes it no-roll. */
@@ -175,7 +136,10 @@ export function calcAttackBonus(
   const { abilities, absentAbilities, skills, advantages } = character;
 
   // Calculate effective range (accounting for Increased Range modifier)
-  const effectiveRange = getEffectiveRange(effectRange, component, modifierDefs);
+  const effectiveRange = resolveEffectiveRange(
+    effectRange as IPowerEffect['range'],
+    component
+  ).value;
 
   // ── Perception or personal range → no attack check ──
   if (effectiveRange === 'perception' || effectiveRange === 'personal') {
@@ -274,7 +238,7 @@ function getInteraction(
 ): { interaction: IOffenseEntry['interaction']; requiresAttackCheck: boolean; causesResistance: boolean; isNoRoll: boolean } | null {
   const hasAttack = def.type === 'attack' || hasAttackExtra(comp);
   const hasArea = hasAreaExtra(comp, modifierDefs);
-  const effectiveRange = getEffectiveRange(def.range, comp, modifierDefs);
+  const effectiveRange = resolveEffectiveRange(def.range, comp).value;
   const causesResistance = hasAttack || hasResistibleModifier(comp);
 
   if (hasAttack) {
@@ -328,7 +292,7 @@ function createComponentProfile(
   const interaction = getInteraction(def, comp, modifierDefs);
   if (!interaction) return null;
 
-  const effectiveRange = getEffectiveRange(def.range, comp, modifierDefs);
+  const effectiveRange = resolveEffectiveRange(def.range, comp).value;
   const strengthContribution = isStrengthBasedDamage(comp)
     ? getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'str')
     : 0;

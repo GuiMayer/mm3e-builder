@@ -1,248 +1,208 @@
-import { describe, it, expect } from 'vitest';
-import { calculatePowerCost } from '../shared/lib/mathEngine';
-import type { IAppliedModifier, IModifierDef } from '../entities/types';
+import { describe, expect, it } from 'vitest';
+import { MODIFIER_DEFS, POWER_DEFS } from '../entities/gameDataLoaders';
+import type {
+  DurationType,
+  ICharacterPower,
+  ICharacterPowerComponent,
+  IPowerEffect,
+  RangeType,
+} from '../entities/types';
+import {
+  calculatePowerCost,
+  isRankedModifier,
+} from '../shared/lib/mathEngine';
+import {
+  resolveEffectiveDuration,
+  resolveEffectiveRange,
+} from '../shared/lib/effectParameters';
+import { validatePowerForSave } from '../shared/lib/semanticValidation';
+import { DEFAULT_VALIDATION_RULES } from '../shared/lib/validationRules';
 
-/**
- * Range/Duration/Action Parameter Modifiers Tests
- * 
- * Tests modifier effects on power parameters (range, duration, action).
- * 
- * References:
- * - Hero's Handbook p.137-140 (Accurate extra)
- * - Modifiers p.187-200 (Range/Duration/Action modifiers)
- */
+function component(
+  modifierId: string,
+  ranks = 1,
+  effectId = 'damage'
+): ICharacterPowerComponent {
+  return {
+    id: 'component-1',
+    effectId,
+    ranks: 10,
+    modifiers: [{ modifierId, ranks }],
+  };
+}
 
-// Mock modifier definitions
-const MODS: IModifierDef[] = [
-  { id: 'ranged', name: 'Ranged', category: 'extra', costType: 'per_rank', costValue: 1, description: 'Changes range from close to ranged', incompatibleWith: ['close_only'] },
-  { id: 'increased_range', name: 'Increased Range', category: 'extra', costType: 'per_rank', costValue: 1, description: 'Increases range by one step', incompatibleWith: ['diminished_range'] },
-  { id: 'diminished_range', name: 'Diminished Range', category: 'flaw', costType: 'per_rank', costValue: -1, description: 'Decreases range by one step', incompatibleWith: ['increased_range'] },
-  { id: 'close_only', name: 'Close Only', category: 'flaw', costType: 'per_rank', costValue: -1, description: 'Limits to close range only', incompatibleWith: ['ranged'] },
-  { id: 'concentration', name: 'Concentration', category: 'extra', costType: 'per_rank', costValue: 0, description: 'Changes duration to concentration', incompatibleWith: [] },
-  { id: 'continuous', name: 'Continuous', category: 'extra', costType: 'per_rank', costValue: 1, description: 'Changes duration to continuous', incompatibleWith: [] },
-  { id: 'sustained', name: 'Sustained', category: 'extra', costType: 'per_rank', costValue: 0, description: 'Changes duration to sustained', incompatibleWith: [] },
-  { id: 'permanent', name: 'Permanent', category: 'extra', costType: 'per_rank', costValue: 0, description: 'Changes duration to permanent', incompatibleWith: [] },
-];
+function effect(
+  range: RangeType,
+  duration: DurationType = 'instant'
+): IPowerEffect {
+  return {
+    id: 'test-effect',
+    name: 'Test Effect',
+    type: 'attack',
+    baseCost: 1,
+    action: 'standard',
+    range,
+    duration,
+    description: '',
+    variableCost: null,
+    extras: [],
+    flaws: [],
+  };
+}
 
-describe('Range Progression Modifiers', () => {
-  describe('Ranged extra', () => {
-    it('Close → Ranged: Damage 10 + Ranged = (1+1)×10 = 20 PP', () => {
-      const mods: IAppliedModifier[] = [{ modifierId: 'ranged', ranks: 1 }];
-      const cost = calculatePowerCost(1, 10, mods, MODS);
-      expect(cost).toBe(20);
+function powerWith(
+  effectId: string,
+  modifierId: string,
+  ranks = 1
+): ICharacterPower {
+  return {
+    id: 'power-1',
+    name: 'Test Power',
+    notes: '',
+    alternateEffects: [],
+    components: [component(modifierId, ranks, effectId)],
+  };
+}
+
+describe('official range parameter progression', () => {
+  it('moves Close to Ranged with one Increased Range rank', () => {
+    const applied = component('increased_range');
+
+    expect(resolveEffectiveRange('close', applied)).toEqual({
+      value: 'ranged',
+      diagnostics: [],
     });
-
-    it('base 2 effect + Ranged: Move Object 10 + Ranged = (2+1)×10 = 30 PP', () => {
-      const mods: IAppliedModifier[] = [{ modifierId: 'ranged', ranks: 1 }];
-      const cost = calculatePowerCost(2, 10, mods, MODS);
-      expect(cost).toBe(30);
-    });
+    expect(calculatePowerCost(1, 10, applied.modifiers, MODIFIER_DEFS)).toBe(20);
   });
 
-  describe('Increased Range extra', () => {
-    it('Ranged → Perception: Damage 10 + Ranged + Increased Range = (1+1+1)×10 = 30 PP', () => {
-      const mods: IAppliedModifier[] = [
-        { modifierId: 'ranged', ranks: 1 },
-        { modifierId: 'increased_range', ranks: 1 },
-      ];
-      const cost = calculatePowerCost(1, 10, mods, MODS);
-      expect(cost).toBe(30);
-    });
+  it('moves Close to Perception with two Increased Range ranks', () => {
+    const applied = component('increased_range', 2);
 
-    it('Close → Perception (two steps): Damage 10 + Ranged + Increased Range = 30 PP', () => {
-      // Same as above - Ranged takes close→ranged, Increased Range takes ranged→perception
-      const mods: IAppliedModifier[] = [
-        { modifierId: 'ranged', ranks: 1 },
-        { modifierId: 'increased_range', ranks: 1 },
-      ];
-      const cost = calculatePowerCost(1, 10, mods, MODS);
-      expect(cost).toBe(30);
+    expect(resolveEffectiveRange('close', applied)).toEqual({
+      value: 'perception',
+      diagnostics: [],
     });
+    expect(calculatePowerCost(1, 10, applied.modifiers, MODIFIER_DEFS)).toBe(30);
   });
 
-  describe('Diminished Range flaw', () => {
-    it('Ranged → Close: base ranged effect + Diminished Range = cost reduction', () => {
-      // If base effect is ranged (base 2), diminished range reduces to close (base 1 equivalent)
-      const mods: IAppliedModifier[] = [{ modifierId: 'diminished_range', ranks: 1 }];
-      const cost = calculatePowerCost(2, 10, mods, MODS);
-      // (2-1) × 10 = 10 PP
-      expect(cost).toBe(10);
-    });
+  it('moves Ranged to Perception with one Increased Range rank', () => {
+    expect(resolveEffectiveRange('ranged', component('increased_range')).value)
+      .toBe('perception');
   });
 
-  describe('Close Only flaw', () => {
-    it('limits ranged effect to close range: Damage 10 + Ranged + Close Only = (1+1-1)×10 = 10 PP', () => {
-      const mods: IAppliedModifier[] = [
-        { modifierId: 'ranged', ranks: 1 },
-        { modifierId: 'close_only', ranks: 1 },
-      ];
-      const cost = calculatePowerCost(1, 10, mods, MODS);
-      // Net effect: +1-1 = 0, so 1×10 = 10 PP
-      expect(cost).toBe(10);
-    });
+  it('warns when Increased Range has no categorical step left', () => {
+    const result = resolveEffectiveRange('ranged', component('increased_range', 2));
+
+    expect(result.value).toBe('perception');
+    expect(result.diagnostics).toContainEqual(expect.objectContaining({
+      modifierId: 'increased_range',
+      messageKey: 'builder.validation.rangeAlreadyPerception',
+    }));
+  });
+
+  it('keeps Extended Range separate from the range category', () => {
+    expect(resolveEffectiveRange('ranged', component('extended_range', 5)))
+      .toEqual({ value: 'ranged', diagnostics: [] });
+  });
+
+  it('moves Perception down through Ranged to Close with Reduced Range', () => {
+    expect(resolveEffectiveRange('perception', component('reduced_range')).value)
+      .toBe('ranged');
+    expect(resolveEffectiveRange('perception', component('reduced_range', 2)).value)
+      .toBe('close');
+  });
+
+  it('allows Affects Others to establish Close range before increasing it', () => {
+    const applied = component('increased_range');
+    applied.modifiers.unshift({ modifierId: 'affects_others', ranks: 1 });
+
+    expect(resolveEffectiveRange('personal', applied))
+      .toEqual({ value: 'ranged', diagnostics: [] });
+  });
+
+  it('warns when a Personal effect has no modifier that establishes Close range', () => {
+    const result = resolveEffectiveRange('personal', component('increased_range'));
+
+    expect(result.value).toBe('personal');
+    expect(result.diagnostics[0]?.messageKey).toBe('builder.validation.rangePersonal');
   });
 });
 
-describe('Duration Modifiers', () => {
-  describe('Concentration duration', () => {
-    it('Instant → Concentration: +0/rank (no cost change)', () => {
-      const mods: IAppliedModifier[] = [{ modifierId: 'concentration', ranks: 1 }];
-      const cost = calculatePowerCost(1, 10, mods, MODS);
-      // (1+0) × 10 = 10 PP
-      expect(cost).toBe(10);
-    });
+describe('official duration parameter changes', () => {
+  it('changes Instant to Concentration with Increased Duration', () => {
+    expect(resolveEffectiveDuration('instant', component('increased_duration')))
+      .toEqual({ value: 'concentration', diagnostics: [] });
   });
 
-  describe('Sustained duration', () => {
-    it('Instant → Sustained: +0/rank (no cost change)', () => {
-      const mods: IAppliedModifier[] = [{ modifierId: 'sustained', ranks: 1 }];
-      const cost = calculatePowerCost(1, 10, mods, MODS);
-      expect(cost).toBe(10);
-    });
+  it('changes Sustained to Continuous with Increased Duration', () => {
+    expect(resolveEffectiveDuration('sustained', component('increased_duration')))
+      .toEqual({ value: 'continuous', diagnostics: [] });
   });
 
-  describe('Continuous duration', () => {
-    it('Sustained → Continuous: +1/rank', () => {
-      const mods: IAppliedModifier[] = [{ modifierId: 'continuous', ranks: 1 }];
-      const cost = calculatePowerCost(1, 10, mods, MODS);
-      // (1+1) × 10 = 20 PP
-      expect(cost).toBe(20);
-    });
+  it('treats legacy Increased Duration ranks as one application', () => {
+    const definition = MODIFIER_DEFS.find(({ id }) => id === 'increased_duration');
+    const applied = component('increased_duration', 3);
 
-    it('base 2 + Continuous: Protection 10 + Continuous = (2+1)×10 = 30 PP', () => {
-      const mods: IAppliedModifier[] = [{ modifierId: 'continuous', ranks: 1 }];
-      const cost = calculatePowerCost(2, 10, mods, MODS);
-      expect(cost).toBe(30);
-    });
+    expect(definition && isRankedModifier(definition)).toBe(false);
+    expect(calculatePowerCost(1, 10, applied.modifiers, MODIFIER_DEFS)).toBe(20);
   });
 
-  describe('Permanent duration', () => {
-    it('Continuous → Permanent: +0/rank (no additional cost)', () => {
-      const mods: IAppliedModifier[] = [{ modifierId: 'permanent', ranks: 1 }];
-      const cost = calculatePowerCost(1, 10, mods, MODS);
-      expect(cost).toBe(10);
-    });
-  });
-});
+  it('warns when Increased Duration is applied to another duration', () => {
+    const result = resolveEffectiveDuration('continuous', component('increased_duration'));
 
-describe('Combined Range and Duration Modifiers', () => {
-  it('Damage 10 + Ranged + Continuous = (1+1+1)×10 = 30 PP', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'ranged', ranks: 1 },
-      { modifierId: 'continuous', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(1, 10, mods, MODS);
-    expect(cost).toBe(30);
+    expect(result.value).toBe('continuous');
+    expect(result.diagnostics[0]?.messageKey)
+      .toBe('builder.validation.increasedDurationInvalid');
   });
 
-  it('Damage 10 + Ranged + Increased Range + Continuous = (1+1+1+1)×10 = 40 PP', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'ranged', ranks: 1 },
-      { modifierId: 'increased_range', ranks: 1 },
-      { modifierId: 'continuous', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(1, 10, mods, MODS);
-    expect(cost).toBe(40);
+  it('only changes Sustained to Concentration with the Concentration flaw', () => {
+    expect(resolveEffectiveDuration('sustained', component('concentration')).value)
+      .toBe('concentration');
+    expect(resolveEffectiveDuration('instant', component('concentration')).diagnostics[0]?.messageKey)
+      .toBe('builder.validation.duration.concentration');
   });
 
-  it('base 2 + Ranged + Continuous: Move Object 10 + Ranged + Continuous = (2+1+1)×10 = 40 PP', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'ranged', ranks: 1 },
-      { modifierId: 'continuous', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(2, 10, mods, MODS);
-    expect(cost).toBe(40);
+  it('only changes Continuous to Permanent with the Permanent flaw', () => {
+    expect(resolveEffectiveDuration('continuous', component('permanent_flaw')).value)
+      .toBe('permanent');
+    expect(resolveEffectiveDuration('concentration', component('permanent_flaw')).diagnostics[0]?.messageKey)
+      .toBe('builder.validation.duration.permanent_flaw');
+  });
+
+  it('only changes Permanent to Sustained with the Sustained extra', () => {
+    expect(resolveEffectiveDuration('permanent', component('sustained')).value)
+      .toBe('sustained');
+    expect(resolveEffectiveDuration('instant', component('sustained')).diagnostics[0]?.messageKey)
+      .toBe('builder.validation.duration.sustained');
   });
 });
 
-describe('Real Power Examples with Parameter Modifiers', () => {
-  it('Telekinesis: Move Object 10 + Increased Range = (2+1)×10 = 30 PP', () => {
-    const mods: IAppliedModifier[] = [{ modifierId: 'increased_range', ranks: 1 }];
-    const cost = calculatePowerCost(2, 10, mods, MODS);
-    expect(cost).toBe(30);
+describe('Power Builder parameter warnings', () => {
+  it('keeps valid Increased Range on a Close effect warning-free', () => {
+    const damage = POWER_DEFS.find(({ id }) => id === 'damage');
+    expect(damage).toBeDefined();
+
+    const warnings = validatePowerForSave(
+      powerWith('damage', 'increased_range'),
+      DEFAULT_VALIDATION_RULES,
+      { powerDefs: POWER_DEFS, modifierDefs: MODIFIER_DEFS }
+    ).filter(({ severity }) => severity === 'warning');
+
+    expect(warnings).toEqual([]);
   });
 
-  it('Force Field: Protection 10 + Continuous = (1+1)×10 = 20 PP', () => {
-    const mods: IAppliedModifier[] = [{ modifierId: 'continuous', ranks: 1 }];
-    const cost = calculatePowerCost(1, 10, mods, MODS);
-    expect(cost).toBe(20);
+  it('surfaces invalid duration applicability as a non-blocking warning', () => {
+    const concentrationEffect = effect('close', 'concentration');
+    const warnings = validatePowerForSave(
+      powerWith(concentrationEffect.id, 'permanent_flaw'),
+      DEFAULT_VALIDATION_RULES,
+      { powerDefs: [concentrationEffect], modifierDefs: MODIFIER_DEFS }
+    );
+
+    expect(warnings).toContainEqual(expect.objectContaining({
+      severity: 'warning',
+      messageKey: 'builder.validation.duration.permanent_flaw',
+    }));
+    expect(warnings.some(({ severity }) => severity === 'error')).toBe(false);
   });
-
-  it('Energy Blast: Damage 10 + Ranged = (1+1)×10 = 20 PP', () => {
-    const mods: IAppliedModifier[] = [{ modifierId: 'ranged', ranks: 1 }];
-    const cost = calculatePowerCost(1, 10, mods, MODS);
-    expect(cost).toBe(20);
-  });
-
-  it('Perception Range Attack: Damage 10 + Ranged + Increased Range = (1+1+1)×10 = 30 PP', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'ranged', ranks: 1 },
-      { modifierId: 'increased_range', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(1, 10, mods, MODS);
-    expect(cost).toBe(30);
-  });
-});
-
-describe('Edge Cases - Parameter Modifiers', () => {
-  it('multiple range modifiers: Ranged + Increased Range on base 1 = +2/rank', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'ranged', ranks: 1 },
-      { modifierId: 'increased_range', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(1, 5, mods, MODS);
-    // (1+1+1) × 5 = 15 PP
-    expect(cost).toBe(15);
-  });
-
-  it('range increase and decrease cancel: Ranged + Diminished Range = net 0', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'ranged', ranks: 1 },
-      { modifierId: 'diminished_range', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(1, 10, mods, MODS);
-    // (1+1-1) × 10 = 10 PP
-    expect(cost).toBe(10);
-  });
-
-  it('duration modifiers stack: Continuous + Permanent = +1/rank total', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'continuous', ranks: 1 },
-      { modifierId: 'permanent', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(1, 10, mods, MODS);
-    // (1+1+0) × 10 = 20 PP
-    expect(cost).toBe(20);
-  });
-
-  it('rank 1 with multiple modifiers: Damage 1 + Ranged + Continuous = (1+1+1)×1 = 3 PP', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'ranged', ranks: 1 },
-      { modifierId: 'continuous', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(1, 1, mods, MODS);
-    expect(cost).toBe(3);
-  });
-
-  it('high rank with modifiers: Damage 20 + Ranged + Increased Range + Continuous = (1+1+1+1)×20 = 80 PP', () => {
-    const mods: IAppliedModifier[] = [
-      { modifierId: 'ranged', ranks: 1 },
-      { modifierId: 'increased_range', ranks: 1 },
-      { modifierId: 'continuous', ranks: 1 },
-    ];
-    const cost = calculatePowerCost(1, 20, mods, MODS);
-    expect(cost).toBe(80);
-  });
-});
-
-describe('Parameter Modifiers - Future Validation (TODO)', () => {
-  // These tests document expected behavior for future validation implementation
-  // Currently, the system allows these combinations but should validate them
-
-  it.todo('Ranged + Close Only: should warn about incompatibility');
-  it.todo('Increased Range + Diminished Range: should warn about incompatibility');
-  it.todo('Increased Range without Ranged on close power: should warn (no effect)');
-  it.todo('Continuous on Instant duration: should validate duration change is valid');
-  it.todo('Permanent on Concentration: should validate progression');
-  it.todo('Multiple Increased Range ranks: should track range progression (ranged→perception→extended)');
 });

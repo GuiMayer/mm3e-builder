@@ -376,18 +376,16 @@
         "category":  "extra",
         "costType":  "per_rank",
         "costValue":  1,
-        "maxRanks":  3,
-        "repeatable":  true,
-        "description":  "Moves duration up one step: instant→concentration→sustained→continuous.",
-        "longDescription":  "Each rank moves the effect\u0027s duration up one step: instant→concentration→sustained→continuous. +1/rank for each step. An effect made continuous with this modifier cannot be turned off voluntarily unless Reversible is also applied.",
+        "description":  "Changes Instant duration to Concentration, or Sustained duration to Continuous.",
+        "longDescription":  "Increased Duration is applied once: an Instant effect becomes Concentration, while a Sustained effect becomes Continuous. Other duration categories are not changed by this extra.",
         "incompatibleWith":  [
 
                              ],
         "i18n":  {
                      "pt-BR":  {
                                    "name":  "Duração Aumentada",
-                                   "description":  "Move a duração um passo: instante→concentração→sustentado→contínuo.",
-                                   "longDescription":  "+1/rank por passo: instante→concentração→sustentado→contínuo. Efeito tornado contínuo não pode ser desligado voluntariamente sem Reversível."
+                                   "description":  "Muda Instantâneo para Concentração ou Sustentado para Contínuo.",
+                                   "longDescription":  "Duração Aumentada é aplicada uma vez: um efeito Instantâneo torna-se Concentração, enquanto um efeito Sustentado torna-se Contínuo. Outras categorias de duração não são alteradas por este extra."
                                }
                  }
     },

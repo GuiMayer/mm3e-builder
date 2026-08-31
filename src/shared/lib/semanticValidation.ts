@@ -10,6 +10,7 @@ import type {
 } from '../../entities/types';
 import { validateComponentModifiers } from './modifierValidation';
 import { validateRequiredPowerFields } from './validation';
+import { resolveEffectiveDuration, resolveEffectiveRange } from './effectParameters';
 
 export type SemanticSeverity = 'error' | 'warning' | 'info';
 
@@ -17,6 +18,8 @@ export interface SemanticValidationIssue {
   severity: SemanticSeverity;
   path: string;
   message: string;
+  messageKey?: string;
+  params?: Record<string, string | number>;
 }
 
 interface GameDataContext {
@@ -149,17 +152,20 @@ function validateCoreModifierApplicability(
       issues.push(issue(modifierPath, 'Triggered can only modify an Instant effect.'));
     }
 
-    if (
-      modifier.modifierId === 'reduced_range'
-      && effectDef.range !== 'ranged'
-      && effectDef.range !== 'perception'
-    ) {
-      issues.push(issue(modifierPath, 'Reduced Range only applies to Ranged or Perception effects.'));
-    }
+  }
 
-    if (modifier.modifierId === 'increased_range' && effectDef.range === 'perception') {
-      issues.push(issue(modifierPath, 'Increased Range cannot increase a Perception-range effect.'));
-    }
+  const parameterDiagnostics = [
+    ...resolveEffectiveRange(effectDef.range, component).diagnostics,
+    ...resolveEffectiveDuration(effectDef.duration, component).diagnostics,
+  ];
+  for (const diagnostic of parameterDiagnostics) {
+    issues.push({
+      path: `${path}.modifiers.${diagnostic.modifierId}`,
+      message: diagnostic.message,
+      messageKey: diagnostic.messageKey,
+      params: diagnostic.params,
+      severity: 'warning',
+    });
   }
 
   return issues;

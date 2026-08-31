@@ -175,6 +175,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     character,
   });
 
+  const semanticWarnings = useMemo(
+    () => validatePowerForSave(power, validationRules, {
+      powerDefs,
+      modifierDefs,
+    }).filter((validationIssue) => validationIssue.severity === 'warning'),
+    [modifierDefs, power, powerDefs, validationRules]
+  );
+
   // Palette context: when an AE is expanded, palette serves that AE's active component
   const paletteContext = useMemo(
     () =>
@@ -1043,6 +1051,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               <span>{t('validation.attackDamage')} — {plViolation.formula} (max {plViolation.limit})</span>
             </div>
           )}
+          {semanticWarnings.map((warning) => (
+            <div className="pl-violation-banner" key={`${warning.path}:${warning.message}`}>
+              <AlertTriangle size={13} />
+              <span>
+                {warning.messageKey
+                  ? t(warning.messageKey, warning.params)
+                  : warning.message}
+              </span>
+            </div>
+          ))}
           {pricingDiagnostics.length > 0 && (
             <div className="pl-violation-banner" title={pricingDiagnostics.map((diagnostic) => diagnostic.message).join('\n')}>
               <AlertTriangle size={13} />
