@@ -91,9 +91,14 @@ export function validatePowerComponents(
  * Represents a Power Level violation.
  * Used by usePLValidation hook and power cost calculation.
  */
-export interface PLViolation {
+export interface CharacterValidationNotice {
   rule: string;        // Translation key: 'validation.attackDamage', 'validation.dodgeToughness', etc.
   formula: string;     // Human-readable: "Attack +12 + Damage 10 = 22"
+  params?: Record<string, string | number>;
+  severity?: 'error' | 'warning';
+}
+
+export interface PLViolation extends CharacterValidationNotice {
   actual: number;      // 22
   limit: number;       // 20 (PL 10 × 2)
 }

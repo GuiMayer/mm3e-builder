@@ -12,6 +12,7 @@ import type {
   ICharacterPowerComponent,
   IResource,
 } from '../../entities/types';
+import { getEffectiveAbilityRank } from './abilityRanks';
 
 /**
  * A single row in the Offense panel table.
@@ -171,7 +172,7 @@ export function calcAttackBonus(
   skillDefs: ISkillDef[],
   modifierDefs: IModifierDef[]
 ): { value: number | null; breakdown: string; isNoRoll: boolean } {
-  const { abilities, skills, advantages } = character;
+  const { abilities, absentAbilities, skills, advantages } = character;
 
   // Calculate effective range (accounting for Increased Range modifier)
   const effectiveRange = getEffectiveRange(effectRange, component, modifierDefs);
@@ -192,7 +193,7 @@ export function calcAttackBonus(
   const parts: string[] = [];
 
   if (effectiveRange === 'close') {
-    const base = abilities.fgt;
+    const base = getEffectiveAbilityRank(abilities, absentAbilities, 'fgt');
     parts.push(`FGT ${base}`);
 
     // Close Attack advantage (generic all-close bonus)
@@ -216,7 +217,7 @@ export function calcAttackBonus(
   }
 
   // ── Ranged ──────────────────────────────────────────────────────
-  const base = abilities.dex;
+  const base = getEffectiveAbilityRank(abilities, absentAbilities, 'dex');
   parts.push(`DEX ${base}`);
 
   const rangedAttackAdv = advantages.find((a) => a.advantageId === 'ranged_attack');
@@ -370,11 +371,12 @@ export function buildTargetedEffectProfiles(
   resources: IResource[] = []
 ): IOffenseEntry[] {
   const entries: IOffenseEntry[] = [];
-  const { abilities, skills } = character;
+  const { abilities, absentAbilities, skills } = character;
 
   // ── 1. Unarmed attack (always first) ───────────────────────────
   {
-    const base = abilities.fgt;
+    const base = getEffectiveAbilityRank(abilities, absentAbilities, 'fgt');
+    const strength = getEffectiveAbilityRank(abilities, absentAbilities, 'str');
     const closeAttackAdv = character.advantages.find((a) => a.advantageId === 'close_attack');
     const closeAdvRanks = closeAttackAdv?.ranks ?? 0;
 
@@ -396,7 +398,7 @@ export function buildTargetedEffectProfiles(
       bonusValue: total,
       bonusBreakdown: parts.join(' + '),
       range: 'close',
-      effect: `${translations?.damage ?? 'Damage'} ${abilities.str}`,
+      effect: `${translations?.damage ?? 'Damage'} ${strength}`,
       notes: '',
       isAE: false,
       isManual: false,
@@ -409,8 +411,8 @@ export function buildTargetedEffectProfiles(
       sourceName: translations?.unarmed ?? 'Unarmed',
       componentName: translations?.damage ?? 'Damage',
       relationship: 'unarmed',
-      resistance: `Toughness DC ${15 + abilities.str}`,
-      effectRank: abilities.str,
+      resistance: `Toughness DC ${15 + strength}`,
+      effectRank: strength,
     });
   }
 

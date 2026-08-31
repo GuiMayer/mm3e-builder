@@ -24,6 +24,7 @@ import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
 import { buildOffenseSummary } from '../../shared/lib/offenseSummary';
 import type { PDFCustomizationOptions, ColorScheme, LayoutMode, FontFamily, FontSize } from './types';
 import { DEFAULT_CUSTOMIZATION, COLOR_THEMES, SPACING_SCALES, FONT_SIZE_SCALES } from './types';
+import { getEffectiveAbilityRank } from '../../shared/lib/abilityRanks';
 
 export interface PDFGeneratorOptions {
   character: ICharacter;
@@ -76,8 +77,8 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     );
 
     // Calculate additional values needed for rendering
-    const staValue = character.absentAbilities.includes('sta') ? 0 : character.abilities.sta;
-    const aglValue = character.absentAbilities.includes('agl') ? 0 : character.abilities.agl;
+    const staValue = getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'sta');
+    const aglValue = getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'agl');
     const { bonus: toughnessBonus } = calcToughnessBonus(character.powers, character.advantages, powerDefs);
     const toughnessTotal = staValue + toughnessBonus;
     const { total: initiativeTotal } = calcInitiativeBonus(aglValue, character.advantages, character.powers, powerDefs);

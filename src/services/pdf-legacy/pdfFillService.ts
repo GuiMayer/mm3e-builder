@@ -13,6 +13,7 @@ import {
   calcInitiativeBonus,
 } from '../../shared/lib/mathEngine';
 import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
+import { getEffectiveAbilityRank } from '../../shared/lib/abilityRanks';
 
 import { loadPDFTemplate } from './pdfTemplateLoader';
 import { sliceWithOverflow } from './helpers';
@@ -75,8 +76,8 @@ export async function fillAndDownloadPDF(character: ICharacter, resources: IReso
   );
 
   // ── 4. Derive toughness and initiative ────────────────────────
-  const staValue = character.absentAbilities.includes('sta') ? 0 : character.abilities.sta;
-  const aglValue = character.absentAbilities.includes('agl') ? 0 : character.abilities.agl;
+  const staValue = getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'sta');
+  const aglValue = getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'agl');
 
   const { bonus: toughnessBonus } = calcToughnessBonus(
     character.powers,

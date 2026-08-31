@@ -248,6 +248,30 @@ export function MobileDrawer({
                 {t('menu.validationRules.enforceEquipmentPPLimit')}: <strong>{(validationRules?.enforceEquipmentPPLimit ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
               </span>
             </button>
+            <button
+              className="mobile-drawer-item"
+              onClick={() => {
+                const enabled = (validationRules?.enforceAbsentAbilityRestrictions ?? false)
+                  || (validationRules?.enforceSkillAbilityRequirements ?? false);
+                onValidationRulesChange({
+                  enforceAbsentAbilityRestrictions: !enabled,
+                  enforceSkillAbilityRequirements: !enabled,
+                });
+              }}
+            >
+              {((validationRules?.enforceAbsentAbilityRestrictions ?? false)
+                || (validationRules?.enforceSkillAbilityRequirements ?? false))
+                ? <Shield size={20} />
+                : <ShieldOff size={20} />}
+              <span>
+                {t('menu.validationRules.absentAbilityWarnings')}: <strong>
+                  {((validationRules?.enforceAbsentAbilityRestrictions ?? false)
+                    || (validationRules?.enforceSkillAbilityRequirements ?? false))
+                    ? t('menu.strictMode.active')
+                    : t('menu.strictMode.disabled')}
+                </strong>
+              </span>
+            </button>
           </div>
 
           <div className="mobile-drawer-divider" />

@@ -5,12 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { useDerivedDefenses } from '../../shared/hooks/useDerivedDefenses';
 import { Info } from 'lucide-react';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { getEffectiveAbilityRank } from '../../shared/lib/abilityRanks';
 
 export function DefensesPanel({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const { character } = useActiveCharacter();
   const { setDefense } = useCharacterActions();
   const abilities = character.abilities;
+  const absentAbilities = character.absentAbilities;
   const defenses = character.defenses;
 
   const { toughnessBonus, toughnessTotal, toughnessBreakdown, initiativeTotal, initiativeBreakdown } =
@@ -18,11 +20,16 @@ export function DefensesPanel({ cost }: { cost: number }) {
 
   const [tooltip, setTooltip] = useState<null | 'toughness' | 'initiative'>(null);
 
+  const agility = getEffectiveAbilityRank(abilities, absentAbilities, 'agl');
+  const fighting = getEffectiveAbilityRank(abilities, absentAbilities, 'fgt');
+  const stamina = getEffectiveAbilityRank(abilities, absentAbilities, 'sta');
+  const awareness = getEffectiveAbilityRank(abilities, absentAbilities, 'awe');
+
   const purchasedRows = [
-    { key: 'dodge'     as const, base: abilities.agl, baseLabel: 'AGL' },
-    { key: 'parry'     as const, base: abilities.fgt, baseLabel: 'FGT' },
-    { key: 'fortitude' as const, base: abilities.sta, baseLabel: 'STA' },
-    { key: 'will'      as const, base: abilities.awe, baseLabel: 'AWE' },
+    { key: 'dodge'     as const, base: agility, baseLabel: 'AGL' },
+    { key: 'parry'     as const, base: fighting, baseLabel: 'FGT' },
+    { key: 'fortitude' as const, base: stamina, baseLabel: 'STA' },
+    { key: 'will'      as const, base: awareness, baseLabel: 'AWE' },
   ];
 
   return (
@@ -41,7 +48,7 @@ export function DefensesPanel({ cost }: { cost: number }) {
           onMouseLeave={() => setTooltip(null)}
         >
           <span className="defense-name">{t('defenses.initiative')}</span>
-          <span className="defense-base">AGL {abilities.agl}</span>
+          <span className="defense-base">AGL {agility}</span>
           <span className="defense-plus" />
           <span className="defense-input defense-derived">
             {initiativeTotal >= 0 ? `+${initiativeTotal}` : `${initiativeTotal}`}
@@ -84,14 +91,14 @@ export function DefensesPanel({ cost }: { cost: number }) {
           onMouseLeave={() => setTooltip(null)}
         >
           <span className="defense-name">{t('defenses.toughness')}</span>
-          <span className="defense-base">STA {abilities.sta}</span>
+          <span className="defense-base">STA {stamina}</span>
           <span className="defense-plus">+</span>
           <span className="defense-input defense-derived">{toughnessBonus}</span>
           <span className="defense-total">{toughnessTotal}</span>
           {tooltip === 'toughness' && (
             <div className="defense-tooltip">
               <div className="defense-tooltip-title">{t('defenses.toughnessBreakdown')}</div>
-              <div>STA {abilities.sta}</div>
+              <div>STA {stamina}</div>
               {toughnessBreakdown.map((line, i) => (
                 <div key={i}>+ {line}</div>
               ))}

@@ -11,14 +11,17 @@ import {
   validateAttackEffect,
   validateSkillCap,
   validateLuckAdvantage,
+  type CharacterValidationNotice,
   type PLViolation,
 } from '../lib/validation';
 import { getActiveValidationRules } from '../lib/validationRules';
 import { useResourcesStore } from '../../store/resourcesStore';
+import { getEffectiveAbilityRank } from '../lib/abilityRanks';
+import { collectAbsentAbilityWarnings } from '../lib/abilityValidation';
+import { useLocalizedData } from './useLocalizedData';
 
 /**
- * Hook that returns current PL violations in real time.
- * Empty array when enforcePLLimits is disabled.
+ * Hook that returns current character validation notices in real time.
  *
  * Validates (per M&M 3e Hero's Handbook p.24-25):
  * - Dodge + Toughness <= PL×2   (real Toughness: STA + Protection + Defensive Roll)
@@ -28,24 +31,30 @@ import { useResourcesStore } from '../../store/resourcesStore';
  * - ALL skills (including Close Combat / Ranged Combat): total <= PL+10
  * - Luck advantage: ranks <= PL÷2 (rounded down)
  */
-export function usePLValidation(): PLViolation[] {
+export function usePLValidation(): CharacterValidationNotice[] {
   const { character } = useActiveCharacter();
   const validationRules = useAppStore((s) => s.validationRules);
   const resources = useResourcesStore((state) => state.resources);
+  const skillDefs = useLocalizedData(SKILL_DEFS);
 
   return useMemo(() => {
-    // Check if PL limits are enforced
     const activeRules = getActiveValidationRules(validationRules);
-    if (!activeRules.enforcePLLimits) return [];
+    const notices: CharacterValidationNotice[] = collectAbsentAbilityWarnings(
+      character,
+      skillDefs,
+      activeRules
+    );
+    if (!activeRules.enforcePLLimits) return notices;
 
     const pl        = character.header.powerLevel;
     const abilities = character.abilities;
     const defenses  = character.defenses;
+    const absentAbilities = character.absentAbilities;
 
-    const dodgeTotal     = abilities.agl + defenses.dodge;
-    const parryTotal     = abilities.fgt + defenses.parry;
-    const fortitudeTotal = abilities.sta + defenses.fortitude;
-    const willTotal      = abilities.awe + defenses.will;
+    const dodgeTotal = getEffectiveAbilityRank(abilities, absentAbilities, 'agl') + defenses.dodge;
+    const parryTotal = getEffectiveAbilityRank(abilities, absentAbilities, 'fgt') + defenses.parry;
+    const fortitudeTotal = getEffectiveAbilityRank(abilities, absentAbilities, 'sta') + defenses.fortitude;
+    const willTotal = getEffectiveAbilityRank(abilities, absentAbilities, 'awe') + defenses.will;
 
     // ── Real Toughness: STA + Protection powers + Defensive Roll ──
     const { bonus: toughnessBonus } = calcToughnessBonus(
@@ -53,7 +62,7 @@ export function usePLValidation(): PLViolation[] {
       character.advantages,
       POWER_DEFS
     );
-    const toughnessTotal = abilities.sta + toughnessBonus;
+    const toughnessTotal = getEffectiveAbilityRank(abilities, absentAbilities, 'sta') + toughnessBonus;
 
     const violations: PLViolation[] = [];
 
@@ -68,7 +77,7 @@ export function usePLValidation(): PLViolation[] {
 
     // ── Targeted effects (powers, equipment, AEs, manual and unarmed) ───────
     // The sheet, PDF and validation consume this same mechanical derivation.
-    const profiles = buildTargetedEffectProfiles(character, POWER_DEFS, SKILL_DEFS, [], MODIFIER_DEFS, undefined, resources);
+    const profiles = buildTargetedEffectProfiles(character, POWER_DEFS, skillDefs, [], MODIFIER_DEFS, undefined, resources);
     for (const profile of profiles) {
       if (!profile.causesResistance || profile.effectRank === null) continue;
       const label = profile.name || profile.componentName || 'Targeted effect';
@@ -100,10 +109,10 @@ export function usePLValidation(): PLViolation[] {
     // "Your hero's total modifier with any skill cannot exceed the series power level +10."
     // Note: The book does NOT distinguish between combat and non-combat skills.
     for (const skillEntry of character.skills) {
-      const def = SKILL_DEFS.find((d) => d.id === skillEntry.skillId);
+      const def = skillDefs.find((d) => d.id === skillEntry.skillId);
       if (!def) continue;
 
-      const abilityBase = abilities[def.baseAbility] ?? 0;
+      const abilityBase = getEffectiveAbilityRank(abilities, absentAbilities, def.baseAbility);
       const otherBonus = skillEntry.otherBonus ?? 0;
       const totalBonusRanks = skillEntry.ranks + otherBonus;
       const v = validateSkillCap(abilityBase, totalBonusRanks, pl);
@@ -126,6 +135,6 @@ export function usePLValidation(): PLViolation[] {
       if (v) violations.push(v);
     }
 
-    return violations;
-  }, [character, resources, validationRules]);
+    return [...notices, ...violations];
+  }, [character, resources, skillDefs, validationRules]);
 }

@@ -377,6 +377,28 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
                   {(validationRules?.enforceDuplicateModifiers ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
                   {t('menu.validationRules.enforceDuplicateModifiers')}: <strong>{(validationRules?.enforceDuplicateModifiers ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
                 </button>
+                <button
+                  className="dropdown-item"
+                  onClick={() => {
+                    const enabled = (validationRules?.enforceAbsentAbilityRestrictions ?? false)
+                      || (validationRules?.enforceSkillAbilityRequirements ?? false);
+                    setValidationRules({
+                      enforceAbsentAbilityRestrictions: !enabled,
+                      enforceSkillAbilityRequirements: !enabled,
+                    });
+                  }}
+                >
+                  {((validationRules?.enforceAbsentAbilityRestrictions ?? false)
+                    || (validationRules?.enforceSkillAbilityRequirements ?? false))
+                    ? <Shield size={14} />
+                    : <ShieldOff size={14} />}
+                  {t('menu.validationRules.absentAbilityWarnings')}: <strong>
+                    {((validationRules?.enforceAbsentAbilityRestrictions ?? false)
+                      || (validationRules?.enforceSkillAbilityRequirements ?? false))
+                      ? t('menu.strictMode.active')
+                      : t('menu.strictMode.disabled')}
+                  </strong>
+                </button>
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">

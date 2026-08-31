@@ -3,9 +3,10 @@
    List of skills with ranks and total bonus
    ================================================ */
 
-import type { ICharacter } from '../../../entities/types';
+import type { AbilityKey, ICharacter } from '../../../entities/types';
 import type { ISkillDef } from '../../../entities/types';
 import { escapeHtml, formatBonus } from './utils';
+import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
 
 export interface SkillsSectionData {
   character: ICharacter;
@@ -65,7 +66,7 @@ function renderSkillEntry(
   skill: ICharacter['skills'][0],
   skillDefs: Record<string, ISkillDef>,
   abilities: ICharacter['abilities'],
-  absentAbilities: string[]
+  absentAbilities: AbilityKey[]
 ): string {
   // Get skill definition
   const skillDef = skillDefs[skill.skillId];
@@ -73,10 +74,7 @@ function renderSkillEntry(
   const linkedAbility = skillDef?.baseAbility || 'int';
 
   // Calculate ability bonus
-  let abilityBonus = 0;
-  if (!absentAbilities.includes(linkedAbility)) {
-    abilityBonus = abilities[linkedAbility as keyof typeof abilities] || 0;
-  }
+  const abilityBonus = getEffectiveAbilityRank(abilities, absentAbilities, linkedAbility);
 
   const otherBonus = skill.otherBonus ?? 0;
   const total = skill.ranks + abilityBonus + otherBonus;

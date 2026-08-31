@@ -30,6 +30,7 @@ import { buildTargetedEffectProfiles, type IOffenseEntry } from '../shared/lib/o
 import { downloadBlob, sanitizeFileName } from './downloadHelper';
 import { getResourceEPCost } from '../shared/lib/resourceCalculations';
 import { resolveModifierDefinition } from '../shared/lib/rulesCatalog';
+import { getEffectiveAbilityRank } from '../shared/lib/abilityRanks';
 
 // ── Types for pre-localized labels ──
 
@@ -352,7 +353,7 @@ function buildAbilitiesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
     row.getCell(1).font = { bold: true, size: 10 };
     row.getCell(2).value = labels.abilityNames[key] || key;
     row.getCell(3).value = isAbsent ? labels.absent : char.abilities[key];
-    row.getCell(4).value = isAbsent ? 0 : char.abilities[key] * 2;
+    row.getCell(4).value = isAbsent ? -10 : char.abilities[key] * 2;
     row.getCell(4).numFmt = '0 "PP"';
     if (i % 2 === 1) {
       for (let c = 1; c <= 4; c++) {
@@ -380,10 +381,10 @@ function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expo
   styleHeaderRow(header, 5);
 
   const defs = [
-    { key: 'dodge', ability: 'agl', abilityVal: char.abilities.agl, bought: char.defenses.dodge },
-    { key: 'parry', ability: 'fgt', abilityVal: char.abilities.fgt, bought: char.defenses.parry },
-    { key: 'fortitude', ability: 'sta', abilityVal: char.abilities.sta, bought: char.defenses.fortitude },
-    { key: 'will', ability: 'awe', abilityVal: char.abilities.awe, bought: char.defenses.will },
+    { key: 'dodge', ability: 'agl', abilityVal: getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'agl'), bought: char.defenses.dodge },
+    { key: 'parry', ability: 'fgt', abilityVal: getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'fgt'), bought: char.defenses.parry },
+    { key: 'fortitude', ability: 'sta', abilityVal: getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'sta'), bought: char.defenses.fortitude },
+    { key: 'will', ability: 'awe', abilityVal: getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'awe'), bought: char.defenses.will },
   ];
 
   defs.forEach((d, i) => {
@@ -418,7 +419,7 @@ function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expo
   // Toughness = STA + equipment bonus (we don't track equipment bonus, so just STA)
   const toughnessRow = ws.getRow(9);
   const staAbsent = char.absentAbilities.includes('sta');
-  const toughness = staAbsent ? 0 : char.abilities.sta;
+  const toughness = getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'sta');
   toughnessRow.getCell(1).value = 'Toughness';
   toughnessRow.getCell(1).font = { bold: true };
   toughnessRow.getCell(2).value = staAbsent ? '–' : `STA ${char.abilities.sta}`;
@@ -428,7 +429,7 @@ function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expo
   // Initiative = AGL
   const initiativeRow = ws.getRow(10);
   const aglAbsent = char.absentAbilities.includes('agl');
-  const initiative = aglAbsent ? 0 : char.abilities.agl;
+  const initiative = getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'agl');
   initiativeRow.getCell(1).value = 'Initiative';
   initiativeRow.getCell(1).font = { bold: true };
   initiativeRow.getCell(2).value = aglAbsent ? '–' : `AGL ${char.abilities.agl}`;
@@ -456,7 +457,9 @@ function buildSkillsSheet(
     const row = ws.getRow(i + 2);
     let name = def ? locName(def, lang) : sk.skillId;
     if (sk.subtype) name += `: ${sk.subtype}`;
-    const abilityVal = def ? (char.abilities[def.baseAbility as keyof typeof char.abilities] ?? 0) : 0;
+    const abilityVal = def
+      ? getEffectiveAbilityRank(char.abilities, char.absentAbilities, def.baseAbility)
+      : 0;
     const other = sk.otherBonus ?? 0;
 
     row.getCell(1).value = name;

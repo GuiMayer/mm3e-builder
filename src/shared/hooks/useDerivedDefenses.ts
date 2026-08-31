@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useActiveCharacter } from './useActiveCharacter';
 import { POWER_DEFS } from '../../entities/gameDataLoaders';
 import { calcToughnessBonus, calcInitiativeBonus } from '../lib/mathEngine';
+import { getEffectiveAbilityRank } from '../lib/abilityRanks';
 
 /**
  * Derives Toughness total and Initiative bonus from the current character state.
@@ -13,15 +14,18 @@ export function useDerivedDefenses() {
   const abilities = character.abilities;
   const powers = character.powers;
   const advantages = character.advantages;
+  const absentAbilities = character.absentAbilities;
 
   return useMemo(() => {
     const { bonus: toughnessBonus, breakdown: toughnessBreakdown } =
       calcToughnessBonus(powers, advantages, POWER_DEFS);
 
-    const toughnessTotal = abilities.sta + toughnessBonus;
+    const stamina = getEffectiveAbilityRank(abilities, absentAbilities, 'sta');
+    const agility = getEffectiveAbilityRank(abilities, absentAbilities, 'agl');
+    const toughnessTotal = stamina + toughnessBonus;
 
     const { total: initiativeTotal, breakdown: initiativeBreakdown } =
-      calcInitiativeBonus(abilities.agl, advantages, powers, POWER_DEFS);
+      calcInitiativeBonus(agility, advantages, powers, POWER_DEFS);
 
     return {
       toughnessBonus,
@@ -30,5 +34,5 @@ export function useDerivedDefenses() {
       initiativeTotal,
       initiativeBreakdown,
     };
-  }, [abilities, powers, advantages]);
+  }, [abilities, absentAbilities, powers, advantages]);
 }

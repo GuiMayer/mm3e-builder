@@ -28,8 +28,11 @@ export function SheetView() {
       {violations.length > 0 && (
         <div className="sheet-violations">
           {violations.map((v, i) => (
-            <div key={i} className="violation-badge">
-              ⚠️ {t(v.rule)}: {v.formula}
+            <div
+              key={i}
+              className={`violation-badge ${v.severity === 'warning' ? 'violation-badge--warning' : ''}`}
+            >
+              ⚠️ {t(v.rule)}: {t(v.formula, v.params)}
             </div>
           ))}
         </div>
@@ -114,6 +117,11 @@ export function SheetView() {
           color: var(--c-error);
           font-weight: 500;
           animation: shake 0.3s ease;
+        }
+        .violation-badge--warning {
+          background: rgba(251, 191, 36, 0.12);
+          border-color: var(--c-warning, #fbbf24);
+          color: var(--c-warning, #fbbf24);
         }
         @keyframes pulse-glow {
           0%, 100% { opacity: 0.8; text-shadow: 0 0 8px rgba(var(--c-primary-rgb), 0.4); }

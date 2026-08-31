@@ -5,6 +5,7 @@
 
 import type { ICharacter } from '../../../entities/types';
 import { escapeHtml } from './utils';
+import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
 
 export interface DefensesSectionData {
   character: ICharacter;
@@ -21,10 +22,10 @@ export function renderDefensesSection(data: DefensesSectionData): string {
   const { defenses, abilities, absentAbilities } = character;
 
   // Calculate base values (ability bonuses)
-  const aglValue = absentAbilities.includes('agl') ? 0 : abilities.agl;
-  const fgtValue = absentAbilities.includes('fgt') ? 0 : abilities.fgt;
-  const staValue = absentAbilities.includes('sta') ? 0 : abilities.sta;
-  const aweValue = absentAbilities.includes('awe') ? 0 : abilities.awe;
+  const aglValue = getEffectiveAbilityRank(abilities, absentAbilities, 'agl');
+  const fgtValue = getEffectiveAbilityRank(abilities, absentAbilities, 'fgt');
+  const staValue = getEffectiveAbilityRank(abilities, absentAbilities, 'sta');
+  const aweValue = getEffectiveAbilityRank(abilities, absentAbilities, 'awe');
 
   const defenseList = [
     {

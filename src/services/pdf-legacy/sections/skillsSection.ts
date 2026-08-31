@@ -16,6 +16,7 @@ import type { PDFForm } from 'pdf-lib';
 import type { ICharacter } from '../../../entities/types';
 import type { ISkillDef } from '../../../entities/types';
 import { setField } from '../helpers';
+import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
 
 // ── Static skill-id → PDF prefix map ──────────────────────────
 const FIXED_SKILL_PREFIX: Record<string, string> = {
@@ -47,7 +48,6 @@ export function fillSkills(
   skillDefs: ISkillDef[]
 ): void {
   const { abilities, absentAbilities, skills } = character;
-  const absent = new Set(absentAbilities);
 
   // Build a quick lookup: skillId → ISkillDef
   const defMap = new Map(skillDefs.map((d) => [d.id, d]));
@@ -58,7 +58,7 @@ export function fillSkills(
     if (!def) continue;
 
     const baseKey = def.baseAbility;
-    const abilityVal = absent.has(baseKey) ? 0 : (abilities[baseKey] ?? 0);
+    const abilityVal = getEffectiveAbilityRank(abilities, absentAbilities, baseKey);
 
     // Find the character's entry (non-subtyped skill has no subtype)
     const entry = skills.find((s) => s.skillId === skillId && !s.subtype);
@@ -73,7 +73,7 @@ export function fillSkills(
 
   // ── 2. Close Combat subtypes (CC 1-3) ─────────────────────
   const ccDef = defMap.get('close_combat');
-  const fgtVal = absent.has('fgt') ? 0 : (abilities.fgt ?? 0);
+  const fgtVal = getEffectiveAbilityRank(abilities, absentAbilities, 'fgt');
   const ccEntries = skills.filter((s) => s.skillId === 'close_combat' && s.subtype);
 
   for (let i = 1; i <= 3; i++) {
@@ -98,7 +98,7 @@ export function fillSkills(
 
   // ── 3. Ranged Combat subtypes (RC 1-3) ────────────────────
   const rcDef = defMap.get('ranged_combat');
-  const dexVal = absent.has('dex') ? 0 : (abilities.dex ?? 0);
+  const dexVal = getEffectiveAbilityRank(abilities, absentAbilities, 'dex');
   const rcEntries = skills.filter((s) => s.skillId === 'ranged_combat' && s.subtype);
 
   for (let i = 1; i <= 3; i++) {
@@ -122,7 +122,7 @@ export function fillSkills(
 
   // ── 4. Expertise subtypes (EX 1-4) ────────────────────────
   const exDef = defMap.get('expertise');
-  const intVal = absent.has('int') ? 0 : (abilities.int ?? 0);
+  const intVal = getEffectiveAbilityRank(abilities, absentAbilities, 'int');
   const exEntries = skills.filter((s) => s.skillId === 'expertise' && s.subtype);
 
   for (let i = 1; i <= 4; i++) {

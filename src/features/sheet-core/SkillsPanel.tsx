@@ -9,6 +9,7 @@ import { Button } from '../../shared/ui/Button';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { getEffectiveAbilityRank } from '../../shared/lib/abilityRanks';
 
 // Colour palette for ability badges (list + modal)
 const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: string }> = {
@@ -134,7 +135,11 @@ export function SkillsPanel({ cost }: { cost: number }) {
         {skills.map((skill, i) => {
           const def = skillDefs.find((d) => d.id === skill.skillId);
           if (!def) return null;
-          const abilityVal = abilities[def.baseAbility as AbilityKey] || 0;
+          const abilityVal = getEffectiveAbilityRank(
+            abilities,
+            character.absentAbilities,
+            def.baseAbility as AbilityKey
+          );
           const total = abilityVal + skill.ranks;
           const displayName = def.subtyped && skill.subtype
             ? `${def.name}: ${skill.subtype}`

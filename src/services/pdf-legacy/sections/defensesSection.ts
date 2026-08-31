@@ -7,6 +7,7 @@
 import type { PDFForm } from 'pdf-lib';
 import type { Abilities, AbilityKey, IDefenses } from '../../../entities/types';
 import { setField, fmtBonus } from '../helpers';
+import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
 
 interface DefensesPP {
   defensesCost: number;
@@ -21,14 +22,12 @@ export function fillDefenses(
   initiativeTotal: number,
   pp: DefensesPP
 ): void {
-  const absent = new Set(absentAbilities);
-
   // ── Active defenses = ability base + purchased ranks ──────
   // If the base ability is absent, contribute 0 from it.
-  const agl  = absent.has('agl') ? 0 : abilities.agl;
-  const fgt  = absent.has('fgt') ? 0 : abilities.fgt;
-  const sta  = absent.has('sta') ? 0 : abilities.sta;
-  const awe  = absent.has('awe') ? 0 : abilities.awe;
+  const agl = getEffectiveAbilityRank(abilities, absentAbilities, 'agl');
+  const fgt = getEffectiveAbilityRank(abilities, absentAbilities, 'fgt');
+  const sta = getEffectiveAbilityRank(abilities, absentAbilities, 'sta');
+  const awe = getEffectiveAbilityRank(abilities, absentAbilities, 'awe');
 
   const dodgeTotal    = agl + defenses.dodge;
   const parryTotal    = fgt + defenses.parry;

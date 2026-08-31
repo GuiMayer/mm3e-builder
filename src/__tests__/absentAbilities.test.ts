@@ -5,6 +5,11 @@ import {
   calcInitiativeBonus,
 } from '../shared/lib/mathEngine';
 import type { Abilities } from '../entities/types';
+import { createDefaultCharacter } from '../entities/characterDefaults';
+import { SKILL_DEFS } from '../entities/gameDataLoaders';
+import { getEffectiveAbilityRank } from '../shared/lib/abilityRanks';
+import { collectAbsentAbilityWarnings } from '../shared/lib/abilityValidation';
+import { STRICT_VALIDATION_RULES } from '../shared/lib/validationRules';
 
 /**
  * Absent Abilities Validation Tests
@@ -252,19 +257,82 @@ describe('Absent Abilities - Edge Cases', () => {
   });
 });
 
-describe('Absent Abilities - Validation Warnings (Future)', () => {
-  // These tests document expected behavior for future validation implementation
-  // Currently, the system allows these combinations but should warn users
+describe('Absent Abilities - Effective Ranks and Warnings', () => {
+  it('uses zero mechanically while retaining the stored ability rank', () => {
+    const abilities: Abilities = {
+      str: 8, sta: 4, agl: 3, dex: 2, fgt: 5, int: 1, awe: 2, pre: 0,
+    };
 
-  it.todo('Athletics skill with absent STR: should warn user');
-  it.todo('Acrobatics skill with absent AGL: should warn user');
-  it.todo('Ranged Combat skill with absent DEX: should warn user');
-  it.todo('Close Combat skill with absent FGT: should warn user');
-  it.todo('Perception skill with absent AWE: should warn user');
-  it.todo('Persuasion skill with absent PRE: should warn user');
-  it.todo('Technology skill with absent INT: should warn user');
+    expect(getEffectiveAbilityRank(abilities, ['str'], 'str')).toBe(0);
+    expect(abilities.str).toBe(8);
+    expect(getEffectiveAbilityRank(abilities, ['str'], 'fgt')).toBe(5);
+  });
+
+  it.each([
+    ['athletics', 'str'],
+    ['acrobatics', 'agl'],
+    ['ranged_combat', 'dex'],
+    ['close_combat', 'fgt'],
+    ['perception', 'awe'],
+    ['persuasion', 'pre'],
+    ['technology', 'int'],
+  ] as const)('warns when %s has absent %s as its base', (skillId, ability) => {
+    const character = createDefaultCharacter({
+      absentAbilities: [ability],
+      skills: [{ skillId, ranks: 1, subtype: null }],
+    });
+
+    const warnings = collectAbsentAbilityWarnings(
+      character,
+      SKILL_DEFS,
+      STRICT_VALIDATION_RULES
+    );
+
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]).toMatchObject({
+      rule: 'validation.absentAbility',
+      formula: 'validation.skillUsesAbsentAbility',
+      severity: 'warning',
+      params: { ability: ability.toUpperCase() },
+    });
+  });
+
+  it.each([
+    ['dodge', 'agl'],
+    ['parry', 'fgt'],
+    ['fortitude', 'sta'],
+    ['will', 'awe'],
+  ] as const)('warns when purchased %s uses absent %s', (defense, ability) => {
+    const character = createDefaultCharacter({
+      absentAbilities: [ability],
+      defenses: { dodge: 0, parry: 0, fortitude: 0, will: 0, [defense]: 2 },
+    });
+
+    const warnings = collectAbsentAbilityWarnings(
+      character,
+      SKILL_DEFS,
+      STRICT_VALIDATION_RULES
+    );
+
+    expect(warnings).toContainEqual(expect.objectContaining({
+      formula: `validation.absentDefense.${defense}`,
+      severity: 'warning',
+    }));
+  });
+
+  it('does not emit optional warnings when their rules are disabled', () => {
+    const character = createDefaultCharacter({
+      absentAbilities: ['agl'],
+      defenses: { dodge: 2, parry: 0, fortitude: 0, will: 0 },
+      skills: [{ skillId: 'acrobatics', ranks: 2, subtype: null }],
+    });
+
+    expect(collectAbsentAbilityWarnings(character, SKILL_DEFS, {
+      ...STRICT_VALIDATION_RULES,
+      enforceAbsentAbilityRestrictions: false,
+      enforceSkillAbilityRequirements: false,
+    })).toEqual([]);
+  });
   
   it.todo('STR-based power (Damage close) with absent STR: should warn');
-  it.todo('Dodge defense with absent AGL: should warn about low base');
-  it.todo('Fortitude defense with absent STA: should warn about low base');
 });
