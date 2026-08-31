@@ -5,7 +5,7 @@ import type { IResource } from '../../entities/types';
  * Independent from the app version: bump only when persisted builds may be
  * priced differently. Ordinary releases must not repeat the notice.
  */
-export const POINT_CALCULATION_REVISION = '3';
+export const POINT_CALCULATION_REVISION = '4';
 export const POINT_CALCULATION_NOTICE_KEY = 'mm3e:point-calculation-revision';
 
 export interface PointCalculationNoticeState {
@@ -22,7 +22,8 @@ export function hasPricedDraftData(
 ): boolean {
   if (resources.length > 0) return true;
   return tabs.some(({ character }) =>
-    character.powers.length > 0
+    character.absentAbilities.length > 0
+    || character.powers.length > 0
     || (character.equipment?.length ?? 0) > 0
     || (character.resourceLinks?.length ?? 0) > 0
   );

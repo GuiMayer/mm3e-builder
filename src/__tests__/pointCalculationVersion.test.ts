@@ -41,6 +41,10 @@ const resource: IResource = {
 };
 
 describe('point calculation revision notice', () => {
+  it('uses revision 4 for the absent ability and duration corrections', () => {
+    expect(POINT_CALCULATION_REVISION).toBe('4');
+  });
+
   it('does not bother a first-time user with an empty draft', () => {
     expect(hasPricedDraftData([emptyTab], [])).toBe(false);
     expect(shouldShowPointCalculationNotice({
@@ -55,6 +59,14 @@ describe('point calculation revision notice', () => {
   it('detects both character powers and resource-only drafts', () => {
     expect(hasPricedDraftData([powerTab], [])).toBe(true);
     expect(hasPricedDraftData([], [resource])).toBe(true);
+  });
+
+  it('detects an absent ability even when the character has no powers', () => {
+    const absentAbilityTab = {
+      character: createDefaultCharacter({ absentAbilities: ['sta'] }),
+    };
+
+    expect(hasPricedDraftData([absentAbilityTab], [])).toBe(true);
   });
 
   it('shows once for old priced data and stops at the current revision', () => {
