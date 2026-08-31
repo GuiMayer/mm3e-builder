@@ -275,20 +275,20 @@ describe('Negative Abilities', () => {
     expect(cost).toBe(-16); // -8 × 2 = -16
   });
 
-  it('absent abilities excluded from cost calculation', () => {
+  it('absent abilities use their fixed -10 PP cost', () => {
     const cost = calculateAbilitiesCost(
       { str: 10, sta: 0, agl: 10, dex: 10, fgt: 10, int: 10, awe: 10, pre: 10 },
       ['sta']
     );
-    expect(cost).toBe(140); // (10+10+10+10+10+10+10) × 2 = 140, STA excluded
+    expect(cost).toBe(130); // Seven ranks at 10 cost 140, plus absent STA at -10
   });
 
-  it('all abilities absent = 0 cost', () => {
+  it('all abilities absent = -80 cost', () => {
     const cost = calculateAbilitiesCost(
       { str: 10, sta: 10, agl: 10, dex: 10, fgt: 10, int: 10, awe: 10, pre: 10 },
       ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre']
     );
-    expect(cost).toBe(0);
+    expect(cost).toBe(-80);
   });
 });
 

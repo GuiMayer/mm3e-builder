@@ -17,47 +17,46 @@ import type { Abilities } from '../entities/types';
  */
 
 describe('Absent Abilities - Cost Calculation', () => {
-  it('absent STA costs 0 PP (not 2×0 = 0)', () => {
+  it('absent STA grants the fixed -10 PP cost', () => {
     const abilities: Abilities = {
       str: 0, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta']);
-    // All abilities at 0, STA absent → 0 PP
-    expect(cost).toBe(0);
+    expect(cost).toBe(-10);
   });
 
-  it('absent STA with other abilities: STR 5, STA absent → 10 PP', () => {
+  it('combines the fixed absent ability cost with purchased abilities', () => {
     const abilities: Abilities = {
       str: 5, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta']);
-    // STR 5 × 2 = 10, STA absent = 0 → 10 PP
-    expect(cost).toBe(10);
+    // STR 5 × 2 = 10, STA absent = -10 → 0 PP
+    expect(cost).toBe(0);
   });
 
-  it('absent PRE costs 0 PP (constructs, mindless)', () => {
+  it('applies the fixed cost to any absent ability', () => {
     const abilities: Abilities = {
       str: 0, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['pre']);
-    expect(cost).toBe(0);
+    expect(cost).toBe(-10);
   });
 
-  it('multiple absent abilities: STA and PRE absent, STR 8 → 16 PP', () => {
+  it('stacks the fixed cost for multiple absent abilities', () => {
     const abilities: Abilities = {
       str: 8, sta: 0, agl: 2, dex: 2, fgt: 6, int: 4, awe: 2, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'pre']);
-    // (8 + 2 + 2 + 6 + 4 + 2) × 2 = 48 PP
-    expect(cost).toBe(48);
+    // (8 + 2 + 2 + 6 + 4 + 2) × 2 - 20 = 28 PP
+    expect(cost).toBe(28);
   });
 
-  it('all abilities absent → 0 PP (edge case)', () => {
+  it('all abilities absent cost -80 PP regardless of preserved ranks', () => {
     const abilities: Abilities = {
       str: 10, sta: 10, agl: 10, dex: 10, fgt: 10, int: 10, awe: 10, pre: 10,
     };
     const cost = calculateAbilitiesCost(abilities, ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre']);
-    expect(cost).toBe(0);
+    expect(cost).toBe(-80);
   });
 });
 
@@ -194,8 +193,8 @@ describe('Absent Abilities - Real Character Examples', () => {
       str: 8, sta: 0, agl: 2, dex: 2, fgt: 6, int: 4, awe: 2, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'pre']);
-    // (8 + 2 + 2 + 6 + 4 + 2) × 2 = 48 PP
-    expect(cost).toBe(48);
+    // (8 + 2 + 2 + 6 + 4 + 2) × 2 - 20 = 28 PP
+    expect(cost).toBe(28);
   });
 
   it('Construct (absent STA, INT, AWE, PRE): correct cost calculation', () => {
@@ -203,8 +202,8 @@ describe('Absent Abilities - Real Character Examples', () => {
       str: 10, sta: 0, agl: 0, dex: 0, fgt: 8, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'int', 'awe', 'pre']);
-    // (10 + 0 + 0 + 8) × 2 = 36 PP
-    expect(cost).toBe(36);
+    // (10 + 0 + 0 + 8) × 2 - 40 = -4 PP
+    expect(cost).toBe(-4);
   });
 
   it('Undead (absent STA, PRE): correct cost calculation', () => {
@@ -212,8 +211,8 @@ describe('Absent Abilities - Real Character Examples', () => {
       str: 6, sta: 0, agl: 3, dex: 3, fgt: 5, int: 2, awe: 2, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'pre']);
-    // (6 + 3 + 3 + 5 + 2 + 2) × 2 = 42 PP
-    expect(cost).toBe(42);
+    // (6 + 3 + 3 + 5 + 2 + 2) × 2 - 20 = 22 PP
+    expect(cost).toBe(22);
   });
 
   it('Energy Being (absent STR, STA): correct cost calculation', () => {
@@ -221,28 +220,26 @@ describe('Absent Abilities - Real Character Examples', () => {
       str: 0, sta: 0, agl: 5, dex: 5, fgt: 4, int: 3, awe: 4, pre: 3,
     };
     const cost = calculateAbilitiesCost(abilities, ['str', 'sta']);
-    // (5 + 5 + 4 + 3 + 4 + 3) × 2 = 48 PP
-    expect(cost).toBe(48);
+    // (5 + 5 + 4 + 3 + 4 + 3) × 2 - 20 = 28 PP
+    expect(cost).toBe(28);
   });
 });
 
 describe('Absent Abilities - Edge Cases', () => {
-  it('negative ability with absent flag: should cost 0 (absent overrides negative)', () => {
+  it('negative ability with absent flag: fixed cost overrides its stored rank', () => {
     const abilities: Abilities = {
       str: -2, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['str']);
-    // STR absent → 0 PP (not -4 PP)
-    expect(cost).toBe(0);
+    expect(cost).toBe(-10);
   });
 
-  it('absent ability with high value: should cost 0 (absent overrides value)', () => {
+  it('absent ability with high stored value: fixed cost overrides its rank', () => {
     const abilities: Abilities = {
       str: 10, sta: 0, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['str']);
-    // STR absent → 0 PP (even though value is 10)
-    expect(cost).toBe(0);
+    expect(cost).toBe(-10);
   });
 
   it('mixed positive and negative with absent: correct calculation', () => {
@@ -250,8 +247,8 @@ describe('Absent Abilities - Edge Cases', () => {
       str: 8, sta: 0, agl: -2, dex: 3, fgt: 5, int: 0, awe: 0, pre: 0,
     };
     const cost = calculateAbilitiesCost(abilities, ['sta', 'int', 'awe', 'pre']);
-    // (8 + (-2) + 3 + 5) × 2 = 28 PP
-    expect(cost).toBe(28);
+    // (8 + (-2) + 3 + 5) × 2 - 40 = -12 PP
+    expect(cost).toBe(-12);
   });
 });
 

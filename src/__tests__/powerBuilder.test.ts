@@ -667,14 +667,14 @@ describe('Full Character PP Budget', () => {
   /**
    * Robot with absent abilities (no Stamina, no Presence)
    * Abilities: STR 8, STA 0(absent), AGL 2, DEX 2, FGT 6, INT 4, AWE 2, PRE 0(absent)
-   * Should cost: (8+2+2+6+4+2)×2 = 48 PP (skipping absent STA and PRE)
+   * Should cost: (8+2+2+6+4+2)×2 - 20 = 28 PP
    */
-  it('Robot: absent STA and PRE correctly excluded from cost', () => {
+  it('Robot: absent STA and PRE receive their fixed costs', () => {
     const cost = calculateAbilitiesCost(
       { str: 8, sta: 0, agl: 2, dex: 2, fgt: 6, int: 4, awe: 2, pre: 0 },
       ['sta', 'pre']
     );
-    expect(cost).toBe(48); // (8+2+2+6+4+2)×2 = 48
+    expect(cost).toBe(28);
   });
 });
 
@@ -697,12 +697,12 @@ describe('Edge Cases', () => {
     expect(cost).toBe(-4); // -2 × 2 = -4
   });
 
-  it('all abilities absent → 0 cost', () => {
+  it('all abilities absent → -80 cost', () => {
     const cost = calculateAbilitiesCost(
       { str: 10, sta: 10, agl: 10, dex: 10, fgt: 10, int: 10, awe: 10, pre: 10 },
       ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre']
     );
-    expect(cost).toBe(0);
+    expect(cost).toBe(-80);
   });
 
   it('0 skill ranks → 0 PP', () => {

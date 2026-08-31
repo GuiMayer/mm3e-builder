@@ -581,9 +581,15 @@ export function calculateAbilitiesCost(
   abilities: Record<string, number>,
   absentAbilities: string[]
 ): number {
+  const absent = new Set(absentAbilities);
   let total = 0;
   for (const [key, value] of Object.entries(abilities)) {
-    if (absentAbilities.includes(key)) continue;
+    // An absent ability has a fixed cost of -10 PP, regardless of any stale
+    // rank preserved in the character file for restoring the ability later.
+    if (absent.has(key)) {
+      total -= 10;
+      continue;
+    }
     total += value * 2;
   }
   return total;

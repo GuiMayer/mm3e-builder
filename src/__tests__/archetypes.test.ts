@@ -144,18 +144,16 @@ describe('Archetype: Crime Fighter (p.37)', () => {
 });
 
 // ─────────────────────────────────────────────────────────
-//  EDGE CASE: Absent abilities (cost 0, not negative)
+//  EDGE CASE: Absent abilities (fixed -10 PP)
 // ─────────────────────────────────────────────────────────
 
 describe('calculateAbilitiesCost — absent abilities', () => {
-  it('absent ability is excluded from cost (Construct has STA absent → Immunity 30)', () => {
+  it('absent ability has the same cost as an ability rank of -5', () => {
     // Construct: STR 11, AGL 3, FGT 9, AWE 1, STA absent (–), DEX 5, INT 0, PRE 0
-    // Absent ability costs 0 pp (not counted), provides –5 modifier
+    // An absent ability has a fixed -10 PP cost and no usable rank.
     const abilities = { str: 11, agl: 3, fgt: 9, awe: 1, sta: -5, dex: 5, int: 0, pre: 0 };
-    // With STA absent (listed in absentAbilities), STA rank is excluded
     const costWithAbsent = calculateAbilitiesCost(abilities, ['sta']);
     const costWithout = calculateAbilitiesCost(abilities, []);
-    // Absent STA saves the –5 × 2 = –10 penalty that a negative rank would incur
-    expect(costWithAbsent).toBeGreaterThan(costWithout);
+    expect(costWithAbsent).toBe(costWithout);
   });
 });

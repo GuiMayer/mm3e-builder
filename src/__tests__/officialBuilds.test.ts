@@ -117,13 +117,13 @@ describe('Official Archetype: Battlesuit (PL 10)', () => {
 // ══════════════════════════════════════════════════════
 
 describe('Official Archetype: Construct (PL 10)', () => {
-  it('validates absent STA costs 0 PP', () => {
+  it('validates absent STA costs -10 PP', () => {
     // Abilities: STR 11, STA -, AGL 3, DEX 3, FGT 9, INT 5, AWE 1, PRE 0
     const abilitiesCost = calculateAbilitiesCost(
       { str: 11, sta: 0, agl: 3, dex: 3, fgt: 9, int: 5, awe: 1, pre: 0 },
       ['sta'] // STA is absent
     );
-    expect(abilitiesCost).toBe(64); // (11+3+3+9+5+1+0) × 2 = 64, STA excluded
+    expect(abilitiesCost).toBe(54); // (11+3+3+9+5+1+0) × 2 - 10 = 54
 
     // Defenses: Dodge 0, Parry 0, Fort Immune, Will 0
     const defensesCost = calculateDefensesCost({
@@ -152,7 +152,7 @@ describe('Official Archetype: Construct (PL 10)', () => {
     // Total: 67 PP
 
     const totalSpent = abilitiesCost + defensesCost + skillsCost + advantagesCost + 67;
-    expect(totalSpent).toBe(146); // Close to 150 (minor discrepancy in original)
+    expect(totalSpent).toBe(136); // Remaining discrepancy belongs to this simplified fixture
   });
 
   it('validates Toughness without STA', () => {

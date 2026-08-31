@@ -169,11 +169,11 @@ describe('mathEngine', () => {
   });
 
   describe('calculateAbilitiesCost', () => {
-    it('calculates 2 PP per rank, skipping absent', () => {
+    it('calculates 2 PP per rank and -10 PP per absent ability', () => {
       const abilities = { str: 5, sta: 3, agl: 0, dex: 0, fgt: 0, int: 0, awe: 0, pre: 0 };
       const cost = calculateAbilitiesCost(abilities, ['sta']);
-      // str: 5×2=10, sta: absent=0, rest: 0 → 10
-      expect(cost).toBe(10);
+      // str: 5×2=10, sta: absent=-10, rest: 0 → 0
+      expect(cost).toBe(0);
     });
   });
 
