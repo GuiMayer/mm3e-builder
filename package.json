@@ -8,6 +8,7 @@
     "typecheck": "tsc -b --noEmit",
     "build": "tsc -b && vite build",
     "build:verify": "node scripts/verify-static-build.mjs",
+    "audit:community": "node scripts/recalculate-community-audit.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
