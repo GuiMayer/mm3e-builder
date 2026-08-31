@@ -270,6 +270,7 @@
   "validation.absentDefense.parry": "Ranks comprados de Aparar usam {{ability}} ausente como base 0.",
   "validation.absentDefense.fortitude": "Ranks comprados de Fortitude usam {{ability}} ausente como base 0.",
   "validation.absentDefense.will": "Ranks comprados de Vontade usam {{ability}} ausente como base 0.",
+  "validation.strengthBasedDamageUsesAbsentStrength": "{{power}} é baseado em Força, mas FOR ausente contribui com 0 ranks.",
 
   "errors.invalidJson": "Arquivo JSON inválido: não foi possível interpretar o conteúdo.",
   "errors.validationError": "Erro de validação no campo \"{{field}}\": {{message}}",

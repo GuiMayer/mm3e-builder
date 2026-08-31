@@ -334,5 +334,32 @@ describe('Absent Abilities - Effective Ranks and Warnings', () => {
     })).toEqual([]);
   });
   
-  it.todo('STR-based power (Damage close) with absent STR: should warn');
+  it('warns when Strength-based Damage uses absent Strength', () => {
+    const character = createDefaultCharacter({
+      absentAbilities: ['str'],
+      powers: [{
+        id: 'power-1',
+        name: 'Power Punch',
+        notes: '',
+        alternateEffects: [],
+        components: [{
+          id: 'component-1',
+          effectId: 'damage',
+          ranks: 4,
+          modifiers: [],
+          fieldValues: { damageBasis: 'strength-based' },
+        }],
+      }],
+    });
+
+    expect(collectAbsentAbilityWarnings(
+      character,
+      SKILL_DEFS,
+      STRICT_VALIDATION_RULES
+    )).toContainEqual(expect.objectContaining({
+      formula: 'validation.strengthBasedDamageUsesAbsentStrength',
+      params: { power: 'Power Punch' },
+      severity: 'warning',
+    }));
+  });
 });

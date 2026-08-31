@@ -270,6 +270,7 @@
   "validation.absentDefense.parry": "Purchased Parry ranks use absent {{ability}} as a base of 0.",
   "validation.absentDefense.fortitude": "Purchased Fortitude ranks use absent {{ability}} as a base of 0.",
   "validation.absentDefense.will": "Purchased Will ranks use absent {{ability}} as a base of 0.",
+  "validation.strengthBasedDamageUsesAbsentStrength": "{{power}} is Strength-based, but absent STR contributes 0 ranks.",
 
   "errors.invalidJson": "Invalid JSON file: could not parse the content.",
   "errors.validationError": "Validation error in field \"{{field}}\": {{message}}",

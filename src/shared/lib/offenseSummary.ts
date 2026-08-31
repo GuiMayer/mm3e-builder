@@ -12,7 +12,7 @@ import type {
   ICharacterPowerComponent,
   IResource,
 } from '../../entities/types';
-import { getEffectiveAbilityRank } from './abilityRanks';
+import { getEffectiveAbilityRank, isStrengthBasedDamage } from './abilityRanks';
 
 /**
  * A single row in the Offense panel table.
@@ -251,15 +251,19 @@ function extractNotes(comp: ICharacterPowerComponent): string {
 
 type SourceType = 'power' | 'equipment' | 'resource';
 
-function getResistanceLabel(def: IPowerEffect, comp: ICharacterPowerComponent): string | undefined {
+function getResistanceLabel(
+  def: IPowerEffect,
+  comp: ICharacterPowerComponent,
+  effectRank: number
+): string | undefined {
   const configured = comp.fieldValues?.resistance;
   const configuredValue = typeof configured === 'string' ? configured : undefined;
   const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
-  if (def.id === 'damage') return `Toughness DC ${15 + comp.ranks}`;
-  if (def.id === 'nullify') return `${hasModifier(comp, 'alternate_resistance') ? 'Fortitude' : 'Will'} DC ${10 + comp.ranks}`;
-  if (configuredValue) return `${capitalize(configuredValue)} DC ${10 + comp.ranks}`;
-  if (hasResistibleModifier(comp) || def.type === 'attack' || hasAttackExtra(comp)) return `Resistance DC ${10 + comp.ranks}`;
+  if (def.id === 'damage') return `Toughness DC ${15 + effectRank}`;
+  if (def.id === 'nullify') return `${hasModifier(comp, 'alternate_resistance') ? 'Fortitude' : 'Will'} DC ${10 + effectRank}`;
+  if (configuredValue) return `${capitalize(configuredValue)} DC ${10 + effectRank}`;
+  if (hasResistibleModifier(comp) || def.type === 'attack' || hasAttackExtra(comp)) return `Resistance DC ${10 + effectRank}`;
   return undefined;
 }
 
@@ -325,6 +329,10 @@ function createComponentProfile(
   if (!interaction) return null;
 
   const effectiveRange = getEffectiveRange(def.range, comp, modifierDefs);
+  const strengthContribution = isStrengthBasedDamage(comp)
+    ? getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'str')
+    : 0;
+  const effectRank = comp.ranks + strengthContribution;
   const profileName = alternateName || source.name || def.name;
   const bonus = interaction.requiresAttackCheck
     ? calcAttackBonus(def.range, profileName, comp, character, skillDefs, modifierDefs)
@@ -337,7 +345,7 @@ function createComponentProfile(
     bonusValue: bonus.value,
     bonusBreakdown: bonus.breakdown,
     range: effectiveRange,
-    effect: `${def.name} ${comp.ranks}`,
+    effect: `${def.name} ${effectRank}`,
     notes: extractNotes(comp),
     isAE: relationship !== 'base',
     isManual: false,
@@ -351,8 +359,8 @@ function createComponentProfile(
     sourceName: source.name || def.name,
     componentName: def.name,
     relationship,
-    resistance: interaction.causesResistance ? getResistanceLabel(def, comp) : undefined,
-    effectRank: comp.ranks,
+    resistance: interaction.causesResistance ? getResistanceLabel(def, comp, effectRank) : undefined,
+    effectRank,
   };
 }
 

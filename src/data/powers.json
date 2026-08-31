@@ -793,6 +793,43 @@
     "duration": "instant",
     "description": "You inflict damage on a target via a close attack. Target resists with Toughness vs. DC [rank + 15]. One degree: -1 penalty to further Toughness checks. Two degrees: dazed + -1 penalty. Three degrees: staggered + -1 penalty. Four degrees: incapacitated. Penalties are cumulative. Incapacitated targets failing again become dying, then dead. Can be Strength-based to add Strength ranks to damage.",
     "variableCost": null,
+    "configurableFields": [
+      {
+        "id": "damageBasis",
+        "label": "Damage Basis",
+        "control": "dropdown",
+        "required": false,
+        "options": [
+          {
+            "value": "effect-only",
+            "label": "Effect ranks only",
+            "description": "Use only the purchased Damage ranks.",
+            "i18n": {
+              "pt-BR": {
+                "label": "Apenas ranks do efeito",
+                "description": "Usa apenas os ranks comprados de Dano."
+              }
+            }
+          },
+          {
+            "value": "strength-based",
+            "label": "Strength-based",
+            "description": "Add the character's effective Strength rank to the purchased Damage ranks.",
+            "i18n": {
+              "pt-BR": {
+                "label": "Baseado em Força",
+                "description": "Soma o rank efetivo de Força do personagem aos ranks comprados de Dano."
+              }
+            }
+          }
+        ],
+        "i18n": {
+          "pt-BR": {
+            "label": "Base do Dano"
+          }
+        }
+      }
+    ],
     "i18n": {
       "pt-BR": {
         "name": "Dano",

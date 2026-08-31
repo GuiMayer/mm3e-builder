@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createDefaultCharacter } from '../entities/characterDefaults';
 import { buildTargetedEffectProfiles, parseEffectRank } from '../shared/lib/offenseSummary';
 import type { ICharacterPower, IModifierDef, IPowerEffect } from '../entities/types';
+import { calcComponentCost } from '../shared/lib/mathEngine';
 
 const effects = [
   { id: 'damage', name: 'Damage', type: 'attack', baseCost: 1, action: 'standard', range: 'close', duration: 'instant', description: '', variableCost: null, extras: [], flaws: [] },
@@ -81,5 +82,50 @@ describe('targeted effect profiles', () => {
 
   it('uses the effect rank rather than a later number in a legacy manual row', () => {
     expect(parseEffectRank('Damage 10, Penetrating 5')).toBe(10);
+  });
+
+  it('adds effective Strength to explicitly Strength-based Damage without changing its PP cost', () => {
+    const strengthBasedComponent = {
+      id: 'component-1',
+      effectId: 'damage',
+      ranks: 6,
+      modifiers: [],
+      fieldValues: { damageBasis: 'strength-based' },
+    };
+    const character = createDefaultCharacter({
+      abilities: { ...createDefaultCharacter().abilities, str: 4 },
+      powers: [power({ components: [strengthBasedComponent] })],
+    });
+
+    const profile = buildTargetedEffectProfiles(character, effects, [], [], modifiers)
+      .find((entry) => entry.sourceType === 'power' && entry.componentName === 'Damage');
+
+    expect(profile).toMatchObject({
+      effect: 'Damage 10',
+      effectRank: 10,
+      resistance: 'Toughness DC 25',
+    });
+    expect(calcComponentCost(strengthBasedComponent, effects[0], modifiers)).toBe(6);
+  });
+
+  it('treats absent Strength as zero for Strength-based Damage', () => {
+    const character = createDefaultCharacter({
+      abilities: { ...createDefaultCharacter().abilities, str: 8 },
+      absentAbilities: ['str'],
+      powers: [power({
+        components: [{
+          id: 'component-1',
+          effectId: 'damage',
+          ranks: 6,
+          modifiers: [],
+          fieldValues: { damageBasis: 'strength-based' },
+        }],
+      })],
+    });
+
+    const profile = buildTargetedEffectProfiles(character, effects, [], [], modifiers)
+      .find((entry) => entry.sourceType === 'power' && entry.componentName === 'Damage');
+
+    expect(profile).toMatchObject({ effectRank: 6, resistance: 'Toughness DC 21' });
   });
 });
