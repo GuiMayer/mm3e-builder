@@ -48,6 +48,7 @@ Healing: 2 points/rank
 Illusion: 1-5 points/rank (depende dos sentidos)
 Immortality: 2 points/rank
 Immunity: 1 point/rank (varia por escopo)
+Impervious Resistance: 1 point/rank (representa Impenetrável sobre uma resistência existente; não aumenta a defesa)
 Insubstantial: 5 points/rank
 Leaping: 1 point/rank
 Luck Control: 3 points/rank
@@ -149,6 +150,14 @@ Variable Descriptor: +1-2 flat
 ```
 
 **Referência**: Modifiers p.188-197
+
+### 2.5.1 Parâmetros e repetição de modifiers
+
+- `Variable > Action` possui três opções: Move +1/rank, Free +2/rank e Reaction +3/rank.
+- JSONs antigos que registravam essas opções como ranks 1, 2 ou 3 continuam válidos e são interpretados sem reescrita.
+- Um modifier `per_rank` só multiplica o custo pela quantidade de aplicações quando sua definição declara `repeatable` ou possui um limite de ranks maior que 1.
+- `affectedRanks` continua separado da quantidade de aplicações: ele indica quantos ranks do efeito recebem o modifier.
+- Modifiers `flat_ranked`, como Increased Mass de Teleport, cobram o valor flat para cada rank comprado.
 
 ### 2.6 Flaws Principais
 

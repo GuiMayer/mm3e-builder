@@ -9,7 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Added
+- Added a structured **Impervious Resistance** utility effect for Impervious bought directly on an existing resistance. It costs 1 PP/rank and never increases the underlying defense.
+- Added a reproducible community-sheet audit command that validates and recalculates the 63 generated character files with the production pricing engine.
+
+### Changed
+- The Power Builder now uses one shared parameter editor for main and alternate effects, including modifier ranks, affected ranks, localized subtypes, and canonical cost previews.
+- Repeatable per-rank modifiers are declared explicitly. Adding an ordinary non-repeatable modifier twice no longer changes its price accidentally.
+- Configurable effect fields and their options now use the active game-data translation.
+
+### Fixed
+- Corrected Affliction to 1 PP/rank regardless of its three failure degrees.
+- Corrected Teleport Increased Mass to charge every purchased modifier rank.
+- Corrected Variable Action pricing for Move (+1/rank), Free (+2/rank), and Reaction (+3/rank), while preserving legacy JSON records that encoded the choice as ranks 1–3.
+- Added a one-time calculation revision 3 notice for existing priced drafts. Persisted character data and the character JSON schema are unchanged.
+
+### Quality
+- Added audited pricing regressions from community builds and expanded the verified suite to 46 test files, 645 passing tests, and 16 documented todos.
+- Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 35 of 57 complete sources now match their independently published sums.
 
 ---
 

@@ -1,5 +1,7 @@
 # Progresso das Correções - MM3E Builder
 
+> **Registro histórico da v1.4.1.** Este arquivo preserva decisões daquele ciclo e não é um retrato do catálogo atual. A seção de Affliction abaixo foi explicitamente corrigida pela revisão de cálculo 3; poderes listados nos “Próximos Passos” podem já existir na v1.11.0.
+
 **Data**: 14/05/2026  
 **Sessão**: Correções Críticas v1.4.1
 
@@ -54,25 +56,11 @@
 
 **Impacto**: Previne combinações inválidas de modifiers que violam as regras do sistema.
 
-### 3. Affliction - Custo por Grau de Condição
+### 3. Affliction - correção histórica revertida
 **Commits**: `10869d3`, `f55eb13`, `ebe74d7`  
 **Status**: ✅ CONCLUÍDO
 
-**O que foi feito**:
-- Adicionado campo `variableCost` com 3 opções (1, 2, 3 graus)
-- Documentado custo: 1 PP/rank por grau de condição
-- Atualizado descrições em inglês e português
-- Adicionado `longDescription` completa com referência ao Hero's Handbook p.149
-- Adicionado 5 novos testes de custo por grau
-- Validado exemplos: Poison (24 PP), Mind Control (30 PP), Stun (12 PP)
-- Todos os 41 testes de affliction passando
-- Todos os testes existentes (altEffects, dataIntegrity) passando
-
-**Impacto**: Corrige erro de 100-200% no custo de Afflictions multi-grau.
-
-**Exemplo**:
-- Affliction rank 10 com 3 graus: 30 PP (correto)
-- Antes: 10 PP (incorreto - erro de 200%)
+> **Correção posterior (revisão de cálculo 3):** esta conclusão estava errada. Affliction custa sempre 1 PP/rank; os três graus são resultados possíveis de falha no teste de resistência, não graus comprados separadamente. O catálogo, os testes e a documentação atuais foram corrigidos. Assim, Affliction rank 10 custa 10 PP antes de extras e flaws.
 
 ---
 

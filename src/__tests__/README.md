@@ -2,7 +2,7 @@
 
 Este diretório contém a suíte de testes completa para o MM3e Builder, validando a implementação das regras oficiais do Mutants & Masterminds 3e.
 
-**Estado verificado em 2026-08-15:** 33 arquivos de teste, 553 testes aprovados e 16 testes marcados como `todo`. Execute `npm test -- --run` para obter o estado real; não mantenha contadores manuais por arquivo neste documento.
+**Estado verificado em 2026-08-30:** 46 arquivos de teste, 645 testes aprovados e 16 testes marcados como `todo`. Execute `npm test -- --run` para obter o estado real.
 
 ## Estrutura de Testes
 

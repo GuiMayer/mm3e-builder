@@ -50,6 +50,7 @@ The Power Builder is the most feature-rich section, built for full M&M 3e rules 
 - **Real-time cost display** — Footer shows cost breakdown per component and a running total for the entire array (base + alternates).
 - **Power name and notes** — Free-form fields for flavor text, multiple editable descriptors (Fire, Magic, etc.), and GM notes.
 - **Structured Senses and cost controls** — Supports structured Senses trait purchases, partial modifier ranks, conditional costs, and supported fixed, fractional, and variable effect costs.
+- **Audited variable modifiers** — Affliction, Teleport Increased Mass, Variable Action tiers, repeatable modifiers, and direct Impervious Resistance purchases use the same canonical pricing path in the Builder, sheet, and exports.
 - **Strict Mode** — Optional PL cap enforcement that validates Attack + Damage and Defense + Toughness bounds per-power.
 
 #### 🔀 Alternate Effects (Arrays) — v2
@@ -130,6 +131,11 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 ### 📋 Version History
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
+
+#### Current development
+- Calculation revision 3 corrects Affliction, Teleport Increased Mass, and Variable Action without changing the character JSON schema.
+- Impervious bought directly on an existing resistance can be represented structurally without adding defense ranks.
+- 645 passing automated tests across 46 test files; the 63 generated community sheets remain importable after recalculation.
 
 #### v1.11.0 (2026-08-16)
 - Resources Library with Gadgets, Gear, Vehicles, Headquarters, and character associations
@@ -267,6 +273,7 @@ O Power Builder é a seção mais completa, construído para máxima conformidad
 - **Custo em tempo real** — Rodapé exibe custo por componente e total da array completa (base + alternativos).
 - **Nome e notas do poder** — Campos livres para flavor text, múltiplos descritores editáveis (Fogo, Magia, etc.) e anotações de mestre.
 - **Sentidos e custos estruturados** — Suporta compras estruturadas de traços de Sentidos, ranks parciais de modificadores, custos condicionais e os custos fixos, fracionários e variáveis compatíveis.
+- **Modificadores variáveis auditados** — Aflição, Massa Aumentada de Teleporte, níveis de Ação de Variável, modifiers repetíveis e compras diretas de Resistência Impenetrável usam o mesmo cálculo canônico no Builder, ficha e exportações.
 - **Modo Estrito** — Validação opcional dos limites de PL que verifica Ataque + Dano e Defesa + Resistência por poder.
 
 #### 🔀 Efeitos Alternativos (Arrays) — v2
@@ -347,6 +354,11 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 ### 📋 Histórico de Versões
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
+
+#### Desenvolvimento atual
+- A revisão de cálculo 3 corrige Aflição, Massa Aumentada de Teleporte e Ação de Variável sem alterar o schema JSON do personagem.
+- Impenetrável comprado diretamente sobre uma resistência existente pode ser representado estruturalmente sem adicionar ranks à defesa.
+- 645 testes automatizados aprovados em 46 arquivos; as 63 fichas geradas da comunidade continuam importáveis após o recálculo.
 
 #### v1.11.0 (2026-08-16)
 - Biblioteca de Resources com Gadgets, Gear, Vehicles, Headquarters e associações aos personagens

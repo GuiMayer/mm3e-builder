@@ -1,5 +1,7 @@
 # Relatório de Compatibilidade: Fichas MM3E vs MM3E Builder
 
+> **Documento histórico (maio de 2026).** A reauditoria de 30 de agosto de 2026 substitui as conclusões de custo deste arquivo: 63/63 JSONs permanecem válidos, e 35/57 fichas com soma completa concordam com o motor após a revisão de cálculo 3. O catálogo atual também possui `impervious-resistance` para representar Impenetrável comprado diretamente sobre uma resistência. As frequências abaixo continuam úteis como levantamento do corpus original.
+
 **Data:** 14 de maio de 2026  
 **Fichas Analisadas:** 63 fichas de personagens  
 **Fonte:** Fórum conhecido de MM3E
@@ -101,7 +103,7 @@ Estes powers usam o padrão "Enhanced [Ability/Defense/Skill]" e podem ser const
 
 | Power das Fichas | Frequência | Status | Solução/Workaround |
 |------------------|------------|--------|-------------------|
-| Impervious | 30 | ⚠️ É um modifier, não power | Usar modifier "Impervious" em Toughness ou outro power |
+| Impervious | 30 | ✅ Modifier e representação estrutural | Usar o modifier em Protection ou `impervious-resistance` quando comprado diretamente sobre uma resistência existente |
 | Enhanced Defenses | 7 | ⚠️ Nomenclatura genérica | Usar Enhanced Trait para cada defesa específica |
 
 ### Powers Customizados/Específicos (2/49)
@@ -240,8 +242,8 @@ O MM3E Builder possui um sistema completo de advantages. Das 102 advantages úni
 
 ### 2. "Impervious" como Power vs Modifier
 **Problema:** Algumas fichas listam "Impervious" como power independente (30 ocorrências).  
-**Solução no Builder:** "Impervious" é um modifier que se aplica a Toughness ou outros powers.  
-**Impacto:** Baixo - mesmo efeito mecânico, apenas organização diferente.
+**Solução atual no Builder:** Use o modifier `impervious` quando houver um efeito como Protection. Para Impenetrável comprado diretamente sobre Resistência de Vigor ou outra resistência existente, use `impervious-resistance`; ele custa 1 PP/rank e não aumenta a defesa.
+**Impacto:** Cobertura estrutural completa para os dois formatos, sem Feature de custo artificial.
 
 ### 3. Modifiers "Resisted by" e "Overcome by"
 **Problema:** Listados como modifiers independentes nas fichas (36 ocorrências combinadas).  
