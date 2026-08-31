@@ -112,7 +112,7 @@ function buildReport(results, structuralImperviousCount) {
   const lines = [
     '# Auditoria de PP — fichas da comunidade',
     '',
-    `Recalculado em 2026-08-30 a partir de ${results.length} fichas JSON. Todos os custos do lado “app” usam \`calculateCharacterPointSummary()\`, o mesmo motor central da ficha, Power Builder, PDF e planilha na v1.11.0 (revisão de cálculo 3).`,
+    `Recalculado em 2026-08-30 a partir de ${results.length} fichas JSON. Todos os custos do lado “app” usam \`calculateCharacterPointSummary()\`, o mesmo motor central da ficha, Power Builder, PDF e planilha na v1.11.0 (revisão de cálculo 4).`,
     '',
     '## Resultado executivo',
     '',
@@ -134,6 +134,8 @@ function buildReport(results, structuralImperviousCount) {
     '- Action de Variable distingue Move (+1/rank), Free (+2/rank) e Reaction (+3/rank), inclusive nos JSONs legados que codificavam a opção por ranks.',
     '- Modificadores per-rank só multiplicam aplicações quando a definição declara que são repetíveis.',
     '- Impervious comprado diretamente sobre uma resistência possui representação própria de 1 PP/rank e não aumenta o valor da defesa.',
+    '- Cada habilidade ausente custa −10 PP e contribui com rank efetivo 0 para perícias, defesas e ataques.',
+    '- Increased Duration é uma aplicação única: Instant vira Concentration e Sustained vira Continuous.',
     '',
     '### Divergências remanescentes exigem revisão da ficha, não ajuste cego do motor',
     '',
@@ -321,7 +323,7 @@ try {
   );
   await fs.writeFile(
     path.join(outputRoot, 'README.md'),
-    `# MM3e Character Builder Sheets\n\nConversão de ${results.length} fichas para o formato JSON importável do MM3e Builder v1.11.0, recalculada com a revisão de cálculo 3.\n\n- \`characters/\`: fichas organizadas pelas categorias originais.\n- \`reports/RELATORIO-AUDITORIA-PP.md\`: relatório humano completo.\n- \`reports/resultados-detalhados.json\`: dados da auditoria para processamento.\n- \`reports/resumo.csv\`: panorama compacto para planilha.\n\nCada JSON preserva a notação-fonte completa em Notes. Importe uma ficha individual pela ação Import da aba de personagens.\n`,
+    `# MM3e Character Builder Sheets\n\nConversão de ${results.length} fichas para o formato JSON importável do MM3e Builder v1.11.0, recalculada com a revisão de cálculo 4.\n\n- \`characters/\`: fichas organizadas pelas categorias originais.\n- \`reports/RELATORIO-AUDITORIA-PP.md\`: relatório humano completo.\n- \`reports/resultados-detalhados.json\`: dados da auditoria para processamento.\n- \`reports/resumo.csv\`: panorama compacto para planilha.\n\nCada JSON preserva a notação-fonte completa em Notes. Importe uma ficha individual pela ação Import da aba de personagens.\n`,
     'utf8',
   );
 

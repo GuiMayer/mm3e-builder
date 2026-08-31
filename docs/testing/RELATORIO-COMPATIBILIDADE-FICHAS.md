@@ -1,6 +1,6 @@
 # Relatório de Compatibilidade: Fichas MM3E vs MM3E Builder
 
-> **Documento histórico (maio de 2026).** A reauditoria de 30 de agosto de 2026 substitui as conclusões de custo deste arquivo: 63/63 JSONs permanecem válidos, e 35/57 fichas com soma completa concordam com o motor após a revisão de cálculo 3. O catálogo atual também possui `impervious-resistance` para representar Impenetrável comprado diretamente sobre uma resistência. As frequências abaixo continuam úteis como levantamento do corpus original.
+> **Documento histórico (maio de 2026).** A reauditoria de 30 de agosto de 2026 substitui as conclusões de custo deste arquivo: 63/63 JSONs permanecem válidos, e 34/57 fichas com soma completa concordam com o motor após a revisão de cálculo 4. O catálogo atual também possui `impervious-resistance` para representar Impenetrável comprado diretamente sobre uma resistência. As frequências abaixo continuam úteis como levantamento do corpus original.
 
 **Data:** 14 de maio de 2026  
 **Fichas Analisadas:** 63 fichas de personagens  

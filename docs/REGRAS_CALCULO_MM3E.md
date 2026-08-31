@@ -7,6 +7,8 @@
 #### Habilidades (Abilities)
 - **Custo**: 2 power points por rank
 - **Fórmula**: `cost = rank * 2`
+- **Habilidade ausente**: custo fixo de **−10 PP**, independentemente do rank preservado no arquivo
+- **Rank efetivo ausente**: 0 para perícias, defesas, iniciativa, ataques e efeitos baseados na habilidade
 - **Range**: -5 a 20 (0 = média humana, 7 = pico humano, 20 = cósmico)
 - **Referência**: Hero's Handbook p.107
 
@@ -72,6 +74,8 @@ Variable: 7 points/rank
 Weaken: 1 point/rank
 ```
 
+**Damage baseado em Strength**: quando a opção é selecionada, o rank efetivo de Strength é somado ao rank do efeito para dano e DC. O custo do efeito continua usando apenas os ranks de Damage comprados, evitando cobrança duplicada. Arquivos antigos sem a opção continuam usando somente os ranks do efeito.
+
 **Referência**: Powers chapter, páginas 149-186
 
 ## 2. REGRAS DE MODIFICADORES (EXTRAS E FLAWS)
@@ -124,7 +128,7 @@ Extended Range: +1 flat/rank (dobra distâncias)
 Feature: +1 flat/rank
 Homing: +1 flat/rank
 Impervious: +1/rank
-Increased Duration: +1/rank
+Increased Duration: +1/rank (uma aplicação: Instant→Concentration ou Sustained→Continuous)
 Increased Mass: +1 flat/rank
 Increased Range: +1/rank
 Incurable: +1 flat
@@ -155,6 +159,8 @@ Variable Descriptor: +1-2 flat
 
 - `Variable > Action` possui três opções: Move +1/rank, Free +2/rank e Reaction +3/rank.
 - JSONs antigos que registravam essas opções como ranks 1, 2 ou 3 continuam válidos e são interpretados sem reescrita.
+- `Increased Duration` não é uma progressão repetível de três passos: aplica uma única mudança válida. Ranks legados maiores que 1 continuam legíveis, mas não multiplicam o custo.
+- `Increased Range` move Close→Ranged→Perception. `Extended Range` é um modifier separado que dobra as distâncias e não cria uma categoria além de Perception.
 - Um modifier `per_rank` só multiplica o custo pela quantidade de aplicações quando sua definição declara `repeatable` ou possui um limite de ranks maior que 1.
 - `affectedRanks` continua separado da quantidade de aplicações: ele indica quantos ranks do efeito recebem o modifier.
 - Modifiers `flat_ranked`, como Increased Mass de Teleport, cobram o valor flat para cada rank comprado.

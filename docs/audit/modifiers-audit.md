@@ -1,5 +1,7 @@
 # Auditoria de Modifiers - MM3E Builder v1.4.0
 
+> **Auditoria histórica.** Este relatório descreve o catálogo da v1.4.0. Para o estado vigente, consulte `docs/REGRAS_CALCULO_MM3E.md`, `src/data/modifiers.json` e a suíte. Em particular, a progressão repetível de Increased Duration registrada abaixo foi corrigida na revisão de cálculo 4.
+
 **Data da Auditoria**: 2026-05-14  
 **Arquivos Analisados**:
 - `src/data/modifiers.json` (60 modifiers implementados)

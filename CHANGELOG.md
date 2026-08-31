@@ -12,21 +12,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added a structured **Impervious Resistance** utility effect for Impervious bought directly on an existing resistance. It costs 1 PP/rank and never increases the underlying defense.
 - Added a reproducible community-sheet audit command that validates and recalculates the 63 generated character files with the production pricing engine.
+- Added an explicit, backward-compatible **Strength-based Damage** option. It contributes effective Strength to effect rank and resistance DC without charging those ranks again.
+- Added optional absent-ability warnings for dependent skills, purchased defenses, and Strength-based Damage.
 
 ### Changed
 - The Power Builder now uses one shared parameter editor for main and alternate effects, including modifier ranks, affected ranks, localized subtypes, and canonical cost previews.
 - Repeatable per-rank modifiers are declared explicitly. Adding an ordinary non-repeatable modifier twice no longer changes its price accidentally.
 - Configurable effect fields and their options now use the active game-data translation.
+- Effective ability ranks are derived in one place across the sheet, PL validation, targeted effects, PDF, and Excel; stored ranks remain intact while an ability is absent.
+- Range and duration applicability warnings now appear live in the Power Builder without preventing saves.
 
 ### Fixed
 - Corrected Affliction to 1 PP/rank regardless of its three failure degrees.
 - Corrected Teleport Increased Mass to charge every purchased modifier rank.
 - Corrected Variable Action pricing for Move (+1/rank), Free (+2/rank), and Reaction (+3/rank), while preserving legacy JSON records that encoded the choice as ranks 1–3.
-- Added a one-time calculation revision 3 notice for existing priced drafts. Persisted character data and the character JSON schema are unchanged.
+- Corrected each absent ability to cost −10 PP and contribute rank 0 mechanically, as defined by the source rules.
+- Corrected Increased Duration to one application: Instant becomes Concentration and Sustained becomes Continuous. Legacy rank values remain readable but are not charged repeatedly.
+- Added a one-time calculation revision 4 notice for existing priced drafts. Persisted character data and the character JSON schema are unchanged.
 
 ### Quality
-- Added audited pricing regressions from community builds and expanded the verified suite to 46 test files, 645 passing tests, and 16 documented todos.
-- Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 35 of 57 complete sources now match their independently published sums.
+- Replaced or removed all 16 pending tests: obsolete/duplicated cases were deleted and valid rule expectations became executable regressions.
+- Expanded the verified suite to 46 test files and 657 passing tests with no pending tests.
+- Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 34 of 57 complete sources match their independently published sums under revision 4.
 
 ---
 

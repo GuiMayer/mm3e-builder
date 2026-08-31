@@ -2,7 +2,7 @@
 
 Este diretório contém a suíte de testes completa para o MM3e Builder, validando a implementação das regras oficiais do Mutants & Masterminds 3e.
 
-**Estado verificado em 2026-08-30:** 46 arquivos de teste, 645 testes aprovados e 16 testes marcados como `todo`. Execute `npm test -- --run` para obter o estado real.
+**Estado verificado em 2026-08-30:** 46 arquivos de teste, 657 testes aprovados e nenhum teste pendente. Execute `npm test -- --run` para obter o estado real.
 
 ## Estrutura de Testes
 
@@ -147,15 +147,6 @@ describe.each([
 });
 ```
 
-### Testes .todo() para Funcionalidades Futuras
-
-```typescript
-describe('Future Validations', () => {
-  it.todo('should validate partial modifiers');
-  it.todo('should enforce power-specific modifier restrictions');
-});
-```
-
 ## Sistema de Validação Modular
 
 Os testes respeitam o sistema de configuração de regras:
@@ -178,6 +169,8 @@ it('respects validation rules configuration', () => {
 - `enforceModifierMaxRanks` - Limites de ranks
 - `enforceAccuratePLCap` - Accurate vs PL (sempre ativo)
 - `enforceAfflictionProgression` - Progressão de condições
+- `enforceAbsentAbilityRestrictions` - Avisos para defesas e poderes dependentes de habilidades ausentes
+- `enforceSkillAbilityRequirements` - Avisos para perícias baseadas em habilidades ausentes
 - `enforceAbsentAbilityRestrictions` - Avisos de habilidades ausentes
 - `plTradeOffsAsErrors` - Erros vs warnings
 - `enforceTrainedOnlySkills` - Skills trained-only

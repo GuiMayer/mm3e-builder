@@ -133,9 +133,10 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
 
 #### Current development
-- Calculation revision 3 corrects Affliction, Teleport Increased Mass, and Variable Action without changing the character JSON schema.
+- Calculation revision 4 adds the official −10 PP cost for absent abilities and corrects Increased Duration, while retaining the revision 3 pricing fixes and the existing character JSON schema.
+- Strength-based Damage is explicit and uses the character's effective Strength without charging those ranks twice; optional warnings cover absent-ability dependencies.
 - Impervious bought directly on an existing resistance can be represented structurally without adding defense ranks.
-- 645 passing automated tests across 46 test files; the 63 generated community sheets remain importable after recalculation.
+- 657 passing automated tests across 46 test files with no pending tests; all 63 generated community sheets remain valid after recalculation.
 
 #### v1.11.0 (2026-08-16)
 - Resources Library with Gadgets, Gear, Vehicles, Headquarters, and character associations
@@ -356,9 +357,10 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
 
 #### Desenvolvimento atual
-- A revisão de cálculo 3 corrige Aflição, Massa Aumentada de Teleporte e Ação de Variável sem alterar o schema JSON do personagem.
+- A revisão de cálculo 4 adiciona o custo oficial de −10 PP para habilidades ausentes e corrige Duração Aumentada, preservando as correções da revisão 3 e o schema JSON existente.
+- Dano baseado em Força é uma opção explícita que usa a Força efetiva sem cobrar esses ranks duas vezes; avisos opcionais cobrem dependências de habilidades ausentes.
 - Impenetrável comprado diretamente sobre uma resistência existente pode ser representado estruturalmente sem adicionar ranks à defesa.
-- 645 testes automatizados aprovados em 46 arquivos; as 63 fichas geradas da comunidade continuam importáveis após o recálculo.
+- 657 testes automatizados aprovados em 46 arquivos, sem testes pendentes; todas as 63 fichas geradas da comunidade continuam válidas após o recálculo.
 
 #### v1.11.0 (2026-08-16)
 - Biblioteca de Resources com Gadgets, Gear, Vehicles, Headquarters e associações aos personagens
