@@ -9,12 +9,12 @@ import type {
 } from '../../../entities/types';
 import {
   type ComponentCostBreakdown,
-  calculatePowerPricing,
   validateAECost,
 } from '../../../shared/lib/mathEngine';
 import { validateAttackEffect } from '../../../shared/lib/validation';
 import { getActiveValidationRules } from '../../../shared/lib/validationRules';
 import { buildTargetedEffectProfiles } from '../../../shared/lib/offenseSummary';
+import { createPowerPricingSelector } from '../powerBuilderModel';
 import { SKILL_DEFS, MODIFIER_DEFS } from '../../../entities/gameDataLoaders';
 
 /* ================================================
@@ -45,10 +45,8 @@ export function usePowerCostCalculation({
   character,
 }: UsePowerCostCalculationProps) {
   const strength = getCharacterStrength(character);
-  const pricing = useMemo(
-    () => calculatePowerPricing(power, powerDefs, modifierDefs, strength),
-    [power, powerDefs, modifierDefs, strength]
-  );
+  const selectPricing = useMemo(() => createPowerPricingSelector(powerDefs, modifierDefs, strength), [powerDefs, modifierDefs, strength]);
+  const pricing = selectPricing(power);
   const componentCosts = pricing.components as ComponentCostResult[];
   const mainCost = pricing.mainCost;
   const arrayCost = pricing.arrayCost;
@@ -56,7 +54,7 @@ export function usePowerCostCalculation({
   const removableDiscount = pricing.removableDiscount;
   const totalCost = pricing.total;
   const equipmentEPCost = pricing.equipmentTotal;
-  const aeCosts = pricing.alternateEffects.map((alternateEffect) => alternateEffect.total);
+  const aeCosts = useMemo(() => pricing.alternateEffects.map((alternateEffect) => alternateEffect.total), [pricing]);
 
   // Validate AE costs against main cost cap
   const aeValidations = useMemo(() => {
@@ -69,44 +67,9 @@ export function usePowerCostCalculation({
   }, [aeCosts, mainCost, validationRules]);
 
   // PL validation uses the same component classification as Targeted Effects.
-  const plViolation = (() => {
-    const activeRules = getActiveValidationRules(validationRules);
-    if (!activeRules.enforcePLLimits) return null;
-
-    const profiles = buildTargetedEffectProfiles(
-      { ...character, powers: [power], equipment: [] },
-      powerDefs,
-      SKILL_DEFS,
-      [],
-      modifierDefs.length > 0 ? modifierDefs : MODIFIER_DEFS
-    ).filter((profile) => profile.sourceType === 'power' && profile.causesResistance && profile.effectRank !== null);
-
-    for (const profile of profiles) {
-      const rank = profile.effectRank;
-      if (rank === null) continue;
-      const label = profile.name || profile.componentName || 'Power';
-      if (!profile.requiresAttackCheck) {
-        if (rank <= powerLevel) continue;
-        return {
-          rule: 'pl.attack',
-          formula: `${label} [no attack roll]: rank ${rank} > PL ${powerLevel}`,
-          actual: rank,
-          limit: powerLevel,
-        };
-      }
-
-      const attackBonus = profile.bonusValue ?? 0;
-      const violation = validateAttackEffect(attackBonus, rank, powerLevel);
-      if (violation) {
-        return {
-          ...violation,
-          formula: `${label}: ${attackBonus} + ${rank} = ${attackBonus + rank} > ${powerLevel * 2}`,
-        };
-      }
-    }
-
-    return null;
-  })();
+  const plViolation = useMemo(() => {
+    return getPowerPLViolation({ validationRules, character, power, powerDefs, modifierDefs, powerLevel });
+  }, [validationRules, character, power, powerDefs, modifierDefs, powerLevel]);
 
   return {
     componentCosts,
@@ -121,4 +84,43 @@ export function usePowerCostCalculation({
     plViolation,
     pricingDiagnostics: pricing.diagnostics,
   };
+}
+
+function getPowerPLViolation({ validationRules, character, power, powerDefs, modifierDefs, powerLevel }: UsePowerCostCalculationProps) {
+  const activeRules = getActiveValidationRules(validationRules);
+  if (!activeRules.enforcePLLimits) return null;
+
+  const profiles = buildTargetedEffectProfiles(
+    { ...character, powers: [power], equipment: [] },
+    powerDefs,
+    SKILL_DEFS,
+    [],
+    modifierDefs.length > 0 ? modifierDefs : MODIFIER_DEFS
+  ).filter((profile) => profile.sourceType === 'power' && profile.causesResistance && profile.effectRank !== null);
+
+  for (const profile of profiles) {
+    const rank = profile.effectRank;
+    if (rank === null) continue;
+    const label = profile.name || profile.componentName || 'Power';
+    if (!profile.requiresAttackCheck) {
+      if (rank <= powerLevel) continue;
+      return {
+        rule: 'pl.attack',
+        formula: `${label} [no attack roll]: rank ${rank} > PL ${powerLevel}`,
+        actual: rank,
+        limit: powerLevel,
+      };
+    }
+
+    const attackBonus = profile.bonusValue ?? 0;
+    const violation = validateAttackEffect(attackBonus, rank, powerLevel);
+    if (violation) {
+      return {
+        ...violation,
+        formula: `${label}: ${attackBonus} + ${rank} = ${attackBonus + rank} > ${powerLevel * 2}`,
+      };
+    }
+  }
+
+  return null;
 }

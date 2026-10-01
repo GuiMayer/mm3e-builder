@@ -3,6 +3,7 @@ import type {
   IModifierDef,
   IPowerEffect,
 } from '../../entities/types';
+import { calculatePowerPricing, type PowerPricing } from '../../shared/lib/mathEngine';
 import { createId } from '../../shared/lib/identity';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 
@@ -181,5 +182,19 @@ export function getPaletteContext(
     selectedEffect,
     contextName: null,
     fabLabel: selectedEffect?.name || 'Main',
+  };
+}
+
+/** Keep pricing stable when only descriptions, palette state or drag state change. */
+export function createPowerPricingSelector(powerDefs: IPowerEffect[], modifierDefs: IModifierDef[], strength: number) {
+  let previous: unknown[] = [];
+  let pricing: PowerPricing | undefined;
+  return (power: ICharacterPower) => {
+    const inputs = [power.components, power.alternateEffects, power.baseDynamic, power.activation, power.removable];
+    if (!pricing || inputs.some((value, index) => value !== previous[index])) {
+      pricing = calculatePowerPricing(power, powerDefs, modifierDefs, strength);
+      previous = inputs;
+    }
+    return pricing;
   };
 }

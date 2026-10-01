@@ -1,7 +1,7 @@
 import React from 'react';
 import { getComponentEffectRanks } from '../../shared/lib/componentRanks';
 import { X, Plus, AlertTriangle } from 'lucide-react';
-import { useDroppable } from '@dnd-kit/core';
+import { ModifierDropzone } from './components/ModifierDropzone';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
 import { Button } from '../../shared/ui/Button';
 import type { TFunction } from 'i18next';
@@ -119,10 +119,9 @@ export function AltEffectCard({
               ? getComponentCostBreakdown(comp, effectDef, genericModifierDefs, strength)
               : null;
             const isActiveComp = comp.id === activeCompId;
-            const droppableId = `dropzone-ae::${ae.id}::${comp.id}`;
 
             return (
-              <AEDropzone key={comp.id} droppableId={droppableId} isActive={isActiveComp && activeId !== null}>
+              <React.Fragment key={comp.id}>
                 <div
                   className={`ae-comp-card ${isActiveComp ? 'ae-comp-card--active' : ''}`}
                   onClick={() => onSetActiveComp(comp.id)}
@@ -241,7 +240,7 @@ export function AltEffectCard({
                   {/* Modifier dropzone */}
                   <div className="build-section" onClick={(e) => e.stopPropagation()}>
                     <label className="build-label">{t('builder.modifiers')}</label>
-                    <div className={`build-dropzone ${isActiveComp && activeId ? 'build-dropzone--active' : ''}`}>
+                    <ModifierDropzone componentId={comp.id} aeId={ae.id} effectId={comp.effectId} label={`${ae.name || `AE ${aeIdx + 1}`} · ${effectDef?.name ?? cIdx + 1}`}>
                       {comp.modifiers.length === 0 && !activeId && (
                         <span className="dropzone-placeholder">{t('builder.dropHere')}</span>
                       )}
@@ -254,7 +253,7 @@ export function AltEffectCard({
                         const incompatKey = `${ae.id}:${comp.id}:${applied.modifierId}`;
                         const conflicts = modifierIncompatibilities[incompatKey] || [];
                         const hasIncompatibility = conflicts.length > 0;
-                        
+
                         return (
                           <div
                             key={applied.modifierId}
@@ -348,8 +347,8 @@ export function AltEffectCard({
                               />
                             )}
                             {hasIncompatibility && (
-                              <span 
-                                className="applied-mod-incompatible-warning" 
+                              <span
+                                className="applied-mod-incompatible-warning"
                                 title={`${t('builder.incompatibleWith')}: ${conflicts.map(id => allModDefs.find(d => d.id === id)?.name || id).join(', ')}`}
                               >
                                 <AlertTriangle size={14} />
@@ -364,40 +363,40 @@ export function AltEffectCard({
                           </div>
                         );
                       })}
-                    </div>
+                    </ModifierDropzone>
                     {/* Modifier fallback select — for touch/accessibility when DnD is unavailable */}
                     {isActiveComp && (
                       <select
                         className="ae-mod-fallback-select"
                         value=""
+                        disabled={!effectDef}
+                        aria-label={t('builder.addModifier')}
                         onChange={(e) => {
                           if (e.target.value) {
-                            const isPowerSpecific = effectDef
-                              ? [...effectDef.extras, ...effectDef.flaws].some(
-                                  (definition) => definition.id === e.target.value
-                                ) && !genericModifierDefs.some(
-                                  (definition) => definition.id === e.target.value
-                                )
-                              : false;
-                            onAddModifier(comp.id, e.target.value, isPowerSpecific);
+                            const isPowerSpecific = e.target.value.startsWith('specific:');
+                            const modId = e.target.value.slice(e.target.value.indexOf(':') + 1);
+                            onAddModifier(comp.id, modId, isPowerSpecific);
                             e.currentTarget.value = '';
                           }
                         }}
                         onClick={(e) => e.stopPropagation()}
                       >
                         <option value="">{t('builder.addModifier')} ▾</option>
-                        {allModDefs
-                          .filter((d) => !comp.modifiers.some((m) => m.modifierId === d.id))
-                          .map((d) => (
-                            <option key={d.id} value={d.id}>
-                              {d.name} ({d.costValue > 0 ? '+' : ''}{d.costValue} {d.costType === 'per_rank' ? '/rank' : 'pp'})
+                        {[...genericModifierDefs.map((definition) => ({ definition, specific: false })),
+                          ...(effectDef ? [...effectDef.extras, ...effectDef.flaws].map((definition) => ({ definition, specific: true })) : [])]
+                          .filter(({ definition }) => !['alternate_effect', 'activation', 'removable'].includes(definition.id)
+                            && !comp.modifiers.some((modifier) => modifier.modifierId === definition.id))
+                          .map(({ definition, specific }) => (
+                            <option key={`${specific}:${definition.id}`} value={`${specific ? 'specific' : 'generic'}:${definition.id}`}>
+                              {definition.name}{specific ? ` · ${t('palette.specific')}` : ''} ({definition.costValue > 0 ? '+' : ''}{definition.costValue} {definition.costType === 'per_rank' ? '/rank' : 'pp'})
                             </option>
                           ))}
+
                       </select>
                     )}
                   </div>
                 </div>
-              </AEDropzone>
+              </React.Fragment>
             );
           })}
 
@@ -460,24 +459,6 @@ export function AltEffectCard({
         .ae-mod-fallback-select:hover { border-color: var(--c-accent); color: var(--c-accent); }
         .ae-mod-fallback-select:focus { outline: none; border-color: var(--c-accent); }
       `}</style>
-    </div>
-  );
-}
-
-// Droppable wrapper for AE component modifier dropzones
-function AEDropzone({
-  droppableId,
-  isActive,
-  children,
-}: {
-  droppableId: string;
-  isActive: boolean;
-  children: React.ReactNode;
-}) {
-  const { setNodeRef } = useDroppable({ id: droppableId });
-  return (
-    <div ref={setNodeRef} className={isActive ? 'ae-dropzone-active' : ''}>
-      {children}
     </div>
   );
 }

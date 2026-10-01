@@ -136,7 +136,8 @@ For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
 - Calculation revision 4 adds the official −10 PP cost for absent abilities and corrects Increased Duration, while retaining the revision 3 pricing fixes and the existing character JSON schema.
 - Strength-based Damage is explicit and uses the character's effective Strength without charging those ranks twice; optional warnings cover absent-ability dependencies.
 - Impervious bought directly on an existing resistance can be represented structurally without adding defense ranks.
-- 685 passing automated tests across 47 test files with no pending tests; all 63 generated community sheets remain valid after recalculation.
+- PowerBuilder usability: explicit drag sources, compatible targets, keyboard navigation and responsive mobile palette ([audit](docs/testing/power-builder-ux-audit-2026-10.md)).
+- 697 passing automated tests across 48 test files with no pending tests; all 63 generated community sheets remain valid after recalculation.
 
 #### v1.11.0 (2026-08-16)
 - Resources Library with Gadgets, Gear, Vehicles, Headquarters, and character associations
@@ -360,7 +361,8 @@ Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
 - A revisão de cálculo 4 adiciona o custo oficial de −10 PP para habilidades ausentes e corrige Duração Aumentada, preservando as correções da revisão 3 e o schema JSON existente.
 - Dano baseado em Força é uma opção explícita que usa a Força efetiva sem cobrar esses ranks duas vezes; avisos opcionais cobrem dependências de habilidades ausentes.
 - Impenetrável comprado diretamente sobre uma resistência existente pode ser representado estruturalmente sem adicionar ranks à defesa.
-- 685 testes automatizados aprovados em 47 arquivos, sem testes pendentes; todas as 63 fichas geradas da comunidade continuam válidas após o recálculo.
+- Usabilidade do PowerBuilder: origem explícita no arraste, destinos compatíveis, navegação por teclado e paleta móvel responsiva ([auditoria](docs/testing/power-builder-ux-audit-2026-10.md)).
+- 697 testes automatizados aprovados em 48 arquivos, sem testes pendentes; todas as 63 fichas geradas da comunidade continuam válidas após o recálculo.
 
 #### v1.11.0 (2026-08-16)
 - Biblioteca de Resources com Gadgets, Gear, Vehicles, Headquarters e associações aos personagens

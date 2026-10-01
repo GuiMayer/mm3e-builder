@@ -1,26 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 type DrawerHeight = 'closed' | 'peek' | 'full';
 
-const STORAGE_KEY = 'powerbuilder-drawer-state';
-
 export function useMobileDrawer() {
   const [isOpen, setIsOpen] = useState(false);
-  const [height, setHeight] = useState<DrawerHeight>(() => {
-    if (typeof localStorage === 'undefined') return 'closed';
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'peek' || saved === 'full') {
-      return saved;
-    }
-    return 'closed';
-  });
-
-  // Save preferred state to localStorage
-  useEffect(() => {
-    if (height !== 'closed') {
-      localStorage.setItem(STORAGE_KEY, height);
-    }
-  }, [height]);
+  // Each editor starts closed. Restoring a saved height without restoring
+  // isOpen leaves an aria-hidden panel covering the workspace.
+  const [height, setHeight] = useState<DrawerHeight>('closed');
 
   const openDrawer = useCallback((initialHeight: DrawerHeight = 'peek') => {
     setIsOpen(true);

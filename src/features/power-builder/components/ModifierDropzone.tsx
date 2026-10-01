@@ -1,32 +1,26 @@
-import { useDroppable } from '@dnd-kit/core';
-
-/* ================================================
-   ModifierDropzone Component
-   Droppable zone for modifiers in PowerBuilder
-   ================================================ */
+import { useDndContext, useDroppable } from '@dnd-kit/core';
+import { useTranslation } from 'react-i18next';
+import { POWER_DEFS, MODIFIER_DEFS } from '../../../entities/gameDataLoaders';
+import { resolveModifierDrop, type ModifierDragData, type ModifierDropData } from '../powerDragAndDropModel';
 
 interface ModifierDropzoneProps {
   componentId: string;
-  activeId: string | null;
+  effectId: string;
+  label: string;
+  aeId?: string;
   children: React.ReactNode;
 }
-
-export function ModifierDropzone({
-  componentId,
-  activeId,
-  children,
-}: ModifierDropzoneProps) {
-  const droppableId = `dropzone-${componentId}`;
-  const { setNodeRef, isOver } = useDroppable({ id: droppableId });
-
+export function ModifierDropzone({ componentId, effectId, label, aeId, children }: ModifierDropzoneProps) {
+  const { t } = useTranslation();
+  const data: ModifierDropData = { kind: 'modifier-target', componentId, aeId, effectId, label };
+  const { active } = useDndContext();
+  const eligible = !!resolveModifierDrop(active?.data.current as ModifierDragData, data, POWER_DEFS, MODIFIER_DEFS);
+  const { setNodeRef, isOver } = useDroppable({ id: aeId ? `dropzone-ae::${aeId}::${componentId}` : `dropzone-${componentId}`, data, disabled: !effectId });
   return (
-    <div
-      ref={setNodeRef}
-      className={`build-dropzone ${isOver || activeId ? 'build-dropzone--active' : ''}`}
-      role="region"
-      aria-label={`Drop zone for component ${componentId}`}
-    >
+    <div ref={setNodeRef} className={`build-dropzone ${eligible ? 'build-dropzone--eligible' : ''} ${eligible && isOver ? 'build-dropzone--active' : ''}`}
+      role="region" aria-label={t('builder.dropTarget', { name: label })} data-drop-component={componentId}>
       {children}
+      {eligible && isOver && <span className="dropzone-feedback">{t('builder.releaseToAdd')}</span>}
     </div>
   );
 }

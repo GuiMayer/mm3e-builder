@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added optional absent-ability warnings for dependent skills, purchased defenses, and Strength-based Damage.
 
 ### Changed
+- Improve PowerBuilder drag handles, keyboard target navigation, full modifier names and mobile palette controls; cache pricing independently of descriptive edits and render styles once per palette.
 - Share point summaries across sheet panels, subscribe panels to their own fields, and load PDF dialogs only when opened.
 - Price partial modifiers by rank boundaries instead of iterating through every rank.
 - Adapt the top bar across desktop, intermediate and mobile widths: separate navigation before controls compete for space, keep named icon actions, and shorten the sheet label on small phones. Settings stay within the viewport.
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Range and duration applicability warnings now appear live in the Power Builder without preventing saves.
 
 ### Fixed
+- Preserve generic/effect-specific modifier sources during drops, restrict alternate-effect targets, clear cancelled drags and prevent a saved drawer height from showing a closed mobile palette.
 - Validate Accurate using the current character's PL, abilities, and combat skills instead of implicit PL 10 defaults.
 - Charge per-rank extras on Strength-based Damage's effective Strength contribution, with consistent sheet, Builder, resource, PDF, and Excel totals.
 - Separate partial Area and range attack profiles; preserve Alternate Resistance and combat-skill miscellaneous bonuses.
@@ -42,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Quality
 - Replaced or removed all 16 pending tests: obsolete/duplicated cases were deleted and valid rule expectations became executable regressions.
-- Expanded the verified suite to 47 test files and 685 passing tests with no pending tests.
+- Expanded the verified suite to 48 test files and 697 passing tests with no pending tests.
 - Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 34 of 57 complete sources match their independently published sums under revision 4.
 
 ---

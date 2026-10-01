@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback } from 'react';
+import { useDialogFocus } from '../../../shared/hooks/useDialogFocus';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 type DrawerHeight = 'closed' | 'peek' | 'full';
@@ -13,8 +15,8 @@ interface Props {
 
 const HEIGHT_MAP: Record<DrawerHeight, string> = {
   closed: '0',
-  peek: '35vh',
-  full: '85vh',
+  peek: '35dvh',
+  full: '85dvh',
 };
 
 const HEIGHT_PX: Record<DrawerHeight, number> = {
@@ -29,6 +31,8 @@ function getHeightPixels(height: DrawerHeight): number {
 
 export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, children }: Props) {
   const drawerRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+  useDialogFocus(drawerRef, isOpen, onClose);
   const [isDragging, setIsDragging] = useState(false);
   const [startY, setStartY] = useState(0);
   const [startHeight, setStartHeight] = useState(0);
@@ -126,27 +130,6 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
     onClose();
   }, [onHeightChange, onClose]);
 
-  // Close on ESC key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onHeightChange('closed');
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      // Prevent body scroll when drawer is open
-      document.body.style.overflow = 'hidden';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [isOpen, onClose, onHeightChange]);
-
   if (!isOpen && height === 'closed') return null;
 
   return (
@@ -166,28 +149,36 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
         }}
         data-state={height}
         role="dialog"
-        aria-label="Modifier palette"
+        aria-label={t('builder.modifierPalette')}
         aria-hidden={!isOpen}
         aria-modal={isOpen}
       >
         {/* Drag handle */}
-        <div
-          className="mobile-drawer-handle-area"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          role="button"
-          aria-label="Drag to resize drawer"
-          tabIndex={0}
-        >
-          <div className="mobile-drawer-handle" />
-          <span className="mobile-drawer-state-indicator" aria-live="polite" aria-atomic="true">
-            {height === 'peek' ? 'Preview' : height === 'full' ? 'Expanded' : ''}
-          </span>
+        <div className="mobile-drawer-handle-area">
+          <button
+            className="mobile-drawer-resize"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={() => setIsDragging(false)}
+            aria-label={t('builder.resizePalette')}
+            onClick={() => onHeightChange(height === 'full' ? 'peek' : 'full')}
+            onKeyDown={(event) => {
+              if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                event.preventDefault();
+                onHeightChange(event.key === 'ArrowUp' ? 'full' : 'peek');
+              }
+            }}
+          >
+            <span className="mobile-drawer-handle" />
+            <span className="mobile-drawer-state-indicator" aria-live="polite" aria-atomic="true">
+              {height === 'peek' ? t('builder.palettePreview') : height === 'full' ? t('builder.paletteExpanded') : ''}
+            </span>
+          </button>
           <button
             className="mobile-drawer-close"
             onClick={handleBackdropClick}
-            aria-label="Close drawer"
+            aria-label={t('builder.close')}
             tabIndex={0}
           >
             <X size={18} />
@@ -244,7 +235,9 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
           min-height: 48px;
         }
 
-        .mobile-drawer-handle-area:active {
+        .mobile-drawer-resize { flex: 1; min-height: 44px; border: 0; background: transparent; display: flex; align-items: center; justify-content: center; color: inherit; cursor: grab; touch-action: none; margin-right: 44px; }
+        .mobile-drawer-resize:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 2px; }
+        .mobile-drawer-resize:active {
           cursor: grabbing;
         }
 
@@ -308,6 +301,7 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
 
         .mobile-drawer-content {
           flex: 1;
+          min-height: 0;
           overflow: hidden;
           display: flex;
           flex-direction: column;

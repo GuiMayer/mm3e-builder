@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback, useRef } from 'react';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { useState, useMemo, useCallback, useId, useRef } from 'react';
+import { DndContext, DragOverlay, type Announcements } from '@dnd-kit/core';
 import type {
   ICharacterPower,
   IModifierDef,
@@ -18,6 +18,8 @@ import { MobileModifierDrawer } from './components/MobileModifierDrawer';
 import { ModifierDrawerFAB } from './components/ModifierDrawerFAB';
 import { createId } from '../../shared/lib/identity';
 import { useMobileDrawer } from './hooks/useMobileDrawer';
+import { useDialogFocus } from '../../shared/hooks/useDialogFocus';
+import { useIsMobile } from '../../shared/hooks/useIsMobile';
 import { X, Save, Plus, Zap, Info, AlertTriangle, Shield } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
@@ -57,6 +59,9 @@ interface Props {
 export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentMode }: Props) {
   const { t } = useTranslation();
   const dialog = useAppDialog();
+  const isMobile = useIsMobile();
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
   const powerDefs = useLocalizedData(POWER_DEFS) as IPowerEffect[];
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
 
@@ -209,7 +214,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     return `${ae.name || 'AE'} · Comp. ${compIdx + 1}`;
   }, [expandedAEId, power.alternateEffects, activeAEComponentId]);
 
-  // FAB context label for mobile
+  const togglePalette = useCallback(() => setPaletteCollapsed((value) => !value), []);
+
+  // Selected target for the mobile palette action
   const fabContextLabel = paletteContext.fabLabel;
 
   // Define addModifierToComponent before using it in hooks
@@ -238,8 +245,13 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         ...p,
         components: p.components.map((comp) => {
           if (comp.id !== componentId) return comp;
+          const targetEffect = powerDefs.find((effect) => effect.id === comp.effectId);
+          if (!targetEffect || !resolveModifierDefinition({ modifierId: modId, ranks: 1, isPowerSpecific: isSpecific }, targetEffect, modifierDefs).definition) return comp;
           const already = comp.modifiers.find((m) => m.modifierId === modId);
           if (already) {
+            if (already.isPowerSpecific !== undefined && already.isPowerSpecific !== isSpecific) {
+              return { ...comp, modifiers: comp.modifiers.map((modifier) => modifier === already ? { modifierId: modId, ranks: 1, isPowerSpecific: isSpecific } : modifier) };
+            }
             const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
             const modifierDef = effectDef
               ? resolveModifierDefinition(already, effectDef, modifierDefs).definition
@@ -288,12 +300,20 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   });
 
   // Use drag-and-drop hook
-  const { sensors, activeId, handleDragStart, handleDragEnd } = usePowerDragAndDrop({
-    onDropToComponent: addModifierToComponent,
-    onDropToAEComponent: addModifierToAEComponent,
+  const { sensors, activeId, activeDrag, collisionDetection, handleDragStart, handleDragEnd, handleDragCancel } = usePowerDragAndDrop({
+    powerDefs, modifierDefs,
+    onDropToComponent: (id, modifierId, specific) => {
+      setActiveComponentId(id); setExpandedAEId(null);
+      addModifierToComponent(id, modifierId, specific);
+    },
+    onDropToAEComponent: (aeId, id, modifierId, specific) => {
+      setExpandedAEId(aeId); setActiveAEComponentId((current) => ({ ...current, [aeId]: id }));
+      if (modifierId === 'removable') addModifierToComponent(id, modifierId, specific);
+      else addModifierToAEComponent(aeId, id, modifierId, specific);
+    },
   });
 
-  function handleAddModifierFromPalette(modId: string, isPowerSpecific?: boolean) {
+  const handleAddModifierFromPalette = useCallback((modId: string, isPowerSpecific?: boolean) => {
     // Intercept 'removable' — power-level flaw, not per-component
     // In equipment mode, removable is not available
     if (modId === 'removable') {
@@ -318,7 +338,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     }
     if (!activeComponentId) return;
     addModifierToComponent(activeComponentId, modId, isPowerSpecific);
-  }
+  }, [equipmentMode, expandedAEId, power.alternateEffects, activeAEComponentId, activeComponentId, addModifierToComponent, addModifierToAEComponent]);
 
   function removeModifier(componentId: string, modId: string) {
     setPower((p) => ({
@@ -412,7 +432,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   async function handleSave() {
     // Filter out empty components (components without an effect selected)
     const validComponents = power.components.filter((c) => c.effectId !== '');
-    
+
     // Check if there's at least one valid component
     if (validComponents.length === 0) {
       await dialog.alert({ title: t('builder.title'), message: t('builder.noEffectError') });
@@ -451,7 +471,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     const invalidAEs = aeValidations
       .map((v, i) => ({ ...v, ae: power.alternateEffects[i] }))
       .filter((v) => !v.valid && v.ae.components.some((c) => c.effectId !== ''));
-    
+
     if (invalidAEs.length > 0) {
       const names = invalidAEs.map((v, index) => v.ae.name || `AE ${index + 1}`).join(', ');
       const confirmed = await dialog.confirm({
@@ -465,17 +485,22 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     onSave(cleanPower);
   }
 
-  const activeMod = activeId ? allModDefs.find((m) => m.id === activeId) : null;
+  const activeMod = activeDrag?.modifier;
+  useDialogFocus(overlayRef, true, onClose, !activeId);
   const hasEffect = power.components.some((c) => c.effectId !== '');
-
-
+  const announcements = useMemo<Announcements>(() => ({
+    onDragStart: ({ active }) => t('builder.dragStarted', { name: active.data.current?.modifier?.name ?? '' }),
+    onDragOver: ({ over }) => over ? t('builder.dragOver', { name: over.data.current?.label ?? '' }) : t('builder.dragOutside'),
+    onDragEnd: ({ over }) => t(over ? 'builder.dragAdded' : 'builder.dragCancelled', { name: over?.data.current?.label ?? '' }),
+    onDragCancel: () => t('builder.dragCancelled'),
+  }), [t]);
 
   return (
-    <div className="builder-overlay" data-history-shortcuts-disabled>
-      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <div ref={overlayRef} className="builder-overlay" role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1} data-history-shortcuts-disabled>
+      <DndContext sensors={sensors} collisionDetection={collisionDetection} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel} accessibility={{ announcements, screenReaderInstructions: { draggable: t('builder.dragInstructions') } }}>
         {/* Top Bar */}
         <div className="builder-topbar">
-          <h2 className="builder-topbar-title">
+          <h2 id={titleId} className="builder-topbar-title">
             <Zap size={18} /> {t('builder.title')}
           </h2>
           <div className="builder-topbar-actions">
@@ -495,18 +520,18 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
         <div className="builder-body">
           {/* Sidebar: Modifier Palette (Desktop) */}
-          <div className="builder-palette-desktop">
+          {!isMobile && <div className="builder-palette-desktop">
             <EffectPalette
               filter={paletteFilter}
               onFilterChange={setPaletteFilter}
               selectedEffect={paletteSelectedEffect}
               onAddModifier={handleAddModifierFromPalette}
               collapsed={paletteCollapsed}
-              onToggleCollapse={() => setPaletteCollapsed((v) => !v)}
-              contextName={paletteContextName}
+              onToggleCollapse={togglePalette}
+              contextName={paletteContextName ?? paletteSelectedEffect?.name}
               equipmentMode={equipmentMode}
             />
-          </div>
+          </div>}
 
           {/* Main: Build Workspace */}
           <div className="builder-workspace">
@@ -742,9 +767,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                     {/* Modifier dropzone */}
                     <div className="build-section" onClick={(e) => e.stopPropagation()}>
                       <label className="build-label">{t('builder.modifiers')}</label>
-                      <ModifierDropzone componentId={comp.id} activeId={isActive ? activeId : null}>
+                      <ModifierDropzone componentId={comp.id} effectId={comp.effectId} label={effectDef?.name ?? t('builder.mainEffect')}>
                         {comp.modifiers.length === 0 && !activeId && (
-                          <span className="dropzone-placeholder">{t('builder.dropHere')}</span>
+                          <span className="dropzone-placeholder">{t(comp.effectId ? 'builder.dropHere' : 'builder.chooseEffectForModifiers')}</span>
                         )}
                         {comp.modifiers.map((applied) => {
                           const def = effectDef
@@ -867,8 +892,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                 />
                               )}
                               {hasIncompatibility && (
-                                <span 
-                                  className="applied-mod-incompatible-warning" 
+                                <span
+                                  className="applied-mod-incompatible-warning"
                                   title={`${t('builder.incompatibleWith')}: ${conflicts.map(id => allModDefs.find(d => d.id === id)?.name || id).join(', ')}`}
                                 >
                                   <AlertTriangle size={14} />
@@ -1050,6 +1075,10 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             )}
             <span className="cost-total-label">{equipmentMode ? t('builder.totalEP') || 'Total EP:' : t('builder.total') + ':'}</span>
             <span className="cost-total-value">{equipmentMode ? equipmentEPCost : totalCost} {equipmentMode ? 'EP' : t('common.pp')}</span>
+            <ModifierDrawerFAB
+              onClick={() => openDrawer('full')}
+              contextLabel={fabContextLabel}
+            />
           </div>
           {plViolation && (
             <div className="pl-violation-banner">
@@ -1075,7 +1104,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           )}
         </div>
 
-        <DragOverlay>
+        <DragOverlay zIndex={1200} dropAnimation={null}>
           {activeMod && (
             <div className="drag-ghost">
               <span>{activeMod.name}</span>
@@ -1087,7 +1116,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         </DragOverlay>
 
         {/* Mobile Modifier Drawer */}
-        <MobileModifierDrawer
+        {isMobile && <MobileModifierDrawer
           isOpen={drawerOpen}
           height={drawerHeight}
           onHeightChange={setDrawerHeight}
@@ -1099,18 +1128,13 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             selectedEffect={paletteSelectedEffect}
             onAddModifier={handleAddModifierFromPalette}
             collapsed={false}
-            onToggleCollapse={() => {}}
-            contextName={paletteContextName}
+            onToggleCollapse={closeDrawer}
+            contextName={paletteContextName ?? paletteSelectedEffect?.name}
             equipmentMode={equipmentMode}
           />
-        </MobileModifierDrawer>
+        </MobileModifierDrawer>}
 
-        {/* Mobile FAB */}
-        <ModifierDrawerFAB
-          onClick={() => openDrawer('peek')}
-          contextLabel={fabContextLabel}
-          isAE={expandedAEId !== null}
-        />
+
       </DndContext>
 
       {/* Effect Detail Modal */}
@@ -1133,13 +1157,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
       <style>{`
         .builder-overlay {
-          position: fixed; inset: 0; z-index: 1000;
+          position: fixed; inset: 0; z-index: 1000; height: 100dvh;
           background: var(--c-bg);
           display: flex; flex-direction: column;
           animation: fadeIn 0.2s ease;
           overflow: hidden;
         }
         .builder-topbar {
+          flex-shrink: 0; flex-wrap: wrap; gap: var(--s-sm);
           display: flex; align-items: center; justify-content: space-between;
           padding: var(--s-sm) var(--s-lg);
           background: var(--c-surface); border-bottom: 1px solid var(--c-border);
@@ -1163,8 +1188,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         .builder-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .builder-close-btn:hover { border-color: var(--c-error); color: var(--c-error); }
 
-        .builder-body { flex: 1; display: flex; overflow: hidden; min-width: 0; }
+        .builder-body { flex: 1; display: flex; overflow: hidden; min-width: 0; min-height: 0; }
         .builder-workspace {
+          min-height: 0; min-width: 0; overscroll-behavior: contain;
           flex: 1; padding: var(--s-lg); overflow-y: auto;
           display: flex; flex-direction: column; gap: var(--s-md); min-width: 0;
         }
@@ -1279,7 +1305,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           padding: var(--s-sm); display: flex; flex-wrap: wrap; gap: var(--s-xs);
           align-items: flex-start; transition: all var(--t-fast);
         }
-        .build-dropzone--active { border-color: var(--c-primary); background: var(--c-primary-muted); }
+        .build-dropzone--eligible { border-color: var(--c-primary); }
+        .build-dropzone--active { border-style: solid; border-color: var(--c-success); background: var(--c-success-muted); box-shadow: 0 0 0 2px var(--c-success); }
+        .dropzone-feedback { flex-basis: 100%; font-size: 0.78rem; font-weight: 600; color: var(--c-success); }
         .dropzone-placeholder { color: var(--c-text-muted); font-size: 0.82rem; font-style: italic; }
 
         /* Applied modifiers */
@@ -1291,8 +1319,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         }
         .applied-mod--flaw { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.3); }
         .applied-mod--specific { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.35); }
-        .applied-mod--incompatible { 
-          background: rgba(239, 68, 68, 0.15); 
+        .applied-mod--incompatible {
+          background: rgba(239, 68, 68, 0.15);
           border-color: rgba(239, 68, 68, 0.5);
           animation: pulse-warning 2s ease-in-out infinite;
         }
@@ -1354,6 +1382,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
         /* Footer */
         .builder-footer {
+          flex-shrink: 0; flex-wrap: wrap; gap: var(--s-xs); max-height: 30dvh; overflow-y: auto;
           display: flex; align-items: center; justify-content: space-between;
           padding: var(--s-sm) var(--s-lg);
           background: var(--c-surface); border-top: 1px solid var(--c-border);
@@ -1414,12 +1443,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           .builder-body {
             flex-direction: column;
           }
-          
+
           /* Hide desktop palette, show mobile drawer instead */
           .builder-palette-desktop {
             display: none;
           }
-          
+
           .builder-workspace {
             width: 100%;
             height: 100%;
@@ -1460,5 +1489,3 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     </div>
   );
 }
-
-

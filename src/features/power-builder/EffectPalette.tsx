@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { memo, useId, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useValidModifiers } from './hooks/useValidModifiers';
-import { Search, ArrowUpCircle, ArrowDownCircle, Zap, ChevronLeft, ChevronRight, Info } from 'lucide-react';
+import { Search, ArrowUpCircle, ArrowDownCircle, Zap, ChevronLeft, ChevronRight, Info, GripVertical } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { IPowerEffect, IModifierDef } from '../../entities/types';
 import { Modal } from '../../shared/ui/Modal';
@@ -21,7 +21,7 @@ interface Props {
   equipmentMode?: boolean;        // when true, hide 'removable' modifier
 }
 
-export function EffectPalette({
+function EffectPaletteComponent({
   filter,
   onFilterChange,
   selectedEffect,
@@ -126,6 +126,7 @@ export function EffectPalette({
             value={filter}
             onChange={(e) => onFilterChange(e.target.value)}
             placeholder={t('palette.search')}
+            aria-label={t('palette.search')}
           />
         </div>
         <button className="palette-toggle-btn" onClick={onToggleCollapse} title={t('builder.collapseAll')}>
@@ -138,6 +139,9 @@ export function EffectPalette({
         </div>
       )}
 
+      <p className="palette-instructions">
+        {selectedEffect ? <><span className="palette-desktop-help">{t('builder.dragHelp')}</span><span className="palette-mobile-help">{t('builder.tapHelp')}</span></> : t('builder.chooseEffectForModifiers')}
+      </p>
       {/* Tabs */}
       <div className="palette-tabs">
         <button
@@ -164,6 +168,9 @@ export function EffectPalette({
 
       {/* List */}
       <div className="palette-list-container">
+        {((activeTab === 'extras' && generalExtras.length === 0) || (activeTab === 'flaws' && generalFlaws.length === 0)) && (
+          <p className="palette-empty">{t('palette.noResults')}</p>
+        )}
         {activeTab === 'extras' &&
           generalExtras.map((mod) => (
             <DraggableModifier
@@ -172,6 +179,7 @@ export function EffectPalette({
               isPowerSpecific={false}
               hasPowerSpecificVersion={powerSpecificIds.has(mod.id)}
               selectedEffectName={selectedEffect?.name}
+              selectedEffectId={selectedEffect?.id}
               onAdd={onAddModifier}
               onInfo={setModalMod}
             />
@@ -184,6 +192,7 @@ export function EffectPalette({
               isPowerSpecific={false}
               hasPowerSpecificVersion={powerSpecificIds.has(mod.id)}
               selectedEffectName={selectedEffect?.name}
+              selectedEffectId={selectedEffect?.id}
               onAdd={onAddModifier}
               onInfo={setModalMod}
             />
@@ -202,6 +211,7 @@ export function EffectPalette({
               key={mod.id}
               mod={mod}
               isPowerSpecific={true}
+              selectedEffectId={selectedEffect?.id}
               onAdd={onAddModifier}
               onInfo={setModalMod}
             />
@@ -256,12 +266,12 @@ export function EffectPalette({
           border-bottom: 1px solid var(--c-border);
         }
         .palette-search {
-          flex: 1; display: flex; align-items: center; gap: var(--s-xs);
+          flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--s-xs);
           padding: var(--s-sm) var(--s-md);
         }
         .palette-search-icon { color: var(--c-text-muted); flex-shrink: 0; }
         .palette-search-input {
-          flex: 1; background: transparent; border: none;
+          flex: 1; min-width: 0; width: 100%; background: transparent; border: none;
           color: var(--c-text); font-family: var(--f-body); font-size: 0.85rem;
         }
         .palette-search-input:focus { outline: none; }
@@ -327,41 +337,135 @@ export function EffectPalette({
             min-width: 100%;
             border-right: none;
           }
-          
+
           .palette-header {
             padding: 0;
           }
-          
+
           .palette-search {
             padding: var(--s-md);
           }
-          
+
           .palette-search-input {
             font-size: 1rem;
           }
-          
+
           .palette-tabs {
             position: sticky;
             top: 0;
             background: var(--c-surface);
             z-index: 10;
           }
-          
+
           .palette-tab {
             padding: var(--s-sm) var(--s-xs);
             font-size: 0.8rem;
             min-height: var(--touch-target-min);
           }
-          
+
           .palette-list-container {
             padding: var(--s-md);
             gap: var(--s-sm);
           }
-          
+
           .palette-context-badge {
             font-size: 0.8rem;
             padding: var(--s-sm) var(--s-md);
           }
+        }
+
+        .palette-item {
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 5px 8px; border-radius: var(--r-sm);
+          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
+          cursor: default; transition: border-color var(--t-fast), background-color var(--t-fast);
+          font-size: 0.8rem; user-select: none; gap: 6px;
+        }
+        .palette-item:hover { border-color: var(--c-success); background: rgba(74,222,128,0.08); }
+        .palette-item--flaw:hover { border-color: var(--c-error); background: rgba(248,113,113,0.08); }
+        .palette-item--specific { border-color: rgba(245,158,11,0.3); }
+        .palette-item--specific:hover { border-color: #f59e0b; background: rgba(245,158,11,0.08); }
+        .palette-item--has-specific { border-left: 3px solid rgba(245,158,11,0.5); }
+        .palette-item--dragging { opacity: 0.4; cursor: grabbing; }
+        .palette-item-name { font-weight: 500; flex: 1; min-width: 0; white-space: normal; overflow-wrap: anywhere; line-height: 1.35; }
+        .palette-item-specific-indicator {
+          font-size: 0.7rem; color: #f59e0b; flex-shrink: 0;
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 1; }
+        }
+        .palette-item-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+        .palette-item-cost { font-size: 0.68rem; color: var(--c-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; display: block; margin-top: 2px; }
+        .palette-item-info, .palette-item-add {
+          background: transparent; border: none; cursor: pointer;
+          color: var(--c-text-muted); display: flex; align-items: center;
+          padding: 1px 3px; border-radius: 3px; transition: all var(--t-fast);
+          font-size: 0.75rem; line-height: 1;
+        }
+        .palette-item-info:hover { color: var(--c-primary); background: var(--c-primary-muted); }
+        .palette-item-add:hover { color: var(--c-success); background: rgba(74,222,128,0.15); }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+          .palette-item {
+            flex-direction: row;
+            align-items: center;
+            padding: var(--s-sm) var(--s-md);
+            gap: var(--s-sm);
+            min-height: var(--touch-target-min);
+          }
+
+          .palette-item-name {
+            flex: 1;
+            font-size: 0.9rem;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: unset;
+            line-height: 1.3;
+          }
+
+          .palette-item-actions {
+            gap: var(--s-xs);
+            flex-shrink: 0;
+            align-items: center;
+          }
+
+          .palette-item-cost {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            background: var(--c-surface);
+            border-radius: var(--r-xs);
+          }
+
+          .palette-item-info, .palette-item-add {
+            min-width: var(--touch-target-min);
+            min-height: var(--touch-target-min);
+            padding: var(--s-xs);
+            font-size: 0.85rem;
+          }
+
+          .palette-item-add {
+            font-size: 1.1rem;
+            font-weight: 600;
+          }
+        }
+
+        .palette-mobile-help { display: none; }
+        .palette-instructions { margin: 0; padding: var(--s-xs) var(--s-sm); font-size: 0.72rem; color: var(--c-text-muted); line-height: 1.4; }
+        .palette-item-drag { display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--c-text-muted); cursor: grab; touch-action: none; min-width: 28px; min-height: 34px; }
+        .palette-item-drag:active { cursor: grabbing; }
+        .palette-item-info, .palette-item-add { min-width: 28px; min-height: 34px; justify-content: center; }
+        .palette-item button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .palette-item button:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 2px; }
+        .palette-item { cursor: default; transition: border-color var(--t-fast), background-color var(--t-fast); }
+        @media (max-width: 768px) {
+          .palette-item { padding: var(--s-xs); gap: 4px; }
+          .palette-item-drag, .palette-toggle-btn, .palette-desktop-help { display: none; }
+          .palette-mobile-help { display: inline; }
+          .palette-item-cost { font-size: 0.68rem; padding: 0; background: transparent; }
+          .palette-item-info, .palette-item-add { min-width: 44px; min-height: 44px; }
         }
       `}</style>
     </aside>
@@ -369,11 +473,12 @@ export function EffectPalette({
 }
 
 // ── Draggable Modifier Item ──
-function DraggableModifier({
+function DraggableModifierComponent({
   mod,
   isPowerSpecific,
   hasPowerSpecificVersion,
   selectedEffectName,
+  selectedEffectId,
   onAdd,
   onInfo,
 }: {
@@ -381,11 +486,17 @@ function DraggableModifier({
   isPowerSpecific: boolean;
   hasPowerSpecificVersion?: boolean;
   selectedEffectName?: string;
+  selectedEffectId?: string;
   onAdd: (id: string, isPowerSpecific?: boolean) => void;
   onInfo: (mod: IModifierDef) => void;
 }) {
   const { t } = useTranslation();
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: mod.id });
+  const itemId = useId();
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, isDragging } = useDraggable({
+    id: `palette:${itemId}:${isPowerSpecific ? 'specific' : 'generic'}:${mod.id}`,
+    disabled: !selectedEffectId,
+    data: { kind: 'modifier', modifier: mod, isPowerSpecific, sourceEffectId: selectedEffectId },
+  });
 
   const costLabel =
     mod.costType === 'per_rank'
@@ -409,22 +520,25 @@ function DraggableModifier({
   return (
     <div
       ref={setNodeRef}
-      {...listeners}
-      {...attributes}
       className={`${itemClass} ${isDragging ? 'palette-item--dragging' : ''} ${hasPowerSpecificVersion ? 'palette-item--has-specific' : ''}`}
       aria-label={tooltipText}
       title={hasPowerSpecificVersion ? tooltipText : undefined}
     >
+      <button ref={setActivatorNodeRef} {...listeners} {...attributes} className="palette-item-drag"
+        disabled={!selectedEffectId} aria-label={t('builder.dragModifier', { name: mod.name })} title={t('builder.dragHelp')}>
+        <GripVertical size={16} />
+      </button>
       <span className="palette-item-name">
         {mod.name}
         {hasPowerSpecificVersion && <span className="palette-item-specific-indicator" title="Power-specific version available">⚡</span>}
+        <span className="palette-item-cost">{costLabel}</span>
       </span>
       <div className="palette-item-actions">
-        <span className="palette-item-cost">{costLabel}</span>
         <button
           className="palette-item-info"
           onClick={(e) => { e.stopPropagation(); onInfo(mod); }}
           title={t('builder.viewModifier')}
+          aria-label={t('builder.modifierDetails', { name: mod.name })}
         >
           <Info size={11} />
         </button>
@@ -432,90 +546,17 @@ function DraggableModifier({
           className="palette-item-add"
           onClick={(e) => { e.stopPropagation(); onAdd(mod.id, isPowerSpecific); }}
           title={t('palette.clickToAdd')}
+          aria-label={t('builder.addNamedModifier', { name: mod.name })}
+          disabled={!selectedEffectId}
         >
           +
         </button>
       </div>
 
-      <style>{`
-        .palette-item {
-          display: flex; align-items: center; justify-content: space-between;
-          padding: 5px 8px; border-radius: var(--r-sm);
-          background: var(--c-surface-elevated); border: 1px solid var(--c-border);
-          cursor: grab; transition: all var(--t-fast);
-          font-size: 0.8rem; user-select: none; gap: 6px;
-        }
-        .palette-item:hover { border-color: var(--c-success); background: rgba(74,222,128,0.08); }
-        .palette-item--flaw:hover { border-color: var(--c-error); background: rgba(248,113,113,0.08); }
-        .palette-item--specific { border-color: rgba(245,158,11,0.3); }
-        .palette-item--specific:hover { border-color: #f59e0b; background: rgba(245,158,11,0.08); }
-        .palette-item--has-specific { border-left: 3px solid rgba(245,158,11,0.5); }
-        .palette-item--dragging { opacity: 0.4; cursor: grabbing; }
-        .palette-item-name { font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
-        .palette-item-specific-indicator { 
-          font-size: 0.7rem; color: #f59e0b; flex-shrink: 0;
-          animation: pulse-glow 2s ease-in-out infinite;
-        }
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 1; }
-        }
-        .palette-item-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-        .palette-item-cost { font-size: 0.68rem; color: var(--c-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-        .palette-item-info, .palette-item-add {
-          background: transparent; border: none; cursor: pointer;
-          color: var(--c-text-muted); display: flex; align-items: center;
-          padding: 1px 3px; border-radius: 3px; transition: all var(--t-fast);
-          font-size: 0.75rem; line-height: 1;
-        }
-        .palette-item-info:hover { color: var(--c-primary); background: var(--c-primary-muted); }
-        .palette-item-add:hover { color: var(--c-success); background: rgba(74,222,128,0.15); }
 
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-          .palette-item {
-            flex-direction: row;
-            align-items: center;
-            padding: var(--s-sm) var(--s-md);
-            gap: var(--s-sm);
-            min-height: var(--touch-target-min);
-          }
-          
-          .palette-item-name {
-            flex: 1;
-            font-size: 0.9rem;
-            white-space: normal;
-            overflow: visible;
-            text-overflow: unset;
-            line-height: 1.3;
-          }
-          
-          .palette-item-actions {
-            gap: var(--s-xs);
-            flex-shrink: 0;
-            align-items: center;
-          }
-          
-          .palette-item-cost {
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            background: var(--c-surface);
-            border-radius: var(--r-xs);
-          }
-          
-          .palette-item-info, .palette-item-add {
-            min-width: var(--touch-target-min);
-            min-height: var(--touch-target-min);
-            padding: var(--s-xs);
-            font-size: 0.85rem;
-          }
-          
-          .palette-item-add {
-            font-size: 1.1rem;
-            font-weight: 600;
-          }
-        }
-      `}</style>
     </div>
   );
 }
+
+export const EffectPalette = memo(EffectPaletteComponent);
+const DraggableModifier = memo(DraggableModifierComponent);

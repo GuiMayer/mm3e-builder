@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import type {
   ICharacterPower,
   IAlternateEffect,
@@ -126,12 +127,12 @@ export function useAlternateEffects({
     }));
   }
 
-  function addModifierToAEComponent(
+  const addModifierToAEComponent = useCallback((
     aeId: string,
     compId: string,
     modId: string,
     isPowerSpecific?: boolean
-  ) {
+  ) => {
     const allSpecific = powerDefs.flatMap((p) => [...(p.extras || []), ...(p.flaws || [])]);
     const isSpecific = isPowerSpecific ?? allSpecific.some((m) => m.id === modId);
     setPower((p) => ({
@@ -141,8 +142,13 @@ export function useAlternateEffects({
           ...ae,
           components: ae.components.map((comp) => {
             if (comp.id !== compId) return comp;
+            const targetEffect = powerDefs.find((effect) => effect.id === comp.effectId);
+            if (!targetEffect || !resolveModifierDefinition({ modifierId: modId, ranks: 1, isPowerSpecific: isSpecific }, targetEffect, modifierDefs).definition) return comp;
             const already = comp.modifiers.find((m) => m.modifierId === modId);
             if (already) {
+              if (already.isPowerSpecific !== undefined && already.isPowerSpecific !== isSpecific) {
+                return { ...comp, modifiers: comp.modifiers.map((modifier) => modifier === already ? { modifierId: modId, ranks: 1, isPowerSpecific: isSpecific } : modifier) };
+              }
               const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
               const modifierDef = effectDef
                 ? resolveModifierDefinition(already, effectDef, modifierDefs).definition
@@ -163,7 +169,7 @@ export function useAlternateEffects({
         }
       ),
     }));
-  }
+  }, [powerDefs, modifierDefs, setPower]);
 
   function removeModifierFromAEComponent(aeId: string, compId: string, modId: string) {
     setPower((p) => ({

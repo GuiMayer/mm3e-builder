@@ -1,67 +1,55 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
-  useSensor,
-  useSensors,
-  PointerSensor,
-  KeyboardSensor,
-  type DragStartEvent,
-  type DragEndEvent,
+  useSensor, useSensors, PointerSensor, KeyboardSensor, pointerWithin, closestCenter,
+  type DragStartEvent, type DragEndEvent, type CollisionDetection, type KeyboardCoordinateGetter,
 } from '@dnd-kit/core';
-
-/* ================================================
-   usePowerDragAndDrop Hook
-   Encapsulates drag-and-drop logic for PowerBuilder
-   ================================================ */
+import type { IModifierDef, IPowerEffect } from '../../../entities/types';
+import { nextDropTargetIndex, resolveModifierDrop, type ModifierDragData, type ModifierDropData } from '../powerDragAndDropModel';
 
 interface UsePowerDragAndDropProps {
-  onDropToComponent: (componentId: string, modifierId: string) => void;
-  onDropToAEComponent: (aeId: string, componentId: string, modifierId: string) => void;
+  powerDefs: IPowerEffect[];
+  modifierDefs: IModifierDef[];
+  onDropToComponent: (componentId: string, modifierId: string, isPowerSpecific?: boolean) => void;
+  onDropToAEComponent: (aeId: string, componentId: string, modifierId: string, isPowerSpecific?: boolean) => void;
 }
 
-export function usePowerDragAndDrop({
-  onDropToComponent,
-  onDropToAEComponent,
-}: UsePowerDragAndDropProps) {
-  const [activeId, setActiveId] = useState<string | null>(null);
+export function usePowerDragAndDrop({ powerDefs, modifierDefs, onDropToComponent, onDropToAEComponent }: UsePowerDragAndDropProps) {
+  const [activeDrag, setActiveDrag] = useState<ModifierDragData | null>(null);
+  const collisionDetection: CollisionDetection = useCallback((args) => {
+    const droppableContainers = args.droppableContainers.filter((target) =>
+      resolveModifierDrop(args.active.data.current as ModifierDragData, target.data.current as ModifierDropData, powerDefs, modifierDefs));
+    const eligible = { ...args, droppableContainers };
+    // Pointer drops outside a target do nothing. Keyboard movement snaps to targets.
+    return args.pointerCoordinates ? pointerWithin(eligible) : closestCenter(eligible);
+  }, [powerDefs, modifierDefs]);
 
-  // Configure DnD sensors
+  const keyboardCoordinates: KeyboardCoordinateGetter = useCallback((event, { currentCoordinates, context }) => {
+    const { active, over, collisionRect, droppableContainers, droppableRects } = context;
+    if (!active || !collisionRect) return undefined;
+    const targets = droppableContainers.getEnabled().filter((target) => droppableRects.has(target.id)
+      && resolveModifierDrop(active.data.current as ModifierDragData, target.data.current as ModifierDropData, powerDefs, modifierDefs));
+    const next = nextDropTargetIndex(event.code, targets.findIndex((target) => target.id === over?.id), targets.length);
+    if (next === null) return undefined;
+    event.preventDefault();
+    const rect = droppableRects.get(targets[next].id)!;
+    return {
+      x: currentCoordinates.x + rect.left + rect.width / 2 - collisionRect.left - collisionRect.width / 2,
+      y: currentCoordinates.y + rect.top + rect.height / 2 - collisionRect.top - collisionRect.height / 2,
+    };
+  }, [powerDefs, modifierDefs]);
+
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(KeyboardSensor)
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: keyboardCoordinates }),
   );
-
-  function handleDragStart(event: DragStartEvent) {
-    setActiveId(event.active.id as string);
-  }
-
+  function handleDragStart(event: DragStartEvent) { setActiveDrag(event.active.data.current as ModifierDragData); }
+  function handleDragCancel() { setActiveDrag(null); }
   function handleDragEnd(event: DragEndEvent) {
-    setActiveId(null);
-    const { active, over } = event;
-    if (!over) return;
-
-    const overId = over.id as string;
-    const modId = active.id as string;
-
-    // AE dropzone uses '::' separator to avoid UUID hyphen fragmentation
-    if (overId.startsWith('dropzone-ae::')) {
-      const payload = overId.replace('dropzone-ae::', '');
-      const sep = payload.indexOf('::');
-      const aeId = payload.slice(0, sep);
-      const compId = payload.slice(sep + 2);
-      onDropToAEComponent(aeId, compId, modId);
-      return;
-    }
-
-    // Regular component dropzone
-    if (!overId.startsWith('dropzone-')) return;
-    const targetComponentId = overId.replace('dropzone-', '');
-    onDropToComponent(targetComponentId, modId);
+    setActiveDrag(null);
+    const drop = resolveModifierDrop(event.active.data.current as ModifierDragData, event.over?.data.current as ModifierDropData, powerDefs, modifierDefs);
+    if (!drop) return;
+    if (drop.aeId) onDropToAEComponent(drop.aeId, drop.componentId, drop.modifierId, drop.isPowerSpecific);
+    else onDropToComponent(drop.componentId, drop.modifierId, drop.isPowerSpecific);
   }
-
-  return {
-    sensors,
-    activeId,
-    handleDragStart,
-    handleDragEnd,
-  };
+  return { sensors, activeDrag, activeId: activeDrag?.modifier.id ?? null, collisionDetection, handleDragStart, handleDragEnd, handleDragCancel };
 }
