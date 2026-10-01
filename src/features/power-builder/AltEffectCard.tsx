@@ -1,4 +1,5 @@
 import React from 'react';
+import { getComponentEffectRanks } from '../../shared/lib/componentRanks';
 import { X, Plus, AlertTriangle } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
@@ -19,6 +20,7 @@ import { getComponentCostBreakdown } from '../../shared/lib/mathEngine';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 
 interface AltEffectCardProps {
+  strength?: number;
   ae: IAlternateEffect;
   aeIdx: number;
   cost: number;
@@ -49,7 +51,7 @@ interface AltEffectCardProps {
 }
 
 export function AltEffectCard({
-  ae, aeIdx, cost, cap, validation, isExpanded, onToggleExpand,
+  strength = 0, ae, aeIdx, cost, cap, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
   allEffects, allModDefs, genericModifierDefs, modifierIncompatibilities,
   activeId,
@@ -114,7 +116,7 @@ export function AltEffectCard({
           {ae.components.map((comp, cIdx) => {
             const effectDef = allEffects.find((d) => d.id === comp.effectId);
             const costBreakdown = effectDef
-              ? getComponentCostBreakdown(comp, effectDef, genericModifierDefs)
+              ? getComponentCostBreakdown(comp, effectDef, genericModifierDefs, strength)
               : null;
             const isActiveComp = comp.id === activeCompId;
             const droppableId = `dropzone-ae::${ae.id}::${comp.id}`;
@@ -262,7 +264,7 @@ export function AltEffectCard({
                             <ModifierParameterControls
                               applied={applied}
                               definition={def}
-                              effectRanks={comp.ranks}
+                              effectRanks={Math.max(1, getComponentEffectRanks(comp, strength))}
                               effectAction={effectDef?.action}
                               onRanksChange={(value) => onUpdateModifierRanks(comp.id, applied.modifierId, value)}
                               onOptionsChange={(options) => onUpdateModifierOptions(comp.id, applied.modifierId, options)}

@@ -14,6 +14,8 @@ import type {
   IPowerEffect,
 } from '../../entities/types';
 import { resolveModifierDefinition } from './rulesCatalog';
+import { isStrengthBasedDamage } from './abilityRanks';
+import { getAffectedRanks, getRankBoundaries } from './componentRanks';
 
 export type PricingDiagnosticCode =
   | 'unknown-effect'
@@ -223,13 +225,6 @@ export function calculateFlatCost(
   return flatSum;
 }
 
-function getAffectedRanks(applied: IAppliedModifier): number | undefined {
-  return applied.affectedRanks
-    ?? (typeof applied.options?.affectedRanks === 'number'
-      ? applied.options.affectedRanks
-      : undefined);
-}
-
 function getTierPricing(
   baseCost: number,
   modifiers: readonly ResolvedAppliedModifier[],
@@ -297,7 +292,8 @@ function resolveComponentModifiers(
 export function calculateComponentPricing(
   component: ICharacterPowerComponent,
   effectDef: IPowerEffect,
-  genericModifierDefs: IModifierDef[]
+  genericModifierDefs: IModifierDef[],
+  strength = 0
 ): ComponentCostBreakdown {
   const resolved = resolveComponentModifiers(component, effectDef, genericModifierDefs);
   const perRankModifiers = resolved.modifiers.filter(
@@ -340,42 +336,33 @@ export function calculateComponentPricing(
       subtotal,
     });
   } else {
-    let previousKey: string | null = null;
-    let currentGroup: {
-      fromRank: number;
-      toRank: number;
-      modifiers: ResolvedAppliedModifier[];
-    } | null = null;
-
-    for (let rank = 1; rank <= component.ranks; rank += 1) {
+    let fromRank = 1;
+    for (const toRank of getRankBoundaries(perRankModifiers.map(({ applied }) => applied), component.ranks)) {
+      if (toRank < fromRank) continue;
       const activeModifiers = perRankModifiers.filter(({ applied }) => {
         const affectedRanks = getAffectedRanks(applied);
-        return affectedRanks === undefined || rank <= affectedRanks;
+        return affectedRanks === undefined || toRank <= affectedRanks;
       });
-      const key = activeModifiers.map(({ applied, definition }) =>
-        `${definition.id}:${applied.ranks}:${applied.option ?? ''}:${JSON.stringify(applied.options ?? {})}`
-      ).join('|');
+      const pricing = getTierPricing(baseCost, activeModifiers, effectDef.action);
+      const rankCount = toRank - fromRank + 1;
+      rankGroups.push({ fromRank, toRank, rankCount, ...pricing, subtotal: priceRanks(rankCount, pricing) });
+      fromRank = toRank + 1;
+    }
 
-      if (currentGroup && key === previousKey) {
-        currentGroup.toRank = rank;
-      } else {
-        currentGroup = { fromRank: rank, toRank: rank, modifiers: activeModifiers };
+    // Strength already bought its built-in Damage. Charge only the added
+    // modifier cost on that contribution; flaws never refund natural Strength.
+    if (isStrengthBasedDamage(component) && strength > 0) {
+      const totalRanks = component.ranks + strength;
+      let fromRank = component.ranks + 1;
+      for (const toRank of getRankBoundaries(perRankModifiers.map(({ applied }) => applied), totalRanks)) {
+        if (toRank < fromRank) continue;
+        const activeModifiers = perRankModifiers.filter(({ applied }) =>
+          getAffectedRanks(applied) === undefined || toRank <= getAffectedRanks(applied)!);
         const pricing = getTierPricing(baseCost, activeModifiers, effectDef.action);
-        rankGroups.push({
-          fromRank: rank,
-          toRank: rank,
-          rankCount: 1,
-          ...pricing,
-          subtotal: priceRanks(1, pricing),
-        });
-      }
-      previousKey = key;
-
-      const latest = rankGroups.at(-1);
-      if (latest) {
-        latest.toRank = currentGroup.toRank;
-        latest.rankCount = latest.toRank - latest.fromRank + 1;
-        latest.subtotal = priceRanks(latest.rankCount, latest);
+        const costPerRank = pricing.isFractional ? 0 : Math.max(0, pricing.costPerRank - baseCost);
+        const rankCount = toRank - fromRank + 1;
+        rankGroups.push({ fromRank, toRank, rankCount, costPerRank, isFractional: false, ranksPerPP: 1, subtotal: rankCount * costPerRank });
+        fromRank = toRank + 1;
       }
     }
   }
@@ -402,9 +389,10 @@ export function calculateComponentPricing(
 export function calcComponentCost(
   component: ICharacterPowerComponent,
   effectDef: IPowerEffect,
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength = 0
 ): number {
-  return calculateComponentPricing(component, effectDef, modifierDefs).total;
+  return calculateComponentPricing(component, effectDef, modifierDefs, strength).total;
 }
 
 /**
@@ -479,7 +467,8 @@ export interface PowerPricing {
 function calculateComponentListPricing(
   components: ICharacterPowerComponent[],
   powerDefs: IPowerEffect[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength = 0
 ): { components: PricedPowerComponent[]; total: number; diagnostics: PricingDiagnostic[] } {
   const diagnostics: PricingDiagnostic[] = [];
   const pricedComponents = components.map((component): PricedPowerComponent => {
@@ -500,7 +489,7 @@ function calculateComponentListPricing(
       };
     }
 
-    const breakdown = calculateComponentPricing(component, effectDef, modifierDefs);
+    const breakdown = calculateComponentPricing(component, effectDef, modifierDefs, strength);
     diagnostics.push(...breakdown.diagnostics);
     return {
       componentId: component.id,
@@ -520,12 +509,14 @@ function calculateComponentListPricing(
 export function calculateAlternateEffectPricing(
   alternateEffect: IAlternateEffect,
   powerDefs: IPowerEffect[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength = 0
 ): AlternateEffectPricing {
   const pricing = calculateComponentListPricing(
     alternateEffect.components,
     powerDefs,
-    modifierDefs
+    modifierDefs,
+    strength
   );
   return {
     alternateEffectId: alternateEffect.id,
@@ -543,9 +534,10 @@ export function calculateAlternateEffectPricing(
 export function calcAlternateEffectCost(
   ae: IAlternateEffect,
   powerDefs: IPowerEffect[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength = 0
 ): number {
-  return calculateAlternateEffectPricing(ae, powerDefs, modifierDefs).total;
+  return calculateAlternateEffectPricing(ae, powerDefs, modifierDefs, strength).total;
 }
 
 /**
@@ -569,9 +561,10 @@ export function validateAECost(
 export function getComponentCostBreakdown(
   component: ICharacterPowerComponent,
   effectDef: IPowerEffect,
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength = 0
 ): ComponentCostBreakdown {
-  return calculateComponentPricing(component, effectDef, modifierDefs);
+  return calculateComponentPricing(component, effectDef, modifierDefs, strength);
 }
 
 /**
@@ -628,19 +621,21 @@ export function calculateAdvantagesCost(advantages: { ranks: number }[]): number
 export function calcPowerTotalCost(
   power: ICharacterPower,
   powerDefs: IPowerEffect[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength = 0
 ): number {
-  return calculatePowerPricing(power, powerDefs, modifierDefs).total;
+  return calculatePowerPricing(power, powerDefs, modifierDefs, strength).total;
 }
 
 export function calculatePowerPricing(
   power: ICharacterPower,
   powerDefs: IPowerEffect[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength = 0
 ): PowerPricing {
-  const main = calculateComponentListPricing(power.components, powerDefs, modifierDefs);
+  const main = calculateComponentListPricing(power.components, powerDefs, modifierDefs, strength);
   const alternateEffects = power.alternateEffects.map((alternateEffect) =>
-    calculateAlternateEffectPricing(alternateEffect, powerDefs, modifierDefs)
+    calculateAlternateEffectPricing(alternateEffect, powerDefs, modifierDefs, strength)
   );
   const dynamicCount = power.alternateEffects.filter(
     (alternateEffect) => alternateEffect.dynamic
@@ -691,9 +686,10 @@ export function calculatePowerPricing(
 export function calcEquipmentEPCost(
   item: ICharacterPower,
   powerDefs: IPowerEffect[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength = 0
 ): number {
-  return calculatePowerPricing(item, powerDefs, modifierDefs).equipmentTotal;
+  return calculatePowerPricing(item, powerDefs, modifierDefs, strength).equipmentTotal;
 }
 
 // ── Derived Stats (pure — usable by PDF generator and React hooks alike) ────

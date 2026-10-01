@@ -14,6 +14,7 @@ import type {
 } from '../../entities/types';
 import { getEffectiveAbilityRank, isStrengthBasedDamage } from './abilityRanks';
 import { resolveEffectiveRange } from './effectParameters';
+import { getAffectedRanks, getCharacterStrength, getComponentEffectRanks, getRankBoundaries } from './componentRanks';
 
 /**
  * A single row in the Offense panel table.
@@ -42,6 +43,7 @@ export interface IOffenseEntry {
   sourceType: 'power' | 'equipment' | 'resource' | 'manual' | 'unarmed';
   sourceName?: string;
   componentName?: string;
+  componentId?: string;
   relationship: 'base' | 'alternate' | 'dynamic-alternate' | 'manual' | 'unarmed';
   resistance?: string;
   effectRank: number | null;
@@ -170,8 +172,8 @@ export function calcAttackBonus(
       const def = skillDefs.find((d) => d.id === s.skillId);
       return def?.id === 'close_combat' && s.subtype?.toLowerCase() === powerName.toLowerCase();
     });
-    const skillRanks = skillEntry?.ranks ?? 0;
-    if (skillRanks > 0) parts.push(`Close Combat: ${powerName} ${skillRanks}`);
+    const skillRanks = (skillEntry?.ranks ?? 0) + (skillEntry?.otherBonus ?? 0);
+    if (skillRanks !== 0) parts.push(`Close Combat: ${powerName} ${skillRanks}`);
 
     if (accurateBonus > 0) parts.push(`Accurate ${accurateBonus}`);
     if (inaccuratePenalty > 0) parts.push(`Inaccurate -${inaccuratePenalty}`);
@@ -192,8 +194,8 @@ export function calcAttackBonus(
     const def = skillDefs.find((d) => d.id === s.skillId);
     return def?.id === 'ranged_combat' && s.subtype?.toLowerCase() === powerName.toLowerCase();
   });
-  const skillRanks = skillEntry?.ranks ?? 0;
-  if (skillRanks > 0) parts.push(`Ranged Combat: ${powerName} ${skillRanks}`);
+  const skillRanks = (skillEntry?.ranks ?? 0) + (skillEntry?.otherBonus ?? 0);
+  if (skillRanks !== 0) parts.push(`Ranged Combat: ${powerName} ${skillRanks}`);
 
   if (accurateBonus > 0) parts.push(`Accurate ${accurateBonus}`);
   if (inaccuratePenalty > 0) parts.push(`Inaccurate -${inaccuratePenalty}`);
@@ -223,10 +225,14 @@ function getResistanceLabel(
   const configured = comp.fieldValues?.resistance;
   const configuredValue = typeof configured === 'string' ? configured : undefined;
   const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+  const alternate = comp.modifiers.find((modifier) => modifier.modifierId === 'alternate_resistance');
+  const resistance = typeof alternate?.options?.subtypeId === 'string' && alternate.options.subtypeId
+    ? alternate.options.subtypeId
+    : configuredValue;
+  if (resistance) return `${capitalize(resistance)} DC ${(def.id === 'damage' ? 15 : 10) + effectRank}`;
 
   if (def.id === 'damage') return `Toughness DC ${15 + effectRank}`;
   if (def.id === 'nullify') return `${hasModifier(comp, 'alternate_resistance') ? 'Fortitude' : 'Will'} DC ${10 + effectRank}`;
-  if (configuredValue) return `${capitalize(configuredValue)} DC ${10 + effectRank}`;
   if (hasResistibleModifier(comp) || def.type === 'attack' || hasAttackExtra(comp)) return `Resistance DC ${10 + effectRank}`;
   return undefined;
 }
@@ -285,7 +291,7 @@ function createComponentProfile(
   comp: ICharacterPowerComponent,
   skillDefs: ISkillDef[],
   modifierDefs: IModifierDef[],
-  source: { id: string; name: string; type: SourceType },
+  source: { id: string; name: string; type: SourceType; parentId?: string },
   relationship: Extract<IOffenseEntry['relationship'], 'base' | 'alternate' | 'dynamic-alternate'>,
   alternateName?: string
 ): IOffenseEntry | null {
@@ -305,7 +311,7 @@ function createComponentProfile(
   return {
     id: `${source.type}:${source.id}:${relationship}:${comp.id}`,
     name: profileName,
-    bonus: bonus.value === null ? '—' : `+${bonus.value}`,
+    bonus: bonus.value === null ? '—' : `${bonus.value >= 0 ? '+' : ''}${bonus.value}`,
     bonusValue: bonus.value,
     bonusBreakdown: bonus.breakdown,
     range: effectiveRange,
@@ -314,7 +320,7 @@ function createComponentProfile(
     isAE: relationship !== 'base',
     isManual: false,
     isNoRoll: interaction.isNoRoll,
-    parentId: relationship === 'base' ? undefined : source.id,
+    parentId: relationship === 'base' ? undefined : source.parentId ?? source.id,
     interaction: interaction.interaction,
     requiresAttackCheck: interaction.requiresAttackCheck,
     causesResistance: interaction.causesResistance,
@@ -322,10 +328,41 @@ function createComponentProfile(
     sourceType: source.type,
     sourceName: source.name || def.name,
     componentName: def.name,
+    componentId: comp.id,
     relationship,
     resistance: interaction.causesResistance ? getResistanceLabel(def, comp, effectRank) : undefined,
     effectRank,
   };
+}
+
+function createComponentProfiles(
+  character: ICharacter,
+  def: IPowerEffect,
+  component: ICharacterPowerComponent,
+  skillDefs: ISkillDef[],
+  modifierDefs: IModifierDef[],
+  source: { id: string; name: string; type: SourceType; parentId?: string },
+  relationship: Extract<IOffenseEntry['relationship'], 'base' | 'alternate' | 'dynamic-alternate'>,
+  alternateName?: string,
+): IOffenseEntry[] {
+  const ranks = getComponentEffectRanks(component, getCharacterStrength(character));
+  const profiles = new Map<string, IOffenseEntry>();
+  for (const boundary of getRankBoundaries(component.modifiers, ranks)) {
+    const slice: ICharacterPowerComponent = {
+      ...component,
+      ranks: boundary,
+      fieldValues: { ...component.fieldValues, damageBasis: 'standalone' },
+      modifiers: component.modifiers.filter((modifier) =>
+        getAffectedRanks(modifier) === undefined || boundary <= getAffectedRanks(modifier)!),
+    };
+    const profile = createComponentProfile(character, def, slice, skillDefs, modifierDefs, source, relationship, alternateName);
+    if (!profile) continue;
+    // Keep the highest cumulative rank for each distinct mechanical use.
+    // Area 4 + Damage 12 yields Area 4 and a direct Damage 12 attack.
+    const key = JSON.stringify([profile.range, profile.tags, profile.bonusValue, profile.resistance?.replace(/DC -?\d+$/, ''), profile.notes]);
+    profiles.set(key, { ...profile, id: `${profile.id}:${boundary}` });
+  }
+  return [...profiles.values()];
 }
 
 /**
@@ -356,17 +393,17 @@ export function buildTargetedEffectProfiles(
       const def = skillDefs.find((d) => d.id === s.skillId);
       return def?.id === 'close_combat' && s.subtype?.toLowerCase() === 'unarmed';
     });
-    const unarmedSkillRanks = unarmedSkill?.ranks ?? 0;
+    const unarmedSkillRanks = (unarmedSkill?.ranks ?? 0) + (unarmedSkill?.otherBonus ?? 0);
 
     const total = base + closeAdvRanks + unarmedSkillRanks;
     const parts = [`FGT ${base}`];
     if (closeAdvRanks > 0) parts.push(`Close Atk ${closeAdvRanks}`);
-    if (unarmedSkillRanks > 0) parts.push(`Unarmed ${unarmedSkillRanks}`);
+    if (unarmedSkillRanks !== 0) parts.push(`Unarmed ${unarmedSkillRanks}`);
 
     entries.push({
       id: '__unarmed__',
       name: translations?.unarmed ?? 'Unarmed',
-      bonus: `+${total}`,
+      bonus: `${total >= 0 ? '+' : ''}${total}`,
       bonusValue: total,
       bonusBreakdown: parts.join(' + '),
       range: 'close',
@@ -394,16 +431,15 @@ export function buildTargetedEffectProfiles(
       for (const comp of sourcePower.components) {
         const def = powerDefs.find((effect) => effect.id === comp.effectId);
         if (!def) continue;
-        const profile = createComponentProfile(character, def, comp, skillDefs, modifierDefs, source, 'base');
-        if (profile) entries.push(profile);
+        entries.push(...createComponentProfiles(character, def, comp, skillDefs, modifierDefs, source, 'base'));
       }
       for (const ae of sourcePower.alternateEffects ?? []) {
         const relationship = ae.dynamic ? 'dynamic-alternate' : 'alternate';
         for (const comp of ae.components) {
           const def = powerDefs.find((effect) => effect.id === comp.effectId);
           if (!def) continue;
-          const profile = createComponentProfile(character, def, comp, skillDefs, modifierDefs, source, relationship, ae.name);
-          if (profile) entries.push(profile);
+          const alternateSource = { ...source, id: `${source.id}:${ae.id}`, parentId: source.id };
+          entries.push(...createComponentProfiles(character, def, comp, skillDefs, modifierDefs, alternateSource, relationship, ae.name));
         }
       }
     }

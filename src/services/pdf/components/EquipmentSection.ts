@@ -4,6 +4,7 @@
    ================================================ */
 
 import type { ICharacter, IPowerEffect, IModifierDef, IResource } from '../../../entities/types';
+import { getCharacterStrength } from '../../../shared/lib/componentRanks';
 import { escapeHtml } from './utils';
 import { resolveModifierDefinition } from '../../../shared/lib/rulesCatalog';
 import { calcEquipmentEPCost, calcPowerTotalCost } from '../../../shared/lib/mathEngine';
@@ -21,6 +22,7 @@ export interface EquipmentSectionData {
  */
 export function renderEquipmentSection(data: EquipmentSectionData): string {
   const { character, powerDefs, modifierDefs, resources = [] } = data;
+  const strength = getCharacterStrength(character);
   
   // Filter equipment (powers with removable flag)
   const equipment = character.powers.filter(p => 
@@ -38,14 +40,14 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
   }
 
   const equipmentHtml = equipment
-    .map(item => renderEquipmentEntry(item, powerDefs, modifierDefs))
+    .map(item => renderEquipmentEntry(item, powerDefs, modifierDefs, strength))
     .join('');
 
   const deviceCost = equipment.reduce((sum, item) =>
-    sum + calcPowerTotalCost(item, powerDefs, modifierDefs), 0
+    sum + calcPowerTotalCost(item, powerDefs, modifierDefs, strength), 0
   );
-  const resourceCost = legacyEquipment.reduce((sum, item) => sum + calcEquipmentEPCost(item, powerDefs, modifierDefs), 0)
-    + linkedResources.reduce((sum, entry) => sum + (entry.isFree ? 0 : entry.contributionEP ?? getResourceEPCost(entry.resource)), 0);
+  const resourceCost = legacyEquipment.reduce((sum, item) => sum + calcEquipmentEPCost(item, powerDefs, modifierDefs, strength), 0)
+    + linkedResources.reduce((sum, entry) => sum + (entry.isFree ? 0 : entry.contributionEP ?? getResourceEPCost(entry.resource, powerDefs, modifierDefs, strength)), 0);
   const costLabel = [deviceCost > 0 ? `${deviceCost} PP` : '', resourceCost > 0 ? `${resourceCost} EP` : ''].filter(Boolean).join(' · ') || '0 EP';
 
   return `
@@ -56,16 +58,16 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
       </div>
       <div class="equipment-list">
         ${equipmentHtml}
-        ${legacyEquipment.map((item) => renderLegacyEquipmentEntry(item, powerDefs, modifierDefs)).join('')}
-        ${linkedResources.map((entry) => renderResourceEntry(entry.resource, entry.isFree, entry.contributionEP, powerDefs, modifierDefs)).join('')}
+        ${legacyEquipment.map((item) => renderLegacyEquipmentEntry(item, powerDefs, modifierDefs, strength)).join('')}
+        ${linkedResources.map((entry) => renderResourceEntry(entry.resource, entry.isFree, entry.contributionEP, powerDefs, modifierDefs, strength)).join('')}
         ${character.equipmentNotes?.trim() ? `<div class="power-description">${escapeHtml(character.equipmentNotes)}</div>` : ''}
       </div>
     </div>
   `.trim();
 }
 
-function renderResourceEntry(resource: IResource, isFree: boolean, contributionEP: number | undefined, powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]): string {
-  const cost = isFree ? 0 : contributionEP ?? getResourceEPCost(resource);
+function renderResourceEntry(resource: IResource, isFree: boolean, contributionEP: number | undefined, powerDefs: IPowerEffect[], modifierDefs: IModifierDef[], strength: number): string {
+  const cost = isFree ? 0 : contributionEP ?? getResourceEPCost(resource, powerDefs, modifierDefs, strength);
   const type = resource.type.charAt(0).toUpperCase() + resource.type.slice(1);
   const traits = resource.type === 'vehicle'
     ? [`${resource.size}`, `STR ${resource.strength}`, `Speed ${resource.speed}`, `Defense ${resource.defense}`, `Toughness ${resource.toughness}`, formatFeatures(resource.features), formatPowerList('Systems', resource.systems, powerDefs, modifierDefs)]
@@ -100,8 +102,8 @@ function formatPower(power: ICharacter['powers'][0], powerDefs: IPowerEffect[], 
   return [power.name, effects, modifiers.length > 0 ? `Modifiers: ${modifiers.join(', ')}` : '', alternates.length > 0 ? `Alternates: ${alternates.join(', ')}` : '', power.notes].filter(Boolean).join(' — ');
 }
 
-function renderLegacyEquipmentEntry(item: ICharacter['powers'][0], powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]): string {
-  return `<div class="equipment-entry"><div class="power-header"><div class="power-name">${escapeHtml(item.name || 'Unnamed Equipment')} <span class="text-muted">(Equipment)</span></div><div class="power-cost">${calcEquipmentEPCost(item, powerDefs, modifierDefs)} EP</div></div><div class="power-effects">${escapeHtml(formatPower(item, powerDefs, modifierDefs))}</div></div>`;
+function renderLegacyEquipmentEntry(item: ICharacter['powers'][0], powerDefs: IPowerEffect[], modifierDefs: IModifierDef[], strength: number): string {
+  return `<div class="equipment-entry"><div class="power-header"><div class="power-name">${escapeHtml(item.name || 'Unnamed Equipment')} <span class="text-muted">(Equipment)</span></div><div class="power-cost">${calcEquipmentEPCost(item, powerDefs, modifierDefs, strength)} EP</div></div><div class="power-effects">${escapeHtml(formatPower(item, powerDefs, modifierDefs))}</div></div>`;
 }
 
 /**
@@ -110,9 +112,10 @@ function renderLegacyEquipmentEntry(item: ICharacter['powers'][0], powerDefs: IP
 function renderEquipmentEntry(
   item: ICharacter['powers'][0],
   powerDefs: IPowerEffect[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength: number
 ): string {
-  const totalCost = calcPowerTotalCost(item, powerDefs, modifierDefs);
+  const totalCost = calcPowerTotalCost(item, powerDefs, modifierDefs, strength);
   
   // Build effects string
   const effects = buildEffectsString(item, powerDefs);

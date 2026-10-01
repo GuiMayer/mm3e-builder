@@ -234,7 +234,7 @@ export function useAlternateEffects({
             comp.id !== compId ? comp : {
               ...comp,
               modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, options } : m
+                m.modifierId === modId ? { ...m, options, ...(typeof options.affectedRanks === 'number' ? { affectedRanks: options.affectedRanks } : {}) } : m
               ),
             }
           ),

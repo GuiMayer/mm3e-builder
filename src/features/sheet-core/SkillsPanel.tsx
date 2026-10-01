@@ -1,5 +1,7 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
-import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { memo, useState, useMemo, useRef, useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+
+import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { ICharacterSkill, AbilityKey, ISkillDef } from '../../entities/types';
 import { SKILL_DEFS } from '../../entities/gameDataLoaders';
@@ -23,10 +25,10 @@ const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: st
   sta: { bg: 'rgba(148,163,184,0.12)', color: '#94a3b8', border: 'rgba(148,163,184,0.3)' },
 };
 
-export function SkillsPanel({ cost }: { cost: number }) {
+function SkillsPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const skillDefs = useLocalizedData(SKILL_DEFS);
-  const { character } = useActiveCharacter();
+  const character = useCharacterSelector(useShallow((value) => ({ skills: value.skills, abilities: value.abilities, absentAbilities: value.absentAbilities })));
   const { setSkills } = useCharacterActions();
   const skills = character.skills;
   const abilities = character.abilities;
@@ -559,3 +561,5 @@ export function SkillsPanel({ cost }: { cost: number }) {
     </section>
   );
 }
+
+export const SkillsPanel = memo(SkillsPanelComponent);

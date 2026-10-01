@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { memo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+
+import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useTranslation } from 'react-i18next';
 import { FileText, ChevronDown, ChevronRight } from 'lucide-react';
@@ -8,9 +10,9 @@ import { FileText, ChevronDown, ChevronRight } from 'lucide-react';
  * F-14: Background & Notes panel
  * Collapsible free-text textarea at the bottom of the character sheet.
  */
-export function NotesPanel() {
+function NotesPanelComponent() {
   const { t } = useTranslation();
-  const { character } = useActiveCharacter();
+  const character = useCharacterSelector(useShallow((value) => ({ notes: value.notes })));
   const { setNotes } = useCharacterActions();
   const notes = character.notes ?? '';
   const [open, setOpen] = useState(false);
@@ -118,3 +120,5 @@ export function NotesPanel() {
     </section>
   );
 }
+
+export const NotesPanel = memo(NotesPanelComponent);

@@ -6,6 +6,8 @@ import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { useResourcesStore } from '../../store/resourcesStore';
+import { getCharacterStrength } from '../../shared/lib/componentRanks';
+import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { getResourceEPCost } from '../../shared/lib/resourceCalculations';
 import { createId } from '../../shared/lib/identity';
 import { Button } from '../../shared/ui/Button';
@@ -81,7 +83,7 @@ export function ResourcesPanel() {
         {links.map((link) => {
           const resource = resources.find((item) => item.id === link.resourceId);
           if (!resource) return <div className="resources-panel__missing" key={link.id}>{t('resources.missing')}<button onClick={() => removeLink(link.id)} aria-label={t('common.remove')}><Trash2 size={14} /></button></div>;
-          const cost = link.isFree ? 0 : link.contributionEP ?? getResourceEPCost(resource);
+          const cost = link.isFree ? 0 : link.contributionEP ?? getResourceEPCost(resource, POWER_DEFS, MODIFIER_DEFS, getCharacterStrength(character));
           return (
             <article className="resources-panel__item" key={link.id}>
               <div className="resources-panel__item-main"><strong>{resource.name || t('resources.unnamed')}</strong><span>{t(`resources.type.${resource.type}`)}</span></div>

@@ -1,5 +1,7 @@
 # Relatório de Cobertura de Regras M&M 3e
 
+> Registro histórico da versão 1.0.0. Os números abaixo não descrevem a suíte atual. Consulte a [verificação das correções de outubro de 2026](rules-audit-2026-10.md).
+
 **Data:** 2026-05-10  
 **Versão do Builder:** 1.0.0  
 **Referência:** Mutants & Masterminds 3e Hero's Handbook Deluxe

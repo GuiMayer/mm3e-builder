@@ -41,8 +41,8 @@ const resource: IResource = {
 };
 
 describe('point calculation revision notice', () => {
-  it('uses revision 4 for the absent ability and duration corrections', () => {
-    expect(POINT_CALCULATION_REVISION).toBe('4');
+  it('uses revision 5 for Strength-based modifier pricing', () => {
+    expect(POINT_CALCULATION_REVISION).toBe('5');
   });
 
   it('does not bother a first-time user with an empty draft', () => {

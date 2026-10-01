@@ -6,7 +6,8 @@ import type {
   ICharacterPowerComponent,
   IPowerEffect,
 } from '../../entities/types';
-import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
+import { getCharacterStrength, getComponentEffectRanks } from '../../shared/lib/componentRanks';
+import { SKILL_DEFS, POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { EffectPalette } from './EffectPalette';
 import { AltEffectCard } from './AltEffectCard';
 import { useAlternateEffects } from './hooks/useAlternateEffects';
@@ -179,8 +180,10 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     () => validatePowerForSave(power, validationRules, {
       powerDefs,
       modifierDefs,
+      character,
+      skillDefs: SKILL_DEFS,
     }).filter((validationIssue) => validationIssue.severity === 'warning'),
-    [modifierDefs, power, powerDefs, validationRules]
+    [modifierDefs, power, powerDefs, validationRules, character]
   );
 
   // Palette context: when an AE is expanded, palette serves that AE's active component
@@ -369,7 +372,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           : {
               ...comp,
               modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, options } : m
+                m.modifierId === modId ? { ...m, options, ...(typeof options.affectedRanks === 'number' ? { affectedRanks: options.affectedRanks } : {}) } : m
               ),
             }
       ),
@@ -434,6 +437,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     const saveIssues = validatePowerForSave(cleanPower, validationRules, {
       powerDefs,
       modifierDefs,
+      character,
+      skillDefs: SKILL_DEFS,
     }).filter((validationIssue) => validationIssue.severity === 'error');
 
     if (saveIssues.length > 0) {
@@ -761,7 +766,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                               <ModifierParameterControls
                                 applied={applied}
                                 definition={def}
-                                effectRanks={comp.ranks}
+                                effectRanks={Math.max(1, getComponentEffectRanks(comp, getCharacterStrength(character)))}
                                 effectAction={effectDef?.action}
                                 onRanksChange={(value) => updateModifierRanks(comp.id, applied.modifierId, value)}
                                 onOptionsChange={(options) => updateModifierOptions(comp.id, applied.modifierId, options)}
@@ -959,6 +964,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               )}
               {power.alternateEffects.map((ae, aeIdx) => (
                 <AltEffectCard
+                  strength={getCharacterStrength(character)}
                   key={ae.id}
                   ae={ae}
                   aeIdx={aeIdx}

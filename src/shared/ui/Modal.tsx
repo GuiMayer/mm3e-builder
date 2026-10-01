@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -10,33 +10,65 @@ interface ModalProps {
   children: ReactNode;
 }
 
+let scrollLocks = 0;
+let originalOverflow = '';
+
 export function Modal({ isOpen, onClose, title, compact, children }: ModalProps) {
   const { t } = useTranslation();
+  const titleId = useId();
+  const contentRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+    if (!isOpen) return;
+    const mountedContent = contentRef.current;
+    if (!mountedContent) return;
+    const content: HTMLDivElement = mountedContent;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    if (scrollLocks++ === 0) originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const focusable = () => Array.from(content.querySelectorAll<HTMLElement>(
+      'button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href], [tabindex="0"]',
+    )).filter((element) => element.getClientRects().length > 0);
+    const isTopmost = () => Array.from(document.querySelectorAll('[role="dialog"][aria-modal="true"]')).at(-1) === content;
+    (focusable()[0] ?? content).focus();
+    function handleKey(e: KeyboardEvent) {
+      if (!isTopmost() || e.defaultPrevented) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        onCloseRef.current();
+      } else if (e.key === 'Tab') {
+        const targets = focusable();
+        const first = targets[0] ?? content;
+        const last = targets.at(-1) ?? content;
+        if (!content.contains(document.activeElement) || (e.shiftKey ? document.activeElement === first : document.activeElement === last)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+        }
+      }
     }
-    return () => { document.body.style.overflow = ''; };
+    function containFocus(e: FocusEvent) {
+      if (isTopmost() && !content.contains(e.target as Node)) (focusable()[0] ?? content).focus();
+    }
+    document.addEventListener('keydown', handleKey);
+    document.addEventListener('focusin', containFocus);
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.removeEventListener('focusin', containFocus);
+      if (--scrollLocks === 0) document.body.style.overflow = originalOverflow;
+      if (previousFocus?.isConnected) previousFocus.focus();
+    };
   }, [isOpen]);
-
-  useEffect(() => {
-    function handleEsc(e: KeyboardEvent) {
-      if (e.key === 'Escape') onClose();
-    }
-    if (isOpen) document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
-  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className={`modal-content ${compact ? 'modal-content--compact' : ''}`} onClick={(e) => e.stopPropagation()}>
+      <div ref={contentRef} data-mm-modal role="dialog" aria-modal="true" aria-labelledby={title ? titleId : undefined} aria-label={title ? undefined : t('builder.title')} tabIndex={-1} className={`modal-content ${compact ? 'modal-content--compact' : ''}`} onClick={(e) => e.stopPropagation()}>
         {title && (
           <div className="modal-header">
-            <h2 className="modal-title">{title}</h2>
+            <h2 id={titleId} className="modal-title">{title}</h2>
             <button className="modal-close" onClick={onClose} aria-label={t('builder.close')}>
               <X size={20} />
             </button>

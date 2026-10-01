@@ -6,6 +6,7 @@ import {
   getSelectedModifierSubtypeId,
   isRankedModifier,
 } from '../../../shared/lib/mathEngine';
+import { getAffectedRanks } from '../../../shared/lib/componentRanks';
 import { NumberInput } from '../../../shared/ui/NumberInput';
 
 interface ModifierParameterControlsProps {
@@ -51,9 +52,7 @@ export function ModifierParameterControls({
         <NumberInput
           variant="small"
           className="applied-mod-ranks"
-          value={typeof applied.options?.affectedRanks === 'number'
-            ? applied.options.affectedRanks
-            : effectRanks}
+          value={getAffectedRanks(applied) ?? effectRanks}
           onChange={(value) => onOptionsChange({
             ...applied.options,
             affectedRanks: Math.max(1, Math.min(effectRanks, value)),

@@ -4,7 +4,7 @@ import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { ICharacterPower } from '../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
-import { calcPowerTotalCost } from '../../shared/lib/mathEngine';
+import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { Plus, Edit3, Trash2, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -63,10 +63,7 @@ export function PowersList() {
     setBuilderOpen(true);
   }
 
-  const totalPowersCost = powers.reduce(
-    (sum, p) => sum + calcPowerTotalCost(p, powerDefs, modifierDefs),
-    0
-  );
+  const { powersCost: totalPowersCost, powerPricing } = useCalculatedPP();
 
   return (
     <section className="panel">
@@ -81,13 +78,11 @@ export function PowersList() {
 
       <div className="powers-grid">
         {powers.map((power, i) => {
-          const totalCost = calcPowerTotalCost(power, powerDefs, modifierDefs);
+          const totalCost = powerPricing[i]?.total ?? 0;
 
           // Build display info from components
           const effectNames = power.components
-            .map((c) => powerDefs.find((d) => d.id === c.effectId))
-            .filter(Boolean)
-            .map((d) => `${d!.name} ${power.components.find((c) => c.effectId === d!.id)?.ranks ?? ''}`);
+            .map((component) => `${powerDefs.find((definition) => definition.id === component.effectId)?.name ?? component.effectId} ${component.ranks}`);
 
           const appliedModNames = power.components.flatMap((comp) =>
             comp.modifiers.map((m) => {

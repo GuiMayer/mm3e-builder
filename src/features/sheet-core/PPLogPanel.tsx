@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { memo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+
+import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { useTranslation } from 'react-i18next';
@@ -11,9 +13,9 @@ import { useAppDialog } from '../../shared/ui/appDialogContext';
  * Displayed only when character.campaignMode = true.
  * Shows a PP breakdown (base + earned + total) and a log of PP awards.
  */
-export function PPLogPanel() {
+function PPLogPanelComponent() {
   const { t } = useTranslation();
-  const { character } = useActiveCharacter();
+  const character = useCharacterSelector(useShallow((value) => ({ campaignMode: value.campaignMode, ppLog: value.ppLog, header: value.header })));
   const { addPPLogEntry, removePPLogEntry } = useCharacterActions();
   const { totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
 
@@ -384,3 +386,5 @@ export function PPLogPanel() {
     </section>
   );
 }
+
+export const PPLogPanel = memo(PPLogPanelComponent);

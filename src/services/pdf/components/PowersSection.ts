@@ -4,6 +4,7 @@
    ================================================ */
 
 import type { ICharacter, IPowerEffect, IModifierDef } from '../../../entities/types';
+import { getCharacterStrength } from '../../../shared/lib/componentRanks';
 import { escapeHtml } from './utils';
 import { calcPowerTotalCost } from '../../../shared/lib/mathEngine';
 import { resolveModifierDefinition } from '../../../shared/lib/rulesCatalog';
@@ -36,7 +37,7 @@ export function renderPowersSection(data: PowersSectionData): string {
   }
 
   const powersHtml = powers
-    .map(power => renderPowerEntry(power, powerDefs, modifierDefs))
+    .map(power => renderPowerEntry(power, powerDefs, modifierDefs, getCharacterStrength(character)))
     .join('');
 
   return `
@@ -58,9 +59,10 @@ export function renderPowersSection(data: PowersSectionData): string {
 function renderPowerEntry(
   power: ICharacter['powers'][0],
   powerDefs: IPowerEffect[],
-  modifierDefs: IModifierDef[]
+  modifierDefs: IModifierDef[],
+  strength: number
 ): string {
-  const totalCost = calcPowerTotalCost(power, powerDefs, modifierDefs);
+  const totalCost = calcPowerTotalCost(power, powerDefs, modifierDefs, strength);
   
   // Build effects string
   const effects = buildEffectsString(power, powerDefs);

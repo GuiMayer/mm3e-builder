@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
-import { useActiveCharacter } from './useActiveCharacter';
+import { useCharacterSelector } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { getActiveValidationRules } from '../lib/validationRules';
-import { calculateCharacterPointSummary } from '../lib/pointSummary';
+import { createCharacterPointSummarySelector } from '../lib/pointSummary';
+
+const selectPointSummary = createCharacterPointSummarySelector(POWER_DEFS, MODIFIER_DEFS);
 
 /**
  * Hook that reactively calculates total PP spent across all sections.
@@ -12,17 +14,11 @@ import { calculateCharacterPointSummary } from '../lib/pointSummary';
  * Also tracks Equipment Points (EP) budget from the Equipment advantage.
  */
 export function useCalculatedPP() {
-  const { character } = useActiveCharacter();
   const validationRules = useAppStore((s) => s.validationRules);
   const resources = useResourcesStore((s) => s.resources);
+  const summary = useCharacterSelector((character) => selectPointSummary(character, resources));
 
   return useMemo(() => {
-    const summary = calculateCharacterPointSummary(
-      character,
-      resources,
-      POWER_DEFS,
-      MODIFIER_DEFS
-    );
     
     // Check if PP budget enforcement is enabled
     const activeRules = getActiveValidationRules(validationRules);
@@ -42,5 +38,5 @@ export function useCalculatedPP() {
       isBudgetEnforced,
       isOverEquipmentLimit,
     };
-  }, [character, resources, validationRules]);
+  }, [summary, validationRules]);
 }

@@ -689,7 +689,20 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
 
           .menubar-left {
             gap: var(--s-sm);
+            width: 100%;
+            min-width: 0;
+            flex-wrap: wrap;
           }
+          .menubar-title { flex: 1; white-space: nowrap; }
+          .menubar-tabs {
+            order: 1;
+            flex: 1 1 100%;
+            min-width: 0;
+            max-width: 100%;
+            overflow-x: auto;
+          }
+          .menubar-tab { flex-shrink: 0; min-height: var(--touch-target-min); }
+          .menubar-pp { flex-shrink: 0; }
 
           /* Show hamburger button */
           .menubar-hamburger {

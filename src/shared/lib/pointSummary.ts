@@ -13,6 +13,7 @@ import {
   type PowerPricing,
   type PricingDiagnostic,
 } from './mathEngine';
+import { getCharacterStrength } from './componentRanks';
 import { getCharacterResourceEPUsed } from './resourceCalculations';
 
 export interface CharacterPointSummary {
@@ -35,6 +36,23 @@ export interface CharacterPointSummary {
   diagnostics: PricingDiagnostic[];
 }
 
+/** A bounded cache shared by UI consumers; unrelated text edits preserve identity. */
+export function createCharacterPointSummarySelector(powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]) {
+  let previous: unknown[] = [];
+  let summary: CharacterPointSummary | undefined;
+  return (character: ICharacter, resources: IResource[]): CharacterPointSummary => {
+    const inputs = [character.abilities, character.absentAbilities, character.defenses,
+      character.skills, character.advantages, character.powers, character.equipment,
+      character.resourceLinks, character.header.powerLevel, character.campaignMode,
+      character.ppLog, resources];
+    if (!summary || inputs.some((value, index) => value !== previous[index])) {
+      summary = calculateCharacterPointSummary(character, resources, powerDefs, modifierDefs);
+      previous = inputs;
+    }
+    return summary;
+  };
+}
+
 /** Canonical point summary for the sheet, Resources and every export surface. */
 export function calculateCharacterPointSummary(
   character: ICharacter,
@@ -54,7 +72,7 @@ export function calculateCharacterPointSummary(
   const skillsCost = calculateSkillsCost(totalSkillRanks);
   const advantagesCost = calculateAdvantagesCost(character.advantages);
   const powerPricing = character.powers.map((power) =>
-    calculatePowerPricing(power, powerDefs, modifierDefs)
+    calculatePowerPricing(power, powerDefs, modifierDefs, getCharacterStrength(character))
   );
   const powersCost = powerPricing.reduce((sum, pricing) => sum + pricing.total, 0);
   const totalSpent = abilitiesCost
@@ -68,7 +86,7 @@ export function calculateCharacterPointSummary(
   const totalAvailable = character.header.powerLevel * 15 + ppEarned;
 
   const equipmentPricing = (character.equipment ?? []).map((item) =>
-    calculatePowerPricing(item, powerDefs, modifierDefs)
+    calculatePowerPricing(item, powerDefs, modifierDefs, getCharacterStrength(character))
   );
   const legacyEPUsed = equipmentPricing.reduce(
     (sum, pricing) => sum + pricing.equipmentTotal,

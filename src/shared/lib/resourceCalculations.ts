@@ -7,6 +7,7 @@ import type {
   IModifierDef,
   IPowerEffect,
 } from '../../entities/types';
+import { getCharacterStrength } from './componentRanks';
 import { calcEquipmentEPCost } from './mathEngine';
 import { MODIFIER_DEFS, POWER_DEFS } from '../../entities/gameDataLoaders';
 
@@ -27,9 +28,10 @@ const HEADQUARTERS_SIZE_COST: Record<IHeadquartersResource['size'], number> = {
 function powerCost(
   power: ICharacterPower,
   powerDefs: IPowerEffect[] = POWER_DEFS,
-  modifierDefs: IModifierDef[] = MODIFIER_DEFS
+  modifierDefs: IModifierDef[] = MODIFIER_DEFS,
+  strength = 0
 ): number {
-  return calcEquipmentEPCost(power, powerDefs, modifierDefs);
+  return calcEquipmentEPCost(power, powerDefs, modifierDefs, strength);
 }
 
 export function getVehicleBaseTraits(size: IVehicleResource['size']) {
@@ -49,7 +51,7 @@ export function getVehicleResourceCost(
     + Math.max(0, resource.toughness - base.toughness)
     + resource.features.reduce((total, feature) => total + (feature.ranks ?? 1), 0);
   return Math.max(0, traits + resource.systems.reduce(
-    (total, system) => total + powerCost(system, powerDefs, modifierDefs),
+    (total, system) => total + powerCost(system, powerDefs, modifierDefs, resource.strength),
     0
   ));
 }
@@ -66,11 +68,12 @@ export function getHeadquartersResourceCost(resource: IHeadquartersResource): nu
 export function getResourceEPCost(
   resource: IResource,
   powerDefs: IPowerEffect[] = POWER_DEFS,
-  modifierDefs: IModifierDef[] = MODIFIER_DEFS
+  modifierDefs: IModifierDef[] = MODIFIER_DEFS,
+  strength = 0
 ): number {
   if (resource.type === 'vehicle') return getVehicleResourceCost(resource, powerDefs, modifierDefs);
   if (resource.type === 'headquarters') return getHeadquartersResourceCost(resource);
-  return powerCost(resource.power, powerDefs, modifierDefs);
+  return powerCost(resource.power, powerDefs, modifierDefs, strength);
 }
 
 export function getCharacterResourceEPUsed(
@@ -83,6 +86,6 @@ export function getCharacterResourceEPUsed(
     if (link.isFree) return total;
     const resource = resources.find((item) => item.id === link.resourceId);
     if (!resource) return total;
-    return total + (link.contributionEP ?? getResourceEPCost(resource, powerDefs, modifierDefs));
+    return total + (link.contributionEP ?? getResourceEPCost(resource, powerDefs, modifierDefs, getCharacterStrength(character)));
   }, 0);
 }

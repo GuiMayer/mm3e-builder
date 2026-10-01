@@ -1,4 +1,6 @@
-import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { memo } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useAppStore } from '../../store/appStore';
 import type { AbilityKey } from '../../entities/types';
@@ -8,9 +10,9 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 
 const ABILITY_KEYS: AbilityKey[] = ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre'];
 
-export function AbilitiesPanel({ cost }: { cost: number }) {
+function AbilitiesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const { character } = useActiveCharacter();
+  const character = useCharacterSelector(useShallow((value) => ({ abilities: value.abilities, absentAbilities: value.absentAbilities })));
   const { setAbility, toggleAbsentAbility } = useCharacterActions();
   const abilities = character.abilities;
   const absentAbilities = character.absentAbilities;
@@ -118,3 +120,5 @@ export function AbilitiesPanel({ cost }: { cost: number }) {
     </section>
   );
 }
+
+export const AbilitiesPanel = memo(AbilitiesPanelComponent);

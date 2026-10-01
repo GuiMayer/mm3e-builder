@@ -8,12 +8,8 @@ import type { ICharacter, IResource } from '../../entities/types';
 import { buildOffenseSummary } from '../../shared/lib/offenseSummary';
 import type { IOffenseEntry } from '../../shared/lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
-import {
-  calcToughnessBonus,
-  calcInitiativeBonus,
-} from '../../shared/lib/mathEngine';
+import { deriveCharacterDefenses } from '../../shared/lib/derivedDefenses';
 import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
-import { getEffectiveAbilityRank } from '../../shared/lib/abilityRanks';
 
 import { loadPDFTemplate } from './pdfTemplateLoader';
 import { sliceWithOverflow } from './helpers';
@@ -76,22 +72,7 @@ export async function fillAndDownloadPDF(character: ICharacter, resources: IReso
   );
 
   // ── 4. Derive toughness and initiative ────────────────────────
-  const staValue = getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'sta');
-  const aglValue = getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'agl');
-
-  const { bonus: toughnessBonus } = calcToughnessBonus(
-    character.powers,
-    character.advantages,
-    POWER_DEFS
-  );
-  const toughnessTotal = staValue + toughnessBonus;
-
-  const { total: initiativeTotal } = calcInitiativeBonus(
-    aglValue,
-    character.advantages,
-    character.powers,
-    POWER_DEFS
-  );
+  const { toughnessTotal, initiativeTotal } = deriveCharacterDefenses(character, POWER_DEFS, resources);
 
   // ── 5. Handle overflow for attacks ────────────────────────────
   const { overflow: attackOverflow } = sliceWithOverflow(offenseEntries, PDF_LIMITS.attacks);

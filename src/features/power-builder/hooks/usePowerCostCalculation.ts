@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { getCharacterStrength } from '../../../shared/lib/componentRanks';
 import type {
   ICharacterPower,
   ICharacter,
@@ -43,9 +44,10 @@ export function usePowerCostCalculation({
   validationRules,
   character,
 }: UsePowerCostCalculationProps) {
+  const strength = getCharacterStrength(character);
   const pricing = useMemo(
-    () => calculatePowerPricing(power, powerDefs, modifierDefs),
-    [power, powerDefs, modifierDefs]
+    () => calculatePowerPricing(power, powerDefs, modifierDefs, strength),
+    [power, powerDefs, modifierDefs, strength]
   );
   const componentCosts = pricing.components as ComponentCostResult[];
   const mainCost = pricing.mainCost;

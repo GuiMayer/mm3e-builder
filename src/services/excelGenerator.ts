@@ -5,6 +5,8 @@
  */
 
 import ExcelJS from 'exceljs';
+import { deriveCharacterDefenses } from '../shared/lib/derivedDefenses';
+import { getCharacterStrength } from '../shared/lib/componentRanks';
 import type {
   ICharacter,
   IModifierDef,
@@ -16,6 +18,7 @@ import type {
 } from '../entities/types';
 import {
   calcAlternateEffectCost,
+  calcEquipmentEPCost,
   calculateAbilitiesCost,
   calculateDefensesCost,
   calculateSkillsCost,
@@ -183,7 +186,7 @@ export async function generateExcel(
   buildAbilitiesSheet(wb, character, labels);
 
   // ── 3. DEFENSES SHEET ──
-  buildDefensesSheet(wb, character, labels);
+  buildDefensesSheet(wb, character, labels, gameData, resources);
 
   // ── 4. SKILLS SHEET ──
   buildSkillsSheet(wb, character, labels, gameData, language);
@@ -199,7 +202,7 @@ export async function generateExcel(
 
   // ??? 8. EQUIPMENT SHEET ???
   if ((character.equipment && character.equipment.length > 0) || character.equipmentNotes?.trim() || (character.resourceLinks?.length ?? 0) > 0) {
-    buildEquipmentSheet(wb, character, labels, resources);
+    buildEquipmentSheet(wb, character, labels, resources, gameData);
   }
 
   // ?? 9. TARGETED EFFECTS SHEET ??
@@ -373,7 +376,7 @@ function buildAbilitiesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
   autoWidth(ws);
 }
 
-function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels) {
+function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, gameData: GameDataRefs, resources: IResource[]) {
   const ws = wb.addWorksheet(labels.sheetDefenses);
 
   const header = ws.getRow(1);
@@ -416,10 +419,10 @@ function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expo
   derivedHeaderRow.getCell(1).value = 'Derived Stats';
   derivedHeaderRow.getCell(1).font = { bold: true, size: 12 };
   
-  // Toughness = STA + equipment bonus (we don't track equipment bonus, so just STA)
+  const derived = deriveCharacterDefenses(char, gameData.powerDefs, resources);
   const toughnessRow = ws.getRow(9);
   const staAbsent = char.absentAbilities.includes('sta');
-  const toughness = getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'sta');
+  const toughness = derived.toughnessTotal;
   toughnessRow.getCell(1).value = 'Toughness';
   toughnessRow.getCell(1).font = { bold: true };
   toughnessRow.getCell(2).value = staAbsent ? '–' : `STA ${char.abilities.sta}`;
@@ -429,7 +432,7 @@ function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expo
   // Initiative = AGL
   const initiativeRow = ws.getRow(10);
   const aglAbsent = char.absentAbilities.includes('agl');
-  const initiative = getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'agl');
+  const initiative = derived.initiativeTotal;
   initiativeRow.getCell(1).value = 'Initiative';
   initiativeRow.getCell(1).font = { bold: true };
   initiativeRow.getCell(2).value = aglAbsent ? '–' : `AGL ${char.abilities.agl}`;
@@ -623,7 +626,7 @@ function buildPowersSheet(
     row.getCell(3).value = power.components.length > 1 ? `${power.components.length} effects` : (power.components[0]?.ranks ?? 0);
     row.getCell(4).value = formatPowerModifiers(power, gameData, lang);
     row.getCell(4).alignment = { wrapText: true };
-    row.getCell(5).value = formatAlternates(power, gameData, lang, labels);
+    row.getCell(5).value = formatAlternates(power, gameData, lang, labels, getCharacterStrength(char));
     row.getCell(5).alignment = { wrapText: true };
     row.getCell(6).value = notes;
     row.getCell(6).alignment = { wrapText: true };
@@ -761,7 +764,7 @@ function buildNotesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportL
   notesCell.font = { size: 11 };
 }
 
-function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, resources: IResource[]) {
+function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, resources: IResource[], gameData: GameDataRefs) {
   const ws = wb.addWorksheet(labels.sheetEquipment);
 
   // Title row
@@ -791,9 +794,10 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
     headerRow.height = 20;
     currentRow++;
 
-    (char.equipment as unknown as Array<Record<string, unknown>>).forEach((eq: Record<string, unknown>) => {
+    char.equipment.forEach((eq) => {
       const row = ws.getRow(currentRow);
-      row.values = [eq.name as string, eq.cost as number, eq.description as string];
+      row.values = [eq.name, calcEquipmentEPCost(eq, gameData.powerDefs, gameData.modifierDefs, getCharacterStrength(char)), eq.notes];
+      row.getCell(2).numFmt = '0 "EP"';
       row.getCell(1).font = { bold: true };
       row.getCell(2).alignment = { horizontal: 'center' };
       row.getCell(3).alignment = { wrapText: true };
@@ -815,16 +819,16 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
 
   const linkedResources = (char.resourceLinks ?? []).flatMap((link) => {
     const resource = resources.find((item) => item.id === link.resourceId);
-    return resource ? [{ resource, isFree: link.isFree }] : [];
+    return resource ? [{ resource, isFree: link.isFree, contributionEP: link.contributionEP }] : [];
   });
   if (linkedResources.length > 0) {
     const headerRow = ws.getRow(currentRow++);
     headerRow.values = [labels.colName, labels.colCost, labels.colNotes];
     headerRow.eachCell((cell) => { cell.font = { bold: true, color: { argb: 'FFFFFFFF' } }; cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: COLORS.headerFill } }; });
-    for (const { resource, isFree } of linkedResources) {
+    for (const { resource, isFree, contributionEP } of linkedResources) {
       const detail = resource.type === 'vehicle' ? `${resource.type}: ${resource.size}, STR ${resource.strength}, Speed ${resource.speed}, Defense ${resource.defense}, Toughness ${resource.toughness}` : resource.type === 'headquarters' ? `${resource.type}: ${resource.size}, Toughness ${resource.toughness}` : `${resource.type}: ${resource.power.components.map((component) => component.effectId).filter(Boolean).join(', ')}`;
       const row = ws.getRow(currentRow++);
-      row.values = [resource.name || 'Unnamed resource', `${isFree ? 0 : getResourceEPCost(resource)} EP${isFree ? ' (Free)' : ''}`, `${detail}${resource.notes ? `\n${resource.notes}` : ''}`];
+      row.values = [resource.name || 'Unnamed resource', `${isFree ? 0 : contributionEP ?? getResourceEPCost(resource, gameData.powerDefs, gameData.modifierDefs, getCharacterStrength(char))} EP${isFree ? ' (Free)' : ''}`, `${detail}${resource.notes ? `\n${resource.notes}` : ''}`];
       row.getCell(1).font = { bold: true }; row.getCell(2).alignment = { horizontal: 'center' }; row.getCell(3).alignment = { wrapText: true };
     }
     currentRow++;
@@ -924,7 +928,8 @@ function formatAlternates(
   power: ICharacterPower,
   gameData: GameDataRefs,
   lang: string,
-  labels: ExportLabels
+  labels: ExportLabels,
+  strength: number
 ): string {
   if (power.alternateEffects.length === 0) return '—';
   return power.alternateEffects
@@ -938,7 +943,7 @@ function formatAlternates(
           .filter(Boolean)
           .join(' + ');
         const name = alt.name || effectNames || '—';
-        const cost = calcAlternateEffectCost(alt, gameData.powerDefs, gameData.modifierDefs);
+        const cost = calcAlternateEffectCost(alt, gameData.powerDefs, gameData.modifierDefs, strength);
         const dyn = alt.dynamic ? ` [${labels.dynamic}]` : '';
         const notesStr = alt.notes ? `\n  📝 ${alt.notes}` : '';
         return `${name}: ${effectNames} [${cost}PP]${dyn}${notesStr}`;

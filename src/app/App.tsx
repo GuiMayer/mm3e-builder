@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { MenuBar } from '../shared/ui/MenuBar'
 import { SheetView } from '../features/sheet-core/SheetView'
 import { CharacterTabs } from '../features/sheet-core/CharacterTabs'
-import { PDFPreviewDialog } from '../features/sheet-core/PDFPreviewDialog'
-import { PDFOverflowModal } from '../features/sheet-core/PDFOverflowModal'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 import { usePDFExport } from '../shared/hooks/usePDFExport'
@@ -14,6 +12,9 @@ import { DraftStorageStatus } from '../shared/ui/DraftStorageStatus'
 import { DraftPersistenceController } from '../shared/ui/DraftPersistenceController'
 import { DraftStartupController } from '../shared/ui/DraftStartupController'
 import { PointCalculationUpdateNotice } from '../shared/ui/PointCalculationUpdateNotice'
+
+const PDFPreviewDialog = lazy(() => import('../features/sheet-core/PDFPreviewDialog').then((module) => ({ default: module.PDFPreviewDialog })));
+const PDFOverflowModal = lazy(() => import('../features/sheet-core/PDFOverflowModal').then((module) => ({ default: module.PDFOverflowModal })));
 
 const ReferencesView = lazy(() =>
   import('../features/references/ReferencesView').then((module) => ({ default: module.ReferencesView }))
@@ -99,26 +100,29 @@ export function App() {
           </main>
         </ErrorBoundary>
 
-        {/* PDF Preview Dialog */}
-        <PDFPreviewDialog
-          isOpen={isPreviewOpen}
-          isGenerating={isGeneratingPreview}
-          html={pdfPreviewHtml}
-          characterName={pdfCharacterName}
-          customizationOptions={customizationOptions}
-          onCustomizationChange={handleCustomizationChange}
-          onClose={closePreview}
-          onGeneratePdf={generateAndOpenPdf}
-          onDownloadHtml={downloadHtmlFromPreview}
-        />
-
-        {/* PDF Overflow Modal */}
+        {isPreviewOpen && (
+          <Suspense fallback={<div role="status">{t('common.loading')}</div>}>
+            <PDFPreviewDialog
+              isOpen={isPreviewOpen}
+              isGenerating={isGeneratingPreview}
+              html={pdfPreviewHtml}
+              characterName={pdfCharacterName}
+              customizationOptions={customizationOptions}
+              onCustomizationChange={handleCustomizationChange}
+              onClose={closePreview}
+              onGeneratePdf={generateAndOpenPdf}
+              onDownloadHtml={downloadHtmlFromPreview}
+            />
+          </Suspense>
+        )}
         {pdfOverflow.length > 0 && (
-          <PDFOverflowModal
-            report={pdfOverflow}
-            onConfirm={confirmAndExportPDF}
-            onCancel={clearOverflow}
-          />
+          <Suspense fallback={<div role="status">{t('common.loading')}</div>}>
+            <PDFOverflowModal
+              report={pdfOverflow}
+              onConfirm={confirmAndExportPDF}
+              onCancel={clearOverflow}
+            />
+          </Suspense>
         )}
       </div>
       </AppDialogProvider>

@@ -795,7 +795,7 @@
   "draft.saveError.recoveryFailed": "The new Draft was not saved because the previous unreadable Draft could not be moved safely to recovery. Export the recovery copy and try again.",
 
   "calculationUpdate.title": "Point calculation fixed",
-  "calculationUpdate.message": "Absent abilities now use the correct −10 PP cost, and Increased Duration is priced as one valid duration change. Your character data was not changed, but some totals may have changed.",
+  "calculationUpdate.message": "Strength-based Damage now includes the cost of modifiers covering its Strength contribution. Partial effects, combat bonuses and equipment defenses also use corrected rules. Your saved character data was not changed, but totals and displayed values may have changed.",
   "builder.pricingDataWarning": "{{count}} saved pricing reference could not be resolved. Re-select the affected effect or modifier.",
 
   "menu.clearDraft.label": "Draft Management",

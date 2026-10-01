@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { memo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+
+import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { IComplication, ComplicationType } from '../../entities/types';
 import { Plus, Trash2, Tag } from 'lucide-react';
@@ -26,9 +28,9 @@ const ALL_TYPES: ComplicationType[] = [
   'secret', 'weakness', 'accident', 'social', 'disability', 'power_loss',
 ];
 
-export function ComplicationsPanel() {
+function ComplicationsPanelComponent() {
   const { t } = useTranslation();
-  const { character } = useActiveCharacter();
+  const character = useCharacterSelector(useShallow((value) => ({ complications: value.complications })));
   const { setComplications } = useCharacterActions();
   const complications = character.complications;
 
@@ -280,3 +282,5 @@ export function ComplicationsPanel() {
     </section>
   );
 }
+
+export const ComplicationsPanel = memo(ComplicationsPanelComponent);

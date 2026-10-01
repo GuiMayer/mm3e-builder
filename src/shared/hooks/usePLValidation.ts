@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
 import { POWER_DEFS, SKILL_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
-import { calcToughnessBonus } from '../lib/mathEngine';
+import { deriveCharacterDefenses } from '../lib/derivedDefenses';
 import { buildTargetedEffectProfiles } from '../lib/offenseSummary';
 import {
   validateDodgeToughness,
@@ -57,12 +57,7 @@ export function usePLValidation(): CharacterValidationNotice[] {
     const willTotal = getEffectiveAbilityRank(abilities, absentAbilities, 'awe') + defenses.will;
 
     // ── Real Toughness: STA + Protection powers + Defensive Roll ──
-    const { bonus: toughnessBonus } = calcToughnessBonus(
-      character.powers,
-      character.advantages,
-      POWER_DEFS
-    );
-    const toughnessTotal = getEffectiveAbilityRank(abilities, absentAbilities, 'sta') + toughnessBonus;
+    const { toughnessTotal } = deriveCharacterDefenses(character, POWER_DEFS, resources);
 
     const violations: PLViolation[] = [];
 

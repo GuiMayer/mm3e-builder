@@ -1,5 +1,7 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
-import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { memo, useState, useMemo, useRef, useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+
+import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { AdvantageType, ICharacterAdvantage } from '../../entities/types';
 import { ADVANTAGE_DEFS, SKILL_DEFS } from '../../entities/gameDataLoaders';
@@ -14,11 +16,11 @@ import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 const ADVANTAGE_TYPES: AdvantageType[] = ['combat', 'fortune', 'general', 'skill'];
 
-export function AdvantagesPanel({ cost }: { cost: number }) {
+function AdvantagesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const advantageDefs = useLocalizedData(ADVANTAGE_DEFS);
   const skillDefs = useLocalizedData(SKILL_DEFS);
-  const { character } = useActiveCharacter();
+  const character = useCharacterSelector(useShallow((value) => ({ advantages: value.advantages, skills: value.skills })));
   const { setAdvantages } = useCharacterActions();
   const advantages = character.advantages;
   const dialog = useAppDialog();
@@ -732,3 +734,5 @@ export function AdvantagesPanel({ cost }: { cost: number }) {
     </section>
   );
 }
+
+export const AdvantagesPanel = memo(AdvantagesPanelComponent);

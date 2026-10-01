@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added optional absent-ability warnings for dependent skills, purchased defenses, and Strength-based Damage.
 
 ### Changed
+- Share point summaries across sheet panels, subscribe panels to their own fields, and load PDF dialogs only when opened.
+- Price partial modifiers by rank boundaries instead of iterating through every rank.
+- Fit the mobile navigation within the viewport and improve dialog focus, effect-selector accessibility, and keyboard/touch access to derived defenses.
 - The Power Builder now uses one shared parameter editor for main and alternate effects, including modifier ranks, affected ranks, localized subtypes, and canonical cost previews.
 - Repeatable per-rank modifiers are declared explicitly. Adding an ordinary non-repeatable modifier twice no longer changes its price accidentally.
 - Configurable effect fields and their options now use the active game-data translation.
@@ -23,16 +26,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Range and duration applicability warnings now appear live in the Power Builder without preventing saves.
 
 ### Fixed
+- Validate Accurate using the current character's PL, abilities, and combat skills instead of implicit PL 10 defaults.
+- Charge per-rank extras on Strength-based Damage's effective Strength contribution, with consistent sheet, Builder, resource, PDF, and Excel totals.
+- Separate partial Area and range attack profiles; preserve Alternate Resistance and combat-skill miscellaneous bonuses.
+- Include linked armor in Toughness and PL checks without stacking equipment or activating alternate effects.
+- Reject imported modifiers whose declared generic/effect-specific source does not resolve.
+- Correct legacy equipment costs and derived defenses in Excel.
 - Corrected Affliction to 1 PP/rank regardless of its three failure degrees.
 - Corrected Teleport Increased Mass to charge every purchased modifier rank.
 - Corrected Variable Action pricing for Move (+1/rank), Free (+2/rank), and Reaction (+3/rank), while preserving legacy JSON records that encoded the choice as ranks 1–3.
 - Corrected each absent ability to cost −10 PP and contribute rank 0 mechanically, as defined by the source rules.
 - Corrected Increased Duration to one application: Instant becomes Concentration and Sustained becomes Continuous. Legacy rank values remain readable but are not charged repeatedly.
-- Added a one-time calculation revision 4 notice for existing priced drafts. Persisted character data and the character JSON schema are unchanged.
+- Added a one-time calculation revision 5 notice for existing priced drafts. Persisted character data and the character JSON schema are unchanged.
 
 ### Quality
 - Replaced or removed all 16 pending tests: obsolete/duplicated cases were deleted and valid rule expectations became executable regressions.
-- Expanded the verified suite to 46 test files and 657 passing tests with no pending tests.
+- Expanded the verified suite to 47 test files and 685 passing tests with no pending tests.
 - Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 34 of 57 complete sources match their independently published sums under revision 4.
 
 ---

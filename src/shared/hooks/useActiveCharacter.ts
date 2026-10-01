@@ -10,6 +10,13 @@ import { createDefaultCharacter } from '../../entities/characterDefaults';
 
 const EMPTY_CHARACTER = createDefaultCharacter();
 
+/** Subscribe only to the section needed by a panel. Selectors must return stable values. */
+export function useCharacterSelector<T>(selector: (character: ICharacter) => T): T {
+  return useCharactersStore((state) => selector(
+    state.tabs.find((tab) => tab.id === state.activeCharacterId)?.character ?? EMPTY_CHARACTER,
+  ));
+}
+
 /**
  * Hook to access the currently active character.
  * Returns safe defaults when no active character exists.

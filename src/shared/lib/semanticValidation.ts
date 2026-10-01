@@ -1,5 +1,6 @@
 import type {
   IAdvantageDef,
+  IAppliedModifier,
   ICharacter,
   ICharacterPower,
   ICharacterPowerComponent,
@@ -11,6 +12,9 @@ import type {
 import { validateComponentModifiers } from './modifierValidation';
 import { validateRequiredPowerFields } from './validation';
 import { resolveEffectiveDuration, resolveEffectiveRange } from './effectParameters';
+import { resolveModifierDefinition } from './rulesCatalog';
+import { buildTargetedEffectProfiles } from './offenseSummary';
+import { validateAttackEffect } from './validation';
 
 export type SemanticSeverity = 'error' | 'warning' | 'info';
 
@@ -27,6 +31,7 @@ interface GameDataContext {
   modifierDefs: IModifierDef[];
   skillDefs?: ISkillDef[];
   advantageDefs?: IAdvantageDef[];
+  character?: ICharacter;
 }
 
 function issue(path: string, message: string, severity: SemanticSeverity = 'error'): SemanticValidationIssue {
@@ -42,32 +47,12 @@ function issue(path: string, message: string, severity: SemanticSeverity = 'erro
  * Returns true if the modifier is found in either location.
  */
 function isValidModifierForEffect(
-  modifierId: string,
+  modifier: IAppliedModifier,
   effectId: string,
   context: GameDataContext
 ): boolean {
-  // Check universal modifiers first
-  if (context.modifierDefs.some((def) => def.id === modifierId)) {
-    return true;
-  }
-
-  // Check effect-specific extras and flaws
   const effectDef = context.powerDefs.find((def) => def.id === effectId);
-  if (!effectDef) {
-    return false; // Effect not found, so modifier can't be valid for it
-  }
-
-  // Check extras
-  if (effectDef.extras.some((extra) => extra.id === modifierId)) {
-    return true;
-  }
-
-  // Check flaws
-  if (effectDef.flaws.some((flaw) => flaw.id === modifierId)) {
-    return true;
-  }
-
-  return false;
+  return !!effectDef && resolveModifierDefinition(modifier, effectDef, context.modifierDefs).definition !== undefined;
 }
 
 function validatePowerComponentForSave(
@@ -82,6 +67,11 @@ function validatePowerComponentForSave(
   if (!effectDef) {
     issues.push(issue(`${path}.effectId`, `Unknown power effect "${component.effectId}".`));
     return issues;
+  }
+  for (const modifier of component.modifiers) {
+    if (!isValidModifierForEffect(modifier, component.effectId, context)) {
+      issues.push(issue(`${path}.modifiers.${modifier.modifierId}`, `Unknown modifier source for "${modifier.modifierId}".`));
+    }
   }
 
   if (effectDef.variableCost?.options?.length && !component.variableCostOption) {
@@ -99,7 +89,8 @@ function validatePowerComponentForSave(
     component,
     effectDef,
     context.modifierDefs,
-    rules,
+    // Attack caps require the actual character and are checked once below.
+    { ...rules, enforceAccuratePLCap: false },
   );
 
   for (const violation of modifierViolations) {
@@ -224,6 +215,28 @@ export function validatePowerForSave(
   context: GameDataContext,
 ): SemanticValidationIssue[] {
   const issues: SemanticValidationIssue[] = [];
+  if (context.character && rules.enforcePLLimits && rules.enforceAccuratePLCap) {
+    const character = context.character;
+    const pl = character.header.powerLevel;
+    const accurateComponents = new Set([
+      ...power.components,
+      ...power.alternateEffects.flatMap((alternate) => alternate.components),
+    ].filter((component) => component.modifiers.some((modifier) => modifier.modifierId === 'accurate')).map((component) => component.id));
+    const profiles = buildTargetedEffectProfiles(
+      { ...character, powers: [power], equipment: [], resourceLinks: [], manualOffenseRows: [] },
+      context.powerDefs, context.skillDefs ?? [], context.advantageDefs ?? [], context.modifierDefs,
+    ).filter((profile) => profile.sourceType === 'power' && profile.requiresAttackCheck
+      && profile.effectRank !== null && accurateComponents.has(profile.componentId ?? ''));
+    for (const profile of profiles) {
+      const rank = profile.effectRank!;
+      const violation = validateAttackEffect(profile.bonusValue ?? 0, rank, pl);
+      if (violation) issues.push(issue(
+        'components',
+        `${profile.name}: attack ${profile.bonusValue ?? 0} + effect ${rank} exceeds ${pl * 2} (PL ${pl}).`,
+        rules.plTradeOffsAsErrors ? 'error' : 'warning',
+      ));
+    }
+  }
   const components = power.components.filter((component) => component.effectId !== '');
 
   if (components.length === 0) {
@@ -287,7 +300,7 @@ function validatePowerReferences(
 
     // Validate modifiers: check both universal modifiers and effect-specific extras/flaws
     for (const [modifierIndex, modifier] of component.modifiers.entries()) {
-      if (!isValidModifierForEffect(modifier.modifierId, component.effectId, context)) {
+      if (!isValidModifierForEffect(modifier, component.effectId, context)) {
         issues.push(issue(
           `${componentPath}.modifiers.${modifierIndex}.modifierId`,
           `Unknown modifier "${modifier.modifierId}".`,

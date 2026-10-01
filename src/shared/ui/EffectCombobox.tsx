@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Info } from 'lucide-react';
 import type { IPowerEffect } from '../../entities/types';
 
@@ -18,7 +18,8 @@ export interface EffectComboboxProps {
  * ─ Replaces the old [filter input + type select + separate select] pattern.
  */
 export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: EffectComboboxProps) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(() => allEffects.find((effect) => effect.id === value)?.name ?? '');
+  const listId = useId();
   const [open, setOpen] = useState(false);
   const [highlightIdx, setHighlightIdx] = useState(0);
 
@@ -56,13 +57,14 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
 
   function handleInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (!open && (e.key === 'ArrowDown' || e.key === 'Enter')) {
+      e.preventDefault();
       setOpen(true);
       return;
     }
-    if (e.key === 'Escape') { setOpen(false); return; }
+    if (e.key === 'Escape' && open) { e.preventDefault(); e.stopPropagation(); setOpen(false); return; }
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setHighlightIdx((i) => Math.min(i + 1, filtered.length - 1));
+      setHighlightIdx((i) => Math.max(0, Math.min(i + 1, filtered.length - 1)));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       setHighlightIdx((i) => Math.max(i - 1, 0));
@@ -98,22 +100,30 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
   // sync the visible text. This is a legitimate use of setState in effect
   // because we're synchronizing with an external prop change.
   const prevValueRef = useRef(value);
+  const prevNameRef = useRef(selectedEff?.name);
   useEffect(() => {
-    if (value !== prevValueRef.current) {
+    if (value !== prevValueRef.current || selectedEff?.name !== prevNameRef.current) {
       prevValueRef.current = value;
+      prevNameRef.current = selectedEff?.name;
       const eff = allEffects.find((e) => e.id === value);
       const newQuery = eff?.name ?? '';
       // Only update if different to avoid unnecessary re-renders
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setQuery(prev => prev === newQuery ? prev : newQuery);
     }
-  }, [value, allEffects]);
+  }, [value, allEffects, selectedEff?.name]);
 
   return (
     <div className="ecb-root" ref={containerRef}>
       <div className="ecb-input-row">
         <input
           ref={inputRef}
+          role="combobox"
+          aria-label={t('builder.searchEffect')}
+          aria-autocomplete="list"
+          aria-expanded={open}
+          aria-controls={open && filtered.length > 0 ? listId : undefined}
+          aria-activedescendant={open && filtered[highlightIdx] ? `${listId}-${filtered[highlightIdx].id}` : undefined}
           className="ecb-input"
           value={query}
           placeholder={t('builder.searchEffect')}
@@ -129,6 +139,7 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
           disabled={!selectedEff}
           onClick={(e) => { e.stopPropagation(); if (selectedEff) onInfo(selectedEff); }}
           title={t('builder.viewEffect')}
+          aria-label={t('builder.viewEffect')}
           type="button"
         >
           <Info size={14} />
@@ -136,10 +147,11 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
       </div>
 
       {open && filtered.length > 0 && (
-        <ul className="ecb-dropdown" ref={listRef} role="listbox">
+        <ul id={listId} className="ecb-dropdown" ref={listRef} role="listbox" aria-label={t('builder.searchEffect')}>
           {filtered.map((eff, idx) => (
             <li
               key={eff.id}
+              id={`${listId}-${eff.id}`}
               role="option"
               aria-selected={eff.id === value}
               className={[

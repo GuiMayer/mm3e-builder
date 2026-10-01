@@ -6,6 +6,7 @@ import { Package, Plus, Edit3, Trash2, AlertTriangle } from 'lucide-react';
 import type { ICharacterPower } from '../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
+import { getCharacterStrength } from '../../shared/lib/componentRanks';
 import { calcEquipmentEPCost } from '../../shared/lib/mathEngine';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
@@ -127,7 +128,7 @@ export function EquipmentNotesPanel() {
       {equipment.length > 0 && (
         <div className="equipment-grid">
           {equipment.map((item, i) => {
-            const totalCost = calcEquipmentEPCost(item, powerDefs, modifierDefs);
+            const totalCost = calcEquipmentEPCost(item, powerDefs, modifierDefs, getCharacterStrength(character));
 
             // Build display info from components
             const effectNames = item.components

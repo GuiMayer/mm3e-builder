@@ -1,14 +1,16 @@
-import { useState } from 'react';
-import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { memo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+
+import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { User, MapPin, Shield, Star, ChevronDown, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../shared/ui/NumberInput';
 
-export function HeaderPanel() {
+function HeaderPanelComponent() {
   const { t } = useTranslation();
-  const { character } = useActiveCharacter();
+  const character = useCharacterSelector(useShallow((value) => ({ header: value.header })));
   const { updateHeader } = useCharacterActions();
   const header = character.header;
   const pp = useCalculatedPP();
@@ -550,3 +552,5 @@ export function HeaderPanel() {
     </section>
   );
 }
+
+export const HeaderPanel = memo(HeaderPanelComponent);

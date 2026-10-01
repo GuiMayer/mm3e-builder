@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { memo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useTranslation } from 'react-i18next';
 import { useDerivedDefenses } from '../../shared/hooks/useDerivedDefenses';
@@ -7,9 +8,9 @@ import { Info } from 'lucide-react';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { getEffectiveAbilityRank } from '../../shared/lib/abilityRanks';
 
-export function DefensesPanel({ cost }: { cost: number }) {
+function DefensesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const { character } = useActiveCharacter();
+  const character = useCharacterSelector(useShallow((value) => ({ abilities: value.abilities, absentAbilities: value.absentAbilities, defenses: value.defenses })));
   const { setDefense } = useCharacterActions();
   const abilities = character.abilities;
   const absentAbilities = character.absentAbilities;
@@ -44,6 +45,13 @@ export function DefensesPanel({ cost }: { cost: number }) {
         {/* Initiative — read-only derived row */}
         <div
           className="defense-row defense-row--initiative"
+          tabIndex={0}
+          role="button"
+          aria-expanded={tooltip === 'initiative'}
+          onFocus={() => setTooltip('initiative')}
+          onBlur={() => setTooltip(null)}
+          onClick={() => setTooltip('initiative')}
+          onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setTooltip((current) => current === 'initiative' ? null : 'initiative'); } }}
           onMouseEnter={() => setTooltip('initiative')}
           onMouseLeave={() => setTooltip(null)}
         >
@@ -87,6 +95,13 @@ export function DefensesPanel({ cost }: { cost: number }) {
         {/* Toughness — read-only, derived, with breakdown tooltip */}
         <div
           className="defense-row defense-row--readonly defense-row--toughness"
+          tabIndex={0}
+          role="button"
+          aria-expanded={tooltip === 'toughness'}
+          onFocus={() => setTooltip('toughness')}
+          onBlur={() => setTooltip(null)}
+          onClick={() => setTooltip('toughness')}
+          onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setTooltip((current) => current === 'toughness' ? null : 'toughness'); } }}
           onMouseEnter={() => setTooltip('toughness')}
           onMouseLeave={() => setTooltip(null)}
         >
@@ -220,3 +235,5 @@ export function DefensesPanel({ cost }: { cost: number }) {
     </section>
   );
 }
+
+export const DefensesPanel = memo(DefensesPanelComponent);
