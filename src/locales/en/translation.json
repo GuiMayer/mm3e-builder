@@ -526,6 +526,7 @@
   "conditions.surprised": "Surprised",
 
   "nav.sheet": "Character Sheet",
+  "nav.sheetCompact": "Sheet",
   "nav.resources": "Resources",
   "nav.references": "References",
   "ref.title": "Quick Reference",

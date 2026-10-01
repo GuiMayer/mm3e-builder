@@ -19,8 +19,10 @@ export function ViewTabs({ activeView, onViewChange }: ViewTabsProps) {
       <button
         className={`menubar-tab ${activeView === 'sheet' ? 'menubar-tab--active' : ''}`}
         onClick={() => onViewChange('sheet')}
+        aria-label={t('nav.sheet')}
       >
-        {t('nav.sheet')}
+        <span className="menubar-tab-label--full">{t('nav.sheet')}</span>
+        <span className="menubar-tab-label--compact">{t('nav.sheetCompact')}</span>
       </button>
       <button
         className={`menubar-tab ${activeView === 'resources' ? 'menubar-tab--active' : ''}`}
@@ -36,24 +38,6 @@ export function ViewTabs({ activeView, onViewChange }: ViewTabsProps) {
         <Library size={13} />
         {t('nav.references')}
       </button>
-
-      <style>{`
-        /* Mobile optimizations for ViewTabs */
-        @media (max-width: 768px) {
-          .menubar-tabs {
-            padding: 1px;
-          }
-          .menubar-tab {
-            padding: 4px var(--s-xs);
-            font-size: 0.7rem;
-            min-height: 32px;
-          }
-          .menubar-tab svg {
-            width: 11px;
-            height: 11px;
-          }
-        }
-      `}</style>
     </div>
   );
 }

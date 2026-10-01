@@ -246,11 +246,12 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
 
       <header className="menubar">
         <div className="menubar-left">
-        {/* Hamburger button - mobile only */}
+        {/* Compact actions menu */}
         <button
           className="menubar-hamburger"
           onClick={() => setDrawerOpen(true)}
           aria-label={t('menu.open')}
+          aria-expanded={drawerOpen}
         >
           <Menu size={24} />
         </button>
@@ -263,7 +264,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         </span>
       </div>
 
-      <nav className="menubar-actions">
+      <nav className="menubar-actions" aria-label={t('menu.actions')}>
         <button
           className="menubar-btn"
           onClick={history.undo}
@@ -282,13 +283,13 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         >
           <Redo2 size={18} /> <span>{t('menu.redo')}</span>
         </button>
-        <button className="menubar-btn" onClick={handleClearCharacter} disabled={activeView !== 'sheet'} title={t('menu.clear')}>
+        <button className="menubar-btn" onClick={handleClearCharacter} disabled={activeView !== 'sheet'} title={t('menu.clear')} aria-label={t('menu.clear')}>
           <Eraser size={18} /> <span>{t('menu.clear')}</span>
         </button>
-        <button className="menubar-btn" onClick={activeView === 'resources' ? handleExportResources : exportCharacter} disabled={activeView === 'references'} title={t('menu.export')}>
+        <button className="menubar-btn" onClick={activeView === 'resources' ? handleExportResources : exportCharacter} disabled={activeView === 'references'} title={t('menu.export')} aria-label={t('menu.export')}>
           <Download size={18} /> <span>{t('menu.export')}</span>
         </button>
-        <button className="menubar-btn menubar-btn--excel" onClick={exportExcel} disabled={activeView !== 'sheet'} title={t('menu.exportExcel')}>
+        <button className="menubar-btn menubar-btn--excel" onClick={exportExcel} disabled={activeView !== 'sheet'} title={t('menu.exportExcel')} aria-label={t('menu.exportExcel')}>
           <FileSpreadsheet size={18} /> <span>{t('menu.exportExcel')}</span>
         </button>
         <button
@@ -297,13 +298,14 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           onClick={onExportPDF}
           disabled={isGeneratingPreview || activeView !== 'sheet'}
           title={t('menu.exportPdf')}
+          aria-label={isGeneratingPreview ? t('pdf.generating') : t('menu.exportPdf')}
         >
           {isGeneratingPreview
             ? <Loader2 size={18} className="spin" />
             : <FileText size={18} />}
           <span>{isGeneratingPreview ? t('pdf.generating') : t('menu.exportPdf')}</span>
         </button>
-        <button className="menubar-btn" onClick={() => activeView === 'resources' ? resourceInputRef.current?.click() : fileInputRef.current?.click()} disabled={activeView === 'references'} title={t('menu.import')}>
+        <button className="menubar-btn" onClick={() => activeView === 'resources' ? resourceInputRef.current?.click() : fileInputRef.current?.click()} disabled={activeView === 'references'} title={t('menu.import')} aria-label={t('menu.import')}>
           <Upload size={18} /> <span>{t('menu.import')}</span>
         </button>
         <input
@@ -322,6 +324,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
             className="menubar-btn"
             onClick={() => setSettingsOpen(!settingsOpen)}
             title={t('menu.settings')}
+            aria-label={t('menu.settings')}
+            aria-expanded={settingsOpen}
           >
             <Settings size={18} />
           </button>
@@ -434,10 +438,12 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
 
       <style>{`
         .menubar {
-          display: flex;
+          display: grid;
+          grid-template-areas: "title tabs points actions";
+          grid-template-columns: max-content minmax(0, 1fr) max-content max-content;
           align-items: center;
-          justify-content: space-between;
-          padding: var(--s-sm) var(--s-lg);
+          gap: var(--s-sm);
+          padding: var(--s-sm) var(--s-md);
           background: var(--c-surface);
           border-bottom: 1px solid var(--c-border);
           position: sticky;
@@ -445,12 +451,14 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           z-index: 100;
           backdrop-filter: blur(12px);
         }
-        .menubar-left {
-          display: flex;
-          align-items: center;
-          gap: var(--s-lg);
-        }
+        .menubar-left { display: contents; }
         .menubar-title {
+          grid-area: title;
+          min-width: 0;
+          margin: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           font-family: var(--f-heading);
           font-size: 1.1rem;
           font-weight: 800;
@@ -460,6 +468,12 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           background-clip: text;
         }
         .menubar-tabs {
+          grid-area: tabs;
+          min-width: 0;
+          max-width: 100%;
+          width: max-content;
+          overflow-x: auto;
+          scrollbar-width: thin;
           display: flex;
           align-items: center;
           gap: 2px;
@@ -469,6 +483,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           padding: 2px;
         }
         .menubar-tab {
+          flex-shrink: 0;
+          min-height: 36px;
           display: flex;
           align-items: center;
           gap: var(--s-xs);
@@ -484,6 +500,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           transition: all var(--t-fast);
           white-space: nowrap;
         }
+        .menubar-tab-label--compact { display: none; }
         .menubar-tab:hover { color: var(--c-text); background: var(--c-surface-elevated); }
         .menubar-tab--active {
           background: var(--c-surface-elevated);
@@ -491,6 +508,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           font-weight: 600;
         }
         .menubar-pp {
+          grid-area: points;
+          white-space: nowrap;
           font-size: 0.85rem;
           color: var(--c-text-secondary);
           font-variant-numeric: tabular-nums;
@@ -503,11 +522,15 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           font-weight: 600;
         }
         .menubar-actions {
+          grid-area: actions;
           display: flex;
           align-items: center;
           gap: var(--s-xs);
         }
         .menubar-btn {
+          flex-shrink: 0;
+          min-height: 40px;
+          white-space: nowrap;
           display: flex;
           align-items: center;
           gap: var(--s-xs);
@@ -548,7 +571,11 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           position: absolute;
           top: calc(100% + var(--s-xs));
           right: 0;
-          min-width: 220px;
+          width: max-content;
+          min-width: min(220px, calc(100vw - 32px));
+          max-width: calc(100vw - 32px);
+          max-height: calc(100dvh - 110px);
+          overflow-y: auto;
           background: var(--c-surface-elevated);
           border: 1px solid var(--c-border);
           border-radius: var(--r-md);
@@ -662,6 +689,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
 
         /* Hamburger button - hidden on desktop */
         .menubar-hamburger {
+          grid-area: menu;
           display: none;
           align-items: center;
           justify-content: center;
@@ -681,57 +709,47 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           color: var(--c-text);
         }
 
-        /* Mobile responsive layout */
+        /* Give navigation its own row before labels compete for space. */
+        @media (max-width: 1439px) {
+          .menubar {
+            grid-template-areas: "title points actions" "tabs tabs tabs";
+            grid-template-columns: minmax(0, 1fr) max-content max-content;
+          }
+          .menubar-tabs { width: 100%; }
+          .menubar-tab { flex: 1 0 auto; justify-content: center; }
+        }
+
+        /* Preserve every action with a named icon in narrower desktop windows. */
+        @media (max-width: 1100px) {
+          .menubar-btn { min-width: 40px; justify-content: center; padding: var(--s-xs); }
+          .menubar-btn > span { display: none; }
+        }
+
         @media (max-width: 768px) {
           .menubar {
-            padding: var(--s-xs) var(--s-md);
+            grid-template-areas: "menu title points" "tabs tabs tabs";
+            grid-template-columns: 44px minmax(0, 1fr) max-content;
+            gap: var(--s-xs) var(--s-sm);
+            padding: var(--s-xs) var(--s-sm);
           }
-
-          .menubar-left {
-            gap: var(--s-sm);
-            width: 100%;
-            min-width: 0;
-            flex-wrap: wrap;
-          }
-          .menubar-title { flex: 1; white-space: nowrap; }
-          .menubar-tabs {
-            order: 1;
-            flex: 1 1 100%;
-            min-width: 0;
-            max-width: 100%;
-            overflow-x: auto;
-          }
-          .menubar-tab { flex-shrink: 0; min-height: var(--touch-target-min); }
-          .menubar-pp { flex-shrink: 0; }
-
-          /* Show hamburger button */
-          .menubar-hamburger {
-            display: flex;
-          }
-
-          /* Hide action buttons - they're in the drawer now */
-          .menubar-actions {
-            display: none;
-          }
-
-          /* Adjust title size */
-          .menubar-title {
-            font-size: 0.95rem;
-          }
-
-          /* Adjust PP counter */
-          .menubar-pp {
+          .menubar-hamburger { display: flex; }
+          .menubar-actions { display: none; }
+          .menubar-title { font-size: 0.95rem; }
+          .menubar-pp { font-size: 0.75rem; }
+          .menubar-tab {
+            min-height: var(--touch-target-min);
+            padding: 4px var(--s-xs);
             font-size: 0.75rem;
           }
-
-          .menubar-btn {
-            min-height: var(--touch-target-min);
-            padding: var(--s-sm) var(--s-md);
-          }
+          .menubar-tab svg { width: 12px; height: 12px; }
           .dropdown-item {
             min-height: var(--touch-target-min);
             padding: var(--s-sm) var(--s-md);
           }
+        }
+              @media (max-width: 480px) {
+          .menubar-tab-label--full { display: none; }
+          .menubar-tab-label--compact { display: inline; }
         }
       `}</style>
       </header>

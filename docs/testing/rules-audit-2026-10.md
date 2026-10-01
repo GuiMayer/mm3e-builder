@@ -30,3 +30,14 @@ A auditoria identificou divergências entre custo, perfil de ataque, validação
 - Verificação no navegador: dimensões móveis, foco e Escape no modal, seleção de Dano por teclado e abertura da prévia PDF; nenhum erro ou aviso no console durante esses fluxos.
 
 Esta verificação cobre os casos acima e a suíte existente; não certifica todas as combinações possíveis de regras. O relatório de cobertura de maio de 2026 fica preservado como histórico. Os resultados históricos da auditoria comunitária referem-se à revisão 4 e não foram recalculados nesta correção.
+
+## Ajuste posterior da barra superior
+
+A faixa entre 769 e 1439 px mantinha todos os grupos na mesma linha. Em 960 px, o título e o contador quebravam e as ações excediam a página. A barra agora usa uma grade com regiões explícitas:
+
+- A partir de 1440 px: título, navegação, PP e ações na mesma linha.
+- De 769 a 1439 px: navegação na segunda linha; até 1100 px, ações em ícones com nomes acessíveis e dicas.
+- Até 768 px: ações no menu lateral e navegação em uma linha própria, com alvos de toque de 44 px.
+- Até 480 px: rótulo compacto Sheet/Ficha, mantendo o nome completo para leitores de tela.
+
+Verificação no navegador em 18 larguras: 320, 360, 390, 480, 481, 600, 768, 769, 800, 960, 1024, 1100, 1101, 1280, 1439, 1440, 1600 e 1920 px. Nenhuma sobreposição ou rolagem horizontal da página/barra foi observada no idioma inglês com a ficha padrão. Menu lateral e configurações também foram abertos; o menu de configurações tem rolagem própria para alturas menores. Compilação e análise estática aprovadas.

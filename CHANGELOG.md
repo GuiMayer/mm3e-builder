@@ -18,7 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Share point summaries across sheet panels, subscribe panels to their own fields, and load PDF dialogs only when opened.
 - Price partial modifiers by rank boundaries instead of iterating through every rank.
-- Fit the mobile navigation within the viewport and improve dialog focus, effect-selector accessibility, and keyboard/touch access to derived defenses.
+- Adapt the top bar across desktop, intermediate and mobile widths: separate navigation before controls compete for space, keep named icon actions, and shorten the sheet label on small phones. Settings stay within the viewport.
+- Improve dialog focus, effect-selector accessibility, and keyboard/touch access to derived defenses.
 - The Power Builder now uses one shared parameter editor for main and alternate effects, including modifier ranks, affected ranks, localized subtypes, and canonical cost previews.
 - Repeatable per-rank modifiers are declared explicitly. Adding an ordinary non-repeatable modifier twice no longer changes its price accidentally.
 - Configurable effect fields and their options now use the active game-data translation.
