@@ -47,7 +47,6 @@
   "ppLog.earned": "{{amount}} PP ganhos",
   "ppLog.base": "Base (NP × 15)",
   "ppLog.total": "Total Disponível",
-
   "tabs.newCharacter": "Novo Personagem",
   "tabs.closeCharacter": "Fechar Aba",
   "tabs.closeConfirm": "Fechar este personagem? Você poderá desfazer imediatamente, antes de fazer outra alteração ou recarregar a página.",
@@ -57,12 +56,10 @@
   "tabs.maxTabsWarning": "Você tem {{count}} abas abertas. Considere exportar personagens antigos para liberar espaço.",
   "tabs.copyLabel": " (Cópia)",
   "tabs.copyOfCopy": " (Cópia {{number}})",
-
   "characterImport.conflict.title": "Personagem já está aberto",
   "characterImport.conflict.description": "Este arquivo possui a mesma identidade de personagem que {{count}} aba(s) aberta(s). Escolha qual aba atualizar ou abra uma cópia independente.",
   "characterImport.conflict.update": "Atualizar {{name}}",
   "characterImport.conflict.openCopy": "Abrir como nova cópia",
-
   "header.heroName": "Nome do Herói",
   "header.player": "Jogador",
   "header.identity": "Identidade",
@@ -85,7 +82,6 @@
   "header.groupAffiliation": "Afiliação",
   "header.series": "Série",
   "header.gameMaster": "Mestre",
-
   "abilities.title": "Habilidades",
   "abilities.str": "Força",
   "abilities.sta": "Vigor",
@@ -97,7 +93,6 @@
   "abilities.pre": "Presença",
   "abilities.absent": "Marcar como ausente",
   "abilities.restore": "Restaurar habilidade",
-
   "defenses.title": "Defesas",
   "defenses.dodge": "Esquiva",
   "defenses.parry": "Aparar",
@@ -106,7 +101,6 @@
   "defenses.toughness": "Resistência",
   "defenses.initiative": "Iniciativa",
   "defenses.toughnessBreakdown": "Composição da Resistência",
-
   "skills.title": "Perícias",
   "skills.addSkill": "Adicionar Perícia",
   "skills.noSkills": "Nenhuma perícia adicionada. Clique em + para adicionar.",
@@ -124,7 +118,6 @@
   "skills.expandAll": "Expandir tudo",
   "skills.collapseAll": "Recolher tudo",
   "skills.otherBonus": "Bônus situacional / outros (ex: equipamento, circunstâncias)",
-
   "advantages.title": "Vantagens",
   "advantages.addAdvantage": "Adicionar Vantagem",
   "advantages.noAdvantages": "Nenhuma vantagem adicionada.",
@@ -152,13 +145,11 @@
   "advantages.noSkillsAvailable": "Nenhuma perícia disponível",
   "advantages.noSkillsInSheet": "Você deve adicionar perícias à sua ficha antes de selecionar Maestria em Perícia.",
   "advantages.allSkillsHaveMastery": "Todas as suas perícias já possuem Maestria em Perícia.",
-
   "powers.title": "Poderes",
   "powers.noPowers": "Nenhum poder criado. Use o construtor para criar.",
   "powers.newPower": "Novo Poder (Power Builder)",
   "powers.alternateEffects": "{{count}} Efeito(s) Alternativo(s)",
   "powers.edit": "Editar",
-
   "complications.title": "Complicações",
   "complications.add": "Adicionar Complicação",
   "complications.noComplications": "Nenhuma complicação. Adicione motivações, fraquezas ou segredos.",
@@ -166,7 +157,6 @@
   "complications.descPlaceholder": "Descrição...",
   "complications.typeLabel": "Tipo",
   "complications.typeNone": "Nenhum",
-
   "builder.title": "Power Builder",
   "builder.baseEffect": "Efeito Base",
   "builder.selectEffect": "Selecione um efeito...",
@@ -215,11 +205,9 @@
   "builder.noEffectError": "Adicione pelo menos um efeito antes de salvar",
   "builder.costOption": "Opção de Custo",
   "builder.selectCostOption": "Selecione uma opção de custo para este efeito",
-
   "palette.search": "Buscar modificadores...",
   "palette.extras": "Extras",
   "palette.flaws": "Falhas",
-
   "summary.abilities": "Habilidades",
   "summary.defenses": "Defesas",
   "summary.skills": "Perícias",
@@ -227,7 +215,6 @@
   "summary.powers": "Poderes",
   "summary.totalSpent": "Total Gasto",
   "summary.remaining": "Restante",
-
   "common.pp": "PP",
   "common.rank": "rank",
   "common.ranks": "ranks",
@@ -249,14 +236,12 @@
   "common.costBase": "custo base",
   "common.close": "Fechar",
   "common.character": "personagem",
-
   "powers.deleteConfirm": "Excluir \"{{name}}\"?",
   "powers.deleteConfirmWithAlt": "Excluir \"{{name}}\" e seus {{count}} Efeito(s) Alternativo(s)?",
   "powers.deleteTitle": "Excluir poder",
   "powers.unnamed": "Poder sem nome",
   "powers.editTooltip": "Editar este poder no Power Builder",
   "powers.newPowerBtn": "Novo Poder (Power Builder)",
-
   "validation.attackDamage": "Ataque + Dano",
   "validation.dodgeToughness": "Esquiva + Resistência",
   "validation.parryToughness": "Aparar + Resistência",
@@ -271,12 +256,10 @@
   "validation.absentDefense.fortitude": "Ranks comprados de Fortitude usam {{ability}} ausente como base 0.",
   "validation.absentDefense.will": "Ranks comprados de Vontade usam {{ability}} ausente como base 0.",
   "validation.strengthBasedDamageUsesAbsentStrength": "{{power}} é baseado em Força, mas FOR ausente contribui com 0 ranks.",
-
   "errors.invalidJson": "Arquivo JSON inválido: não foi possível interpretar o conteúdo.",
   "errors.validationError": "Erro de validação no campo \"{{field}}\": {{message}}",
   "errors.importError": "Erro ao importar arquivo.",
   "errors.exportError": "Erro ao exportar arquivo.",
-
   "builder.base": "Base",
   "builder.mods": "{{count}} mod(s)",
   "builder.alts": "{{count}} alt(s)",
@@ -323,14 +306,10 @@
   "palette.specific": "Específicos do Poder",
   "palette.flatRank": "flat/rank",
   "palette.clickToAdd": "Clique ou arraste para adicionar",
-
   "app.subtitle": "Gerenciador de Fichas",
   "app.description": "Gerenciador de Fichas e Construtor de Poderes para Mutants & Masterminds 3ª Edição",
-
   "palette.modifierAria": "{{type}}: {{name}}, custo {{cost}}",
-
   "menu.exportExcel": "Excel",
-
   "excel.sheetSummary": "Resumo",
   "excel.sheetAbilities": "Habilidades",
   "excel.sheetDefenses": "Defesas",
@@ -372,7 +351,6 @@
   "palette.noSpecificEffect": "Selecione um efeito primeiro.",
   "palette.noSpecificMods": "Nenhum modificador específico para este efeito.",
   "builder.aeOverageLabel": "+{{overageBy}}PP acima do limite",
-
   "builder.removable.label": "Dispositivo",
   "builder.removable.none": "Nenhum",
   "builder.removable.removable": "Removível",
@@ -383,7 +361,6 @@
   "builder.removable.from": "desconto em",
   "builder.removable.discount": "Desconto Removível",
   "builder.removable.remove": "Remover flaw Removível",
-
   "offense.title": "Ataques",
   "offense.attack": "Ataque",
   "offense.bonus": "Bônus",
@@ -397,7 +374,6 @@
   "offense.range_personal": "Pessoal",
   "offense.unarmed": "Desarmado",
   "offense.damage": "Dano",
-
   "equipment.title": "Equipamentos",
   "equipment.hint": "Pontos de Equipamento da vantagem Equipamento (ranks × 5 PE)",
   "equipment.placeholder": "Liste seus equipamentos aqui...\nExemplo:\nCinto de Utilidades (Equipamento 4 = 20 PE):\n  Granada de Flash: Ofuscação em Área 3 — 12 PE\n  Garra de Escalada: Movimento 1 (Balanço) — 2 PE",
@@ -441,7 +417,6 @@
   "equipment.limitCalcUsed": "Usado",
   "equipment.limitCalcOver": "Acima em",
   "equipment.limitHint": "Aumente os ranks da vantagem Equipamento ou remova itens de equipamento.",
-
   "complications.type.motivation": "Motivação",
   "complications.type.enemy": "Inimigo",
   "complications.type.identity": "Identidade",
@@ -453,7 +428,6 @@
   "complications.type.social": "Social",
   "complications.type.disability": "Deficiência",
   "complications.type.power_loss": "Perda de Poder",
-
   "offense.custom.add": "Adicionar ataque personalizado",
   "offense.custom.name": "Nome do Ataque",
   "offense.custom.notes": "Notas",
@@ -485,11 +459,9 @@
   "targeted.tag.perception": "Percepção",
   "targeted.tag.affects-others": "Affects Others",
   "targeted.tag.dynamic": "Dinâmico",
-
   "notes.title": "Histórico & Anotações",
   "notes.placeholder": "Histórico do personagem, notas do mestre, histórico de sessões...",
   "notes.charCount": "{{count}} chars",
-
   "conditions.title": "Condições",
   "conditions.clearAll": "Limpar Tudo",
   "conditions.activeCount": "{{count}} ativa(s)",
@@ -524,7 +496,6 @@
   "conditions.restrained": "Contido",
   "conditions.staggered": "Oscilante",
   "conditions.surprised": "Surpreso",
-
   "nav.sheet": "Ficha do Personagem",
   "nav.sheetCompact": "Ficha",
   "nav.resources": "Recursos",
@@ -542,9 +513,7 @@
   "ref.col.condition": "Condição",
   "ref.col.components": "= Componentes",
   "ref.col.description": "Efeito",
-
   "ref.subtitle": "Regras de acesso rápido para Mutants & Masterminds 3e",
-
   "ref.actions.aid": "Ajudar",
   "ref.actions.aim": "Mirar",
   "ref.actions.charge": "Investida",
@@ -555,10 +524,8 @@
   "ref.actions.recover": "Recuperar",
   "ref.actions.smash": "Esmagar",
   "ref.actions.trip": "Derrubar",
-
   "ref.actionTypes.standard": "Padrão",
   "ref.actionTypes.move": "Movimento",
-
   "ref.actionEffects.aid": "+2 (ou +5 com 2+ graus) na jogada de um aliado no próximo turno do personagem",
   "ref.actionEffects.aim": "+2 de bônus circunstancial na próxima jogada de ataque à distância (preparada)",
   "ref.actionEffects.charge": "Mova-se em linha reta e faça um ataque corpo a corpo no final",
@@ -569,21 +536,18 @@
   "ref.actionEffects.recover": "Remove a condição ativa mais alta do personagem; uma vez por encontro de combate",
   "ref.actionEffects.smash": "-5 no teste de ataque contra objetos segurados ou estacionários; ignora limite de Resistência",
   "ref.actionEffects.trip": "-2 no teste de ataque; alvo resiste com FOR ou Acrobacia; em falha, alvo fica prostrado",
-
   "ref.maneuvers.accurate_attack": "Ataque Preciso",
   "ref.maneuvers.allout_attack": "Ataque Total",
   "ref.maneuvers.defensive_attack": "Ataque Defensivo",
   "ref.maneuvers.power_attack": "Ataque Poderoso",
   "ref.maneuvers.slam_attack": "Ataque de Impacto",
   "ref.maneuvers.team_attack": "Ataque em Equipe",
-
   "ref.maneuverEffects.accurate_attack": "-1 ou -2 no rank do efeito",
   "ref.maneuverEffects.allout_attack": "--",
   "ref.maneuverEffects.defensive_attack": "--",
   "ref.maneuverEffects.power_attack": "+1 ou +2 no rank do efeito",
   "ref.maneuverEffects.slam_attack": "Variante de Investida; atacante sofre metade do dano de Resistência em um acerto",
   "ref.maneuverEffects.team_attack": "Múltiplos atacantes acertam simultaneamente vs. um alvo; use o maior resultado + 2 por extra",
-
   "conditions.desc.compelled": "Um personagem compelido é direcionado por uma força externa, mas luta contra ela; o personagem está limitado a ações livres e uma única ação padrão por turno, com ambos os tipos de ação sendo escolhidos por outro personagem controlador. Como de costume, esta ação padrão pode ser trocada por uma ação de movimento. Controlado substitui compelido.",
   "conditions.desc.controlled": "Um personagem controlado não tem livre arbítrio; as ações do personagem a cada turno são ditadas por outro personagem controlador.",
   "conditions.desc.dazed": "Um personagem atordoado está limitado a ações livres e uma única ação padrão por turno, embora o personagem possa usar essa ação para realizar um movimento, como de costume. Paralisado substitui atordoado.",
@@ -613,9 +577,7 @@
   "conditions.desc.restrained": "Um personagem contido está impedido e vulnerável. Se as restrições estão ancoradas a um objeto imóvel, o personagem está imóvel em vez de impedido. Se contido por outro personagem, o personagem contido está imóvel, mas pode ser movido pelo personagem que o contém.",
   "conditions.desc.staggered": "Um personagem oscilante está atordoado e impedido.",
   "conditions.desc.surprised": "Um personagem surpreso está paralisado e vulnerável, pego desprevenido e, portanto, incapaz de agir e menos capaz de evitar ataques.",
-
   "validation.noRoll": "Poder Sem Rolagem",
-
   "menu.exportPdf": "PDF",
   "pdf.generating": "Gerando PDF...",
   "pdf.overflowTitle": "Limite de campos do PDF excedido",
@@ -639,7 +601,6 @@
   "pdf.toast.error": "Erro ao gerar preview",
   "pdf.toast.converting": "Convertendo para PDF...",
   "pdf.toast.downloaded": "PDF baixado com sucesso!",
-
   "pdf.customization.title": "Personalização",
   "pdf.customization.theme.label": "Tema de Cores",
   "pdf.customization.theme.default": "Azul Padrão",
@@ -661,33 +622,27 @@
   "pdf.customization.sections.notes": "Incluir Notas",
   "pdf.customization.sections.complications": "Incluir Complicações",
   "pdf.customization.sections.equipment": "Incluir Equipamento",
-
   "pdf.toast.printReady": "Preview pronto! Use Ctrl+P ou diálogo de impressão do navegador.",
-
   "error.boundary.title": "Algo deu errado",
   "error.boundary.message": "Ocorreu um erro inesperado. Por favor, tente novamente.",
   "error.boundary.details": "Detalhes do erro",
   "error.boundary.tryAgain": "Tentar novamente",
   "error.boundary.reload": "Recarregar página",
   "error.boundary.goHome": "Ir para início",
-
   "draftNotification.title": "Continuar de onde parou?",
   "draftNotification.unnamedCharacter": "Personagem Sem Nome",
   "draftNotification.continue": "Continuar",
   "draftNotification.startNew": "Começar Novo",
-
   "dialog.confirmation": "Confirmação",
   "dialog.acknowledge": "Estou ciente.",
   "menu.open": "Abrir menu",
   "menu.close": "Fechar menu",
-
   "tabs.closeTitle": "Fechar personagem",
   "tabs.closeAction": "Fechar",
   "advantages.alertTitle": "Vantagem",
   "ppLog.removeTitle": "Remover entrada de PP",
   "equipment.alertTitle": "Equipamento",
   "equipment.deleteTitle": "Excluir equipamento",
-
   "resources.title": "Recursos",
   "resources.libraryHint": "Dispositivos, Equipamentos, Veículos, Quartéis-Generais e recursos personalizados reutilizáveis. Associe-os pela ficha do personagem.",
   "resources.libraryEmpty": "Sua biblioteca de recursos está vazia. Adicione um recurso para começar.",
@@ -755,7 +710,6 @@
   "resources.error.invalidRecord": "O arquivo contém um registro de Recurso inválido.",
   "resources.error.invalidResource": "O arquivo contém um Recurso inválido.",
   "resources.error.storageWrite": "Os Recursos não puderam ser salvos; por isso, a importação do personagem não foi aplicada.",
-
   "draft.management": "Gerenciamento de Rascunho",
   "draft.export": "Exportar Rascunho",
   "draft.import": "Importar Rascunho",
@@ -794,11 +748,9 @@
   "draft.saveError.storageFull": "O armazenamento do navegador está cheio. Libere espaço ou exporte e limpe Rascunhos antigos antes de tentar novamente.",
   "draft.saveError.writeFailed": "O navegador não conseguiu salvar este Rascunho. Suas alterações continuam marcadas como não salvas.",
   "draft.saveError.recoveryFailed": "O novo Rascunho não foi salvo porque o Rascunho anterior ilegível não pôde ser movido com segurança para recuperação. Exporte a cópia de recuperação e tente novamente.",
-
   "calculationUpdate.title": "Cálculo de pontos corrigido",
   "calculationUpdate.message": "Dano baseado em Força agora inclui o custo dos modificadores que cobrem sua contribuição de Força. Efeitos parciais, bônus de combate e defesas de equipamento também usam regras corrigidas. Os dados salvos dos personagens não foram alterados, mas totais e valores exibidos podem ter mudado.",
   "builder.pricingDataWarning": "{{count}} referência salva de cálculo não pôde ser identificada. Selecione novamente o efeito ou modificador afetado.",
-
   "menu.clearDraft.label": "Gerenciamento de Rascunho",
   "menu.clearDraft.action": "Limpar Rascunho",
   "menu.clearDraft.hint": "Remover rascunho salvo do armazenamento do navegador",
@@ -824,5 +776,7 @@
   "palette.noResults": "Nenhum modificador corresponde à busca.",
   "builder.tapHelp": "Use + para adicionar um modificador ao efeito selecionado.",
   "builder.openModifierPalette": "Abrir paleta de modificadores",
-  "builder.addModifiersTo": "Adicionar modificadores a {{name}}"
+  "builder.addModifiersTo": "Adicionar modificadores a {{name}}",
+  "pdf.customization.theme.mono": "Econômico para impressão",
+  "pdf.customization.sections.hideEmpty": "Ocultar seções vazias"
 }

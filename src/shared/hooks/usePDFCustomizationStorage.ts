@@ -40,6 +40,7 @@ export function loadPDFCustomizationOptions(): PDFCustomizationOptions {
         includeNotes: parsed.includeNotes,
         includeComplications: parsed.includeComplications,
         includeEquipment: parsed.includeEquipment,
+        hideEmptySections: parsed.hideEmptySections !== false,
       };
     }
 

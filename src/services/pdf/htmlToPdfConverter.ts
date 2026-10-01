@@ -1,68 +1,35 @@
-/* ================================================
-   HTML to PDF Converter
-   Uses jsPDF.html() to convert HTML strings to PDF
-   ================================================ */
-
 import { jsPDF } from 'jspdf';
 import { paginateHtmlForPdf } from './pdfPagination';
+import { PDF_GEOMETRY, PDF_CONTENT_WIDTH_PX, PDF_CONTENT_HEIGHT_PX } from './pdfGeometry';
+import { getPDFFontFaces } from './pdfFonts';
 
-const PDF_MARGIN_MM = 10;
-const RENDER_WIDTH_PX = 816;
-const HTML2CANVAS_SCALE = 0.23;
+export interface HtmlToPdfOptions { filename: string }
 
-export interface HtmlToPdfOptions {
-  filename: string;
-}
-
-/**
- * Convert HTML string to PDF blob
- *
- * @param html - HTML content to convert
- * @param options - Conversion options
- * @returns Promise<Blob> - PDF blob ready for download
- */
-export async function convertHtmlToPdf(
-  html: string,
-  options: HtmlToPdfOptions
-): Promise<Blob> {
-  let element: HTMLElement | null = null;
-
+export async function convertHtmlToPdf(html: string, options: HtmlToPdfOptions): Promise<Blob> {
+  const root = await paginateHtmlForPdf(html, PDF_CONTENT_WIDTH_PX, PDF_CONTENT_HEIGHT_PX);
+  const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', putOnlyUsedFonts: true });
+  pdf.setProperties({ title: options.filename.replace(/\.pdf$/i, '') });
+  const pages = Array.from(root.querySelectorAll<HTMLElement>('.pdf-page'));
   try {
-    const pdf = new jsPDF({
-      unit: 'mm',
-      format: 'a4',
-      orientation: 'portrait',
-    });
-    pdf.setProperties({ title: options.filename.replace(/\.pdf$/i, '') });
-
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const contentHeightPx = (pageHeight - PDF_MARGIN_MM * 2) / HTML2CANVAS_SCALE;
-    const renderElement = await paginateHtmlForPdf(html, RENDER_WIDTH_PX, contentHeightPx);
-    element = renderElement;
-
-    await new Promise<void>((resolve, reject) => {
-      pdf.html(renderElement, {
-        callback: () => resolve(),
-        margin: PDF_MARGIN_MM,
-        x: 0,
-        y: 0,
-        width: 190,
-        windowWidth: RENDER_WIDTH_PX,
-        autoPaging: 'text',
-        html2canvas: {
-          scale: HTML2CANVAS_SCALE,
-          useCORS: true,
-          letterRendering: true,
-          logging: false,
-        },
-      }).catch(reject);
-    });
-
+    for (const [index, page] of pages.entries()) {
+      if (index > 0) pdf.addPage();
+      const wrapper = document.createElement('div');
+      // Put the physical margin in the DOM. jsPDF's non-paging canvas paths
+      // do not apply x/y offsets consistently to both text and borders.
+      wrapper.style.cssText = `padding:${PDF_GEOMETRY.marginMm / PDF_GEOMETRY.mmPerPx}px;width:${PDF_GEOMETRY.widthMm / PDF_GEOMETRY.mmPerPx}px;box-sizing:border-box;`;
+      root.querySelectorAll('style').forEach(style => wrapper.append(style.cloneNode(true)));
+      wrapper.append(page.cloneNode(true));
+      await pdf.html(wrapper, {
+        callback: () => {}, x: 0, y: 0,
+        width: PDF_GEOMETRY.widthMm,
+        windowWidth: PDF_GEOMETRY.widthMm / PDF_GEOMETRY.mmPerPx, autoPaging: false,
+        fontFaces: getPDFFontFaces(root.dataset.pdfFont ?? 'Noto Sans'),
+        html2canvas: { scale: PDF_GEOMETRY.mmPerPx, useCORS: true, logging: false },
+      });
+      pdf.setFont((root.dataset.pdfFont ?? 'Noto Sans').toLowerCase(), 'normal normal 400');
+      pdf.setFontSize(8); pdf.setTextColor('#536070');
+      pdf.text(`${root.dataset.pageLabel} ${index + 1} / ${pages.length}`, PDF_GEOMETRY.widthMm - PDF_GEOMETRY.marginMm, PDF_GEOMETRY.heightMm - PDF_GEOMETRY.marginMm, { align: 'right' });
+    }
     return pdf.output('blob');
-  } catch (error) {
-    console.error('Error converting HTML to PDF:', error);
-    throw new Error(`Failed to convert HTML to PDF: ${String(error)}`);
-  } finally {
-    element?.remove();
-  }
+  } finally { root.remove(); }
 }

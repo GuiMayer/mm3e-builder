@@ -25,7 +25,7 @@ export function renderNotesSection(data: NotesSectionData): string {
     <div class="pdf-section">
       <div class="pdf-section-title">Notes</div>
       <div class="notes-section">
-        ${nl2br(notes)}
+        ${notes.split(/\n\s*\n/).map(paragraph => `<p class="pdf-flow-line">${nl2br(paragraph)}</p>`).join('')}
       </div>
     </div>
   `.trim();

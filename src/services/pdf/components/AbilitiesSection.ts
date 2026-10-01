@@ -4,7 +4,7 @@
    ================================================ */
 
 import type { ICharacter } from '../../../entities/types';
-import { escapeHtml, formatBonus, classNames } from './utils';
+import { escapeHtml, classNames } from './utils';
 
 export interface AbilitiesSectionData {
   character: ICharacter;
@@ -56,13 +56,11 @@ export function renderAbilitiesSection(data: AbilitiesSectionData): string {
 function renderAbilityBox(name: string, value: number, isAbsent: boolean): string {
   const className = classNames('ability-box', isAbsent && 'absent');
   const displayValue = isAbsent ? '—' : value;
-  const bonus = isAbsent ? '' : formatBonus(value);
 
   return `
     <div class="${className}">
       <div class="ability-name">${escapeHtml(name)}</div>
       <div class="ability-value">${displayValue}</div>
-      ${!isAbsent ? `<div class="ability-bonus">${bonus}</div>` : ''}
     </div>
   `;
 }

@@ -1,286 +1,164 @@
-const PAGINATION_KEY_ATTRIBUTE = 'data-pdf-pagination-key';
-const PAGINATION_EPSILON_PX = 1;
+import { waitForPDFFonts } from './pdfFonts';
 
-interface PaginationBreak {
-  beforeKey: string;
-  height: number;
-  grid: boolean;
+const EPSILON = 0.5;
+interface Fragment { frame: HTMLElement; targets: HTMLElement[] }
+interface Group { create: (continued: boolean) => Fragment; units: HTMLElement[][] }
+
+/** Kept for consumers that need to decide whether an atomic row fits. */
+export function fitsOnPdfPage(contentHeight: number, pageHeight: number): boolean {
+  return contentHeight <= pageHeight + EPSILON;
 }
 
-interface PaginationUnit {
-  key: string;
-  target: HTMLElement;
-  elements: HTMLElement[];
-  grid: boolean;
-}
+function clone(element: HTMLElement): HTMLElement { return element.cloneNode(true) as HTMLElement; }
 
-interface PaginationTargetSet {
-  section: HTMLElement;
-  sectionKey: string;
-  title: HTMLElement | null;
-  units: PaginationUnit[];
-}
-
-interface UnitSpec {
-  containerSelector: string;
-  itemSelector: string;
-  columns: number;
-  leadingRows?: number;
-}
-
-const UNIT_SPECS: UnitSpec[] = [
-  { containerSelector: '.powers-list', itemSelector: ':scope > .power-entry', columns: 1 },
-  {
-    containerSelector: '.equipment-list',
-    itemSelector: ':scope > .equipment-entry',
-    columns: 1,
-  },
-  {
-    containerSelector: '.complications-list',
-    itemSelector: ':scope > .complication-item',
-    columns: 1,
-  },
-  { containerSelector: '.skills-grid', itemSelector: ':scope > .skill-entry', columns: 2 },
-  {
-    containerSelector: '.advantages-list',
-    itemSelector: ':scope > .advantage-entry',
-    columns: 2,
-  },
-  {
-    containerSelector: '.offense-table',
-    itemSelector: ':scope > .offense-col',
-    columns: 5,
-    leadingRows: 2,
-  },
-];
-
-export function getRequiredPageSpacerHeight(
-  pageOffset: number,
-  blockHeight: number,
-  pageHeight: number
-): number | null {
-  if (
-    blockHeight > pageHeight ||
-    pageOffset + blockHeight <= pageHeight + PAGINATION_EPSILON_PX
-  ) {
-    return null;
-  }
-
-  return Math.max(0, pageHeight - pageOffset);
-}
-
-function chunkElements(
-  elements: HTMLElement[],
-  columns: number,
-  leadingRows = 1
-): HTMLElement[][] {
-  const firstChunkSize = Math.min(elements.length, columns * leadingRows);
-  const chunks: HTMLElement[][] = [];
-
-  if (firstChunkSize > 0) {
-    chunks.push(elements.slice(0, firstChunkSize));
-  }
-
-  for (let index = firstChunkSize; index < elements.length; index += columns) {
-    chunks.push(elements.slice(index, index + columns));
-  }
-
-  return chunks;
-}
-
-function annotatePaginationTargets(root: HTMLElement): PaginationTargetSet[] {
-  const container = root.querySelector<HTMLElement>('.pdf-container');
-  if (!container) return [];
-
-  return Array.from(container.querySelectorAll<HTMLElement>(':scope > .pdf-section')).map(
-    (section, sectionIndex) => {
-      const sectionKey = `section-${sectionIndex}`;
-      section.setAttribute(PAGINATION_KEY_ATTRIBUTE, sectionKey);
-
-      const spec = UNIT_SPECS.find(({ containerSelector }) =>
-        section.querySelector(containerSelector)
-      );
-      if (!spec) {
-        return {
-          section,
-          sectionKey,
-          title: section.querySelector<HTMLElement>(':scope > .pdf-section-title'),
-          units: [],
-        };
+function sectionGroup(section: HTMLElement, continuation: string): Group {
+  const title = section.querySelector<HTMLElement>(':scope > .pdf-section-title');
+  const list = section.querySelector<HTMLElement>(':scope > .powers-list,:scope > .equipment-list,:scope > .complications-list,:scope > .notes-section,:scope > .skills-grid,:scope > .advantages-list,:scope > .offense-table');
+  const table = list?.tagName === 'TABLE';
+  const items = list ? Array.from((table ? list.querySelector('tbody')! : list).children) as HTMLElement[] : Array.from(section.children).filter(item => item !== title) as HTMLElement[];
+  return {
+    units: items.map(item => [item]),
+    create: continued => {
+      const frame = section.cloneNode(false) as HTMLElement;
+      if (title) {
+        const heading = clone(title);
+        if (continued) { const label = document.createElement('span'); label.className = 'pdf-continuation'; label.textContent = ` (${continuation})`; heading.firstChild?.after(label); }
+        frame.append(heading);
       }
-
-      const unitContainer = section.querySelector<HTMLElement>(spec.containerSelector);
-      const items = unitContainer
-        ? Array.from(unitContainer.querySelectorAll<HTMLElement>(spec.itemSelector))
-        : [];
-      const grid = spec.columns > 1;
-      const units = chunkElements(items, spec.columns, spec.leadingRows)
-        .map((elements, unitIndex) => {
-          const key = `${sectionKey}-unit-${unitIndex}`;
-          elements[0]?.setAttribute(PAGINATION_KEY_ATTRIBUTE, key);
-          return { key, target: elements[0], elements, grid };
-        })
-        .filter((unit): unit is PaginationUnit => Boolean(unit.target));
-
-      return {
-        section,
-        sectionKey,
-        title: section.querySelector<HTMLElement>(':scope > .pdf-section-title'),
-        units,
-      };
-    }
-  );
+      if (!list) return { frame, targets: [frame] };
+      const container = list.cloneNode(false) as HTMLElement;
+      frame.append(container);
+      if (!table) return { frame, targets: [container] };
+      const header = list.querySelector('thead');
+      if (header) container.append(header.cloneNode(true));
+      const body = document.createElement('tbody'); container.append(body);
+      return { frame, targets: [body] };
+    },
+  };
 }
 
-function getElementsHeight(elements: HTMLElement[]): number {
-  if (elements.length === 0) return 0;
-  const top = Math.min(...elements.map((element) => element.getBoundingClientRect().top));
-  const bottom = Math.max(...elements.map((element) => element.getBoundingClientRect().bottom));
-  return bottom - top;
-}
-
-function getPageOffset(target: HTMLElement, root: HTMLElement, pageHeight: number): number {
-  const relativeTop = target.getBoundingClientRect().top - root.getBoundingClientRect().top;
-  return ((relativeTop % pageHeight) + pageHeight) % pageHeight;
-}
-
-function createSpacer(height: number, grid: boolean): HTMLDivElement {
-  const spacer = document.createElement('div');
-  spacer.className = 'pdf-pagination-spacer';
-  spacer.setAttribute('aria-hidden', 'true');
-  spacer.style.height = `${height}px`;
-  spacer.style.minHeight = `${height}px`;
-  spacer.style.width = '100%';
-  if (grid) spacer.style.gridColumn = '1 / -1';
-  return spacer;
-}
-
-function measureAndInsertBreak(
-  target: HTMLElement,
-  blockHeight: number,
-  root: HTMLElement,
-  pageHeight: number,
-  beforeKey: string,
-  grid: boolean
-): PaginationBreak | null {
-  const spacerHeight = getRequiredPageSpacerHeight(
-    getPageOffset(target, root, pageHeight),
-    blockHeight,
-    pageHeight
-  );
-
-  if (spacerHeight === null || spacerHeight <= PAGINATION_EPSILON_PX) return null;
-
-  target.before(createSpacer(spacerHeight, grid));
-  return { beforeKey, height: spacerHeight, grid };
-}
-
-function createPaginationPlan(measurementRoot: HTMLElement, pageHeight: number): PaginationBreak[] {
-  const targets = annotatePaginationTargets(measurementRoot);
-  const breaks: PaginationBreak[] = [];
-
-  for (const targetSet of targets) {
-    const sectionHeight = targetSet.section.getBoundingClientRect().height;
-
-    if (sectionHeight <= pageHeight) {
-      const pageBreak = measureAndInsertBreak(
-        targetSet.section,
-        sectionHeight,
-        measurementRoot,
-        pageHeight,
-        targetSet.sectionKey,
-        false
-      );
-      if (pageBreak) breaks.push(pageBreak);
-      continue;
-    }
-
-    const firstUnit = targetSet.units[0];
-    if (targetSet.title && firstUnit) {
-      const firstUnitBottom = Math.max(
-        ...firstUnit.elements.map((element) => element.getBoundingClientRect().bottom)
-      );
-      const titleAndFirstUnitHeight = firstUnitBottom - targetSet.title.getBoundingClientRect().top;
-      const pageBreak = measureAndInsertBreak(
-        targetSet.section,
-        titleAndFirstUnitHeight,
-        measurementRoot,
-        pageHeight,
-        targetSet.sectionKey,
-        false
-      );
-      if (pageBreak) breaks.push(pageBreak);
-    }
-
-    for (const unit of targetSet.units) {
-      const pageBreak = measureAndInsertBreak(
-        unit.target,
-        getElementsHeight(unit.elements),
-        measurementRoot,
-        pageHeight,
-        unit.key,
-        unit.grid
-      );
-      if (pageBreak) breaks.push(pageBreak);
-    }
+function getGroup(element: HTMLElement, continuation: string): Group {
+  if (element.classList.contains('pdf-columns')) {
+    const columns = Array.from(element.children).map(section => sectionGroup(section as HTMLElement, continuation));
+    const count = Math.max(0, ...columns.map(column => column.units.length));
+    return {
+      units: Array.from({ length: count }, (_, index) => columns.map(column => column.units[index]?.[0] ?? document.createElement('div'))),
+      create: continued => {
+        const frame = element.cloneNode(false) as HTMLElement;
+        const fragments = columns.map(column => column.create(continued));
+        fragments.forEach(fragment => frame.append(fragment.frame));
+        return { frame, targets: fragments.map(fragment => fragment.targets[0]) };
+      },
+    };
   }
-
-  return breaks;
+  if (element.classList.contains('pdf-section')) return sectionGroup(element, continuation);
+  return { units: [[element]], create: () => ({ frame: document.createElement('div'), targets: [] }) };
 }
 
-function applyPaginationPlan(renderRoot: HTMLElement, breaks: PaginationBreak[]): void {
-  annotatePaginationTargets(renderRoot);
-
-  for (const pageBreak of breaks) {
-    const target = renderRoot.querySelector<HTMLElement>(
-      `[${PAGINATION_KEY_ATTRIBUTE}="${pageBreak.beforeKey}"]`
-    );
-    target?.before(createSpacer(pageBreak.height, pageBreak.grid));
-  }
-
-  renderRoot.querySelectorAll<HTMLElement>(`[${PAGINATION_KEY_ATTRIBUTE}]`).forEach((element) => {
-    element.removeAttribute(PAGINATION_KEY_ATTRIBUTE);
-  });
+function textWithBreaks(node: Node): string {
+  if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? '';
+  if (node instanceof HTMLElement && node.tagName === 'BR') return '\n';
+  const text = Array.from(node.childNodes).map(textWithBreaks).join('');
+  return node instanceof HTMLElement && ['DIV', 'P', 'TD'].includes(node.tagName) ? `${text}\n` : text;
 }
 
-function waitForLayout(): Promise<void> {
-  return new Promise((resolve) => {
-    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
-  });
-}
-
-/**
- * Measures a disposable off-screen copy, then applies only the resulting
- * spacers to the clean render tree. The off-screen styles can never leak into
- * the element passed to jsPDF.html().
+/** Measures physical pages, repeats section/table headings and splits oversized content.
+ * No spacers and no second automatic pagination pass are involved in PDF conversion.
  */
-export async function paginateHtmlForPdf(
-  html: string,
-  renderWidth: number,
-  pageHeight: number
-): Promise<HTMLElement> {
-  const renderRoot = document.createElement('div');
-  renderRoot.innerHTML = html;
-
-  const measurementRoot = renderRoot.cloneNode(true) as HTMLElement;
-  measurementRoot.setAttribute('aria-hidden', 'true');
-  measurementRoot.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: -100000px;
-    width: ${renderWidth}px;
-    visibility: hidden;
-    pointer-events: none;
-  `;
-
-  document.body.appendChild(measurementRoot);
+export async function paginateHtmlForPdf(html: string, width: number, height: number): Promise<HTMLElement> {
+  const parsed = new DOMParser().parseFromString(html, 'text/html');
+  const source = parsed.querySelector<HTMLElement>('.pdf-container');
+  if (!source) throw new Error('Missing PDF content');
+  const root = document.createElement('div');
+  parsed.querySelectorAll('style').forEach(style => root.append(document.importNode(style, true)));
+  const pages = document.createElement('div'); pages.className = 'pdf-pages'; root.append(pages);
+  const measurement = document.createElement('div');
+  measurement.style.cssText = `position:fixed;left:-100000px;top:0;width:${width}px;visibility:hidden;pointer-events:none;`;
+  measurement.setAttribute('aria-hidden', 'true'); measurement.append(root); document.body.append(measurement);
+  let page: HTMLElement;
+  let fragment!: Fragment;
+  const newPage = () => {
+    page = document.createElement('div'); page.className = 'pdf-page'; page.style.width = `${width}px`; pages.append(page);
+    if (pages.children.length > 1 && source.dataset.characterName) {
+      const heading = document.createElement('div'); heading.className = 'pdf-page-heading'; heading.textContent = source.dataset.characterName; page.append(heading);
+    }
+  };
+  const fits = () => fitsOnPdfPage(page.getBoundingClientRect().height, height);
   try {
-    await document.fonts?.ready;
-    await waitForLayout();
-    const plan = createPaginationPlan(measurementRoot, pageHeight);
-    applyPaginationPlan(renderRoot, plan);
-    return renderRoot;
-  } finally {
-    measurementRoot.remove();
-  }
+    await waitForPDFFonts(source.dataset.pdfFont ?? 'Noto Sans');
+    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    newPage();
+    for (const element of Array.from(source.children) as HTMLElement[]) {
+      const group = getGroup(element, source.dataset.continuationLabel ?? 'continued');
+      let continued = false;
+      let fragmentHasContent = false;
+      const newFragment = () => { fragment = group.create(continued); page.append(fragment.frame); fragmentHasContent = false; };
+      newFragment();
+      const appendNodes = (nodes: HTMLElement[]) => nodes.forEach((node, index) => (fragment.targets[index] ?? fragment.frame).append(node));
+      const advance = () => {
+        continued ||= fragmentHasContent;
+        if (!fragmentHasContent) fragment.frame.remove();
+        newPage(); newFragment();
+      };
+      const addUnit = (originals: HTMLElement[], splittable = true) => {
+        const nodes = originals.map(clone); appendNodes(nodes);
+        if (fits()) { fragmentHasContent = true; return; }
+        nodes.forEach(node => node.remove());
+        // Keep a heading with its first row. Reclaim the empty frame before deciding.
+        if (fragmentHasContent || page.children.length > (pages.children.length > 1 ? 2 : 1)) advance();
+        appendNodes(nodes);
+        if (fits()) { fragmentHasContent = true; return; }
+        nodes.forEach(node => node.remove());
+        // A very long power is divided by its components/alternates/notes.
+        if (splittable && originals.length === 1 && originals[0].matches('.power-entry,.equipment-entry')) {
+          const original = originals[0];
+          const header = original.querySelector<HTMLElement>(':scope > .power-header');
+          const children = Array.from(original.children).filter(child => child !== header).flatMap(child => child.classList.contains('power-alternate') ? Array.from(child.children).map(line => { const wrapper = child.cloneNode(false) as HTMLElement; wrapper.append(line.cloneNode(true)); return wrapper; }) : [child as HTMLElement]);
+          children.forEach((child, index) => { const part = original.cloneNode(false) as HTMLElement; if (header) part.append(clone(header)); part.append(clone(child)); part.dataset.pdfPart = String(index); addUnit([part], false); });
+          return;
+        }
+        // Split the text of an oversized paragraph, cell or component at word boundaries.
+        // Slice long unbroken tokens too; nothing is truncated.
+        const tableRow = originals.length === 1 && originals[0].tagName === 'TR';
+        const textSources = tableRow ? Array.from(originals[0].children) as HTMLElement[] : originals;
+        const tokens = textSources.map(original => textWithBreaks(original).match(/\S+\s*|\s+/g) ?? ['']);
+        const positions = tokens.map(() => 0);
+        while (tokens.some((items, index) => positions[index] < items.length)) {
+          const chunks = textSources.map(original => { const node = original.cloneNode(false) as HTMLElement; node.style.whiteSpace = 'pre-wrap'; return node; });
+          const row = tableRow ? originals[0].cloneNode(false) as HTMLElement : null;
+          if (row) { row.append(...chunks); appendNodes([row]); } else appendNodes(chunks);
+          let progress = false;
+          chunks.forEach((chunk, index) => {
+            const start = positions[index];
+            let low = start, high = tokens[index].length;
+            while (low < high) {
+              const mid = Math.ceil((low + high) / 2); chunk.textContent = tokens[index].slice(start, mid).join('');
+              if (fits()) low = mid; else high = mid - 1;
+            }
+            chunk.textContent = tokens[index].slice(start, low).join(''); positions[index] = low;
+            progress ||= low > start;
+          });
+          if (!progress) {
+            row?.remove();
+            chunks.forEach(chunk => chunk.remove());
+            if (fragmentHasContent) { advance(); continue; }
+            // An enormous single token is split into Unicode code points, preserving accents.
+            const index = tokens.findIndex((items, i) => positions[i] < items.length);
+            const token = tokens[index][positions[index]];
+            if (Array.from(token).length <= 1) throw new Error('PDF content cannot fit within page geometry');
+            tokens[index].splice(positions[index], 1, ...Array.from(token));
+            continue;
+          }
+          fragmentHasContent = true;
+          if (tokens.some((items, index) => positions[index] < items.length)) advance();
+        }
+      };
+      group.units.forEach(unit => addUnit(unit));
+      if (!fragmentHasContent) fragment.frame.remove();
+    }
+    root.dataset.characterName = source.dataset.characterName ?? '';
+    root.dataset.pdfFont = source.dataset.pdfFont ?? 'Noto Sans';
+    root.dataset.pageLabel = source.dataset.pageLabel ?? 'Page';
+    return root;
+  } finally { root.remove(); measurement.remove(); }
 }

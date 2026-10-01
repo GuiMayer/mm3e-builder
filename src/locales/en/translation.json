@@ -47,7 +47,6 @@
   "ppLog.earned": "{{amount}} PP earned",
   "ppLog.base": "Base (PL × 15)",
   "ppLog.total": "Total Available",
-
   "tabs.newCharacter": "New Character",
   "tabs.closeCharacter": "Close Tab",
   "tabs.closeConfirm": "Close this character? You can undo it immediately, before making another change or refreshing the page.",
@@ -57,12 +56,10 @@
   "tabs.maxTabsWarning": "You have {{count}} tabs open. Consider exporting older characters to free up space.",
   "tabs.copyLabel": " (Copy)",
   "tabs.copyOfCopy": " (Copy {{number}})",
-
   "characterImport.conflict.title": "Character already open",
   "characterImport.conflict.description": "This file has the same character identity as {{count}} open tab. Choose which tab to update, or open an independent copy.",
   "characterImport.conflict.update": "Update {{name}}",
   "characterImport.conflict.openCopy": "Open as new copy",
-
   "header.heroName": "Hero Name",
   "header.player": "Player",
   "header.identity": "Identity",
@@ -85,7 +82,6 @@
   "header.groupAffiliation": "Group Affiliation",
   "header.series": "Series",
   "header.gameMaster": "Game Master",
-
   "abilities.title": "Abilities",
   "abilities.str": "Strength",
   "abilities.sta": "Stamina",
@@ -97,7 +93,6 @@
   "abilities.pre": "Presence",
   "abilities.absent": "Mark as absent",
   "abilities.restore": "Restore ability",
-
   "defenses.title": "Defenses",
   "defenses.dodge": "Dodge",
   "defenses.parry": "Parry",
@@ -106,7 +101,6 @@
   "defenses.toughness": "Toughness",
   "defenses.initiative": "Initiative",
   "defenses.toughnessBreakdown": "Toughness breakdown",
-
   "skills.title": "Skills",
   "skills.addSkill": "Add Skill",
   "skills.noSkills": "No skills added. Click + to add.",
@@ -124,7 +118,6 @@
   "skills.expandAll": "Expand all",
   "skills.collapseAll": "Collapse all",
   "skills.otherBonus": "Situational / other bonus (e.g. equipment, circumstances)",
-
   "advantages.title": "Advantages",
   "advantages.addAdvantage": "Add Advantage",
   "advantages.noAdvantages": "No advantages added.",
@@ -152,13 +145,11 @@
   "advantages.noSkillsAvailable": "No skills available",
   "advantages.noSkillsInSheet": "You must add skills to your character sheet before selecting Skill Mastery.",
   "advantages.allSkillsHaveMastery": "All your skills already have Skill Mastery.",
-
   "powers.title": "Powers",
   "powers.noPowers": "No powers created. Use the builder to create.",
   "powers.newPower": "New Power (Power Builder)",
   "powers.alternateEffects": "{{count}} Alternate Effect(s)",
   "powers.edit": "Edit",
-
   "complications.title": "Complications",
   "complications.add": "Add Complication",
   "complications.noComplications": "No complications. Add motivations, weaknesses or secrets.",
@@ -166,7 +157,6 @@
   "complications.descPlaceholder": "Description...",
   "complications.typeLabel": "Type",
   "complications.typeNone": "None",
-
   "builder.title": "Power Builder",
   "builder.baseEffect": "Base Effect",
   "builder.selectEffect": "Select an effect...",
@@ -184,8 +174,8 @@
   "builder.addAlternate": "+ Alternate Effect",
   "builder.dynamic": "Dynamic (+2)",
   "builder.dynamicTooltip": "Dynamic Array: use base power + this AE simultaneously. Each dynamic AE costs +2PP.",
-  "builder.altRuleNote": "Switch as free action \u00b7 Max 1 active \u00b7 Components = simultaneous effects (Linked)",
-  "builder.altExceedsCap": "This AE exceeds the cap by {{overageBy}}PP \u2014 reduce ranks or remove modifiers",
+  "builder.altRuleNote": "Switch as free action · Max 1 active · Components = simultaneous effects (Linked)",
+  "builder.altExceedsCap": "This AE exceeds the cap by {{overageBy}}PP — reduce ranks or remove modifiers",
   "builder.addLinkedEffect": "+ Linked Effect",
   "builder.linkedEffectHint": "Linked effects are active together; their costs are added.",
   "builder.alternateEffectHint": "Alternate Effects are switched as a free action; only one is active at a time.",
@@ -202,9 +192,9 @@
   "builder.selectEffectToStart": "Start by choosing this power's base effect.",
   "builder.arrayCost": "Array cost",
   "builder.activation": "Activation",
-  "builder.altEffectCap": "Cap: \u2264 {{cap}}pp per AE",
+  "builder.altEffectCap": "Cap: ≤ {{cap}}pp per AE",
   "builder.addModifier": "Add modifier",
-  "builder.paletteContextAE": "Editing: {{aeName}} \u00b7 {{comp}}",
+  "builder.paletteContextAE": "Editing: {{aeName}} · {{comp}}",
   "builder.saveWithInvalidAEs": "{{count}} AE(s) exceed the cap: {{names}}. Save anyway?",
   "builder.linkedComponent": "Comp. {{n}}",
   "builder.save": "Save",
@@ -215,11 +205,9 @@
   "builder.noEffectError": "Add at least one effect before saving",
   "builder.costOption": "Cost Option",
   "builder.selectCostOption": "Select a cost option for this effect",
-
   "palette.search": "Search modifiers...",
   "palette.extras": "Extras",
   "palette.flaws": "Flaws",
-
   "summary.abilities": "Abilities",
   "summary.defenses": "Defenses",
   "summary.skills": "Skills",
@@ -227,7 +215,6 @@
   "summary.powers": "Powers",
   "summary.totalSpent": "Total Spent",
   "summary.remaining": "Remaining",
-
   "common.pp": "PP",
   "common.rank": "rank",
   "common.ranks": "ranks",
@@ -249,14 +236,12 @@
   "common.costBase": "base cost",
   "common.close": "Close",
   "common.character": "character",
-
   "powers.deleteConfirm": "Delete \"{{name}}\"?",
   "powers.deleteConfirmWithAlt": "Delete \"{{name}}\" and its {{count}} Alternate Effect(s)?",
   "powers.deleteTitle": "Delete power",
   "powers.unnamed": "Unnamed Power",
   "powers.editTooltip": "Edit this power in the Power Builder",
   "powers.newPowerBtn": "New Power (Power Builder)",
-
   "validation.attackDamage": "Attack + Damage",
   "validation.dodgeToughness": "Dodge + Toughness",
   "validation.parryToughness": "Parry + Toughness",
@@ -271,12 +256,10 @@
   "validation.absentDefense.fortitude": "Purchased Fortitude ranks use absent {{ability}} as a base of 0.",
   "validation.absentDefense.will": "Purchased Will ranks use absent {{ability}} as a base of 0.",
   "validation.strengthBasedDamageUsesAbsentStrength": "{{power}} is Strength-based, but absent STR contributes 0 ranks.",
-
   "errors.invalidJson": "Invalid JSON file: could not parse the content.",
   "errors.validationError": "Validation error in field \"{{field}}\": {{message}}",
   "errors.importError": "Error importing file.",
   "errors.exportError": "Error exporting file.",
-
   "builder.base": "Base",
   "builder.mods": "{{count}} mod(s)",
   "builder.alts": "{{count}} alt(s)",
@@ -323,14 +306,10 @@
   "palette.specific": "Power-Specific",
   "palette.flatRank": "flat/rank",
   "palette.clickToAdd": "Click or drag to add",
-
   "app.subtitle": "Character Sheet Manager",
   "app.description": "Character Sheet Manager and Power Builder for Mutants & Masterminds 3rd Edition",
-
   "palette.modifierAria": "{{type}}: {{name}}, cost {{cost}}",
-
   "menu.exportExcel": "Excel",
-
   "excel.sheetSummary": "Summary",
   "excel.sheetAbilities": "Abilities",
   "excel.sheetDefenses": "Defenses",
@@ -372,7 +351,6 @@
   "palette.noSpecificEffect": "Select an effect first.",
   "palette.noSpecificMods": "No specific modifiers for this effect.",
   "builder.aeOverageLabel": "+{{overageBy}}PP over cap",
-
   "builder.removable.label": "Device",
   "builder.removable.none": "None",
   "builder.removable.removable": "Removable",
@@ -383,7 +361,6 @@
   "builder.removable.from": "discount on",
   "builder.removable.discount": "Removable Discount",
   "builder.removable.remove": "Remove Removable flaw",
-
   "offense.title": "Offense",
   "offense.attack": "Attack",
   "offense.bonus": "Bonus",
@@ -397,7 +374,6 @@
   "offense.range_personal": "Personal",
   "offense.unarmed": "Unarmed",
   "offense.damage": "Damage",
-
   "equipment.title": "Equipment",
   "equipment.hint": "Equipment Points from the Equipment advantage (ranks × 5 EP)",
   "equipment.placeholder": "List your equipment here...\nExample:\nUtility Belt (Equipment 4 = 20 EP):\n  Flash-Bangs: Burst Area Dazzle 3 — 12 EP\n  Grapple Gun: Movement 1 (Swinging) — 2 EP",
@@ -441,7 +417,6 @@
   "equipment.limitCalcUsed": "Used",
   "equipment.limitCalcOver": "Over by",
   "equipment.limitHint": "Increase Equipment advantage ranks or remove equipment items.",
-
   "complications.type.motivation": "Motivation",
   "complications.type.enemy": "Enemy",
   "complications.type.identity": "Identity",
@@ -453,7 +428,6 @@
   "complications.type.social": "Social",
   "complications.type.disability": "Disability",
   "complications.type.power_loss": "Power Loss",
-
   "offense.custom.add": "Add custom attack",
   "offense.custom.name": "Attack Name",
   "offense.custom.notes": "Notes",
@@ -485,11 +459,9 @@
   "targeted.tag.perception": "Perception",
   "targeted.tag.affects-others": "Affects Others",
   "targeted.tag.dynamic": "Dynamic",
-
   "notes.title": "Background & Notes",
   "notes.placeholder": "Character background, GM notes, session history...",
   "notes.charCount": "{{count}} chars",
-
   "conditions.title": "Conditions",
   "conditions.clearAll": "Clear All",
   "conditions.activeCount": "{{count}} active",
@@ -524,7 +496,6 @@
   "conditions.restrained": "Restrained",
   "conditions.staggered": "Staggered",
   "conditions.surprised": "Surprised",
-
   "nav.sheet": "Character Sheet",
   "nav.sheetCompact": "Sheet",
   "nav.resources": "Resources",
@@ -542,9 +513,7 @@
   "ref.col.condition": "Condition",
   "ref.col.components": "= Components",
   "ref.col.description": "Effect",
-
   "ref.subtitle": "Quick-access rules for Mutants & Masterminds 3e",
-
   "ref.actions.aid": "Aid",
   "ref.actions.aim": "Aim",
   "ref.actions.charge": "Charge",
@@ -555,10 +524,8 @@
   "ref.actions.recover": "Recover",
   "ref.actions.smash": "Smash",
   "ref.actions.trip": "Trip",
-
   "ref.actionTypes.standard": "Standard",
   "ref.actionTypes.move": "Move",
-
   "ref.actionEffects.aid": "+2 (or +5 on 2+ degrees) to an ally's check on the character's next turn",
   "ref.actionEffects.aim": "+2 circumstance bonus to the next ranged attack check (readied)",
   "ref.actionEffects.charge": "Move in a straight line then make a close attack at the end",
@@ -569,21 +536,18 @@
   "ref.actionEffects.recover": "Remove the character's highest active condition; once per combat encounter",
   "ref.actionEffects.smash": "-5 attack check against held or stationary objects; ignores Toughness cap",
   "ref.actionEffects.trip": "-2 attack check; target resists with STR or Acrobatics; on failure, target goes prone",
-
   "ref.maneuvers.accurate_attack": "Accurate Attack",
   "ref.maneuvers.allout_attack": "All-out Attack",
   "ref.maneuvers.defensive_attack": "Defensive Attack",
   "ref.maneuvers.power_attack": "Power Attack",
   "ref.maneuvers.slam_attack": "Slam Attack",
   "ref.maneuvers.team_attack": "Team Attack",
-
   "ref.maneuverEffects.accurate_attack": "-1 or -2 to effect rank",
   "ref.maneuverEffects.allout_attack": "--",
   "ref.maneuverEffects.defensive_attack": "--",
   "ref.maneuverEffects.power_attack": "+1 or +2 to effect rank",
   "ref.maneuverEffects.slam_attack": "Charge variant; attacker takes half Toughness damage on a hit",
   "ref.maneuverEffects.team_attack": "Multiple attackers hit simultaneously vs. one target; use highest result + 2 per extra",
-
   "conditions.desc.compelled": "A compelled character is directed by an outside force, but struggling against it; the character is limited to free actions and a single standard action per turn, with both types of action being chosen by another, controlling character. As usual, this standard action can be traded for a move action. Controlled supersedes compelled.",
   "conditions.desc.controlled": "A controlled character has no free will; the character's actions each turn are dictated by another, controlling, character.",
   "conditions.desc.dazed": "A dazed character is limited to free actions and a single standard action per turn, although the character may use that action to perform a move, as usual. Stunned supersedes dazed.",
@@ -613,9 +577,7 @@
   "conditions.desc.restrained": "A restrained character is hindered and vulnerable. If the restraints are anchored to an immobile object, the character is immobile rather than hindered. If restrained by another character, the restrained character is immobile but may be moved by the restraining character.",
   "conditions.desc.staggered": "A staggered character is dazed and hindered.",
   "conditions.desc.surprised": "A surprised character is stunned and vulnerable, caught off-guard and therefore unable to act, and less able to avoid attacks.",
-
   "validation.noRoll": "No-Roll Power",
-
   "menu.exportPdf": "PDF",
   "pdf.generating": "Generating PDF...",
   "pdf.overflowTitle": "PDF field limit exceeded",
@@ -639,7 +601,6 @@
   "pdf.toast.error": "Error generating preview",
   "pdf.toast.converting": "Converting to PDF...",
   "pdf.toast.downloaded": "PDF downloaded successfully!",
-
   "pdf.customization.title": "Customization",
   "pdf.customization.theme.label": "Color Theme",
   "pdf.customization.theme.default": "Default Blue",
@@ -661,33 +622,27 @@
   "pdf.customization.sections.notes": "Include Notes",
   "pdf.customization.sections.complications": "Include Complications",
   "pdf.customization.sections.equipment": "Include Equipment",
-
   "pdf.toast.printReady": "Print preview ready! Use Ctrl+P or browser print dialog.",
-
   "error.boundary.title": "Something went wrong",
   "error.boundary.message": "An unexpected error occurred. Please try again.",
   "error.boundary.details": "Error details",
   "error.boundary.tryAgain": "Try again",
   "error.boundary.reload": "Reload page",
   "error.boundary.goHome": "Go home",
-
   "draftNotification.title": "Continue where you left off?",
   "draftNotification.unnamedCharacter": "Unnamed Character",
   "draftNotification.continue": "Continue",
   "draftNotification.startNew": "Start New",
-
   "dialog.confirmation": "Confirmation",
   "dialog.acknowledge": "I understand.",
   "menu.open": "Open menu",
   "menu.close": "Close menu",
-
   "tabs.closeTitle": "Close character",
   "tabs.closeAction": "Close",
   "advantages.alertTitle": "Advantage",
   "ppLog.removeTitle": "Remove PP entry",
   "equipment.alertTitle": "Equipment",
   "equipment.deleteTitle": "Delete equipment",
-
   "resources.title": "Resources",
   "resources.libraryHint": "Reusable Gadgets, Gear, Vehicles, Headquarters, and custom resources. Associate them from a character sheet.",
   "resources.libraryEmpty": "Your resource library is empty. Add a resource to start building it.",
@@ -755,7 +710,6 @@
   "resources.error.invalidRecord": "The file contains an invalid Resource record.",
   "resources.error.invalidResource": "The file contains an invalid Resource.",
   "resources.error.storageWrite": "The Resources could not be saved, so the character import was not applied.",
-
   "draft.management": "Draft Management",
   "draft.export": "Export Draft",
   "draft.import": "Import Draft",
@@ -794,11 +748,9 @@
   "draft.saveError.storageFull": "Browser storage is full. Free storage space or export and clear older drafts before trying again.",
   "draft.saveError.writeFailed": "The browser could not save this Draft. Your changes remain marked as unsaved.",
   "draft.saveError.recoveryFailed": "The new Draft was not saved because the previous unreadable Draft could not be moved safely to recovery. Export the recovery copy and try again.",
-
   "calculationUpdate.title": "Point calculation fixed",
   "calculationUpdate.message": "Strength-based Damage now includes the cost of modifiers covering its Strength contribution. Partial effects, combat bonuses and equipment defenses also use corrected rules. Your saved character data was not changed, but totals and displayed values may have changed.",
   "builder.pricingDataWarning": "{{count}} saved pricing reference could not be resolved. Re-select the affected effect or modifier.",
-
   "menu.clearDraft.label": "Draft Management",
   "menu.clearDraft.action": "Clear Draft",
   "menu.clearDraft.hint": "Remove saved draft from browser storage",
@@ -824,5 +776,7 @@
   "palette.noResults": "No modifiers match your search.",
   "builder.tapHelp": "Use + to add a modifier to the selected effect.",
   "builder.openModifierPalette": "Open modifier palette",
-  "builder.addModifiersTo": "Add modifiers to {{name}}"
+  "builder.addModifiersTo": "Add modifiers to {{name}}",
+  "pdf.customization.theme.mono": "Printer friendly",
+  "pdf.customization.sections.hideEmpty": "Hide empty sections"
 }

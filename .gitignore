@@ -26,3 +26,7 @@ dist-ssr
 # Test and lint outputs
 lint-errors.txt
 test-results.txt
+
+# Local PDF inspection artifacts
+/output/pdf/
+/tmp/pdfs/

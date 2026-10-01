@@ -28,28 +28,9 @@ export function renderHeaderSection(data: HeaderSectionData): string {
   const { character, powerPointsData } = data;
   const { header } = character;
 
-  return `
-    <div class="header-section character-name-running">
-      <div class="header-main">
-        <div class="character-name">${escapeHtml(header.name || 'Unnamed Hero')}</div>
-        
-        ${renderHeaderField('Player', header.player)}
-        ${renderHeaderField('Identity', header.identity ? `${header.identity}${header.identityType ? ` (${header.identityType})` : ''}` : '')}
-        ${renderHeaderField('Base of Operations', header.base)}
-      </div>
-      
-      <div class="header-stats">
-        ${renderStatBox('Power Level', header.powerLevel || 10)}
-        ${renderStatBox('Hero Points', header.heroPoints || 0)}
-      </div>
-    </div>
-    
-    ${renderPowerPointsSummaryCompact(powerPointsData)}
-    
-    ${renderPhysicalDescription(header)}
-    
-    ${renderAdditionalInfo(header)}
-  `.trim();
+  const identity = header.identity ? `${header.identity}${header.identityType ? ` (${header.identityType})` : ''}` : '';
+  const details = [['Gender', header.gender], ['Age', header.age], ['Height', header.height], ['Weight', header.weight], ['Eyes', header.eyes], ['Hair', header.hair], ['Group Affiliation', header.groupAffiliation], ['Series', header.series], ['Game Master', header.gameMaster]];
+  return `<div class="pdf-header"><div class="header-main"><div class="character-name">${escapeHtml(header.name || 'Unnamed Hero')}</div><div class="header-stats">PL ${header.powerLevel} · Hero Points ${header.heroPoints}</div></div><div class="header-fields">${renderHeaderField('Player', header.player)}${renderHeaderField('Identity', identity)}${renderHeaderField('Base of Operations', header.base)}</div><div class="header-details">${details.map(([label, value]) => renderHeaderField(label!, value)).join('')}</div>${renderPowerPointsSummaryCompact(powerPointsData)}</div>`;
 }
 
 /**
@@ -68,56 +49,7 @@ function renderPowerPointsSummaryCompact(ppData: HeaderSectionData['powerPointsD
     ppEarned,
   } = ppData;
 
-  const isOverbudget = remaining < 0;
-  const isClose = remaining >= 0 && remaining <= Math.floor(totalAvailable * 0.1);
-  
-  let summaryBoxClass = 'pp-summary-box';
-  let valueClass = 'pp-summary-value';
-  
-  if (isOverbudget) {
-    summaryBoxClass += ' over-budget';
-    valueClass += ' negative';
-  } else if (isClose) {
-    summaryBoxClass += ' under-budget';
-    valueClass += ' positive';
-  } else {
-    valueClass += ' positive';
-  }
-
-  return `
-    <div class="pp-summary-compact">
-      <div class="pp-breakdown">
-        <div class="pp-breakdown-item">
-          <span class="pp-breakdown-label">Abilities</span>
-          <span class="pp-breakdown-value">${abilitiesCost} PP</span>
-        </div>
-        ${ppEarned !== 0 ? `<div class="pp-breakdown-item"><span class="pp-breakdown-label">Campaign Adjustment</span><span class="pp-breakdown-value">${ppEarned > 0 ? '+' : ''}${ppEarned} PP</span></div>` : ''}
-        <div class="pp-breakdown-item">
-          <span class="pp-breakdown-label">Defenses</span>
-          <span class="pp-breakdown-value">${defensesCost} PP</span>
-        </div>
-        <div class="pp-breakdown-item">
-          <span class="pp-breakdown-label">Skills</span>
-          <span class="pp-breakdown-value">${skillsCost} PP</span>
-        </div>
-        <div class="pp-breakdown-item">
-          <span class="pp-breakdown-label">Advantages</span>
-          <span class="pp-breakdown-value">${advantagesCost} PP</span>
-        </div>
-        <div class="pp-breakdown-item">
-          <span class="pp-breakdown-label">Powers</span>
-          <span class="pp-breakdown-value">${powersCost} PP</span>
-        </div>
-      </div>
-      
-      <div class="${summaryBoxClass}">
-        <div class="pp-summary-label">Points Remaining</div>
-        <div class="${valueClass}">${remaining}</div>
-        <div class="pp-summary-fraction">${totalSpent} / ${totalAvailable} PP</div>
-        ${isOverbudget ? '<div class="pp-warning">Over Budget!</div>' : ''}
-      </div>
-    </div>
-  `;
+  return `<div class="pp-summary-compact"><strong>${totalSpent} / ${totalAvailable} PP · Points Remaining ${remaining}${remaining < 0 ? ' · Over Budget!' : ''}</strong><span>Abilities ${abilitiesCost} · Defenses ${defensesCost} · Skills ${skillsCost} · Advantages ${advantagesCost} · Powers ${powersCost}${ppEarned !== 0 ? ` · Campaign Adjustment ${ppEarned}` : ''}</span></div>`;
 }
 
 /**
@@ -134,77 +66,3 @@ function renderHeaderField(label: string, value: string | undefined): string {
   `;
 }
 
-/**
- * Render a stat box (for PL, Hero Points, etc.)
- */
-function renderStatBox(label: string, value: number, highlight: boolean = false): string {
-  const className = highlight ? 'stat-box highlight-box' : 'stat-box';
-  
-  return `
-    <div class="${className}">
-      <div class="stat-box-label">${escapeHtml(label)}</div>
-      <div class="stat-box-value">${value}</div>
-    </div>
-  `;
-}
-
-/**
- * Render physical description grid
- */
-function renderPhysicalDescription(header: ICharacter['header']): string {
-  const fields = [
-    { label: 'Gender', value: header.gender },
-    { label: 'Age', value: header.age },
-    { label: 'Height', value: header.height },
-    { label: 'Weight', value: header.weight },
-    { label: 'Eyes', value: header.eyes },
-    { label: 'Hair', value: header.hair },
-  ];
-  
-  const hasAnyField = fields.some(f => isPresent(f.value));
-  if (!hasAnyField) return '';
-  
-  const fieldsHtml = fields
-    .filter(f => isPresent(f.value))
-    .map(f => `
-      <div class="description-field">
-        <span class="description-label">${escapeHtml(f.label)}:</span>
-        <span class="description-value">${escapeHtml(f.value)}</span>
-      </div>
-    `)
-    .join('');
-  
-  return `
-    <div class="pdf-subsection">
-      <div class="pdf-subsection-title">Physical Description</div>
-      <div class="physical-description">
-        ${fieldsHtml}
-      </div>
-    </div>
-  `;
-}
-
-/**
- * Render additional info (affiliation, series, GM)
- */
-function renderAdditionalInfo(header: ICharacter['header']): string {
-  const fields = [
-    { label: 'Group Affiliation', value: header.groupAffiliation },
-    { label: 'Series', value: header.series },
-    { label: 'Game Master', value: header.gameMaster },
-  ];
-  
-  const hasAnyField = fields.some(f => isPresent(f.value));
-  if (!hasAnyField) return '';
-  
-  const fieldsHtml = fields
-    .filter(f => isPresent(f.value))
-    .map(f => renderHeaderField(f.label, f.value))
-    .join('');
-  
-  return `
-    <div class="pdf-subsection">
-      ${fieldsHtml}
-    </div>
-  `;
-}

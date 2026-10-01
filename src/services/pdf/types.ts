@@ -75,7 +75,7 @@ export interface IPDFConverter {
 /**
  * Available color schemes for PDF
  */
-export type ColorScheme = 'default' | 'crimson' | 'emerald' | 'slate';
+export type ColorScheme = 'default' | 'crimson' | 'emerald' | 'slate' | 'mono';
 
 /**
  * Layout mode for PDF
@@ -90,7 +90,7 @@ export type FontSize = 'small' | 'medium' | 'large';
 /**
  * Available font families
  */
-export type FontFamily = 'Segoe UI' | 'Arial' | 'Times New Roman' | 'Georgia';
+export type FontFamily = 'Noto Sans' | 'Noto Serif' | 'Segoe UI' | 'Arial' | 'Times New Roman' | 'Georgia';
 
 /**
  * PDF customization options
@@ -103,6 +103,8 @@ export interface PDFCustomizationOptions {
   includeNotes: boolean;
   includeComplications: boolean;
   includeEquipment: boolean;
+  /** Defaults to true when loading preferences saved before this option existed. */
+  hideEmptySections?: boolean;
 }
 
 /**
@@ -120,6 +122,7 @@ export interface ColorTheme {
  * Color themes
  */
 export const COLOR_THEMES: Record<ColorScheme, ColorTheme> = {
+  mono: {primary:'#222222',primaryLight:'#777777',primaryDark:'#111111',secondary:'#444444',accent:'#555555'},
   default: {
     primary: '#2c5aa0',
     primaryLight: '#4a7bc8',
@@ -156,71 +159,11 @@ export const COLOR_THEMES: Record<ColorScheme, ColorTheme> = {
 export const DEFAULT_CUSTOMIZATION: PDFCustomizationOptions = {
   colorScheme: 'default',
   layoutMode: 'normal',
-  fontFamily: 'Segoe UI',
+  fontFamily: 'Noto Sans',
   fontSize: 'medium',
   includeNotes: true,
   includeComplications: true,
   includeEquipment: true,
+  hideEmptySections: true,
 };
 
-/**
- * Font size scales (in pt)
- */
-export const FONT_SIZE_SCALES = {
-  small: {
-    xs: 6,
-    sm: 7,
-    base: 9,
-    md: 10,
-    lg: 11,
-    xl: 13,
-    '2xl': 15,
-    '3xl': 18,
-  },
-  medium: {
-    xs: 7,
-    sm: 8,
-    base: 10,
-    md: 11,
-    lg: 12,
-    xl: 14,
-    '2xl': 16,
-    '3xl': 20,
-  },
-  large: {
-    xs: 8,
-    sm: 9,
-    base: 11,
-    md: 12,
-    lg: 13,
-    xl: 15,
-    '2xl': 17,
-    '3xl': 22,
-  },
-};
-
-/**
- * Spacing scales for layout modes (in inches)
- */
-export const SPACING_SCALES = {
-  normal: {
-    xs: 0.03,
-    sm: 0.05,
-    md: 0.08,
-    lg: 0.1,
-    xl: 0.15,
-    '2xl': 0.2,
-    '3xl': 0.3,
-    pagePadding: 0.5,
-  },
-  compact: {
-    xs: 0.018,
-    sm: 0.03,
-    md: 0.048,
-    lg: 0.06,
-    xl: 0.09,
-    '2xl': 0.12,
-    '3xl': 0.18,
-    pagePadding: 0.35,
-  },
-};

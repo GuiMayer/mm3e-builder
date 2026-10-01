@@ -5,6 +5,7 @@
 
 import { useTranslation } from 'react-i18next';
 import type { PDFCustomizationOptions, ColorScheme, LayoutMode, FontFamily, FontSize } from '../../services/pdf/types';
+import { resolvePDFFont } from '../../services/pdf/pdfFonts';
 import { COLOR_THEMES } from '../../services/pdf/types';
 
 interface PDFCustomizationPanelProps {
@@ -49,7 +50,7 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
       <section className="panel-section">
         <h4 className="section-label">{t('pdf.customization.theme.label')}</h4>
         <div className="theme-grid">
-          {(['default', 'crimson', 'emerald', 'slate'] as ColorScheme[]).map((scheme) => (
+          {(['default', 'crimson', 'emerald', 'slate', 'mono'] as ColorScheme[]).map((scheme) => (
             <button
               key={scheme}
               className={`theme-button ${options.colorScheme === scheme ? 'active' : ''}`}
@@ -105,13 +106,11 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
         </label>
         <select
           className="font-select"
-          value={options.fontFamily}
+          value={resolvePDFFont(options.fontFamily)}
           onChange={(e) => handleFontFamilyChange(e.target.value as FontFamily)}
         >
-          <option value="Segoe UI">Segoe UI</option>
-          <option value="Arial">Arial</option>
-          <option value="Times New Roman">Times New Roman</option>
-          <option value="Georgia">Georgia</option>
+          <option value="Noto Sans">Noto Sans</option>
+          <option value="Noto Serif">Noto Serif</option>
         </select>
 
         <label className="input-label" style={{ marginTop: '0.75rem' }}>
@@ -161,6 +160,7 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
             />
             <span>{t('pdf.customization.sections.equipment')}</span>
           </label>
+          <label className="checkbox-label"><input className="app-checkbox" type="checkbox" checked={options.hideEmptySections !== false} onChange={() => onChange({ ...options, hideEmptySections: options.hideEmptySections === false })} /><span>{t('pdf.customization.sections.hideEmpty')}</span></label>
         </div>
       </section>
 
