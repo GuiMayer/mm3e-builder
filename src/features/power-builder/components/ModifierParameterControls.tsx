@@ -43,7 +43,6 @@ export function ModifierParameterControls({
           value={applied.ranks}
           onChange={onRanksChange}
           min={1}
-          max={definition.maxRanks}
           aria-label={`${t('builder.modifierRanks')}: ${definition.name}`}
         />
       )}

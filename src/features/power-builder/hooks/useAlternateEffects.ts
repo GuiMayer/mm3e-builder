@@ -7,8 +7,7 @@ import type {
   IModifierDef,
 } from '../../../entities/types';
 import { createId } from '../../../shared/lib/identity';
-import { isRankedModifier } from '../../../shared/lib/mathEngine';
-import { resolveModifierDefinition } from '../../../shared/lib/rulesCatalog';
+import { addComponentModifier } from '../modifierApplication';
 
 interface UseAlternateEffectsParams {
   setPower: React.Dispatch<React.SetStateAction<ICharacterPower>>;
@@ -133,8 +132,6 @@ export function useAlternateEffects({
     modId: string,
     isPowerSpecific?: boolean
   ) => {
-    const allSpecific = powerDefs.flatMap((p) => [...(p.extras || []), ...(p.flaws || [])]);
-    const isSpecific = isPowerSpecific ?? allSpecific.some((m) => m.id === modId);
     setPower((p) => ({
       ...p,
       alternateEffects: p.alternateEffects.map((ae) =>
@@ -142,29 +139,7 @@ export function useAlternateEffects({
           ...ae,
           components: ae.components.map((comp) => {
             if (comp.id !== compId) return comp;
-            const targetEffect = powerDefs.find((effect) => effect.id === comp.effectId);
-            if (!targetEffect || !resolveModifierDefinition({ modifierId: modId, ranks: 1, isPowerSpecific: isSpecific }, targetEffect, modifierDefs).definition) return comp;
-            const already = comp.modifiers.find((m) => m.modifierId === modId);
-            if (already) {
-              if (already.isPowerSpecific !== undefined && already.isPowerSpecific !== isSpecific) {
-                return { ...comp, modifiers: comp.modifiers.map((modifier) => modifier === already ? { modifierId: modId, ranks: 1, isPowerSpecific: isSpecific } : modifier) };
-              }
-              const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
-              const modifierDef = effectDef
-                ? resolveModifierDefinition(already, effectDef, modifierDefs).definition
-                : undefined;
-              if (!modifierDef || !isRankedModifier(modifierDef)) return comp;
-              return {
-                ...comp,
-                modifiers: comp.modifiers.map((m) =>
-                  m.modifierId === modId ? { ...m, ranks: m.ranks + 1 } : m
-                ),
-              };
-            }
-            return {
-              ...comp,
-              modifiers: [...comp.modifiers, { modifierId: modId, ranks: 1, isPowerSpecific: isSpecific }],
-            };
+            return addComponentModifier(comp, powerDefs.find(effect => effect.id === comp.effectId), modifierDefs, modId, isPowerSpecific);
           }),
         }
       ),

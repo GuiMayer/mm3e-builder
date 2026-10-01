@@ -36,7 +36,8 @@ import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelecto
 import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { ModifierParameterControls } from './components/ModifierParameterControls';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
-import { isRankedModifier } from '../../shared/lib/mathEngine';
+import { addComponentModifier } from './modifierApplication';
+import { getBlockingPowerSaveIssues } from './powerSavePolicy';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 import {
   collectModifierDefinitions,
@@ -237,41 +238,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         return;
       }
 
-      // Check if it comes from the power's specific modifiers
-      const allSpecific = powerDefs.flatMap((p) => [...(p.extras || []), ...(p.flaws || [])]);
-      const isSpecific = isPowerSpecific ?? allSpecific.some((m) => m.id === modId);
-
       setPower((p) => ({
         ...p,
-        components: p.components.map((comp) => {
-          if (comp.id !== componentId) return comp;
-          const targetEffect = powerDefs.find((effect) => effect.id === comp.effectId);
-          if (!targetEffect || !resolveModifierDefinition({ modifierId: modId, ranks: 1, isPowerSpecific: isSpecific }, targetEffect, modifierDefs).definition) return comp;
-          const already = comp.modifiers.find((m) => m.modifierId === modId);
-          if (already) {
-            if (already.isPowerSpecific !== undefined && already.isPowerSpecific !== isSpecific) {
-              return { ...comp, modifiers: comp.modifiers.map((modifier) => modifier === already ? { modifierId: modId, ranks: 1, isPowerSpecific: isSpecific } : modifier) };
-            }
-            const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
-            const modifierDef = effectDef
-              ? resolveModifierDefinition(already, effectDef, modifierDefs).definition
-              : undefined;
-            if (!modifierDef || !isRankedModifier(modifierDef)) return comp;
-            return {
-              ...comp,
-              modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, ranks: m.ranks + 1 } : m
-              ),
-            };
-          }
-          return {
-            ...comp,
-            modifiers: [
-              ...comp.modifiers,
-              { modifierId: modId, ranks: 1, isPowerSpecific: isSpecific },
-            ],
-          };
-        }),
+        components: p.components.map(comp => comp.id === componentId
+          ? addComponentModifier(comp, powerDefs.find(effect => effect.id === comp.effectId), modifierDefs, modId, isPowerSpecific)
+          : comp),
       }));
     },
     [equipmentMode, modifierDefs, powerDefs]
@@ -454,12 +425,12 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       alternateEffects: cleanedAlternateEffects,
     };
 
-    const saveIssues = validatePowerForSave(cleanPower, validationRules, {
+    const saveIssues = getBlockingPowerSaveIssues(cleanPower, validationRules, {
       powerDefs,
       modifierDefs,
       character,
       skillDefs: SKILL_DEFS,
-    }).filter((validationIssue) => validationIssue.severity === 'error');
+    });
 
     if (saveIssues.length > 0) {
       const firstIssue = saveIssues[0];
