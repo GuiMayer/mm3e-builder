@@ -10,9 +10,11 @@ import { escapeHtml } from './utils';
 import { formatComponentDetails, renderPowerDetails } from './powerDetails';
 import { calcEquipmentEPCost, calcPowerTotalCost } from '../../../shared/lib/mathEngine';
 import { getResourceEPCost } from '../../../shared/lib/resourceCalculations';
+import { blankPower } from './worksheet';
 
 export interface EquipmentSectionData {
   labels?: PDFLabels;
+  worksheet?: boolean;
   character: ICharacter;
   powerDefs: IPowerEffect[];
   modifierDefs: IModifierDef[];
@@ -38,7 +40,7 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
   });
   const legacyEquipment = character.equipment ?? [];
 
-  if (equipment.length === 0 && legacyEquipment.length === 0 && linkedResources.length === 0 && !character.equipmentNotes?.trim()) {
+  if (!data.worksheet && equipment.length === 0 && legacyEquipment.length === 0 && linkedResources.length === 0 && !character.equipmentNotes?.trim()) {
     return ''; // No section if no equipment
   }
 
@@ -64,6 +66,7 @@ export function renderEquipmentSection(data: EquipmentSectionData): string {
         ${legacyEquipment.map((item) => renderLegacyEquipmentEntry(item, powerDefs, modifierDefs, strength, labels)).join('')}
         ${linkedResources.map((entry) => renderResourceEntry(entry.resource, entry.isFree, entry.contributionEP, powerDefs, modifierDefs, strength, labels)).join('')}
         ${character.equipmentNotes?.trim() ? `<div class="power-description">${escapeHtml(character.equipmentNotes)}</div>` : ''}
+        ${data.worksheet ? blankPower(labels, 'equipment-entry') : ''}
       </div>
     </div>
   `.trim();

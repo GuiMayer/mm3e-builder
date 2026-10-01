@@ -6,9 +6,11 @@ import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 
 import type { ICharacter, IComplication } from '../../../entities/types';
 import { escapeHtml } from './utils';
+import { writingLine } from './worksheet';
 
 export interface ComplicationsSectionData {
   labels?: PDFLabels;
+  worksheet?: boolean;
   character: ICharacter;
 }
 
@@ -20,7 +22,7 @@ export function renderComplicationsSection(data: ComplicationsSectionData): stri
   const { character } = data;
   const { complications } = character;
 
-  if (complications.length === 0) {
+  if (complications.length === 0 && !data.worksheet) {
     return `
       <div class="pdf-section">
         <div class="pdf-section-title">${labels('Complications')}</div>
@@ -30,8 +32,8 @@ export function renderComplicationsSection(data: ComplicationsSectionData): stri
   }
 
   const complicationsHtml = complications
-    .map(comp => renderComplicationItem(comp))
-    .join('');
+    .map(comp => data.worksheet ? `<div class="complication-item">${writingLine(labels('Name'), comp.title)}${writingLine(labels('Description'), comp.description)}</div>` : renderComplicationItem(comp))
+    .join('') + (data.worksheet ? Array.from({ length: complications.length ? 1 : 2 }, () => `<div class="complication-item">${writingLine(labels('Name'))}${writingLine(labels('Description'))}</div>`).join('') : '');
 
   return `
     <div class="pdf-section">

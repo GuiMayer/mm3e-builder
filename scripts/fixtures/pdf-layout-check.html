@@ -1,7 +1,7 @@
 <!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Auditoria PDF — ficha fictícia</title>
 <style>body{font:16px Arial;background:#eceff3;margin:24px}button{padding:12px;margin:8px}iframe{width:816px;height:1400px;background:white;border:1px solid #ccc}pre{white-space:pre-wrap}</style>
 <h1>Validação do layout PDF</h1><p>Ficha fictícia, sem acesso ao armazenamento de personagens. Mesmo conteúdo nos dois modos.</p>
-<button id="stress">Testar conteúdo longo</button><button id="empty">Testar ficha mínima</button><button id="serif">Testar fonte serifada</button><button id="normal">Exportar normal</button><button id="compact">Exportar compacto</button><pre id="status">Preparando...</pre><iframe title="HTML gerado antes da paginação"></iframe>
+<button id="stress">Testar conteúdo longo</button><button id="empty">Testar ficha mínima</button><button id="serif">Testar fonte serifada</button><button id="normal">Exportar normal</button><button id="compact">Exportar compacto</button><button id="worksheet-empty">Testar preenchimento em branco</button><button id="worksheet">Testar preenchimento com dados</button><pre id="status">Preparando...</pre><iframe title="HTML gerado antes da paginação"></iframe>
 <script type="module">
 import {createDefaultCharacter} from '/src/entities/characterDefaults.ts';
 import {generateCharacterPDF} from '/src/services/pdf/pdfGenerator.ts';
@@ -21,8 +21,8 @@ for(const mode of ['normal','compact'])document.getElementById(mode).onclick=asy
 const urls=new Map();
 function showDownload(mode,blob){if(urls.has(mode))URL.revokeObjectURL(urls.get(mode));document.getElementById('download-'+mode)?.remove();const a=document.createElement('a');const url=URL.createObjectURL(blob);urls.set(mode,url);a.href=url;a.download='pdf-layout-'+mode+'.pdf';a.id='download-'+mode;a.textContent='Baixar PDF '+mode;document.body.prepend(a);}
 const normalize=s=>s.replace(/\s+/g,'');
-for(const mode of ['stress','empty','serif'])document.getElementById(mode).onclick=async()=>{document.querySelector('#status').textContent='Testando '+mode;try{
- const sample=mode==='empty'?createDefaultCharacter():structuredClone(character);
+for(const mode of ['stress','empty','serif','worksheet-empty','worksheet'])document.getElementById(mode).onclick=async()=>{document.querySelector('#status').textContent='Testando '+mode;try{
+ const sample=(mode==='empty'||mode==='worksheet-empty')?createDefaultCharacter():structuredClone(character);
  const resources=[];
  if(mode==='stress'){
   sample.powers.push(...Array.from({length:9},(_,i)=>power('Poder adicional '+i,'damage',4,'Notas específicas do poder '+i)));
@@ -38,13 +38,13 @@ for(const mode of ['stress','empty','serif'])document.getElementById(mode).oncli
   resources.push({id:'vehicle',type:'vehicle',name:'Veículo de teste',notes:'Notas de veículo',createdAt:'2026-10-01',updatedAt:'2026-10-01',size:'large',strength:6,speed:5,defense:6,toughness:8,features:[{id:'feature',name:'Navegação',ranks:2}],systems:[power('Sistema de teste','damage',4)]},{id:'hq',type:'headquarters',name:'Base de teste',notes:'Notas da base',createdAt:'2026-10-01',updatedAt:'2026-10-01',size:'large',toughness:8,features:[],effects:[power('Escudo da base','protection',4)]});
  }
  const before=JSON.stringify({sample,resources});
- const result=await generateCharacterPDF({...options,character:sample,resources,customization:{...DEFAULT_CUSTOMIZATION,fontFamily:mode==='serif'?'Noto Serif':'Noto Sans',colorScheme:mode==='serif'?'mono':'default'}});
+ const result=await generateCharacterPDF({...options,character:sample,resources,customization:{...DEFAULT_CUSTOMIZATION,contentMode:mode.startsWith('worksheet')?'worksheet':'filled',includeEquipment:!mode.startsWith('worksheet'),includeNotes:!mode.startsWith('worksheet'),includeComplications:!mode.startsWith('worksheet'),fontFamily:mode==='serif'?'Noto Serif':'Noto Sans',colorScheme:mode==='serif'?'mono':'default'}});
  if(!result.success)throw Error(result.error);
  const root=await paginateHtmlForPdf(result.html,PDF_CONTENT_WIDTH_PX,PDF_CONTENT_HEIGHT_PX);
  const pages=[...root.querySelectorAll('.pdf-page')];
  const heights=pages.map(p=>Number(p.dataset.contentHeight));
  const text=normalize(root.textContent);
- const expected=mode==='stress'?['INICIOPODER','FIMPODER','INICIONOTAS','FIMNOTAS','FIMTOKEN','Alternativo 9','Ataque manual 23','Especialidade 34','Equipamento legado','Dispositivo removível','Veículo de teste','Base de teste']:[];
+ const expected=mode.startsWith('worksheet')?['Tipo de identidade','Grupo','Mestre','Dispositivos e recursos','Complicações','Notas']:mode==='stress'?['INICIOPODER','FIMPODER','INICIONOTAS','FIMNOTAS','FIMTOKEN','Alternativo 9','Ataque manual 23','Especialidade 34','Equipamento legado','Dispositivo removível','Veículo de teste','Base de teste']:[];
  const missing=expected.filter(value=>!text.includes(normalize(value)));
  if(mode==='stress'){
   const notesText=normalize([...root.querySelectorAll('.notes-section')].map(node=>node.textContent).join(''));
@@ -53,6 +53,7 @@ for(const mode of ['stress','empty','serif'])document.getElementById(mode).oncli
   if(!normalize(content.textContent).includes(normalize(sample.powers[1].notes)))missing.push('Texto completo das notas do poder');
  }
  if(missing.length||heights.some(h=>h>PDF_CONTENT_HEIGHT_PX+0.5)||before!==JSON.stringify({sample,resources}))throw Error(JSON.stringify({missing,heights,changed:before!==JSON.stringify({sample,resources})}));
+ document.querySelector('iframe').srcdoc=result.html;
  const blob=await convertHtmlToPdf(result.html,{filename:'redesign-'+mode+'.pdf'});
  
  showDownload(mode,blob);

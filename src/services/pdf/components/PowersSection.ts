@@ -9,9 +9,11 @@ import { getCharacterStrength } from '../../../shared/lib/componentRanks';
 import { escapeHtml } from './utils';
 import { calcPowerTotalCost } from '../../../shared/lib/mathEngine';
 import { renderPowerDetails } from './powerDetails';
+import { blankPower } from './worksheet';
 
 export interface PowersSectionData {
   labels?: PDFLabels;
+  worksheet?: boolean;
   character: ICharacter;
   powerDefs: IPowerEffect[];
   modifierDefs: IModifierDef[];
@@ -30,7 +32,7 @@ export function renderPowersSection(data: PowersSectionData): string {
     !p.removable || p.removable === 'none'
   );
 
-  if (powers.length === 0) {
+  if (powers.length === 0 && !data.worksheet) {
     return `
       <div class="pdf-section">
         <div class="pdf-section-title">${labels('Powers')}</div>
@@ -41,7 +43,7 @@ export function renderPowersSection(data: PowersSectionData): string {
 
   const powersHtml = powers
     .map(power => renderPowerEntry(power, powerDefs, modifierDefs, getCharacterStrength(character), labels))
-    .join('');
+    .join('') + (data.worksheet ? Array.from({ length: powers.length ? 1 : 2 }, () => blankPower(labels)).join('') : '');
 
   return `
     <div class="pdf-section">

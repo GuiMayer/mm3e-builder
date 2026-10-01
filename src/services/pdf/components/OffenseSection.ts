@@ -9,6 +9,7 @@ import { escapeHtml } from './utils';
 
 export interface OffenseSectionData {
   labels?: PDFLabels;
+  worksheet?: boolean;
   offenseEntries: IOffenseEntry[];
 }
 
@@ -19,7 +20,7 @@ export function renderOffenseSection(data: OffenseSectionData): string {
   const labels = data.labels ?? englishPDFLabels;
   const { offenseEntries } = data;
 
-  if (offenseEntries.length === 0) {
+  if (offenseEntries.length === 0 && !data.worksheet) {
     return `
       <div class="pdf-section">
         <div class="pdf-section-title">${labels('Targeted Effects')}</div>
@@ -28,7 +29,7 @@ export function renderOffenseSection(data: OffenseSectionData): string {
     `.trim();
   }
 
-  const rowsHtml = offenseEntries.map(entry => renderOffenseRow(entry, labels)).join('');
+  const rowsHtml = offenseEntries.map(entry => renderOffenseRow(entry, labels)).join('') + (data.worksheet ? '<tr class="pdf-writing-row"><td></td><td></td><td></td><td></td><td></td></tr>'.repeat(Math.max(1, 4 - offenseEntries.length)) : '');
 
   return `
     <div class="pdf-section">

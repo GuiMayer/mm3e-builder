@@ -58,7 +58,7 @@ describe('PDF content preservation', () => {
   it('omits empty lists by default but honors the explicit preference to show them', async () => {
     const options = { character: createDefaultCharacter(), powerDefs: POWER_DEFS, modifierDefs: MODIFIER_DEFS, skillDefs: {}, advantageDefs: {} };
     const hidden = await generateCharacterPDF(options);
-    const shown = await generateCharacterPDF({ ...options, customization: { ...DEFAULT_CUSTOMIZATION, hideEmptySections: false } });
+    const shown = await generateCharacterPDF({ ...options, customization: { ...DEFAULT_CUSTOMIZATION, contentMode: undefined, hideEmptySections: false } });
     expect(hidden.html).not.toContain('No powers defined.');
     expect(shown.html).toContain('No powers defined.');
     expect(shown.html).toContain('No skills trained.');

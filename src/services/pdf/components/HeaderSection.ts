@@ -6,9 +6,11 @@ import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 
 import type { ICharacter } from '../../../entities/types';
 import { escapeHtml, isPresent } from './utils';
+import { writingLine } from './worksheet';
 
 export interface HeaderSectionData {
   labels?: PDFLabels;
+  worksheet?: boolean;
   character: ICharacter;
   powerPointsData: {
     abilitiesCost: number;
@@ -33,6 +35,10 @@ export function renderHeaderSection(data: HeaderSectionData): string {
 
   const identity = header.identity ? `${header.identity}${header.identityType ? ` (${labels(header.identityType)})` : ''}` : '';
   const details = [['Gender', header.gender], ['Age', header.age], ['Height', header.height], ['Weight', header.weight], ['Eyes', header.eyes], ['Hair', header.hair], ['Group Affiliation', header.groupAffiliation], ['Series', header.series], ['Game Master', header.gameMaster]];
+  if (data.worksheet) {
+    const fields = [['Player', header.player], ['Identity', header.identity], ['Identity Type', header.identityType ? labels(header.identityType) : ''], ['Base of Operations', header.base], ...details, ['Campaign Adjustment', String(powerPointsData.ppEarned)]];
+    return `<div class="pdf-header"><div class="header-main"><div class="character-name">${isPresent(header.name) ? escapeHtml(header.name) : writingLine(labels('Name'))}</div><div class="header-stats">${labels('PL')} ${header.powerLevel} · ${labels('Hero Points')} ${header.heroPoints}</div></div><div class="pdf-writing-header">${fields.map(([label, value]) => writingLine(labels(label!), value)).join('')}</div>${renderPowerPointsSummaryCompact(powerPointsData, labels)}</div>`;
+  }
   return `<div class="pdf-header"><div class="header-main"><div class="character-name">${escapeHtml(header.name || labels('Unnamed Hero'))}</div><div class="header-stats">${labels('PL')} ${header.powerLevel} · ${labels('Hero Points')} ${header.heroPoints}</div></div><div class="header-fields">${renderHeaderField(labels('Player'), header.player)}${renderHeaderField(labels('Identity'), identity)}${renderHeaderField(labels('Base of Operations'), header.base)}</div><div class="header-details">${details.map(([label, value]) => renderHeaderField(labels(label!), value)).join('')}</div>${renderPowerPointsSummaryCompact(powerPointsData, labels)}</div>`;
 }
 

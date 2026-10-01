@@ -102,12 +102,15 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       effect: entry.isManual ? entry.effect : powerDefs.reduce((effect, def) => effect.startsWith(`${def.name} `) ? `${displayPowerDefs.find(display => display.id === def.id)!.name}${effect.slice(def.name.length)}` : effect, entry.effect),
     }));
 
+    const worksheet = customization.contentMode === 'worksheet';
+    const hideEmpty = !worksheet && (customization.contentMode === 'filled' || customization.hideEmptySections !== false);
+
     // Generate sections
     const sections: string[] = [];
 
     // Header (now includes compact PP summary)
     sections.push(renderHeaderSection({
-      character, labels,
+      character, labels, worksheet,
       powerPointsData: {
         abilitiesCost,
         defensesCost,
@@ -137,34 +140,34 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
 
     // Offense
     sections.push(renderOffenseSection({
-      offenseEntries: displayOffenseEntries, labels,
+      offenseEntries: displayOffenseEntries, labels, worksheet,
     }));
 
     // Parallel lists share the page width without changing their source data.
-    const skillsSection = customization.hideEmptySections !== false && !character.skills.some(skill => skill.ranks > 0) ? '' : renderSkillsSection({
-      character, labels,
+    const skillsSection = hideEmpty && !character.skills.some(skill => skill.ranks > 0) ? '' : renderSkillsSection({
+      character, labels, worksheet,
       skillDefs: displaySkillDefs,
       skillsCost,
     });
-    const advantagesSection = customization.hideEmptySections !== false && character.advantages.length === 0 ? '' : renderAdvantagesSection({
-      character, labels,
+    const advantagesSection = hideEmpty && character.advantages.length === 0 ? '' : renderAdvantagesSection({
+      character, labels, worksheet,
       advantageDefs: displayAdvantageDefs,
       advantagesCost,
     });
     sections.push(`<div class="pdf-columns">${skillsSection}${advantagesSection}</div>`);
 
     // Powers
-    if (customization.hideEmptySections === false || character.powers.some(power => !power.removable || power.removable === 'none')) sections.push(renderPowersSection({
-      character, labels,
+    if (!hideEmpty || character.powers.some(power => !power.removable || power.removable === 'none')) sections.push(renderPowersSection({
+      character, labels, worksheet,
       powerDefs: displayPowerDefs,
       modifierDefs: displayModifierDefs,
       powersCost,
     }));
 
     // Equipment (optional based on customization)
-    if (customization.includeEquipment) {
+    if (worksheet || customization.includeEquipment) {
       const equipmentSection = renderEquipmentSection({
-        character, labels,
+        character, labels, worksheet,
         powerDefs: displayPowerDefs,
         modifierDefs: displayModifierDefs,
         resources,
@@ -175,9 +178,9 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     }
 
     // Complications (optional based on customization)
-    if (customization.includeComplications && (customization.hideEmptySections === false || character.complications.length > 0)) {
+    if ((worksheet || customization.includeComplications) && (!hideEmpty || character.complications.length > 0)) {
       const complicationsSection = renderComplicationsSection({
-        character, labels,
+        character, labels, worksheet,
       });
       if (complicationsSection) {
         sections.push(complicationsSection);
@@ -185,9 +188,9 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     }
 
     // Notes (optional based on customization)
-    if (customization.includeNotes) {
+    if (worksheet || customization.includeNotes) {
       const notesSection = renderNotesSection({
-        character, labels,
+        character, labels, worksheet,
       });
       if (notesSection) {
         sections.push(notesSection);

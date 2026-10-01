@@ -2,6 +2,7 @@ import type { IPowerEffect, IModifierDef } from '../../entities/types';
 export type PDFLabels = (label: string) => string;
 export const englishPDFLabels: PDFLabels = label => label;
 const portuguese: Record<string, string> = {
+  'Name':'Nome','Identity Type':'Tipo de identidade','Description':'Descrição','Modifiers':'Modificadores','Descriptors':'Descritores','Cost':'Custo','Total':'Total','Other':'Outros',
   'Abilities':'Atributos','Defenses':'Defesas','Skills':'Perícias','Advantages':'Vantagens','Powers':'Poderes','Targeted Effects':'Ataques e efeitos direcionados','Devices & Resources':'Dispositivos e recursos','Complications':'Complicações','Notes':'Notas',
   'Strength':'Força','Stamina':'Vigor','Agility':'Agilidade','Dexterity':'Destreza','Fighting':'Luta','Intellect':'Intelecto','Awareness':'Prontidão','Presence':'Presença',
   'Dodge':'Esquiva','Parry':'Aparar','Fortitude':'Fortitude','Will':'Vontade','Toughness':'Resistência','Initiative':'Iniciativa','Base':'Base','Bonus':'Bônus',

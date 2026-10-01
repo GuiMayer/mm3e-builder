@@ -6,7 +6,7 @@ import { PDF_CONTENT_WIDTH_PX, PDF_GEOMETRY } from './pdfGeometry';
 export function getPDFStyles(options: PDFCustomizationOptions): string {
   const color = options.colorScheme === 'mono' ? '#222222' : COLOR_THEMES[options.colorScheme].primary;
   const size = { small: 9, medium: 10, large: 11 }[options.fontSize];
-  const gap = options.layoutMode === 'compact' ? 4 : 7;
+  const gap = options.contentMode !== 'worksheet' && options.layoutMode === 'compact' ? 4 : 7;
   return `${getPDFFontCSS(options.fontFamily)}
 .pdf-container,.pdf-page{font-family:'${resolvePDFFont(options.fontFamily)}',sans-serif;font-size:${size}pt;line-height:1.35;color:#202b3a;box-sizing:border-box;width:${PDF_CONTENT_WIDTH_PX}px;display:flow-root;overflow-wrap:anywhere;}
 .pdf-container *,.pdf-page *{box-sizing:border-box;}
@@ -56,6 +56,31 @@ export function getPDFStyles(options: PDFCustomizationOptions): string {
 .text-muted{color:#536070;}.text-small,.text-sm{font-size:8.5pt;}
 .pdf-page-heading{font-size:8pt;color:#536070;border-bottom:1px solid #dce1e8;margin-bottom:8px;padding-bottom:4px;}
 .pdf-continuation{font-size:8pt;font-weight:400;color:#536070;}
+${options.contentMode === 'worksheet' ? `
+.pdf-writing-line{display:flex;align-items:baseline;gap:5px;min-height:26px;padding-top:5px;}
+.pdf-writing-label{font-size:8pt;color:#536070;white-space:nowrap;}
+.pdf-writing-value{flex:1;min-width:24px;min-height:19px;border-bottom:1px solid #a3acb8;}
+.pdf-writing-header{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 12px;margin-top:4px;}
+.pdf-writing-header .pdf-writing-line{flex-wrap:wrap;gap:0 3px;min-height:22px;padding-top:2px;}
+.pdf-writing-header .pdf-writing-value{min-width:45px;min-height:16px;}
+.pdf-writing-pair{display:grid;grid-template-columns:3fr 1fr;gap:16px;}
+.character-name .pdf-writing-line{padding-top:0;min-height:28px;}
+.pdf-inline-blank{display:inline-block;min-width:90px;height:14px;margin-left:3px;border-bottom:1px solid #a3acb8;}
+.pdf-inline-blank.short{min-width:23px;}
+.skill-entry,.advantage-entry{min-height:24px;border-bottom-color:#a3acb8;}
+.advantage-entry{display:flex;align-items:baseline;gap:6px;}
+.advantage-name{flex:1;min-width:0;}
+.advantage-rank{float:none;}
+.pdf-list-heading{display:flex;align-items:baseline;gap:6px;font-size:8pt;color:#536070;min-height:20px;}
+.pdf-list-heading .skill-total{font-size:8pt;font-weight:400;color:#536070;}
+.worksheet-skill .skill-ranks,.pdf-list-heading .skill-ranks{width:28px;text-align:right;}
+.worksheet-skill .skill-other,.pdf-list-heading .skill-other{width:32px;text-align:right;font-size:8pt;color:#536070;white-space:nowrap;}
+.worksheet-skill .skill-total,.pdf-list-heading .skill-total{width:32px;}
+.worksheet-skill .skill-name .pdf-inline-blank{min-width:50px;}
+.pdf-writing-row{height:28px;}
+.offense-table tr:nth-child(even),.ability-box,.defense-box{background:white;}
+.offense-table td{border-right:1px solid #dce1e8;}
+` : ''}
 @page{size:A4;margin:${PDF_GEOMETRY.marginMm}mm;}
 @media print{.pdf-page{break-after:page;}.pdf-page:last-child{break-after:auto;}}
 `;

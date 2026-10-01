@@ -10,6 +10,7 @@ import { escapeHtml } from './utils';
 
 export interface AdvantagesSectionData {
   labels?: PDFLabels;
+  worksheet?: boolean;
   character: ICharacter;
   advantageDefs: Record<string, IAdvantageDef>;
   advantagesCost: number;
@@ -23,7 +24,7 @@ export function renderAdvantagesSection(data: AdvantagesSectionData): string {
   const { character, advantageDefs, advantagesCost } = data;
   const { advantages } = character;
 
-  if (advantages.length === 0) {
+  if (advantages.length === 0 && !data.worksheet) {
     return `
       <div class="pdf-section">
         <div class="pdf-section-title">${labels('Advantages')}</div>
@@ -40,8 +41,8 @@ export function renderAdvantagesSection(data: AdvantagesSectionData): string {
   });
 
   const advantagesHtml = sortedAdvantages
-    .map(adv => renderAdvantageEntry(adv, advantageDefs))
-    .join('');
+    .map(adv => renderAdvantageEntry(adv, advantageDefs, !!data.worksheet))
+    .join('') + (data.worksheet ? Array.from({ length: Math.max(2, 8 - advantages.length) }, () => '<div class="advantage-entry"><span class="advantage-name"></span><span class="advantage-rank"><span class="pdf-inline-blank short"></span></span></div>').join('') : '');
 
   return `
     <div class="pdf-section">
@@ -50,6 +51,7 @@ export function renderAdvantagesSection(data: AdvantagesSectionData): string {
         <span class="section-cost">${advantagesCost} PP</span>
       </div>
       <div class="advantages-list">
+        ${data.worksheet ? `<div class="pdf-list-heading"><span class="advantage-name">${labels('Name')}</span><span class="advantage-rank">${labels('ranks')}</span></div>` : ''}
         ${advantagesHtml}
       </div>
     </div>
@@ -61,7 +63,8 @@ export function renderAdvantagesSection(data: AdvantagesSectionData): string {
  */
 function renderAdvantageEntry(
   advantage: ICharacter['advantages'][0],
-  advantageDefs: Record<string, IAdvantageDef>
+  advantageDefs: Record<string, IAdvantageDef>,
+  worksheet = false
 ): string {
   const advantageDef = advantageDefs[advantage.advantageId];
   const advantageName = advantageDef?.name || advantage.advantageId;
@@ -74,7 +77,7 @@ function renderAdvantageEntry(
   return `
     <div class="advantage-entry">
       <span class="advantage-name">${escapeHtml(displayName)}</span>
-      ${isRanked && ranks > 1 ? `<span class="advantage-rank">${ranks}</span>` : ''}
+      ${worksheet || (isRanked && ranks > 1) ? `<span class="advantage-rank">${ranks}</span>` : ''}
     </div>
   `;
 }

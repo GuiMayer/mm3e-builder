@@ -33,6 +33,8 @@ export function loadPDFCustomizationOptions(): PDFCustomizationOptions {
       typeof parsed.includeEquipment === 'boolean'
     ) {
       return {
+        contentMode: parsed.contentMode === 'worksheet' || parsed.contentMode === 'filled'
+          ? parsed.contentMode : parsed.hideEmptySections === false ? 'worksheet' : 'filled',
         colorScheme: parsed.colorScheme,
         layoutMode: parsed.layoutMode,
         fontFamily: parsed.fontFamily,

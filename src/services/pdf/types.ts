@@ -96,6 +96,8 @@ export type FontFamily = 'Noto Sans' | 'Noto Serif' | 'Segoe UI' | 'Arial' | 'Ti
  * PDF customization options
  */
 export interface PDFCustomizationOptions {
+  /** Worksheet includes empty fields and writing space; never changes character data. */
+  contentMode?: 'filled' | 'worksheet';
   colorScheme: ColorScheme;
   layoutMode: LayoutMode;
   fontFamily: FontFamily;
@@ -103,7 +105,7 @@ export interface PDFCustomizationOptions {
   includeNotes: boolean;
   includeComplications: boolean;
   includeEquipment: boolean;
-  /** Defaults to true when loading preferences saved before this option existed. */
+  /** Legacy preference, replaced in the panel by contentMode. */
   hideEmptySections?: boolean;
 }
 
@@ -157,6 +159,7 @@ export const COLOR_THEMES: Record<ColorScheme, ColorTheme> = {
  * Default customization options
  */
 export const DEFAULT_CUSTOMIZATION: PDFCustomizationOptions = {
+  contentMode: 'filled',
   colorScheme: 'default',
   layoutMode: 'normal',
   fontFamily: 'Noto Sans',
