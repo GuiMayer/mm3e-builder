@@ -499,7 +499,7 @@ body {
 
 .header-field {
   margin-bottom: var(--space-sm);
-  color: var(--color-bg-primary);
+  color: inherit;
 }
 
 .header-field-label {

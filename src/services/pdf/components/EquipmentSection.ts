@@ -6,7 +6,7 @@
 import type { ICharacter, IPowerEffect, IModifierDef, IResource } from '../../../entities/types';
 import { getCharacterStrength } from '../../../shared/lib/componentRanks';
 import { escapeHtml } from './utils';
-import { resolveModifierDefinition } from '../../../shared/lib/rulesCatalog';
+import { formatComponentDetails, renderPowerDetails } from './powerDetails';
 import { calcEquipmentEPCost, calcPowerTotalCost } from '../../../shared/lib/mathEngine';
 import { getResourceEPCost } from '../../../shared/lib/resourceCalculations';
 
@@ -88,18 +88,9 @@ function formatPowerList(label: string, powers: ICharacter['powers'], powerDefs:
 }
 
 function formatPower(power: ICharacter['powers'][0], powerDefs: IPowerEffect[], modifierDefs: IModifierDef[]): string {
-  const effects = buildEffectsString(power, powerDefs);
-  const modifiers = power.components.flatMap((component) => {
-    const effectDef = powerDefs.find((definition) => definition.id === component.effectId);
-    return component.modifiers.map((modifier) => {
-      const definition = effectDef
-        ? resolveModifierDefinition(modifier, effectDef, modifierDefs).definition
-        : undefined;
-      return `${definition?.name ?? modifier.modifierId}${modifier.ranks !== 1 ? ` ${modifier.ranks}` : ''}${modifier.option ? ` (${modifier.option})` : ''}`;
-    });
-  });
-  const alternates = power.alternateEffects.map((alternate) => alternate.name || buildEffectsString({ ...power, components: alternate.components }, powerDefs));
-  return [power.name, effects, modifiers.length > 0 ? `Modifiers: ${modifiers.join(', ')}` : '', alternates.length > 0 ? `Alternates: ${alternates.join(', ')}` : '', power.notes].filter(Boolean).join(' — ');
+  const effects = power.components.map(component => formatComponentDetails(component, powerDefs, modifierDefs)).join(' + ');
+  const alternates = power.alternateEffects.map(alternate => [alternate.dynamic ? 'Dynamic Alternate Effect' : 'Alternate Effect', alternate.name, ...alternate.components.map(component => formatComponentDetails(component, powerDefs, modifierDefs)), alternate.notes].filter(Boolean).join(': '));
+  return [power.name, effects, power.baseDynamic ? 'Dynamic base effect' : '', power.activation ? `Activation: ${power.activation}` : '', power.descriptors?.join(', '), ...alternates, power.notes].filter(Boolean).join(' — ');
 }
 
 function renderLegacyEquipmentEntry(item: ICharacter['powers'][0], powerDefs: IPowerEffect[], modifierDefs: IModifierDef[], strength: number): string {
@@ -117,45 +108,5 @@ function renderEquipmentEntry(
 ): string {
   const totalCost = calcPowerTotalCost(item, powerDefs, modifierDefs, strength);
   
-  // Build effects string
-  const effects = buildEffectsString(item, powerDefs);
-  
-  // Build descriptors string
-  const descriptors = item.descriptors && item.descriptors.length > 0
-    ? item.descriptors.join(', ')
-    : '';
-
-  return `
-    <div class="equipment-entry">
-      <div class="power-header">
-        <div class="power-name">${escapeHtml(item.name || 'Unnamed Equipment')}</div>
-        <div class="power-cost">${totalCost} PP</div>
-      </div>
-      ${effects ? `<div class="power-effects">${effects}</div>` : ''}
-      ${descriptors ? `<div class="power-description text-small">${escapeHtml(descriptors)}</div>` : ''}
-    </div>
-  `;
-}
-
-/**
- * Build effects string from power components
- */
-function buildEffectsString(power: ICharacter['powers'][0], powerDefs: IPowerEffect[]): string {
-  if (!power.components || power.components.length === 0) {
-    return '';
-  }
-
-  const effectStrings = power.components.map(comp => {
-    const effectDef = powerDefs.find(d => d.id === comp.effectId);
-    const effectName = effectDef?.name || comp.effectId;
-    const parts: string[] = [effectName];
-    
-    if (comp.ranks && comp.ranks > 0) {
-      parts.push(String(comp.ranks));
-    }
-    
-    return parts.join(' ');
-  });
-
-  return escapeHtml(effectStrings.join(', '));
+  return `<div class="equipment-entry"><div class="power-header"><div class="power-name">${escapeHtml(item.name || 'Unnamed Equipment')}</div><div class="power-cost">${totalCost} PP</div></div>${renderPowerDetails(item, powerDefs, modifierDefs)}</div>`;
 }
