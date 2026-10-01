@@ -95,6 +95,7 @@ export async function paginateHtmlForPdf(html: string, width: number, height: nu
       const newFragment = () => { fragment = group.create(continued); page.append(fragment.frame); fragmentHasContent = false; };
       newFragment();
       const appendNodes = (nodes: HTMLElement[]) => nodes.forEach((node, index) => (fragment.targets[index] ?? fragment.frame).append(node));
+      const hasEarlierContent = () => page.children.length > (pages.children.length > 1 ? 2 : 1);
       const advance = () => {
         continued ||= fragmentHasContent;
         if (!fragmentHasContent) fragment.frame.remove();
@@ -105,7 +106,21 @@ export async function paginateHtmlForPdf(html: string, width: number, height: nu
         if (fits()) { fragmentHasContent = true; return; }
         nodes.forEach(node => node.remove());
         // Keep a heading with its first row. Reclaim the empty frame before deciding.
-        if (fragmentHasContent || page.children.length > (pages.children.length > 1 ? 2 : 1)) advance();
+        const probe = document.createElement('div'); probe.className = 'pdf-page'; probe.style.width = `${width}px`;
+        const candidate = group.create(true);
+        if (source.dataset.characterName) {
+          const runningHeading = document.createElement('div');
+          runningHeading.className = 'pdf-page-heading';
+          runningHeading.textContent = source.dataset.characterName;
+          probe.append(runningHeading);
+        }
+        probe.append(candidate.frame);
+        originals.forEach((original, index) => (candidate.targets[index] ?? candidate.frame).append(clone(original)));
+        measurement.append(probe);
+        const fitsFreshPage = fitsOnPdfPage(probe.getBoundingClientRect().height, height);
+        probe.remove();
+        // Oversized text uses the current page's remaining space before continuing.
+        if (fitsFreshPage && (fragmentHasContent || hasEarlierContent())) advance();
         appendNodes(nodes);
         if (fits()) { fragmentHasContent = true; return; }
         nodes.forEach(node => node.remove());
@@ -113,20 +128,36 @@ export async function paginateHtmlForPdf(html: string, width: number, height: nu
         if (splittable && originals.length === 1 && originals[0].matches('.power-entry,.equipment-entry')) {
           const original = originals[0];
           const header = original.querySelector<HTMLElement>(':scope > .power-header');
-          const children = Array.from(original.children).filter(child => child !== header).flatMap(child => child.classList.contains('power-alternate') ? Array.from(child.children).map(line => { const wrapper = child.cloneNode(false) as HTMLElement; wrapper.append(line.cloneNode(true)); return wrapper; }) : [child as HTMLElement]);
+          const children = Array.from(original.children).filter(child => child !== header).flatMap(child => child.classList.contains('power-alternate') ? Array.from(child.children).map((line, index) => {
+            const wrapper = child.cloneNode(false) as HTMLElement;
+            if (index > 0 && child.firstElementChild) wrapper.append(child.firstElementChild.cloneNode(true));
+            wrapper.append(line.cloneNode(true)); return wrapper;
+          }) : [child as HTMLElement]);
           children.forEach((child, index) => { const part = original.cloneNode(false) as HTMLElement; if (header) part.append(clone(header)); part.append(clone(child)); part.dataset.pdfPart = String(index); addUnit([part], false); });
           return;
         }
         // Split the text of an oversized paragraph, cell or component at word boundaries.
         // Slice long unbroken tokens too; nothing is truncated.
         const tableRow = originals.length === 1 && originals[0].tagName === 'TR';
-        const textSources = tableRow ? Array.from(originals[0].children) as HTMLElement[] : originals;
+        const powerHeader = originals.length === 1 && originals[0].matches('.power-entry,.equipment-entry')
+          ? originals[0].querySelector<HTMLElement>(':scope > .power-header') : null;
+        const textSources = tableRow ? Array.from(originals[0].children) as HTMLElement[] : originals.map(original => {
+          if (!powerHeader) return original;
+          const body = clone(original);
+          body.querySelector(':scope > .power-header')?.remove();
+          return body;
+        });
         const tokens = textSources.map(original => textWithBreaks(original).match(/\S+\s*|\s+/g) ?? ['']);
         const positions = tokens.map(() => 0);
         while (tokens.some((items, index) => positions[index] < items.length)) {
-          const chunks = textSources.map(original => { const node = original.cloneNode(false) as HTMLElement; node.style.whiteSpace = 'pre-wrap'; return node; });
+          const chunks = textSources.map(original => { const node = powerHeader ? document.createElement('div') : original.cloneNode(false) as HTMLElement; node.style.whiteSpace = 'pre-wrap'; return node; });
+          const wrappers = powerHeader ? chunks.map(chunk => {
+            const wrapper = originals[0].cloneNode(false) as HTMLElement;
+            wrapper.append(clone(powerHeader), chunk);
+            return wrapper;
+          }) : chunks;
           const row = tableRow ? originals[0].cloneNode(false) as HTMLElement : null;
-          if (row) { row.append(...chunks); appendNodes([row]); } else appendNodes(chunks);
+          if (row) { row.append(...chunks); appendNodes([row]); } else appendNodes(wrappers);
           let progress = false;
           chunks.forEach((chunk, index) => {
             const start = positions[index];
@@ -140,8 +171,8 @@ export async function paginateHtmlForPdf(html: string, width: number, height: nu
           });
           if (!progress) {
             row?.remove();
-            chunks.forEach(chunk => chunk.remove());
-            if (fragmentHasContent) { advance(); continue; }
+            wrappers.forEach(wrapper => wrapper.remove());
+            if (fragmentHasContent || hasEarlierContent()) { advance(); continue; }
             // An enormous single token is split into Unicode code points, preserving accents.
             const index = tokens.findIndex((items, i) => positions[i] < items.length);
             const token = tokens[index][positions[index]];
@@ -159,6 +190,9 @@ export async function paginateHtmlForPdf(html: string, width: number, height: nu
     root.dataset.characterName = source.dataset.characterName ?? '';
     root.dataset.pdfFont = source.dataset.pdfFont ?? 'Noto Sans';
     root.dataset.pageLabel = source.dataset.pageLabel ?? 'Page';
+    Array.from(pages.children).forEach(page => {
+      (page as HTMLElement).dataset.contentHeight = String(page.getBoundingClientRect().height);
+    });
     return root;
   } finally { root.remove(); measurement.remove(); }
 }

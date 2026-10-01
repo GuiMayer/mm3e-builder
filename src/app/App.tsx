@@ -34,7 +34,7 @@ export function App() {
     exportPDF,
     isPreviewOpen,
     isGeneratingPreview,
-    pdfPreviewHtml,
+    pdfPreviewUrl,
     pdfCharacterName,
     customizationOptions,
     handleCustomizationChange,
@@ -105,7 +105,7 @@ export function App() {
             <PDFPreviewDialog
               isOpen={isPreviewOpen}
               isGenerating={isGeneratingPreview}
-              html={pdfPreviewHtml}
+              pdfUrl={pdfPreviewUrl}
               characterName={pdfCharacterName}
               customizationOptions={customizationOptions}
               onCustomizationChange={handleCustomizationChange}

@@ -17,7 +17,7 @@ export function getPDFStyles(options: PDFCustomizationOptions): string {
 .section-cost{font-weight:400;font-size:${Math.max(8, size - 1)}pt;color:#536070;white-space:nowrap;margin-left:8px;}
 .pdf-header{border-bottom:2px solid ${color};margin-bottom:${gap + 4}px;padding-bottom:${gap}px;}
 .header-main{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
-.character-name{font-size:${size + 8}pt;line-height:1.15;font-weight:700;color:${color};}
+.character-name{flex:1;min-width:0;font-size:${size + 8}pt;line-height:1.15;font-weight:700;color:${color};}
 .header-stats{font-weight:700;white-space:nowrap;color:${color};}
 .header-fields,.header-details{display:flex;flex-wrap:wrap;gap:2px 14px;margin-top:4px;font-size:${Math.max(8, size - 1)}pt;}
 .header-field-label{color:#536070;}

@@ -1,11 +1,32 @@
 import { jsPDF } from 'jspdf';
 import { paginateHtmlForPdf } from './pdfPagination';
 import { PDF_GEOMETRY, PDF_CONTENT_WIDTH_PX, PDF_CONTENT_HEIGHT_PX } from './pdfGeometry';
-import { getPDFFontFaces } from './pdfFonts';
+import { embedPDFFontsInHTML, getPDFFontFaces } from './pdfFonts';
 
 export interface HtmlToPdfOptions { filename: string }
 
-export async function convertHtmlToPdf(html: string, options: HtmlToPdfOptions): Promise<Blob> {
+let conversionQueue: Promise<void> = Promise.resolve();
+
+/** Serialize off-screen rendering so rapidly changed previews cannot mix styles. */
+export function convertHtmlToPdf(html: string, options: HtmlToPdfOptions): Promise<Blob> {
+  const result = conversionQueue.then(() => renderPdf(html, options));
+  conversionQueue = result.then(() => {}, () => {});
+  return result;
+}
+
+export function createPaginatedHTML(html: string): Promise<string> {
+  const result = conversionQueue.then(async () => {
+    const root = await paginateHtmlForPdf(html, PDF_CONTENT_WIDTH_PX, PDF_CONTENT_HEIGHT_PX);
+    const font = root.dataset.pdfFont ?? 'Noto Sans';
+    const parsed = new DOMParser().parseFromString(html, 'text/html');
+    parsed.body.replaceChildren(root);
+    return embedPDFFontsInHTML(parsed.documentElement.outerHTML, font);
+  });
+  conversionQueue = result.then(() => {}, () => {});
+  return result;
+}
+
+async function renderPdf(html: string, options: HtmlToPdfOptions): Promise<Blob> {
   const root = await paginateHtmlForPdf(html, PDF_CONTENT_WIDTH_PX, PDF_CONTENT_HEIGHT_PX);
   const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', putOnlyUsedFonts: true });
   pdf.setProperties({ title: options.filename.replace(/\.pdf$/i, '') });

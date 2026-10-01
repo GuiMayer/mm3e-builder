@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
 import { useAppStore } from '../../store/appStore';
@@ -17,7 +17,7 @@ import { useResourcesStore } from '../../store/resourcesStore';
  * Encapsulates PDF generation logic, overflow checking, and modal state.
  */
 export function usePDFExport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { character } = useActiveCharacter();
   const resources = useResourcesStore((state) => state.resources);
   const { showToast, updateToast, dismissToast } = useToast();
@@ -26,6 +26,11 @@ export function usePDFExport() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
   const [pdfPreviewHtml, setPdfPreviewHtml] = useState<string | null>(null);
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const previewUrlRef = useRef<string | null>(null);
+  const previewBlobRef = useRef<Blob | null>(null);
+  const generationRef = useRef(0);
+  useEffect(() => () => { generationRef.current++; if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current); }, []);
   const [pdfCharacterName, setPdfCharacterName] = useState<string>('');
   const currentToastIdRef = useRef<string | null>(null);
   const [customizationOptions, setCustomizationOptions] = useState<PDFCustomizationOptions>(() => loadPDFCustomizationOptions());
@@ -77,6 +82,9 @@ export function usePDFExport() {
    */
   async function generatePreviewHtml(options?: PDFCustomizationOptions) {
     const customOptions = options || customizationOptions;
+    const generation = ++generationRef.current;
+    setPdfPreviewUrl(null);
+    previewBlobRef.current = null;
     
     try {
       const { generateCharacterPDF } = await import('../../services/pdf');
@@ -100,20 +108,30 @@ export function usePDFExport() {
         advantageDefs: advantageDefsRecord,
         customization: customOptions,
         resources,
+        language: i18n.language,
       });
       
       if (!result.success) {
         throw new Error(result.error || 'PDF generation failed');
       }
       
-      // Store HTML for preview
+      if (generation !== generationRef.current) return;
+      const { convertHtmlToPdf } = await import('../../services/pdf/htmlToPdfConverter');
+      const blob = await convertHtmlToPdf(result.html, { filename: `${sanitizeFileName(character.header.name || 'character')}_sheet.pdf` });
+      if (generation !== generationRef.current) return;
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+      const url = URL.createObjectURL(blob);
+      previewUrlRef.current = url;
+      previewBlobRef.current = blob;
       setPdfPreviewHtml(result.html);
+      setPdfPreviewUrl(url);
       // Update toast to success
       if (currentToastIdRef.current) {
         updateToast(currentToastIdRef.current, t('pdf.toast.ready'), 'success');
         currentToastIdRef.current = null;
       }
     } catch (e) {
+      if (generation !== generationRef.current) return;
       console.error('[usePDFExport] Error generating preview:', e);
       
       // Update toast to error
@@ -126,7 +144,7 @@ export function usePDFExport() {
       setIsPreviewOpen(false);
       setPdfPreviewHtml(null);
     } finally {
-      setIsGeneratingPreview(false);
+      if (generation === generationRef.current) setIsGeneratingPreview(false);
     }
   }
 
@@ -165,10 +183,7 @@ export function usePDFExport() {
    * Generate and open PDF in browser (new behavior for preview modal)
    */
   async function generateAndOpenPdf() {
-    if (!pdfPreviewHtml) return;
-
-    const sanitizedName = sanitizeFileName(pdfCharacterName);
-    const filename = `${sanitizedName}_sheet.pdf`;
+    if (!previewBlobRef.current || isGeneratingPreview) return;
 
     // Open the tab while this click is still synchronous, so browsers do not
     // mistake the generated PDF for an unsolicited popup after async rendering.
@@ -182,11 +197,7 @@ export function usePDFExport() {
     const toastId = showToast(t('pdf.toast.converting'), 'loading');
 
     try {
-      const { convertHtmlToPdf } = await import(
-        '../../services/pdf/htmlToPdfConverter'
-      );
-      const pdfBlob = await convertHtmlToPdf(pdfPreviewHtml, { filename });
-
+      const pdfBlob = previewBlobRef.current!;
       const pdfUrl = URL.createObjectURL(pdfBlob);
       pdfWindow.location.replace(pdfUrl);
 
@@ -210,14 +221,20 @@ export function usePDFExport() {
     
     const sanitizedName = sanitizeFileName(pdfCharacterName);
     const filename = `${sanitizedName}_sheet.html`;
-    const blob = new Blob([pdfPreviewHtml], { type: 'text/html' });
-    await downloadBlob(blob, filename);
+    const { createPaginatedHTML } = await import('../../services/pdf/htmlToPdfConverter');
+    const html = await createPaginatedHTML(pdfPreviewHtml);
+    await downloadBlob(new Blob([html], { type: 'text/html' }), filename);
   }
 
   /**
    * Close preview dialog
    */
   function closePreview() {
+    generationRef.current++;
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    previewUrlRef.current = null;
+    previewBlobRef.current = null;
+    setPdfPreviewUrl(null);
     setIsPreviewOpen(false);
     setPdfPreviewHtml(null);
     setPdfCharacterName('');
@@ -252,6 +269,7 @@ export function usePDFExport() {
     isPreviewOpen,
     isGeneratingPreview,
     pdfPreviewHtml,
+    pdfPreviewUrl,
     pdfCharacterName,
     customizationOptions,
     handleCustomizationChange,

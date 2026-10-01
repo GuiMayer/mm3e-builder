@@ -1,10 +1,11 @@
 /* ================================================
    PDF Preview Dialog
-   Shows HTML preview with instant modal open and loading state
+   Shows the generated PDF with instant modal open and loading state
    ================================================ */
 
 import { useEffect, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PDFDocumentPreview } from './PDFDocumentPreview';
 import { PDFCustomizationPanel } from './PDFCustomizationPanel';
 import type { PDFCustomizationOptions } from '../../services/pdf/types';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
@@ -12,19 +13,19 @@ import { useAppDialog } from '../../shared/ui/appDialogContext';
 interface PDFPreviewDialogProps {
   isOpen: boolean;
   isGenerating: boolean;
-  html: string | null;
+  pdfUrl: string | null;
   characterName: string;
   customizationOptions: PDFCustomizationOptions;
   onCustomizationChange: (options: PDFCustomizationOptions) => void;
   onClose: () => void;
   onGeneratePdf: () => Promise<void>;
-  onDownloadHtml: () => void;
+  onDownloadHtml: () => Promise<void>;
 }
 
 export function PDFPreviewDialog({
   isOpen,
   isGenerating,
-  html,
+  pdfUrl,
   characterName,
   customizationOptions,
   onCustomizationChange,
@@ -35,7 +36,6 @@ export function PDFPreviewDialog({
   const { t } = useTranslation();
   const dialog = useAppDialog();
   const [isConverting, setIsConverting] = useState(false);
-  const [iframeLoaded, setIframeLoaded] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   // Determine if actions should be disabled
@@ -55,9 +55,12 @@ export function PDFPreviewDialog({
   }, [dialog, onGeneratePdf, t]);
 
   // Handle HTML download
-  const handleDownloadHtml = useCallback(() => {
-    onDownloadHtml();
-  }, [onDownloadHtml]);
+  const handleDownloadHtml = useCallback(async () => {
+    setIsConverting(true);
+    try { await onDownloadHtml(); }
+    catch { await dialog.alert({ title: t('pdf.preview.title'), message: t('pdf.preview.error') }); }
+    finally { setIsConverting(false); }
+  }, [dialog, onDownloadHtml, t]);
 
   // Close handler (prevent closing while converting)
   const handleClose = useCallback(() => {
@@ -106,13 +109,6 @@ export function PDFPreviewDialog({
     }
   }, [isOpen, handleKeyDown]);
 
-  // Reset iframe loaded state when HTML changes
-  useEffect(() => {
-    if (html) {
-      setIframeLoaded(false);
-    }
-  }, [html]);
-
   if (!isOpen) return null;
 
   return (
@@ -147,11 +143,11 @@ export function PDFPreviewDialog({
             <button
               className="pdf-preview-customize-btn"
               onClick={toggleMobileDrawer}
-              aria-label="Customize PDF"
+              aria-label={t('pdf.customization.title')}
               aria-expanded={isMobileDrawerOpen}
             >
               <span className="customize-icon">⚙️</span>
-              <span className="customize-label">Customize</span>
+              <span className="customize-label">{t('pdf.customization.title')}</span>
             </button>
             <button
               className="pdf-preview-close-btn"
@@ -193,7 +189,7 @@ export function PDFPreviewDialog({
             <button
               className="pdf-preview-btn pdf-preview-btn--primary"
               onClick={handleGeneratePdf}
-              disabled={isActionsDisabled || !html}
+              disabled={isActionsDisabled || !pdfUrl}
             >
               {isConverting ? (
                 <>
@@ -210,7 +206,7 @@ export function PDFPreviewDialog({
             <button
               className="pdf-preview-btn pdf-preview-btn--secondary"
               onClick={handleDownloadHtml}
-              disabled={isActionsDisabled || !html}
+              disabled={isActionsDisabled || !pdfUrl}
             >
               <span className="pdf-preview-icon">🗂️</span>
               {t('pdf.preview.downloadHTML')}
@@ -224,23 +220,8 @@ export function PDFPreviewDialog({
                 <span className="pdf-preview-spinner" />
                 <p>{t('pdf.preview.generatingMessage')}</p>
               </div>
-            ) : html && !iframeLoaded ? (
-              <div className="pdf-preview-loading">
-                <span className="pdf-preview-spinner" />
-                <p>Loading preview...</p>
-              </div>
             ) : null}
-            
-            {html && (
-              <iframe
-                className="pdf-preview-iframe"
-                srcDoc={html}
-                sandbox="allow-same-origin"
-                title="PDF Preview"
-                onLoad={() => setIframeLoaded(true)}
-                style={{ opacity: iframeLoaded ? 1 : 0 }}
-              />
-            )}
+            {pdfUrl && <PDFDocumentPreview key={pdfUrl} url={pdfUrl} />}
           </div>
         </div>
       </div>
@@ -265,15 +246,17 @@ export function PDFPreviewDialog({
           box-shadow: var(--shadow-xl, 0 20px 60px rgba(0,0,0,0.5));
           display: grid;
           grid-template-columns: 1fr;
-          grid-template-rows: auto 1fr;
+          grid-template-rows: auto minmax(0, 1fr);
           animation: pdf-preview-slide-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
           font-family: var(--f-body, system-ui, sans-serif);
+          min-width: 0;
+          min-height: 0;
         }
 
         @media (min-width: 1024px) {
           .pdf-preview-modal {
             grid-template-columns: 320px 1fr;
-            grid-template-rows: auto 1fr;
+            grid-template-rows: auto minmax(0, 1fr);
           }
         }
 
@@ -308,6 +291,8 @@ export function PDFPreviewDialog({
           grid-row: 2;
           border-right: 1px solid var(--c-border, #333);
           overflow: hidden;
+          min-width: 0;
+          min-height: 0;
           display: flex;
           flex-direction: column;
         }
@@ -379,6 +364,8 @@ export function PDFPreviewDialog({
           display: flex;
           flex-direction: column;
           overflow: hidden;
+          min-width: 0;
+          min-height: 0;
         }
 
         @media (min-width: 1024px) {
@@ -400,6 +387,8 @@ export function PDFPreviewDialog({
           color: var(--c-text-secondary, #999);
           margin: 0;
           overflow: hidden;
+          min-width: 0;
+          min-height: 0;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
@@ -408,6 +397,12 @@ export function PDFPreviewDialog({
           display: flex;
           align-items: center;
           gap: 0.5rem;
+          flex-shrink: 0;
+        }
+
+        .pdf-preview-header > div:first-child {
+          min-width: 0;
+          padding-right: 0.5rem;
         }
 
         .pdf-preview-customize-btn {
@@ -551,6 +546,8 @@ export function PDFPreviewDialog({
           flex: 1;
           position: relative;
           overflow: hidden;
+          min-width: 0;
+          min-height: 0;
           background: var(--c-bg, #1a1a1a);
           padding: var(--s-md, 0.75rem);
         }
@@ -573,15 +570,6 @@ export function PDFPreviewDialog({
           border-width: 3px;
           border-color: var(--c-border, #333);
           border-top-color: var(--c-primary, #3b82f6);
-        }
-
-        .pdf-preview-iframe {
-          width: 100%;
-          height: 100%;
-          border: 1px solid var(--c-border, #333);
-          border-radius: var(--r-md, 8px);
-          background: #fff;
-          transition: opacity 0.2s ease;
         }
 
         /* Mobile Responsive */

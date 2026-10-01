@@ -27,3 +27,24 @@ export async function waitForPDFFonts(font: string): Promise<void> {
   await Promise.all([document.fonts.load(`10pt "${family}"`), document.fonts.load(`bold 10pt "${family}"`), document.fonts.load(`italic 10pt "${family}"`)]);
   await document.fonts.ready;
 }
+
+const embeddedFontCache = new Map<string, Promise<string>>();
+
+/** Downloaded HTML remains printable offline, with the same licensed fonts. */
+export async function embedPDFFontsInHTML(html: string, font: string): Promise<string> {
+  const parsed = new DOMParser().parseFromString(html, 'text/html');
+  for (const face of getPDFFontFaces(font)) {
+    const url = face.src[0].url;
+    if (!embeddedFontCache.has(url)) embeddedFontCache.set(url, (async () => {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Unable to load PDF font');
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      let binary = '';
+      for (let index = 0; index < bytes.length; index += 8192) binary += String.fromCharCode(...bytes.subarray(index, index + 8192));
+      return `data:font/ttf;base64,${btoa(binary)}`;
+    })().catch(error => { embeddedFontCache.delete(url); throw error; }));
+    const dataUrl = await embeddedFontCache.get(url)!;
+    parsed.querySelectorAll('style').forEach(style => { style.textContent = style.textContent!.split(url).join(dataUrl); });
+  }
+  return `<!DOCTYPE html>\n${parsed.documentElement.outerHTML}`;
+}
