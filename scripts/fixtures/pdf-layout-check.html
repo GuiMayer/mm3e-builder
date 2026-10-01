@@ -1,0 +1,61 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Auditoria PDF — ficha fictícia</title>
+<style>body{font:16px Arial;background:#eceff3;margin:24px}button{padding:12px;margin:8px}iframe{width:816px;height:1400px;background:white;border:1px solid #ccc}pre{white-space:pre-wrap}</style>
+<h1>Validação do layout PDF</h1><p>Ficha fictícia, sem acesso ao armazenamento de personagens. Mesmo conteúdo nos dois modos.</p>
+<button id="stress">Testar conteúdo longo</button><button id="empty">Testar ficha mínima</button><button id="serif">Testar fonte serifada</button><button id="normal">Exportar normal</button><button id="compact">Exportar compacto</button><pre id="status">Preparando...</pre><iframe title="HTML gerado antes da paginação"></iframe>
+<script type="module">
+import {createDefaultCharacter} from '/src/entities/characterDefaults.ts';
+import {generateCharacterPDF} from '/src/services/pdf/pdfGenerator.ts';
+import {paginateHtmlForPdf} from '/src/services/pdf/pdfPagination.ts';
+import {PDF_CONTENT_WIDTH_PX,PDF_CONTENT_HEIGHT_PX} from '/src/services/pdf/pdfGeometry.ts';
+import {convertHtmlToPdf} from '/src/services/pdf/htmlToPdfConverter.ts';
+import {POWER_DEFS,MODIFIER_DEFS,SKILL_DEFS,ADVANTAGE_DEFS} from '/src/entities/gameDataLoaders.ts';
+import {DEFAULT_CUSTOMIZATION} from '/src/services/pdf/types.ts';
+const component=(effectId,ranks,modifiers=[])=>({id:crypto.randomUUID(),effectId,ranks,modifiers});
+const power=(name,effectId,ranks,notes='',extra={})=>({id:crypto.randomUUID(),name,components:[component(effectId,ranks)],notes,alternateEffects:[],descriptors:['Luz','Energia'],...extra});
+const character=createDefaultCharacter({header:{name:'Aurora — auditoria visual',player:'Personagem fictícia',identity:'Helena Costa',base:'São Paulo',powerLevel:10,heroPoints:1,age:'28',gender:'Feminino',height:'1,72 m',weight:'65 kg',eyes:'Castanhos',hair:'Preto',groupAffiliation:'Guardiões',series:'Horizonte',gameMaster:'Mestre'},abilities:{str:4,sta:4,agl:3,dex:3,fgt:5,int:2,awe:3,pre:2},defenses:{dodge:5,parry:3,fortitude:5,will:5},skills:SKILL_DEFS.slice(0,12).map(d=>({skillId:d.id,ranks:2,subtype:d.hasSubtype?'Especialidade':null})),advantages:ADVANTAGE_DEFS.slice(0,8).map(d=>({advantageId:d.id,ranks:1})),powers:[power('Rajada solar','damage',8,'Projeta energia luminosa concentrada. O ataque pode ser usado para proteger aliados e destruir obstáculos.',{components:[component('damage',8,[{modifierId:'increased_range',ranks:1},{modifierId:'accurate',ranks:2}])],alternateEffects:[{id:'ae1',name:'Pulso de luz',dynamic:false,notes:'Atinge alvos próximos com uma onda de energia.',components:[component('damage',6,[{modifierId:'area',ranks:1,option:'Burst'}])]}]}),power('Voo luminoso','flight',5,'Deixa um rastro de luz durante o deslocamento.'),power('Campo protetor','protection',4,'Escudo de energia que acompanha os movimentos.'),power('Reflexos rápidos','quickness',4,'Executa tarefas físicas com velocidade ampliada.'),power('Força radiante','move-object',5,'Manipula objetos à distância com luz solidificada.'),power('Visão especial','senses',2,'Percebe sinais fora do espectro visível.'),power('Passo brilhante','speed',3,'Corre em alta velocidade por curtas distâncias.')],complications:[{title:'Responsabilidade',description:'Protege a população da cidade e prioriza o resgate de inocentes.'},{title:'Identidade secreta',description:'A vida profissional de Helena exige manter seus poderes em segredo.'},{title:'Vulnerabilidade',description:'Ambientes sem luz enfraquecem sua confiança e dificultam sua concentração.'}],equipmentNotes:'Comunicador, roupas resistentes, telefone e kit de primeiros socorros.',notes:'Helena descobriu seus poderes durante um acidente em um laboratório de energia. Desde então, investiga a origem das alterações e procura equilibrar sua carreira com a missão de proteger a cidade. Seus aliados conhecem sua identidade e oferecem apoio nas investigações.'});
+const options={language:'pt-BR',character,powerDefs:POWER_DEFS,modifierDefs:MODIFIER_DEFS,skillDefs:Object.fromEntries(SKILL_DEFS.map(d=>[d.id,d])),advantageDefs:Object.fromEntries(ADVANTAGE_DEFS.map(d=>[d.id,d]))};
+const htmls={};for(const mode of ['normal','compact']){const result=await generateCharacterPDF({...options,customization:{...DEFAULT_CUSTOMIZATION,layoutMode:mode}});if(!result.success)throw Error(result.error);htmls[mode]=result.html;}
+document.querySelector('iframe').srcdoc=htmls.normal;document.querySelector('#status').textContent='Pronto. 12 perícias, 8 vantagens, 7 poderes, 1 efeito alternativo, 3 complicações e notas.';
+for(const mode of ['normal','compact'])document.getElementById(mode).onclick=async()=>{document.querySelector('#status').textContent='Convertendo '+mode;try{const blob=await convertHtmlToPdf(htmls[mode],{filename:'audit-'+mode+'.pdf'});showDownload(mode,blob);document.querySelector('#status').textContent='PDF '+mode+' exportado';}catch(e){document.querySelector('#status').textContent=String(e);}};
+
+const urls=new Map();
+function showDownload(mode,blob){if(urls.has(mode))URL.revokeObjectURL(urls.get(mode));document.getElementById('download-'+mode)?.remove();const a=document.createElement('a');const url=URL.createObjectURL(blob);urls.set(mode,url);a.href=url;a.download='pdf-layout-'+mode+'.pdf';a.id='download-'+mode;a.textContent='Baixar PDF '+mode;document.body.prepend(a);}
+const normalize=s=>s.replace(/\s+/g,'');
+for(const mode of ['stress','empty','serif'])document.getElementById(mode).onclick=async()=>{document.querySelector('#status').textContent='Testando '+mode;try{
+ const sample=mode==='empty'?createDefaultCharacter():structuredClone(character);
+ const resources=[];
+ if(mode==='stress'){
+  sample.powers.push(...Array.from({length:9},(_,i)=>power('Poder adicional '+i,'damage',4,'Notas específicas do poder '+i)));
+  sample.powers[0].alternateEffects.push(...Array.from({length:10},(_,i)=>({id:'stress-ae'+i,name:'Alternativo '+i,dynamic:true,notes:'Notas do alternativo '+i,components:[component('damage',4,[{modifierId:'area',ranks:1,option:'Cone'}])]})));
+  sample.powers[1].notes='INICIOPODER '+('A descrição completa do poder precisa continuar sem perda de texto. '.repeat(110))+' FIMPODER';
+  sample.notes='INICIONOTAS '+('História longa com acentuação, informação e consequências para a campanha. '.repeat(140))+' FIMNOTAS\n'+('X'.repeat(900))+' FIMTOKEN';
+  sample.manualOffenseRows=Array.from({length:24},(_,i)=>({id:'manual'+i,name:'Ataque manual '+i,bonus:4,range:'ranged',effect:'Dano 4',notes:'Observações para a linha '+i}));
+  sample.skills.push(...Array.from({length:35},(_,i)=>({skillId:'expertise',ranks:2,subtype:'Especialidade '+i})));
+  sample.advantages.push(...Array.from({length:25},(_,i)=>({advantageId:'skill_mastery',ranks:1,subtype:'Especialidade '+i})));
+  sample.equipment=[power('Equipamento legado','damage',4,'Informação de equipamento legado')];
+  sample.powers.push({...power('Dispositivo removível','damage',5,'Notas de dispositivo'),removable:'removable'});
+  sample.resourceLinks=[{id:'vehicle-link',resourceId:'vehicle',isFree:false,contributionEP:4},{id:'hq-link',resourceId:'hq',isFree:true}];
+  resources.push({id:'vehicle',type:'vehicle',name:'Veículo de teste',notes:'Notas de veículo',createdAt:'2026-10-01',updatedAt:'2026-10-01',size:'large',strength:6,speed:5,defense:6,toughness:8,features:[{id:'feature',name:'Navegação',ranks:2}],systems:[power('Sistema de teste','damage',4)]},{id:'hq',type:'headquarters',name:'Base de teste',notes:'Notas da base',createdAt:'2026-10-01',updatedAt:'2026-10-01',size:'large',toughness:8,features:[],effects:[power('Escudo da base','protection',4)]});
+ }
+ const before=JSON.stringify({sample,resources});
+ const result=await generateCharacterPDF({...options,character:sample,resources,customization:{...DEFAULT_CUSTOMIZATION,fontFamily:mode==='serif'?'Noto Serif':'Noto Sans',colorScheme:mode==='serif'?'mono':'default'}});
+ if(!result.success)throw Error(result.error);
+ const root=await paginateHtmlForPdf(result.html,PDF_CONTENT_WIDTH_PX,PDF_CONTENT_HEIGHT_PX);
+ const pages=[...root.querySelectorAll('.pdf-page')];
+ const heights=pages.map(p=>Number(p.dataset.contentHeight));
+ const text=normalize(root.textContent);
+ const expected=mode==='stress'?['INICIOPODER','FIMPODER','INICIONOTAS','FIMNOTAS','FIMTOKEN','Alternativo 9','Ataque manual 23','Especialidade 34','Equipamento legado','Dispositivo removível','Veículo de teste','Base de teste']:[];
+ const missing=expected.filter(value=>!text.includes(normalize(value)));
+ if(mode==='stress'){
+  const notesText=normalize([...root.querySelectorAll('.notes-section')].map(node=>node.textContent).join(''));
+  if(notesText!==normalize(sample.notes))missing.push('Texto completo das notas');
+  const content=root.cloneNode(true);content.querySelectorAll('style,.power-header,.pdf-page-heading,.pdf-section-title').forEach(node=>node.remove());
+  if(!normalize(content.textContent).includes(normalize(sample.powers[1].notes)))missing.push('Texto completo das notas do poder');
+ }
+ if(missing.length||heights.some(h=>h>PDF_CONTENT_HEIGHT_PX+0.5)||before!==JSON.stringify({sample,resources}))throw Error(JSON.stringify({missing,heights,changed:before!==JSON.stringify({sample,resources})}));
+ const blob=await convertHtmlToPdf(result.html,{filename:'redesign-'+mode+'.pdf'});
+ 
+ showDownload(mode,blob);
+ document.querySelector('#status').textContent=JSON.stringify({mode,pages:pages.length,heights,missing,unchanged:true},null,2);
+ }catch(e){document.querySelector('#status').textContent=String(e);}};
+</script></html>
