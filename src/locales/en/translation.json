@@ -784,5 +784,9 @@
   "pdf.preview.previousPage": "Previous page",
   "pdf.preview.nextPage": "Next page",
   "pdf.preview.zoom": "Zoom",
-  "pdf.preview.fitWidth": "Fit width"
+  "pdf.preview.fitWidth": "Fit width",
+  "pdf.preview.fitPage": "Fit page",
+  "pdf.preview.zoomLimits": "From {{min}}% to {{max}}%",
+  "pdf.preview.zoomOut": "Zoom out",
+  "pdf.preview.zoomIn": "Zoom in"
 }

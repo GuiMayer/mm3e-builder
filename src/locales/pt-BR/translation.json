@@ -784,5 +784,9 @@
   "pdf.preview.previousPage": "Página anterior",
   "pdf.preview.nextPage": "Próxima página",
   "pdf.preview.zoom": "Zoom",
-  "pdf.preview.fitWidth": "Ajustar à largura"
+  "pdf.preview.fitWidth": "Ajustar à largura",
+  "pdf.preview.fitPage": "Ajustar página",
+  "pdf.preview.zoomLimits": "De {{min}}% a {{max}}%",
+  "pdf.preview.zoomOut": "Diminuir zoom",
+  "pdf.preview.zoomIn": "Aumentar zoom"
 }
