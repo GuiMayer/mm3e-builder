@@ -57,7 +57,7 @@ Os arquivos gerados e capturas ficam em `output/pdf/`, ignorado pelo Git. O expo
 
 ## Ajuste dos controles de zoom
 
-A prévia passou a iniciar ajustada à página inteira, considerando largura e altura disponíveis. O zoom pode ser digitado entre 25% e 300%; valores fora dos limites são corrigidos ao confirmar ou perder foco. Campo vazio recupera o zoom aplicado. Os botões flutuantes de diminuir/aumentar ficam no canto inferior direito, usam passos de 10 pontos percentuais e são desabilitados nos respectivos limites. O comando Ajustar página restaura o ajuste automático ao redimensionar a janela; um percentual manual é preservado.
+A prévia inicia em 100%. O comando Ajustar página considera largura e altura disponíveis e ativa o ajuste automático ao redimensionar. O zoom pode ser digitado entre 25% e 300%; valores fora dos limites são corrigidos ao confirmar ou perder foco. Campo vazio recupera o zoom aplicado. Os botões flutuantes de diminuir/aumentar ficam no canto inferior direito, usam passos de 10 pontos percentuais e são desabilitados nos respectivos limites. O comando Ajustar página restaura o ajuste automático ao redimensionar a janela; um percentual manual é preservado.
 
 Verificação visual em 1280, 960 e 375 px, incluindo digitação, confirmação por Enter, limites inferior/superior, campo vazio, ajuste após edição, botões e rolagem interna. Alteração restrita à prévia e suas traduções; o PDF e os dados da ficha não mudam.
 

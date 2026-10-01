@@ -17,14 +17,14 @@ export function PDFDocumentPreview({ url }: { url: string }) {
   const { t } = useTranslation();
   const [document, setDocument] = useState<PDFDocumentProxy | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
-  const [zoom, setZoom] = useState(75);
-  const [zoomInput, setZoomInput] = useState('75');
+  const [zoom, setZoom] = useState(100);
+  const [zoomInput, setZoomInput] = useState('100');
   const [rendering, setRendering] = useState(true);
   const [error, setError] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textLayerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const autoFitRef = useRef(true);
+  const autoFitRef = useRef(false);
   const zoomInputDirtyRef = useRef(false);
 
   const fitPage = useCallback(() => {
