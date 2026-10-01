@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { Info } from 'lucide-react';
 import type { IPowerEffect } from '../../entities/types';
+import { useAlphabeticalList } from '../hooks/useAlphabeticalList';
 
 export interface EffectComboboxProps {
   value: string;
@@ -28,14 +29,15 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
   const containerRef = useRef<HTMLDivElement>(null);
 
   const selectedEff = allEffects.find((d) => d.id === value) ?? null;
+  const orderedEffects = useAlphabeticalList(allEffects);
 
   // Filtered list — matches name or type, case-insensitive
   const filtered = query.trim()
-    ? allEffects.filter((e) =>
+    ? orderedEffects.filter((e) =>
         e.name.toLowerCase().includes(query.toLowerCase()) ||
         e.type.toLowerCase().includes(query.toLowerCase())
       )
-    : allEffects;
+    : orderedEffects;
 
   // Close on outside click
   useEffect(() => {

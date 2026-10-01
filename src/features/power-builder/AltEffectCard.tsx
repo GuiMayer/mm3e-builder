@@ -18,6 +18,7 @@ import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { ModifierParameterControls } from './components/ModifierParameterControls';
 import { getComponentCostBreakdown } from '../../shared/lib/mathEngine';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
+import { useNameComparator } from '../../shared/hooks/useAlphabeticalList';
 
 interface AltEffectCardProps {
   strength?: number;
@@ -60,6 +61,7 @@ export function AltEffectCard({
   onInfoClick, t,
 }: AltEffectCardProps) {
   const { valid, overageBy } = validation;
+  const compareNames = useNameComparator();
 
 
 
@@ -386,6 +388,7 @@ export function AltEffectCard({
                           ...(effectDef ? [...effectDef.extras, ...effectDef.flaws].map((definition) => ({ definition, specific: true })) : [])]
                           .filter(({ definition }) => !['alternate_effect', 'activation', 'removable'].includes(definition.id)
                             && !comp.modifiers.some((modifier) => modifier.modifierId === definition.id))
+                          .sort((first, second) => compareNames(first.definition, second.definition))
                           .map(({ definition, specific }) => (
                             <option key={`${specific}:${definition.id}`} value={`${specific ? 'specific' : 'generic'}:${definition.id}`}>
                               {definition.name}{specific ? ` · ${t('palette.specific')}` : ''} ({definition.costValue > 0 ? '+' : ''}{definition.costValue} {definition.costType === 'per_rank' ? '/rank' : 'pp'})

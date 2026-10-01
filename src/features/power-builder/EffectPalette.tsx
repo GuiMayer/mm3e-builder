@@ -1,7 +1,8 @@
-import { memo, useId, useState } from 'react';
+import { memo, useId, useMemo, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
+import { useAlphabeticalList } from '../../shared/hooks/useAlphabeticalList';
 import { useValidModifiers } from './hooks/useValidModifiers';
 import { Search, ArrowUpCircle, ArrowDownCircle, Zap, ChevronLeft, ChevronRight, Info, GripVertical } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -33,6 +34,11 @@ function EffectPaletteComponent({
 }: Props) {
   const { t } = useTranslation();
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
+  const orderedModifiers = useAlphabeticalList(modifierDefs);
+  const specificDefinitions = useMemo(() => selectedEffect
+    ? [...(selectedEffect.extras ?? []), ...(selectedEffect.flaws ?? [])]
+    : [], [selectedEffect]);
+  const orderedSpecificModifiers = useAlphabeticalList(specificDefinitions);
   const [activeTab, setActiveTab] = useState<PaletteTab>('extras');
   const [modalMod, setModalMod] = useState<IModifierDef | null>(null);
 
@@ -42,7 +48,7 @@ function EffectPaletteComponent({
 
   const lowerFilter = filter.toLowerCase();
 
-  const generalExtras = modifierDefs.filter(
+  const generalExtras = orderedModifiers.filter(
     (m) =>
       m.category === 'extra' &&
       // Arrays are edited in the dedicated Alternate Effects section, which
@@ -52,7 +58,7 @@ function EffectPaletteComponent({
       m.id !== 'activation' &&
       (m.name.toLowerCase().includes(lowerFilter) || m.description.toLowerCase().includes(lowerFilter))
   );
-  const generalFlaws = modifierDefs.filter(
+  const generalFlaws = orderedModifiers.filter(
     (m) =>
       m.category === 'flaw' &&
       // Hide 'removable' in equipment mode (EP system handles it)
@@ -60,20 +66,8 @@ function EffectPaletteComponent({
       (m.name.toLowerCase().includes(lowerFilter) || m.description.toLowerCase().includes(lowerFilter))
   );
 
-  const specificMods: IModifierDef[] = selectedEffect
-    ? [
-        ...(selectedEffect.extras || []).filter(
-          (m) =>
-            m.name.toLowerCase().includes(lowerFilter) ||
-            m.description.toLowerCase().includes(lowerFilter)
-        ),
-        ...(selectedEffect.flaws || []).filter(
-          (m) =>
-            m.name.toLowerCase().includes(lowerFilter) ||
-            m.description.toLowerCase().includes(lowerFilter)
-        ),
-      ]
-    : [];
+  const specificMods = orderedSpecificModifiers.filter((modifier) =>
+    modifier.name.toLowerCase().includes(lowerFilter) || modifier.description.toLowerCase().includes(lowerFilter));
 
   const specificCount = specificMods.length;
 
