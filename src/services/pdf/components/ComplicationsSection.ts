@@ -1,3 +1,4 @@
+import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 /* ================================================
    Complications Section Component
    List of character complications
@@ -7,6 +8,7 @@ import type { ICharacter, IComplication } from '../../../entities/types';
 import { escapeHtml } from './utils';
 
 export interface ComplicationsSectionData {
+  labels?: PDFLabels;
   character: ICharacter;
 }
 
@@ -14,14 +16,15 @@ export interface ComplicationsSectionData {
  * Render the complications section
  */
 export function renderComplicationsSection(data: ComplicationsSectionData): string {
+  const labels = data.labels ?? englishPDFLabels;
   const { character } = data;
   const { complications } = character;
 
   if (complications.length === 0) {
     return `
       <div class="pdf-section">
-        <div class="pdf-section-title">Complications</div>
-        <p class="text-muted">No complications defined.</p>
+        <div class="pdf-section-title">${labels('Complications')}</div>
+        <p class="text-muted">${labels('No complications defined.')}</p>
       </div>
     `.trim();
   }
@@ -32,7 +35,7 @@ export function renderComplicationsSection(data: ComplicationsSectionData): stri
 
   return `
     <div class="pdf-section">
-      <div class="pdf-section-title">Complications</div>
+      <div class="pdf-section-title">${labels('Complications')}</div>
       <div class="complications-list">
         ${complicationsHtml}
       </div>

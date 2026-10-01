@@ -778,5 +778,11 @@
   "builder.openModifierPalette": "Open modifier palette",
   "builder.addModifiersTo": "Add modifiers to {{name}}",
   "pdf.customization.theme.mono": "Printer friendly",
-  "pdf.customization.sections.hideEmpty": "Hide empty sections"
+  "pdf.customization.sections.hideEmpty": "Hide empty sections",
+  "pdf.preview.loading": "Loading PDF preview...",
+  "pdf.preview.pageCount": "Page {{page}} / {{total}}",
+  "pdf.preview.previousPage": "Previous page",
+  "pdf.preview.nextPage": "Next page",
+  "pdf.preview.zoom": "Zoom",
+  "pdf.preview.fitWidth": "Fit width"
 }

@@ -1,3 +1,4 @@
+import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 /* ================================================
    Defenses Section Component
    Dodge, Parry, Fortitude, Will, Toughness, Initiative
@@ -8,6 +9,7 @@ import { escapeHtml } from './utils';
 import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
 
 export interface DefensesSectionData {
+  labels?: PDFLabels;
   character: ICharacter;
   defensesCost: number;
   toughnessTotal: number;
@@ -18,6 +20,7 @@ export interface DefensesSectionData {
  * Render the defenses section
  */
 export function renderDefensesSection(data: DefensesSectionData): string {
+  const labels = data.labels ?? englishPDFLabels;
   const { character, defensesCost, toughnessTotal, initiativeTotal } = data;
   const { defenses, abilities, absentAbilities } = character;
 
@@ -66,12 +69,12 @@ export function renderDefensesSection(data: DefensesSectionData): string {
     },
   ];
 
-  const defensesHtml = defenseList.map(def => renderDefenseBox(def)).join('');
+  const defensesHtml = defenseList.map(def => renderDefenseBox(def, labels)).join('');
 
   return `
     <div class="pdf-section">
       <div class="pdf-section-title">
-        Defenses
+        ${labels('Defenses')}
         <span class="section-cost">${defensesCost} PP</span>
       </div>
       <div class="defenses-grid">
@@ -89,13 +92,13 @@ function renderDefenseBox(defense: {
   total: number;
   base: number;
   bonus: number;
-}): string {
+}, labels: PDFLabels): string {
   return `
     <div class="defense-box">
-      <div class="defense-name">${escapeHtml(defense.name)}</div>
+      <div class="defense-name">${escapeHtml(labels(defense.name))}</div>
       <div class="defense-value">${defense.total}</div>
       <div class="defense-breakdown">
-        Base: ${defense.base} + Bonus: ${defense.bonus}
+        ${labels('Base')}: ${defense.base} + ${labels('Bonus')}: ${defense.bonus}
       </div>
     </div>
   `;

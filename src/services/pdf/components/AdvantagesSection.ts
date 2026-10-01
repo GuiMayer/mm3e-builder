@@ -1,3 +1,4 @@
+import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 /* ================================================
    Advantages Section Component
    List of advantages with optional ranks
@@ -8,6 +9,7 @@ import type { IAdvantageDef } from '../../../entities/types';
 import { escapeHtml } from './utils';
 
 export interface AdvantagesSectionData {
+  labels?: PDFLabels;
   character: ICharacter;
   advantageDefs: Record<string, IAdvantageDef>;
   advantagesCost: number;
@@ -17,14 +19,15 @@ export interface AdvantagesSectionData {
  * Render the advantages section
  */
 export function renderAdvantagesSection(data: AdvantagesSectionData): string {
+  const labels = data.labels ?? englishPDFLabels;
   const { character, advantageDefs, advantagesCost } = data;
   const { advantages } = character;
 
   if (advantages.length === 0) {
     return `
       <div class="pdf-section">
-        <div class="pdf-section-title">Advantages</div>
-        <p class="text-muted">No advantages selected.</p>
+        <div class="pdf-section-title">${labels('Advantages')}</div>
+        <p class="text-muted">${labels('No advantages selected.')}</p>
       </div>
     `.trim();
   }
@@ -43,7 +46,7 @@ export function renderAdvantagesSection(data: AdvantagesSectionData): string {
   return `
     <div class="pdf-section">
       <div class="pdf-section-title">
-        Advantages
+        ${labels('Advantages')}
         <span class="section-cost">${advantagesCost} PP</span>
       </div>
       <div class="advantages-list">

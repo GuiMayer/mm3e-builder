@@ -4,6 +4,7 @@ import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../entiti
 import { generateCharacterPDF } from '../services/pdf/pdfGenerator';
 import { renderPowerDetails } from '../services/pdf/components/powerDetails';
 import type { ICharacterPower } from '../entities/types';
+import { DEFAULT_CUSTOMIZATION } from '../services/pdf/types';
 
 const power: ICharacterPower = {
   id: 'array', name: 'Solar array', descriptors: ['Light'], baseDynamic: true, activation: 'move', notes: 'Base notes',
@@ -35,5 +36,31 @@ describe('PDF content preservation', () => {
     expect(result.success).toBe(true);
     expect(result.html.match(/Area \(Burst\)/g)).toHaveLength(3);
     expect(JSON.stringify(character)).toBe(before);
+  });
+
+  it('localizes labels and catalog names without translating user text or changing mechanics', async () => {
+    const character = createDefaultCharacter({ header: { name: 'Strength', player: '<Player>', identity: 'Will', base: 'Area', powerLevel: 0, heroPoints: 0 }, powers: [power] });
+    const options = { character, powerDefs: POWER_DEFS, modifierDefs: MODIFIER_DEFS, skillDefs: {}, advantageDefs: {} };
+    const before = JSON.stringify(options);
+    const portuguese = await generateCharacterPDF({ ...options, language: 'pt-BR' });
+    const english = await generateCharacterPDF({ ...options, language: 'en' });
+    expect(portuguese.html).toContain('lang="pt-BR"');
+    expect(portuguese.html).toContain('>Strength</div>');
+    expect(portuguese.html).toContain('&lt;Player&gt;');
+    expect(portuguese.html).toContain('NP 0');
+    expect(portuguese.html).toContain('Dano 6');
+    expect(portuguese.html).toContain('Área (Explosão)');
+    expect(english.html).toContain('Damage 6');
+    expect(english.html).toContain('Area (Burst)');
+    expect(JSON.stringify(options)).toBe(before);
+  });
+
+  it('omits empty lists by default but honors the explicit preference to show them', async () => {
+    const options = { character: createDefaultCharacter(), powerDefs: POWER_DEFS, modifierDefs: MODIFIER_DEFS, skillDefs: {}, advantageDefs: {} };
+    const hidden = await generateCharacterPDF(options);
+    const shown = await generateCharacterPDF({ ...options, customization: { ...DEFAULT_CUSTOMIZATION, hideEmptySections: false } });
+    expect(hidden.html).not.toContain('No powers defined.');
+    expect(shown.html).toContain('No powers defined.');
+    expect(shown.html).toContain('No skills trained.');
   });
 });

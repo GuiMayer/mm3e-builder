@@ -1,3 +1,4 @@
+import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 /* ================================================
    Skills Section Component
    List of skills with ranks and total bonus
@@ -9,6 +10,7 @@ import { escapeHtml, formatBonus } from './utils';
 import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
 
 export interface SkillsSectionData {
+  labels?: PDFLabels;
   character: ICharacter;
   skillDefs: Record<string, ISkillDef>;
   skillsCost: number;
@@ -18,6 +20,7 @@ export interface SkillsSectionData {
  * Render the skills section
  */
 export function renderSkillsSection(data: SkillsSectionData): string {
+  const labels = data.labels ?? englishPDFLabels;
   const { character, skillDefs, skillsCost } = data;
   const { skills, abilities, absentAbilities } = character;
 
@@ -27,8 +30,8 @@ export function renderSkillsSection(data: SkillsSectionData): string {
   if (activeSkills.length === 0) {
     return `
       <div class="pdf-section">
-        <div class="pdf-section-title">Skills</div>
-        <p class="text-muted">No skills trained.</p>
+        <div class="pdf-section-title">${labels('Skills')}</div>
+        <p class="text-muted">${labels('No skills trained.')}</p>
       </div>
     `.trim();
   }
@@ -41,7 +44,7 @@ export function renderSkillsSection(data: SkillsSectionData): string {
   });
 
   const skillsHtml = sortedSkills
-    .map(skill => renderSkillEntry(skill, skillDefs, abilities, absentAbilities))
+    .map(skill => renderSkillEntry(skill, skillDefs, abilities, absentAbilities, labels))
     .join('');
   
   const totalRanks = skills.reduce((sum, s) => sum + s.ranks, 0);
@@ -49,8 +52,8 @@ export function renderSkillsSection(data: SkillsSectionData): string {
   return `
     <div class="pdf-section">
       <div class="pdf-section-title">
-        Skills
-        <span class="section-cost">${skillsCost} PP (${totalRanks} ranks)</span>
+        ${labels('Skills')}
+        <span class="section-cost">${skillsCost} PP (${totalRanks} ${labels('ranks')})</span>
       </div>
       <div class="skills-grid">
         ${skillsHtml}
@@ -66,7 +69,8 @@ function renderSkillEntry(
   skill: ICharacter['skills'][0],
   skillDefs: Record<string, ISkillDef>,
   abilities: ICharacter['abilities'],
-  absentAbilities: AbilityKey[]
+  absentAbilities: AbilityKey[],
+  labels: PDFLabels
 ): string {
   // Get skill definition
   const skillDef = skillDefs[skill.skillId];
@@ -85,7 +89,7 @@ function renderSkillEntry(
   return `
     <div class="skill-entry">
       <span class="skill-name">${escapeHtml(displayName)}</span>
-      <span class="skill-ranks">${skill.ranks} ranks${otherBonus !== 0 ? `, ${otherBonus > 0 ? '+' : ''}${otherBonus} other` : ''}</span>
+      <span class="skill-ranks">${skill.ranks} ${labels('ranks')}${otherBonus !== 0 ? `, ${otherBonus > 0 ? '+' : ''}${otherBonus} ${labels('other')}` : ''}</span>
       <span class="skill-total">${formatBonus(total)}</span>
     </div>
   `;

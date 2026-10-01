@@ -22,6 +22,7 @@ import { buildOffenseSummary } from '../../shared/lib/offenseSummary';
 import type { PDFCustomizationOptions } from './types';
 import { getPDFStyles } from './pdfStyles';
 import { resolvePDFFont } from './pdfFonts';
+import { createPDFLabels, localizePDFDefinition, localizePDFPowers, localizePDFModifiers, pdfLanguage } from './pdfMessages';
 import { escapeHtml } from './components/utils';
 import { DEFAULT_CUSTOMIZATION } from './types';
 
@@ -34,6 +35,7 @@ export interface PDFGeneratorOptions {
   includeStyles?: boolean;  // Whether to include inline styles
   customization?: PDFCustomizationOptions;  // Customization options for PDF appearance
   resources?: IResource[];
+  language?: string;
 }
 
 export interface PDFGenerationResult {
@@ -56,6 +58,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       includeStyles = true,
       customization = DEFAULT_CUSTOMIZATION,
       resources = [],
+      language = 'en',
     } = options;
 
     const {
@@ -89,12 +92,22 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       resources
     );
 
+    const labels = createPDFLabels(language);
+    const displayPowerDefs = localizePDFPowers(powerDefs, language);
+    const displayModifierDefs = localizePDFModifiers(modifierDefs, language);
+    const displaySkillDefs = Object.fromEntries(Object.entries(skillDefs).map(([id, def]) => [id, localizePDFDefinition(def, language)]));
+    const displayAdvantageDefs = Object.fromEntries(Object.entries(advantageDefs).map(([id, def]) => [id, localizePDFDefinition(def, language)]));
+    const displayOffenseEntries = offenseEntries.map(entry => ({ ...entry,
+      name: entry.sourceType === 'unarmed' ? labels('Unarmed') : entry.name,
+      effect: entry.isManual ? entry.effect : powerDefs.reduce((effect, def) => effect.startsWith(`${def.name} `) ? `${displayPowerDefs.find(display => display.id === def.id)!.name}${effect.slice(def.name.length)}` : effect, entry.effect),
+    }));
+
     // Generate sections
     const sections: string[] = [];
 
     // Header (now includes compact PP summary)
     sections.push(renderHeaderSection({
-      character,
+      character, labels,
       powerPointsData: {
         abilitiesCost,
         defensesCost,
@@ -110,13 +123,13 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
 
     // Abilities
     sections.push(renderAbilitiesSection({
-      character,
+      character, labels,
       abilitiesCost,
     }));
 
     // Defenses
     sections.push(renderDefensesSection({
-      character,
+      character, labels,
       defensesCost,
       toughnessTotal,
       initiativeTotal,
@@ -124,36 +137,36 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
 
     // Offense
     sections.push(renderOffenseSection({
-      offenseEntries,
+      offenseEntries: displayOffenseEntries, labels,
     }));
 
     // Parallel lists share the page width without changing their source data.
     const skillsSection = customization.hideEmptySections !== false && !character.skills.some(skill => skill.ranks > 0) ? '' : renderSkillsSection({
-      character,
-      skillDefs,
+      character, labels,
+      skillDefs: displaySkillDefs,
       skillsCost,
     });
     const advantagesSection = customization.hideEmptySections !== false && character.advantages.length === 0 ? '' : renderAdvantagesSection({
-      character,
-      advantageDefs,
+      character, labels,
+      advantageDefs: displayAdvantageDefs,
       advantagesCost,
     });
     sections.push(`<div class="pdf-columns">${skillsSection}${advantagesSection}</div>`);
 
     // Powers
     if (customization.hideEmptySections === false || character.powers.some(power => !power.removable || power.removable === 'none')) sections.push(renderPowersSection({
-      character,
-      powerDefs,
-      modifierDefs,
+      character, labels,
+      powerDefs: displayPowerDefs,
+      modifierDefs: displayModifierDefs,
       powersCost,
     }));
 
     // Equipment (optional based on customization)
     if (customization.includeEquipment) {
       const equipmentSection = renderEquipmentSection({
-        character,
-        powerDefs,
-        modifierDefs,
+        character, labels,
+        powerDefs: displayPowerDefs,
+        modifierDefs: displayModifierDefs,
         resources,
       });
       if (equipmentSection) {
@@ -164,7 +177,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     // Complications (optional based on customization)
     if (customization.includeComplications && (customization.hideEmptySections === false || character.complications.length > 0)) {
       const complicationsSection = renderComplicationsSection({
-        character,
+        character, labels,
       });
       if (complicationsSection) {
         sections.push(complicationsSection);
@@ -174,7 +187,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     // Notes (optional based on customization)
     if (customization.includeNotes) {
       const notesSection = renderNotesSection({
-        character,
+        character, labels,
       });
       if (notesSection) {
         sections.push(notesSection);
@@ -185,7 +198,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     const bodyContent = sections.filter(s => s.trim().length > 0).join('\n\n');
 
     // Generate full HTML
-    const html = generateHTMLDocument(bodyContent, includeStyles, customization, character.header.name);
+    const html = generateHTMLDocument(bodyContent, includeStyles, customization, character.header.name, language);
 
     return {
       html,
@@ -208,20 +221,21 @@ function generateHTMLDocument(
   bodyContent: string, 
   includeStyles: boolean, 
   customization: PDFCustomizationOptions,
-  characterName: string
+  characterName: string,
+  language: string
 ): string {
   const styles = includeStyles ? getPDFStyles(customization) : '';
   
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${pdfLanguage(language)}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>M&M 3e Character Sheet</title>
+  <title>${escapeHtml(characterName)} - M&amp;M 3e</title>
   ${styles ? `<style>${styles}</style>` : ''}
 </head>
 <body>
-  <div class="pdf-container" data-character-name="${escapeHtml(characterName)}" data-pdf-font="${resolvePDFFont(customization.fontFamily)}" data-page-label="Page" data-continuation-label="continued">
+  <div class="pdf-container" data-character-name="${escapeHtml(characterName)}" data-pdf-font="${resolvePDFFont(customization.fontFamily)}" data-page-label="${createPDFLabels(language)('Page')}" data-continuation-label="${createPDFLabels(language)('continued')}">
     ${bodyContent}
   </div>
 </body>

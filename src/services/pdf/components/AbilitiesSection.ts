@@ -1,3 +1,4 @@
+import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 /* ================================================
    Abilities Section Component
    8 core abilities: STR, STA, AGL, DEX, FGT, INT, AWE, PRE
@@ -7,6 +8,7 @@ import type { ICharacter } from '../../../entities/types';
 import { escapeHtml, classNames } from './utils';
 
 export interface AbilitiesSectionData {
+  labels?: PDFLabels;
   character: ICharacter;
   abilitiesCost: number;
 }
@@ -15,6 +17,7 @@ export interface AbilitiesSectionData {
  * Render the abilities section
  */
 export function renderAbilitiesSection(data: AbilitiesSectionData): string {
+  const labels = data.labels ?? englishPDFLabels;
   const { character, abilitiesCost } = data;
   const { abilities, absentAbilities } = character;
 
@@ -31,7 +34,7 @@ export function renderAbilitiesSection(data: AbilitiesSectionData): string {
 
   const abilitiesHtml = abilityList
     .map(ability => renderAbilityBox(
-      ability.name,
+      labels(ability.name),
       ability.value,
       absentAbilities.includes(ability.key as keyof typeof abilities)
     ))
@@ -40,7 +43,7 @@ export function renderAbilitiesSection(data: AbilitiesSectionData): string {
   return `
     <div class="pdf-section">
       <div class="pdf-section-title">
-        Abilities
+        ${labels('Abilities')}
         <span class="section-cost">${abilitiesCost} PP</span>
       </div>
       <div class="abilities-grid">

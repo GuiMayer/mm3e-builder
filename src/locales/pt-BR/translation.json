@@ -778,5 +778,11 @@
   "builder.openModifierPalette": "Abrir paleta de modificadores",
   "builder.addModifiersTo": "Adicionar modificadores a {{name}}",
   "pdf.customization.theme.mono": "Econômico para impressão",
-  "pdf.customization.sections.hideEmpty": "Ocultar seções vazias"
+  "pdf.customization.sections.hideEmpty": "Ocultar seções vazias",
+  "pdf.preview.loading": "Carregando prévia do PDF...",
+  "pdf.preview.pageCount": "Página {{page}} / {{total}}",
+  "pdf.preview.previousPage": "Página anterior",
+  "pdf.preview.nextPage": "Próxima página",
+  "pdf.preview.zoom": "Zoom",
+  "pdf.preview.fitWidth": "Ajustar à largura"
 }

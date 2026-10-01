@@ -1,3 +1,4 @@
+import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 /* ================================================
    Powers Section Component
    List of powers with effects and modifiers
@@ -10,6 +11,7 @@ import { calcPowerTotalCost } from '../../../shared/lib/mathEngine';
 import { renderPowerDetails } from './powerDetails';
 
 export interface PowersSectionData {
+  labels?: PDFLabels;
   character: ICharacter;
   powerDefs: IPowerEffect[];
   modifierDefs: IModifierDef[];
@@ -20,6 +22,7 @@ export interface PowersSectionData {
  * Render the powers section
  */
 export function renderPowersSection(data: PowersSectionData): string {
+  const labels = data.labels ?? englishPDFLabels;
   const { character, powerDefs, modifierDefs, powersCost } = data;
   
   // Filter out equipment (removable powers)
@@ -30,20 +33,20 @@ export function renderPowersSection(data: PowersSectionData): string {
   if (powers.length === 0) {
     return `
       <div class="pdf-section">
-        <div class="pdf-section-title">Powers</div>
-        <p class="text-muted">No powers defined.</p>
+        <div class="pdf-section-title">${labels('Powers')}</div>
+        <p class="text-muted">${labels('No powers defined.')}</p>
       </div>
     `.trim();
   }
 
   const powersHtml = powers
-    .map(power => renderPowerEntry(power, powerDefs, modifierDefs, getCharacterStrength(character)))
+    .map(power => renderPowerEntry(power, powerDefs, modifierDefs, getCharacterStrength(character), labels))
     .join('');
 
   return `
     <div class="pdf-section">
       <div class="pdf-section-title">
-        Powers
+        ${labels('Powers')}
         <span class="section-cost">${powersCost} PP</span>
       </div>
       <div class="powers-list">
@@ -60,9 +63,10 @@ function renderPowerEntry(
   power: ICharacter['powers'][0],
   powerDefs: IPowerEffect[],
   modifierDefs: IModifierDef[],
-  strength: number
+  strength: number,
+  labels: PDFLabels
 ): string {
   const totalCost = calcPowerTotalCost(power, powerDefs, modifierDefs, strength);
   
-  return `<div class="power-entry"><div class="power-header"><div class="power-name">${escapeHtml(power.name || 'Unnamed Power')}</div><div class="power-cost">${totalCost} PP</div></div>${renderPowerDetails(power, powerDefs, modifierDefs)}</div>`;
+  return `<div class="power-entry"><div class="power-header"><div class="power-name">${escapeHtml(power.name || labels('Unnamed Power'))}</div><div class="power-cost">${totalCost} PP</div></div>${renderPowerDetails(power, powerDefs, modifierDefs, labels)}</div>`;
 }

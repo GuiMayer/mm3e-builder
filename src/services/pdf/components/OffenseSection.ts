@@ -1,3 +1,4 @@
+import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 /* ================================================
    Offense Section Component
    Attack table with name, bonus, range, effect, notes
@@ -7,6 +8,7 @@ import type { IOffenseEntry } from '../../../shared/lib/offenseSummary';
 import { escapeHtml } from './utils';
 
 export interface OffenseSectionData {
+  labels?: PDFLabels;
   offenseEntries: IOffenseEntry[];
 }
 
@@ -14,23 +16,24 @@ export interface OffenseSectionData {
  * Render the offense section
  */
 export function renderOffenseSection(data: OffenseSectionData): string {
+  const labels = data.labels ?? englishPDFLabels;
   const { offenseEntries } = data;
 
   if (offenseEntries.length === 0) {
     return `
       <div class="pdf-section">
-        <div class="pdf-section-title">Targeted Effects</div>
-        <p class="text-muted">No offense entries defined.</p>
+        <div class="pdf-section-title">${labels('Targeted Effects')}</div>
+        <p class="text-muted">${labels('No offense entries defined.')}</p>
       </div>
     `.trim();
   }
 
-  const rowsHtml = offenseEntries.map(entry => renderOffenseRow(entry)).join('');
+  const rowsHtml = offenseEntries.map(entry => renderOffenseRow(entry, labels)).join('');
 
   return `
     <div class="pdf-section">
-      <div class="pdf-section-title">Targeted Effects</div>
-      <table class="offense-table"><thead><tr><th>Attack</th><th>Bonus</th><th>Range</th><th>Effect</th><th>Notes</th></tr></thead><tbody>${rowsHtml}</tbody></table>
+      <div class="pdf-section-title">${labels('Targeted Effects')}</div>
+      <table class="offense-table"><thead><tr><th>${labels('Attack')}</th><th>${labels('Bonus')}</th><th>${labels('Range')}</th><th>${labels('Effect')}</th><th>${labels('Notes')}</th></tr></thead><tbody>${rowsHtml}</tbody></table>
     </div>
   `.trim();
 }
@@ -38,18 +41,18 @@ export function renderOffenseSection(data: OffenseSectionData): string {
 /**
  * Render a single offense row
  */
-function renderOffenseRow(entry: IOffenseEntry): string {
+function renderOffenseRow(entry: IOffenseEntry, labels: PDFLabels): string {
   const notes = [
-    entry.resistance,
-    entry.relationship === 'alternate' ? 'Alternate Effect' : entry.relationship === 'dynamic-alternate' ? 'Dynamic Alternate Effect' : '',
-    entry.sourceType === 'resource' ? 'Resource' : entry.sourceType === 'equipment' ? 'Equipment' : '',
-    entry.tags.join(', '),
+    entry.resistance?.replace(/\b(Toughness|Fortitude|Will|Dodge|Parry|DC)\b/g, labels),
+    entry.relationship === 'alternate' ? labels('Alternate Effect') : entry.relationship === 'dynamic-alternate' ? labels('Dynamic Alternate Effect') : '',
+    entry.sourceType === 'resource' ? labels('Resource') : entry.sourceType === 'equipment' ? labels('Equipment') : '',
+    entry.tags.map(labels).join(', '),
     entry.notes,
   ].filter(Boolean).join(' · ');
   return `
     <tr><td>${escapeHtml(entry.name)}</td>
       <td>${escapeHtml(entry.bonus)}</td>
-      <td>${escapeHtml(entry.range)}</td>
+      <td>${escapeHtml(labels(entry.range))}</td>
       <td>${escapeHtml(entry.effect)}</td>
       <td>${escapeHtml(notes)}</td></tr>
   `;

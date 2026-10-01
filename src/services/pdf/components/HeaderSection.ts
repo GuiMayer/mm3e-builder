@@ -1,3 +1,4 @@
+import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 /* ================================================
    Header Section Component
    Character identity, basic info, and key stats
@@ -7,6 +8,7 @@ import type { ICharacter } from '../../../entities/types';
 import { escapeHtml, isPresent } from './utils';
 
 export interface HeaderSectionData {
+  labels?: PDFLabels;
   character: ICharacter;
   powerPointsData: {
     abilitiesCost: number;
@@ -25,18 +27,19 @@ export interface HeaderSectionData {
  * Render the character header section
  */
 export function renderHeaderSection(data: HeaderSectionData): string {
+  const labels = data.labels ?? englishPDFLabels;
   const { character, powerPointsData } = data;
   const { header } = character;
 
-  const identity = header.identity ? `${header.identity}${header.identityType ? ` (${header.identityType})` : ''}` : '';
+  const identity = header.identity ? `${header.identity}${header.identityType ? ` (${labels(header.identityType)})` : ''}` : '';
   const details = [['Gender', header.gender], ['Age', header.age], ['Height', header.height], ['Weight', header.weight], ['Eyes', header.eyes], ['Hair', header.hair], ['Group Affiliation', header.groupAffiliation], ['Series', header.series], ['Game Master', header.gameMaster]];
-  return `<div class="pdf-header"><div class="header-main"><div class="character-name">${escapeHtml(header.name || 'Unnamed Hero')}</div><div class="header-stats">PL ${header.powerLevel} · Hero Points ${header.heroPoints}</div></div><div class="header-fields">${renderHeaderField('Player', header.player)}${renderHeaderField('Identity', identity)}${renderHeaderField('Base of Operations', header.base)}</div><div class="header-details">${details.map(([label, value]) => renderHeaderField(label!, value)).join('')}</div>${renderPowerPointsSummaryCompact(powerPointsData)}</div>`;
+  return `<div class="pdf-header"><div class="header-main"><div class="character-name">${escapeHtml(header.name || labels('Unnamed Hero'))}</div><div class="header-stats">${labels('PL')} ${header.powerLevel} · ${labels('Hero Points')} ${header.heroPoints}</div></div><div class="header-fields">${renderHeaderField(labels('Player'), header.player)}${renderHeaderField(labels('Identity'), identity)}${renderHeaderField(labels('Base of Operations'), header.base)}</div><div class="header-details">${details.map(([label, value]) => renderHeaderField(labels(label!), value)).join('')}</div>${renderPowerPointsSummaryCompact(powerPointsData, labels)}</div>`;
 }
 
 /**
  * Render compact power points summary
  */
-function renderPowerPointsSummaryCompact(ppData: HeaderSectionData['powerPointsData']): string {
+function renderPowerPointsSummaryCompact(ppData: HeaderSectionData['powerPointsData'], labels: PDFLabels): string {
   const {
     abilitiesCost,
     defensesCost,
@@ -49,7 +52,7 @@ function renderPowerPointsSummaryCompact(ppData: HeaderSectionData['powerPointsD
     ppEarned,
   } = ppData;
 
-  return `<div class="pp-summary-compact"><strong>${totalSpent} / ${totalAvailable} PP · Points Remaining ${remaining}${remaining < 0 ? ' · Over Budget!' : ''}</strong><span>Abilities ${abilitiesCost} · Defenses ${defensesCost} · Skills ${skillsCost} · Advantages ${advantagesCost} · Powers ${powersCost}${ppEarned !== 0 ? ` · Campaign Adjustment ${ppEarned}` : ''}</span></div>`;
+  return `<div class="pp-summary-compact"><strong>${totalSpent} / ${totalAvailable} PP · ${labels('Points Remaining')} ${remaining}${remaining < 0 ? ` · ${labels('Over Budget!')}` : ''}</strong><span>${labels('Abilities')} ${abilitiesCost} · ${labels('Defenses')} ${defensesCost} · ${labels('Skills')} ${skillsCost} · ${labels('Advantages')} ${advantagesCost} · ${labels('Powers')} ${powersCost}${ppEarned !== 0 ? ` · ${labels('Campaign Adjustment')} ${ppEarned}` : ''}</span></div>`;
 }
 
 /**
