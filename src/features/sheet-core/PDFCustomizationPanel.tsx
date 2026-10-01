@@ -3,6 +3,7 @@
    Panel with options to customize PDF appearance
    ================================================ */
 
+import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PDFCustomizationOptions, ColorScheme, LayoutMode, FontFamily, FontSize } from '../../services/pdf/types';
 import { resolvePDFFont } from '../../services/pdf/pdfFonts';
@@ -15,6 +16,8 @@ interface PDFCustomizationPanelProps {
 
 export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPanelProps) {
   const { t } = useTranslation();
+  const fontId = useId();
+  const worksheet = options.contentMode === 'worksheet';
 
   const handleColorSchemeChange = (colorScheme: ColorScheme) => {
     onChange({ ...options, colorScheme });
@@ -46,92 +49,20 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
     <div className="pdf-customization-panel">
       <h3 className="panel-title">{t('pdf.customization.title')}</h3>
 
-      {/* Theme Section */}
       <section className="panel-section">
-        <h4 className="section-label">{t('pdf.customization.theme.label')}</h4>
-        <div className="theme-grid">
-          {(['default', 'crimson', 'emerald', 'slate', 'mono'] as ColorScheme[]).map((scheme) => (
-            <button
-              key={scheme}
-              className={`theme-button ${options.colorScheme === scheme ? 'active' : ''}`}
-              onClick={() => handleColorSchemeChange(scheme)}
-              aria-label={t(`pdf.customization.theme.${scheme}`)}
-            >
-              <div className="theme-preview">
-                <span 
-                  className="theme-color primary" 
-                  style={{ backgroundColor: COLOR_THEMES[scheme].primary }}
-                />
-                <span 
-                  className="theme-color secondary" 
-                  style={{ backgroundColor: COLOR_THEMES[scheme].secondary }}
-                />
-              </div>
-              <span className="theme-name">{t(`pdf.customization.theme.${scheme}`)}</span>
+        <h4 className="section-label">{t('pdf.customization.content.label')}</h4>
+        <div className="pdf-content-modes">
+          {(['filled', 'worksheet'] as const).map(mode => (
+            <button type="button" key={mode} className={`mode-button ${((options.contentMode ?? 'filled') === mode) ? 'active' : ''}`} aria-pressed={(options.contentMode ?? 'filled') === mode} onClick={() => onChange({ ...options, contentMode: mode, hideEmptySections: mode === 'filled' })}>
+              {t(`pdf.customization.content.${mode}`)}
             </button>
           ))}
         </div>
+        <p className="section-hint">{t(`pdf.customization.content.${worksheet ? 'worksheetHint' : 'filledHint'}`)}</p>
       </section>
-
-      {/* Layout Section */}
-      <section className="panel-section">
-        <h4 className="section-label">{t('pdf.customization.layout.label')}</h4>
-        <div className="button-group">
-          <button
-            className={`mode-button ${options.layoutMode === 'normal' ? 'active' : ''}`}
-            onClick={() => handleLayoutModeChange('normal')}
-          >
-            {t('pdf.customization.layout.normal')}
-          </button>
-          <button
-            className={`mode-button ${options.layoutMode === 'compact' ? 'active' : ''}`}
-            onClick={() => handleLayoutModeChange('compact')}
-          >
-            {t('pdf.customization.layout.compact')}
-          </button>
-        </div>
-        <p className="section-hint">
-          {options.layoutMode === 'compact' 
-            ? t('pdf.customization.layout.compactHint')
-            : t('pdf.customization.layout.normalHint')}
-        </p>
-      </section>
-
-      {/* Typography Section */}
-      <section className="panel-section">
-        <h4 className="section-label">{t('pdf.customization.typography.label')}</h4>
-        
-        <label className="input-label">
-          {t('pdf.customization.typography.font')}
-        </label>
-        <select
-          className="font-select"
-          value={resolvePDFFont(options.fontFamily)}
-          onChange={(e) => handleFontFamilyChange(e.target.value as FontFamily)}
-        >
-          <option value="Noto Sans">Noto Sans</option>
-          <option value="Noto Serif">Noto Serif</option>
-        </select>
-
-        <label className="input-label" style={{ marginTop: '0.75rem' }}>
-          {t('pdf.customization.typography.size')}
-        </label>
-        <div className="button-group">
-          {(['small', 'medium', 'large'] as FontSize[]).map((size) => (
-            <button
-              key={size}
-              className={`size-button ${options.fontSize === size ? 'active' : ''}`}
-              onClick={() => handleFontSizeChange(size)}
-            >
-              {t(`pdf.customization.typography.${size}`)}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Sections Section */}
-      <section className="panel-section">
-        <h4 className="section-label">{t('pdf.customization.sections.label')}</h4>
+      {worksheet ? <p className="section-hint">{t('pdf.customization.content.allSections')}</p> : (
+      <details className="pdf-options-group">
+        <summary>{t('pdf.customization.sections.label')}</summary><p className="section-hint">{t('pdf.customization.sections.hint')}</p>
         <div className="checkbox-group">
           <label className="checkbox-label">
             <input
@@ -160,11 +91,106 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
             />
             <span>{t('pdf.customization.sections.equipment')}</span>
           </label>
-          <label className="checkbox-label"><input className="app-checkbox" type="checkbox" checked={options.hideEmptySections !== false} onChange={() => onChange({ ...options, hideEmptySections: options.hideEmptySections === false })} /><span>{t('pdf.customization.sections.hideEmpty')}</span></label>
+        </div>
+      </details>
+      )}
+      <details className="pdf-options-group">
+        <summary>{t('pdf.customization.appearance')}</summary>
+        <div className="pdf-appearance-options">
+      {/* Theme Section */}
+      <section className="panel-section">
+        <h4 className="section-label">{t('pdf.customization.theme.label')}</h4>
+        <div className="theme-grid">
+          {(['default', 'crimson', 'emerald', 'slate', 'mono'] as ColorScheme[]).map((scheme) => (
+            <button
+              key={scheme}
+              className={`theme-button ${options.colorScheme === scheme ? 'active' : ''}`}
+              onClick={() => handleColorSchemeChange(scheme)}
+              aria-label={t(`pdf.customization.theme.${scheme}`)}
+            >
+              <div className="theme-preview">
+                <span 
+                  className="theme-color primary" 
+                  style={{ backgroundColor: COLOR_THEMES[scheme].primary }}
+                />
+                <span 
+                  className="theme-color secondary" 
+                  style={{ backgroundColor: COLOR_THEMES[scheme].secondary }}
+                />
+              </div>
+              <span className="theme-name">{t(`pdf.customization.theme.${scheme}`)}</span>
+            </button>
+          ))}
         </div>
       </section>
 
+      {/* Layout Section */}
+      {!worksheet && <section className="panel-section">
+        <h4 className="section-label">{t('pdf.customization.layout.label')}</h4>
+        <div className="button-group">
+          <button
+            className={`mode-button ${options.layoutMode === 'normal' ? 'active' : ''}`}
+            onClick={() => handleLayoutModeChange('normal')}
+          >
+            {t('pdf.customization.layout.normal')}
+          </button>
+          <button
+            className={`mode-button ${options.layoutMode === 'compact' ? 'active' : ''}`}
+            onClick={() => handleLayoutModeChange('compact')}
+          >
+            {t('pdf.customization.layout.compact')}
+          </button>
+        </div>
+        <p className="section-hint">
+          {options.layoutMode === 'compact' 
+            ? t('pdf.customization.layout.compactHint')
+            : t('pdf.customization.layout.normalHint')}
+        </p>
+      </section>}
+
+      {/* Typography Section */}
+      <section className="panel-section">
+        <h4 className="section-label">{t('pdf.customization.typography.label')}</h4>
+        
+        <label className="input-label" htmlFor={fontId}>
+          {t('pdf.customization.typography.font')}
+        </label>
+        <select
+          id={fontId}
+          className="font-select"
+          value={resolvePDFFont(options.fontFamily)}
+          onChange={(e) => handleFontFamilyChange(e.target.value as FontFamily)}
+        >
+          <option value="Noto Sans">Noto Sans</option>
+          <option value="Noto Serif">Noto Serif</option>
+        </select>
+
+        <label className="input-label" style={{ marginTop: '0.75rem' }}>
+          {t('pdf.customization.typography.size')}
+        </label>
+        <div className="button-group">
+          {(['small', 'medium', 'large'] as FontSize[]).map((size) => (
+            <button
+              key={size}
+              className={`size-button ${options.fontSize === size ? 'active' : ''}`}
+              onClick={() => handleFontSizeChange(size)}
+            >
+              {t(`pdf.customization.typography.${size}`)}
+            </button>
+          ))}
+        </div>
+      </section>
+
+        </div>
+      </details>
+
       <style>{`
+        .pdf-content-modes { display: flex; flex-direction: column; gap: 0.5rem; }
+        .pdf-options-group > summary { cursor: pointer; font-weight: 600; color: var(--c-text, #e0e0e0); padding: 0.6rem 0; }
+        .pdf-options-group { border-top: 1px solid var(--c-border, #333); }
+        .pdf-options-group > .checkbox-group { margin-top: 0.75rem; }
+        .pdf-appearance-options { display: flex; flex-direction: column; gap: 1.25rem; padding-top: 0.75rem; }
+        .pdf-customization-panel button:focus-visible,.pdf-options-group > summary:focus-visible { outline: 2px solid var(--c-primary, #3b82f6); outline-offset: 3px; }
         .pdf-customization-panel {
           display: flex;
           flex-direction: column;
@@ -201,9 +227,9 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
 
         .section-hint {
           font-size: 0.75rem;
-          color: var(--c-text-tertiary, #666);
+          color: var(--c-text-secondary, #999);
           margin: 0.25rem 0 0 0;
-          font-style: italic;
+          line-height: 1.5;
         }
 
         /* Theme Grid */

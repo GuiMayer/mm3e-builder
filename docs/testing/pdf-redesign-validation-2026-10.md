@@ -48,7 +48,7 @@ Essa afirmação se refere ao redesenho do PDF. O commit anterior `a4b788b`, de 
 
 ## Verificações automatizadas
 
-- `npm run test -- --run`: 703 testes em 49 arquivos passaram.
+- `npm run test -- --run`: 709 testes em 50 arquivos passaram.
 - `npm run lint`: passou.
 - `npm run build`: passou, incluindo o worker do visualizador e as fontes.
 - `npm run build:verify`: 13 referências estáticas verificadas.
@@ -66,3 +66,18 @@ Verificação visual em 1280, 960 e 375 px, incluindo digitação, confirmação
 A prévia inicial usava somente canvas e um parágrafo oculto para leitura assistiva. Isso impedia selecionar o texto visualmente, embora o PDF exportado contivesse texto pesquisável. Foi adicionada a TextLayer do PDF.js, com os trechos posicionados sobre o canvas e estilos restritos ao visualizador. O parágrafo oculto foi removido para evitar duplicação na leitura assistiva. A mesma camada acompanha o zoom sem refazer o desenho da página e é cancelada/substituída ao trocar de página.
 
 Verificados seleção com duplo clique, cópia por Ctrl+C, alinhamento em 25%, 100%, 150% e 300% e remoção do texto da página anterior ao navegar. A correção afeta a prévia; não muda o gerador de PDF nem dados de personagens.
+
+## Impressão para preencher à mão
+
+A personalização agora começa pela escolha entre **Ficha preenchida** e **Preencher à mão**. A primeira omite listas sem conteúdo e respeita as três seções opcionais, agrupadas em **Escolher seções**: notas/histórico, complicações e dispositivos/recursos. Tema, fonte, tamanho e espaçamento ficam em **Aparência**, inicialmente recolhida. A opção anterior de mostrar seções vazias foi substituída pelo modo de preenchimento.
+
+O modo de preenchimento conserva valores existentes, incluindo zeros, e acrescenta todos os campos de identificação, todas as perícias do catálogo, especializações vazias e colunas para ranks, outros bônus e total. Inclui linhas adicionais de ataques/vantagens, blocos de poderes/equipamentos, complicações e notas. Não imprime o catálogo inteiro de poderes/vantagens nem cria registros vazios na ficha. Todas as seções aparecem nesse modo; as escolhas de seções e de layout compacto ficam guardadas para o retorno à ficha preenchida. O espaçamento para escrever independe do layout compacto.
+
+| Caso em Noto Sans média | Resultado |
+| --- | --- |
+| Ficha mínima com espaços para escrever | 2 páginas; todas as perícias na primeira |
+| Amostra da auditoria com dados e espaços adicionais | 3 páginas; todas as perícias na primeira |
+
+As cinco páginas foram renderizadas e conferidas com Poppler. A paginação passou pelas verificações de limite de altura e preservação dos objetos de entrada. Os novos casos podem ser reproduzidos pelos botões **Testar preenchimento em branco** e **Testar preenchimento com dados** da fixture existente.
+
+O painel foi conferido em 1280, 960 e 390 px, incluindo troca de modo, preservação dos checkboxes ao retornar, expansão dos grupos, fonte serifada e tamanho grande. Preferências antigas são lidas somente pela chave `mm3e-pdf-customization-options`: a escolha antiga de mostrar vazios passa a abrir o modo de preenchimento. Os seis testes adicionados cobrem campos vazios, dados existentes, especializações, custo, escape de HTML, escolhas opcionais e compatibilidade das preferências. Entidades, regras, schemas, migrações e stores de personagens não foram alterados.
