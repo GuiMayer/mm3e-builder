@@ -60,3 +60,9 @@ Os arquivos gerados e capturas ficam em `output/pdf/`, ignorado pelo Git. O expo
 A prévia passou a iniciar ajustada à página inteira, considerando largura e altura disponíveis. O zoom pode ser digitado entre 25% e 300%; valores fora dos limites são corrigidos ao confirmar ou perder foco. Campo vazio recupera o zoom aplicado. Os botões flutuantes de diminuir/aumentar ficam no canto inferior direito, usam passos de 10 pontos percentuais e são desabilitados nos respectivos limites. O comando Ajustar página restaura o ajuste automático ao redimensionar a janela; um percentual manual é preservado.
 
 Verificação visual em 1280, 960 e 375 px, incluindo digitação, confirmação por Enter, limites inferior/superior, campo vazio, ajuste após edição, botões e rolagem interna. Alteração restrita à prévia e suas traduções; o PDF e os dados da ficha não mudam.
+
+## Seleção de texto na prévia
+
+A prévia inicial usava somente canvas e um parágrafo oculto para leitura assistiva. Isso impedia selecionar o texto visualmente, embora o PDF exportado contivesse texto pesquisável. Foi adicionada a TextLayer do PDF.js, com os trechos posicionados sobre o canvas e estilos restritos ao visualizador. O parágrafo oculto foi removido para evitar duplicação na leitura assistiva. A mesma camada acompanha o zoom sem refazer o desenho da página e é cancelada/substituída ao trocar de página.
+
+Verificados seleção com duplo clique, cópia por Ctrl+C, alinhamento em 25%, 100%, 150% e 300% e remoção do texto da página anterior ao navegar. A correção afeta a prévia; não muda o gerador de PDF nem dados de personagens.

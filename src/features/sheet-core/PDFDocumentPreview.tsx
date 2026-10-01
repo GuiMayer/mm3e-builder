@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { PDFDocumentProxy, PDFDocumentLoadingTask, RenderTask } from 'pdfjs-dist';
+import type { PDFDocumentProxy, PDFDocumentLoadingTask, RenderTask, TextLayer } from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { PDF_GEOMETRY } from '../../services/pdf/pdfGeometry';
+import './pdfTextLayer.css';
 
 const MIN_ZOOM = 25;
 const MAX_ZOOM = 300;
@@ -20,8 +21,8 @@ export function PDFDocumentPreview({ url }: { url: string }) {
   const [zoomInput, setZoomInput] = useState('75');
   const [rendering, setRendering] = useState(true);
   const [error, setError] = useState(false);
-  const [pageText, setPageText] = useState('');
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const textLayerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const autoFitRef = useRef(true);
   const zoomInputDirtyRef = useRef(false);
@@ -80,30 +81,41 @@ export function PDFDocumentPreview({ url }: { url: string }) {
     if (!document) return;
     let cancelled = false;
     let task: RenderTask | undefined;
+    let textLayer: TextLayer | undefined;
     let release: (() => void) | undefined;
     void (async () => {
       const page = await document.getPage(pageNumber);
       if (cancelled) return;
       release = () => page.cleanup();
       const canvas = canvasRef.current;
-      if (!canvas) return;
+      const textContainer = textLayerRef.current;
+      if (!canvas || !textContainer) return;
+      textContainer.replaceChildren();
       const viewport = page.getViewport({ scale: 2 });
       canvas.width = Math.ceil(viewport.width);
       canvas.height = Math.ceil(viewport.height);
       task = page.render({ canvas, viewport });
       await task.promise;
+      if (cancelled) return;
       const content = await page.getTextContent();
+      const { TextLayer } = await import('pdfjs-dist');
+      if (cancelled) return;
+      const textViewport = page.getViewport({ scale: 96 / 72 });
+      textLayer = new TextLayer({ textContentSource: content, container: textContainer, viewport: textViewport });
+      // Keep fractional page dimensions, matching the scaled PDF rather than
+      // rounding the selectable layer to whole CSS pixels.
+      textContainer.style.width = `${textViewport.width}px`;
+      textContainer.style.height = `${textViewport.height}px`;
+      await textLayer.render();
       if (!cancelled) {
-        setPageText(content.items.map(item => 'str' in item ? item.str : '').join(' '));
         setRendering(false);
       }
     })().catch(() => { if (!cancelled) { setError(true); setRendering(false); } });
-    return () => { cancelled = true; task?.cancel(); release?.(); };
+    return () => { cancelled = true; task?.cancel(); textLayer?.cancel(); release?.(); };
   }, [document, pageNumber]);
 
   function changePage(next: number) {
     setRendering(true);
-    setPageText('');
     setPageNumber(next);
   }
 
@@ -138,9 +150,9 @@ export function PDFDocumentPreview({ url }: { url: string }) {
     <div className="pdf-document-scroll" aria-busy={rendering && !error}>
       {error ? <p role="alert">{t('pdf.preview.error')}</p> : <>
         {rendering && <p className="pdf-document-loading" role="status">{t('pdf.preview.loading')}</p>}
-        <div className="pdf-document-paper" style={{ width: `${PAGE_WIDTH * zoom / 100}px`, opacity: rendering ? 0 : 1 }}>
-          <canvas ref={canvasRef} role="img" aria-label={pageLabel} />
-          <p className="pdf-document-accessible-text">{pageText}</p>
+        <div className="pdf-document-paper" role="group" aria-label={pageLabel} style={{ width: `${PAGE_WIDTH * zoom / 100}px`, opacity: rendering ? 0 : 1 }}>
+          <canvas ref={canvasRef} aria-hidden="true" />
+          <div ref={textLayerRef} className="pdf-document-text-layer" style={{ transform: `scale(${zoom / 100})` }} />
         </div>
       </>}
     </div>
@@ -159,7 +171,7 @@ export function PDFDocumentPreview({ url }: { url: string }) {
       .pdf-document-zoom-field input{width:68px;text-align:center;font:inherit;}
       .pdf-document-viewport{position:relative;display:flex;flex:1;min-height:0;min-width:0;}
       .pdf-document-scroll{overflow:auto;flex:1;min-height:0;min-width:0;position:relative;padding:12px 12px 72px;}
-      .pdf-document-paper{background:white;box-shadow:0 2px 10px #0005;margin:0 auto;}
+      .pdf-document-paper{position:relative;background:white;box-shadow:0 2px 10px #0005;margin:0 auto;}
       .pdf-document-paper canvas{display:block;width:100%;height:auto;}
       .pdf-document-loading{position:absolute;inset:30px 0 auto;text-align:center;}
       .pdf-document-floating-zoom{position:absolute;right:20px;bottom:12px;display:flex;gap:2px;padding:3px;background:rgba(30,34,42,0.9);border:1px solid #ffffff26;border-radius:24px;box-shadow:0 2px 8px #0003;backdrop-filter:blur(6px);}
@@ -168,7 +180,6 @@ export function PDFDocumentPreview({ url }: { url: string }) {
       .pdf-document-floating-zoom button:focus-visible{outline:2px solid var(--c-primary,#3b82f6);outline-offset:1px;}
       .pdf-document-floating-zoom button:disabled{opacity:0.35;cursor:default;}
       @media(max-width:768px){.pdf-document-floating-zoom button{width:44px;height:44px;}}
-      .pdf-document-accessible-text{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
     `}</style>
   </div>;
 }
