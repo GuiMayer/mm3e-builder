@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { lazy, Suspense, useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { AppView } from '../../app/App';
 
@@ -13,6 +13,7 @@ import { useExcelExport } from '../hooks/useExcelExport';
 import { MobileDrawer } from './MobileDrawer';
 import { CharacterImportConflictDialog } from './CharacterImportConflictDialog';
 import { ThemeSelector } from './ThemeSelector';
+import { PRESET_THEMES } from '../../features/themes/themeModel';
 import { LanguageSelector } from './LanguageSelector';
 import { ViewTabs } from './ViewTabs';
 import { Settings, Download, Upload, Eraser, Shield, ShieldOff, FileSpreadsheet, BookOpen, FileText, Loader2, Trash2, Menu, Undo2, Redo2 } from 'lucide-react';
@@ -27,12 +28,8 @@ import { parseDraftStorageSnapshot, restoreDraftStorageSnapshot } from '../../se
 
 const IMPORT_BACKUP_KEY = 'mm3e-draft-import-backup-v1';
 
-const THEMES = [
-  { id: 'dark-knight', label: 'Dark Knight' },
-  { id: 'arc-reactor', label: 'Arc Reactor' },
-  { id: 'cyberpunk', label: 'Cyberpunk' },
-  { id: 'light-print', label: 'Light Print' },
-];
+const THEMES = [...PRESET_THEMES];
+const CustomThemeEditor = lazy(() => import('../../features/themes/CustomThemeEditor').then(module => ({ default: module.CustomThemeEditor })));
 
 // Display labels for each registered language.
 // To add a new language: register it in src/locales/index.ts AND add a label here.
@@ -97,10 +94,21 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   // Local state
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [themeEditorOpen, setThemeEditorOpen] = useState(false);
+  const settingsTriggerRef = useRef<HTMLButtonElement>(null);
+  const mobileTriggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const draftInputRef = useRef<HTMLInputElement>(null);
   const resourceInputRef = useRef<HTMLInputElement>(null);
   const dialog = useAppDialog();
+  function openThemeEditor() { setSettingsOpen(false); setDrawerOpen(false); setThemeEditorOpen(true); }
+  function closeThemeEditor() {
+    setThemeEditorOpen(false);
+    requestAnimationFrame(() => (window.innerWidth <= 768 ? mobileTriggerRef : settingsTriggerRef).current?.focus());
+  }
+  function handleThemeChange(value: string) {
+    try { setTheme(value); } catch { void dialog.alert({ message: t('theme.selectionError') }); }
+  }
 
   // Ensure i18n is synced with store on mount
   useEffect(() => {
@@ -204,6 +212,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
 
   return (
     <>
+      {themeEditorOpen && <Suspense fallback={null}><CustomThemeEditor onClose={closeThemeEditor} /></Suspense>}
       {/* Mobile Drawer - rendered outside header to avoid position conflicts */}
       <MobileDrawer
         isOpen={drawerOpen}
@@ -219,7 +228,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         onExportPDF={onExportPDF}
         isGeneratingPreview={isGeneratingPreview}
         theme={theme}
-        onThemeChange={setTheme}
+        onThemeChange={handleThemeChange}
+        onCustomizeTheme={openThemeEditor}
         themes={THEMES}
         language={language}
         onLanguageChange={handleLanguageChange}
@@ -250,6 +260,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         <button
           className="menubar-hamburger"
           onClick={() => setDrawerOpen(true)}
+          ref={mobileTriggerRef}
           aria-label={t('menu.open')}
           aria-expanded={drawerOpen}
         >
@@ -322,6 +333,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         <div className="menubar-dropdown-wrapper" ref={dropdownRef}>
           <button
             className="menubar-btn"
+            ref={settingsTriggerRef}
             onClick={() => setSettingsOpen(!settingsOpen)}
             title={t('menu.settings')}
             aria-label={t('menu.settings')}
@@ -334,7 +346,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
             <div className="menubar-dropdown">
               <div className="dropdown-section">
                 <span className="dropdown-label">{t('menu.theme')}</span>
-                <ThemeSelector theme={theme} onThemeChange={setTheme} themes={THEMES} />
+                <ThemeSelector theme={theme} onThemeChange={handleThemeChange} themes={THEMES} onCustomize={openThemeEditor} />
               </div>
               <div className="dropdown-divider" />
               <div className="dropdown-section">

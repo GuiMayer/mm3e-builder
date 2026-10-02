@@ -20,6 +20,7 @@ interface MobileDrawerProps {
   isGeneratingPreview: boolean;
   theme: string;
   onThemeChange: (theme: string) => void;
+  onCustomizeTheme: () => void;
   themes: Array<{ id: string; label: string }>;
   language: string;
   onLanguageChange: (lang: string) => void;
@@ -52,6 +53,7 @@ export function MobileDrawer({
   isGeneratingPreview,
   theme,
   onThemeChange,
+  onCustomizeTheme,
   themes,
   language,
   onLanguageChange,
@@ -165,7 +167,7 @@ export function MobileDrawer({
           {/* Theme Section */}
           <div className="mobile-drawer-section">
             <span className="mobile-drawer-label">{t('menu.theme')}</span>
-            <ThemeSelector theme={theme} onThemeChange={onThemeChange} themes={themes} />
+            <ThemeSelector theme={theme} onThemeChange={onThemeChange} themes={themes} onCustomize={onCustomizeTheme} />
           </div>
 
           <div className="mobile-drawer-divider" />
