@@ -1,35 +1,13 @@
-import { useId, useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RotateCcw } from 'lucide-react';
 import { Modal } from '../../shared/ui/Modal';
 import { useAppStore } from '../../store/appStore';
 import { useCustomThemeStore } from './customThemeStore';
-import { COLOR_GROUPS, COLOR_ROLES, PRESET_THEMES, contrastIssues, createCustomTheme, isPresetTheme, normalizeHex, themeVariables, type ColorRole, type CustomTheme, type ThemeColor } from './themeModel';
+import { COLOR_GROUPS, COLOR_ROLES, PRESET_THEMES, contrastIssues, createCustomTheme, isPresetTheme, themeVariables, type ColorRole, type CustomTheme } from './themeModel';
 import type { PresetTheme } from './presetPalettes';
+import { ThemeColorField } from './ThemeColorField';
 import './customTheme.css';
-
-function ColorField({ role, color, base, transparent, onChange, onValidityChange }: {
-  role: ColorRole; color: ThemeColor; base: ThemeColor; transparent: boolean; onChange: (color: ThemeColor) => void; onValidityChange: (valid: boolean) => void;
-}) {
-  const { t } = useTranslation();
-  const id = useId();
-  const [hex, setHex] = useState(color.hex);
-  const valid = normalizeHex(hex);
-  const label = t(`theme.color.${role}`);
-  function update(next: ThemeColor) { setHex(next.hex); onChange(next); onValidityChange(true); }
-  return <div className="theme-color-field">
-    <label htmlFor={id}>{label}</label>
-    <div className="theme-color-controls">
-      <input type="color" aria-label={t('theme.pickColor', { color: label })} value={color.hex} onChange={event => update({ ...color, hex: event.target.value.toUpperCase() })} />
-      <input id={id} className="theme-hex" type="text" value={hex} spellCheck={false} maxLength={7} aria-invalid={!valid} aria-describedby={!valid ? `${id}-error` : undefined}
-        onChange={event => { const value = event.target.value; setHex(value); const next = normalizeHex(value); onValidityChange(!!next); if (next) onChange({ ...color, hex: next }); }}
-        onBlur={() => { if (valid) setHex(valid); }} />
-      <button type="button" title={t('theme.resetColor', { color: label })} aria-label={t('theme.resetColor', { color: label })} onClick={() => update(base)}><RotateCcw size={15} /></button>
-    </div>
-    {transparent && <label className="theme-alpha">{t('theme.opacity')}<input type="range" min="0" max="100" step="1" value={Math.round(color.alpha * 100)} aria-label={t('theme.colorOpacity', { color: label })} onChange={event => onChange({ ...color, alpha: Number(event.target.value) / 100 })} /><output>{Math.round(color.alpha * 100)}%</output></label>}
-    {!valid && <span className="theme-color-error" id={`${id}-error`}>{t('theme.invalidHex')}</span>}
-  </div>;
-}
 
 export function CustomThemeEditor({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
@@ -40,11 +18,12 @@ export function CustomThemeEditor({ onClose }: { onClose: () => void }) {
   });
   const [error, setError] = useState('');
   const [fieldRevision, setFieldRevision] = useState(0);
+  const [pickerRole, setPickerRole] = useState<ColorRole | null>(null);
   const [invalidRoles, setInvalidRoles] = useState<Partial<Record<ColorRole, boolean>>>({});
   const invalidFields = Object.values(invalidRoles).some(Boolean);
   const base = createCustomTheme(draft.baseTheme);
   const issues = contrastIssues(draft);
-  function copyBase(selected: PresetTheme = draft.baseTheme) { setDraft(createCustomTheme(selected)); setFieldRevision(n => n + 1); setInvalidRoles({}); setError(''); }
+  function copyBase(selected: PresetTheme = draft.baseTheme) { setDraft(createCustomTheme(selected)); setFieldRevision(n => n + 1); setPickerRole(null); setInvalidRoles({}); setError(''); }
   function save() {
     if (invalidFields) return;
     if (!useCustomThemeStore.getState().save(draft)) { setError(t('theme.saveError')); return; }
@@ -61,7 +40,8 @@ export function CustomThemeEditor({ onClose }: { onClose: () => void }) {
           <div className="theme-groups" key={fieldRevision}>
             {COLOR_GROUPS.map((group, index) => <details key={group} open={index === 0}>
               <summary>{t(`theme.group.${group}`)}</summary>
-              {COLOR_ROLES.filter(([, category]) => category === group).map(([role, , transparent]) => <ColorField key={role} role={role} color={draft.colors[role]} base={base.colors[role]} transparent={!!transparent}
+              {COLOR_ROLES.filter(([, category]) => category === group).map(([role, , transparent]) => <ThemeColorField key={role} role={role} color={draft.colors[role]} base={base.colors[role]} transparent={!!transparent}
+                open={pickerRole === role} onToggle={() => setPickerRole(current => current === role ? null : role)} onClose={() => setPickerRole(null)}
                 onValidityChange={valid => setInvalidRoles(current => ({ ...current, [role]: !valid }))}
                 onChange={color => { setDraft(current => ({ ...current, colors: { ...current.colors, [role]: color } })); setError(''); }} />)}
             </details>)}
