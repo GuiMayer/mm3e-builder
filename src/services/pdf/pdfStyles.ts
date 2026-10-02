@@ -44,6 +44,8 @@ export function getPDFStyles(options: PDFCustomizationOptions): string {
 .offense-table tr:nth-child(even){background:#f6f8fa;}
 .offense-table th:nth-child(1){width:22%;}.offense-table th:nth-child(2){width:8%;}.offense-table th:nth-child(3){width:15%;}.offense-table th:nth-child(4){width:21%;}.offense-table th:nth-child(5){width:34%;}
 .offense-table td:nth-child(2){text-align:center;font-weight:700;}
+.pdf-campaign-section .offense-table th:nth-child(1){width:14%;}.pdf-campaign-section .offense-table th:nth-child(2){width:12%;}.pdf-campaign-section .offense-table th:nth-child(3){width:46%;}.pdf-campaign-section .offense-table th:nth-child(4){width:10%;}.pdf-campaign-section .offense-table th:nth-child(5){width:18%;}
+.pdf-campaign-section .offense-table td:nth-child(2){text-align:left;font-weight:400;}
 .power-entry,.equipment-entry{padding:${gap}px 0;border-bottom:1px solid #dce1e8;margin:0;}
 .power-header{display:flex;justify-content:space-between;gap:12px;font-weight:700;align-items:baseline;margin-bottom:2px;}
 .power-cost{font-size:9pt;color:${color};white-space:nowrap;}

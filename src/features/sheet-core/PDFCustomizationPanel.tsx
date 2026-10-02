@@ -94,6 +94,10 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
         </div>
       </details>
       )}
+      <label className="checkbox-label">
+        <input className="app-checkbox" type="checkbox" checked={options.includeCampaignHistory === true} onChange={() => onChange({ ...options, includeCampaignHistory: !options.includeCampaignHistory })} />
+        <span>{t('pdf.customization.sections.campaign')}</span>
+      </label>
       <details className="pdf-options-group">
         <summary>{t('pdf.customization.appearance')}</summary>
         <div className="pdf-appearance-options">

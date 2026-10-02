@@ -15,6 +15,7 @@ import {
   renderEquipmentSection,
   renderComplicationsSection,
   renderNotesSection,
+  renderCampaignSection,
 } from './components';
 import { deriveCharacterDefenses } from '../../shared/lib/derivedDefenses';
 import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
@@ -198,6 +199,9 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     }
 
     // Combine sections
+    if (customization.includeCampaignHistory) {
+      sections.push(renderCampaignSection(character, { totalAvailable, remaining }, labels));
+    }
     const bodyContent = sections.filter(s => s.trim().length > 0).join('\n\n');
 
     // Generate full HTML

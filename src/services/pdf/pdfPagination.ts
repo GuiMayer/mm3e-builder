@@ -26,6 +26,11 @@ function sectionGroup(section: HTMLElement, continuation: string): Group {
         frame.append(heading);
       }
       if (!list) return { frame, targets: [frame] };
+      // Keep introductory context, including campaign budget/mode, with repeated tables.
+      for (const child of Array.from(section.children)) {
+        if (child === list) break;
+        if (child !== title) frame.append(child.cloneNode(true));
+      }
       const container = list.cloneNode(false) as HTMLElement;
       frame.append(container);
       if (!table) return { frame, targets: [container] };

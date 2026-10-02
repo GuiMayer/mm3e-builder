@@ -19,6 +19,11 @@ export function buildExcelLabels(t: TFunction): ExportLabels {
     sheetEquipment: t('excel.sheetEquipment'),
     sheetOffense: t('excel.sheetOffense'),
     sheetNotes: t('excel.sheetNotes'),
+    campaign: {
+      sheet: t('campaign.title'), initialPP: t('campaign.initialPP'), initialPL: t('campaign.initialPL'), active: t('campaign.active'),
+      date: t('ppLog.date'), session: t('campaign.session'), type: t('campaign.type'), award: t('campaign.award'), adjustment: t('campaign.adjustment'),
+      amount: t('ppLog.amount'), running: t('campaign.running'), available: t('campaign.available'),
+    },
     heroName: t('header.heroName'),
     player: t('header.player'),
     identity: t('header.identity'),

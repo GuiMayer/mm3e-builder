@@ -34,6 +34,7 @@ import { downloadBlob, sanitizeFileName } from './downloadHelper';
 import { getResourceEPCost } from '../shared/lib/resourceCalculations';
 import { resolveModifierDefinition } from '../shared/lib/rulesCatalog';
 import { getEffectiveAbilityRank } from '../shared/lib/abilityRanks';
+import { campaignInitialPP } from '../shared/lib/campaign';
 
 // ── Types for pre-localized labels ──
 
@@ -49,6 +50,7 @@ export interface ExportLabels {
   sheetEquipment: string;
   sheetOffense: string;
   sheetNotes: string;
+  campaign?: { sheet: string; initialPP: string; initialPL: string; active: string; date: string; session: string; type: string; award: string; adjustment: string; amount: string; running: string; available: string };
   heroName: string;
   player: string;
   identity: string;
@@ -223,8 +225,8 @@ export async function generateExcel(
   }
 
   // ── 9. PP LOG SHEET (Campaign Mode only) ──
-  if (character.campaignMode && character.ppLog && character.ppLog.length > 0) {
-    buildPPLogSheet(wb, character);
+  if (character.campaignMode || character.campaign || character.ppLog?.length) {
+    buildCampaignSheet(wb, character, labels, pointSummary);
   }
 
   // ── Download ──
@@ -858,37 +860,31 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
   ws.getColumn(3).width = 60; // Description/Notes
 }
 
-function buildPPLogSheet(wb: ExcelJS.Workbook, char: ICharacter) {
-  const ws = wb.addWorksheet('PP Log');
-
-  const header = ws.getRow(1);
-  header.values = ['Date', 'Description', 'Amount', 'Running Total'];
-  styleHeaderRow(header, 4);
-
-  let runningTotal = char.header.powerLevel * 15;
-  
-  (char.ppLog ?? []).forEach((entry, i) => {
-    runningTotal += entry.amount;
-    const row = ws.getRow(i + 2);
-    row.getCell(1).value = entry.date || '—';
-    row.getCell(2).value = entry.note || '—';
-    row.getCell(3).value = entry.amount;
-    row.getCell(3).numFmt = '+0;-0;0';
-    row.getCell(3).font = { 
-      bold: true,
-      color: { argb: entry.amount >= 0 ? COLORS.costPositive : COLORS.costNegative }
-    };
-    row.getCell(4).value = runningTotal;
-    row.getCell(4).font = { bold: true };
-    
-    if (i % 2 === 1) {
-      for (let c = 1; c <= 4; c++) {
-        row.getCell(c).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: COLORS.altRowFill } };
-      }
-    }
-  });
-
+export function buildCampaignSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, summary: CharacterPointSummary) {
+  const l = labels.campaign ?? { sheet: 'Campaign', initialPP: 'Starting PP', initialPL: 'Starting PL', active: 'Campaign active', date: 'Date', session: 'Session', type: 'Type', award: 'Award', adjustment: 'Adjustment', amount: 'Amount', running: 'Campaign budget after entry', available: 'Available PP' };
+  const ws = wb.addWorksheet(l.sheet);
+  ws.addRow([l.active, char.campaignMode ? labels.yes : labels.no]);
+  ws.addRow([l.initialPL, char.campaign?.initialPowerLevel ?? char.header.powerLevel]);
+  ws.addRow([labels.powerLevel, char.header.powerLevel]);
+  ws.addRow([l.initialPP, campaignInitialPP(char)]);
+  ws.addRow([l.available, summary.totalAvailable]);
+  ws.addRow([labels.totalSpent, summary.totalSpent]);
+  ws.addRow([labels.remaining, summary.remaining]);
+  ws.addRow([]);
+  const header = ws.addRow([l.date, l.session, l.type, labels.colNotes, l.amount, l.running]);
+  styleHeaderRow(header, 6);
+  let running = campaignInitialPP(char);
+  for (const entry of char.ppLog ?? []) {
+    running += entry.amount;
+    const row = ws.addRow([entry.date, entry.session ?? '', entry.kind ? l[entry.kind] : '', entry.note, entry.amount, running]);
+    // General formatting preserves historical fractions without rounding display.
+    row.getCell(5).numFmt = 'General';
+    row.getCell(5).font = { bold: true, color: { argb: entry.amount < 0 ? COLORS.costNegative : COLORS.costPositive } };
+    row.getCell(4).alignment = { wrapText: true, vertical: 'top' };
+  }
+  ws.views = [{ state: 'frozen', ySplit: header.number }];
   autoWidth(ws);
+  ws.getColumn(4).width = 50;
 }
 
 // ── Helper: format modifier list as text ──

@@ -105,6 +105,8 @@ export interface PDFCustomizationOptions {
   includeNotes: boolean;
   includeComplications: boolean;
   includeEquipment: boolean;
+  /** Include the campaign ledger only on explicit request. */
+  includeCampaignHistory?: boolean;
   /** Legacy preference, replaced in the panel by contentMode. */
   hideEmptySections?: boolean;
 }
@@ -167,6 +169,7 @@ export const DEFAULT_CUSTOMIZATION: PDFCustomizationOptions = {
   includeNotes: true,
   includeComplications: true,
   includeEquipment: true,
+  includeCampaignHistory: false,
   hideEmptySections: true,
 };
 

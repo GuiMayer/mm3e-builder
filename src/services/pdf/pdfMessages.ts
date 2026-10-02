@@ -2,6 +2,8 @@ import type { IPowerEffect, IModifierDef } from '../../entities/types';
 export type PDFLabels = (label: string) => string;
 export const englishPDFLabels: PDFLabels = label => label;
 const portuguese: Record<string, string> = {
+  'PP after entry':'PP após lançamento',
+  'Campaign History':'Histórico de campanha','Campaign active':'Campanha ativa','Campaign disabled':'Campanha desativada','Starting PP':'PP iniciais','Available PP':'PP disponíveis','Date':'Data','Session':'Sessão','Amount':'Quantidade','Campaign budget after entry':'Orçamento de campanha após lançamento',
   'Name':'Nome','Identity Type':'Tipo de identidade','Description':'Descrição','Modifiers':'Modificadores','Descriptors':'Descritores','Cost':'Custo','Total':'Total','Other':'Outros',
   'Abilities':'Atributos','Defenses':'Defesas','Skills':'Perícias','Advantages':'Vantagens','Powers':'Poderes','Targeted Effects':'Ataques e efeitos direcionados','Devices & Resources':'Dispositivos e recursos','Complications':'Complicações','Notes':'Notas',
   'Strength':'Força','Stamina':'Vigor','Agility':'Agilidade','Dexterity':'Destreza','Fighting':'Luta','Intellect':'Intelecto','Awareness':'Prontidão','Presence':'Presença',

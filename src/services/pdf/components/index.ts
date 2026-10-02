@@ -14,4 +14,5 @@ export * from './PowersSection';
 export * from './EquipmentSection';
 export * from './ComplicationsSection';
 export * from './NotesSection';
+export * from './CampaignSection';
 export * from './PowerPointTotalsSection';

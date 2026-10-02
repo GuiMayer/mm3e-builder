@@ -42,6 +42,7 @@ export function loadPDFCustomizationOptions(): PDFCustomizationOptions {
         includeNotes: parsed.includeNotes,
         includeComplications: parsed.includeComplications,
         includeEquipment: parsed.includeEquipment,
+        includeCampaignHistory: parsed.includeCampaignHistory === true,
         hideEmptySections: parsed.hideEmptySections !== false,
       };
     }
