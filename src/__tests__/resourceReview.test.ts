@@ -39,4 +39,10 @@ describe('Reviewed Resource migration', () => {
     expect(parseResourceAppendix({ version: 2, items: [modern] })).toEqual([modern]);
     expect(needsResourceReview(modern)).toBe(false);
   });
+  it('never replaces explicit movement or its notes because an imported review flag is stale', () => {
+    const movement = { ...power, notes: 'Configured movement notes', components: [{ ...power.components[0], effectId: 'flight', ranks: 7 }] };
+    const vehicle: IVehicleResource = { ...base, type: 'vehicle', size: 'medium', strength: 0, speed: 7, defense: 0, toughness: 5, features: [], systems: [power], movement, movementReviewRequired: true };
+    expect(needsResourceReview(vehicle)).toBe(false);
+    expect(applyResourceReview([vehicle], { [base.id]: { movementEffect: 'speed' } })).toEqual([vehicle]);
+  });
 });

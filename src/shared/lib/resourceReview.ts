@@ -9,7 +9,7 @@ export interface ResourceReviewChoice {
 }
 
 export function needsResourceReview(resource: IResource): boolean {
-  if (resource.type === 'vehicle') return !!resource.movementReviewRequired;
+  if (resource.type === 'vehicle') return !!resource.movementReviewRequired && resource.movement === undefined;
   if (resource.type === 'headquarters') return resource.powerLevel === undefined;
   return !!resource.costReviewRequired;
 }
