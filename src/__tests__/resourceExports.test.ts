@@ -1,0 +1,55 @@
+import { createInstance } from 'i18next';
+import ExcelJS from 'exceljs';
+import { describe, expect, it } from 'vitest';
+import en from '../locales/en/translation.json';
+import pt from '../locales/pt-BR/translation.json';
+import { createDefaultCharacter } from '../entities/characterDefaults';
+import type { ICharacterPower, IResource, IVehicleResource } from '../entities/types';
+import { POWER_DEFS, MODIFIER_DEFS } from '../entities/gameDataLoaders';
+import { calculateCharacterPointSummary } from '../shared/lib/pointSummary';
+import { buildEquipmentSheet } from '../services/excelGenerator';
+import { buildExcelGameDataRefs, buildExcelLabels } from '../services/excelExportConfig';
+import { renderEquipmentSection } from '../services/pdf/components/EquipmentSection';
+import { createPDFLabels, localizePDFPowers, localizePDFModifiers } from '../services/pdf/pdfMessages';
+import { parseDraftBundle, serializeDraftBundle } from '../services/draftTransfer';
+
+const base = { name: 'Resource', notes: 'Keep <notes>', createdAt: 'old', updatedAt: 'old' };
+const power: ICharacterPower = { id: 'p', name: 'Ray', notes: 'Keep power', alternateEffects: [], removable: 'removable', components: [{ id: 'c', effectId: 'damage', ranks: 5, modifiers: [{ modifierId: 'increased_range', ranks: 1 }] }] };
+const device: IResource = { ...base, id: '00000000-0000-4000-8000-000000000001', name: 'Device', type: 'gadget', costMode: 'device', power };
+const vehicle: IVehicleResource = { ...base, id: '00000000-0000-4000-8000-000000000002', name: 'Aircraft', type: 'vehicle', size: 'huge', strength: 8, defense: -2, toughness: 9, speed: 7, features: [{ id: 'f', name: 'Seat', ranks: 2, notes: 'Keep seat' }], systems: [], movement: { ...power, name: 'Flight mode', removable: undefined, components: [{ ...power.components[0], effectId: 'flight', ranks: 7, modifiers: [] }] } };
+const alternate: IResource = { ...vehicle, id: '00000000-0000-4000-8000-000000000003', name: 'Alternate car', size: 'medium', strength: 0, defense: 0, toughness: 5, speed: 4, movement: undefined, features: [] };
+const hq: IResource = { ...base, id: '00000000-0000-4000-8000-000000000004', type: 'headquarters', name: 'Base', size: 'awesome', toughness: 6, powerLevel: 12, features: [], effects: [power], effectSettings: { p: { kind: 'defense-system', target: 'occupants' } } };
+const resources = [device, vehicle, alternate, hq];
+const character = createDefaultCharacter({ advantages: [{ advantageId: 'equipment', ranks: 5 }], resourceLinks: resources.map(resource => ({ id: resource.id, resourceId: resource.id, isFree: false, ...(resource.type === 'vehicle' ? { alternateSetId: 'garage' } : resource.type === 'headquarters' ? { contributionEP: 3, alternateSetId: 'garage' } : {}) })) });
+describe('Resource export agreement and roundtrip', () => {
+  it('preserves character identities, links, optional contexts and notes through draft transfer', () => {
+    const text = serializeDraftBundle([{ id: 'tab', character, label: 'Test', lastModified: 0, isDirty: false }], 'tab', resources);
+    const result = parseDraftBundle(text);
+    expect(result.resources).toEqual(resources);
+    expect(result.tabs[0].character.resourceLinks).toEqual(character.resourceLinks);
+    expect(result.tabs[0].character.powers).toEqual([]);
+  });
+  it.each(['en', 'pt-BR'])('exports the same allocated PP/EP costs and complete localized descriptions in PDF and Excel (%s)', async language => {
+    const before = JSON.stringify({ character, resources });
+    const summary = calculateCharacterPointSummary(character, resources, POWER_DEFS, MODIFIER_DEFS);
+    expect(summary.resourcePPUsed).toBe(8); expect(summary.totalEPUsed).toBe(22); expect(summary.totalSpent).toBe(13);
+    const html = renderEquipmentSection({ character, resources, powerDefs: localizePDFPowers(POWER_DEFS, language), modifierDefs: localizePDFModifiers(MODIFIER_DEFS, language), labels: createPDFLabels(language) });
+    expect(html).toContain('8 PP · 22 EP'); expect(html).toContain('18 EP'); expect(html).toContain('1 EP'); expect(html).toContain('3 EP');
+    expect(html).toContain('Keep seat'); expect(html).toContain('Keep &lt;notes&gt;');
+    expect(html).toContain(language === 'en' ? 'Movement: Flight mode' : 'Movimento: Flight mode');
+    expect(html).toContain(language === 'en' ? 'Flight 7' : 'Voo 7');
+    expect(html).toContain(language === 'en' ? 'Defense System (Occupants)' : 'Sistema de defesa (Ocupantes)');
+    const instance = createInstance(); await instance.init({ lng: language, resources: { en: { translation: en }, 'pt-BR': { translation: pt } } });
+    const labels = buildExcelLabels(instance.t.bind(instance));
+    const wb = new ExcelJS.Workbook(); buildEquipmentSheet(wb, character, labels, resources, buildExcelGameDataRefs(), language);
+    const restored = new ExcelJS.Workbook(); await restored.xlsx.load(await wb.xlsx.writeBuffer());
+    const rows = restored.getWorksheet(labels.sheetEquipment)!.getSheetValues().flatMap(row => Array.isArray(row) ? [row] : []);
+    expect(rows.find(row => row[1] === 'Device')![2]).toBe('8 PP');
+    expect(rows.find(row => row[1] === 'Aircraft')![2]).toBe('18 EP');
+    expect(rows.find(row => row[1] === 'Alternate car')![2]).toBe(language === 'en' ? '1 EP (Alternate)' : '1 EP (Alternativo)');
+    expect(rows.find(row => row[1] === 'Base')![2]).toBe(language === 'en' ? '3 EP (Shared)' : '3 EP (Compartilhado)');
+    expect(rows.find(row => row[1] === 'Aircraft')![3]).toContain('Keep seat');
+    expect(rows.find(row => row[1] === 'Base')![3]).toContain(language === 'en' ? 'PL 12' : 'NP 12');
+    expect(JSON.stringify({ character, resources })).toBe(before);
+  });
+});

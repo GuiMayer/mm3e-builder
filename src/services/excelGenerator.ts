@@ -31,9 +31,11 @@ import {
 } from '../shared/lib/pointSummary';
 import { buildTargetedEffectProfiles, type IOffenseEntry } from '../shared/lib/offenseSummary';
 import { downloadBlob, sanitizeFileName } from './downloadHelper';
-import { getResourceEPCost } from '../shared/lib/resourceCalculations';
+import { getLinkedResourceCharges } from '../shared/lib/resourceCalculations';
 import { resolveModifierDefinition } from '../shared/lib/rulesCatalog';
 import { getEffectiveAbilityRank } from '../shared/lib/abilityRanks';
+import { describeResource } from './resourceDescription';
+import { createPDFLabels, localizePDFPowers, localizePDFModifiers } from './pdf/pdfMessages';
 import { campaignInitialPP } from '../shared/lib/campaign';
 
 // ── Types for pre-localized labels ──
@@ -204,7 +206,7 @@ export async function generateExcel(
 
   // ??? 8. EQUIPMENT SHEET ???
   if ((character.equipment && character.equipment.length > 0) || character.equipmentNotes?.trim() || (character.resourceLinks?.length ?? 0) > 0) {
-    buildEquipmentSheet(wb, character, labels, resources, gameData);
+    buildEquipmentSheet(wb, character, labels, resources, gameData, language);
   }
 
   // ?? 9. TARGETED EFFECTS SHEET ??
@@ -766,7 +768,7 @@ function buildNotesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportL
   notesCell.font = { size: 11 };
 }
 
-function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, resources: IResource[], gameData: GameDataRefs) {
+export function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, resources: IResource[], gameData: GameDataRefs, language: string) {
   const ws = wb.addWorksheet(labels.sheetEquipment);
 
   // Title row
@@ -819,18 +821,18 @@ function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
     currentRow++; // Empty row
   }
 
-  const linkedResources = (char.resourceLinks ?? []).flatMap((link) => {
-    const resource = resources.find((item) => item.id === link.resourceId);
-    return resource ? [{ resource, isFree: link.isFree, contributionEP: link.contributionEP }] : [];
-  });
+  const linkedResources = getLinkedResourceCharges(char, resources, gameData.powerDefs, gameData.modifierDefs);
   if (linkedResources.length > 0) {
+    const l = createPDFLabels(language);
+    const powers = localizePDFPowers(gameData.powerDefs, language), modifiers = localizePDFModifiers(gameData.modifierDefs, language);
     const headerRow = ws.getRow(currentRow++);
     headerRow.values = [labels.colName, labels.colCost, labels.colNotes];
     headerRow.eachCell((cell) => { cell.font = { bold: true, color: { argb: 'FFFFFFFF' } }; cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: COLORS.headerFill } }; });
-    for (const { resource, isFree, contributionEP } of linkedResources) {
-      const detail = resource.type === 'vehicle' ? `${resource.type}: ${resource.size}, STR ${resource.strength}, Speed ${resource.speed}, Defense ${resource.defense}, Toughness ${resource.toughness}` : resource.type === 'headquarters' ? `${resource.type}: ${resource.size}, Toughness ${resource.toughness}` : `${resource.type}: ${resource.power.components.map((component) => component.effectId).filter(Boolean).join(', ')}`;
+    for (const { resource, link, charged, unit, alternate, total } of linkedResources) {
+      const detail = describeResource(resource, powers, modifiers, l).join(' · ');
+      const ownership = link.isFree ? l('Free') : alternate ? l('Alternate') : unit === 'EP' && link.contributionEP !== undefined ? l('Shared') : '';
       const row = ws.getRow(currentRow++);
-      row.values = [resource.name || 'Unnamed resource', `${isFree ? 0 : contributionEP ?? getResourceEPCost(resource, gameData.powerDefs, gameData.modifierDefs, getCharacterStrength(char))} EP${isFree ? ' (Free)' : ''}`, `${detail}${resource.notes ? `\n${resource.notes}` : ''}`];
+      row.values = [resource.name || l('Unnamed Resource'), `${charged} ${unit}${ownership ? ` (${ownership})` : ''}`, [`${l('Total')}: ${total} ${unit}`, detail, resource.notes].filter(Boolean).join('\n')];
       row.getCell(1).font = { bold: true }; row.getCell(2).alignment = { horizontal: 'center' }; row.getCell(3).alignment = { wrapText: true };
     }
     currentRow++;
