@@ -577,6 +577,7 @@
   "targeted.noAttackRoll": "Sem rolagem de ataque",
   "targeted.fact.roll": "Rolagem",
   "targeted.fact.resistance": "Resistência",
+  "targeted.dc": "CD",
   "targeted.tag.attack": "Ataque",
   "targeted.tag.resistance": "Resistência",
   "targeted.tag.area": "Área",

@@ -577,6 +577,7 @@
   "targeted.noAttackRoll": "No attack roll",
   "targeted.fact.roll": "Roll",
   "targeted.fact.resistance": "Resistance",
+  "targeted.dc": "DC",
   "targeted.tag.attack": "Attack",
   "targeted.tag.resistance": "Resistance",
   "targeted.tag.area": "Area",

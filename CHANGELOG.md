@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Translate effect names in Targeted Effects using the active-language catalog, including Affliction, power components, alternate effects and equipment. Keep custom names and manually typed effect text unchanged.
+- Translate the Targeted Effects resistance column and difficulty abbreviation at display time (e.g. Toughness DC 16 → Resistência CD 16), retaining the original numerical DCs and calculation profiles.
 
 The retrospective commit packages and preserved historical tags are documented
 in [Version history](docs/version-history.md). New release dates identify the

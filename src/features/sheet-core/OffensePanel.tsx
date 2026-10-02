@@ -8,6 +8,7 @@ import type { IManualOffenseRow } from '../../entities/types';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { createId } from '../../shared/lib/identity';
 import { RollButton } from '../dice-roller/RollButton';
+import { formatResistanceLabel } from '../../shared/lib/offenseDisplay';
 
 type EffectFilter = 'all' | 'attack' | 'resistance' | 'area' | 'affects-others';
 
@@ -256,7 +257,7 @@ function EffectProfile({ profile, t }: { profile: IOffenseEntry; t: (key: string
       </div>
       <div className="targeted-profile-fact">
         <span className="targeted-profile-fact-label">{t('targeted.fact.resistance')}</span>
-        {profile.resistance ?? '—'}
+        {formatResistanceLabel(profile.resistance, t)}
       </div>
       <div className="targeted-profile-tags">
         {profile.tags.map((tag) => <span key={tag} className={`targeted-tag targeted-tag--${tag}`}>{t(`targeted.tag.${tag}`)}</span>)}
