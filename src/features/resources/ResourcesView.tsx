@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Archive, Edit3, Plus, Trash2, Wand2 } from 'lucide-react';
+import { Archive, Copy, Edit3, Plus, Trash2, Wand2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterPower, IResource, IResourceFeature, IVehicleResource, IHeadquartersResource, ResourceType } from '../../entities/types';
 import { useResourcesStore } from '../../store/resourcesStore';
@@ -16,6 +16,7 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 import { createId } from '../../shared/lib/identity';
 import { resolveResourceEditTarget, type ResourceEditTarget, type ResourcePowerTarget } from '../../shared/lib/resourcePowers';
 import { ResourcePowerSummary } from './ResourcePowerSummary';
+import { duplicateResource, getResourceCopyName } from '../../shared/lib/resourceDuplication';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { ResourceReviewDialog } from './ResourceReviewDialog';
@@ -65,6 +66,14 @@ export function ResourcesView({ initialEditTarget }: { initialEditTarget?: Resou
       useResourcesStore.getState().removeResource(resource.id);
     }
   }
+  function duplicate(resourceId: string) {
+    const state = useResourcesStore.getState();
+    const original = state.getResource(resourceId);
+    if (!original) return;
+    const name = getResourceCopyName(t('resources.copyName', { name: original.name || t('resources.unnamed') }), state.resources);
+    const copy = duplicateResource(original, name);
+    if (state.addResource(copy)) setEditing({ resource: copy, isNew: false });
+  }
   function savePower(power: ICharacterPower) {
     if (!powerTarget) return;
     const state = useResourcesStore.getState(), current = state.getResource(powerTarget.resourceId);
@@ -89,7 +98,7 @@ export function ResourcesView({ initialEditTarget }: { initialEditTarget?: Resou
       const cost = getResourceCost(resource, undefined, undefined, getCharacterStrength(character));
       const powers = resource.type === 'vehicle' ? resource.systems : resource.type === 'headquarters' ? resource.effects : [];
       return <article className="resource-card" key={resource.id}>
-        <div className="resource-card__top"><span>{t(`resources.type.${resource.type}`)}</span><div><Tooltip content={t('resources.editInLibrary')}><button onClick={() => setEditing({ resource, isNew: false })} aria-label={t('common.edit')}><Edit3 size={16}/></button></Tooltip><button onClick={() => void remove(resource)} aria-label={t('common.delete')}><Trash2 size={16}/></button></div></div>
+        <div className="resource-card__top"><span>{t(`resources.type.${resource.type}`)}</span><div><Tooltip content={t('resources.duplicate')}><button onClick={() => duplicate(resource.id)} aria-label={t('resources.duplicate')}><Copy size={16}/></button></Tooltip><Tooltip content={t('resources.editInLibrary')}><button onClick={() => setEditing({ resource, isNew: false })} aria-label={t('common.edit')}><Edit3 size={16}/></button></Tooltip><button onClick={() => void remove(resource)} aria-label={t('common.delete')}><Trash2 size={16}/></button></div></div>
         <h2>{resource.name || t('resources.unnamed')}</h2>{resource.notes && <p>{resource.notes}</p>}
         {resource.type === 'vehicle' && <p>{t(`resources.size.${resource.size}`)} · {t('resources.strengthShort')} {resource.strength} · {t('resources.defense')} {resource.defense} · {t('resources.toughness')} {resource.toughness}</p>}
         {resource.type === 'headquarters' && <p>{t(`resources.size.${resource.size}`)} · {t('resources.toughness')} {resource.toughness} · {t('resources.hq.level')} {resource.powerLevel ?? 10}</p>}

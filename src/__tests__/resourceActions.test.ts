@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { ICharacterPower, IHeadquartersResource, IResource, IVehicleResource } from '../entities/types';
 import { createDefaultCharacter } from '../entities/characterDefaults';
+import { duplicateResource, getResourceCopyName } from '../shared/lib/resourceDuplication';
 import { getResourcePowers, resolveResourceEditTarget } from '../shared/lib/resourcePowers';
-import { getLinkedResourceCharges } from '../shared/lib/resourceCalculations';
+import { getLinkedResourceCharges, getResourceCost } from '../shared/lib/resourceCalculations';
 import { buildPowerReferences } from '../features/sheet-core/powerReference';
 import { MODIFIER_DEFS, POWER_DEFS } from '../entities/gameDataLoaders';
 
@@ -42,5 +43,55 @@ describe('Resource quick references and edit destinations', () => {
     expect(vehicle).toEqual(original);
     expect(character).toEqual(sheet);
     expect(getLinkedResourceCharges(character, [vehicle])).toEqual(charges);
+  });
+});
+
+describe('Independent resource duplication', () => {
+  it.each([device, vehicle, hq])('preserves content and costs of $type while remapping identities', resource => {
+    const original = structuredClone(resource);
+    const copy = duplicateResource(resource, 'Copy');
+    expect(copy.id).not.toBe(resource.id);
+    expect(copy.name).toBe('Copy');
+    expect(copy.notes).toBe(resource.notes);
+    expect(copy.createdAt).not.toBe(resource.createdAt);
+    const entries = getResourcePowers(resource), copies = getResourcePowers(copy);
+    copies.forEach(({ power: cloned }, index) => {
+      const old = entries[index].power;
+      expect(cloned.id).not.toBe(old.id);
+      expect(cloned.components[0].id).not.toBe(old.components[0].id);
+      expect(cloned.alternateEffects[0].id).not.toBe(old.alternateEffects[0].id);
+      expect(cloned.alternateEffects[0].components[0].id).not.toBe(old.alternateEffects[0].components[0].id);
+      expect(cloned.alternateEffects[0].components[0].senseTraits).toEqual(old.alternateEffects[0].components[0].senseTraits);
+      expect(cloned.components[0].modifiers).toEqual(old.components[0].modifiers);
+      cloned.components[0].modifiers[0].ranks = 99;
+      expect(old.components[0].modifiers[0].ranks).toBe(1);
+      cloned.components[0].modifiers[0].ranks = 1;
+    });
+    expect(getResourceCost(copy)).toEqual(getResourceCost(resource));
+    if (copy.type === 'vehicle' || copy.type === 'headquarters') {
+      expect(copy.features[0].id).not.toBe(vehicle.features[0].id);
+      expect(copy.features[0].notes).toBe('Seats notes');
+    }
+    expect(resource).toEqual(original);
+  });
+  it('remaps HQ settings to the new effect and preserves extension and unassigned fields', () => {
+    const original = { ...hq, extension: { nested: ['keep'] }, effectSettings: { ...hq.effectSettings, power: { ...hq.effectSettings!.power, custom: true } } };
+    const copy = duplicateResource(original, 'Copy') as IHeadquartersResource;
+    expect(copy.effectSettings?.[copy.effects[0].id]).toEqual(original.effectSettings.power);
+    expect(copy.effectSettings?.power).toBeUndefined();
+    expect(copy.effectSettings?.orphan).toEqual(hq.effectSettings?.orphan);
+    expect(copy).toMatchObject({ extension: { nested: ['keep'] } });
+    expect(original.effectSettings.power).toMatchObject({ custom: true });
+  });
+  it('does not change existing links or charges when an unlinked copy joins the library', () => {
+    const character = createDefaultCharacter({ resourceLinks: [{ id: 'link', resourceId: device.id, isFree: false, alternateSetId: 'set' }] });
+    const original = structuredClone(character);
+    const costs = getLinkedResourceCharges(character, [device]);
+    const copy = duplicateResource(device, 'Copy');
+    expect(getLinkedResourceCharges(character, [device, copy])).toEqual(costs);
+    expect(character).toEqual(original);
+  });
+  it('generates a unique localized copy name without overwriting same-name items', () => {
+    expect(getResourceCopyName('Resource (cópia)', [device, { ...device, name: 'Resource (cópia)' }, { ...device, name: 'resource (CÓPIA) 2' }])).toBe('Resource (cópia) 3');
   });
 });

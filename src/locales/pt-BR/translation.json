@@ -841,6 +841,8 @@
   "resources.editInLibrary": "Editar recurso na biblioteca",
   "resources.editResourceNamed": "Editar recurso: {{name}}",
   "resources.removePowerNamed": "Remover poder: {{name}}",
+  "resources.duplicate": "Duplicar recurso",
+  "resources.copyName": "{{name}} (cópia)",
   "resources.editEffects": "Editar efeitos",
   "resources.systems": "Sistemas",
   "resources.effects": "Efeitos",
