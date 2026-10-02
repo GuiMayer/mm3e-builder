@@ -17,6 +17,22 @@ completion commit, not a verified deployment date.
 
 ---
 
+## [1.16.0] - 2026-10-02
+
+### Added
+- Read-only rules dialogs directly on the sheet for powers, component effects, modifiers, whole-power Activation/Removable and alternate effects. Include localized descriptions, relevant catalog metadata, selected options, notes and descriptors; resolve effect-specific modifiers in their own effect's context.
+
+### Changed
+- Position shared tooltips with Floating UI, outside clipped panels and within viewport bounds. Long descriptions use a wider layout, readable line spacing and bounded scrolling; keyboard focus and Escape are supported.
+- Use wider, responsive reference dialogs for skills, advantages, effects and modifiers in the sheet and Power Builder. Conditions and derived defense explanations use the shared tooltip/dialog presentation.
+- Keep character data, schemas, calculation revision, rule calculations, modifier restrictions and warning messages unchanged. Consultations do not edit the sheet or catalog.
+
+### Quality
+- Four new tests cover modifier source resolution, localization fallbacks, alternate effects, missing catalog entries and preservation of input data.
+- Verified with 58 test files and 770 passing tests, strict type checking, lint, production build and static-asset verification. Browser checks covered keyboard, descriptions and mobile widths of 320/390px without horizontal overflow.
+
+---
+
 ## [1.15.0] - 2026-10-02
 
 ### Added
@@ -551,6 +567,7 @@ completion commit, not a verified deployment date.
 
 | Version | Date | Key Feature | Schema Version |
 |---------|------|-------------|----------------|
+| 1.16.0 | 2026-10-02 | Readable tooltips and direct power rules descriptions | 2.0.0 |
 | 1.15.0 | 2026-10-02 | Custom themes and modern color picker | 2.0.0 |
 | 1.14.0 | 2026-10-02 | Contextual dice rolls and draggable session window | 2.0.0 |
 | 1.13.1 | 2026-10-02 | Player-controlled generic Extras and Flaws | 2.0.0 |
@@ -621,7 +638,8 @@ If you encounter issues, please report at: https://github.com/GuiMayer/mm3e-buil
 
 ---
 
-[Unreleased]: https://github.com/GuiMayer/mm3e-builder/compare/v1.15.0...HEAD
+[Unreleased]: https://github.com/GuiMayer/mm3e-builder/compare/v1.16.0...HEAD
+[1.16.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.15.0...v1.16.0
 [1.15.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.13.1...v1.14.0
 [1.13.1]: https://github.com/GuiMayer/mm3e-builder/compare/v1.13.0...v1.13.1

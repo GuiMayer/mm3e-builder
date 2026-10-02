@@ -44,7 +44,7 @@ como registros históricos. Nenhuma dessas tags foi movida ou recriada.
 As tags `desktop-stable`, `STABLE_WITHOUT_AUTO_SAVE` e `stable-bundle-warning`
 são checkpoints de desenvolvimento, não versões de produto.
 
-## Pacotes consolidados retroativamente
+## Pacotes versionados
 
 | Versão | Data de conclusão | Intervalo de commits | Quantidade | Pacote |
 |---|---|---|---:|---|
@@ -55,6 +55,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.13.1 | 2026-10-02 | `2d5d779..abae384` | 2 | Extras e flaws genéricos a critério do jogador |
 | v1.14.0 | 2026-10-02 | `abae384..0344af3` | 6 | Rolagens e janela de dados |
 | v1.15.0 | 2026-10-02 | `0344af3..v1.15.0` | 9 | Temas personalizados e consolidação das versões |
+| v1.16.0 | 2026-10-02 | `v1.15.0..v1.16.0` | 3 | Tooltips e consulta direta das regras de poderes |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -132,13 +133,25 @@ final está descrito nas notas existentes da v1.11.0.
 - Commit de consolidação: changelog agrupado, catálogo de tags, README e
   metadados da versão atual alinhados em 1.15.0.
 
+### v1.16.0 — Tooltips e consulta de regras
+
+- `0e63c1c`: tooltips posicionadas com Floating UI, largura legível, foco por
+  teclado e caixas de referência responsivas para as descrições existentes.
+- `d0c823c`: leitura de poderes, efeitos, modificadores e alternativos na ficha,
+  com resolução contextual dos modificadores específicos e testes de preservação.
+- Commit de versão: documentação, validação completa e metadados em 1.16.0.
+
+Esta versão foi implementada como um novo pacote, após a consolidação retroativa.
+As consultas são somente para leitura: não alteram fichas, custos, catálogos,
+restrições de modificadores nem as mensagens de aviso.
+
 ## Compatibilidade e publicação
 
 Criar tags não altera commits, fichas, schemas ou migrações. As correções de
 regras em v1.12.0/v1.12.1 podem mudar totais recalculados; isso é diferente de
 alterar o formato dos arquivos. Rolagens e temas não entram nas fichas exportadas.
 
-O alinhamento de `package.json` em 1.15.0 usa o mecanismo já existente de aviso
+O alinhamento de `package.json` em 1.16.0 usa o mecanismo já existente de aviso
 e backup antes de carregar um rascunho de outra versão. Não foi criada uma
 migração nova. A revisão de cálculo permanece 5; o schema de personagem permanece 2.0.0.
 

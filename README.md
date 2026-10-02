@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.15.0
+# Mutants & Masterminds 3e Character Builder — v1.16.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -78,6 +78,7 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 
 #### 📋 Powers List (Sheet View)
 - Cards display each power with component effects, applied modifier tags, and individual AE tags showing "↪ [Name] ⚡" for dynamic slots.
+- Hover or focus names/tags for readable tooltips; click powers, effects, modifiers or alternate effects for a read-only rules dialog, without opening the Builder. Effect-specific modifiers resolve in their own effect's context.
 - Edit button re-opens the Power Builder with the existing power pre-loaded.
 
 #### 🎯 Targeted Effects
@@ -141,7 +142,8 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Versioned updates through v1.15.0
+#### Versioned updates through v1.16.0
+- **v1.16.0**: Wider, viewport-aware tooltips and direct rules descriptions for powers/modifiers on the sheet, with keyboard and mobile access.
 - **v1.15.0**: Custom interface themes, local palettes and modern HEX/RGB/HSL color selection.
 - **v1.14.0**: Manual/contextual d20 rolls, configurable session history and draggable dice window.
 - **v1.13.0 / v1.13.1**: Compact A4 PDFs, selectable zoom preview, printable empty fields and player-controlled generic Extras/Flaws.
@@ -312,6 +314,7 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 
 #### 📋 Lista de Poderes (Visão de Ficha)
 - Cards exibem cada poder com efeitos dos componentes, tags dos modificadores aplicados e tags individuais de AE mostrando "↪ [Nome] ⚡" para slots dinâmicos.
+- Passe o mouse ou use o foco do teclado para consultar tooltips legíveis; clique em poderes, efeitos, modificadores ou alternativos para abrir uma caixa de regras somente para leitura. Modificadores específicos usam o contexto do próprio efeito.
 - Botão de edição reabre o Power Builder com o poder existente pré-carregado.
 
 #### 🎯 Efeitos Direcionados
@@ -375,7 +378,8 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Atualizações versionadas até a v1.15.0
+#### Atualizações versionadas até a v1.16.0
+- **v1.16.0**: Tooltips mais largas e ajustadas à tela, descrições de poderes/modificadores diretamente na ficha e acesso por teclado e mobile.
 - **v1.15.0**: Temas personalizados, paletas locais e seletor moderno HEX/RGB/HSL.
 - **v1.14.0**: Rolagens d20 manuais/contextuais, histórico configurável da sessão e janela de dados arrastável.
 - **v1.13.0 / v1.13.1**: PDFs A4 compactos, prévia selecionável com zoom, campos vazios para impressão e Extras/Flaws genéricos a critério do jogador.
