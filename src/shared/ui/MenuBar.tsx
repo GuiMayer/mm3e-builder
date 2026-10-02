@@ -460,7 +460,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
           border-bottom: 1px solid var(--c-border);
           position: sticky;
           top: 0;
-          z-index: 100;
+          z-index: 200;
           backdrop-filter: blur(12px);
         }
         .menubar-left { display: contents; }
