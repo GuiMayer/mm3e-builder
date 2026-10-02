@@ -4,7 +4,10 @@
 
 The roller starts hidden. On desktop, a semicircular d20 button on the right
 edge opens a floating panel. At widths up to 768 px, a floating button opens
-a bottom drawer. Results appear immediately, without dice animation.
+a bottom drawer. The opener disappears while the drawer is open. The panel
+slides in from the right on desktop and from below on mobile, reversing that
+movement when closed; reduced-motion preferences disable the transition.
+Results appear immediately, without dice animation.
 
 The manual form rolls **d20 + an integer bonus**, initially 0. Negative bonuses
 are supported. A manual result contains only the formula and result: it has no

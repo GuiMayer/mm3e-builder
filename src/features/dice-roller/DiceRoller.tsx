@@ -32,13 +32,18 @@ export function DiceRoller() {
   const [limitInvalid, setLimitInvalid] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const wasOpenRef = useRef(false);
   const panelId = useId();
   const titleId = useId();
   const limitHelpId = useId();
   const bonus = Number(bonusText);
   const bonusValid = bonusText.trim() !== '' && Number.isSafeInteger(bonus) && Number.isSafeInteger(bonus + 20);
 
-  useEffect(() => { if (isOpen) inputRef.current?.focus(); }, [isOpen]);
+  useEffect(() => {
+    if (isOpen) inputRef.current?.focus({ preventScroll: true });
+    else if (wasOpenRef.current) triggerRef.current?.focus({ preventScroll: true });
+    wasOpenRef.current = isOpen;
+  }, [isOpen]);
   useEffect(() => {
     if (!notice) return;
     const timer = setTimeout(() => useRollSession.getState().dismissNotice(notice.id), 5000);
@@ -47,7 +52,6 @@ export function DiceRoller() {
 
   function close() {
     setOpen(false);
-    triggerRef.current?.focus();
   }
 
   function applyLimit() {
@@ -60,8 +64,8 @@ export function DiceRoller() {
 
   const latest = history[0];
   return <>
-    <button ref={triggerRef} type="button" className="dice-toggle" aria-label={t(isOpen ? 'dice.close' : 'dice.open')} title={t(isOpen ? 'dice.close' : 'dice.open')} aria-expanded={isOpen} aria-controls={panelId} onClick={() => isOpen ? close() : setOpen(true)}><D20Icon size={24} /></button>
-    <aside id={panelId} className="dice-panel" hidden={!isOpen} aria-labelledby={titleId} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } }}>
+    <button ref={triggerRef} type="button" className="dice-toggle" hidden={isOpen} aria-label={t('dice.open')} title={t('dice.open')} aria-expanded={isOpen} aria-controls={panelId} onClick={() => setOpen(true)}><D20Icon size={24} /></button>
+    <aside id={panelId} className="dice-panel" data-open={isOpen} aria-hidden={!isOpen} inert={!isOpen} aria-labelledby={titleId} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } }}>
       <header className="dice-panel-header"><h2 id={titleId}><D20Icon /> {t('dice.title')}</h2><button type="button" onClick={close} aria-label={t('dice.close')}><X size={18} /></button></header>
       <form className="dice-manual" onSubmit={event => { event.preventDefault(); if (bonusValid) roll({ bonus, source: null }); }}>
         <label htmlFor={`${panelId}-bonus`}>{t('dice.bonus')}</label>
