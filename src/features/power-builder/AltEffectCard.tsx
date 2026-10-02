@@ -22,6 +22,7 @@ import { useNameComparator } from '../../shared/hooks/useAlphabeticalList';
 
 interface AltEffectCardProps {
   strength?: number;
+  costUnit?: 'PP' | 'EP';
   ae: IAlternateEffect;
   aeIdx: number;
   cost: number;
@@ -52,7 +53,7 @@ interface AltEffectCardProps {
 }
 
 export function AltEffectCard({
-  strength = 0, ae, aeIdx, cost, cap, validation, isExpanded, onToggleExpand,
+  strength = 0, costUnit = 'PP', ae, aeIdx, cost, cap, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
   allEffects, allModDefs, genericModifierDefs, modifierIncompatibilities,
   activeId,
@@ -79,7 +80,7 @@ export function AltEffectCard({
           placeholder={`AE ${aeIdx + 1}`}
         />
         <span className={`ae-cost-badge ${valid ? 'ae-cost-badge--ok' : 'ae-cost-badge--over'}`}>
-          {valid ? '✅' : '⚠️'} {cost}/{cap}pp
+          {valid ? '✅' : '⚠️'} {cost}/{cap} {costUnit}
           {!valid && <span className="ae-overage"> {t('builder.aeOverageLabel', { overageBy })}</span>}
         </span>
         <label
@@ -226,15 +227,15 @@ export function AltEffectCard({
                         <span key={`${group.fromRank}-${group.toRank}`}>
                           R{group.fromRank}{group.toRank > group.fromRank ? `–${group.toRank}` : ''}:{' '}
                           {group.isFractional
-                            ? `1 PP / ${group.ranksPerPP} ranks × ${group.rankCount}`
-                            : `${group.costPerRank} PP/rank × ${group.rankCount}`}
-                          {' = '}{group.subtotal} PP{groupIndex < costBreakdown.rankGroups.length - 1 ? ' + ' : ''}
+                            ? `1 ${costUnit} / ${group.ranksPerPP} ranks × ${group.rankCount}`
+                            : `${group.costPerRank} ${costUnit}/rank × ${group.rankCount}`}
+                          {' = '}{group.subtotal} {costUnit}{groupIndex < costBreakdown.rankGroups.length - 1 ? ' + ' : ''}
                         </span>
                       ))}
                       {(costBreakdown.rankGroups.length !== 1
                         || costBreakdown.flatCost !== 0
                         || costBreakdown.total !== costBreakdown.rankCost) && (
-                        <span>{' = '}<strong>{costBreakdown.total} PP</strong></span>
+                        <span>{' = '}<strong>{costBreakdown.total} {costUnit}</strong></span>
                       )}
                     </div>
                   )}
@@ -391,7 +392,7 @@ export function AltEffectCard({
                           .sort((first, second) => compareNames(first.definition, second.definition))
                           .map(({ definition, specific }) => (
                             <option key={`${specific}:${definition.id}`} value={`${specific ? 'specific' : 'generic'}:${definition.id}`}>
-                              {definition.name}{specific ? ` · ${t('palette.specific')}` : ''} ({definition.costValue > 0 ? '+' : ''}{definition.costValue} {definition.costType === 'per_rank' ? '/rank' : 'pp'})
+                              {definition.name}{specific ? ` · ${t('palette.specific')}` : ''} ({definition.costValue > 0 ? '+' : ''}{definition.costValue} {definition.costType === 'per_rank' ? '/rank' : costUnit})
                             </option>
                           ))}
 

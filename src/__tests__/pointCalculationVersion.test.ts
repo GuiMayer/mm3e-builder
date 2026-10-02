@@ -42,7 +42,7 @@ const resource: IResource = {
 
 describe('point calculation revision notice', () => {
   it('uses revision 5 for Strength-based modifier pricing', () => {
-    expect(POINT_CALCULATION_REVISION).toBe('5');
+    expect(POINT_CALCULATION_REVISION).toBe('6');
   });
 
   it('does not bother a first-time user with an empty draft', () => {

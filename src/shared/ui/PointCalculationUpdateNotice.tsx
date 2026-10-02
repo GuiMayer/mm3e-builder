@@ -7,6 +7,7 @@ import {
   POINT_CALCULATION_REVISION,
   shouldShowPointCalculationNotice,
 } from '../lib/pointCalculationVersion';
+import { needsResourceReview } from '../lib/resourceReview';
 import { useAppDialog } from './appDialogContext';
 
 export function PointCalculationUpdateNotice() {
@@ -38,7 +39,7 @@ export function PointCalculationUpdateNotice() {
     });
 
     void (async () => {
-      if (shouldShow) {
+      if (shouldShow && !resources.some(needsResourceReview)) {
         await dialog.alert({
           title: t('calculationUpdate.title'),
           message: t('calculationUpdate.message'),

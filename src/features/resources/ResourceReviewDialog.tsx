@@ -14,6 +14,7 @@ export function ResourceReviewDialog({ resources, character, onClose }: { resour
   const [choices, setChoices] = useState<Record<string, ResourceReviewChoice>>(() => Object.fromEntries(resources.filter(needsResourceReview).map((resource) => [resource.id,
     resource.type === 'vehicle' ? { movementEffect: 'speed' } : resource.type === 'headquarters' ? { powerLevel: character.header.powerLevel } : { costMode: resource.costMode ?? 'equipment', removable: resource.power.removable === 'easily_removable' ? 'easily_removable' : 'removable' }])));
   const [error, setError] = useState(false);
+  const storageError = useResourcesStore((state) => state.storageError);
   const update = (id: string, value: Partial<ResourceReviewChoice>) => setChoices((current) => ({ ...current, [id]: { ...current[id], ...value } }));
   const preview = applyResourceReview(resources, choices);
   function save() {
@@ -34,7 +35,7 @@ export function ResourceReviewDialog({ resources, character, onClose }: { resour
         <p><b>{t('resources.review.costs', { before: `${before.total} ${before.unit}`, after: `${after.total} ${after.unit}` })}</b></p>
       </fieldset>;
     })}
-    {error && <p role="alert">{t('resources.error.storageWrite')}</p>}
+    {error && <p role="alert">{t(storageError ?? 'resources.error.storageWrite')}</p>}
     <div className="resource-review__actions"><Button variant="ghost" onClick={onClose}>{t('resources.review.later')}</Button><Button onClick={save}>{t('resources.review.apply')}</Button></div>
     <style>{`.resource-review{display:flex;flex-direction:column;gap:var(--s-md)}.resource-review fieldset{border:1px solid var(--c-border);border-radius:var(--r-sm);padding:var(--s-md)}.resource-review p{color:var(--c-text-secondary)}.resource-review label{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-sm);margin:var(--s-sm) 0}.resource-review select{max-width:100%;background:var(--c-surface);color:var(--c-text);border:1px solid var(--c-border);padding:var(--s-sm)}.resource-review__actions{display:flex;flex-wrap:wrap;gap:var(--s-sm);justify-content:flex-end}`}</style>
   </div></Modal>;

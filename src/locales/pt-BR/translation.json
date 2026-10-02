@@ -823,7 +823,7 @@
   "resources.libraryHint": "Dispositivos, Equipamentos, Veículos, Quartéis-Generais e recursos personalizados reutilizáveis. Associe-os pela ficha do personagem.",
   "resources.libraryEmpty": "Sua biblioteca de recursos está vazia. Adicione um recurso para começar.",
   "resources.characterTitle": "Recursos",
-  "resources.characterHint": "Associe itens da biblioteca a este personagem. Itens concedidos pelo Mestre permanecem visíveis, mas custam 0 EP.",
+  "resources.characterHint": "Associe itens da biblioteca a este personagem. Dispositivos usam PP; equipamento comum usa EP. Itens concedidos pelo mestre continuam visíveis sem custo.",
   "resources.overBudget": "O orçamento de Pontos de Equipamento foi excedido. O recurso continua disponível; ajuste os ranks de Equipamento se esse limite estiver ativo.",
   "resources.missing": "Recurso ausente na biblioteca",
   "resources.free": "Gratuito / concedido pelo Mestre",
@@ -925,7 +925,7 @@
   "draft.saveError.writeFailed": "O navegador não conseguiu salvar este Rascunho. Suas alterações continuam marcadas como não salvas.",
   "draft.saveError.recoveryFailed": "O novo Rascunho não foi salvo porque o Rascunho anterior ilegível não pôde ser movido com segurança para recuperação. Exporte a cópia de recuperação e tente novamente.",
   "calculationUpdate.title": "Cálculo de pontos corrigido",
-  "calculationUpdate.message": "Dano baseado em Força agora inclui o custo dos modificadores que cobrem sua contribuição de Força. Efeitos parciais, bônus de combate e defesas de equipamento também usam regras corrigidas. Os dados salvos dos personagens não foram alterados, mas totais e valores exibidos podem ter mudado.",
+  "calculationUpdate.message": "Os custos dos recursos agora distinguem dispositivos em PP, equipamento em EP, movimento de veículos, recursos alternativos e contribuições compartilhadas. Ataques de veículos também usam a Força do veículo. Nomes, poderes, notas e vínculos salvos são preservados; recursos antigos ambíguos têm uma revisão separada, com backup e custos antes/depois.",
   "builder.pricingDataWarning": "{{count}} referência salva de cálculo não pôde ser identificada. Selecione novamente o efeito ou modificador afetado.",
   "menu.clearDraft.label": "Gerenciamento de Rascunho",
   "menu.clearDraft.action": "Limpar Rascunho",
@@ -1038,5 +1038,8 @@
   "resources.import.keep": "Manter as versões locais",
   "resources.import.copy": "Importar cópias independentes",
   "resources.import.update": "Atualizar a biblioteca compartilhada",
-  "resources.import.missing": "O arquivo faz referência a {{count}} recurso(s) ausente(s). Inclua-os no arquivo exportado ou restaure a biblioteca antes de importar."
+  "resources.import.missing": "O arquivo faz referência a {{count}} recurso(s) ausente(s). Inclua-os no arquivo exportado ou restaure a biblioteca antes de importar.",
+  "targeted.source.resource": "Recurso",
+  "resources.hq.budgetLabel": "Custo do efeito (limite 2×NP)",
+  "resources.error.storageConflict": "Esta biblioteca mudou em outra janela. Exporte seu trabalho pendente se necessário e recarregue para usar a versão atual. Nenhum recurso foi sobrescrito."
 }

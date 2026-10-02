@@ -823,7 +823,7 @@
   "resources.libraryHint": "Reusable Gadgets, Gear, Vehicles, Headquarters, and custom resources. Associate them from a character sheet.",
   "resources.libraryEmpty": "Your resource library is empty. Add a resource to start building it.",
   "resources.characterTitle": "Resources",
-  "resources.characterHint": "Associate library items with this character. GM-granted items stay visible but cost 0 EP.",
+  "resources.characterHint": "Associate library items with this character. Devices use PP; ordinary equipment uses EP. GM-granted items stay visible at no cost.",
   "resources.overBudget": "Equipment Point budget exceeded. The resource remains available; adjust Equipment ranks if this limit is enforced.",
   "resources.missing": "Missing library resource",
   "resources.free": "Free / GM-granted",
@@ -925,7 +925,7 @@
   "draft.saveError.writeFailed": "The browser could not save this Draft. Your changes remain marked as unsaved.",
   "draft.saveError.recoveryFailed": "The new Draft was not saved because the previous unreadable Draft could not be moved safely to recovery. Export the recovery copy and try again.",
   "calculationUpdate.title": "Point calculation fixed",
-  "calculationUpdate.message": "Strength-based Damage now includes the cost of modifiers covering its Strength contribution. Partial effects, combat bonuses and equipment defenses also use corrected rules. Your saved character data was not changed, but totals and displayed values may have changed.",
+  "calculationUpdate.message": "Resource costs now distinguish PP devices, EP equipment, vehicle movement, alternate resources and shared contributions. Vehicle attacks also use the vehicle’s Strength. Saved names, powers, notes and links are preserved; ambiguous legacy resources have a separate review with a backup and before/after costs.",
   "builder.pricingDataWarning": "{{count}} saved pricing reference could not be resolved. Re-select the affected effect or modifier.",
   "menu.clearDraft.label": "Draft Management",
   "menu.clearDraft.action": "Clear Draft",
@@ -1010,7 +1010,7 @@
   "resources.hq.target.resource": "Headquarters",
   "resources.hq.target.occupants": "Occupants",
   "resources.hq.target.both": "Headquarters and occupants",
-  "resources.hq.effectCost": "1 EP feature · effect {{cost}} PP / {{limit}} PP",
+  "resources.hq.effectCost": "1 EP feature · underlying effect {{cost}} PP / {{limit}} PP",
   "resources.hq.costWarning": "This effect costs {{cost}} PP; a PL {{level}} headquarters normally allows up to {{limit}} PP per Effect feature. Review with your GM.",
   "resources.hq.levelWarning": "Review the series/headquarters PL. PL 10 is used only as an unreviewed estimate.",
   "resources.hq.plWarning": "This headquarters effect exceeds the usual PL {{level}} attack/effect limits. Review with your GM.",
@@ -1038,5 +1038,8 @@
   "resources.import.keep": "Keep local versions",
   "resources.import.copy": "Import independent copies",
   "resources.import.update": "Update the shared library",
-  "resources.import.missing": "The file references {{count}} missing resource(s). Include them in the exported file or restore the library before importing."
+  "resources.import.missing": "The file references {{count}} missing resource(s). Include them in the exported file or restore the library before importing.",
+  "targeted.source.resource": "Resource",
+  "resources.hq.budgetLabel": "Effect cost (2×PL budget)",
+  "resources.error.storageConflict": "This library changed in another window. Export your pending work if needed, then reload to use its current version. No resource was overwritten."
 }

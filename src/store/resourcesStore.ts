@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import type { IResource } from '../entities/types';
-import { readResourceLibrary, saveResourceLibrary, migrateResourceMetadata } from '../services/storage/resourceLibraryStorage';
+import { readResourceLibrary, saveResourceLibrary, migrateResourceMetadata, preserveResourceSource } from '../services/storage/resourceLibraryStorage';
 
 interface ResourcesStoreState {
   resources: IResource[]; past: IResource[][]; future: IResource[][];
-  loadError: string | null; storageError: string | null; quarantined: unknown[]; source: string | null;
+  loadError: string | null; storageError: string | null; quarantined: unknown[]; source: string | null; lastSavedSource: string | null;
   addResource: (resource: IResource) => boolean;
   updateResource: (resource: IResource) => boolean;
   upsertResources: (resources: IResource[], replaceExisting?: boolean) => boolean;
@@ -18,8 +18,18 @@ const loaded = readResourceLibrary();
 export const useResourcesStore = create<ResourcesStoreState>()((set, get) => {
   const write = (resources: IResource[], history: { past: IResource[][]; future: IResource[][] }, replaceUnreadable = false): boolean => {
     const state = get();
+    try {
+      if (localStorage.getItem('mm3e-resource-library') !== state.lastSavedSource) {
+        set({ storageError: 'resources.error.storageConflict' }); return false;
+      }
+    } catch { set({ storageError: 'resources.error.storageWrite' }); return false; }
+    // Review may follow an import that already wrote v2 metadata. Back up that
+    // original library too, before the user changes ambiguous acquisition/movement.
+    if (replaceUnreadable && state.lastSavedSource && !preserveResourceSource(state.lastSavedSource)) {
+      set({ storageError: 'resources.error.storageWrite' }); return false;
+    }
     if (!saveResourceLibrary(resources, state.quarantined, {}, replaceUnreadable)) { set({ storageError: 'resources.error.storageWrite' }); return false; }
-    set({ resources, ...history, storageError: null, ...(replaceUnreadable && state.loadError === 'resources.storage.unreadable' ? { loadError: null } : {}) });
+    set({ resources, ...history, lastSavedSource: localStorage.getItem('mm3e-resource-library'), storageError: null, ...(replaceUnreadable && state.loadError === 'resources.storage.unreadable' ? { loadError: null } : {}) });
     return true;
   };
   const change = (resources: IResource[]) => {
@@ -28,7 +38,7 @@ export const useResourcesStore = create<ResourcesStoreState>()((set, get) => {
   };
   return {
     resources: loaded.resources, past: [], future: [], loadError: loaded.error,
-    quarantined: loaded.quarantined, source: loaded.source, storageError: null,
+    quarantined: loaded.quarantined, source: loaded.source, lastSavedSource: loaded.source, storageError: null,
     addResource: (resource) => change([...get().resources, migrateResourceMetadata(resource)]),
     updateResource: (resource) => get().resources.some((item) => item.id === resource.id) && change(get().resources.map((item) => item.id === resource.id ? resource : item)),
     upsertResources: (resources, replaceExisting = false) => {

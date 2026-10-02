@@ -74,6 +74,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   const { character: activeCharacter } = useActiveCharacter();
   const character = useMemo(() => resourceContext ? getResourceCharacter(activeCharacter, resourceContext.resource) : activeCharacter, [activeCharacter, resourceContext]);
   const powerLevel = character.header.powerLevel;
+  const isHQEffect = resourceContext?.kind === 'headquarters-effect';
+  const costUnit = equipmentMode && !isHQEffect ? 'EP' : 'PP';
   const validationRules = useAppStore((s) => s.validationRules) ?? DEFAULT_VALIDATION_RULES;
 
   // Build initial state — if existing power has legacy format, migration handles it at store level
@@ -524,7 +526,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   placeholder={t('builder.powerNamePlaceholder')}
                     />
                     <select className="build-input build-input--small" value={power.activation ?? ''} onChange={(e) => setPower((current) => ({ ...current, activation: e.target.value === 'move' || e.target.value === 'standard' ? e.target.value : undefined }))} aria-label="Activation">
-                      <option value="">Activation: none</option><option value="move">Activation: move (−1 PP)</option><option value="standard">Activation: standard (−2 PP)</option>
+                      <option value="">Activation: none</option><option value="move">Activation: move (−1 {costUnit})</option><option value="standard">Activation: standard (−2 {costUnit})</option>
                     </select>
                 {!equipmentMode && (power.removable === 'removable' || power.removable === 'easily_removable') && (
                   <span
@@ -645,7 +647,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                           : t('builder.linkedComponent', { n: idx + 1 })}
                       </span>
                       {costInfo.total > 0 && (
-                        <span className="component-cost">{costInfo.total} PP</span>
+                        <span className="component-cost">{costInfo.total} {costUnit}</span>
                       )}
                       {power.components.length > 1 && (
                         <button
@@ -899,11 +901,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                               : `R${group.fromRank}${group.toRank > group.fromRank ? `–${group.toRank}` : ''}: `}
                             {group.isFractional ? (
                               <>
-                                <span className="fractional-cost-badge">1 PP / {group.ranksPerPP} ranks</span>
-                                {' '}× {group.rankCount} = {group.subtotal} PP
+                                <span className="fractional-cost-badge">1 {costUnit} / {group.ranksPerPP} ranks</span>
+                                {' '}× {group.rankCount} = {group.subtotal} {costUnit}
                               </>
                             ) : (
-                              <>{group.costPerRank} PP/rank × {group.rankCount} = {group.subtotal} PP</>
+                              <>{group.costPerRank} {costUnit}/rank × {group.rankCount} = {group.subtotal} {costUnit}</>
                             )}
                             {groupIndex < costInfo.breakdown!.rankGroups.length - 1 ? ' + ' : ''}
                           </span>
@@ -914,7 +916,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                         {(costInfo.breakdown.rankGroups.length !== 1
                           || costInfo.breakdown.flatCost !== 0
                           || costInfo.breakdown.total !== costInfo.breakdown.rankCost) && (
-                          <span>{' = '}<strong>{costInfo.breakdown.total} PP</strong></span>
+                          <span>{' = '}<strong>{costInfo.breakdown.total} {costUnit}</strong></span>
                         )}
                       </div>
                     )}
@@ -940,7 +942,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               <div className="ae-section-header">
                 <label className="build-label">{t('builder.alternateEffects')}</label>
                 {mainCost > 0 && (
-                  <span className="ae-cap-badge">Cap: {mainCost}pp</span>
+                  <span className="ae-cap-badge">Cap: {mainCost} {costUnit}</span>
                 )}
               </div>
               {mainCost > 0 && (
@@ -968,6 +970,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               {power.alternateEffects.map((ae, aeIdx) => (
                 <AltEffectCard
                   strength={getCharacterStrength(character)}
+                  costUnit={costUnit}
                   key={ae.id}
                   ae={ae}
                   aeIdx={aeIdx}
@@ -1015,7 +1018,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               return (
                 <span key={comp.id} className="cost-comp-item">
                   <span className="cost-comp-name">{effectDef.name}</span>
-                  <span className="cost-comp-val">{costInfo.total}pp</span>
+                  <span className="cost-comp-val">{costInfo.total} {costUnit}</span>
                 </span>
               );
             })}
@@ -1027,7 +1030,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                 <span key={ae.id} className="cost-comp-item">
                   <span className="cost-comp-name">↪ {ae.name || 'AE'}</span>
                   <span className={`cost-comp-val ${valid ? '' : 'cost-comp-val--invalid'}`}>
-                    {cost}pp {valid ? '✅' : '⚠️'}
+                    {cost} {costUnit} {valid ? '✅' : '⚠️'}
                   </span>
                 </span>
               );
@@ -1035,13 +1038,13 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             {power.alternateEffects.length > 0 && (
               <span className="cost-comp-item">
                 <span className="cost-comp-name">{t('builder.arrayCost')}</span>
-                <span className="cost-comp-val">{arrayCost - mainCost}pp</span>
+                <span className="cost-comp-val">{arrayCost - mainCost} {costUnit}</span>
               </span>
             )}
             {activationDiscount > 0 && (
               <span className="cost-comp-item">
                 <span className="cost-comp-name">{t('builder.activation')}</span>
-                <span className="cost-comp-val">−{activationDiscount}pp</span>
+                <span className="cost-comp-val">−{activationDiscount} {costUnit}</span>
               </span>
             )}
           </div>
@@ -1051,15 +1054,15 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                 {t(`builder.removable.${power.removable ?? 'none'}`)} −{removableDiscount} PP
               </span>
             )}
-            <span className="cost-total-label">{equipmentMode ? t('builder.totalEP') || 'Total EP:' : t('builder.total') + ':'}</span>
-            <span className="cost-total-value">{equipmentMode ? equipmentEPCost : totalCost} {equipmentMode ? 'EP' : t('common.pp')}</span>
+            <span className="cost-total-label">{isHQEffect ? t('resources.hq.budgetLabel') : equipmentMode ? t('builder.totalEP') : t('builder.total') + ':'}</span>
+            <span className="cost-total-value">{equipmentMode ? equipmentEPCost : totalCost} {costUnit}</span>
             <ModifierDrawerFAB
               onClick={() => openDrawer('full')}
               contextLabel={fabContextLabel}
             />
           </div>
           {saveError && <div role="alert" className="pl-violation-banner">{t(saveError)}</div>}
-          {resourceContext && <div className="pl-violation-banner" style={{ color: 'var(--c-text-secondary)' }}>
+          {resourceContext && <div className="pl-violation-banner resource-context-banner">
             <Info size={13} /><span>{t('resources.builder.context', { name: resourceContext.resource.name || t('resources.unnamed'), strength: getCharacterStrength(character), level: powerLevel })}{resourceContext.resource.type === 'headquarters' ? ` · ${t('resources.hq.effectCost', { cost: equipmentEPCost, limit: powerLevel * 2 })}` : ''}</span>
           </div>}
           {resourceWarnings.map((warning) => <div className="pl-violation-banner" key={warning.key}><AlertTriangle size={13} /><span>{t(warning.key, warning.values)}</span></div>)}
@@ -1383,6 +1386,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           border-radius: var(--r-full); border: 1px solid rgba(var(--c-success-rgb, 74, 222, 128), 0.3);
         }
         .pl-violation-banner { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--c-error); background: rgba(var(--c-error-rgb, 248, 113, 113), 0.08); border: 1px solid rgba(var(--c-error-rgb, 248, 113, 113), 0.3); border-radius: var(--r-sm); padding: 5px 10px; margin-top: 4px; width: 100%; }
+        .pl-violation-banner span { min-width: 0; overflow-wrap: anywhere; }
+        .pl-violation-banner svg { flex-shrink: 0; }
+        .resource-context-banner { background: transparent; border-color: var(--c-border); color: var(--c-text-secondary); }
 
         /* Drag ghost */
         .drag-ghost {
@@ -1456,9 +1462,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           .build-dropzone { min-width: 0; }
           .builder-footer {
             flex-direction: column;
+            flex-wrap: nowrap;
             gap: var(--s-sm);
             align-items: flex-start;
           }
+          .builder-footer > * { flex-shrink: 0; max-width: 100%; }
           .cost-breakdown {
             width: 100%;
             flex-wrap: wrap;

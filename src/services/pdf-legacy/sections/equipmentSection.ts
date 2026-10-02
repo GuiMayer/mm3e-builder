@@ -12,16 +12,14 @@ import type { PDFForm } from 'pdf-lib';
 import type { ICharacter, IResource } from '../../../entities/types';
 import { setField, splitLines } from '../helpers';
 import { PDF_LIMITS } from '../overflowCollector';
+import { getLinkedResourceCharges } from '../../../shared/lib/resourceCalculations';
 
 /**
  * Fill Equipment 1..10 on page 2 from the character's
  * free-text equipmentNotes field.
  */
 export function fillEquipment(form: PDFForm, character: ICharacter, resources: IResource[] = []): void {
-  const resourceLines = (character.resourceLinks ?? []).flatMap((link) => {
-    const resource = resources.find((item) => item.id === link.resourceId);
-    return resource ? [`${resource.name || 'Unnamed resource'}${link.isFree ? ' (Free)' : ''}`] : [];
-  });
+  const resourceLines = getLinkedResourceCharges(character, resources).map(({ resource, link, charged, unit, alternate }) => `${resource.name || 'Unnamed resource'} — ${charged} ${unit}${link.isFree ? ' (Free)' : alternate ? ' (Alternate)' : unit === 'EP' && link.contributionEP !== undefined ? ' (Shared)' : ''}`);
   const lines = splitLines([character.equipmentNotes ?? '', ...resourceLines].filter(Boolean).join('\n'), PDF_LIMITS.equipment);
 
   for (let i = 1; i <= PDF_LIMITS.equipment; i++) {

@@ -1,5 +1,6 @@
 import { createInstance } from 'i18next';
 import ExcelJS from 'exceljs';
+import { PDFDocument } from 'pdf-lib';
 import { describe, expect, it } from 'vitest';
 import en from '../locales/en/translation.json';
 import pt from '../locales/pt-BR/translation.json';
@@ -12,6 +13,7 @@ import { buildExcelGameDataRefs, buildExcelLabels } from '../services/excelExpor
 import { renderEquipmentSection } from '../services/pdf/components/EquipmentSection';
 import { createPDFLabels, localizePDFPowers, localizePDFModifiers } from '../services/pdf/pdfMessages';
 import { parseDraftBundle, serializeDraftBundle } from '../services/draftTransfer';
+import { fillEquipment } from '../services/pdf-legacy/sections/equipmentSection';
 
 const base = { name: 'Resource', notes: 'Keep <notes>', createdAt: 'old', updatedAt: 'old' };
 const power: ICharacterPower = { id: 'p', name: 'Ray', notes: 'Keep power', alternateEffects: [], removable: 'removable', components: [{ id: 'c', effectId: 'damage', ranks: 5, modifiers: [{ modifierId: 'increased_range', ranks: 1 }] }] };
@@ -22,6 +24,16 @@ const hq: IResource = { ...base, id: '00000000-0000-4000-8000-000000000004', typ
 const resources = [device, vehicle, alternate, hq];
 const character = createDefaultCharacter({ advantages: [{ advantageId: 'equipment', ranks: 5 }], resourceLinks: resources.map(resource => ({ id: resource.id, resourceId: resource.id, isFree: false, ...(resource.type === 'vehicle' ? { alternateSetId: 'garage' } : resource.type === 'headquarters' ? { contributionEP: 3, alternateSetId: 'garage' } : {}) })) });
 describe('Resource export agreement and roundtrip', () => {
+  it('fills the legacy PDF equipment fields with the same allocated units and alternate/shared costs', async () => {
+    const document = await PDFDocument.create(), page = document.addPage();
+    for (let i = 1; i <= 10; i++) document.getForm().createTextField(`Equipment ${i}`).addToPage(page, { x: 10, y: 700 - i * 25, width: 400, height: 20 });
+    fillEquipment(document.getForm(), character, resources);
+    const restored = await PDFDocument.load(await document.save());
+    expect(restored.getForm().getTextField('Equipment 1').getText()).toBe('Device — 8 PP');
+    expect(restored.getForm().getTextField('Equipment 2').getText()).toBe('Aircraft — 18 EP');
+    expect(restored.getForm().getTextField('Equipment 3').getText()).toBe('Alternate car — 1 EP (Alternate)');
+    expect(restored.getForm().getTextField('Equipment 4').getText()).toBe('Base — 3 EP (Shared)');
+  });
   it('preserves character identities, links, optional contexts and notes through draft transfer', () => {
     const text = serializeDraftBundle([{ id: 'tab', character, label: 'Test', lastModified: 0, isDirty: false }], 'tab', resources);
     const result = parseDraftBundle(text);

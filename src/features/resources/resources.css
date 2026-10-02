@@ -3,7 +3,7 @@
 .resources-view h1{align-items:center;display:flex;font-size:1.4rem;gap:var(--s-sm);margin:0 0 var(--s-xs)}
 .resources-view__header p{color:var(--c-text-muted);margin:0;max-width:650px}
 .resources-view__new{align-content:flex-start;display:flex;flex-wrap:wrap;gap:var(--s-xs);justify-content:flex-end}
-.resources-view__grid{display:grid;gap:var(--s-md);grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.resources-view__grid{align-items:start;display:grid;gap:var(--s-md);grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
 .resources-view__empty{border:1px dashed var(--c-border);border-radius:var(--r-md);color:var(--c-text-muted);grid-column:1/-1;padding:var(--s-xl);text-align:center}
 .resource-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);display:flex;flex-direction:column;gap:var(--s-sm);min-width:0;padding:var(--s-md)}
 .resource-card__top,.resource-card__power{align-items:center;display:flex;gap:var(--s-sm);justify-content:space-between}

@@ -9,7 +9,7 @@ const values = new Map<string, string>();
 const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); }, removeItem: (key: string) => { values.delete(key); } };
 
 describe('Resource compatibility and durable writes', () => {
-  beforeEach(() => { values.clear(); vi.stubGlobal('localStorage', storage); useResourcesStore.setState({ resources: [], past: [], future: [], quarantined: [], storageError: null, loadError: null }); });
+  beforeEach(() => { values.clear(); vi.stubGlobal('localStorage', storage); useResourcesStore.setState({ resources: [], past: [], future: [], quarantined: [], storageError: null, loadError: null, lastSavedSource: null }); });
   it('rejects incomplete nested powers in appendices and library files', () => {
     const broken = { ...resource, power: { id: 'p', name: 'Missing components' } } as IResource;
     expect(() => parseResourceAppendix({ version: 1, items: [broken] })).toThrow();
@@ -64,5 +64,35 @@ describe('Resource compatibility and durable writes', () => {
     const hq = { ...resource, type: 'headquarters', size: 'small', toughness: 6, effects: [], features: [{ id: 'f', name: 'Alarm', ranks: 0 }] } as unknown as IResource;
     expect(saveResourceLibrary([hq])).toBe(false);
     expect(storage.getItem(resourceLibraryStorageKeys.library)).toBe(before);
+  });
+  it('refuses stale mutations, migration and undo after another window changes the library', () => {
+    expect(useResourcesStore.getState().addResource(resource)).toBe(true);
+    const before = structuredClone(useResourcesStore.getState().resources);
+    const history = useResourcesStore.getState().past;
+    const external = JSON.stringify({ version: 2, items: [{ ...before[0], notes: 'Changed in another window' }] });
+    storage.setItem(resourceLibraryStorageKeys.library, external);
+    expect(useResourcesStore.getState().updateResource({ ...before[0], name: 'Stale edit' })).toBe(false);
+    expect(useResourcesStore.getState().replaceResources(before)).toBe(false);
+    expect(useResourcesStore.getState().undo()).toBe(false);
+    expect(storage.getItem(resourceLibraryStorageKeys.library)).toBe(external);
+    expect(useResourcesStore.getState().resources).toEqual(before);
+    expect(useResourcesStore.getState().past).toBe(history);
+    expect(useResourcesStore.getState().storageError).toBe('resources.error.storageConflict');
+  });
+  it('backs up an imported v2 library before applying the reviewed acquisition', () => {
+    expect(useResourcesStore.getState().addResource(resource)).toBe(true);
+    const raw = storage.getItem(resourceLibraryStorageKeys.library);
+    expect(useResourcesStore.getState().replaceResources([{ ...resource, costMode: 'device', costReviewRequired: false }])).toBe(true);
+    expect(storage.getItem(resourceLibraryStorageKeys.backup)).toBe(raw);
+    expect(readResourceLibrary().resources[0]).toMatchObject({ costMode: 'device', costReviewRequired: false });
+  });
+  it('keeps the imported library and review pending if its backup cannot be written', () => {
+    expect(useResourcesStore.getState().addResource(resource)).toBe(true);
+    const raw = storage.getItem(resourceLibraryStorageKeys.library), state = useResourcesStore.getState();
+    vi.stubGlobal('localStorage', { ...storage, setItem: (key: string, value: string) => { if (key === resourceLibraryStorageKeys.backup) throw new Error('Full'); storage.setItem(key, value); } });
+    expect(state.replaceResources([{ ...resource, costMode: 'device', costReviewRequired: false }])).toBe(false);
+    expect(storage.getItem(resourceLibraryStorageKeys.library)).toBe(raw);
+    expect(useResourcesStore.getState().resources).toBe(state.resources);
+    expect(useResourcesStore.getState().past).toBe(state.past);
   });
 });
