@@ -52,5 +52,5 @@
 .theme-editor-footer>span{font-size:.72rem;color:var(--c-text-secondary);}
 .theme-editor-footer>div{display:flex;gap:8px;margin-left:auto;}
 .theme-editor-footer p{width:100%;color:var(--c-error);font-size:.8rem;margin:0;}
-.theme-editor-footer .theme-save{background:var(--c-primary);color:var(--c-action-text);border-color:var(--c-primary);}
+.theme-editor-footer .theme-save{background:var(--c-primary);color:var(--c-action-text, var(--c-text-inverse));border-color:var(--c-primary);}
 @media(max-width:700px){.theme-editor .modal-content--compact{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);}.theme-editor-layout{grid-template-columns:minmax(0,1fr);padding:0 12px 16px;max-height:55dvh;}.theme-base-controls{padding:12px;}.theme-editor-intro{padding:0 12px 12px;}.theme-editor-footer{padding:12px;}.theme-editor button,.theme-editor input,.theme-editor select{min-height:44px;}.theme-preview-area{grid-row:1;}.theme-contrast{margin-bottom:12px;}}

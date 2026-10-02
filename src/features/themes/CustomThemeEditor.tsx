@@ -8,8 +8,6 @@ import { COLOR_GROUPS, COLOR_ROLES, PRESET_THEMES, contrastIssues, createCustomT
 import type { PresetTheme } from './presetPalettes';
 import './customTheme.css';
 
-const EDITOR_COLORS = { ...themeVariables(createCustomTheme('dark-knight')), colorScheme: 'dark' } as CSSProperties;
-
 function ColorField({ role, color, base, transparent, onChange, onValidityChange }: {
   role: ColorRole; color: ThemeColor; base: ThemeColor; transparent: boolean; onChange: (color: ThemeColor) => void; onValidityChange: (valid: boolean) => void;
 }) {
@@ -40,14 +38,13 @@ export function CustomThemeEditor({ onClose }: { onClose: () => void }) {
     const selected = useAppStore.getState().theme;
     return saved ? structuredClone(saved) : createCustomTheme(isPresetTheme(selected) ? selected : 'dark-knight');
   });
-  const [baseSelection, setBaseSelection] = useState<PresetTheme>(draft.baseTheme);
   const [error, setError] = useState('');
   const [fieldRevision, setFieldRevision] = useState(0);
   const [invalidRoles, setInvalidRoles] = useState<Partial<Record<ColorRole, boolean>>>({});
   const invalidFields = Object.values(invalidRoles).some(Boolean);
   const base = createCustomTheme(draft.baseTheme);
   const issues = contrastIssues(draft);
-  function copyBase() { setDraft(createCustomTheme(baseSelection)); setFieldRevision(n => n + 1); setInvalidRoles({}); setError(''); }
+  function copyBase(selected: PresetTheme = draft.baseTheme) { setDraft(createCustomTheme(selected)); setFieldRevision(n => n + 1); setInvalidRoles({}); setError(''); }
   function save() {
     if (invalidFields) return;
     if (!useCustomThemeStore.getState().save(draft)) { setError(t('theme.saveError')); return; }
@@ -55,10 +52,10 @@ export function CustomThemeEditor({ onClose }: { onClose: () => void }) {
     catch { setError(t('theme.selectionError')); return; }
     onClose();
   }
-  return <div className="theme-editor" style={EDITOR_COLORS}>
+  return <div className="theme-editor">
     <Modal isOpen onClose={onClose} title={t('theme.editorTitle')} compact>
       <form className="theme-editor-form" onSubmit={event => { event.preventDefault(); save(); }}>
-        <div className="theme-base-controls"><label>{t('theme.base')}<select value={baseSelection} onChange={event => setBaseSelection(event.target.value as PresetTheme)}>{PRESET_THEMES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label><button type="button" onClick={copyBase}><RotateCcw size={15} />{t('theme.useBase')}</button></div>
+        <div className="theme-base-controls"><label>{t('theme.base')}<select value={draft.baseTheme} onChange={event => copyBase(event.target.value as PresetTheme)}>{PRESET_THEMES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label><button type="button" onClick={() => copyBase()}><RotateCcw size={15} />{t('theme.useBase')}</button></div>
         <p className="theme-editor-intro">{t('theme.editorIntro')}</p>
         <div className="theme-editor-layout">
           <div className="theme-groups" key={fieldRevision}>

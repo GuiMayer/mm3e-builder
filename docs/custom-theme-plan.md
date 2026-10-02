@@ -72,14 +72,14 @@ e informar corretamente se o tema foi salvo.
 2. Abrir um diálogo próprio, montado fora do conteúdo descartável do menu.
    No celular, fechar o menu ao abri-lo, evitando dois elementos modais ativos.
 3. Se já existir um tema personalizado, abrir sua paleta. Caso contrário,
-   inicializar com uma cópia exata do tema selecionado. Oferecer **Usar como
-   base** para copiar qualquer um dos quatro temas prontos para o rascunho.
+   inicializar com uma cópia exata do tema selecionado. A seleção de base copia
+   imediatamente qualquer um dos quatro temas prontos para o rascunho e a prévia.
 4. Apresentar grupos de cores recolhíveis, cada linha com nome simples,
    amostra, seletor e hexadecimal. Opacidade de 0 a 100% aparece apenas nos
    papéis transparentes. Cada cor pode voltar ao valor do tema base.
 5. Mostrar uma prévia isolada com fundo, cartão, campo, botão, foco, textos,
    badges e mensagens de estado. A prévia muda imediatamente; os controles
-   do editor conservam uma paleta legível e independente do rascunho.
+   do editor acompanham o tema ativo do aplicativo, independentemente do rascunho.
 6. **Salvar e aplicar** valida, grava a paleta e ativa Personalizado. Não
    escrever no armazenamento a cada movimento do seletor de cor.
 7. **Cancelar**, X ou Escape descartam o rascunho sem mudar o tema ativo.

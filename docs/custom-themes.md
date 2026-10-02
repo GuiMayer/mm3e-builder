@@ -19,13 +19,14 @@ a paleta personalizada. Existe um único tema personalizado, editável novamente
 pelo mesmo botão.
 
 **Cancelar**, X e Escape descartam a edição sem gravar nem mudar o tema ativo.
-Selecionar uma base e clicar em **Restaurar cores da base** substitui somente
-o rascunho; é necessário salvar para aplicar essa mudança.
+Selecionar uma base atualiza imediatamente o rascunho, os campos e a prévia.
+**Restaurar cores da base** desfaz as edições do rascunho a partir dessa base.
+É necessário salvar para aplicar essas mudanças à página.
 
 Formato hexadecimal inválido mantém a última cor válida da prévia e desabilita
 o salvamento até ser corrigido. Avisos de contraste são informativos e não
-impedem salvar. O editor mantém suas próprias cores legíveis, independentemente
-da paleta em edição.
+impedem salvar. A janela do editor acompanha o tema ativo do aplicativo;
+somente a prévia usa as cores do rascunho até o salvamento.
 
 ## Armazenamento e isolamento
 
