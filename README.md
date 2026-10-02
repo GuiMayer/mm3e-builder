@@ -23,6 +23,11 @@ A modern, fast, and user-friendly character builder for the Mutants & Mastermind
 - **Advantages** — Searchable and filterable advantage selector with 49 advantages, ranked/flat type display, and description modal. **Advantage Subtypes** — 8 advantages support multiple instances with different subtypes (e.g., Skill Mastery: Acrobatics, Skill Mastery: Stealth). Includes hybrid mode for Improved Critical allowing both rank stacking and multiple instances.
 - **Complications** — Free-form title + description fields for Motivation, Enemy, Secret, etc.
 
+#### 🎲 Session Dice Roller
+- **Hidden by default** — Open the right-edge d20 button on desktop or the floating mobile button; results are immediate, without animation.
+- **Manual or sheet checks** — Enter a bonus for d20 rolls without a source, or use contextual buttons on abilities, skills, defenses, attacks, and supported advantages.
+- **Temporary history** — Keep 15 results by default; change capacity in the panel footer. History follows character tabs and clears on reload/close. Existing sheets and exports are unchanged. [Details](docs/dice-roller.md).
+
 #### 📖 Campaign Mode & PP Advancement Log
 - **Campaign Mode toggle** — Switch between campaign mode (PP earned during play) and standard mode (PL × 15 flat).
 - **PP Log Panel** — Track PP awards and deductions with date, amount, and notes for each entry.
@@ -248,6 +253,11 @@ Um criador de fichas moderno, rápido e focado na facilidade de uso para o siste
 - **Perícias** — Lista completa (28+ perícias), subtipos (ex: Especialidade: História), custo automático de 1 PP a cada 2 ranks.
 - **Vantagens** — Seletor pesquisável e filtrável com 49 vantagens, exibição de tipo (ranqueada/flat) e modal de descrição. **Subtipos de Vantagens** — 8 vantagens suportam múltiplas instâncias com diferentes subtipos (ex: Maestria em Perícia: Acrobacia, Maestria em Perícia: Furtividade). Inclui modo híbrido para Crítico Aprimorado permitindo tanto empilhamento de ranks quanto múltiplas instâncias.
 - **Complicações** — Campos livres de título e descrição para Motivação, Inimigo, Segredo, etc.
+
+#### 🎲 Rolador de Dados da Sessão
+- **Oculto por padrão** — Abra pelo botão d20 na lateral direita no desktop ou pelo botão flutuante no celular; resultados imediatos, sem animação.
+- **Testes manuais ou pela ficha** — Digite um bônus para rolar d20 sem origem, ou use os botões em habilidades, perícias, defesas, ataques e vantagens compatíveis.
+- **Histórico temporário** — Guarda 15 resultados por padrão; altere a quantidade no rodapé. O histórico acompanha as abas de personagens e é limpo ao recarregar/fechar. Fichas e exportações permanecem intactas. [Detalhes](docs/dice-roller.md).
 
 #### 📖 Modo Campanha & Registro de Avanço de PP
 - **Toggle de Modo Campanha** — Alterne entre modo campanha (PP ganhos durante o jogo) e modo padrão (NP × 15 fixo).

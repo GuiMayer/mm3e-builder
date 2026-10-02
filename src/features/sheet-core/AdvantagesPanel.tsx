@@ -728,6 +728,8 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
 
         /* Mobile responsive adjustments for NumberInput */
         @media (max-width: 768px) {
+          .adv-chip { max-width: 100%; flex-wrap: wrap; border-radius: var(--r-md); }
+          .adv-name { white-space: normal; overflow-wrap: anywhere; }
           .adv-rank-input {
             width: 44px;
           }

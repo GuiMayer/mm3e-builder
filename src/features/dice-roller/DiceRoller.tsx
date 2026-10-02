@@ -76,6 +76,6 @@ export function DiceRoller() {
       </footer>
     </aside>
     {notice && !isOpen && <div className="dice-notice"><div>{notice.source && <strong>{notice.source.label}</strong>}<span>{rollFormula(notice)}</span></div><button type="button" aria-label={t('dice.dismiss')} onClick={() => useRollSession.getState().dismissNotice(notice.id)}><X size={16} /></button></div>}
-    <span className="dice-sr-only" role="status" aria-live="polite" aria-atomic="true">{latest && `${latest.source ? `${latest.source.characterName}, ${latest.source.label}: ` : ''}${rollFormula(latest)}`}</span>
+    <span className="dice-sr-only" role="status" aria-live="polite" aria-atomic="true">{latest && <span key={latest.id}>{`${latest.source ? `${latest.source.characterName}, ${latest.source.label}: ` : ''}${rollFormula(latest)}`}</span>}</span>
   </>;
 }

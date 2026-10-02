@@ -2,7 +2,7 @@
 
 Este diretório contém a suíte de testes completa para o MM3e Builder, validando a implementação das regras oficiais do Mutants & Masterminds 3e.
 
-**Estado verificado em 2026-08-30:** 46 arquivos de teste, 657 testes aprovados e nenhum teste pendente. Execute `npm test -- --run` para obter o estado real.
+**Estado verificado em 2026-10-02:** 53 arquivos de teste, 730 testes aprovados e nenhum teste pendente. Execute `npm test -- --run` para obter o estado real.
 
 ## Estrutura de Testes
 
@@ -14,6 +14,7 @@ Este diretório contém a suíte de testes completa para o MM3e Builder, validan
 | Dados e importação | `dataIntegrity`, `archetypes`, `semanticValidation`, `characterFile` | Dados JSON, migrações e validação de arquivos |
 | Estado e persistência | `charactersStore.integration`, `characterHistory`, `characterOperations`, `characterDraftStorage`, `draftAutoLoad` | Abas, undo/redo temporário, operações puras, auto-save e recuperação |
 | Exportação e interface lógica | `exportCorrections`, `pdfHtmlSafety`, `powerBuilderModel` | PDF, Excel, segurança de HTML e modelo do editor |
+| Rolagens da sessão | `diceRoller`, `diceCheckSources` | d20, histórico temporário, origens, bônus compartilhados e preservação das fichas |
 
 ### Testes de Integração
 

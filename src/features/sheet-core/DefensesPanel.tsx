@@ -56,7 +56,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
             {initiativeTotal >= 0 ? `+${initiativeTotal}` : `${initiativeTotal}`}
           </span>
           <span className="defense-total defense-total--initiative">
-            <button type="button" className="defense-detail-btn" aria-label={t('defenses.initiative')} aria-expanded={tooltip === 'initiative'} onClick={() => setTooltip(current => current === 'initiative' ? null : 'initiative')} onFocus={() => setTooltip('initiative')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
+            <button type="button" className="defense-detail-btn" aria-label={t('defenses.initiative')} aria-expanded={tooltip === 'initiative'} onClick={() => setTooltip('initiative')} onFocus={() => setTooltip('initiative')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
           </span>
           <RollButton bonus={initiativeTotal} label={t('defenses.initiative')} section={t('defenses.title')} breakdown={initiativeBreakdown} />
           {tooltip === 'initiative' && (
@@ -99,7 +99,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           <span className="defense-plus">+</span>
           <span className="defense-input defense-derived">{toughnessBonus}</span>
           <span className="defense-total">{toughnessTotal}</span>
-          <button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-expanded={tooltip === 'toughness'} onClick={() => setTooltip(current => current === 'toughness' ? null : 'toughness')} onFocus={() => setTooltip('toughness')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
+          <button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-expanded={tooltip === 'toughness'} onClick={() => setTooltip('toughness')} onFocus={() => setTooltip('toughness')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
           <RollButton bonus={toughnessTotal} label={t('defenses.toughness')} section={t('defenses.title')} breakdown={[`STA ${stamina}`, ...toughnessBreakdown]} />
           {tooltip === 'toughness' && (
             <div className="defense-tooltip">
@@ -125,14 +125,14 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
           border-radius: var(--r-sm); padding: var(--s-sm) var(--s-md);
         }
-        .defense-row--readonly { opacity: 0.7; cursor: default; }
+        .defense-row--readonly { cursor: default; }
         .defense-row--toughness:hover { border-color: var(--c-border-active); opacity: 1; }
         .defense-row--initiative {
-          opacity: 0.55;
+          opacity: 1;
           cursor: default;
           border-style: dashed;
         }
-        .defense-row--initiative:hover { opacity: 0.8; border-color: var(--c-border-active); }
+        .defense-row--initiative:hover { border-color: var(--c-border-active); }
 
         .defense-divider {
           height: 1px;
@@ -209,6 +209,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
 
         /* Mobile responsive layout */
         @media (max-width: 768px) {
+          .defense-detail-btn { min-width: 44px; min-height: 44px; }
           .defense-row {
             flex-wrap: wrap;
             gap: var(--s-xs);

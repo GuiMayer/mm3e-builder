@@ -11,9 +11,10 @@ interface Props {
   breakdown?: string[];
   routine?: boolean;
   showLabel?: boolean;
+  onRoll?: () => void;
 }
 
-export function RollButton({ bonus, label, section, detail, breakdown, routine = false, showLabel = false }: Props) {
+export function RollButton({ bonus, label, section, detail, breakdown, routine = false, showLabel = false, onRoll }: Props) {
   const { t } = useTranslation();
   const hasCharacter = useCharactersStore(state => state.tabs.some(tab => tab.id === state.activeCharacterId));
   const signedBonus = bonus < 0 ? `− ${Math.abs(bonus)}` : `+ ${bonus}`;
@@ -27,6 +28,7 @@ export function RollButton({ bonus, label, section, detail, breakdown, routine =
       useRollSession.getState().roll({ bonus, mode: routine ? 'routine' : 'd20', source: {
         characterId: tab.id, characterName: tab.character.header.name || t('tabs.unnamed'), section, label, detail, breakdown,
       } });
+      onRoll?.();
     }}>
     {routine ? <span className="roll-routine-icon">10</span> : <D20Icon size={20} />}
     {showLabel && <span>{label}</span>}

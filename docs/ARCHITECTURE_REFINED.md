@@ -90,6 +90,12 @@ draft cannot be safely replaced.
 
 ## Temporary editing history
 
+The session dice roller also uses runtime-only state, independently of editing
+history. Its colocated `features/dice-roller/rollSessionStore` retains up to 15
+results by default with a user-editable capacity. Rolls snapshot their source
+and reuse existing derived bonuses; they never mutate characters or enter
+Draft persistence or exports. See [dice-roller.md](./dice-roller.md).
+
 Undo/redo is runtime-only. `charactersStore` maintains one independent history
 per tab, plus a separate recent-close history. `resourcesStore` maintains its
 own independent Resource-library history. Character snapshots contain only

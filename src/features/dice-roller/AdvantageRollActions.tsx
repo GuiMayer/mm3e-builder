@@ -1,3 +1,4 @@
+import { useId, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacter, ICharacterAdvantage, ISkillDef } from '../../entities/types';
 import { useDerivedDefenses } from '../../shared/hooks/useDerivedDefenses';
@@ -25,9 +26,12 @@ export function AdvantageRollActions({ advantage, name, character, skillDefs }: 
 
 function RollChoices({ choices, name }: { choices: React.ComponentProps<typeof RollButton>[]; name: string }) {
   const { t } = useTranslation();
+  const id = useId();
+  const listRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   if (!choices.length) return null;
   if (choices.length === 1) return <RollButton {...choices[0]} />;
-  return <details className="roll-choices"><summary aria-label={t('dice.choose', { name })} title={t('dice.choose', { name })}><D20Icon /></summary><div className="roll-choices-list">{choices.map((choice, index) => <RollButton key={index} {...choice} showLabel />)}</div></details>;
+  return <><button ref={triggerRef} type="button" className="roll-button" popoverTarget={id} aria-label={t('dice.choose', { name })} title={t('dice.choose', { name })}><D20Icon /></button><div ref={listRef} id={id} popover="auto" className="roll-choices-list" aria-label={t('dice.choose', { name })}><strong>{t('dice.choose', { name })}</strong>{choices.map((choice, index) => <RollButton key={index} {...choice} showLabel onRoll={() => { listRef.current?.hidePopover(); triggerRef.current?.focus(); }} />)}</div></>;
 }
 
 function DefensiveAdvantageRoll({ id, name }: { id: string; name: string }) {

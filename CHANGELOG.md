@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added a hidden, animation-free d20 roller with a right-edge desktop control, mobile bottom drawer, manual integer bonus, and session-only history (15 results by default, configurable in the footer).
+- Added contextual roll buttons for abilities, skills, initiative, resistance checks, and eligible attack profiles, plus explicit advantage shortcuts and Skill Mastery routine checks. Sources are snapshotted without changing character data or exports.
 - Added a structured **Impervious Resistance** utility effect for Impervious bought directly on an existing resistance. It costs 1 PP/rank and never increases the underlying defense.
 - Added a reproducible community-sheet audit command that validates and recalculates the 63 generated character files with the production pricing engine.
 - Added an explicit, backward-compatible **Strength-based Damage** option. It contributes effective Strength to effect rank and resistance DC without charging those ranks again.
@@ -46,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Quality
 - Replaced or removed all 16 pending tests: obsolete/duplicated cases were deleted and valid rule expectations became executable regressions.
-- Expanded the verified suite to 48 test files and 697 passing tests with no pending tests.
+- Expanded the verified suite to 53 test files and 730 passing tests with no pending tests (2026-10-02), including session-roll behavior and character preservation.
 - Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 34 of 57 complete sources match their independently published sums under revision 4.
 
 ---

@@ -13,6 +13,7 @@ complete release record.
 - [Refined architecture](./ARCHITECTURE_REFINED.md) is the authoritative guide for product scope, module boundaries, persistence, import/export compatibility, and verification gates.
 - [Project README](../README.md) describes the user-facing capabilities and local setup.
 - [Power Builder modifier policy](./power-builder-modifier-policy.md) documents generic and effect-specific modifier selection, save diagnostics, and stored-source behavior.
+- [Session dice roller](./dice-roller.md) describes manual and contextual checks, advantage shortcuts, responsive controls, and the temporary history boundary.
 - [Contributing guide](../CONTRIBUTING.md) explains translation and data contributions.
 - [Changelog](../CHANGELOG.md) records released changes and work awaiting release.
 - [Future expansions](../FUTURE_EXPANSIONS.md) records deferred product work and
