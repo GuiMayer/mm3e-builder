@@ -51,7 +51,7 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
                   min={minAbilityScore !== -Infinity ? minAbilityScore : undefined}
                 />
               )}
-              {!isAbsent && <RollButton bonus={abilities[key]} label={t(`abilities.${key}`)} section={t('abilities.title')} />}
+              <div className="ability-actions sheet-item-actions"><span className="sheet-roll-slot">{!isAbsent && <RollButton bonus={abilities[key]} label={t(`abilities.${key}`)} section={t('abilities.title')} />}</span></div>
               <button
                 className="ability-toggle"
                 onClick={() => toggleAbsentAbility(key)}
@@ -73,6 +73,9 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
           transition: all var(--t-fast); position: relative;
         }
         .ability-card:hover { border-color: var(--c-border-active); }
+        .ability-actions { width: 100%; margin-top: auto; }
+        .ability-card>.number-input-wrapper { max-width: 100%; }
+        .ability-card .ability-input { min-width: 0; flex: 0 1 auto; }
         .ability-card.absent { opacity: 0.4; }
         .ability-abbr { font-family: var(--f-heading); font-size: 0.7rem; font-weight: 800; color: var(--c-primary); letter-spacing: 0.1em; }
         .ability-name { font-size: 0.75rem; color: var(--c-text-secondary); }

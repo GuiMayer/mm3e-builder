@@ -49,16 +49,19 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           onMouseEnter={() => setTooltip('initiative')}
           onMouseLeave={() => setTooltip(null)}
         >
-          <span className="defense-name">{t('defenses.initiative')}</span>
-          <span className="defense-base">AGL {agility}</span>
-          <span className="defense-plus" />
-          <span className="defense-input defense-derived">
-            {initiativeTotal >= 0 ? `+${initiativeTotal}` : `${initiativeTotal}`}
-          </span>
-          <span className="defense-total defense-total--initiative">
+          <div className="defense-label">
+            <span className="defense-name">{t('defenses.initiative')}</span>
             <button type="button" className="defense-detail-btn" aria-label={t('defenses.initiative')} aria-expanded={tooltip === 'initiative'} onClick={() => setTooltip('initiative')} onFocus={() => setTooltip('initiative')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
+          </div>
+          <div className="defense-calculation">
+          <span className="defense-base">AGL {agility}</span>
+          <span className="defense-plus">+</span>
+          <span className="defense-input defense-derived">{initiativeTotal - agility}</span>
+          </div>
+          <span className="sheet-check-result">
+            <span className="defense-total">{initiativeTotal >= 0 ? `+${initiativeTotal}` : `${initiativeTotal}`}</span>
+            <span className="sheet-roll-slot"><RollButton bonus={initiativeTotal} label={t('defenses.initiative')} section={t('defenses.title')} breakdown={initiativeBreakdown} /></span>
           </span>
-          <RollButton bonus={initiativeTotal} label={t('defenses.initiative')} section={t('defenses.title')} breakdown={initiativeBreakdown} />
           {tooltip === 'initiative' && (
             <div className="defense-tooltip">
               {initiativeBreakdown.map((line, i) => (
@@ -74,6 +77,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         {purchasedRows.map((r) => (
           <div key={r.key} className="defense-row">
             <span className="defense-name">{t(`defenses.${r.key}`)}</span>
+            <div className="defense-calculation">
             <span className="defense-base">{r.baseLabel} {r.base}</span>
             <span className="defense-plus">+</span>
             <NumberInput
@@ -83,8 +87,11 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
               onChange={(value) => setDefense(r.key, Math.max(0, value))}
               min={0}
             />
-            <span className="defense-total">{r.base + defenses[r.key]}</span>
-            {(r.key === 'fortitude' || r.key === 'will') && <RollButton bonus={r.base + defenses[r.key]} label={t(`defenses.${r.key}`)} section={t('defenses.title')} breakdown={[`${r.baseLabel} ${r.base}`, `${t('common.ranks')} ${defenses[r.key]}`]} />}
+            </div>
+            <span className="sheet-check-result">
+              <span className="defense-total">{r.base + defenses[r.key]}</span>
+              <span className="sheet-roll-slot">{(r.key === 'fortitude' || r.key === 'will') && <RollButton bonus={r.base + defenses[r.key]} label={t(`defenses.${r.key}`)} section={t('defenses.title')} breakdown={[`${r.baseLabel} ${r.base}`, `${t('common.ranks')} ${defenses[r.key]}`]} />}</span>
+            </span>
           </div>
         ))}
 
@@ -94,13 +101,19 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           onMouseEnter={() => setTooltip('toughness')}
           onMouseLeave={() => setTooltip(null)}
         >
-          <span className="defense-name">{t('defenses.toughness')}</span>
+          <div className="defense-label">
+            <span className="defense-name">{t('defenses.toughness')}</span>
+            <button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-expanded={tooltip === 'toughness'} onClick={() => setTooltip('toughness')} onFocus={() => setTooltip('toughness')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
+          </div>
+          <div className="defense-calculation">
           <span className="defense-base">STA {stamina}</span>
           <span className="defense-plus">+</span>
           <span className="defense-input defense-derived">{toughnessBonus}</span>
-          <span className="defense-total">{toughnessTotal}</span>
-          <button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-expanded={tooltip === 'toughness'} onClick={() => setTooltip('toughness')} onFocus={() => setTooltip('toughness')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
-          <RollButton bonus={toughnessTotal} label={t('defenses.toughness')} section={t('defenses.title')} breakdown={[`STA ${stamina}`, ...toughnessBreakdown]} />
+          </div>
+          <span className="sheet-check-result">
+            <span className="defense-total">{toughnessTotal}</span>
+            <span className="sheet-roll-slot"><RollButton bonus={toughnessTotal} label={t('defenses.toughness')} section={t('defenses.title')} breakdown={[`STA ${stamina}`, ...toughnessBreakdown]} /></span>
+          </span>
           {tooltip === 'toughness' && (
             <div className="defense-tooltip">
               <div className="defense-tooltip-title">{t('defenses.toughnessBreakdown')}</div>
@@ -121,10 +134,13 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
 
         .defense-row {
           position: relative;
-          display: flex; align-items: center; gap: var(--s-sm);
+          display: grid; grid-template-columns: minmax(120px,1fr) auto auto; align-items: center; gap: var(--s-sm);
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
           border-radius: var(--r-sm); padding: var(--s-sm) var(--s-md);
         }
+        .defense-label,.defense-calculation { display: flex; align-items: center; gap: var(--s-xs); }
+        .defense-calculation { flex-wrap: wrap; min-width: 0; }
+        .defense-calculation>.number-input-wrapper { flex-shrink: 0; }
         .defense-row--readonly { cursor: default; }
         .defense-row--toughness:hover { border-color: var(--c-border-active); opacity: 1; }
         .defense-row--initiative {
@@ -141,7 +157,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           opacity: 0.4;
         }
 
-        .defense-name { font-weight: 600; font-size: 0.85rem; min-width: 100px; }
+        .defense-name { font-weight: 600; font-size: 0.85rem; min-width: 0; }
         .defense-base { font-size: 0.78rem; color: var(--c-text-secondary); min-width: 60px; }
         .defense-plus { color: var(--c-text-muted); }
 
@@ -165,13 +181,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         .defense-total {
           font-weight: 700; font-size: 0.95rem;
           color: var(--c-primary); min-width: 40px;
-          text-align: right; margin-left: auto;
-          display: flex; align-items: center; gap: 4px;
-        }
-        .defense-total--initiative {
-          color: var(--c-text-muted);
-          font-weight: 500;
-          font-size: 0.88rem;
+          text-align: right;
         }
 
         /* Tooltip */
@@ -211,9 +221,10 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         @media (max-width: 768px) {
           .defense-detail-btn { min-width: 44px; min-height: 44px; }
           .defense-row {
-            flex-wrap: wrap;
+            grid-template-columns: minmax(0,1fr) auto;
             gap: var(--s-xs);
           }
+          .defense-row>.defense-name,.defense-label { grid-column: 1 / -1; }
           .defense-name {
             min-width: 80px;
           }
@@ -223,6 +234,10 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           .defense-input {
             width: 60px;
           }
+        }
+        @media (max-width: 380px) {
+          .defense-row { grid-template-columns: minmax(0,1fr); }
+          .defense-row>.sheet-check-result { justify-self: end; }
         }
       `}</style>
     </section>

@@ -152,6 +152,8 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
               >
                 {displayName}
               </button>
+              <div className="skill-check-inputs">
+              <span className="skill-ranks-group">
               <span className="skill-base" style={abilityBadgeStyle(def.baseAbility)}>
                 {t(`abilities.${def.baseAbility}`).toUpperCase()} {abilityVal}
               </span>
@@ -163,7 +165,9 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
                 onChange={(value) => updateRanks(i, value)}
                 min={0}
               />
+              </span>
               {/* Other bonus — optional situational modifier (F-11) */}
+              <span className="skill-other-group">
               <span className="skill-other-label">±</span>
               <NumberInput
                 variant="small"
@@ -172,11 +176,17 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
                 onChange={(value) => updateOtherBonus(i, value)}
                 title={t('skills.otherBonus')}
               />
-              <span className="skill-total">= {check.total}</span>
-              <RollButton bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])]} />
+              </span>
+              </div>
+              <div className="skill-row-actions sheet-item-actions">
               <button className="skill-remove" onClick={() => removeSkill(i)} title={t('common.remove')}>
                 <Trash2 size={14} />
               </button>
+              <span className="sheet-check-result">
+                <span className="skill-total">= {check.total}</span>
+                <span className="sheet-roll-slot"><RollButton bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])]} /></span>
+              </span>
+              </div>
             </div>
           );
         })}
@@ -353,17 +363,20 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
         .skill-empty { color: var(--c-text-muted); font-size: 0.85rem; font-style: italic; }
         .skills-list { display: flex; flex-direction: column; gap: var(--s-xs); }
         .skill-row {
-          display: flex; align-items: center; gap: var(--s-sm);
+          display: grid; grid-template-columns: minmax(120px, 1fr) auto auto; align-items: center; gap: var(--s-sm);
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
           border-radius: var(--r-sm); padding: var(--s-xs) var(--s-md);
           transition: border-color var(--t-fast);
         }
         .skill-row:hover { border-color: var(--c-border-active); }
+        .skill-check-inputs,.skill-ranks-group,.skill-other-group { display: flex; align-items: center; gap: var(--s-xs); }
+        .skill-check-inputs { flex-wrap: wrap; }
+        .skill-ranks-group { flex-wrap: wrap; min-width: 0; max-width: 100%; }
 
         /* Melhoria 3: name is a clickable button */
         .skill-name--clickable {
           background: transparent; border: none; color: var(--c-text);
-          font-weight: 500; font-size: 0.85rem; min-width: 180px;
+          font-weight: 500; font-size: 0.85rem; min-width: 0; overflow-wrap: anywhere;
           cursor: pointer; text-align: left; padding: 0; font-family: var(--f-body);
           text-decoration-line: underline;
           text-decoration-style: dotted;
@@ -401,6 +414,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
           padding: var(--s-xs); border-radius: var(--r-sm); display: flex;
         }
         .skill-row:hover .skill-remove { opacity: 1; }
+        .skill-row:focus-within .skill-remove { opacity: 1; }
         .skill-remove:hover { color: var(--c-error); }
 
         .sk-sel-close-btn {
@@ -551,8 +565,10 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
             width: 48px;
           }
           .skill-row {
-            flex-wrap: wrap;
+            grid-template-columns: minmax(0,1fr); gap: var(--s-sm);
           }
+          .skill-row-actions { justify-self: end; }
+          .skill-remove { opacity: 1; }
         }
       `}</style>
     </section>

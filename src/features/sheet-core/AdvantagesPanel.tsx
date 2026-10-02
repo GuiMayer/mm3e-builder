@@ -234,6 +234,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
           if (!def) return null;
           return (
             <div key={`${adv.advantageId}-${i}`} className="adv-chip">
+              <div className="adv-details">
               <Tooltip content={def.description!}>
                 <span className="adv-name">
                   {def.name}
@@ -255,7 +256,8 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
                   )}
                 </>
               )}
-              <AdvantageRollActions advantage={adv} name={def.name} character={character} skillDefs={skillDefs} />
+              </div>
+              <div className="sheet-item-actions">
               <button
                 className="adv-info-btn"
                 onClick={() => setDescTarget(def)}
@@ -266,6 +268,8 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
               <button className="adv-remove" onClick={() => removeAdvantage(i)} title={t('common.remove')}>
                 <Trash2 size={12} />
               </button>
+              <span className="sheet-roll-slot"><AdvantageRollActions advantage={adv} name={def.name} character={character} skillDefs={skillDefs} /></span>
+              </div>
             </div>
           );
         })}
@@ -528,15 +532,17 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
 
       <style>{`
         .adv-empty { color: var(--c-text-muted); font-size: 0.85rem; font-style: italic; }
-        .adv-grid { display: flex; flex-wrap: wrap; gap: var(--s-sm); }
+        .adv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--s-sm); }
         .adv-chip {
-          display: flex; align-items: center; gap: var(--s-xs);
+          display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: var(--s-sm);
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
-          border-radius: var(--r-full); padding: var(--s-xs) var(--s-md);
+          border-radius: var(--r-md); padding: var(--s-xs) var(--s-md);
           transition: border-color var(--t-fast);
         }
         .adv-chip:hover { border-color: var(--c-border-active); }
-        .adv-name { font-size: 0.82rem; font-weight: 500; cursor: help; white-space: nowrap; }
+        .adv-details { min-width: 0; display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-xs); }
+        .adv-details>.tooltip-wrapper { min-width: 0; max-width: 100%; }
+        .adv-name { font-size: 0.82rem; font-weight: 500; cursor: help; overflow-wrap: anywhere; }
         .adv-rank-input {
           width: 36px; text-align: center;
           background: var(--c-bg); border: 1px solid var(--c-border);
@@ -552,6 +558,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
           transition: opacity var(--t-fast), color var(--t-fast);
         }
         .adv-chip:hover .adv-info-btn { opacity: 1; }
+        .adv-chip:focus-within .adv-info-btn { opacity: 1; }
         .adv-info-btn:hover { color: var(--c-primary); }
         .adv-remove {
           background: transparent; border: none; color: var(--c-text-muted);
@@ -559,6 +566,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
           display: flex; padding: 2px;
         }
         .adv-chip:hover .adv-remove { opacity: 1; }
+        .adv-chip:focus-within .adv-remove { opacity: 1; }
         .adv-remove:hover { color: var(--c-error); }
 
         /* Selector */
@@ -728,7 +736,9 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
 
         /* Mobile responsive adjustments for NumberInput */
         @media (max-width: 768px) {
-          .adv-chip { max-width: 100%; flex-wrap: wrap; border-radius: var(--r-md); }
+          .adv-chip { max-width: 100%; grid-template-columns: minmax(0,1fr); }
+          .adv-chip>.sheet-item-actions { justify-self: end; }
+          .adv-info-btn,.adv-remove { opacity: 1; min-width: 28px; min-height: 44px; align-items: center; justify-content: center; }
           .adv-name { white-space: normal; overflow-wrap: anywhere; }
           .adv-rank-input {
             width: 44px;

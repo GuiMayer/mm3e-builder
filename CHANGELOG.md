@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added optional absent-ability warnings for dependent skills, purchased defenses, and Strength-based Damage.
 
 ### Changed
+- Standardize sheet roll controls at the right edge of rows/cards with grouped totals/actions, consistent button styling and mobile wrapping across abilities, skills, defenses, advantages and targeted effects.
 - Animate the dice drawer from outside the viewport, hide its opener while open, and restore focus on close; respect reduced-motion preferences while keeping rolls immediate.
 - Treat generic Extras and Flaws as player choices for every effect, including Movement and Senses. Applicability, incompatibility, maximum-rank, and PL diagnostics do not block Power Builder saves; effect-specific modifiers remain scoped to their defining effect.
 - Sort effect and modifier options by their displayed names in the active language, retaining alphabetical order after filtering without mutating catalog or character data.

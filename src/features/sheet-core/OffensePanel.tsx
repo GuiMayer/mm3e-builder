@@ -190,7 +190,7 @@ export function OffensePanel() {
         .targeted-source-type { border-radius: var(--r-full); color: var(--c-text-muted); background: var(--c-surface); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.05em; padding: 2px 7px; text-transform: uppercase; }
         .targeted-source-count { color: var(--c-text-muted); font-size: 0.76rem; font-variant-numeric: tabular-nums; }
         .targeted-profile-list { display: flex; flex-direction: column; }
-        .targeted-profile { align-items: center; display: grid; gap: var(--s-sm); grid-template-columns: minmax(130px, 1.2fr) minmax(90px, .8fr) minmax(90px, .8fr) minmax(120px, 1fr) minmax(100px, .9fr); padding: var(--s-sm) var(--s-md); border-bottom: 1px solid var(--c-border); }
+        .targeted-profile { align-items: center; display: grid; gap: var(--s-sm); grid-template-columns: minmax(120px, 1.2fr) minmax(70px, .8fr) minmax(70px, .8fr) minmax(90px, 1fr) minmax(80px, .9fr) auto; padding: var(--s-sm) var(--s-md); border-bottom: 1px solid var(--c-border); }
         .targeted-profile:last-child { border-bottom: none; }
         .targeted-profile--alternate { background: rgba(var(--c-primary-rgb), .025); }
         .targeted-profile-main { min-width: 0; }
@@ -200,7 +200,8 @@ export function OffensePanel() {
         .targeted-profile-fact { color: var(--c-text-secondary); font-size: .77rem; min-width: 0; }
         .targeted-profile-fact strong { color: var(--c-primary); font-family: var(--f-heading); font-size: .86rem; }
         .targeted-profile-fact-label { color: var(--c-text-muted); display: block; font-size: .62rem; font-weight: 700; letter-spacing: .05em; margin-bottom: 1px; text-transform: uppercase; }
-        .targeted-profile-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+        .targeted-profile-tags { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; }
+        .targeted-profile-actions { grid-column: -2 / -1; grid-row: 1; }
         .targeted-tag { border-radius: var(--r-full); color: var(--c-text-secondary); background: var(--c-surface-elevated); border: 1px solid var(--c-border); font-size: .65rem; padding: 1px 6px; white-space: nowrap; }
         .targeted-tag--attack { color: var(--c-primary); border-color: var(--c-primary-muted); }
         .targeted-tag--resistance { color: var(--c-warning); }
@@ -221,6 +222,8 @@ export function OffensePanel() {
         @media (max-width: 768px) {
           .targeted-profile { align-items: start; grid-template-columns: 1fr 1fr; padding: var(--s-md); }
           .targeted-profile-main { grid-column: 1 / -1; }
+          .targeted-profile-name { white-space: normal; overflow-wrap: anywhere; }
+          .targeted-profile-actions { grid-column: 1 / -1; grid-row: auto; justify-self: end; }
           .targeted-profile-tags { grid-column: 1 / -1; }
           .targeted-manual-editor { grid-template-columns: 1fr 1fr; padding: var(--s-md); }
           .targeted-manual-editor > :nth-child(1), .targeted-manual-editor > :nth-child(4), .targeted-manual-editor > :nth-child(5), .targeted-editor-actions { grid-column: 1 / -1; }
@@ -242,7 +245,6 @@ function EffectProfile({ profile, t }: { profile: IOffenseEntry; t: (key: string
       <div className="targeted-profile-fact">
         <span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span>
         <strong>{profile.requiresAttackCheck ? profile.bonus : t('targeted.noAttackRoll')}</strong>
-        {profile.requiresAttackCheck && profile.bonusValue !== null && <RollButton bonus={profile.bonusValue} label={profile.name} section={t('targeted.title')} detail={[t(`targeted.source.${profile.sourceType}`), profile.sourceName, profile.componentName, profile.relationship === 'alternate' || profile.relationship === 'dynamic-alternate' ? profile.name : undefined].filter(Boolean).join(' · ')} breakdown={[profile.bonusBreakdown]} />}
       </div>
       <div className="targeted-profile-fact">
         <span className="targeted-profile-fact-label">{t('offense.range')}</span>
@@ -260,6 +262,7 @@ function EffectProfile({ profile, t }: { profile: IOffenseEntry; t: (key: string
         {profile.tags.map((tag) => <span key={tag} className={`targeted-tag targeted-tag--${tag}`}>{t(`targeted.tag.${tag}`)}</span>)}
         {profile.notes && <span className="targeted-tag">{profile.notes}</span>}
       </div>
+      <div className="targeted-profile-actions sheet-item-actions"><span className="sheet-roll-slot">{profile.requiresAttackCheck && profile.bonusValue !== null && <RollButton bonus={profile.bonusValue} label={profile.name} section={t('targeted.title')} detail={[t(`targeted.source.${profile.sourceType}`), profile.sourceName, profile.componentName, profile.relationship === 'alternate' || profile.relationship === 'dynamic-alternate' ? profile.name : undefined].filter(Boolean).join(' · ')} breakdown={[profile.bonusBreakdown]} />}</span></div>
     </article>
   );
 }
@@ -280,13 +283,14 @@ function ManualProfile({ profile, row, editing, draft, onDraftChange, onEdit, on
   return (
     <article className="targeted-profile">
       <div className="targeted-profile-main"><div className="targeted-profile-name">{profile.name}</div><div className="targeted-profile-component">{t('targeted.source.manual')}</div></div>
-      <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span><strong>{profile.requiresAttackCheck ? profile.bonus : t('targeted.noAttackRoll')}</strong>{profile.requiresAttackCheck && profile.bonusValue !== null && <RollButton bonus={profile.bonusValue} label={profile.name} section={t('targeted.title')} detail={t('targeted.source.manual')} />}</div>
+      <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span><strong>{profile.requiresAttackCheck ? profile.bonus : t('targeted.noAttackRoll')}</strong></div>
       <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.range')}</span>{t(`offense.range_${profile.range}`)}</div>
       <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.effect')}</span>{profile.effect}</div>
       <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.notes')}</span>{row.notes || '—'}</div>
-      <div className="targeted-editor-actions">
+      <div className="targeted-profile-actions sheet-item-actions">
         <button className="targeted-icon-btn" onClick={onEdit} title={t('offense.custom.edit')}><Pencil size={13} /></button>
         <button className="targeted-icon-btn targeted-icon-btn--remove" onClick={onRemove} title={t('offense.custom.remove')}><Trash2 size={13} /></button>
+        <span className="sheet-roll-slot">{profile.requiresAttackCheck && profile.bonusValue !== null && <RollButton bonus={profile.bonusValue} label={profile.name} section={t('targeted.title')} detail={t('targeted.source.manual')} />}</span>
       </div>
     </article>
   );

@@ -9,6 +9,12 @@ slides in from the right on desktop and from below on mobile, reversing that
 movement when closed; reduced-motion preferences disable the transition.
 Results appear immediately, without dice animation.
 
+Sheet d20 controls occupy a consistent slot at the right edge of each row or
+card. Skill/defense totals and roll controls stay together, while information/edit/remove
+actions are grouped separately. Non-rollable entries reserve alignment space
+without offering a button. Mobile controls use 44 px targets and groups wrap
+together, keeping editable numbers legible at narrow widths.
+
 The manual form rolls **d20 + an integer bonus**, initially 0. Negative bonuses
 are supported. A manual result contains only the formula and result: it has no
 character, section, action label, or source.

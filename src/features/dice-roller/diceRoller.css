@@ -40,11 +40,13 @@
 .dice-notice strong{font-size:.75rem;color:var(--c-text-secondary);}
 .dice-notice span{font-size:1rem;font-weight:700;color:var(--c-primary);}
 .dice-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
-.roll-button{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:32px;min-height:32px;padding:4px;color:var(--c-primary);background:transparent;border:1px solid transparent;border-radius:var(--r-sm);cursor:pointer;}
+.sheet-item-actions,.sheet-check-result{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0;}
+.sheet-roll-slot{display:inline-flex;align-items:center;justify-content:center;width:32px;min-height:32px;flex-shrink:0;}
+.roll-button{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:32px;height:32px;padding:4px;color:var(--c-primary);background:var(--c-primary-muted);border:1px solid var(--c-border);border-radius:var(--r-sm);cursor:pointer;}
 .roll-button:hover{background:var(--c-primary-muted);border-color:var(--c-border);}
 .roll-button:disabled{opacity:.4;cursor:default;}
 .roll-routine-icon{font-size:.8rem;font-weight:800;}
-.roll-button--label{width:100%;gap:8px;text-align:left;justify-content:flex-start;white-space:normal;font:inherit;font-size:.78rem;}
+.roll-button--label{width:100%;height:auto;min-height:32px;gap:8px;text-align:left;justify-content:flex-start;white-space:normal;font:inherit;font-size:.78rem;}
 .roll-choices-list{position:fixed;inset:0;margin:auto;width:300px;max-width:calc(100vw - 36px);height:max-content;max-height:calc(100dvh - 36px);overflow:auto;color:var(--c-text);background:var(--c-surface-elevated);border:1px solid var(--c-border);border-radius:var(--r-sm);padding:12px;box-shadow:var(--shadow-xl);}
 .roll-choices-list:popover-open{display:flex;flex-direction:column;gap:8px;}
 .roll-choices-list>strong{font-size:.8rem;overflow-wrap:anywhere;}
@@ -55,7 +57,9 @@
  .dice-panel{transform:translateY(calc(100% + 24px));}
  .dice-panel[data-open=true]{transform:translateY(0);}
  .dice-panel button,.dice-panel input,.roll-button{min-height:44px;}
- .roll-button{min-width:44px;}
+ .roll-button{width:44px;height:44px;}
+ .sheet-roll-slot{width:44px;min-height:44px;}
+ .roll-button--label{width:100%;height:auto;min-height:44px;}
  .dice-notice{bottom:calc(82px + env(safe-area-inset-bottom));right:16px;max-width:calc(100vw - 32px);}
  .dice-history{padding-bottom:8px;}
 }
