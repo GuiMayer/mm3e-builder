@@ -1,6 +1,7 @@
 import type { ICharacter, IPowerEffect, IResource } from '../../entities/types';
 import { getEffectiveAbilityRank } from './abilityRanks';
 import { calcInitiativeBonus, calcToughnessBonus } from './mathEngine';
+import { isDeviceResource } from './resourceCalculations';
 
 type DefensiveCharacter = Pick<ICharacter, 'abilities' | 'absentAbilities' | 'powers' | 'advantages' | 'equipment' | 'resourceLinks'>;
 
@@ -10,9 +11,11 @@ export function deriveCharacterDefenses(character: DefensiveCharacter, powerDefs
   const equipment = [
     ...(character.equipment ?? []),
     ...resources.flatMap((resource) => linkedIds.has(resource.id)
-      && resource.type !== 'vehicle' && resource.type !== 'headquarters' ? [resource.power] : []),
+      && resource.type !== 'vehicle' && resource.type !== 'headquarters' && !isDeviceResource(resource) ? [resource.power] : []),
   ];
-  const natural = calcToughnessBonus(character.powers, character.advantages, powerDefs);
+  const devicePowers = resources.flatMap((resource) => linkedIds.has(resource.id) && isDeviceResource(resource) ? [resource.power] : []);
+  const personalPowers = [...character.powers, ...devicePowers];
+  const natural = calcToughnessBonus(personalPowers, character.advantages, powerDefs);
   let armor = { bonus: 0, breakdown: [] as string[] };
   for (const item of equipment) {
     const candidate = calcToughnessBonus([item], [], powerDefs);
@@ -21,7 +24,7 @@ export function deriveCharacterDefenses(character: DefensiveCharacter, powerDefs
   // Equipment bonuses do not stack with one another or power/advantage bonuses.
   const toughness = armor.bonus > natural.bonus ? armor : natural;
   const agility = getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'agl');
-  let initiative = calcInitiativeBonus(agility, character.advantages, character.powers, powerDefs);
+  let initiative = calcInitiativeBonus(agility, character.advantages, personalPowers, powerDefs);
   for (const item of equipment) {
     const candidate = calcInitiativeBonus(agility, [], [item], powerDefs);
     if (candidate.total > initiative.total) initiative = candidate;

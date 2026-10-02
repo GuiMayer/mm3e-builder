@@ -14,7 +14,7 @@ import {
   type PricingDiagnostic,
 } from './mathEngine';
 import { getCharacterStrength } from './componentRanks';
-import { getCharacterResourceEPUsed } from './resourceCalculations';
+import { getCharacterResourceEPUsed, getCharacterResourcePPUsed, isDeviceResource } from './resourceCalculations';
 import { campaignInitialPP } from './campaign';
 
 export interface CharacterPointSummary {
@@ -23,6 +23,7 @@ export interface CharacterPointSummary {
   skillsCost: number;
   advantagesCost: number;
   powersCost: number;
+  resourcePPUsed: number;
   totalSpent: number;
   ppEarned: number;
   totalAvailable: number;
@@ -75,7 +76,8 @@ export function calculateCharacterPointSummary(
   const powerPricing = character.powers.map((power) =>
     calculatePowerPricing(power, powerDefs, modifierDefs, getCharacterStrength(character))
   );
-  const powersCost = powerPricing.reduce((sum, pricing) => sum + pricing.total, 0);
+  const resourcePPUsed = getCharacterResourcePPUsed(character, resources, powerDefs, modifierDefs);
+  const powersCost = powerPricing.reduce((sum, pricing) => sum + pricing.total, 0) + resourcePPUsed;
   const totalSpent = abilitiesCost
     + defensesCost
     + skillsCost
@@ -109,6 +111,7 @@ export function calculateCharacterPointSummary(
     skillsCost,
     advantagesCost,
     powersCost,
+    resourcePPUsed,
     totalSpent,
     ppEarned,
     totalAvailable,
@@ -123,6 +126,8 @@ export function calculateCharacterPointSummary(
     diagnostics: [
       ...powerPricing.flatMap((pricing) => pricing.diagnostics),
       ...equipmentPricing.flatMap((pricing) => pricing.diagnostics),
+      ...resources.filter((resource) => isDeviceResource(resource) && (character.resourceLinks ?? []).some((link) => !link.isFree && link.resourceId === resource.id)).flatMap((resource) =>
+        isDeviceResource(resource) ? calculatePowerPricing(resource.power, powerDefs, modifierDefs, getCharacterStrength(character)).diagnostics : []),
     ],
   };
 }

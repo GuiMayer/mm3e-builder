@@ -15,6 +15,7 @@ import type {
 import { getEffectiveAbilityRank, isStrengthBasedDamage } from './abilityRanks';
 import { resolveEffectiveRange } from './effectParameters';
 import { getAffectedRanks, getCharacterStrength, getComponentEffectRanks, getRankBoundaries } from './componentRanks';
+import { getResourceCharacter, getResourceAttackBonus } from './resourceContext';
 
 /**
  * A single row in the Offense panel table.
@@ -425,13 +426,14 @@ export function buildTargetedEffectProfiles(
     });
   }
 
-  const appendSourceProfiles = (sourcePowers: ICharacter['powers'], sourceType: SourceType) => {
+  const appendSourceProfiles = (sourcePowers: ICharacter['powers'], sourceType: SourceType, context = character, resource?: IResource) => {
     for (const sourcePower of sourcePowers) {
-      const source = { id: sourcePower.id, name: sourcePower.name, type: sourceType };
+      const start = entries.length;
+      const source = { id: resource ? `${resource.id}:${sourcePower.id}` : sourcePower.id, name: sourcePower.name, type: sourceType };
       for (const comp of sourcePower.components) {
         const def = powerDefs.find((effect) => effect.id === comp.effectId);
         if (!def) continue;
-        entries.push(...createComponentProfiles(character, def, comp, skillDefs, modifierDefs, source, 'base'));
+        entries.push(...createComponentProfiles(context, def, comp, skillDefs, modifierDefs, source, 'base'));
       }
       for (const ae of sourcePower.alternateEffects ?? []) {
         const relationship = ae.dynamic ? 'dynamic-alternate' : 'alternate';
@@ -439,7 +441,15 @@ export function buildTargetedEffectProfiles(
           const def = powerDefs.find((effect) => effect.id === comp.effectId);
           if (!def) continue;
           const alternateSource = { ...source, id: `${source.id}:${ae.id}`, parentId: source.id };
-          entries.push(...createComponentProfiles(character, def, comp, skillDefs, modifierDefs, alternateSource, relationship, ae.name));
+          entries.push(...createComponentProfiles(context, def, comp, skillDefs, modifierDefs, alternateSource, relationship, ae.name));
+        }
+      }
+      if (resource) {
+        const fixedBonus = getResourceAttackBonus(resource, sourcePower);
+        for (let index = start; index < entries.length; index++) {
+          const entry = entries[index];
+          entries[index] = { ...entry, name: [resource.name, entry.name].filter(Boolean).join(' — '), sourceName: resource.name || entry.sourceName,
+            ...(fixedBonus !== undefined && entry.requiresAttackCheck ? { bonusValue: fixedBonus, bonus: `+${fixedBonus}`, bonusBreakdown: `PL ${fixedBonus}` } : {}) };
         }
       }
     }
@@ -455,7 +465,7 @@ export function buildTargetedEffectProfiles(
       : resource.type === 'headquarters'
         ? resource.effects
         : [resource.power];
-    appendSourceProfiles(powers.map((power) => ({ ...power, name: resource.name || power.name })), 'resource');
+    appendSourceProfiles(powers, 'resource', getResourceCharacter(character, resource), resource);
   }
 
   // ── 3. Manual offense rows (F-13) ──────────────────────────────

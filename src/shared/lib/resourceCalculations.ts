@@ -6,9 +6,10 @@ import type {
   IVehicleResource,
   IModifierDef,
   IPowerEffect,
+  ICharacterResourceLink,
 } from '../../entities/types';
 import { getCharacterStrength } from './componentRanks';
-import { calcEquipmentEPCost } from './mathEngine';
+import { calcEquipmentEPCost, calculatePowerPricing } from './mathEngine';
 import { MODIFIER_DEFS, POWER_DEFS } from '../../entities/gameDataLoaders';
 
 const VEHICLE_BASES: Record<IVehicleResource['size'], { size: number; strength: number; toughness: number; defense: number }> = {
@@ -46,7 +47,7 @@ export function getVehicleResourceCost(
   const base = VEHICLE_BASES[resource.size];
   const traits = base.size
     + Math.max(0, resource.strength - base.strength)
-    + Math.max(0, resource.speed)
+    + (resource.movement ? powerCost(resource.movement, powerDefs, modifierDefs, resource.strength) : Math.max(0, resource.speed))
     + Math.max(0, resource.defense - base.defense)
     + Math.max(0, resource.toughness - base.toughness)
     + resource.features.reduce((total, feature) => total + (feature.ranks ?? 1), 0);
@@ -60,7 +61,7 @@ export function getHeadquartersResourceCost(resource: IHeadquartersResource): nu
   const traits = HEADQUARTERS_SIZE_COST[resource.size]
     + Math.max(0, Math.ceil((resource.toughness - 6) / 2))
     + resource.features.reduce((total, feature) => total + (feature.ranks ?? 1), 0)
-    // Each HQ effect is a one-EP Feature; its PP value is validated separately.
+    // Effects are one-EP Features; their 2xPL budget is an advisory diagnostic.
     + resource.effects.length;
   return Math.max(0, traits);
 }
@@ -71,6 +72,7 @@ export function getResourceEPCost(
   modifierDefs: IModifierDef[] = MODIFIER_DEFS,
   strength = 0
 ): number {
+  if (isDeviceResource(resource)) return 0;
   if (resource.type === 'vehicle') return getVehicleResourceCost(resource, powerDefs, modifierDefs);
   if (resource.type === 'headquarters') return getHeadquartersResourceCost(resource);
   return powerCost(resource.power, powerDefs, modifierDefs, strength);
@@ -82,10 +84,60 @@ export function getCharacterResourceEPUsed(
   powerDefs: IPowerEffect[] = POWER_DEFS,
   modifierDefs: IModifierDef[] = MODIFIER_DEFS
 ): number {
-  return (character.resourceLinks ?? []).reduce((total, link) => {
-    if (link.isFree) return total;
-    const resource = resources.find((item) => item.id === link.resourceId);
-    if (!resource) return total;
-    return total + (link.contributionEP ?? getResourceEPCost(resource, powerDefs, modifierDefs, getCharacterStrength(character)));
-  }, 0);
+  return getLinkedResourceCharges(character, resources, powerDefs, modifierDefs)
+    .reduce((total, charge) => total + (charge.unit === 'EP' ? charge.charged : 0), 0);
+}
+
+export function isDeviceResource(resource: IResource): resource is Extract<IResource, { power: ICharacterPower }> & { costMode: 'device' } {
+  return resource.type !== 'vehicle' && resource.type !== 'headquarters' && resource.costMode === 'device';
+}
+
+export function getResourceCost(resource: IResource, powerDefs: IPowerEffect[] = POWER_DEFS, modifierDefs: IModifierDef[] = MODIFIER_DEFS, strength = 0): { total: number; unit: 'PP' | 'EP' } {
+  if (isDeviceResource(resource)) return { total: calculatePowerPricing(resource.power, powerDefs, modifierDefs, strength).total, unit: 'PP' };
+  return { total: getResourceEPCost(resource, powerDefs, modifierDefs, strength), unit: 'EP' };
+}
+
+export interface LinkedResourceCharge {
+  link: ICharacterResourceLink;
+  resource: IResource;
+  total: number;
+  unit: 'PP' | 'EP';
+  charged: number;
+  alternate: boolean;
+}
+
+/** One authoritative allocation for UI, budgets, PDF and Excel. Shared HQs stay separate. */
+export function getLinkedResourceCharges(character: ICharacter, resources: IResource[], powerDefs: IPowerEffect[] = POWER_DEFS, modifierDefs: IModifierDef[] = MODIFIER_DEFS): LinkedResourceCharge[] {
+  const library = new Map(resources.map((resource) => [resource.id, resource]));
+  const charges = (character.resourceLinks ?? []).flatMap((link): LinkedResourceCharge[] => {
+    const resource = library.get(link.resourceId);
+    if (!resource) return [];
+    const cost = getResourceCost(resource, powerDefs, modifierDefs, getCharacterStrength(character));
+    return [{ link, resource, ...cost, charged: link.isFree ? 0 : cost.unit === 'EP' ? link.contributionEP ?? cost.total : cost.total, alternate: false }];
+  });
+  const groups = new Map<string, LinkedResourceCharge[]>();
+  for (const charge of charges) {
+    if (!charge.link.alternateSetId || charge.link.isFree || charge.unit !== 'EP'
+      || (charge.resource.type === 'headquarters' && charge.link.contributionEP !== undefined)) continue;
+    const group = groups.get(charge.link.alternateSetId) ?? [];
+    group.push(charge); groups.set(charge.link.alternateSetId, group);
+  }
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+    const primary = group.reduce((highest, item) => item.charged > highest.charged ? item : highest);
+    for (const charge of group) if (charge !== primary) { charge.charged = 1; charge.alternate = true; }
+  }
+  return charges;
+}
+
+export function getCharacterResourcePPUsed(character: ICharacter, resources: IResource[], powerDefs: IPowerEffect[] = POWER_DEFS, modifierDefs: IModifierDef[] = MODIFIER_DEFS): number {
+  return getLinkedResourceCharges(character, resources, powerDefs, modifierDefs).reduce((total, charge) => total + (charge.unit === 'PP' ? charge.charged : 0), 0);
+}
+
+export function changeVehicleSize(resource: IVehicleResource, size: IVehicleResource['size']): IVehicleResource {
+  const before = getVehicleBaseTraits(resource.size), after = getVehicleBaseTraits(size);
+  return { ...resource, size,
+    strength: after.strength + resource.strength - before.strength,
+    toughness: after.toughness + resource.toughness - before.toughness,
+    defense: after.defense + resource.defense - before.defense };
 }
