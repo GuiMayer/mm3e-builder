@@ -10,6 +10,8 @@ import { useAppDialog } from '../../shared/ui/appDialogContext';
 import { campaignInitialPP, localCampaignDate, isCampaignAmount, isCampaignDate, CAMPAIGN_AMOUNT_LIMIT } from '../../shared/lib/campaign';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import type { IPPLogEntry } from '../../entities/types';
+import { readCampaignMigrationBackup } from '../../services/storage/campaignMigration';
+import { downloadBlob } from '../../services/downloadHelper';
 import './campaign.css';
 
 interface EntryDraft { date: string; amount: string; note: string; session: string; kind: 'award' | 'adjustment' }
@@ -29,7 +31,13 @@ function CampaignPanel({ characterId }: { characterId: string }) {
   const [base, setBase] = useState(String(campaignInitialPP(character)));
   const [baseEditing, setBaseEditing] = useState(false);
   const [error, setError] = useState('');
+  const [migrationBackup] = useState(() => readCampaignMigrationBackup());
+  const [query, setQuery] = useState('');
+  const [newestFirst, setNewestFirst] = useState(true);
   const log = character.ppLog ?? [];
+  const search = query.trim().toLocaleLowerCase();
+  const visibleEntries = log.map((entry, index) => ({ entry, index })).filter(({ entry }) => log.length < 10 || !search || `${entry.date} ${entry.session ?? ''} ${entry.note} ${entry.amount}`.toLocaleLowerCase().includes(search));
+  if (newestFirst) visibleEntries.reverse();
   const net = log.reduce((sum, entry) => sum + entry.amount, 0);
   const amount = Number(draft?.amount);
   const validAmount = !!draft?.amount.trim() && (isCampaignAmount(amount) || (editing !== null && amount === editing.original.amount));
@@ -100,9 +108,14 @@ function CampaignPanel({ characterId }: { characterId: string }) {
         <p className="campaign-preview" aria-live="polite">{valid ? t('campaign.preview', { total: preview }) : t('campaign.invalidEntry')}</p>
         <div className="campaign-toolbar"><button className="btn btn-primary" type="submit" disabled={!valid}>{t('campaign.save')}</button><button className="btn btn-secondary" type="button" onClick={() => { setDraft(null); setEditing(null); setError(''); }}>{t('menu.cancel')}</button></div>
       </form>}
+      {log.length >= 10 && <div className="campaign-history-controls">
+        <label htmlFor={`${id}-search`}>{t('campaign.search')}<input id={`${id}-search`} type="search" value={query} onChange={event => setQuery(event.target.value)} /></label>
+        <label htmlFor={`${id}-order`}>{t('campaign.order')}<select id={`${id}-order`} value={newestFirst ? 'newest' : 'oldest'} onChange={event => setNewestFirst(event.target.value === 'newest')}><option value="newest">{t('campaign.newest')}</option><option value="oldest">{t('campaign.oldest')}</option></select></label>
+      </div>}
       <div className="campaign-log">
         {log.length === 0 && <p className="campaign-hint">{t('ppLog.empty')}</p>}
-        {log.map((entry, index) => ({ entry, index })).reverse().map(({ entry, index }) => {
+        {log.length > 0 && visibleEntries.length === 0 && <p className="campaign-hint">{t('campaign.noResults')}</p>}
+        {visibleEntries.map(({ entry, index }) => {
           const reversed = log.some(item => item.reversesEntryId === entry.id);
           return <article key={`${entry.id}:${index}`} className="campaign-entry">
             <div className="campaign-entry-heading"><span>{entry.date || '—'}{entry.session ? ` · ${entry.session}` : ''}</span><strong className={entry.amount < 0 ? 'campaign-negative' : ''}>{signed(entry.amount)} PP</strong></div>
@@ -125,6 +138,7 @@ function CampaignPanel({ characterId }: { characterId: string }) {
           <p className="campaign-preview" aria-live="polite">{base.trim() && Number.isSafeInteger(Number(base)) && Number(base) >= 0 && Number(base) <= CAMPAIGN_AMOUNT_LIMIT ? t('campaign.preview', { total: character.campaignMode ? Number(base) + net : totalAvailable }) : t('campaign.invalidBase')}</p>
           <div className="campaign-toolbar"><button className="btn btn-primary" type="submit">{t('campaign.save')}</button><button className="btn btn-secondary" type="button" onClick={() => setBaseEditing(false)}>{t('menu.cancel')}</button></div>
         </form>}
+        {migrationBackup && <button className="btn btn-secondary campaign-backup" onClick={() => { void downloadBlob(new Blob([migrationBackup], { type: 'application/x-ndjson' }), 'mm3e-before-campaign-migration.jsonl').catch(() => setError('draft.exportError')); }}>{t('campaign.downloadBackup')}</button>}
       </details>
     </div>}
   </section>;

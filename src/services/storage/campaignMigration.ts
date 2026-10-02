@@ -2,6 +2,9 @@ import { captureDraftStorageSnapshot, serializeDraftStorageSnapshot, type DraftS
 import { createCampaign } from '../../shared/lib/campaign';
 
 export const CAMPAIGN_MIGRATION_BACKUP_KEY = 'mm3e-campaign-migration-backup-v1';
+export function readCampaignMigrationBackup(storage: Pick<Storage, 'getItem'> = localStorage): string | null {
+  try { return storage.getItem(CAMPAIGN_MIGRATION_BACKUP_KEY); } catch { return null; }
+}
 type StorageAccess = Pick<Storage, 'getItem' | 'setItem'>;
 type RawObject = Record<string, unknown>;
 const object = (value: unknown): value is RawObject => !!value && typeof value === 'object' && !Array.isArray(value);

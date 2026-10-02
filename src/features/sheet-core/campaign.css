@@ -39,5 +39,8 @@
 .campaign-options>summary{cursor:pointer;font-size:.8rem;padding:6px 0;}
 .campaign-options>p{margin:10px 0;}
 .campaign-options form{display:grid;gap:12px;max-width:380px;}
+.campaign-history-controls{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:12px;}
+.campaign-backup{margin-top:12px;}
+@media(max-width:480px){.campaign-history-controls{grid-template-columns:1fr;}}
 @media(max-width:768px){.campaign-form-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.campaign-panel :is(input,select,button){min-height:44px;}.campaign-entry-actions button{min-width:44px;}}
 @media(max-width:480px){.campaign-header{flex-wrap:wrap;padding:10px 12px;}.campaign-toggle{flex-basis:100%;}.campaign-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:12px;}.campaign-body{padding:0 12px 12px;}.campaign-form-grid{grid-template-columns:1fr;}.campaign-form{padding:12px;}.campaign-entry-heading{flex-wrap:wrap;}}

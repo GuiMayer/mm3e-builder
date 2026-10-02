@@ -14,6 +14,6 @@ export function renderCampaignSection(character: ICharacter, summary: Pick<Chara
   return `<div class="pdf-section pdf-campaign-section">
     <div class="pdf-section-title">${labels('Campaign History')}</div>
     <p>${labels(character.campaignMode ? 'Campaign active' : 'Campaign disabled')} · ${labels('Starting PP')}: ${campaignInitialPP(character)} · ${labels('Available PP')}: ${summary.totalAvailable} · ${labels('Points Remaining')}: ${summary.remaining}</p>
-    <table class="offense-table"><thead><tr><th>${labels('Date')}</th><th>${labels('Session')}</th><th>${labels('Notes')}</th><th>${labels('Amount')}</th><th>${labels('PP after entry')}</th></tr></thead><tbody>${rows}</tbody></table>
+    <table class="offense-table"><thead><tr><th>${labels('Date')}</th><th>${labels('Session')}</th><th>${labels('Notes')}</th><th>PP</th><th>${labels('PP after entry')}</th></tr></thead><tbody>${rows}</tbody></table>
   </div>`;
 }
