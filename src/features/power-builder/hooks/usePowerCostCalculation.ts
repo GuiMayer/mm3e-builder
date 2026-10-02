@@ -29,6 +29,7 @@ interface UsePowerCostCalculationProps {
   powerLevel: number;
   validationRules?: Partial<IValidationRules>;
   character: ICharacter;
+  attackBonusOverride?: number;
 }
 
 interface ComponentCostResult {
@@ -43,6 +44,7 @@ export function usePowerCostCalculation({
   powerLevel,
   validationRules,
   character,
+  attackBonusOverride,
 }: UsePowerCostCalculationProps) {
   const strength = getCharacterStrength(character);
   const selectPricing = useMemo(() => createPowerPricingSelector(powerDefs, modifierDefs, strength), [powerDefs, modifierDefs, strength]);
@@ -68,8 +70,8 @@ export function usePowerCostCalculation({
 
   // PL validation uses the same component classification as Targeted Effects.
   const plViolation = useMemo(() => {
-    return getPowerPLViolation({ validationRules, character, power, powerDefs, modifierDefs, powerLevel });
-  }, [validationRules, character, power, powerDefs, modifierDefs, powerLevel]);
+    return getPowerPLViolation({ validationRules, character, power, powerDefs, modifierDefs, powerLevel, attackBonusOverride });
+  }, [validationRules, character, power, powerDefs, modifierDefs, powerLevel, attackBonusOverride]);
 
   return {
     componentCosts,
@@ -86,7 +88,7 @@ export function usePowerCostCalculation({
   };
 }
 
-function getPowerPLViolation({ validationRules, character, power, powerDefs, modifierDefs, powerLevel }: UsePowerCostCalculationProps) {
+function getPowerPLViolation({ validationRules, character, power, powerDefs, modifierDefs, powerLevel, attackBonusOverride }: UsePowerCostCalculationProps) {
   const activeRules = getActiveValidationRules(validationRules);
   if (!activeRules.enforcePLLimits) return null;
 
@@ -112,7 +114,7 @@ function getPowerPLViolation({ validationRules, character, power, powerDefs, mod
       };
     }
 
-    const attackBonus = profile.bonusValue ?? 0;
+    const attackBonus = attackBonusOverride ?? profile.bonusValue ?? 0;
     const violation = validateAttackEffect(attackBonus, rank, powerLevel);
     if (violation) {
       return {

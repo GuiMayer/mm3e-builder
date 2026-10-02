@@ -1,0 +1,34 @@
+.resources-view{margin:0 auto;max-width:1200px;padding:var(--s-lg)}
+.resources-view__header{display:flex;gap:var(--s-lg);justify-content:space-between;margin-bottom:var(--s-xl)}
+.resources-view h1{align-items:center;display:flex;font-size:1.4rem;gap:var(--s-sm);margin:0 0 var(--s-xs)}
+.resources-view__header p{color:var(--c-text-muted);margin:0;max-width:650px}
+.resources-view__new{align-content:flex-start;display:flex;flex-wrap:wrap;gap:var(--s-xs);justify-content:flex-end}
+.resources-view__grid{display:grid;gap:var(--s-md);grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.resources-view__empty{border:1px dashed var(--c-border);border-radius:var(--r-md);color:var(--c-text-muted);grid-column:1/-1;padding:var(--s-xl);text-align:center}
+.resource-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);display:flex;flex-direction:column;gap:var(--s-sm);min-width:0;padding:var(--s-md)}
+.resource-card__top,.resource-card__power{align-items:center;display:flex;gap:var(--s-sm);justify-content:space-between}
+.resource-card__top span{color:var(--c-primary);font-size:.7rem;font-weight:700;text-transform:uppercase}
+.resource-card button,.resource-feature__row>button{align-items:center;background:transparent;border:0;border-radius:var(--r-sm);color:var(--c-text-secondary);cursor:pointer;display:inline-flex;gap:var(--s-xs);min-height:36px;min-width:36px;padding:var(--s-xs);text-align:left}
+.resource-card button:hover{color:var(--c-primary);background:var(--c-primary-muted)}
+.resource-card h2{font-size:1rem;margin:0;overflow-wrap:anywhere}
+.resource-card p,.resource-card__features{color:var(--c-text-secondary);font-size:.82rem;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.resource-card__features{padding-left:var(--s-lg)}
+.resource-card__features small{color:var(--c-text-muted);display:block}
+.resource-card__effects{background:var(--c-primary-muted)!important;border:1px solid var(--c-primary)!important;color:var(--c-primary)!important;justify-content:center}
+.resource-card__system{border-top:1px solid var(--c-border);padding-top:var(--s-xs)}
+.resource-card__cost-details{font-size:.8rem;color:var(--c-text-secondary)}
+.resource-card__cost-details summary{cursor:pointer;padding:var(--s-xs) 0}
+.resource-card__cost-details dl{margin:var(--s-sm) 0}.resource-card__cost-details dl>div{display:flex;justify-content:space-between;gap:var(--s-sm)}.resource-card__cost-details dd{margin:0;white-space:nowrap}
+.resource-card footer{color:var(--c-primary);font-weight:700;margin-top:auto;padding-top:var(--s-md)}
+.resource-warning{color:var(--c-warning)!important}
+.resource-notice{background:var(--c-surface);border:1px solid var(--c-warning);border-radius:var(--r-sm);padding:var(--s-md);margin-bottom:var(--s-lg)}
+.resource-editor{display:flex;flex-direction:column;gap:var(--s-md);max-width:760px;margin:0 auto}
+.resource-editor label,.resource-card__system label{color:var(--c-text-secondary);display:flex;flex-direction:column;font-size:.82rem;gap:var(--s-xs);margin:var(--s-xs) 0;min-width:0}
+.resource-editor input,.resource-editor textarea,.resource-editor select,.resource-card select{background:var(--c-surface-elevated);border:1px solid var(--c-border);border-radius:var(--r-sm);color:var(--c-text);font:inherit;max-width:100%;padding:var(--s-sm);width:100%;min-width:0}
+.resource-editor fieldset{border:1px solid var(--c-border);border-radius:var(--r-sm);display:flex;flex-direction:column;gap:var(--s-sm);margin:0;padding:var(--s-md);min-width:0}
+.resource-editor p{color:var(--c-text-muted);font-size:.82rem;margin:0}
+.resource-fields__numbers{display:grid;gap:var(--s-sm);grid-template-columns:repeat(3,minmax(0,1fr))}
+.resource-editor__actions{display:flex;gap:var(--s-sm);justify-content:flex-end}
+.resource-feature__row{display:grid;gap:var(--s-sm);grid-template-columns:minmax(0,1fr) 125px 36px;align-items:end}
+.resource-features{display:flex;flex-direction:column;gap:var(--s-sm)}
+@media(max-width:700px){.resources-view{padding:var(--s-sm)}.resources-view__header{flex-direction:column}.resources-view__new{justify-content:flex-start}.resource-fields__numbers{grid-template-columns:repeat(2,minmax(0,1fr))}.resource-feature__row{grid-template-columns:minmax(0,1fr) 36px}.resource-feature__row>label:first-child{grid-column:1/-1}.resource-card button,.resource-feature__row>button{min-height:44px;min-width:44px}}

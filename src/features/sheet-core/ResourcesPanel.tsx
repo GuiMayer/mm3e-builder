@@ -6,26 +6,29 @@ import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { useResourcesStore } from '../../store/resourcesStore';
-import { getCharacterStrength } from '../../shared/lib/componentRanks';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
-import { getResourceEPCost } from '../../shared/lib/resourceCalculations';
+import { getLinkedResourceCharges, isDeviceResource } from '../../shared/lib/resourceCalculations';
 import { createId } from '../../shared/lib/identity';
 import { Button } from '../../shared/ui/Button';
+import { NumberInput } from '../../shared/ui/NumberInput';
+import { useCharactersStore } from '../../store/charactersStore';
 
 const RESOURCE_TYPES: ResourceType[] = ['gadget', 'gear', 'vehicle', 'headquarters', 'custom'];
 const EMPTY_RESOURCE_LINKS: ICharacterResourceLink[] = [];
 
 export function ResourcesPanel() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { character } = useActiveCharacter();
   const { setResourceLinks } = useCharacterActions();
   const resources = useResourcesStore((state) => state.resources);
-  const { equipmentEPLimit, totalEPUsed, isOverEquipmentLimit } = useCalculatedPP();
+  const { equipmentEPLimit, totalEPUsed, isOverEquipmentLimit, resourcePPUsed } = useCalculatedPP();
+  const tabs = useCharactersStore((state) => state.tabs);
   const [showSelector, setShowSelector] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilters, setActiveFilters] = useState<Set<ResourceType>>(new Set());
   const searchRef = useRef<HTMLInputElement>(null);
   const links = character.resourceLinks ?? EMPTY_RESOURCE_LINKS;
+  const charges = useMemo(() => getLinkedResourceCharges(character, resources, POWER_DEFS, MODIFIER_DEFS), [character, resources]);
 
   useEffect(() => {
     if (showSelector) searchRef.current?.focus();
@@ -66,14 +69,14 @@ export function ResourcesPanel() {
       !linkedResourceIds.has(resource.id)
       && (activeFilters.size === 0 || activeFilters.has(resource.type))
       && (term === '' || resource.name.toLowerCase().includes(term))
-    );
-  }, [activeFilters, links, resources, searchTerm]);
+    ).sort((a, b) => a.name.localeCompare(b.name, i18n.language, { sensitivity: 'base', numeric: true }));
+  }, [activeFilters, links, resources, searchTerm, i18n.language]);
 
   return (
     <section className="panel resources-panel">
       <div className="panel-header">
         <h2 className="panel-title"><Package size={15} /> {t('resources.characterTitle')}</h2>
-        <span className={`panel-cost ${isOverEquipmentLimit ? 'panel-cost--error' : ''}`}>{totalEPUsed} / {equipmentEPLimit} EP</span>
+        <span className={`panel-cost ${isOverEquipmentLimit ? 'panel-cost--error' : ''}`}>{resourcePPUsed > 0 ? `${resourcePPUsed} PP · ` : ''}{totalEPUsed} / {equipmentEPLimit} EP</span>
       </div>
       <p className="resources-panel__hint">{t('resources.characterHint')}</p>
 
@@ -83,13 +86,23 @@ export function ResourcesPanel() {
         {links.map((link) => {
           const resource = resources.find((item) => item.id === link.resourceId);
           if (!resource) return <div className="resources-panel__missing" key={link.id}>{t('resources.missing')}<button onClick={() => removeLink(link.id)} aria-label={t('common.remove')}><Trash2 size={14} /></button></div>;
-          const cost = link.isFree ? 0 : link.contributionEP ?? getResourceEPCost(resource, POWER_DEFS, MODIFIER_DEFS, getCharacterStrength(character));
+          const charge = charges.find((item) => item.link.id === link.id)!;
+          const localPaid = tabs.flatMap((tab) => getLinkedResourceCharges(tab.character, resources)).filter((item) => item.resource.id === resource.id && item.unit === 'EP').reduce((sum, item) => sum + item.charged, 0);
           return (
             <article className="resources-panel__item" key={link.id}>
               <div className="resources-panel__item-main"><strong>{resource.name || t('resources.unnamed')}</strong><span>{t(`resources.type.${resource.type}`)}</span></div>
               <label className="resources-panel__free"><input className="app-checkbox" type="checkbox" checked={link.isFree} onChange={(event) => updateLink(link.id, { isFree: event.target.checked })} /> {t('resources.free')}</label>
-              <strong className="resources-panel__cost">{cost} EP</strong>
+              <strong className="resources-panel__cost">{charge.charged} {charge.unit}</strong>
               <button className="resources-panel__remove" onClick={() => removeLink(link.id)} title={t('common.remove')} aria-label={t('common.remove')}><Trash2 size={14} /></button>
+              <details className="resources-panel__ownership"><summary>{t('resources.ownership')}</summary>
+                <p>{t('resources.fullCost', { cost: charge.total, unit: charge.unit })}{charge.alternate ? ` · ${t('resources.alternatePrice')}` : ''}</p>
+                {!isDeviceResource(resource) && <>
+                  <label><input type="checkbox" className="app-checkbox" checked={link.contributionEP !== undefined} onChange={(event) => updateLink(link.id, { contributionEP: event.target.checked ? charge.total : undefined, ...(resource.type === 'headquarters' && event.target.checked ? { alternateSetId: undefined } : {}) })}/> {t('resources.shared')}</label>
+                  {link.contributionEP !== undefined && <><label>{t('resources.contribution')}<NumberInput value={link.contributionEP} min={0} variant="compact" onChange={(contributionEP) => updateLink(link.id, { contributionEP })}/></label><p>{t('resources.localContributions', { paid: localPaid, cost: charge.total })}</p></>}
+                  {!(resource.type === 'headquarters' && link.contributionEP !== undefined) && <><label>{t('resources.alternateGroup')}<input type="text" value={link.alternateSetId ?? ''} placeholder={t('resources.alternateGroupPlaceholder')} onChange={(event) => updateLink(link.id, { alternateSetId: event.target.value || undefined })}/></label><p>{t('resources.alternateGroupHint')}</p></>}
+                  {(resource.type === 'vehicle' || resource.type === 'headquarters') && <p>{t('resources.sharedHint')}</p>}
+                </>}
+              </details>
             </article>
           );
         })}
@@ -164,7 +177,12 @@ export function ResourcesPanel() {
         .resources-panel__item-main span { color:var(--c-text-muted); font-size:.7rem; text-transform:capitalize; }
         .resources-panel__free { color:var(--c-text-secondary); font-size:.76rem; white-space:nowrap; }
         .resources-panel__cost { color:var(--c-primary); font-variant-numeric:tabular-nums; }
-        .resources-panel__remove,.resources-panel__missing button { background:transparent; border:0; color:var(--c-text-muted); cursor:pointer; display:flex; padding:4px; }
+        .resources-panel__remove,.resources-panel__missing button { background:transparent; border:0; color:var(--c-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center; min-width:36px; min-height:36px; padding:4px; }
+        .resources-panel__ownership { grid-column:1/-1; font-size:.8rem; color:var(--c-text-secondary); min-width:0; }
+        .resources-panel__ownership summary { cursor:pointer; padding:var(--s-xs) 0; }
+        .resources-panel__ownership p { color:var(--c-text-muted); margin:var(--s-sm) 0; }
+        .resources-panel__ownership label { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-sm); margin:var(--s-sm) 0; }
+        .resources-panel__ownership input[type=text] { background:var(--c-surface); color:var(--c-text); border:1px solid var(--c-border); border-radius:var(--r-sm); padding:var(--s-xs); max-width:100%; }
         .resources-panel__remove:hover,.resources-panel__missing button:hover { color:var(--c-error); }
         .resources-panel__selector { animation:fadeIn .2s ease; background:var(--c-surface-elevated); border:1px solid var(--c-border); border-radius:var(--r-md); margin-top:var(--s-sm); padding:var(--s-md); }
         .resources-panel__search { align-items:center; border-bottom:1px solid var(--c-border); display:flex; gap:var(--s-xs); padding-bottom:var(--s-sm); }
@@ -185,7 +203,7 @@ export function ResourcesPanel() {
         .resources-panel__selector-footer { border-top:1px solid var(--c-border); display:flex; justify-content:flex-end; margin-top:var(--s-sm); padding-top:var(--s-sm); }
         .resources-panel__close-selector { align-items:center; background:var(--c-surface-elevated); border:1px solid var(--c-border); border-radius:var(--r-sm); color:var(--c-text-secondary); cursor:pointer; display:flex; font:inherit; font-size:.78rem; gap:4px; padding:var(--s-xs) var(--s-sm); }
         .resources-panel__close-selector:hover { border-color:var(--c-primary); color:var(--c-primary); }
-        @media (max-width:768px) { .resources-panel__item { grid-template-columns:1fr auto; } .resources-panel__free { grid-column:1; } .resources-panel__cost { grid-column:2; grid-row:2; } .resources-panel__remove { grid-column:2; grid-row:1; } }
+        @media (max-width:768px) { .resources-panel__item { grid-template-columns:1fr auto; } .resources-panel__free { grid-column:1; } .resources-panel__cost { grid-column:2; grid-row:2; } .resources-panel__remove { grid-column:2; grid-row:1; min-width:44px; min-height:44px; } }
       `}</style>
     </section>
   );

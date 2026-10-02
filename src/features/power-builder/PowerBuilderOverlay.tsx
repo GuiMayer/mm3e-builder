@@ -1,4 +1,6 @@
 import { InfoDialog } from '../../shared/ui/InfoDialog';
+import { getResourceCharacter, getResourceAttackBonus, type ResourceBuilderContext } from '../../shared/lib/resourceContext';
+import { getResourcePowerWarnings } from '../../shared/lib/resourceWarnings';
 import { useState, useMemo, useCallback, useId, useRef } from 'react';
 import { DndContext, DragOverlay, type Announcements } from '@dnd-kit/core';
 import type {
@@ -55,9 +57,11 @@ interface Props {
   onClose: () => void;
   /** When true, hides the Removable modifier from the palette and badge UI. */
   equipmentMode?: boolean;
+  resourceContext?: ResourceBuilderContext;
+  saveError?: string | null;
 }
 
-export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentMode }: Props) {
+export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
   const { t } = useTranslation();
   const dialog = useAppDialog();
   const isMobile = useIsMobile();
@@ -67,7 +71,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
 
   // Read character and validation rules from stores
-  const { character } = useActiveCharacter();
+  const { character: activeCharacter } = useActiveCharacter();
+  const character = useMemo(() => resourceContext ? getResourceCharacter(activeCharacter, resourceContext.resource) : activeCharacter, [activeCharacter, resourceContext]);
   const powerLevel = character.header.powerLevel;
   const validationRules = useAppStore((s) => s.validationRules) ?? DEFAULT_VALIDATION_RULES;
 
@@ -180,6 +185,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     powerLevel,
     validationRules,
     character,
+    attackBonusOverride: resourceContext ? getResourceAttackBonus(resourceContext.resource, power) : undefined,
   });
 
   const semanticWarnings = useMemo(
@@ -191,6 +197,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     }).filter((validationIssue) => validationIssue.severity === 'warning'),
     [modifierDefs, power, powerDefs, validationRules, character]
   );
+  const resourceWarnings = resourceContext ? getResourcePowerWarnings(resourceContext.resource, power, character, powerDefs, allModDefs) : [];
 
   // Palette context: when an AE is expanded, palette serves that AE's active component
   const paletteContext = useMemo(
@@ -1051,6 +1058,11 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               contextLabel={fabContextLabel}
             />
           </div>
+          {saveError && <div role="alert" className="pl-violation-banner">{t(saveError)}</div>}
+          {resourceContext && <div className="pl-violation-banner" style={{ color: 'var(--c-text-secondary)' }}>
+            <Info size={13} /><span>{t('resources.builder.context', { name: resourceContext.resource.name || t('resources.unnamed'), strength: getCharacterStrength(character), level: powerLevel })}{resourceContext.resource.type === 'headquarters' ? ` · ${t('resources.hq.effectCost', { cost: equipmentEPCost, limit: powerLevel * 2 })}` : ''}</span>
+          </div>}
+          {resourceWarnings.map((warning) => <div className="pl-violation-banner" key={warning.key}><AlertTriangle size={13} /><span>{t(warning.key, warning.values)}</span></div>)}
           {plViolation && (
             <div className="pl-violation-banner">
               <AlertTriangle size={13} />

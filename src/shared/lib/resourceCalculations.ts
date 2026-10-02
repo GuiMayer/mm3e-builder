@@ -141,3 +141,27 @@ export function changeVehicleSize(resource: IVehicleResource, size: IVehicleReso
     toughness: after.toughness + resource.toughness - before.toughness,
     defense: after.defense + resource.defense - before.defense };
 }
+
+export function getResourceCostDetails(resource: IResource, strength = 0): Array<{ key?: string; name?: string; cost: number }> {
+  if (resource.type === 'vehicle') {
+    const base = getVehicleBaseTraits(resource.size);
+    return [{ key: 'resources.size', cost: base.size },
+      { key: 'resources.strengthShort', cost: Math.max(0, resource.strength - base.strength) },
+      { key: 'resources.defense', cost: Math.max(0, resource.defense - base.defense) },
+      { key: 'resources.toughness', cost: Math.max(0, resource.toughness - base.toughness) },
+      { key: 'resources.movement', cost: resource.movement ? powerCost(resource.movement, undefined, undefined, resource.strength) : resource.speed },
+      ...resource.features.map((feature) => ({ name: feature.name, cost: feature.ranks ?? 1 })),
+      ...resource.systems.map((power) => ({ name: power.name, cost: powerCost(power, undefined, undefined, resource.strength) }))];
+  }
+  if (resource.type === 'headquarters') return [
+    { key: 'resources.size', cost: HEADQUARTERS_SIZE_COST[resource.size] },
+    { key: 'resources.toughness', cost: Math.max(0, Math.ceil((resource.toughness - 6) / 2)) },
+    ...resource.features.map((feature) => ({ name: feature.name, cost: feature.ranks ?? 1 })),
+    ...resource.effects.map((power) => ({ name: power.name, cost: 1 })),
+  ];
+  const price = calculatePowerPricing(resource.power, POWER_DEFS, MODIFIER_DEFS, strength);
+  return [{ key: 'resources.effects', cost: price.mainCost },
+    { key: 'resources.alternateGroup', cost: price.arrayCost - price.mainCost },
+    { key: 'builder.activation', cost: -price.activationDiscount },
+    ...(isDeviceResource(resource) ? [{ key: 'resources.removable', cost: -price.removableDiscount }] : [])];
+}
