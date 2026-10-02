@@ -8,26 +8,28 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   compact?: boolean;
+  dismissible?: boolean;
   children: ReactNode;
 }
 
-export function Modal({ isOpen, onClose, title, compact, children }: ModalProps) {
+export function Modal({ isOpen, onClose, title, compact, dismissible = true, children }: ModalProps) {
   const { t } = useTranslation();
   const titleId = useId();
   const contentRef = useRef<HTMLDivElement>(null);
-  useDialogFocus(contentRef, isOpen, onClose);
+  const close = () => { if (dismissible) onClose(); };
+  useDialogFocus(contentRef, isOpen, close);
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={close}>
       <div ref={contentRef} data-mm-modal role="dialog" aria-modal="true" aria-labelledby={title ? titleId : undefined} aria-label={title ? undefined : t('builder.title')} tabIndex={-1} className={`modal-content ${compact ? 'modal-content--compact' : ''}`} onClick={(e) => e.stopPropagation()}>
         {title && (
           <div className="modal-header">
             <h2 id={titleId} className="modal-title">{title}</h2>
-            <button className="modal-close" onClick={onClose} aria-label={t('builder.close')}>
+            {dismissible && <button className="modal-close" onClick={onClose} aria-label={t('builder.close')}>
               <X size={20} />
-            </button>
+            </button>}
           </div>
         )}
         <div className="modal-body">{children}</div>

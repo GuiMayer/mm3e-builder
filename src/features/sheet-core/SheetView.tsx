@@ -39,6 +39,7 @@ export function SheetView() {
       )}
 
       <HeaderPanel />
+      <PPLogPanel />
       <OffensePanel />
       <ConditionsPanel />
       <AbilitiesPanel cost={pp.abilitiesCost} />
@@ -48,7 +49,6 @@ export function SheetView() {
       <PowersList />
       <ComplicationsPanel />
       <ResourcesPanel />
-      <PPLogPanel />
       <NotesPanel />
 
       {/* PP Summary Footer */}

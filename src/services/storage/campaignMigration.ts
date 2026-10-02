@@ -65,7 +65,7 @@ export function applyCampaignMigration(pending: PendingCampaignMigration, bases:
     for (const source of pending.sources) if (storage.getItem(source.key) !== source.value) return { success: false, error: 'campaign.migrationChanged' };
     for (const row of pending.characters) {
       const base = bases[row.key];
-      if (!base || !Number.isSafeInteger(base.initialPowerLevel) || base.initialPowerLevel < 1 || !Number.isFinite(base.initialPP) || base.initialPP < 0 || base.initialPP > 1_000_000) return { success: false, error: 'campaign.invalidBase' };
+      if (!base || !Number.isSafeInteger(base.initialPowerLevel) || base.initialPowerLevel < 1 || !Number.isSafeInteger(base.initialPP) || base.initialPP < 0 || base.initialPP > 1_000_000) return { success: false, error: 'campaign.invalidBase' };
     }
     const changes = pending.sources.map(source => {
       const data = JSON.parse(source.value) as RawObject;

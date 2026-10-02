@@ -73,7 +73,6 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   const replaceResources = useResourcesStore((s) => s.replaceResources);
   const { setCampaignMode, resetCharacter } = useCharacterActions();
   const campaignMode = character.campaignMode ?? false;
-  const hasLogEntries = (character.ppLog ?? []).length > 0;
   
   // Hooks
   const { totalSpent, totalAvailable, remaining, isBudgetEnforced } = useCalculatedPP();
@@ -147,12 +146,13 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   }
 
   async function handleCampaignModeToggle() {
-    // If trying to disable Campaign Mode, ask for confirmation
-    if (campaignMode && !hasLogEntries) {
-      const confirmed = await dialog.confirm({ message: t('menu.campaignMode.confirmDisable') });
+    const targetId = activeCharacterId;
+    if (!targetId) return;
+    if (campaignMode) {
+      const confirmed = await dialog.confirm({ message: t('menu.campaignMode.confirmDisable', { before: totalAvailable, after: character.header.powerLevel * 15 }) });
       if (!confirmed) return;
     }
-    setCampaignMode(!campaignMode);
+    setCampaignMode(!campaignMode, targetId);
   }
 
   function handleClearDraft() {
@@ -236,7 +236,6 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         languages={LANGUAGES}
         campaignMode={campaignMode}
         onCampaignModeToggle={handleCampaignModeToggle}
-        hasLogEntries={hasLogEntries}
         validationRules={validationRules}
         onValidationRulesChange={setValidationRules}
         onClearDraft={handleClearDraft}
@@ -352,18 +351,15 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
               <div className="dropdown-section">
                 <span className="dropdown-label">{t('menu.campaignMode')}</span>
                 <button
-                  className={`dropdown-item ${campaignMode ? 'active' : ''} ${hasLogEntries && campaignMode ? 'disabled' : ''}`}
+                  className={`dropdown-item ${campaignMode ? 'active' : ''}`}
                   onClick={handleCampaignModeToggle}
-                  title={hasLogEntries && campaignMode ? t('menu.campaignMode.clearLogFirst') : t('menu.campaignMode.hint')}
-                  disabled={hasLogEntries && campaignMode}
+                  title={t('menu.campaignMode.hint')}
                 >
                   <BookOpen size={14} />
                   {t('menu.campaignMode')}: <strong>{campaignMode ? t('menu.campaignMode.active') : t('menu.campaignMode.disabled')}</strong>
                 </button>
                 <span className="dropdown-hint">
-                  {hasLogEntries && campaignMode 
-                    ? t('menu.campaignMode.clearLogFirst')
-                    : t('menu.campaignMode.hint')}
+                  {t('menu.campaignMode.hint')}
                 </span>
               </div>
               <div className="dropdown-divider" />

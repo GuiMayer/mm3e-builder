@@ -27,7 +27,6 @@ interface MobileDrawerProps {
   languages: Array<{ id: string; label: string }>;
   campaignMode: boolean;
   onCampaignModeToggle: () => void;
-  hasLogEntries: boolean;
   validationRules: IValidationRules | undefined;
   onValidationRulesChange: (rules: Partial<IValidationRules>) => void;
   onClearDraft: () => void;
@@ -60,7 +59,6 @@ export function MobileDrawer({
   languages,
   campaignMode,
   onCampaignModeToggle,
-  hasLogEntries,
   validationRules,
   onValidationRulesChange,
   onClearDraft,
@@ -184,9 +182,8 @@ export function MobileDrawer({
           <div className="mobile-drawer-section">
             <span className="mobile-drawer-label">{t('menu.campaignMode')}</span>
             <button
-              className={`mobile-drawer-item ${campaignMode ? 'active' : ''} ${hasLogEntries && campaignMode ? 'disabled' : ''}`}
+              className={`mobile-drawer-item ${campaignMode ? 'active' : ''}`}
               onClick={onCampaignModeToggle}
-              disabled={hasLogEntries && campaignMode}
             >
               <BookOpen size={20} />
               <span>
@@ -194,9 +191,7 @@ export function MobileDrawer({
               </span>
             </button>
             <span className="mobile-drawer-hint">
-              {hasLogEntries && campaignMode
-                ? t('menu.campaignMode.clearLogFirst')
-                : t('menu.campaignMode.hint')}
+              {t('menu.campaignMode.hint')}
             </span>
           </div>
 

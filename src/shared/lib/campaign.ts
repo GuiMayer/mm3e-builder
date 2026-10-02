@@ -30,6 +30,6 @@ export function migrateCampaignCharacter(character: ICharacter): ICharacter {
   return { ...character, campaign: createCampaign(character.header.powerLevel) };
 }
 
-export function campaignInitialPP(character: ICharacter): number {
+export function campaignInitialPP(character: Pick<ICharacter, 'campaign' | 'header'>): number {
   return character.campaign?.initialPP ?? character.header.powerLevel * 15;
 }

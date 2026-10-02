@@ -8,6 +8,8 @@ import {
 import { downloadBlob } from '../../services/downloadHelper';
 import { useAutoLoadDraftMulti } from '../hooks/useAutoLoadDraftMulti';
 import { useAppDialog } from './appDialogContext';
+import { prepareCampaignMigration, applyCampaignMigration, type CampaignMigrationBase } from '../../services/storage/campaignMigration';
+import { CampaignMigrationDialog } from './CampaignMigrationDialog';
 
 const APP_VERSION = __APP_VERSION__;
 
@@ -31,7 +33,10 @@ export function DraftStartupController() {
   const { t } = useTranslation();
   const dialog = useAppDialog();
   const [preparedBackup] = useState(prepareUpdateBackup);
-  const [migrationAllowed, setMigrationAllowed] = useState(preparedBackup === null);
+  const [campaignMigration] = useState(() => prepareCampaignMigration());
+  const [backupResolved, setBackupResolved] = useState(preparedBackup === null);
+  const [migrationAllowed, setMigrationAllowed] = useState(preparedBackup === null && campaignMigration === null);
+  const [campaignError, setCampaignError] = useState('');
   const promptStartedRef = useRef(false);
   useAutoLoadDraftMulti(migrationAllowed);
 
@@ -77,9 +82,25 @@ export function DraftStartupController() {
       } catch {
         // The notice may repeat, but migration and persistence can still run.
       }
-      setMigrationAllowed(true);
+      setBackupResolved(true);
+      if (!campaignMigration) setMigrationAllowed(true);
     })();
-  }, [dialog, preparedBackup, t]);
+  }, [dialog, preparedBackup, campaignMigration, t]);
 
-  return null;
+  function applyCampaign(bases: Record<string, CampaignMigrationBase>) {
+    if (!campaignMigration) return;
+    const result = applyCampaignMigration(campaignMigration, bases);
+    if (!result.success) { setCampaignError(result.error); return; }
+    setCampaignError('');
+    setMigrationAllowed(true);
+  }
+  async function exportCampaignBackup() {
+    if (!campaignMigration) return;
+    try {
+      await downloadBlob(new Blob([serializeDraftStorageSnapshot(campaignMigration.snapshot)], { type: 'application/x-ndjson' }), 'mm3e-before-campaign-migration.jsonl');
+    } catch { setCampaignError('draft.exportError'); }
+  }
+  return backupResolved && campaignMigration && !migrationAllowed
+    ? <CampaignMigrationDialog pending={campaignMigration} onApply={applyCampaign} onBackup={() => void exportCampaignBackup()} error={campaignError} />
+    : null;
 }
