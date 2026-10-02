@@ -20,7 +20,7 @@ export function ModifierDrawerFAB({ onClick, contextLabel }: Props) {
       <style>{`
         .modifier-fab {
           flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--r-full);
-          background: var(--c-primary); color: var(--c-text-inverse); border: none;
+          background: var(--c-primary); color: var(--c-action-text, var(--c-text-inverse)); border: none;
           cursor: pointer; display: flex; align-items: center; justify-content: center;
           transition: background-color var(--t-fast);
         }

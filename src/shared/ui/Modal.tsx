@@ -37,7 +37,7 @@ export function Modal({ isOpen, onClose, title, compact, children }: ModalProps)
         .modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0, 0, 0, 0.6);
+          background: rgba(var(--c-overlay-rgb, 0, 0, 0), calc(var(--c-overlay-alpha, 0.6) * 1));
           backdrop-filter: blur(4px);
           display: flex;
           align-items: center;

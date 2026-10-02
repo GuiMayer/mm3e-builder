@@ -278,8 +278,8 @@ function EffectPaletteComponent({
         .palette-toggle-btn:hover { color: var(--c-primary); }
         .palette-context-badge {
           font-size: 0.7rem; font-weight: 600; padding: 4px var(--s-md);
-          background: rgba(245,158,11,0.12); border-bottom: 1px solid rgba(245,158,11,0.3);
-          color: #f59e0b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+          background: rgba(var(--c-warning-rgb, 245, 158, 11), 0.12); border-bottom: 1px solid rgba(var(--c-warning-rgb, 245, 158, 11), 0.3);
+          color: var(--c-status-warning, #f59e0b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
         .palette-tabs {
@@ -297,7 +297,7 @@ function EffectPaletteComponent({
         .palette-tab--active { border-bottom: 2px solid; }
         .palette-tab--active.palette-tab--extra { color: var(--c-success); border-color: var(--c-success); }
         .palette-tab--active.palette-tab--flaw { color: var(--c-error); border-color: var(--c-error); }
-        .palette-tab--active.palette-tab--specific { color: #f59e0b; border-color: #f59e0b; }
+        .palette-tab--active.palette-tab--specific { color: var(--c-status-warning, #f59e0b); border-color: var(--c-status-warning, #f59e0b); }
         .palette-tab--disabled { opacity: 0.4; cursor: not-allowed; }
         .palette-tab:disabled { cursor: not-allowed; }
 
@@ -315,10 +315,10 @@ function EffectPaletteComponent({
           font-size: 0.7rem; font-weight: 700; padding: 2px 8px;
           border-radius: var(--r-full); text-transform: uppercase;
         }
-        .mod-badge--extra { background: rgba(74,222,128,0.2); color: var(--c-success); }
-        .mod-badge--flaw { background: rgba(248,113,113,0.2); color: var(--c-error); }
+        .mod-badge--extra { background: rgba(var(--c-success-rgb, 74, 222, 128), 0.2); color: var(--c-success); }
+        .mod-badge--flaw { background: rgba(var(--c-error-rgb, 248, 113, 113), 0.2); color: var(--c-error); }
         .mod-badge--cost { background: var(--c-surface-elevated); color: var(--c-text-secondary); }
-        .mod-badge--max { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .mod-badge--max { background: rgba(var(--c-warning-rgb, 245, 158, 11), 0.15); color: var(--c-status-warning, #f59e0b); }
         .mod-modal-desc { font-size: 0.88rem; line-height: 1.6; color: var(--c-text); }
         .mod-modal-options h4 { font-size: 0.78rem; font-weight: 700; color: var(--c-text-secondary); margin-bottom: var(--s-xs); }
         .mod-modal-options ul { margin: 0; padding-left: var(--s-md); display: flex; flex-direction: column; gap: 4px; }
@@ -375,15 +375,15 @@ function EffectPaletteComponent({
           cursor: default; transition: border-color var(--t-fast), background-color var(--t-fast);
           font-size: 0.8rem; user-select: none; gap: 6px;
         }
-        .palette-item:hover { border-color: var(--c-success); background: rgba(74,222,128,0.08); }
-        .palette-item--flaw:hover { border-color: var(--c-error); background: rgba(248,113,113,0.08); }
-        .palette-item--specific { border-color: rgba(245,158,11,0.3); }
-        .palette-item--specific:hover { border-color: #f59e0b; background: rgba(245,158,11,0.08); }
-        .palette-item--has-specific { border-left: 3px solid rgba(245,158,11,0.5); }
+        .palette-item:hover { border-color: var(--c-success); background: rgba(var(--c-success-rgb, 74, 222, 128), 0.08); }
+        .palette-item--flaw:hover { border-color: var(--c-error); background: rgba(var(--c-error-rgb, 248, 113, 113), 0.08); }
+        .palette-item--specific { border-color: rgba(var(--c-warning-rgb, 245, 158, 11), 0.3); }
+        .palette-item--specific:hover { border-color: var(--c-status-warning, #f59e0b); background: rgba(var(--c-warning-rgb, 245, 158, 11), 0.08); }
+        .palette-item--has-specific { border-left: 3px solid rgba(var(--c-warning-rgb, 245, 158, 11), 0.5); }
         .palette-item--dragging { opacity: 0.4; cursor: grabbing; }
         .palette-item-name { font-weight: 500; flex: 1; min-width: 0; white-space: normal; overflow-wrap: anywhere; line-height: 1.35; }
         .palette-item-specific-indicator {
-          font-size: 0.7rem; color: #f59e0b; flex-shrink: 0;
+          font-size: 0.7rem; color: var(--c-status-warning, #f59e0b); flex-shrink: 0;
           animation: pulse-glow 2s ease-in-out infinite;
         }
         @keyframes pulse-glow {
@@ -399,7 +399,7 @@ function EffectPaletteComponent({
           font-size: 0.75rem; line-height: 1;
         }
         .palette-item-info:hover { color: var(--c-primary); background: var(--c-primary-muted); }
-        .palette-item-add:hover { color: var(--c-success); background: rgba(74,222,128,0.15); }
+        .palette-item-add:hover { color: var(--c-success); background: rgba(var(--c-success-rgb, 74, 222, 128), 0.15); }
 
         /* Mobile optimizations */
         @media (max-width: 768px) {

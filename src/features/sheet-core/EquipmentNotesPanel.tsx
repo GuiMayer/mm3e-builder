@@ -243,7 +243,7 @@ export function EquipmentNotesPanel() {
           align-items: flex-start;
           gap: var(--s-sm);
           padding: var(--s-md);
-          background: var(--c-error-bg, rgba(239, 68, 68, 0.1));
+          background: var(--c-error-bg, rgba(var(--c-error-rgb, 239, 68, 68), 0.1));
           border: 1px solid var(--c-error, #ef4444);
           border-radius: var(--r-md);
           color: var(--c-error, #ef4444);
@@ -266,7 +266,7 @@ export function EquipmentNotesPanel() {
           font-size: 0.8rem;
           font-variant-numeric: tabular-nums;
           padding: var(--s-xs) var(--s-sm);
-          background: rgba(0, 0, 0, 0.08);
+          background: rgba(var(--c-bg-rgb, 0, 0, 0), 0.08);
           border-radius: var(--r-sm);
         }
         .equipment-limit-over {
@@ -357,10 +357,10 @@ export function EquipmentNotesPanel() {
           font-size: 0.7rem;
           padding: 2px 8px;
           border-radius: var(--r-full);
-          background: rgba(139,92,246,0.12);
+          background: rgba(var(--c-custom-accent-rgb, 139, 92, 246), 0.12);
           color: var(--c-accent);
           font-weight: 500;
-          border: 1px solid rgba(139,92,246,0.25);
+          border: 1px solid rgba(var(--c-custom-accent-rgb, 139, 92, 246), 0.25);
         }
         .equipment-card-notes {
           font-size: 0.78rem;
@@ -395,7 +395,7 @@ export function EquipmentNotesPanel() {
           border-color: var(--c-primary);
         }
         .equipment-action-btn--danger:hover {
-          background: rgba(248,113,113,0.15);
+          background: rgba(var(--c-error-rgb, 248, 113, 113), 0.15);
           color: var(--c-error);
           border-color: var(--c-error);
         }
@@ -419,7 +419,7 @@ export function EquipmentNotesPanel() {
         }
         .equipment-new-btn:hover {
           background: var(--c-primary);
-          color: var(--c-text-inverse);
+          color: var(--c-action-text, var(--c-text-inverse));
           box-shadow: var(--shadow-glow);
         }
       `}</style>

@@ -429,27 +429,27 @@ export function AltEffectCard({
         .ae-rules-note { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--c-text-muted); padding: 4px var(--s-sm); background: var(--c-surface-elevated); border-radius: var(--r-sm); border: 1px solid var(--c-border); }
         .ae-card { border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface); overflow: hidden; transition: border-color var(--t-fast); }
         .ae-card--expanded { border-color: var(--c-accent); }
-        .ae-card--invalid { border-color: rgba(248,113,113,0.5); }
+        .ae-card--invalid { border-color: rgba(var(--c-error-rgb, 248, 113, 113), 0.5); }
         .ae-card-header { display: flex; align-items: center; gap: var(--s-sm); padding: var(--s-sm) var(--s-md); cursor: pointer; transition: background var(--t-fast); flex-wrap: wrap; }
         .ae-card-header:hover { background: var(--c-surface-elevated); }
         .ae-card-arrow { font-size: 0.65rem; color: var(--c-text-muted); flex-shrink: 0; }
         .ae-card-name { flex: 1; min-width: 80px; background: transparent; border: none; color: var(--c-text); font-family: var(--f-body); font-size: 0.88rem; font-weight: 600; }
         .ae-card-name:focus { outline: none; }
         .ae-cost-badge { font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: var(--r-full); white-space: nowrap; }
-        .ae-cost-badge--ok { background: rgba(74,222,128,0.12); color: var(--c-success); }
-        .ae-cost-badge--over { background: rgba(248,113,113,0.12); color: var(--c-error); }
+        .ae-cost-badge--ok { background: rgba(var(--c-success-rgb, 74, 222, 128), 0.12); color: var(--c-success); }
+        .ae-cost-badge--over { background: rgba(var(--c-error-rgb, 248, 113, 113), 0.12); color: var(--c-error); }
         .ae-overage { font-size: 0.68rem; opacity: 0.8; }
         .ae-dynamic-label { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: var(--c-accent); cursor: pointer; flex-shrink: 0; }
         .ae-remove-btn { background: transparent; border: none; color: var(--c-text-muted); cursor: pointer; display: flex; transition: color var(--t-fast); flex-shrink: 0; }
         .ae-remove-btn:hover { color: var(--c-error); }
         .ae-card-body { padding: var(--s-md); display: flex; flex-direction: column; gap: var(--s-md); border-top: 1px solid var(--c-border); }
-        .ae-cap-warning { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--c-error); background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); border-radius: var(--r-sm); padding: 6px 10px; }
+        .ae-cap-warning { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--c-error); background: rgba(var(--c-error-rgb, 248, 113, 113), 0.08); border: 1px solid rgba(var(--c-error-rgb, 248, 113, 113), 0.25); border-radius: var(--r-sm); padding: 6px 10px; }
         .ae-comp-card { border: 1px solid var(--c-border); border-radius: var(--r-sm); padding: var(--s-sm); display: flex; flex-direction: column; gap: var(--s-sm); background: var(--c-surface-elevated); cursor: pointer; transition: border-color var(--t-fast); }
         .ae-comp-card--active { border-color: var(--c-accent); }
         .ae-comp-card:hover { border-color: var(--c-primary-muted); }
         .ae-comp-header { display: flex; align-items: center; gap: var(--s-sm); }
         .ae-comp-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--c-text-muted); flex: 1; }
-        .component-breakdown--fractional { color: var(--c-warning); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.08); }
+        .component-breakdown--fractional { color: var(--c-warning); border-color: rgba(var(--c-warning-rgb, 251, 191, 36), 0.35); background: rgba(var(--c-warning-rgb, 251, 191, 36), 0.08); }
         .fractional-cost-badge { font-weight: 800; }
         .cost-comp-val--invalid { color: var(--c-error); }
         .ae-mod-fallback-select {

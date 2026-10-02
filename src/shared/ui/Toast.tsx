@@ -66,7 +66,7 @@ export function Toast({ toast, onDismiss }: ToastProps) {
           background: var(--c-surface-elevated, #2a2a2a);
           border: 1px solid var(--c-border, #333);
           border-radius: var(--r-lg, 12px);
-          box-shadow: var(--shadow-xl, 0 8px 24px rgba(0, 0, 0, 0.4));
+          box-shadow: var(--shadow-xl, 0 8px 24px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 2)));
           font-family: var(--f-body, system-ui, sans-serif);
           font-size: 0.9rem;
           color: var(--c-text, #e0e0e0);

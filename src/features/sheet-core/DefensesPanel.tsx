@@ -198,7 +198,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           color: var(--c-text-secondary);
           white-space: nowrap;
           z-index: 100;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+          box-shadow: 0 8px 24px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 1.5));
           pointer-events: none;
           line-height: 1.7;
           animation: fadeIn 0.15s ease;

@@ -1154,7 +1154,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           transition: all var(--t-fast);
         }
         .builder-action-btn:hover { border-color: var(--c-primary); color: var(--c-text); }
-        .builder-save-btn { background: var(--c-primary); color: var(--c-text-inverse); border-color: var(--c-primary); }
+        .builder-save-btn { background: var(--c-primary); color: var(--c-action-text, var(--c-text-inverse)); border-color: var(--c-primary); }
         .builder-save-btn:hover { opacity: 0.9; }
         .builder-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .builder-close-btn:hover { border-color: var(--c-error); color: var(--c-error); }
@@ -1198,13 +1198,13 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         .build-name-row .build-input { flex: 1; }
         .build-removable-badge {
           display: inline-flex; align-items: center; gap: 4px;
-          padding: 3px 10px; background: var(--c-warning-bg, rgba(251, 191, 36, 0.15));
+          padding: 3px 10px; background: var(--c-warning-bg, rgba(var(--c-warning-rgb, 251, 191, 36), 0.15));
           border: 1px solid var(--c-warning, #f59e0b); border-radius: var(--r-full);
           color: var(--c-warning, #f59e0b); font-size: 0.72rem; font-weight: 600;
           cursor: pointer; white-space: nowrap; user-select: none;
           transition: all var(--t-fast);
         }
-        .build-removable-badge:hover { background: var(--c-warning-bg, rgba(251, 191, 36, 0.25)); }
+        .build-removable-badge:hover { background: var(--c-warning-bg, rgba(var(--c-warning-rgb, 251, 191, 36), 0.25)); }
         .build-removable-badge-remove {
           display: inline-flex; align-items: center; justify-content: center;
           background: transparent; border: none; color: inherit;
@@ -1214,8 +1214,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         .build-removable-badge-remove:hover { opacity: 1; }
         .build-removable-discount {
           font-size: 0.78rem; color: var(--c-success, #4ade80); font-weight: 600;
-          background: rgba(74, 222, 128, 0.1); padding: 2px 8px;
-          border-radius: var(--r-full); border: 1px solid rgba(74, 222, 128, 0.3);
+          background: rgba(var(--c-success-rgb, 74, 222, 128), 0.1); padding: 2px 8px;
+          border-radius: var(--r-full); border: 1px solid rgba(var(--c-success-rgb, 74, 222, 128), 0.3);
           margin-top: var(--s-xs);
         }
         .builder-save-hint { align-self: center; color: var(--c-text-muted); font-size: 0.72rem; }
@@ -1259,14 +1259,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         .effect-badge {
           font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
           padding: 2px 8px; border-radius: var(--r-full);
-          background: var(--c-primary); color: var(--c-text-inverse);
+          background: var(--c-primary); color: var(--c-action-text, var(--c-text-inverse));
         }
         .effect-detail { font-size: 0.78rem; color: var(--c-text-secondary); }
         .effect-desc { font-size: 0.82rem; color: var(--c-text); width: 100%; margin-top: var(--s-xs); }
         .defense-warning {
           display: flex; align-items: center; gap: 6px; width: 100%;
-          font-size: 0.78rem; color: #f59e0b; background: rgba(245,158,11,0.1);
-          border: 1px solid rgba(245,158,11,0.3); border-radius: var(--r-sm);
+          font-size: 0.78rem; color: var(--c-status-warning, #f59e0b); background: rgba(var(--c-warning-rgb, 245, 158, 11), 0.1);
+          border: 1px solid rgba(var(--c-warning-rgb, 245, 158, 11), 0.3); border-radius: var(--r-sm);
           padding: 4px 8px;
         }
 
@@ -1285,19 +1285,19 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         .applied-mod {
           display: flex; align-items: center; gap: 5px;
           padding: 3px 8px; border-radius: var(--r-full);
-          background: rgba(74, 222, 128, 0.12); border: 1px solid rgba(74, 222, 128, 0.3);
+          background: rgba(var(--c-success-rgb, 74, 222, 128), 0.12); border: 1px solid rgba(var(--c-success-rgb, 74, 222, 128), 0.3);
           font-size: 0.78rem;
         }
-        .applied-mod--flaw { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.3); }
-        .applied-mod--specific { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.35); }
+        .applied-mod--flaw { background: rgba(var(--c-error-rgb, 248, 113, 113), 0.12); border-color: rgba(var(--c-error-rgb, 248, 113, 113), 0.3); }
+        .applied-mod--specific { background: rgba(var(--c-warning-rgb, 245, 158, 11), 0.1); border-color: rgba(var(--c-warning-rgb, 245, 158, 11), 0.35); }
         .applied-mod--incompatible {
-          background: rgba(239, 68, 68, 0.15);
-          border-color: rgba(239, 68, 68, 0.5);
+          background: rgba(var(--c-error-rgb, 239, 68, 68), 0.15);
+          border-color: rgba(var(--c-error-rgb, 239, 68, 68), 0.5);
           animation: pulse-warning 2s ease-in-out infinite;
         }
         @keyframes pulse-warning {
-          0%, 100% { border-color: rgba(239, 68, 68, 0.5); }
-          50% { border-color: rgba(239, 68, 68, 0.8); }
+          0%, 100% { border-color: rgba(var(--c-error-rgb, 239, 68, 68), 0.5); }
+          50% { border-color: rgba(var(--c-error-rgb, 239, 68, 68), 0.8); }
         }
         .applied-mod-name { font-weight: 600; }
         .applied-mod-ranks {
@@ -1367,16 +1367,16 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         .cost-total-value { font-family: var(--f-heading); font-size: 1.4rem; font-weight: 800; color: var(--c-primary); }
         .cost-removable-line {
           font-size: 0.78rem; color: var(--c-success, #4ade80); font-weight: 600;
-          background: rgba(74, 222, 128, 0.1); padding: 2px 8px;
-          border-radius: var(--r-full); border: 1px solid rgba(74, 222, 128, 0.3);
+          background: rgba(var(--c-success-rgb, 74, 222, 128), 0.1); padding: 2px 8px;
+          border-radius: var(--r-full); border: 1px solid rgba(var(--c-success-rgb, 74, 222, 128), 0.3);
         }
-        .pl-violation-banner { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--c-error); background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3); border-radius: var(--r-sm); padding: 5px 10px; margin-top: 4px; width: 100%; }
+        .pl-violation-banner { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--c-error); background: rgba(var(--c-error-rgb, 248, 113, 113), 0.08); border: 1px solid rgba(var(--c-error-rgb, 248, 113, 113), 0.3); border-radius: var(--r-sm); padding: 5px 10px; margin-top: 4px; width: 100%; }
 
         /* Drag ghost */
         .drag-ghost {
           display: flex; align-items: center; gap: var(--s-sm);
           padding: 6px 14px; border-radius: var(--r-full);
-          background: var(--c-primary); color: var(--c-text-inverse);
+          background: var(--c-primary); color: var(--c-action-text, var(--c-text-inverse));
           font-size: 0.82rem; font-weight: 600; box-shadow: var(--shadow-lg);
           opacity: 0.9;
         }

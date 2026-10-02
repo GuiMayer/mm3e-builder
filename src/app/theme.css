@@ -28,9 +28,9 @@
   --r-full: 9999px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 0.6));
+  --shadow-md: 0 4px 12px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 0.75));
+  --shadow-lg: 0 8px 32px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 1));
   --shadow-glow: 0 0 20px rgba(var(--c-primary-rgb), 0.3);
 
   /* Transitions */
@@ -576,7 +576,7 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.5rem;
   margin-top: 0.5rem;
   padding: 0.5rem;
-  background: rgba(251, 191, 36, 0.1);
+  background: rgba(var(--c-warning-rgb, 251, 191, 36), 0.1);
   border: 1px solid var(--c-warning);
   border-radius: var(--r-sm);
   font-size: 0.875rem;

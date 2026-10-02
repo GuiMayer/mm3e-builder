@@ -88,11 +88,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div style={{
           padding: '20px',
           margin: '20px',
-          border: '2px solid #ef4444',
+          border: '2px solid var(--c-status-error, #ef4444)',
           borderRadius: '8px',
-          backgroundColor: '#fef2f2',
+          backgroundColor: 'var(--c-error-bg, #fef2f2)',
         }}>
-          <h2 style={{ color: '#dc2626', marginTop: 0 }}>Something went wrong</h2>
+          <h2 style={{ color: 'var(--c-status-error, #dc2626)', marginTop: 0 }}>Something went wrong</h2>
           <details style={{ whiteSpace: 'pre-wrap', marginTop: '10px' }}>
             <summary style={{ cursor: 'pointer', fontWeight: 'bold' }}>
               Error details
@@ -104,8 +104,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               <pre style={{
                 marginTop: '10px',
                 padding: '10px',
-                backgroundColor: '#fff',
-                border: '1px solid #ddd',
+                backgroundColor: 'var(--c-custom-surface, #fff)',
+                border: '1px solid var(--c-custom-border, #ddd)',
                 borderRadius: '4px',
                 overflow: 'auto',
                 fontSize: '0.85em',
@@ -119,8 +119,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             style={{
               marginTop: '15px',
               padding: '8px 16px',
-              backgroundColor: '#dc2626',
-              color: 'white',
+              backgroundColor: 'var(--c-status-error, #dc2626)',
+              color: 'var(--c-danger-text, white)',
               border: 'none',
               borderRadius: '4px',
               cursor: 'pointer',

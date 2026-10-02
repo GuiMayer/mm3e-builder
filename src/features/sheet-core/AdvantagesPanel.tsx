@@ -641,10 +641,10 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
           font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
           padding: 3px 10px; border-radius: var(--r-full);
         }
-        .adv-desc-badge--combat  { background: rgba(248,113,113,0.15); color: #f87171; }
-        .adv-desc-badge--fortune { background: rgba(251,191,36,0.15);  color: #fbbf24; }
-        .adv-desc-badge--general { background: rgba(96,165,250,0.15);  color: #60a5fa; }
-        .adv-desc-badge--skill   { background: rgba(74,222,128,0.15);  color: #4ade80; }
+        .adv-desc-badge--combat  { background: rgba(var(--c-error-rgb, 248, 113, 113), 0.15); color: var(--c-status-error, #f87171); }
+        .adv-desc-badge--fortune { background: rgba(var(--c-warning-rgb, 251, 191, 36), 0.15);  color: var(--c-status-warning, #fbbf24); }
+        .adv-desc-badge--general { background: rgba(var(--c-info-rgb, 96, 165, 250), 0.15);  color: var(--c-status-info, #60a5fa); }
+        .adv-desc-badge--skill   { background: rgba(var(--c-success-rgb, 74, 222, 128), 0.15);  color: var(--c-status-success, #4ade80); }
         .adv-desc-ranked {
           font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: var(--r-full);
           background: var(--c-surface-elevated); border: 1px solid var(--c-border); color: var(--c-text-secondary);
@@ -680,7 +680,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
         }
         .subtype-warning {
           font-size: 0.85rem; color: var(--c-warning);
-          background: rgba(251, 191, 36, 0.1);
+          background: rgba(var(--c-warning-rgb, 251, 191, 36), 0.1);
           padding: var(--s-sm); border-radius: var(--r-sm);
           margin: var(--s-sm) 0;
         }
@@ -688,12 +688,12 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
           position: absolute; top: 100%; left: 0; right: 0; z-index: 1000;
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
           border-radius: var(--r-sm); margin-top: 4px; max-height: 200px; overflow-y: auto;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          box-shadow: 0 4px 12px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 0.75));
         }
         .subtype-autocomplete-portal {
           background: var(--c-surface-elevated); border: 1px solid var(--c-border);
           border-radius: var(--r-sm); margin-top: 4px; max-height: 200px; overflow-y: auto;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+          box-shadow: 0 8px 24px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 1));
         }
         .subtype-autocomplete-item {
           width: 100%; padding: var(--s-sm); text-align: left;

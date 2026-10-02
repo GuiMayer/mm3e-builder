@@ -130,9 +130,9 @@ export function ConditionsPanel() {
           font-weight: 700;
         }
         .conditions-badge--alert {
-          background: rgba(239, 68, 68, 0.15);
-          border: 1px solid rgba(239, 68, 68, 0.4);
-          color: #ef4444;
+          background: rgba(var(--c-error-rgb, 239, 68, 68), 0.15);
+          border: 1px solid rgba(var(--c-error-rgb, 239, 68, 68), 0.4);
+          color: var(--c-status-error, #ef4444);
         }
         .conditions-clear-btn {
           display: flex;
@@ -195,16 +195,16 @@ export function ConditionsPanel() {
           opacity: 0.85;
         }
         .condition-badge--active {
-          background: rgba(239, 68, 68, 0.12);
-          border-color: rgba(239, 68, 68, 0.5);
-          color: #ef4444;
+          background: rgba(var(--c-error-rgb, 239, 68, 68), 0.12);
+          border-color: rgba(var(--c-error-rgb, 239, 68, 68), 0.5);
+          color: var(--c-status-error, #ef4444);
           font-weight: 600;
           border-style: solid;
           opacity: 1;
-          box-shadow: 0 0 6px rgba(239, 68, 68, 0.15);
+          box-shadow: 0 0 6px rgba(var(--c-error-rgb, 239, 68, 68), 0.15);
         }
         .condition-badge--active:hover {
-          background: rgba(239, 68, 68, 0.2);
+          background: rgba(var(--c-error-rgb, 239, 68, 68), 0.2);
         }
         .conditions-normal-hint {
           font-size: 0.78rem;

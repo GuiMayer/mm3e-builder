@@ -258,7 +258,7 @@ export function CharacterTabs() {
 
         .character-tab-close:hover {
           background: var(--c-error);
-          color: var(--c-text-inverse);
+          color: var(--c-danger-text, var(--c-text-inverse));
         }
 
         .character-tabs-action {
@@ -269,7 +269,7 @@ export function CharacterTabs() {
           background: var(--c-primary);
           border: none;
           border-radius: var(--r-sm);
-          color: var(--c-text-inverse);
+          color: var(--c-action-text, var(--c-text-inverse));
           cursor: pointer;
           transition: all var(--t-fast);
           flex-shrink: 0;
@@ -277,7 +277,7 @@ export function CharacterTabs() {
 
         .character-tabs-action--new {
           background: var(--c-primary);
-          color: var(--c-text-inverse);
+          color: var(--c-action-text, var(--c-text-inverse));
         }
 
         .character-tabs-action--new:hover {

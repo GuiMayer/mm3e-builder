@@ -110,7 +110,7 @@ export function SheetView() {
         }
         .violation-badge {
           padding: var(--s-xs) var(--s-md);
-          background: rgba(248, 113, 113, 0.15);
+          background: rgba(var(--c-error-rgb, 248, 113, 113), 0.15);
           border: 1px solid var(--c-error);
           border-radius: var(--r-full);
           font-size: 0.78rem;
@@ -119,7 +119,7 @@ export function SheetView() {
           animation: shake 0.3s ease;
         }
         .violation-badge--warning {
-          background: rgba(251, 191, 36, 0.12);
+          background: rgba(var(--c-warning-rgb, 251, 191, 36), 0.12);
           border-color: var(--c-warning, #fbbf24);
           color: var(--c-warning, #fbbf24);
         }

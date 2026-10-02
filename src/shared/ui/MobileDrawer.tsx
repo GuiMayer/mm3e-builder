@@ -299,7 +299,7 @@ export function MobileDrawer({
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
+          background: rgba(var(--c-overlay-rgb, 0, 0, 0), calc(var(--c-overlay-alpha, 0.6) * 0.833333));
           backdrop-filter: blur(4px);
           z-index: 999;
           animation: fadeIn 0.2s ease;
@@ -314,7 +314,7 @@ export function MobileDrawer({
           max-width: 85vw;
           background: var(--c-surface);
           border-right: 1px solid var(--c-border);
-          box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+          box-shadow: 4px 0 24px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 1.5));
           z-index: 1000;
           display: flex;
           flex-direction: column;
@@ -517,7 +517,7 @@ export function MobileDrawer({
         .mobile-drawer-item:active:not(:disabled) {
           transform: scale(0.98);
           background: var(--c-primary);
-          color: #fff;
+          color: var(--c-action-text, #fff);
         }
       `}</style>
     </>

@@ -202,8 +202,8 @@ export function PowersList() {
         .power-alt-info { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--s-xs); }
         .power-alt-tag {
           font-size: 0.7rem; padding: 2px 8px; border-radius: var(--r-full);
-          background: rgba(139,92,246,0.12); color: var(--c-accent); font-weight: 500;
-          border: 1px solid rgba(139,92,246,0.25);
+          background: rgba(var(--c-custom-accent-rgb, 139, 92, 246), 0.12); color: var(--c-accent); font-weight: 500;
+          border: 1px solid rgba(var(--c-custom-accent-rgb, 139, 92, 246), 0.25);
         }
         .power-card-notes { font-size: 0.78rem; color: var(--c-text-muted); font-style: italic; margin-top: var(--s-xs); }
 
@@ -219,7 +219,7 @@ export function PowersList() {
           font-size: 0.75rem; cursor: pointer; transition: all var(--t-fast);
         }
         .power-action-btn:hover { background: var(--c-primary-muted); color: var(--c-primary); border-color: var(--c-primary); }
-        .power-action-btn--danger:hover { background: rgba(248,113,113,0.15); color: var(--c-error); border-color: var(--c-error); }
+        .power-action-btn--danger:hover { background: rgba(var(--c-error-rgb, 248, 113, 113), 0.15); color: var(--c-error); border-color: var(--c-error); }
 
         .power-new-btn {
           display: flex; align-items: center; justify-content: center; gap: var(--s-sm);
@@ -229,7 +229,7 @@ export function PowersList() {
           font-family: var(--f-heading); font-size: 0.95rem; font-weight: 700;
           cursor: pointer; transition: all var(--t-fast); width: 100%;
         }
-        .power-new-btn:hover { background: var(--c-primary); color: var(--c-text-inverse); box-shadow: var(--shadow-glow); }
+        .power-new-btn:hover { background: var(--c-primary); color: var(--c-action-text, var(--c-text-inverse)); box-shadow: var(--shadow-glow); }
       `}</style>
     </section>
   );

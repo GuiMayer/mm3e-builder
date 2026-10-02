@@ -236,7 +236,7 @@ function ComplicationsPanelComponent() {
         .comp-type-opt:hover { border-color: var(--c-primary); color: var(--c-text); }
         .comp-type-opt--active {
           background: var(--c-primary); border-color: var(--c-primary);
-          color: var(--c-bg); font-weight: 600;
+          color: var(--c-action-text, var(--c-bg)); font-weight: 600;
         }
         .comp-type-opt--clear { color: var(--c-text-muted); font-style: italic; }
 

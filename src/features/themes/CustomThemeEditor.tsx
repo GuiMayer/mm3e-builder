@@ -8,7 +8,7 @@ import { COLOR_GROUPS, COLOR_ROLES, PRESET_THEMES, contrastIssues, createCustomT
 import type { PresetTheme } from './presetPalettes';
 import './customTheme.css';
 
-const EDITOR_COLORS = themeVariables(createCustomTheme('dark-knight')) as CSSProperties;
+const EDITOR_COLORS = { ...themeVariables(createCustomTheme('dark-knight')), colorScheme: 'dark' } as CSSProperties;
 
 function ColorField({ role, color, base, transparent, onChange, onValidityChange }: {
   role: ColorRole; color: ThemeColor; base: ThemeColor; transparent: boolean; onChange: (color: ThemeColor) => void; onValidityChange: (valid: boolean) => void;

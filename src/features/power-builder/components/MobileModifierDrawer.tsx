@@ -195,7 +195,7 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
         .mobile-drawer-backdrop {
           position: fixed;
           inset: 0;
-          background: rgba(0, 0, 0, 0.5);
+          background: rgba(var(--c-overlay-rgb, 0, 0, 0), calc(var(--c-overlay-alpha, 0.6) * 0.833333));
           backdrop-filter: blur(4px);
           z-index: 999;
           animation: fadeIn 0.2s ease;
@@ -209,7 +209,7 @@ export function MobileModifierDrawer({ isOpen, height, onHeightChange, onClose, 
           background: var(--c-surface);
           border-top-left-radius: var(--r-lg);
           border-top-right-radius: var(--r-lg);
-          box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 -4px 20px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 1.5));
           z-index: 1000;
           display: flex;
           flex-direction: column;

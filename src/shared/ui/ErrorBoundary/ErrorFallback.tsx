@@ -196,7 +196,7 @@ export function ErrorFallback({ error, resetError, showDetails = true }: ErrorFa
 
         .error-fallback-button--primary {
           background: var(--c-primary);
-          color: var(--c-text-inverse);
+          color: var(--c-action-text, var(--c-text-inverse));
           border-color: var(--c-primary);
         }
 

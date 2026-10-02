@@ -156,7 +156,7 @@ export function ResourcesPanel() {
       <style>{`
         .resources-panel .panel-header { align-items:center; justify-content:space-between; }
         .resources-panel__hint,.resources-panel__empty { color:var(--c-text-muted); font-size:.82rem; margin:0 0 var(--s-md); }
-        .resources-panel__warning { background:rgba(248,113,113,.12); border:1px solid var(--c-error); border-radius:var(--r-sm); color:var(--c-error); font-size:.8rem; margin-bottom:var(--s-md); padding:var(--s-sm); }
+        .resources-panel__warning { background:rgba(var(--c-error-rgb, 248, 113, 113), .12); border:1px solid var(--c-error); border-radius:var(--r-sm); color:var(--c-error); font-size:.8rem; margin-bottom:var(--s-md); padding:var(--s-sm); }
         .resources-panel__list { display:flex; flex-direction:column; gap:var(--s-xs); }
         .resources-panel__item,.resources-panel__missing { align-items:center; background:var(--c-surface-elevated); border:1px solid var(--c-border); border-radius:var(--r-sm); display:grid; gap:var(--s-sm); grid-template-columns:minmax(0,1fr) auto auto auto; padding:var(--s-sm); }
         .resources-panel__item-main { display:flex; flex-direction:column; min-width:0; }

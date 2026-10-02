@@ -237,7 +237,7 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
           background: var(--c-surface-elevated);
           border: 1px solid var(--c-border);
           border-radius: var(--r-md);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+          box-shadow: 0 8px 24px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 1.75));
           max-height: 280px;
           overflow-y: auto;
           scrollbar-width: thin;
@@ -280,12 +280,12 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
           letter-spacing: 0.04em;
           font-weight: 600;
         }
-        .ecb-tag--attack   { background: color-mix(in srgb,#ef4444 18%,transparent); color:#f87171; }
-        .ecb-tag--defense  { background: color-mix(in srgb,#3b82f6 18%,transparent); color:#60a5fa; }
-        .ecb-tag--movement { background: color-mix(in srgb,#10b981 18%,transparent); color:#34d399; }
-        .ecb-tag--sensory  { background: color-mix(in srgb,#a855f7 18%,transparent); color:#c084fc; }
-        .ecb-tag--control  { background: color-mix(in srgb,#f59e0b 18%,transparent); color:#fbbf24; }
-        .ecb-tag--general  { background: color-mix(in srgb,#6b7280 18%,transparent); color:#9ca3af; }
+        .ecb-tag--attack   { background: color-mix(in srgb,var(--c-category-attack, #ef4444) 18%,transparent); color:var(--c-category-attack, #f87171); }
+        .ecb-tag--defense  { background: color-mix(in srgb,var(--c-category-defense, #3b82f6) 18%,transparent); color:var(--c-category-defense, #60a5fa); }
+        .ecb-tag--movement { background: color-mix(in srgb,var(--c-category-movement, #10b981) 18%,transparent); color:var(--c-category-movement, #34d399); }
+        .ecb-tag--sensory  { background: color-mix(in srgb,var(--c-category-sensory, #a855f7) 18%,transparent); color:var(--c-category-sensory, #c084fc); }
+        .ecb-tag--control  { background: color-mix(in srgb,var(--c-category-control, #f59e0b) 18%,transparent); color:var(--c-category-control, #fbbf24); }
+        .ecb-tag--general  { background: color-mix(in srgb,var(--c-category-general, #6b7280) 18%,transparent); color:var(--c-category-general, #9ca3af); }
         .ecb-cost {
           font-size: 0.72rem;
           color: var(--c-text-muted);
@@ -302,7 +302,7 @@ export function EffectCombobox({ value, onChange, allEffects, t, onInfo }: Effec
           border-radius: var(--r-md);
           color: var(--c-text-muted);
           font-size: 0.85rem;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+          box-shadow: 0 8px 24px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 1.25));
         }
       `}</style>
     </div>

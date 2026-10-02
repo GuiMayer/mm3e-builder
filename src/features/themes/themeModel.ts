@@ -79,6 +79,14 @@ export function themeVariables(theme: CustomTheme): Record<string, string> {
     variables[`--c-${role}-bg`] = cssColor({ ...theme.colors[role], alpha: .15 });
   }
   variables['--c-shadow-alpha'] = String(theme.colors.shadow.alpha);
+  variables['--c-overlay-alpha'] = String(theme.colors.overlay.alpha);
+  for (const role of ['success', 'warning', 'error', 'info'] as const) variables[`--c-status-${role}`] = cssColor(theme.colors[role]);
+  variables['--c-status-accent'] = cssColor(theme.colors.accent);
+  variables['--c-custom-accent-rgb'] = rgb(theme.colors.accent.hex).join(', ');
+  variables['--c-custom-muted'] = cssColor(theme.colors['text-muted']);
+  variables['--c-custom-secondary'] = cssColor(theme.colors['text-secondary']);
+  variables['--c-custom-border'] = cssColor(theme.colors.border);
+  variables['--c-custom-surface'] = cssColor(theme.colors.surface);
   for (const [size, blur, factor] of [['sm', '0 1px 3px', .6], ['md', '0 4px 12px', .75], ['lg', '0 8px 32px', 1], ['xl', '0 12px 40px', 1.5]] as const) {
     variables[`--shadow-${size}`] = `${blur} ${cssColor({ ...theme.colors.shadow, alpha: Math.min(1, theme.colors.shadow.alpha * factor) })}`;
   }
@@ -101,7 +109,7 @@ export function contrastIssues(theme: CustomTheme): { foreground: ColorRole; bac
   const pairs: [ColorRole, ColorRole, number][] = [];
   for (const background of ['bg', 'surface', 'surface-elevated', 'surface-glass'] as const) {
     for (const foreground of ['text', 'text-secondary', 'text-muted', 'primary', 'accent', 'success', 'warning', 'error', 'info'] as const) pairs.push([foreground, background, 4.5]);
-    pairs.push(['border', background, 3], ['border-active', background, 3], ['primary', background, 3]);
+    pairs.push(['border', background, 3], ['border-active', background, 3]);
   }
   pairs.push(['action-text', 'primary', 4.5], ['action-text', 'primary-hover', 4.5], ['danger-text', 'error', 4.5]);
   return pairs.flatMap(([foreground, background, minimum]) => {

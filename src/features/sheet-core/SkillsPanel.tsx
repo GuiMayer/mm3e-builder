@@ -16,14 +16,14 @@ import { RollButton } from '../dice-roller/RollButton';
 
 // Colour palette for ability badges (list + modal)
 const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: string }> = {
-  agl: { bg: 'rgba(34,211,238,0.12)',  color: '#22d3ee', border: 'rgba(34,211,238,0.3)' },
-  str: { bg: 'rgba(248,113,113,0.12)', color: '#f87171', border: 'rgba(248,113,113,0.3)' },
-  fgt: { bg: 'rgba(251,146,60,0.12)',  color: '#fb923c', border: 'rgba(251,146,60,0.3)' },
-  dex: { bg: 'rgba(96,165,250,0.12)',  color: '#60a5fa', border: 'rgba(96,165,250,0.3)' },
-  pre: { bg: 'rgba(244,114,182,0.12)', color: '#f472b6', border: 'rgba(244,114,182,0.3)' },
-  int: { bg: 'rgba(74,222,128,0.12)',  color: '#4ade80', border: 'rgba(74,222,128,0.3)' },
-  awe: { bg: 'rgba(251,191,36,0.12)',  color: '#fbbf24', border: 'rgba(251,191,36,0.3)' },
-  sta: { bg: 'rgba(148,163,184,0.12)', color: '#94a3b8', border: 'rgba(148,163,184,0.3)' },
+  agl: { bg: 'rgba(var(--c-ability-agl-rgb, 34, 211, 238), 0.12)',  color: 'var(--c-ability-agl, #22d3ee)', border: 'rgba(var(--c-ability-agl-rgb, 34, 211, 238), 0.3)' },
+  str: { bg: 'rgba(var(--c-ability-str-rgb, 248, 113, 113), 0.12)', color: 'var(--c-ability-str, #f87171)', border: 'rgba(var(--c-ability-str-rgb, 248, 113, 113), 0.3)' },
+  fgt: { bg: 'rgba(var(--c-ability-fgt-rgb, 251, 146, 60), 0.12)',  color: 'var(--c-ability-fgt, #fb923c)', border: 'rgba(var(--c-ability-fgt-rgb, 251, 146, 60), 0.3)' },
+  dex: { bg: 'rgba(var(--c-ability-dex-rgb, 96, 165, 250), 0.12)',  color: 'var(--c-ability-dex, #60a5fa)', border: 'rgba(var(--c-ability-dex-rgb, 96, 165, 250), 0.3)' },
+  pre: { bg: 'rgba(var(--c-ability-pre-rgb, 244, 114, 182), 0.12)', color: 'var(--c-ability-pre, #f472b6)', border: 'rgba(var(--c-ability-pre-rgb, 244, 114, 182), 0.3)' },
+  int: { bg: 'rgba(var(--c-ability-int-rgb, 74, 222, 128), 0.12)',  color: 'var(--c-ability-int, #4ade80)', border: 'rgba(var(--c-ability-int-rgb, 74, 222, 128), 0.3)' },
+  awe: { bg: 'rgba(var(--c-ability-awe-rgb, 251, 191, 36), 0.12)',  color: 'var(--c-ability-awe, #fbbf24)', border: 'rgba(var(--c-ability-awe-rgb, 251, 191, 36), 0.3)' },
+  sta: { bg: 'rgba(var(--c-ability-sta-rgb, 148, 163, 184), 0.12)', color: 'var(--c-ability-sta, #94a3b8)', border: 'rgba(var(--c-ability-sta-rgb, 148, 163, 184), 0.3)' },
 };
 
 function SkillsPanelComponent({ cost }: { cost: number }) {
@@ -479,8 +479,8 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
         /* Melhoria 5: dynamic subtype count badge */
         .sk-result-subcount {
           font-size: 0.65rem; font-weight: 700;
-          background: rgba(74,222,128,0.15); color: #4ade80;
-          border: 1px solid rgba(74,222,128,0.3);
+          background: rgba(var(--c-success-rgb, 74, 222, 128), 0.15); color: var(--c-status-success, #4ade80);
+          border: 1px solid rgba(var(--c-success-rgb, 74, 222, 128), 0.3);
           padding: 1px 6px; border-radius: var(--r-full); flex-shrink: 0;
         }
 
@@ -498,7 +498,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
         .sk-subtype-input-inline:focus { outline: none; }
         .sk-subtype-confirm {
           padding: var(--s-xs) var(--s-sm); background: var(--c-primary);
-          color: var(--c-text-inverse); border: none; border-radius: var(--r-sm);
+          color: var(--c-action-text, var(--c-text-inverse)); border: none; border-radius: var(--r-sm);
           cursor: pointer; font-size: 0.78rem; font-family: var(--f-body);
           white-space: nowrap;
         }
@@ -510,10 +510,10 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
           font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
           letter-spacing: 0.04em; padding: 2px 9px; border-radius: var(--r-full);
         }
-        .sk-desc-badge--trained     { background: rgba(251,191,36,0.15);  color: #fbbf24; }
-        .sk-desc-badge--interaction { background: rgba(74,222,128,0.15);  color: #4ade80; }
-        .sk-desc-badge--manipulation{ background: rgba(167,139,250,0.15); color: #a78bfa; }
-        .sk-desc-badge--tools       { background: rgba(248,113,113,0.15); color: #f87171; }
+        .sk-desc-badge--trained     { background: rgba(var(--c-warning-rgb, 251, 191, 36), 0.15);  color: var(--c-status-warning, #fbbf24); }
+        .sk-desc-badge--interaction { background: rgba(var(--c-success-rgb, 74, 222, 128), 0.15);  color: var(--c-status-success, #4ade80); }
+        .sk-desc-badge--manipulation{ background: rgba(var(--c-custom-accent-rgb, 167, 139, 250), 0.15); color: var(--c-status-accent, #a78bfa); }
+        .sk-desc-badge--tools       { background: rgba(var(--c-error-rgb, 248, 113, 113), 0.15); color: var(--c-status-error, #f87171); }
 
         .sk-desc-body { font-size: 0.92rem; line-height: 1.7; color: var(--c-text); margin: 0 0 var(--s-md); }
 

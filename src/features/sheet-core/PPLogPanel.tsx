@@ -198,7 +198,7 @@ function PPLogPanelComponent() {
         .pplog-badge {
           margin-left: auto;
           padding: 2px 8px;
-          background: var(--c-accent-muted, rgba(139, 92, 246, 0.15));
+          background: var(--c-accent-muted, rgba(var(--c-custom-accent-rgb, 139, 92, 246), 0.15));
           border: 1px solid var(--c-accent);
           border-radius: var(--r-full);
           color: var(--c-accent);
@@ -297,7 +297,7 @@ function PPLogPanelComponent() {
         .pplog-award-btn:hover {
           border-color: var(--c-accent);
           color: var(--c-accent);
-          background: var(--c-accent-muted, rgba(139, 92, 246, 0.08));
+          background: var(--c-accent-muted, rgba(var(--c-custom-accent-rgb, 139, 92, 246), 0.08));
         }
 
         .pplog-form {
@@ -339,7 +339,7 @@ function PPLogPanelComponent() {
         .pplog-form-field input:focus {
           outline: none;
           border-color: var(--c-accent);
-          box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15);
+          box-shadow: 0 0 0 2px rgba(var(--c-custom-accent-rgb, 139, 92, 246), 0.15);
         }
         .pplog-form-actions {
           display: flex;
@@ -360,7 +360,7 @@ function PPLogPanelComponent() {
         }
         .pplog-btn--add {
           background: var(--c-accent);
-          color: white;
+          color: var(--c-action-text, white);
         }
         .pplog-btn--add:hover { filter: brightness(1.1); }
         .pplog-btn--cancel {

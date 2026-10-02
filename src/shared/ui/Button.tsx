@@ -54,7 +54,7 @@ export function Button({
 
         .btn--primary {
           background: var(--c-primary);
-          color: var(--c-text-inverse);
+          color: var(--c-action-text, var(--c-text-inverse));
         }
         .btn--primary:hover:not(:disabled) {
           background: var(--c-primary-hover);
@@ -78,7 +78,7 @@ export function Button({
         }
         .btn--danger {
           background: var(--c-error);
-          color: white;
+          color: var(--c-danger-text, white);
         }
         .btn--danger:hover:not(:disabled) {
           opacity: 0.9;
