@@ -2,6 +2,8 @@
   "dice.title": "Dice rolls",
   "dice.open": "Open dice roller",
   "dice.close": "Close dice roller",
+  "dice.move": "Move dice window",
+  "dice.moveHint": "Drag the header or use arrow keys to move. Shift moves faster; Home restores the initial position.",
   "dice.bonus": "Manual bonus",
   "dice.roll": "Roll",
   "dice.history": "Recent rolls",

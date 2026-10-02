@@ -2,6 +2,8 @@
   "dice.title": "Rolagens",
   "dice.open": "Abrir rolador de dados",
   "dice.close": "Fechar rolador de dados",
+  "dice.move": "Mover janela de dados",
+  "dice.moveHint": "Arraste o cabeçalho ou use as setas para mover. Shift move mais rápido; Home restaura a posição inicial.",
   "dice.bonus": "Bônus manual",
   "dice.roll": "Rolar",
   "dice.history": "Rolagens recentes",

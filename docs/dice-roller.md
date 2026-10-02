@@ -9,6 +9,13 @@ slides in from the right on desktop and from below on mobile, reversing that
 movement when closed; reduced-motion preferences disable the transition.
 Results appear immediately, without dice animation.
 
+On desktop, drag the panel by its header to move it like a floating window.
+The close button remains independent of dragging. The window stays within
+the viewport and adjusts its position when the screen shrinks. Closing and
+reopening retains its position for the current session; reloading resets it.
+With the header focused, arrow keys move it by 10 px, Shift + arrows by 50 px,
+and Home restores the initial position. Mobile retains the fixed bottom drawer.
+
 Sheet d20 controls occupy a consistent slot at the right edge of each row or
 card. Skill/defense totals and roll controls stay together, while information/edit/remove
 actions are grouped separately. Non-rollable entries reserve alignment space
@@ -74,8 +81,12 @@ unchanged.
 limits, notices, and routine checks. `diceCheckSources.test.ts` covers shared
 skill totals, bilingual references, scoped skills, advantage handling, and
 preservation of character contents/revisions/edit histories while rolling.
+`diceWindowPosition.test.ts` covers movement bounds, viewport shrinkage, and
+screens with little or no spare space around the window.
 
 The actual App was checked with isolated synthetic characters at 390, 960,
 and 1280 px, plus 667 × 375 landscape. Checks included collapsed defaults,
 source-free manual rolls, contextual notices, multi-choice advantages,
 cross-character history, capacity 30, trimming, and reset after reload.
+Desktop header dragging, keyboard movement, viewport bounds, closing/reopening
+at a custom position, and the transition to the mobile drawer were also checked.

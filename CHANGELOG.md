@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added optional absent-ability warnings for dependent skills, purchased defenses, and Strength-based Damage.
 
 ### Changed
+- Allow moving the desktop dice window by its header or keyboard, retain its position during the session, and keep it within the viewport after resizing; preserve the mobile bottom drawer.
 - Standardize sheet roll controls at the right edge of rows/cards with grouped totals/actions, consistent button styling and mobile wrapping across abilities, skills, defenses, advantages and targeted effects.
 - Animate the dice drawer from outside the viewport, hide its opener while open, and restore focus on close; respect reduced-motion preferences while keeping rolls immediate.
 - Treat generic Extras and Flaws as player choices for every effect, including Movement and Senses. Applicability, incompatibility, maximum-rank, and PL diagnostics do not block Power Builder saves; effect-specific modifiers remain scoped to their defining effect.
@@ -50,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Quality
 - Replaced or removed all 16 pending tests: obsolete/duplicated cases were deleted and valid rule expectations became executable regressions.
-- Expanded the verified suite to 53 test files and 730 passing tests with no pending tests (2026-10-02), including session-roll behavior and character preservation.
+- Expanded the verified suite to 54 test files and 734 passing tests with no pending tests (2026-10-02), including session-roll behavior, window bounds and character preservation.
 - Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 34 of 57 complete sources match their independently published sums under revision 4.
 
 ---

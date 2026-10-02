@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import { D20Icon } from './D20Icon';
+import { DiceWindow } from './DiceWindow';
 import { rollFormula, validRollLimit } from './rollModel';
 import type { RollResult } from './rollModel';
 import { useRollSession } from './rollSessionStore';
@@ -65,8 +66,7 @@ export function DiceRoller() {
   const latest = history[0];
   return <>
     <button ref={triggerRef} type="button" className="dice-toggle" hidden={isOpen} aria-label={t('dice.open')} title={t('dice.open')} aria-expanded={isOpen} aria-controls={panelId} onClick={() => setOpen(true)}><D20Icon size={24} /></button>
-    <aside id={panelId} className="dice-panel" data-open={isOpen} aria-hidden={!isOpen} inert={!isOpen} aria-labelledby={titleId} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } }}>
-      <header className="dice-panel-header"><h2 id={titleId}><D20Icon /> {t('dice.title')}</h2><button type="button" onClick={close} aria-label={t('dice.close')}><X size={18} /></button></header>
+    <DiceWindow id={panelId} titleId={titleId} isOpen={isOpen} onClose={close}>
       <form className="dice-manual" onSubmit={event => { event.preventDefault(); if (bonusValid) roll({ bonus, source: null }); }}>
         <label htmlFor={`${panelId}-bonus`}>{t('dice.bonus')}</label>
         <div className="dice-manual-controls"><span>d20 +</span><input ref={inputRef} id={`${panelId}-bonus`} type="number" step="1" value={bonusText} onChange={event => setBonusText(event.target.value)} /><button type="submit" disabled={!bonusValid}><D20Icon size={16} /> {t('dice.roll')}</button></div>
@@ -78,7 +78,7 @@ export function DiceRoller() {
       <footer className="dice-panel-footer"><label htmlFor={`${panelId}-limit`}>{t('dice.limit')}<input id={`${panelId}-limit`} type="number" min="1" step="1" value={limitText} aria-invalid={limitInvalid} aria-describedby={limitHelpId} onChange={event => { setLimitText(event.target.value); setLimitInvalid(false); }} onBlur={applyLimit} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); applyLimit(); } }} /></label>
         <p id={limitHelpId}>{limitInvalid ? t('dice.invalidLimit') : t('dice.sessionOnly')}</p>
       </footer>
-    </aside>
+    </DiceWindow>
     {notice && !isOpen && <div className="dice-notice"><div>{notice.source && <strong>{notice.source.label}</strong>}<span>{rollFormula(notice)}</span></div><button type="button" aria-label={t('dice.dismiss')} onClick={() => useRollSession.getState().dismissNotice(notice.id)}><X size={16} /></button></div>}
     <span className="dice-sr-only" role="status" aria-live="polite" aria-atomic="true">{latest && <span key={latest.id}>{`${latest.source ? `${latest.source.characterName}, ${latest.source.label}: ` : ''}${rollFormula(latest)}`}</span>}</span>
   </>;
