@@ -1032,5 +1032,11 @@
   "resources.alternateGroupPlaceholder": "e.g. Vehicles",
   "resources.alternatePrice": "Alternate: 1 EP",
   "resources.sharedHint": "Shared headquarters are paid separately from personal headquarters. Contributions are not split automatically.",
-  "resources.localContributions": "Local contributions: {{paid}} / {{cost}} EP. Other campaign members may be outside this browser."
+  "resources.localContributions": "Local contributions: {{paid}} / {{cost}} EP. Other campaign members may be outside this browser.",
+  "resources.import.conflictTitle": "Resources already in this library",
+  "resources.import.conflictDescription": "The file contains changed versions of these resources. Updating the shared library affects every linked sheet. An independent copy only changes the imported sheet.",
+  "resources.import.keep": "Keep local versions",
+  "resources.import.copy": "Import independent copies",
+  "resources.import.update": "Update the shared library",
+  "resources.import.missing": "The file references {{count}} missing resource(s). Include them in the exported file or restore the library before importing."
 }

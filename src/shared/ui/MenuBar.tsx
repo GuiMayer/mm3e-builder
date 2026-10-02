@@ -12,6 +12,8 @@ import { useFileOperations } from '../hooks/useFileOperations';
 import { useExcelExport } from '../hooks/useExcelExport';
 import { MobileDrawer } from './MobileDrawer';
 import { CharacterImportConflictDialog } from './CharacterImportConflictDialog';
+import { ResourceImportConflictDialog } from './ResourceImportConflictDialog';
+import { preserveResourceImportBackup } from '../../services/storage/resourceImportBackup';
 import { ThemeSelector } from './ThemeSelector';
 import { PRESET_THEMES } from '../../features/themes/themeModel';
 import { LanguageSelector } from './LanguageSelector';
@@ -84,6 +86,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     handleFileInput,
     fileInputRef,
     pendingImport,
+    resourceConflicts,
+    resolveResourceConflict,
     updateCharacterFromPendingImport,
     openPendingImportAsCopy,
     cancelPendingImport,
@@ -199,7 +203,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       const missingLinks = tabs.flatMap((tab) => tab.character.resourceLinks ?? []).filter((link) => !importedIds.has(link.resourceId)).length;
       const warning = missingLinks ? t('resources.missingLinksWarning', { count: missingLinks }) : '';
       if (!await dialog.confirm({ title: t('resources.restoreTitle'), message: t('resources.restoreMessage', { count: imported.length, warning }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
-      localStorage.setItem('mm3e-resource-library-import-backup-v1', JSON.stringify({ exportedAt: new Date().toISOString(), resources: localStorage.getItem('mm3e-resource-library') }));
+      if (!preserveResourceImportBackup()) throw new I18nError('resources.error.storageWrite');
       if (!replaceResources(imported)) throw new I18nError('resources.error.storageWrite');
     } catch (error) { await dialog.alert({ title: t('resources.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('resources.importFailed') }); }
   }
@@ -252,6 +256,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         onOpenAsCopy={openPendingImportAsCopy}
         onCancel={cancelPendingImport}
       />
+      <ResourceImportConflictDialog conflicts={resourceConflicts} onChoose={resolveResourceConflict} />
 
       <header className="menubar">
         <div className="menubar-left">

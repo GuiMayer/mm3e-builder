@@ -56,7 +56,7 @@ export const ResourceSchema = z.discriminatedUnion('type', [
     effectSettings: z.record(z.string(), z.object({ kind: z.enum(['effect', 'defense-system']), target: z.enum(['resource', 'occupants', 'both']) }).passthrough()).optional(),
   }),
 ]);
-export const ResourceLibrarySchema = z.object({ version: z.union([z.literal(1), z.literal(2)]), items: z.array(ResourceSchema) }).passthrough();
+export const ResourceLibrarySchema = z.object({ version: z.union([z.literal(1), z.literal(2)]), items: z.array(ResourceSchema) }).passthrough().refine(library => new Set(library.items.map(item => item.id)).size === library.items.length, { message: 'Duplicate resource identities' });
 
 export function migrateResourceMetadata(resource: IResource): IResource {
   if (resource.type === 'gadget' || resource.type === 'gear' || resource.type === 'custom') {

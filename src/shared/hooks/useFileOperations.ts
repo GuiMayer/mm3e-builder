@@ -4,7 +4,7 @@ import { useActiveCharacter } from './useActiveCharacter';
 import { exportCharacterJSON, importCharacterJSON, importResourceAppendix, I18nError, saveDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
-import type { ICharacter } from '../../entities/types';
+import type { ICharacter, IResource } from '../../entities/types';
 import type { CharacterTab } from '../../entities/characterTab';
 import {
   duplicateImportedCharacter,
@@ -13,10 +13,14 @@ import {
 } from '../../entities/characterImport';
 import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
 import { useAppDialog } from '../ui/appDialogContext';
+import { findResourceImportConflicts, prepareResourceImport, type ResourceImportChoice } from '../lib/resourceImport';
+import { preserveResourceImportBackup } from '../../services/storage/resourceImportBackup';
 
 export interface PendingCharacterImport {
   character: ICharacter;
   matchingTabs: CharacterTab[];
+  resources: IResource[];
+  replaceExisting: boolean;
 }
 
 /**
@@ -31,6 +35,23 @@ export function useFileOperations() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isImporting, setIsImporting] = useState(false);
   const [pendingImport, setPendingImport] = useState<PendingCharacterImport | null>(null);
+  const [resourceConflicts, setResourceConflicts] = useState<IResource[] | null>(null);
+  const conflictResolver = useRef<((choice: ResourceImportChoice | null) => void) | null>(null);
+
+  function resolveResourceConflict(choice: ResourceImportChoice | null) {
+    conflictResolver.current?.(choice);
+    conflictResolver.current = null;
+    setResourceConflicts(null);
+  }
+
+  function persistImportedResources(incoming: IResource[], replaceExisting: boolean): boolean {
+    if (!incoming.length) return true;
+    if ((replaceExisting && !preserveResourceImportBackup()) || !useResourcesStore.getState().upsertResources(incoming, replaceExisting)) {
+      void dialog.alert({ title: t('errors.importError'), message: t('resources.error.storageWrite') });
+      return false;
+    }
+    return true;
+  }
 
   function openImportedCharacter(importedCharacter: ICharacter) {
     useCharactersStore.getState().addCharacter(
@@ -65,19 +86,25 @@ export function useFileOperations() {
       const appendixResources = await importResourceAppendix(file);
       const migrated = migrateLegacyEquipmentToResources(char);
       const resourcesToPersist = [...appendixResources, ...migrated.resources];
-      if (resourcesToPersist.length > 0
-        && !useResourcesStore.getState().upsertResources(resourcesToPersist)) {
-        throw new I18nError('resources.error.storageWrite');
+      const conflicts = findResourceImportConflicts(resourcesToPersist, useResourcesStore.getState().resources);
+      let choice: ResourceImportChoice | null = 'keep';
+      if (conflicts.length) {
+        choice = await new Promise<ResourceImportChoice | null>(resolve => {
+          conflictResolver.current = resolve;
+          setResourceConflicts(conflicts);
+        });
       }
+      if (!choice) return;
+      const prepared = prepareResourceImport(migrated.character, resourcesToPersist, useResourcesStore.getState().resources, choice);
       const matchingTabs = findCharacterIdentityMatches(
         useCharactersStore.getState().tabs,
-        migrated.character.characterId
+        prepared.character.characterId
       );
 
       if (matchingTabs.length === 0) {
-        openImportedCharacter(migrated.character);
+        if (persistImportedResources(prepared.resources, prepared.replaceExisting)) openImportedCharacter(prepared.character);
       } else {
-        setPendingImport({ character: migrated.character, matchingTabs });
+        setPendingImport({ ...prepared, matchingTabs });
       }
     } catch (err) {
       if (err instanceof I18nError) {
@@ -85,7 +112,6 @@ export function useFileOperations() {
       } else {
         await dialog.alert({ title: t('errors.importError'), message: t('errors.importError') });
       }
-      throw err;
     } finally {
       setIsImporting(false);
     }
@@ -116,6 +142,7 @@ export function useFileOperations() {
   function updateCharacterFromPendingImport(tabId: string) {
     const pending = pendingImport;
     if (!pending) return;
+    if (!persistImportedResources(pending.resources, pending.replaceExisting)) return;
 
     const store = useCharactersStore.getState();
     if (store.getCharacterById(tabId)) {
@@ -130,6 +157,7 @@ export function useFileOperations() {
   function openPendingImportAsCopy() {
     const pending = pendingImport;
     if (!pending) return;
+    if (!persistImportedResources(pending.resources, pending.replaceExisting)) return;
 
     const existingNames = useCharactersStore.getState().tabs.map((tab) => tab.label);
     openImportedCharacter(duplicateImportedCharacter(pending.character, existingNames));
@@ -144,6 +172,8 @@ export function useFileOperations() {
     fileInputRef,
     isImporting,
     pendingImport,
+    resourceConflicts,
+    resolveResourceConflict,
     updateCharacterFromPendingImport,
     openPendingImportAsCopy,
     cancelPendingImport: () => setPendingImport(null),

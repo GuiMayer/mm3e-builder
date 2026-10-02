@@ -1032,5 +1032,11 @@
   "resources.alternateGroupPlaceholder": "Ex.: Veículos",
   "resources.alternatePrice": "Alternativo: 1 EP",
   "resources.sharedHint": "Bases compartilhadas são pagas separadamente das bases pessoais. As contribuições não são divididas automaticamente.",
-  "resources.localContributions": "Contribuições locais: {{paid}} / {{cost}} EP. Outros participantes da campanha podem estar fora deste navegador."
+  "resources.localContributions": "Contribuições locais: {{paid}} / {{cost}} EP. Outros participantes da campanha podem estar fora deste navegador.",
+  "resources.import.conflictTitle": "Recursos já presentes na biblioteca",
+  "resources.import.conflictDescription": "O arquivo contém versões diferentes destes recursos. Atualizar a biblioteca compartilhada afeta todas as fichas vinculadas. Uma cópia independente altera apenas a ficha importada.",
+  "resources.import.keep": "Manter as versões locais",
+  "resources.import.copy": "Importar cópias independentes",
+  "resources.import.update": "Atualizar a biblioteca compartilhada",
+  "resources.import.missing": "O arquivo faz referência a {{count}} recurso(s) ausente(s). Inclua-os no arquivo exportado ou restaure a biblioteca antes de importar."
 }
