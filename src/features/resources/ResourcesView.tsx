@@ -10,11 +10,13 @@ import { getResourceCost, getResourceCostDetails, getVehicleBaseTraits, changeVe
 import { getCharacterStrength } from '../../shared/lib/componentRanks';
 import { getResourcePowerWarnings } from '../../shared/lib/resourceWarnings';
 import { needsResourceReview } from '../../shared/lib/resourceReview';
-import type { ResourceBuilderContext } from '../../shared/lib/resourceContext';
 import { Button } from '../../shared/ui/Button';
 import { Modal } from '../../shared/ui/Modal';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { createId } from '../../shared/lib/identity';
+import { resolveResourceEditTarget, type ResourceEditTarget, type ResourcePowerTarget } from '../../shared/lib/resourcePowers';
+import { ResourcePowerSummary } from './ResourcePowerSummary';
+import { Tooltip } from '../../shared/ui/Tooltip';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { ResourceReviewDialog } from './ResourceReviewDialog';
 import './resources.css';
@@ -22,7 +24,6 @@ import './resources.css';
 const TYPES: ResourceType[] = ['gadget', 'gear', 'vehicle', 'headquarters', 'custom'];
 const VEHICLE_SIZES: IVehicleResource['size'][] = ['medium', 'large', 'huge', 'gargantuan', 'colossal', 'awesome'];
 const HQ_SIZES: IHeadquartersResource['size'][] = ['miniscule', 'fine', 'diminutive', 'tiny', 'small', 'medium', 'large', 'huge', 'gargantuan', 'colossal', 'awesome'];
-interface PowerTarget { resourceId: string; kind: ResourceBuilderContext['kind']; powerId?: string; }
 function blankPower(): ICharacterPower { return { id: createId(), name: '', components: [{ id: createId(), effectId: '', ranks: 1, modifiers: [], fieldValues: {} }], notes: '', alternateEffects: [] }; }
 function makeResource(type: ResourceType, level: number): IResource {
   const base = { id: createId(), name: '', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
@@ -30,13 +31,19 @@ function makeResource(type: ResourceType, level: number): IResource {
   if (type === 'headquarters') return { ...base, type, size: 'small', toughness: 6, powerLevel: level, features: [], effects: [] };
   return { ...base, type, costMode: type === 'gadget' ? 'device' : 'equipment', power: { ...blankPower(), ...(type === 'gadget' ? { removable: 'removable' as const } : {}) } };
 }
-export function ResourcesView() {
+export function ResourcesView({ initialEditTarget }: { initialEditTarget?: ResourceEditTarget }) {
   const { t, i18n } = useTranslation();
   const { character } = useActiveCharacter();
   const resources = useResourcesStore((state) => state.resources);
   const saveError = useResourcesStore((state) => state.storageError);
-  const [editing, setEditing] = useState<{ resource: IResource; isNew: boolean } | null>(null);
-  const [powerTarget, setPowerTarget] = useState<PowerTarget | null>(null);
+  const [editing, setEditing] = useState<{ resource: IResource; isNew: boolean } | null>(() => {
+    const resolved = resolveResourceEditTarget(resources, initialEditTarget);
+    return resolved?.target.kind === 'traits' ? { resource: resolved.resource, isNew: false } : null;
+  });
+  const [powerTarget, setPowerTarget] = useState<ResourcePowerTarget | null>(() => {
+    const resolved = resolveResourceEditTarget(resources, initialEditTarget);
+    return resolved && resolved.target.kind !== 'traits' ? resolved.target : null;
+  });
   const [review, setReview] = useState(false);
   const dialog = useAppDialog();
   const ordered = useMemo(() => [...resources].sort((a, b) => a.name.localeCompare(b.name, i18n.language, { sensitivity: 'base', numeric: true })), [resources, i18n.language]);
@@ -82,20 +89,20 @@ export function ResourcesView() {
       const cost = getResourceCost(resource, undefined, undefined, getCharacterStrength(character));
       const powers = resource.type === 'vehicle' ? resource.systems : resource.type === 'headquarters' ? resource.effects : [];
       return <article className="resource-card" key={resource.id}>
-        <div className="resource-card__top"><span>{t(`resources.type.${resource.type}`)}</span><div><button onClick={() => setEditing({ resource, isNew: false })} aria-label={t('common.edit')}><Edit3 size={16}/></button><button onClick={() => void remove(resource)} aria-label={t('common.delete')}><Trash2 size={16}/></button></div></div>
+        <div className="resource-card__top"><span>{t(`resources.type.${resource.type}`)}</span><div><Tooltip content={t('resources.editInLibrary')}><button onClick={() => setEditing({ resource, isNew: false })} aria-label={t('common.edit')}><Edit3 size={16}/></button></Tooltip><button onClick={() => void remove(resource)} aria-label={t('common.delete')}><Trash2 size={16}/></button></div></div>
         <h2>{resource.name || t('resources.unnamed')}</h2>{resource.notes && <p>{resource.notes}</p>}
         {resource.type === 'vehicle' && <p>{t(`resources.size.${resource.size}`)} · {t('resources.strengthShort')} {resource.strength} · {t('resources.defense')} {resource.defense} · {t('resources.toughness')} {resource.toughness}</p>}
         {resource.type === 'headquarters' && <p>{t(`resources.size.${resource.size}`)} · {t('resources.toughness')} {resource.toughness} · {t('resources.hq.level')} {resource.powerLevel ?? 10}</p>}
         {(resource.type === 'vehicle' || resource.type === 'headquarters') && resource.features.length > 0 && <ul className="resource-card__features">{resource.features.map((feature) => <li key={feature.id}>{feature.name || t('resources.feature')} {(feature.ranks ?? 1) > 1 ? `×${feature.ranks}` : ''}{feature.notes && <small>{feature.notes}</small>}</li>)}</ul>}
-        {resource.type === 'vehicle' && <div className="resource-card__power"><span>{t('resources.movement')}: {resource.movement ? resource.movement.components.map((component) => `${t(`resources.movement.${component.effectId}`, { defaultValue: component.effectId })} ${component.ranks}`).join(' + ') || t('resources.movement.systems') : resource.speed ? `${t('resources.movement.speed')} ${resource.speed}` : t('resources.movement.none')}</span><button aria-label={t('resources.movement.edit')} onClick={() => setPowerTarget({ resourceId: resource.id, kind: 'movement' })}><Wand2 size={16}/></button></div>}
-        {resource.type === 'vehicle' || resource.type === 'headquarters' ? <><div className="resource-card__power"><b>{t(resource.type === 'vehicle' ? 'resources.systems' : 'resources.effects')}</b><button onClick={() => setPowerTarget({ resourceId: resource.id, kind: resource.type === 'vehicle' ? 'system' : 'headquarters-effect' })}><Plus size={14}/> {t('common.add')}</button></div>{powers.map((power) => <div className="resource-card__system" key={power.id}><div className="resource-card__power"><button onClick={() => setPowerTarget({ resourceId: resource.id, kind: resource.type === 'vehicle' ? 'system' : 'headquarters-effect', powerId: power.id })}>{power.name || t('resources.unnamedEffect')}</button><button aria-label={t('common.remove')} onClick={() => void removePower(resource, power.id)}><Trash2 size={16}/></button></div>{resource.type === 'headquarters' && <><label>{t('resources.hq.kind')}<select value={resource.effectSettings?.[power.id]?.kind ?? 'effect'} onChange={(event) => {
+        {resource.type === 'vehicle' && (resource.movement ? <ResourcePowerSummary power={resource.movement} label={t('resources.movement')} onEdit={() => setPowerTarget({ resourceId: resource.id, kind: 'movement', powerId: resource.movement!.id })}/> : <div className="resource-card__power"><span>{t('resources.movement')}: {resource.speed ? `${t('resources.movement.speed')} ${resource.speed}` : t('resources.movement.none')}</span><button aria-label={t('resources.movement.edit')} onClick={() => setPowerTarget({ resourceId: resource.id, kind: 'movement' })}><Wand2 size={16}/></button></div>)}
+        {resource.type === 'vehicle' || resource.type === 'headquarters' ? <><div className="resource-card__power"><b>{t(resource.type === 'vehicle' ? 'resources.systems' : 'resources.effects')}</b><button onClick={() => setPowerTarget({ resourceId: resource.id, kind: resource.type === 'vehicle' ? 'system' : 'headquarters-effect' })}><Plus size={14}/> {t('common.add')}</button></div>{powers.map((power) => <div className="resource-card__system" key={power.id}><ResourcePowerSummary power={power} onEdit={() => setPowerTarget({ resourceId: resource.id, kind: resource.type === 'vehicle' ? 'system' : 'headquarters-effect', powerId: power.id })} onRemove={() => void removePower(resource, power.id)}/>{resource.type === 'headquarters' && <><label>{t('resources.hq.kind')}<select value={resource.effectSettings?.[power.id]?.kind ?? 'effect'} onChange={(event) => {
           const current = useResourcesStore.getState().getResource(resource.id);
           if (current?.type === 'headquarters') useResourcesStore.getState().updateResource({ ...current, effectSettings: { ...current.effectSettings, [power.id]: { ...current.effectSettings?.[power.id], target: current.effectSettings?.[power.id]?.target ?? 'resource', kind: event.target.value as 'effect' | 'defense-system' } } });
         }}><option value="effect">{t('resources.hq.effect')}</option><option value="defense-system">{t('resources.hq.defenseSystem')}</option></select></label><label>{t('resources.hq.target')}<select value={resource.effectSettings?.[power.id]?.target ?? 'resource'} onChange={(event) => {
           const current = useResourcesStore.getState().getResource(resource.id);
           if (current?.type === 'headquarters') useResourcesStore.getState().updateResource({ ...current, effectSettings: { ...current.effectSettings, [power.id]: { ...current.effectSettings?.[power.id], kind: current.effectSettings?.[power.id]?.kind ?? 'effect', target: event.target.value as 'resource' | 'occupants' | 'both' } } });
         }}>{['resource', 'occupants', 'both'].map((target) => <option key={target} value={target}>{t(`resources.hq.target.${target}`)}</option>)}</select></label>{getResourcePowerWarnings(resource, power, character).map((warning) => <p className="resource-warning" key={warning.key}>{t(warning.key, warning.values)}</p>)}</>}</div>)}</>
-          : <button className="resource-card__effects" onClick={() => setPowerTarget({ resourceId: resource.id, kind: 'power', powerId: resource.power.id })}><Wand2 size={16}/> {t('resources.editEffects')}</button>}
+          : <ResourcePowerSummary power={resource.power} onEdit={() => setPowerTarget({ resourceId: resource.id, kind: 'power', powerId: resource.power.id })}/>}
         <details className="resource-card__cost-details"><summary>{t('resources.totalCost')}</summary><dl>{getResourceCostDetails(resource, getCharacterStrength(character)).map((part, index) => <div key={index}><dt>{part.key ? t(part.key) : part.name || t('resources.unnamedEffect')}</dt><dd>{part.cost} {cost.unit}</dd></div>)}</dl></details>
         <footer>{cost.total} {cost.unit}{needsResourceReview(resource) && <span> · {t('resources.review.required')}</span>}</footer>
       </article>;

@@ -15,6 +15,7 @@ import { PointCalculationUpdateNotice } from '../shared/ui/PointCalculationUpdat
 import { DiceRoller } from '../features/dice-roller/DiceRoller'
 import { ResourceStorageStatus } from '../shared/ui/ResourceStorageStatus'
 import { ResourceReviewController } from '../features/resources/ResourceReviewController'
+import type { ResourceEditTarget } from '../shared/lib/resourcePowers'
 
 const PDFPreviewDialog = lazy(() => import('../features/sheet-core/PDFPreviewDialog').then((module) => ({ default: module.PDFPreviewDialog })));
 const PDFOverflowModal = lazy(() => import('../features/sheet-core/PDFOverflowModal').then((module) => ({ default: module.PDFOverflowModal })));
@@ -31,6 +32,7 @@ export type AppView = 'sheet' | 'resources' | 'references';
 export function App() {
   const { t, i18n } = useTranslation()
   const [activeView, setActiveView] = useState<AppView>('sheet');
+  const [resourceEditTarget, setResourceEditTarget] = useState<ResourceEditTarget>();
   
   // PDF export with preview dialog
   const {
@@ -78,7 +80,7 @@ export function App() {
       <div className="app-root">
         <MenuBar 
           activeView={activeView} 
-          onViewChange={setActiveView}
+          onViewChange={(view) => { setResourceEditTarget(undefined); setActiveView(view); }}
           onExportPDF={exportPDF}
           isGeneratingPreview={isGeneratingPreview}
         />
@@ -89,10 +91,10 @@ export function App() {
         >
           <main className="app-main">
             {activeView === 'sheet' ? (
-              <SheetView />
+              <SheetView onEditResource={(target) => { setResourceEditTarget(target); setActiveView('resources'); }}/>
             ) : activeView === 'resources' ? (
               <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
-                <ResourcesView />
+                <ResourcesView initialEditTarget={resourceEditTarget}/>
               </Suspense>
             ) : (
               <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>

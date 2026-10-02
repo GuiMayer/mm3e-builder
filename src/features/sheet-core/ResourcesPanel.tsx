@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Package, Plus, Search, Trash2, X } from 'lucide-react';
+import { Edit3, Package, Plus, Search, Trash2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterResourceLink, ResourceType } from '../../entities/types';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
@@ -12,11 +12,14 @@ import { createId } from '../../shared/lib/identity';
 import { Button } from '../../shared/ui/Button';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { useCharactersStore } from '../../store/charactersStore';
+import { getResourcePowers, type ResourceEditTarget } from '../../shared/lib/resourcePowers';
+import { ResourcePowerSummary } from '../resources/ResourcePowerSummary';
+import { Tooltip } from '../../shared/ui/Tooltip';
 
 const RESOURCE_TYPES: ResourceType[] = ['gadget', 'gear', 'vehicle', 'headquarters', 'custom'];
 const EMPTY_RESOURCE_LINKS: ICharacterResourceLink[] = [];
 
-export function ResourcesPanel() {
+export function ResourcesPanel({ onEditResource }: { onEditResource: (target: ResourceEditTarget) => void }) {
   const { t, i18n } = useTranslation();
   const { character } = useActiveCharacter();
   const { setResourceLinks } = useCharacterActions();
@@ -93,7 +96,11 @@ export function ResourcesPanel() {
               <div className="resources-panel__item-main"><strong>{resource.name || t('resources.unnamed')}</strong><span>{t(`resources.type.${resource.type}`)}</span></div>
               <label className="resources-panel__free"><input className="app-checkbox" type="checkbox" checked={link.isFree} onChange={(event) => updateLink(link.id, { isFree: event.target.checked })} /> {t('resources.free')}</label>
               <strong className="resources-panel__cost">{charge.charged} {charge.unit}</strong>
-              <button className="resources-panel__remove" onClick={() => removeLink(link.id)} title={t('common.remove')} aria-label={t('common.remove')}><Trash2 size={14} /></button>
+              <div className="resources-panel__actions">
+                <Tooltip content={t('resources.editInLibrary')}><button className="resources-panel__edit" onClick={() => onEditResource({ resourceId: resource.id, kind: 'traits' })} aria-label={t('resources.editResourceNamed', { name: resource.name || t('resources.unnamed') })}><Edit3 size={14}/></button></Tooltip>
+                <button className="resources-panel__remove" onClick={() => removeLink(link.id)} title={t('common.remove')} aria-label={t('common.remove')}><Trash2 size={14} /></button>
+              </div>
+              <div className="resources-panel__powers">{getResourcePowers(resource).map(({ power, target }) => <ResourcePowerSummary key={power.id} power={power} label={target.kind === 'movement' ? t('resources.movement') : undefined} onEdit={() => onEditResource(target)}/>)}</div>
               <details className="resources-panel__ownership"><summary>{t('resources.ownership')}</summary>
                 <p>{t('resources.fullCost', { cost: charge.total, unit: charge.unit })}{charge.alternate ? ` · ${t('resources.alternatePrice')}` : ''}</p>
                 {!isDeviceResource(resource) && <>
@@ -177,6 +184,10 @@ export function ResourcesPanel() {
         .resources-panel__item-main span { color:var(--c-text-muted); font-size:.7rem; text-transform:capitalize; }
         .resources-panel__free { color:var(--c-text-secondary); font-size:.76rem; white-space:nowrap; }
         .resources-panel__cost { color:var(--c-primary); font-variant-numeric:tabular-nums; }
+        .resources-panel__actions { display:flex; }
+        .resources-panel__powers { grid-column:1/-1; min-width:0; }
+        .resources-panel__edit { background:transparent; border:0; color:var(--c-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center; min-width:36px; min-height:36px; }
+        .resources-panel__edit:hover { color:var(--c-primary); }
         .resources-panel__remove,.resources-panel__missing button { background:transparent; border:0; color:var(--c-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center; min-width:36px; min-height:36px; padding:4px; }
         .resources-panel__ownership { grid-column:1/-1; font-size:.8rem; color:var(--c-text-secondary); min-width:0; }
         .resources-panel__ownership summary { cursor:pointer; padding:var(--s-xs) 0; }
@@ -203,7 +214,7 @@ export function ResourcesPanel() {
         .resources-panel__selector-footer { border-top:1px solid var(--c-border); display:flex; justify-content:flex-end; margin-top:var(--s-sm); padding-top:var(--s-sm); }
         .resources-panel__close-selector { align-items:center; background:var(--c-surface-elevated); border:1px solid var(--c-border); border-radius:var(--r-sm); color:var(--c-text-secondary); cursor:pointer; display:flex; font:inherit; font-size:.78rem; gap:4px; padding:var(--s-xs) var(--s-sm); }
         .resources-panel__close-selector:hover { border-color:var(--c-primary); color:var(--c-primary); }
-        @media (max-width:768px) { .resources-panel__item { grid-template-columns:1fr auto; } .resources-panel__free { grid-column:1; } .resources-panel__cost { grid-column:2; grid-row:2; } .resources-panel__remove { grid-column:2; grid-row:1; min-width:44px; min-height:44px; } }
+        @media (max-width:768px) { .resources-panel__item { grid-template-columns:minmax(0,1fr) auto; } .resources-panel__free { grid-column:1; } .resources-panel__cost { grid-column:2; grid-row:2; } .resources-panel__actions { grid-column:2; grid-row:1; } .resources-panel__remove,.resources-panel__edit { min-width:44px; min-height:44px; } }
       `}</style>
     </section>
   );

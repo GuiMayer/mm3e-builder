@@ -13,8 +13,9 @@ import { PPLogPanel } from './PPLogPanel';
 import { ConditionsPanel } from './ConditionsPanel';
 import { NotesPanel } from './NotesPanel';
 import { useTranslation } from 'react-i18next';
+import type { ResourceEditTarget } from '../../shared/lib/resourcePowers';
 
-export function SheetView() {
+export function SheetView({ onEditResource }: { onEditResource: (target: ResourceEditTarget) => void }) {
   const { t } = useTranslation();
   const violations = usePLValidation();
   const pp = useCalculatedPP();
@@ -48,7 +49,7 @@ export function SheetView() {
       <AdvantagesPanel cost={pp.advantagesCost} />
       <PowersList />
       <ComplicationsPanel />
-      <ResourcesPanel />
+      <ResourcesPanel onEditResource={onEditResource}/>
       <NotesPanel />
 
       {/* PP Summary Footer */}
