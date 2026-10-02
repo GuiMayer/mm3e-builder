@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added a custom interface palette editor beside the theme selector, with 36 color roles, opacity controls, preview and informative contrast warnings. The Custom theme option appears only after saving a valid local palette; built-in themes and character/export data remain unchanged.
 - Added a hidden, animation-free d20 roller with a right-edge desktop control, mobile bottom drawer, manual integer bonus, and session-only history (15 results by default, configurable in the footer).
 - Added contextual roll buttons for abilities, skills, initiative, resistance checks, and eligible attack profiles, plus explicit advantage shortcuts and Skill Mastery routine checks. Sources are snapshotted without changing character data or exports.
 - Added a structured **Impervious Resistance** utility effect for Impervious bought directly on an existing resistance. It costs 1 PP/rank and never increases the underlying defense.
@@ -51,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Quality
 - Replaced or removed all 16 pending tests: obsolete/duplicated cases were deleted and valid rule expectations became executable regressions.
-- Expanded the verified suite to 54 test files and 734 passing tests with no pending tests (2026-10-02), including session-roll behavior, window bounds and character preservation.
+- Expanded the verified suite to 56 test files and 744 passing tests with no pending tests (2026-10-02), including session-roll behavior, window bounds, custom palettes and character preservation.
 - Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 34 of 57 complete sources match their independently published sums under revision 4.
 
 ---

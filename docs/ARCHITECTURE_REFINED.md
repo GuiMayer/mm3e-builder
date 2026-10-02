@@ -88,6 +88,17 @@ snapshot. Draft loading and migration are gated until that one-time backup
 prompt is resolved. Recovery copies are retained when a legacy or unreadable
 draft cannot be safely replaced.
 
+## Interface themes
+
+Interface themes have a separate presentation boundary in `features/themes`.
+The immutable built-in palettes retain their original values; one custom palette
+uses `mm3e-custom-theme-v1`, independently of character/Resource storage. The
+existing app preference selects its `custom` identifier only after a valid
+palette is saved. A single controller applies allowed CSS variables before
+rendering and on changes, removing custom overrides when a built-in theme is
+selected. The editor's local draft never updates character data or export
+palettes. See [custom-themes.md](./custom-themes.md).
+
 ## Temporary editing history
 
 The session dice roller also uses runtime-only state, independently of editing

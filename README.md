@@ -28,6 +28,9 @@ A modern, fast, and user-friendly character builder for the Mutants & Mastermind
 - **Manual or sheet checks** — Enter a bonus for d20 rolls without a source, or use contextual buttons on abilities, skills, defenses, attacks, and supported advantages.
 - **Temporary history** — Keep 15 results by default; change capacity in the panel footer. History follows character tabs and clears on reload/close. Existing sheets and exports are unchanged. [Details](docs/dice-roller.md).
 
+#### 🎨 Custom Interface Theme
+- Use the square palette button beside the theme selector to edit colors, transparency and a live preview. **Custom theme** appears only after saving; all four built-in themes remain unchanged. The palette persists locally and never changes character data or PDF colors. [Details](docs/custom-themes.md).
+
 #### 📖 Campaign Mode & PP Advancement Log
 - **Campaign Mode toggle** — Switch between campaign mode (PP earned during play) and standard mode (PL × 15 flat).
 - **PP Log Panel** — Track PP awards and deductions with date, amount, and notes for each entry.
@@ -258,6 +261,9 @@ Um criador de fichas moderno, rápido e focado na facilidade de uso para o siste
 - **Oculto por padrão** — Abra pelo botão d20 na lateral direita no desktop ou pelo botão flutuante no celular; resultados imediatos, sem animação.
 - **Testes manuais ou pela ficha** — Digite um bônus para rolar d20 sem origem, ou use os botões em habilidades, perícias, defesas, ataques e vantagens compatíveis.
 - **Histórico temporário** — Guarda 15 resultados por padrão; altere a quantidade no rodapé. O histórico acompanha as abas de personagens e é limpo ao recarregar/fechar. Fichas e exportações permanecem intactas. [Detalhes](docs/dice-roller.md).
+
+#### 🎨 Tema Personalizado da Interface
+- Use o botão quadrado de paleta ao lado dos temas para editar cores, transparências e conferir a prévia. **Tema personalizado** aparece somente após salvar; os quatro temas padrão permanecem intactos. A paleta fica salva no navegador, sem alterar fichas ou cores do PDF. [Detalhes](docs/custom-themes.md).
 
 #### 📖 Modo Campanha & Registro de Avanço de PP
 - **Toggle de Modo Campanha** — Alterne entre modo campanha (PP ganhos durante o jogo) e modo padrão (NP × 15 fixo).
