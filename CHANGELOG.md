@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added optional absent-ability warnings for dependent skills, purchased defenses, and Strength-based Damage.
 
 ### Changed
+- Treat generic Extras and Flaws as player choices for every effect, including Movement and Senses. Applicability, incompatibility, maximum-rank, and PL diagnostics do not block Power Builder saves; effect-specific modifiers remain scoped to their defining effect.
 - Sort effect and modifier options by their displayed names in the active language, retaining alphabetical order after filtering without mutating catalog or character data.
 - Improve PowerBuilder drag handles, keyboard target navigation, full modifier names and mobile palette controls; cache pricing independently of descriptive edits and render styles once per palette.
 - Share point summaries across sheet panels, subscribe panels to their own fields, and load PDF dialogs only when opened.
