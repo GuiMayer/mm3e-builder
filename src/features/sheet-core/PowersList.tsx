@@ -6,17 +6,18 @@ import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
 import { Tooltip } from '../../shared/ui/Tooltip';
-import { Plus, Edit3, Trash2, Zap } from 'lucide-react';
+import { Plus, Edit3, Trash2, Zap, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
-import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
+import { buildPowerReferences, localizeReference } from './powerReference';
+import { PowerReferenceDialog, type PowerReferenceTarget } from './PowerReferenceDialog';
 
 const PowerBuilderOverlay = lazy(() =>
   import('../power-builder/PowerBuilderOverlay').then((module) => ({ default: module.PowerBuilderOverlay }))
 );
 
 export function PowersList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const powerDefs = useLocalizedData(POWER_DEFS);
   const modifierDefs = useLocalizedData(MODIFIER_DEFS);
   
@@ -26,6 +27,7 @@ export function PowersList() {
   const [builderOpen, setBuilderOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const dialog = useAppDialog();
+  const [referenceTarget, setReferenceTarget] = useState<PowerReferenceTarget | null>(null);
 
 
 
@@ -80,19 +82,11 @@ export function PowersList() {
         {powers.map((power, i) => {
           const totalCost = powerPricing[i]?.total ?? 0;
 
-          // Build display info from components
-          const effectNames = power.components
-            .map((component) => `${powerDefs.find((definition) => definition.id === component.effectId)?.name ?? component.effectId} ${component.ranks}`);
-
-          const appliedModNames = power.components.flatMap((comp) =>
-            comp.modifiers.map((m) => {
-              const effectDef = powerDefs.find((definition) => definition.id === comp.effectId);
-              const md = effectDef
-                ? resolveModifierDefinition(m, effectDef, modifierDefs).definition
-                : undefined;
-              return md ? md.name : m.modifierId;
-            })
-          );
+          const references = buildPowerReferences(power.components, powerDefs, modifierDefs, i18n.language);
+          const effectNames = references.map(reference => `${reference.definition?.name ?? reference.component.effectId} ${reference.component.ranks}`);
+          const powerSummary = references.map(reference => `${reference.definition?.name ?? reference.component.effectId}: ${reference.definition?.description || t('rulesInfo.missing')}`).join('\n\n');
+          const appliedModifiers = references.flatMap(reference => reference.modifiers.map(modifier => ({ modifier, effectName: reference.definition?.name ?? reference.component.effectId, componentId: reference.component.id })));
+          const powerModifierIds = [power.activation ? 'activation' : '', power.removable && power.removable !== 'none' ? 'removable' : ''].filter(Boolean);
 
           return (
             <div key={power.id} className="power-card-item">
@@ -101,8 +95,14 @@ export function PowersList() {
                   <Zap size={18} />
                 </div>
                 <div className="power-card-info">
-                  <span className="power-card-name">{power.name || t('powers.unnamed')}</span>
-                  <span className="power-card-effect">{effectNames.join(' + ')}</span>
+                  <Tooltip content={powerSummary + '\n\n' + t('rulesInfo.clickForDetails')}>
+                    <button type="button" className="power-card-name power-reference-button" aria-haspopup="dialog" onClick={() => setReferenceTarget({ kind: 'power', power })}>{power.name || t('powers.unnamed')} <Info size={13} /></button>
+                  </Tooltip>
+                  <span className="power-card-effect">{references.map((reference, index) => <span key={reference.component.id}>
+                    {index > 0 && ' + '}<Tooltip content={(reference.definition?.description || t('rulesInfo.missing')) + '\n\n' + t('rulesInfo.clickForDetails')}>
+                      <button type="button" className="power-reference-button" aria-haspopup="dialog" onClick={() => setReferenceTarget({ kind: 'effect', reference })}>{effectNames[index]}</button>
+                    </Tooltip>
+                  </span>)}</span>
                   {power.descriptors && power.descriptors.length > 0 && (
                     <div className="power-card-descriptors">
                       {power.descriptors.map((desc, idx) => (
@@ -114,13 +114,18 @@ export function PowersList() {
                 <span className="power-card-cost">{totalCost} {t('common.pp')}</span>
               </div>
 
-              {appliedModNames.length > 0 && (
-                <div className="power-card-mods">
-                  {appliedModNames.map((name, j) => (
-                    <span key={j} className="power-mod-tag">{name}</span>
-                  ))}
-                </div>
-              )}
+              {(appliedModifiers.length > 0 || powerModifierIds.length > 0) && <div className="power-card-mods">
+                {appliedModifiers.map(({ modifier, effectName, componentId }, index) => <Tooltip key={`${componentId}-${index}`} content={effectName + '\n' + (modifier.definition?.description || t('rulesInfo.missing')) + '\n\n' + t('rulesInfo.clickForDetails')}>
+                  <button type="button" className="power-mod-tag power-reference-button" aria-haspopup="dialog" onClick={() => setReferenceTarget({ kind: 'modifier', reference: modifier, effectName })}>{modifier.definition?.name ?? modifier.applied.modifierId}</button>
+                </Tooltip>)}
+                {powerModifierIds.map(id => {
+                  const raw = modifierDefs.find(definition => definition.id === id);
+                  const definition = raw && localizeReference(raw, i18n.language);
+                  return <Tooltip key={id} content={(definition?.description || t('rulesInfo.missing')) + '\n\n' + t('rulesInfo.clickForDetails')}>
+                    <button type="button" className="power-mod-tag power-reference-button" aria-haspopup="dialog" onClick={() => setReferenceTarget({ kind: 'modifier', reference: { definition, source: 'generic', applied: { modifierId: id, ranks: 1, options: { subtypeId: id === 'activation' ? power.activation! : power.removable! } } } })}>{definition?.name ?? id}</button>
+                  </Tooltip>;
+                })}
+              </div>}
 
               {power.alternateEffects.length > 0 && (
                 <div className="power-alt-info">
@@ -130,9 +135,10 @@ export function PowersList() {
                       .filter(Boolean)
                       .join(' + ');
                     return (
-                      <span key={ae.id} className="power-alt-tag">
+                      <Tooltip key={ae.id} content={buildPowerReferences(ae.components, powerDefs, modifierDefs, i18n.language).map(reference => reference.definition?.description || t('rulesInfo.missing')).join('\n\n') + '\n\n' + t('rulesInfo.clickForDetails')}>
+                      <button type="button" className="power-alt-tag power-reference-button" aria-haspopup="dialog" onClick={() => setReferenceTarget({ kind: 'power', power: ae })}>
                         ↪ {ae.name || aeEffects || 'AE'}{ae.dynamic ? ' ⚡' : ''}
-                      </span>
+                      </button></Tooltip>
                     );
                   })}
                 </div>
@@ -160,6 +166,8 @@ export function PowersList() {
       <button className="power-new-btn" onClick={openNew}>
         <Plus size={18} /> {t('powers.newPowerBtn')}
       </button>
+
+      {referenceTarget && <PowerReferenceDialog target={referenceTarget} onClose={() => setReferenceTarget(null)} />}
 
       {builderOpen && (
         <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
@@ -189,14 +197,18 @@ export function PowersList() {
           width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
           background: var(--c-primary-muted); border-radius: var(--r-sm); color: var(--c-primary);
         }
-        .power-card-info { flex: 1; display: flex; flex-direction: column; }
+        .power-card-info { min-width:0; flex: 1; display: flex; flex-direction: column; }
+        .power-reference-button{font:inherit;color:inherit;background:none;border:0;padding:0;text-align:left;cursor:pointer;overflow-wrap:anywhere;}
+        .power-reference-button:hover{text-decoration:underline;text-underline-offset:3px;}
+        .power-reference-button:focus-visible{outline:2px solid var(--c-primary);outline-offset:3px;border-radius:3px;}
+        .power-card-name.power-reference-button{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;}
         .power-card-name { font-weight: 700; font-size: 0.95rem; }
         .power-card-effect { font-size: 0.78rem; color: var(--c-text-secondary); }
         .power-card-cost { font-weight: 800; font-size: 1.1rem; color: var(--c-primary); font-variant-numeric: tabular-nums; }
 
         .power-card-mods { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--s-sm); }
         .power-mod-tag {
-          font-size: 0.7rem; padding: 2px 8px; border-radius: var(--r-full);
+          font-family:var(--f-body);font-size: 0.7rem; padding: 4px 8px; border-radius: var(--r-full);
           background: var(--c-primary-muted); color: var(--c-primary); font-weight: 500;
         }
         .power-alt-info { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--s-xs); }
@@ -229,6 +241,7 @@ export function PowersList() {
           font-family: var(--f-heading); font-size: 0.95rem; font-weight: 700;
           cursor: pointer; transition: all var(--t-fast); width: 100%;
         }
+        @media(max-width:600px){.power-card-info .power-reference-button,.power-card-mods .power-reference-button,.power-alt-info .power-reference-button{min-height:36px;}.power-card-cost{flex-shrink:0;}.power-card-name{overflow-wrap:anywhere;}}
         .power-new-btn:hover { background: var(--c-primary); color: var(--c-action-text, var(--c-text-inverse)); box-shadow: var(--shadow-glow); }
       `}</style>
     </section>

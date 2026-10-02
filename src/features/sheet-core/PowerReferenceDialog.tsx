@@ -1,0 +1,85 @@
+import { useTranslation } from 'react-i18next';
+import type { IAlternateEffect, ICharacterPower, IModifierDef, IPowerEffect } from '../../entities/types';
+import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
+import { InfoDialog } from '../../shared/ui/InfoDialog';
+import { buildPowerReferences, localizeReference, type ComponentReference, type ModifierReference } from './powerReference';
+
+export type PowerReferenceTarget = { kind: 'power'; power: ICharacterPower | IAlternateEffect } |
+  { kind: 'effect'; reference: ComponentReference } | { kind: 'modifier'; reference: ModifierReference; effectName?: string };
+
+function RuleDescription({ definition }: { definition?: IPowerEffect | IModifierDef }) {
+  const { t } = useTranslation();
+  if (!definition) return <p>{t('rulesInfo.missing')}</p>;
+  return <>
+    <div className="reference-meta">
+      {'baseCost' in definition ? <>
+        <span>{t(`rulesInfo.action.${definition.action}`)}</span><span>{t(`rulesInfo.range.${definition.range}`)}</span><span>{t(`rulesInfo.duration.${definition.duration}`)}</span>
+        <span>{definition.variableCost ? t('rulesInfo.variableCost') : definition.baseCost + ' ' + t('common.pp') + '/' + t('common.rank')}</span>
+      </> : <>
+        <span>{t(`rulesInfo.${definition.category}`)}</span>
+        {definition.appliesToPower || ['activation', 'removable'].includes(definition.id) ? <span>{t('rulesInfo.powerLevel')}</span> : <span>{definition.costValue > 0 ? '+' : ''}{definition.costValue} {t(`rulesInfo.cost.${definition.costType}`)}</span>}
+      </>}
+    </div>
+    {(definition.longDescription || definition.description).split(/\n\s*\n/).map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+    {'options' in definition && !!definition.options?.length && <ul>{definition.options.map(option => <li key={option.label}><strong>{option.label}</strong>{option.notes && `: ${option.notes}`}</li>)}</ul>}
+  </>;
+}
+
+function AppliedModifierDescription({ reference, effectName }: { reference: ModifierReference; effectName?: string }) {
+  const { t, i18n } = useTranslation();
+  const { applied, definition, source } = reference;
+  const subtype = definition?.subtypes?.find(option => option.id === applied.options?.subtypeId);
+  const optionLabel = applied.option || subtype?.i18n?.[i18n.language]?.label || subtype?.label;
+  return <>
+    <div className="reference-meta">
+      {effectName && <span>{effectName}</span>}
+      <span>{t('common.ranks')}: {applied.ranks}</span>
+      {source === 'power-specific' && <span>{t('rulesInfo.specific')}</span>}
+      {applied.affectedRanks !== undefined && <span>{t('rulesInfo.affectedRanks', { count: applied.affectedRanks })}</span>}
+      {optionLabel && <span>{optionLabel}</span>}
+    </div>
+    <RuleDescription definition={definition && subtype ? { ...definition, costValue: subtype.costValue } : definition} />
+  </>;
+}
+
+function EffectDescription({ reference }: { reference: ComponentReference }) {
+  const { t } = useTranslation();
+  const { component, definition, modifiers } = reference;
+  return <section className="reference-section">
+    <h3>{definition?.name ?? component.effectId} · {component.ranks} {t('common.ranks')}</h3>
+    <RuleDescription definition={definition} />
+    {modifiers.map((modifier, index) => <details key={index}>
+      <summary>{modifier.definition?.name ?? modifier.applied.modifierId}</summary>
+      <AppliedModifierDescription reference={modifier} />
+    </details>)}
+  </section>;
+}
+
+export function PowerReferenceDialog({ target, onClose }: { target: PowerReferenceTarget; onClose: () => void }) {
+  const { t, i18n } = useTranslation();
+  if (target.kind === 'modifier') return <InfoDialog isOpen title={target.reference.definition?.name ?? target.reference.applied.modifierId} onClose={onClose}>
+    <AppliedModifierDescription reference={target.reference} effectName={target.effectName} />
+  </InfoDialog>;
+  if (target.kind === 'effect') return <InfoDialog isOpen title={target.reference.definition?.name ?? target.reference.component.effectId} onClose={onClose}>
+    <EffectDescription reference={target.reference} />
+  </InfoDialog>;
+  const power = target.power;
+  const references = buildPowerReferences(power.components, POWER_DEFS, MODIFIER_DEFS, i18n.language);
+  const powerModifiers = ['activation' in power && power.activation ? 'activation' : '', 'removable' in power && power.removable && power.removable !== 'none' ? 'removable' : ''].filter(Boolean);
+  return <InfoDialog isOpen title={power.name || t('powers.unnamed')} onClose={onClose}>
+    {'descriptors' in power && !!power.descriptors?.length && <div className="reference-meta">{power.descriptors.map((descriptor, index) => <span key={index}>{descriptor}</span>)}</div>}
+    {power.notes && <p>{power.notes}</p>}
+    {references.map(reference => <EffectDescription key={reference.component.id} reference={reference} />)}
+    {powerModifiers.map(id => {
+      const definition = MODIFIER_DEFS.find(modifier => modifier.id === id);
+      return <section className="reference-section" key={id}><h3>{definition && localizeReference(definition, i18n.language).name}</h3><RuleDescription definition={definition && localizeReference(definition, i18n.language)} /></section>;
+    })}
+    {'alternateEffects' in power && !!power.alternateEffects.length && <section className="reference-section">
+      <h3>{t('rulesInfo.alternates')}</h3>
+      {power.alternateEffects.map(alternate => <details key={alternate.id}><summary>{alternate.name || t('rulesInfo.alternate')}{alternate.dynamic ? ` · ${t('rulesInfo.dynamic')}` : ''}</summary>
+        {alternate.notes && <p>{alternate.notes}</p>}
+        {buildPowerReferences(alternate.components, POWER_DEFS, MODIFIER_DEFS, i18n.language).map(reference => <EffectDescription key={reference.component.id} reference={reference} />)}
+      </details>)}
+    </section>}
+  </InfoDialog>;
+}
