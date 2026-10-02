@@ -13,6 +13,7 @@ import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
+import { AdvantageRollActions } from '../dice-roller/AdvantageRollActions';
 
 const ADVANTAGE_TYPES: AdvantageType[] = ['combat', 'fortune', 'general', 'skill'];
 
@@ -20,7 +21,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const advantageDefs = useLocalizedData(ADVANTAGE_DEFS);
   const skillDefs = useLocalizedData(SKILL_DEFS);
-  const character = useCharacterSelector(useShallow((value) => ({ advantages: value.advantages, skills: value.skills })));
+  const character = useCharacterSelector(useShallow((value) => ({ advantages: value.advantages, skills: value.skills, abilities: value.abilities, absentAbilities: value.absentAbilities })));
   const { setAdvantages } = useCharacterActions();
   const advantages = character.advantages;
   const dialog = useAppDialog();
@@ -254,6 +255,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
                   )}
                 </>
               )}
+              <AdvantageRollActions advantage={adv} name={def.name} character={character} skillDefs={skillDefs} />
               <button
                 className="adv-info-btn"
                 onClick={() => setDescTarget(def)}

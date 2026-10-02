@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import type { IManualOffenseRow } from '../../entities/types';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { createId } from '../../shared/lib/identity';
+import { RollButton } from '../dice-roller/RollButton';
 
 type EffectFilter = 'all' | 'attack' | 'resistance' | 'area' | 'affects-others';
 
@@ -241,6 +242,7 @@ function EffectProfile({ profile, t }: { profile: IOffenseEntry; t: (key: string
       <div className="targeted-profile-fact">
         <span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span>
         <strong>{profile.requiresAttackCheck ? profile.bonus : t('targeted.noAttackRoll')}</strong>
+        {profile.requiresAttackCheck && profile.bonusValue !== null && <RollButton bonus={profile.bonusValue} label={profile.name} section={t('targeted.title')} detail={[t(`targeted.source.${profile.sourceType}`), profile.sourceName, profile.componentName, profile.relationship === 'alternate' || profile.relationship === 'dynamic-alternate' ? profile.name : undefined].filter(Boolean).join(' · ')} breakdown={[profile.bonusBreakdown]} />}
       </div>
       <div className="targeted-profile-fact">
         <span className="targeted-profile-fact-label">{t('offense.range')}</span>
@@ -278,7 +280,7 @@ function ManualProfile({ profile, row, editing, draft, onDraftChange, onEdit, on
   return (
     <article className="targeted-profile">
       <div className="targeted-profile-main"><div className="targeted-profile-name">{profile.name}</div><div className="targeted-profile-component">{t('targeted.source.manual')}</div></div>
-      <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span><strong>{profile.bonus}</strong></div>
+      <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span><strong>{profile.requiresAttackCheck ? profile.bonus : t('targeted.noAttackRoll')}</strong>{profile.requiresAttackCheck && profile.bonusValue !== null && <RollButton bonus={profile.bonusValue} label={profile.name} section={t('targeted.title')} detail={t('targeted.source.manual')} />}</div>
       <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.range')}</span>{t(`offense.range_${profile.range}`)}</div>
       <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.effect')}</span>{profile.effect}</div>
       <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.notes')}</span>{row.notes || '—'}</div>

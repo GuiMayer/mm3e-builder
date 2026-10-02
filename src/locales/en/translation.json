@@ -14,6 +14,7 @@
   "dice.rollNamed": "Roll {{name}}: d20 {{bonus}}",
   "dice.routineNamed": "Routine check {{name}}: 10 {{bonus}}",
   "dice.routine": "Routine check",
+  "dice.choose": "Choose a check for {{name}}",
   "app.title": "M&M 3e Builder",
   "menu.actions": "Actions",
   "menu.undo": "Undo",

@@ -11,7 +11,8 @@ import { Button } from '../../shared/ui/Button';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../shared/ui/NumberInput';
-import { getEffectiveAbilityRank } from '../../shared/lib/abilityRanks';
+import { calculateSkillCheck } from '../../shared/lib/skillCheck';
+import { RollButton } from '../dice-roller/RollButton';
 
 // Colour palette for ability badges (list + modal)
 const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: string }> = {
@@ -31,7 +32,6 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
   const character = useCharacterSelector(useShallow((value) => ({ skills: value.skills, abilities: value.abilities, absentAbilities: value.absentAbilities })));
   const { setSkills } = useCharacterActions();
   const skills = character.skills;
-  const abilities = character.abilities;
 
   const [showSelector, setShowSelector]     = useState(false);
   const [searchTerm, setSearchTerm]         = useState('');
@@ -137,12 +137,8 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
         {skills.map((skill, i) => {
           const def = skillDefs.find((d) => d.id === skill.skillId);
           if (!def) return null;
-          const abilityVal = getEffectiveAbilityRank(
-            abilities,
-            character.absentAbilities,
-            def.baseAbility as AbilityKey
-          );
-          const total = abilityVal + skill.ranks;
+          const check = calculateSkillCheck(character, skill, def);
+          const abilityVal = check.ability;
           const displayName = def.subtyped && skill.subtype
             ? `${def.name}: ${skill.subtype}`
             : def.name;
@@ -176,7 +172,8 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
                 onChange={(value) => updateOtherBonus(i, value)}
                 title={t('skills.otherBonus')}
               />
-              <span className="skill-total">= {total + (skill.otherBonus ?? 0)}</span>
+              <span className="skill-total">= {check.total}</span>
+              <RollButton bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])]} />
               <button className="skill-remove" onClick={() => removeSkill(i)} title={t('common.remove')}>
                 <Trash2 size={14} />
               </button>

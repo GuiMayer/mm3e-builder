@@ -1,0 +1,46 @@
+import { useTranslation } from 'react-i18next';
+import type { ICharacter, ICharacterAdvantage, ISkillDef } from '../../entities/types';
+import { useDerivedDefenses } from '../../shared/hooks/useDerivedDefenses';
+import { useOffenseSummary } from '../../shared/hooks/useOffenseSummary';
+import { calculateSkillCheck } from '../../shared/lib/skillCheck';
+import { advantageSkillChecks, skillDisplayName } from './advantageChecks';
+import { RollButton } from './RollButton';
+import { D20Icon } from './D20Icon';
+
+export function AdvantageRollActions({ advantage, name, character, skillDefs }: {
+  advantage: ICharacterAdvantage; name: string;
+  character: Pick<ICharacter, 'skills' | 'abilities' | 'absentAbilities'>;
+  skillDefs: ISkillDef[];
+}) {
+  const { t } = useTranslation();
+  const checks = advantageSkillChecks(advantage, character.skills, skillDefs);
+  const choices = checks.map(({ skill, definition, routine }) => {
+    const check = calculateSkillCheck(character, skill, definition);
+    return { bonus: check.total, label: `${name} · ${skillDisplayName(skill, definition)}`, section: t('advantages.title'), routine, breakdown: [`${t(`abilities.${definition.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])] };
+  });
+  if (advantage.advantageId === 'improved_initiative' || advantage.advantageId === 'defensive_roll') return <DefensiveAdvantageRoll id={advantage.advantageId} name={name} />;
+  if (advantage.advantageId === 'close_attack' || advantage.advantageId === 'ranged_attack') return <AttackAdvantageRoll id={advantage.advantageId} name={name} />;
+  return <RollChoices choices={choices} name={name} />;
+}
+
+function RollChoices({ choices, name }: { choices: React.ComponentProps<typeof RollButton>[]; name: string }) {
+  const { t } = useTranslation();
+  if (!choices.length) return null;
+  if (choices.length === 1) return <RollButton {...choices[0]} />;
+  return <details className="roll-choices"><summary aria-label={t('dice.choose', { name })} title={t('dice.choose', { name })}><D20Icon /></summary><div className="roll-choices-list">{choices.map((choice, index) => <RollButton key={index} {...choice} showLabel />)}</div></details>;
+}
+
+function DefensiveAdvantageRoll({ id, name }: { id: string; name: string }) {
+  const { t } = useTranslation();
+  const defenses = useDerivedDefenses();
+  const initiative = id === 'improved_initiative';
+  return <RollButton bonus={initiative ? defenses.initiativeTotal : defenses.toughnessTotal} label={`${name} · ${t(initiative ? 'defenses.initiative' : 'defenses.toughness')}`} section={t('advantages.title')} breakdown={initiative ? defenses.initiativeBreakdown : defenses.toughnessBreakdown} />;
+}
+
+function AttackAdvantageRoll({ id, name }: { id: string; name: string }) {
+  const { t } = useTranslation();
+  const profiles = useOffenseSummary();
+  const choices = profiles.filter(profile => profile.requiresAttackCheck && profile.bonusValue !== null && profile.range === (id === 'close_attack' ? 'close' : 'ranged'))
+    .map(profile => ({ bonus: profile.bonusValue!, label: `${name} · ${profile.name}`, section: t('advantages.title'), detail: [t(`targeted.source.${profile.sourceType}`), profile.componentName].filter(Boolean).join(' · '), breakdown: [profile.bonusBreakdown] }));
+  return <RollChoices choices={choices} name={name} />;
+}

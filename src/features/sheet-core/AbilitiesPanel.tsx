@@ -7,6 +7,7 @@ import type { AbilityKey } from '../../entities/types';
 import { useTranslation } from 'react-i18next';
 import { getActiveValidationRules } from '../../shared/lib/validationRules';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { RollButton } from '../dice-roller/RollButton';
 
 const ABILITY_KEYS: AbilityKey[] = ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre'];
 
@@ -50,6 +51,7 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
                   min={minAbilityScore !== -Infinity ? minAbilityScore : undefined}
                 />
               )}
+              {!isAbsent && <RollButton bonus={abilities[key]} label={t(`abilities.${key}`)} section={t('abilities.title')} />}
               <button
                 className="ability-toggle"
                 onClick={() => toggleAbsentAbility(key)}

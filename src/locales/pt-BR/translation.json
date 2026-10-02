@@ -14,6 +14,7 @@
   "dice.rollNamed": "Rolar {{name}}: d20 {{bonus}}",
   "dice.routineNamed": "Teste rotineiro {{name}}: 10 {{bonus}}",
   "dice.routine": "Teste rotineiro",
+  "dice.choose": "Escolher um teste para {{name}}",
   "app.title": "M&M 3e Builder",
   "menu.actions": "Ações",
   "menu.undo": "Desfazer",

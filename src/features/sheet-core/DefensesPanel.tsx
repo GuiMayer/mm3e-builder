@@ -7,6 +7,7 @@ import { useDerivedDefenses } from '../../shared/hooks/useDerivedDefenses';
 import { Info } from 'lucide-react';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { getEffectiveAbilityRank } from '../../shared/lib/abilityRanks';
+import { RollButton } from '../dice-roller/RollButton';
 
 function DefensesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
@@ -45,13 +46,6 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         {/* Initiative — read-only derived row */}
         <div
           className="defense-row defense-row--initiative"
-          tabIndex={0}
-          role="button"
-          aria-expanded={tooltip === 'initiative'}
-          onFocus={() => setTooltip('initiative')}
-          onBlur={() => setTooltip(null)}
-          onClick={() => setTooltip('initiative')}
-          onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setTooltip((current) => current === 'initiative' ? null : 'initiative'); } }}
           onMouseEnter={() => setTooltip('initiative')}
           onMouseLeave={() => setTooltip(null)}
         >
@@ -62,8 +56,9 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
             {initiativeTotal >= 0 ? `+${initiativeTotal}` : `${initiativeTotal}`}
           </span>
           <span className="defense-total defense-total--initiative">
-            <Info size={12} style={{ opacity: 0.5 }} />
+            <button type="button" className="defense-detail-btn" aria-label={t('defenses.initiative')} aria-expanded={tooltip === 'initiative'} onClick={() => setTooltip(current => current === 'initiative' ? null : 'initiative')} onFocus={() => setTooltip('initiative')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
           </span>
+          <RollButton bonus={initiativeTotal} label={t('defenses.initiative')} section={t('defenses.title')} breakdown={initiativeBreakdown} />
           {tooltip === 'initiative' && (
             <div className="defense-tooltip">
               {initiativeBreakdown.map((line, i) => (
@@ -89,19 +84,13 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
               min={0}
             />
             <span className="defense-total">{r.base + defenses[r.key]}</span>
+            {(r.key === 'fortitude' || r.key === 'will') && <RollButton bonus={r.base + defenses[r.key]} label={t(`defenses.${r.key}`)} section={t('defenses.title')} breakdown={[`${r.baseLabel} ${r.base}`, `${t('common.ranks')} ${defenses[r.key]}`]} />}
           </div>
         ))}
 
         {/* Toughness — read-only, derived, with breakdown tooltip */}
         <div
           className="defense-row defense-row--readonly defense-row--toughness"
-          tabIndex={0}
-          role="button"
-          aria-expanded={tooltip === 'toughness'}
-          onFocus={() => setTooltip('toughness')}
-          onBlur={() => setTooltip(null)}
-          onClick={() => setTooltip('toughness')}
-          onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setTooltip((current) => current === 'toughness' ? null : 'toughness'); } }}
           onMouseEnter={() => setTooltip('toughness')}
           onMouseLeave={() => setTooltip(null)}
         >
@@ -110,6 +99,8 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           <span className="defense-plus">+</span>
           <span className="defense-input defense-derived">{toughnessBonus}</span>
           <span className="defense-total">{toughnessTotal}</span>
+          <button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-expanded={tooltip === 'toughness'} onClick={() => setTooltip(current => current === 'toughness' ? null : 'toughness')} onFocus={() => setTooltip('toughness')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
+          <RollButton bonus={toughnessTotal} label={t('defenses.toughness')} section={t('defenses.title')} breakdown={[`STA ${stamina}`, ...toughnessBreakdown]} />
           {tooltip === 'toughness' && (
             <div className="defense-tooltip">
               <div className="defense-tooltip-title">{t('defenses.toughnessBreakdown')}</div>
@@ -126,6 +117,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
 
       <style>{`
         .defenses-table { display: flex; flex-direction: column; gap: var(--s-xs); }
+        .defense-detail-btn{display:inline-flex;align-items:center;justify-content:center;padding:6px;min-width:32px;min-height:32px;background:transparent;border:0;color:var(--c-text-muted);cursor:pointer;}
 
         .defense-row {
           position: relative;
