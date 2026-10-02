@@ -1,9 +1,12 @@
-# Modo campanha: auditoria e proposta de reformulação
+# Modo campanha: auditoria e plano implementado
 
 Data: 2026-10-02. Código revisado: `083256f` (aplicativo 1.16.0 com correções posteriores).
-Estado: **proposta; nenhuma mudança de comportamento ou migração foi implementada nesta auditoria**.
+Estado: **implementado na v1.17.0**. A auditoria abaixo descreve o snapshot antigo;
+o fluxo atual está em [Modo campanha](./campaign-mode.md). A decisão posterior do
+usuário substituiu a política legada congelada por migração para base fixa, com
+revisão do NP/PP inicial no popup antes de concluir.
 
-## O que existe hoje
+## O que existia no snapshot auditado
 
 O modo campanha é um recurso por personagem para ajustar o orçamento de PP.
 Não é um gerenciador de campanhas, grupos ou sessões compartilhadas.
@@ -91,21 +94,14 @@ Alterar NP passa a alterar os limites da ficha, sem conceder PP automaticamente.
 O mestre continua decidindo NP e prêmios; não criar avanço automático a cada
 15 PP ou adicionar uma concessão escondida ao mudar o NP.
 
-Para fichas antigas, manter uma política de compatibilidade:
-
-- **Orçamento acompanha NP:** comportamento antigo exato, inclusive futuras
-  mudanças de NP, até o usuário decidir trocar.
-- **Orçamento inicial fixo:** nova abordagem, usada por padrão nas campanhas novas.
-
-A política antiga fica em “Opções de orçamento”, sem ocupar a tela principal.
-Ao trocar para orçamento fixo, sugerir como base `NP atual × 15`, mostrar o total
-antes/depois e conservar todos os ajustes. Não tentar deduzir o NP inicial a partir
-do texto das notas, do total gasto ou da soma do histórico.
-
-Exemplo: uma ficha antiga NP 11 com +15 já tem 180 PP. A conversão sugerirá uma
-base fixa de 165, mantendo os 180 PP naquele momento. O usuário pode escolher
-150 conscientemente, com prévia dos 165 PP resultantes. Não corrigir retroativamente
-um orçamento potencialmente duplicado sem essa escolha.
+Fichas antigas salvas no navegador são migradas para o modelo novo após revisar
+NP/PP inicial e total antes/depois no popup. Não há política `legacy-pl` disponível.
+O formato antigo não informava o NP inicial: não deduzir pela nota, pelo gasto ou
+pela soma do histórico. A sugestão conservadora é NP atual × 15, ajustável antes
+de concluir. NP atual 11 com +15 e NP inicial revisado 10 resulta em base 150 e
+total 165, corrigindo a contagem dupla sem excluir o prêmio.
+O popup aparece para fichas com campanha ativa ou histórico antigo preservado;
+fichas padrão sem histórico e fichas já migradas ficam fora dessa revisão.
 
 ### 3. Um registro claro, sem contabilizar compras duas vezes
 
@@ -121,7 +117,7 @@ o tamanho do histórico justificar; não adicionar tabelas vazias obrigatórias.
 - Mostrar a prévia do orçamento resultante antes de salvar.
 - Gasto é o custo atual da ficha, não uma dedução a lançar no registro.
 - Estorno cria um novo lançamento com valor oposto e referência ao original.
-  Ambos permanecem no histórico; a soma funciona também no modelo antigo.
+  Ambos permanecem no histórico e entram uma vez na soma.
 - Remover exige confirmação e oferece undo da sessão com mensagem verdadeira.
 - Datas inválidas e notas antigas continuam acessíveis exatamente como salvas.
 - Ordenar uma projeção para exibição, mantendo a ordem persistida do legado.
@@ -135,7 +131,7 @@ online, sincronização, autenticação ou snapshots completos a cada alteraçã
 
 Desativar suspende a participação do histórico no cálculo e restaura o orçamento
 do modo padrão, com prévia numérica. O histórico permanece consultável e exportável.
-Reativar recupera a mesma política, a base e os lançamentos. Não usar “limpe primeiro”.
+Reativar recupera a mesma base e os lançamentos. Não usar “limpe primeiro”.
 
 Cada editor fica vinculado ao ID da ficha e a uma revisão do lançamento. Trocar
 de ficha fecha ou guarda o formulário apenas para sua origem; confirmações tardias
@@ -145,7 +141,7 @@ cancelar a ação. Undo/redo e autosave continuam operando no store existente.
 ### 5. Exportações e uso no celular
 
 - JSON/JSONL: transportar todo o estado de campanha mesmo desativado.
-- Excel: aba de Campanha traduzida, base, política, histórico e acumulado; incluir
+- Excel: aba de Campanha traduzida, base, estado, histórico e acumulado; incluir
   histórico preservado com indicação de inatividade.
 - PDF/HTML: resumo compacto e opção de incluir o histórico, desligada por padrão
   para não aumentar a ficha sem necessidade. Não inserir tabelas vazias no modo normal.
@@ -155,16 +151,16 @@ cancelar a ação. Undo/redo e autosave continuam operando no store existente.
 
 ## Compatibilidade e migração sem perda
 
-### Modelo aditivo sugerido
+### Modelo aditivo implementado
 
 Manter `campaignMode` e **`ppLog` como única fonte dos ajustes monetários de PP**.
-Adicionar um objeto opcional de configuração, por exemplo:
+Adicionar um objeto opcional de configuração:
 
 ```ts
 campaign?: {
   version: 1;
-  budgetPolicy: 'legacy-pl' | 'fixed';
-  initialPP?: number; // obrigatório apenas em fixed
+  initialPowerLevel: number;
+  initialPP: number;
 };
 ```
 
@@ -172,9 +168,8 @@ Os registros mantêm `id`, `date`, `amount`, `note`. Metadados opcionais de tipo
 sessão e estorno podem ser adicionados sem substituir o conteúdo antigo. Não
 manter uma segunda lista de eventos que também seja somada ao orçamento.
 
-A revisão do formato de arquivo deve ser explicitada (sugestão: schema 2.1.0 para
-campos aditivos, mantendo importação de 1.0.0/2.0.0). O envelope do rascunho pode
-continuar na versão atual se só o objeto personagem mudar; atualizar sua validação.
+O schema é 2.1.0 para campos aditivos, mantendo importação de 1.0.0/2.0.0.
+O envelope do rascunho permanece na versão 1; sua validação inclui o campo novo.
 Versionar a configuração de campanha separadamente da versão do aplicativo.
 
 ### Contrato obrigatório
@@ -183,8 +178,9 @@ Versionar a configuração de campanha separadamente da versão do aplicativo.
    dos rascunhos e dados relacionados antes da primeira regravação da migração,
    reaproveitando o fluxo de snapshot pré-atualização. Um backup persistente dedicado
    não pode ser apagado automaticamente pela limpeza dos backups temporários atuais.
-2. Migrar uma cópia em memória. A ausência de `campaign` seleciona `legacy-pl`;
-   conservar `campaignMode` inclusive quando desligado ou ausente.
+2. Migrar uma cópia em memória após revisar a base no popup, adicionando `campaign`;
+   conservar `campaignMode` inclusive quando desligado ou ausente. Importações
+   diretas de arquivos antigos usam base fixa conservadora revisável no painel.
 3. Conservar quantidade, ordem, IDs, datas, valores e notas de **todas** as entradas.
    Não converter negativos em positivos, não inferir “gasto” pela nota, não deduplicar
    IDs ou datas, não arredondar frações e não preencher datas inválidas com hoje.
@@ -195,11 +191,12 @@ Versionar a configuração de campanha separadamente da versão do aplicativo.
    originais. Não descartar a linha/ficha nem substituir automaticamente por vazio.
 6. Comparar o personagem completo antes/depois, excetuando apenas novos metadados
    permitidos. Identidade, poderes, modificadores, Resources, equipamentos, notas,
-   PP e limites de NP não são modificados pela migração de campanha.
-7. Calcular e comparar o orçamento: migrar deve manter o total anterior exato;
-   inclusive com modo desligado, registro vazio, ajustes negativos ou saldo excedido.
+   PP registrados e NP atual não são modificados pela migração de campanha.
+7. Calcular e comparar o orçamento: o total corresponde à base revisada no popup
+   mais os ajustes, corrigindo a duplicação quando o NP inicial é informado.
+   Com o modo desligado, o orçamento atual continua NP × 15.
 8. A migração deve ser idempotente: executar novamente não cria lançamentos,
-   estornos, IDs novos ou outra base; não altera a política já escolhida.
+   estornos, IDs novos ou outra base; não altera a base já revisada.
 9. Validar, persistir e reler a cópia candidata. Em falha/quota insuficiente,
    interromper e restaurar a origem, mantendo autosave protegido. Não tratar um
    aviso opcional de download como garantia de que existe um backup recuperável.
@@ -214,25 +211,26 @@ orçamento fixo. Não prometer ida/volta completa pela versão antiga. Qualquer 
 de exportação legado deve anunciar essa limitação; o backup completo continua sendo
 o caminho para preservar todos os dados novos.
 
-## Etapas e commits propostos
+## Etapas entregues em commits lógicos
 
 | Etapa | Entrega revisável | Verificação antes do commit |
 |---|---|---|
 | 1 — Integridade do modo atual | Validar novos PP/datas, data local, saldo negativo, mensagem de undo, correção do teto silencioso de NP na exportação | Roundtrip de NP acima de 15; rejeição de novas entradas inválidas; recuperação de frações legadas sem arredondamento |
-| 2 — Modelo e migração | Configuração opcional de campanha, política legada, leitura aditiva e backup/rollback | Totais e conteúdo invariantes, todos os caminhos de entrada, idempotência, quota e bytes originais preservados |
-| 3 — Orçamento central | Base fixa para novas campanhas, compatibilidade antiga, prévia de conversão, resumo compartilhado | NP muda limites sem conceder PP em fixed; legacy mantém comportamento; ficha/Resources/PDF/Excel concordam |
+| 2 — Modelo e migração | Configuração opcional, leitura aditiva, revisão de base e backup/rollback | Conteúdo preservado, total revisado, idempotência, quota e bytes originais |
+| 3 — Orçamento central | Base fixa em todas as campanhas, prévia da migração, resumo compartilhado | NP muda limites sem conceder PP; ficha/Resources/PDF/Excel concordam |
 | 4 — Painel e registro | Painel compacto, edição/estorno, sessão opcional, modo desativável sem apagar, vínculo explícito ao personagem | Adicionar/editar/estornar/remover/undo; troca de aba durante formulário e confirmação; negativos, datas e notas longas |
 | 5 — Exportações | JSON/JSONL completos, Excel traduzido, histórico opcional no PDF/HTML | Exportar/importar/reabrir sem perda; campanha inativa; estorno soma uma vez; PDF não aumenta quando a opção está desligada |
 | 6 — Acabamento e versão | PT/EN, foco/toque, documentação e versão minor do overhaul | Suite completa, lint, tipos, build, assets; navegador em 320/390/768/960px e desktop |
 
-Cada etapa deve formar um commit lógico. A migração e o suporte de leitura vêm
+As etapas 1–3 foram agrupadas em `46b5a7c`; popup/painel em `7912e3f`, exportações
+em `bc9e233` e acabamento de histórico/backup em `359f6f3`. A migração e o suporte de leitura vêm
 antes de a interface produzir novos campos. Não mudar as mensagens existentes
 do motor de regras ou sua política de modificadores neste overhaul.
 
 ## Critérios de aceite e evidência da auditoria
 
 - Ficha antiga NP 10 com +15 continua com 165 após migração.
-- Ficha antiga NP 11 com +15 continua com 180 até uma conversão escolhida.
+- Ficha antiga NP 11 com +15 e NP inicial revisado 10 migra para 165, mantendo +15.
 - Campanha nova com base 150 e +15 continua com 165 ao subir NP 10 → 11.
 - Compra de 3 PP na ficha reduz restante em 3, sem pedir dedução no registro.
 - Desativar/reativar preserva 100% dos lançamentos e a configuração.
@@ -247,14 +245,17 @@ calculador, ações, renderização SSR do painel, importação JSON e carregado
 Confirmaram os seis comportamentos defeituosos descritos como reproduzidos e os
 dois caminhos funcionais (undo e histórico inativo). Os diagnósticos ficaram em
 `output/pdf/campaign-audit.test.ts`, fora da suíte versionada, pois descrevem o estado
-atual, não os comportamentos desejados. **33 testes existentes**, em cinco arquivos
+auditado, não os comportamentos desejados, e foram removidos após criar regressões
+permanentes. **33 testes existentes**, em cinco arquivos
 de exportação/importação, migração, storage e histórico, também passaram.
 Não foram acessados ou modificados rascunhos reais do navegador.
 
 Os testes antigos de `exportCorrections.test.ts` para orçamento e acumulado somam
 valores manualmente, sem executar o resumo central ou gerar o workbook. Por isso
 seu sucesso não cobre os bugs de NP/orçamento nem garante a exportação de campanha.
-O overhaul precisa de regressões sobre as funções reais e sobre os artefatos gerados.
+O overhaul acrescentou regressões sobre as funções reais e workbooks gerados.
+Resultado final: 64 arquivos / 792 testes, com migração revisada, backup/rollback,
+ações por ID, roundtrip, exportações e verificação interativa de histórico longo.
 
 ## Referência de regras
 

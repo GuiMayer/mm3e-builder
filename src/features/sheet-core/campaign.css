@@ -15,6 +15,11 @@
 .campaign-panel>.campaign-hint{padding:0 16px 14px;}
 .campaign-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
 .campaign-toolbar button{display:flex;align-items:center;justify-content:center;gap:6px;}
+.campaign-panel .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:8px 12px;font:inherit;font-size:.8rem;font-weight:600;border:1px solid var(--c-border);border-radius:var(--r-sm);cursor:pointer;}
+.campaign-panel .btn-primary{background:var(--c-primary);color:var(--c-action-text,var(--c-text-inverse));border-color:var(--c-primary);}
+.campaign-panel .btn-secondary{background:var(--c-surface-elevated);color:var(--c-text);}
+.campaign-panel .btn:hover{border-color:var(--c-primary-hover);}
+.campaign-panel .btn:disabled{opacity:.5;cursor:not-allowed;}
 .campaign-form{display:grid;gap:12px;padding:16px;border:1px solid var(--c-border-active);border-radius:var(--r-md);background:var(--c-bg);}
 .campaign-form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
 .campaign-panel label{display:grid;min-width:0;gap:6px;font-size:.75rem;color:var(--c-text-secondary);}

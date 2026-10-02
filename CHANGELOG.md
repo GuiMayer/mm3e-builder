@@ -9,13 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-- Translate effect names in Targeted Effects using the active-language catalog, including Affliction, power components, alternate effects and equipment. Keep custom names and manually typed effect text unchanged.
-- Translate the Targeted Effects resistance column and difficulty abbreviation at display time (e.g. Toughness DC 16 → Resistência CD 16), retaining the original numerical DCs and calculation profiles.
-
 The retrospective commit packages and preserved historical tags are documented
 in [Version history](docs/version-history.md). New release dates identify the
 completion commit, not a verified deployment date.
+
+---
+
+## [1.17.0] - 2026-10-02
+
+### Added
+- Reviewed startup migration only for old saved campaign characters, including inactive histories: starting PL/PP review, before/after totals, verified original local backup, download and storage-conflict protection. No frozen legacy budget policy remains.
+- Compact campaign panel after the header, with optional sessions, full notes, editing, reversal entries, preview, session undo, per-character forms and search/order for histories of ten or more entries.
+- Localized Excel Campaign sheet, including inactive campaigns; opt-in history in HTML-based PDF with repeated headings and budget context. JSON/JSONL transport the complete campaign state using additive character schema 2.1.0.
+
+### Changed
+- Campaign available PP now uses fixed starting PP plus the ledger. Raising PL changes character limits without granting PP again. Disabling preserves history/configuration and temporarily uses standard PL × 15.
+- Preserve every old ledger ID, date, note, amount and order, including finite fractional amounts; validate new entries as nonzero integers with local valid dates. Expose the original migration backup in budget options.
+- Characteristic pricing, modifier availability and existing rule warning messages remain unchanged. [Campaign guide](docs/campaign-mode.md) explains migration and compatibility.
+
+### Fixed
+- Prevent double-counting campaign advancement after raising PL, show signed negative adjustments correctly, retain PL above 15 on JSON export and keep pending campaign actions attached to their original tab.
+- Translate effect names in Targeted Effects using the active-language catalog, including Affliction, power components, alternate effects and equipment. Keep custom names and manually typed effect text unchanged.
+- Translate the Targeted Effects resistance column and difficulty abbreviation at display time (e.g. Toughness DC 16 → Resistência CD 16), retaining the original numerical DCs and calculation profiles.
+
+### Quality
+- 64 test files / 792 passing tests, type checking, lint, production build and static-asset verification. Migration tests cover original bytes, idempotence, quota, rollback and cross-tab conflicts; action tests cover targeted edits, duplicate legacy IDs and undo; Excel tests reopen real generated workbooks.
+- Isolated browser checks cover reviewed migration (180 → 165 PP), NP changes, disable/reactivate, tab isolation, 320/390/768/960px layouts, long-history controls and seven-page PDF pagination with an oversized note. Real user drafts were not accessed.
 
 ---
 
@@ -640,7 +659,8 @@ If you encounter issues, please report at: https://github.com/GuiMayer/mm3e-buil
 
 ---
 
-[Unreleased]: https://github.com/GuiMayer/mm3e-builder/compare/v1.16.0...HEAD
+[Unreleased]: https://github.com/GuiMayer/mm3e-builder/compare/v1.17.0...HEAD
+[1.17.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.16.0...v1.17.0
 [1.16.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.15.0...v1.16.0
 [1.15.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.13.1...v1.14.0

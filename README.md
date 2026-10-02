@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.16.0
+# Mutants & Masterminds 3e Character Builder — v1.17.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -32,11 +32,10 @@ A modern, fast, and user-friendly character builder for the Mutants & Mastermind
 - Use the square palette button beside the theme selector to edit colors, transparency and a live preview. **Custom theme** appears only after saving; all four built-in themes remain unchanged. The palette persists locally and never changes character data or PDF colors. [Details](docs/custom-themes.md).
 
 #### 📖 Campaign Mode & PP Advancement Log
-- **Campaign Mode toggle** — Switch between campaign mode (PP earned during play) and standard mode (PL × 15 flat).
-- **PP Log Panel** — Track PP awards and deductions with date, amount, and notes for each entry.
-- **Automatic PP calculation** — Base PP (PL × 15) + earned PP from log = total available PP.
-- **Data protection** — Confirmation dialogs when disabling Campaign Mode or removing log entries to prevent accidental data loss.
-- **Smart validation** — Campaign Mode toggle is disabled when log has entries, requiring cleanup before mode switch to maintain PP budget consistency.
+- **Fixed starting budget** — Starting PP + awards/adjustments = available PP. Raising PL changes limits without awarding PP again.
+- **Compact campaign panel** — Optional sessions, full notes, editing, reversal entries, session undo and search/order for long histories. Disabling preserves every entry and the starting budget.
+- **Reviewed migration** — Old locally saved campaign characters prompt for starting PL/PP and show before/after totals. A verified original backup is saved first; ordinary sheets are unaffected.
+- **Complete exports** — JSON/JSONL retain inactive history; Excel includes a localized Campaign sheet and HTML-based PDF offers opt-in history. [Details](docs/campaign-mode.md).
 
 #### 🗂️ Multi-Character Management
 - **Character Tabs** — Work on multiple characters simultaneously in separate tabs with visual tab management UI.
@@ -121,8 +120,8 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 - The legacy template is fetched only after selecting the legacy exporter, keeping the default initial load smaller.
 
 #### 📤 Export to Excel
-- Full character sheet exported to a styled `.xlsx` workbook with 8 sections: Summary, Abilities, Defenses, Skills, Advantages, Powers, Complications, and PP Log (when in Campaign Mode).
-- **PP Log sheet** — When in Campaign Mode, includes a dedicated sheet showing full award/deduction history with running totals and color-coded positive/negative adjustments.
+- Full character sheet exported to a styled `.xlsx` workbook with dedicated sheets for statistics, powers, targeted effects and optional resources/notes.
+- **Campaign sheet** — Includes configuration and full award/adjustment history, even when inactive, with fixed-base running budgets and localized headings.
 - **Accurate calculations** — Total PP includes PP Log adjustments, Toughness and Initiative stats included in Defenses sheet.
 - Color-coded cells, PP totals, alternate effects listed per power, and linked Resources in the equipment export.
 
@@ -142,7 +141,8 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Versioned updates through v1.16.0
+#### Versioned updates through v1.17.0
+- **v1.17.0**: Fixed campaign advancement budgets, reviewed lossless migration, editable ledger and complete exports; Targeted Effects translation fixes.
 - **v1.16.0**: Wider, viewport-aware tooltips and direct rules descriptions for powers/modifiers on the sheet, with keyboard and mobile access.
 - **v1.15.0**: Custom interface themes, local palettes and modern HEX/RGB/HSL color selection.
 - **v1.14.0**: Manual/contextual d20 rolls, configurable session history and draggable dice window.
@@ -268,11 +268,10 @@ Um criador de fichas moderno, rápido e focado na facilidade de uso para o siste
 - Use o botão quadrado de paleta ao lado dos temas para editar cores, transparências e conferir a prévia. **Tema personalizado** aparece somente após salvar; os quatro temas padrão permanecem intactos. A paleta fica salva no navegador, sem alterar fichas ou cores do PDF. [Detalhes](docs/custom-themes.md).
 
 #### 📖 Modo Campanha & Registro de Avanço de PP
-- **Toggle de Modo Campanha** — Alterne entre modo campanha (PP ganhos durante o jogo) e modo padrão (NP × 15 fixo).
-- **Painel de Registro de PP** — Rastreie concessões e deduções de PP com data, quantidade e notas para cada entrada.
-- **Cálculo automático de PP** — PP base (NP × 15) + PP ganhos do registro = PP total disponível.
-- **Proteção de dados** — Diálogos de confirmação ao desativar Modo Campanha ou remover entradas do registro para prevenir perda acidental de dados.
-- **Validação inteligente** — Toggle de Modo Campanha é desabilitado quando há entradas no registro, exigindo limpeza antes da troca de modo para manter consistência do orçamento de PP.
+- **Base inicial fixa** — PP iniciais + prêmios/ajustes = PP disponíveis. Subir o NP muda os limites sem conceder os pontos novamente.
+- **Painel compacto** — Sessão opcional, notas completas, edição, estorno, desfazer na sessão e busca/ordenação para históricos longos. Desativar conserva lançamentos e base.
+- **Migração revisada** — Fichas antigas de campanha no navegador pedem revisão do NP/PP inicial, com total antes/depois e backup original verificado. Fichas padrão ficam intactas.
+- **Exportações completas** — JSON/JSONL preservam histórico inativo; Excel inclui aba Campanha traduzida e o PDF por HTML oferece histórico opcional. [Detalhes](docs/campaign-mode.md).
 
 #### 🗂️ Gerenciamento Multi-Personagem
 - **Abas de Personagem** — Trabalhe em múltiplos personagens simultaneamente em abas separadas com interface visual de gerenciamento.
@@ -357,8 +356,8 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 - O template legado é carregado apenas após selecionar esse exportador, reduzindo o carregamento inicial padrão.
 
 #### 📤 Exportar para Excel
-- Ficha completa exportada para um arquivo `.xlsx` estilizado com 8 abas: Resumo, Atributos, Defesas, Perícias, Vantagens, Poderes, Complicações e Registro de PP (quando em Modo Campanha).
-- **Aba de Registro de PP** — Quando em Modo Campanha, inclui uma aba dedicada mostrando histórico completo de concessões/deduções com totais acumulados e ajustes positivos/negativos coloridos.
+- Ficha completa exportada para `.xlsx` estilizado com abas para estatísticas, poderes, efeitos direcionados e recursos/notas opcionais.
+- **Aba Campanha** — Inclui configuração e histórico de prêmios/ajustes mesmo desativado, com acumulado sobre a base fixa e cabeçalhos traduzidos.
 - **Cálculos precisos** — PP total inclui ajustes do Registro de PP, stats de Resistência e Iniciativa incluídos na aba de Defesas.
 - Células coloridas, totais de PP, efeitos alternativos listados por poder e Resources associados na exportação de equipamento.
 
@@ -378,7 +377,8 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Atualizações versionadas até a v1.16.0
+#### Atualizações versionadas até a v1.17.0
+- **v1.17.0**: Orçamento de campanha sem duplicação, migração revisada sem perda, registro editável e exportações completas; correções de tradução em Efeitos Direcionados.
 - **v1.16.0**: Tooltips mais largas e ajustadas à tela, descrições de poderes/modificadores diretamente na ficha e acesso por teclado e mobile.
 - **v1.15.0**: Temas personalizados, paletas locais e seletor moderno HEX/RGB/HSL.
 - **v1.14.0**: Rolagens d20 manuais/contextuais, histórico configurável da sessão e janela de dados arrastável.

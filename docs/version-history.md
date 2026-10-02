@@ -56,6 +56,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.14.0 | 2026-10-02 | `abae384..0344af3` | 6 | Rolagens e janela de dados |
 | v1.15.0 | 2026-10-02 | `0344af3..v1.15.0` | 9 | Temas personalizados e consolidação das versões |
 | v1.16.0 | 2026-10-02 | `v1.15.0..v1.16.0` | 3 | Tooltips e consulta direta das regras de poderes |
+| v1.17.0 | 2026-10-02 | `v1.16.0..v1.17.0` | 8 | Overhaul de campanha, migração revisada e traduções |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -147,13 +148,31 @@ restrições de modificadores nem as mensagens de aviso.
 
 ## Compatibilidade e publicação
 
+### v1.17.0 — Campanha e orçamento de avanço
+
+- `f00ec25` / `083256f`: traduções de efeitos e resistência/CD na ficha.
+- `460c4a5`: auditoria e plano de campanha, posteriormente revisado conforme a
+  decisão do usuário de migrar para o modelo novo com revisão do NP inicial.
+- `46b5a7c`: schema 2.1.0, base fixa, ações e migração com backup/rollback.
+- `7912e3f`: popup revisado e painel editável por ficha, sem apagar ao desativar.
+- `bc9e233`: Excel traduzido e histórico opcional no PDF/HTML.
+- `359f6f3`: busca/ordem para histórico longo e acesso ao backup original.
+- Commit de versão: documentação, verificações e metadados em 1.17.0.
+
+O pacote corrige a duplicação de PP de avanço pela base revisada, sem apagar
+prêmios antigos. Não mantém uma política legada congelada. A compatibilidade
+significa carregar fichas antigas no aplicativo novo conservando seus dados;
+versões antigas não entendem os novos metadados de orçamento fixo.
+
 Criar tags não altera commits, fichas, schemas ou migrações. As correções de
 regras em v1.12.0/v1.12.1 podem mudar totais recalculados; isso é diferente de
 alterar o formato dos arquivos. Rolagens e temas não entram nas fichas exportadas.
 
-O alinhamento de `package.json` em 1.16.0 usa o mecanismo já existente de aviso
-e backup antes de carregar um rascunho de outra versão. Não foi criada uma
-migração nova. A revisão de cálculo permanece 5; o schema de personagem permanece 2.0.0.
+Na v1.16.0, o aviso pré-atualização existente foi usado sem nova migração.
+Na v1.17.0, o popup adicional aparece apenas para campanhas locais antigas e
+salva um backup dedicado antes de migrar. O schema passa a 2.1.0; a revisão de
+cálculo de características permanece 5. O orçamento de campanha muda conforme
+a base revisada, mas preços, modificadores e avisos de regras não mudam.
 
 As novas tags são criadas localmente. Sua existência não afirma que cada pacote
 foi publicado no GitHub, implantado no Pages ou lançado como GitHub Release.

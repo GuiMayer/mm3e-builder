@@ -7,6 +7,13 @@ serves the compiled assets; the browser owns runtime state, persistence, and
 exports. A backend, user account, remote database, and network synchronization
 are outside the current product boundary.
 
+Campaign mode is per character: fixed starting PP plus `ppLog`, independent of
+current PL. Character schema 2.1.0 adds versioned campaign metadata without
+replacing legacy entries. `DraftStartupController` gates loading/autosave while
+old local campaign budgets are reviewed; `services/storage/campaignMigration`
+saves and verifies raw backups before additive writes. Standard unused sheets
+do not receive campaign metadata. See [Campaign mode](./campaign-mode.md).
+
 ## Responsibilities
 
 ### `entities`

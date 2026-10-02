@@ -4,8 +4,12 @@
 .campaign-migration-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .campaign-migration label{display:grid;gap:6px;font-size:.8rem;}
 .campaign-migration input{min-width:0;width:100%;padding:8px 10px;background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--r-sm);color:var(--c-text);font:inherit;}
-.campaign-migration input:focus-visible{outline:2px solid var(--c-primary);outline-offset:2px;}
+.campaign-migration :is(input,button):focus-visible{outline:2px solid var(--c-primary);outline-offset:2px;}
 .campaign-migration-hint{color:var(--c-text-secondary);}
 .campaign-migration-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end;margin-top:20px;}
 .campaign-error{color:var(--c-error);}
 @media(max-width:420px){.campaign-migration-fields{grid-template-columns:1fr;gap:12px;}.campaign-migration-actions button{width:100%;min-height:44px;}}
+.campaign-migration .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;font:inherit;font-size:.85rem;font-weight:600;border:1px solid var(--c-border);border-radius:var(--r-sm);cursor:pointer;}
+.campaign-migration .btn-primary{background:var(--c-primary);color:var(--c-action-text,var(--c-text-inverse));border-color:var(--c-primary);}
+.campaign-migration .btn-secondary{background:var(--c-surface-elevated);color:var(--c-text);}
+.campaign-migration .btn:disabled{opacity:.5;cursor:not-allowed;}

@@ -2,10 +2,9 @@
 
 ## Current release
 
-The current application release is **v1.11.0** (2026-08-16). Its principal
-changes are the Resource library, Targeted Effects, safer Draft persistence and
-transfer, Power Builder/rule refinements, centralized identity, and the
-selectable-text PDF workflow. See the [changelog](../CHANGELOG.md) for the
+The current application release is **v1.17.0** (2026-10-02). Its latest changes
+are fixed campaign advancement budgets, reviewed migration of old local campaigns,
+an editable progression ledger and complete exports. See the [changelog](../CHANGELOG.md) for the
 complete release record.
 
 ## Current references
@@ -14,7 +13,8 @@ complete release record.
 - [Project README](../README.md) describes the user-facing capabilities and local setup.
 - [Power Builder modifier policy](./power-builder-modifier-policy.md) documents generic and effect-specific modifier selection, save diagnostics, and stored-source behavior.
 - [Session dice roller](./dice-roller.md) describes manual and contextual checks, advantage shortcuts, responsive controls, and the temporary history boundary.
-- [Campaign mode audit and overhaul proposal](./campaign-overhaul-plan.md) records confirmed defects, the proposed progression workflow and lossless migration requirements; the overhaul is not implemented yet.
+- [Campaign mode](./campaign-mode.md) describes the implemented progression panel, reviewed migration, backups and export compatibility.
+- [Campaign overhaul audit and plan](./campaign-overhaul-plan.md) records the original defects, revised migration decision and implementation stages.
 - [Contributing guide](../CONTRIBUTING.md) explains translation and data contributions.
 - [Changelog](../CHANGELOG.md) records released changes and work awaiting release.
 - [Future expansions](../FUTURE_EXPANSIONS.md) records deferred product work and
