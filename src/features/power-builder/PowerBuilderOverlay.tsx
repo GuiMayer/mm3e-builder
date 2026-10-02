@@ -1,3 +1,4 @@
+import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { useState, useMemo, useCallback, useId, useRef } from 'react';
 import { DndContext, DragOverlay, type Announcements } from '@dnd-kit/core';
 import type {
@@ -23,7 +24,6 @@ import { useIsMobile } from '../../shared/hooks/useIsMobile';
 import { X, Save, Plus, Zap, Info, AlertTriangle, Shield } from 'lucide-react';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { useTranslation } from 'react-i18next';
-import { Modal } from '../../shared/ui/Modal';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { Button } from '../../shared/ui/Button';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
@@ -1110,7 +1110,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
       {/* Effect Detail Modal */}
       {effectModalPower && (
-        <Modal isOpen={true} title={effectModalPower.name} onClose={() => setEffectModalPower(null)} compact>
+        <InfoDialog isOpen={true} title={effectModalPower.name} onClose={() => setEffectModalPower(null)}>
           <div className="effect-modal-content">
             <div className="effect-modal-meta">
               <span className="effect-badge">{effectModalPower.type}</span>
@@ -1123,7 +1123,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               {effectModalPower.longDescription || effectModalPower.description}
             </p>
           </div>
-        </Modal>
+        </InfoDialog>
       )}
 
       <style>{`

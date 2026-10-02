@@ -1,3 +1,4 @@
+import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { memo, useId, useMemo, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { MODIFIER_DEFS } from '../../entities/gameDataLoaders';
@@ -7,7 +8,6 @@ import { useValidModifiers } from './hooks/useValidModifiers';
 import { Search, ArrowUpCircle, ArrowDownCircle, Zap, ChevronLeft, ChevronRight, Info, GripVertical } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { IPowerEffect, IModifierDef } from '../../entities/types';
-import { Modal } from '../../shared/ui/Modal';
 
 type PaletteTab = 'extras' | 'flaws' | 'specific';
 
@@ -214,9 +214,8 @@ function EffectPaletteComponent({
 
       {/* Modifier detail modal */}
       {modalMod && (
-        <Modal
+        <InfoDialog
           isOpen={true}
-          compact
           title={modalMod.name}
           onClose={() => setModalMod(null)}
         >
@@ -245,7 +244,7 @@ function EffectPaletteComponent({
               </div>
             )}
           </div>
-        </Modal>
+        </InfoDialog>
       )}
 
       <style>{`

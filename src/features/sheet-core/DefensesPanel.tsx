@@ -1,3 +1,5 @@
+import { InfoDialog } from '../../shared/ui/InfoDialog';
+import { Tooltip } from '../../shared/ui/Tooltip';
 import { memo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
@@ -20,7 +22,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
   const { toughnessBonus, toughnessTotal, toughnessBreakdown, initiativeTotal, initiativeBreakdown } =
     useDerivedDefenses();
 
-  const [tooltip, setTooltip] = useState<null | 'toughness' | 'initiative'>(null);
+  const [detail, setDetail] = useState<null | 'toughness' | 'initiative'>(null);
 
   const agility = getEffectiveAbilityRank(abilities, absentAbilities, 'agl');
   const fighting = getEffectiveAbilityRank(abilities, absentAbilities, 'fgt');
@@ -46,12 +48,10 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         {/* Initiative — read-only derived row */}
         <div
           className="defense-row defense-row--initiative"
-          onMouseEnter={() => setTooltip('initiative')}
-          onMouseLeave={() => setTooltip(null)}
         >
           <div className="defense-label">
             <span className="defense-name">{t('defenses.initiative')}</span>
-            <button type="button" className="defense-detail-btn" aria-label={t('defenses.initiative')} aria-expanded={tooltip === 'initiative'} onClick={() => setTooltip('initiative')} onFocus={() => setTooltip('initiative')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
+            <Tooltip content={initiativeBreakdown.join('\n')}><button type="button" className="defense-detail-btn" aria-label={t('defenses.initiative')} aria-haspopup="dialog" onClick={() => setDetail('initiative')}><Info size={14} /></button></Tooltip>
           </div>
           <div className="defense-calculation">
           <span className="defense-base">AGL {agility}</span>
@@ -62,13 +62,6 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
             <span className="defense-total">{initiativeTotal >= 0 ? `+${initiativeTotal}` : `${initiativeTotal}`}</span>
             <span className="sheet-roll-slot"><RollButton bonus={initiativeTotal} label={t('defenses.initiative')} section={t('defenses.title')} breakdown={initiativeBreakdown} /></span>
           </span>
-          {tooltip === 'initiative' && (
-            <div className="defense-tooltip">
-              {initiativeBreakdown.map((line, i) => (
-                <div key={i}>{line}</div>
-              ))}
-            </div>
-          )}
         </div>
 
         <div className="defense-divider" />
@@ -98,12 +91,10 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         {/* Toughness — read-only, derived, with breakdown tooltip */}
         <div
           className="defense-row defense-row--readonly defense-row--toughness"
-          onMouseEnter={() => setTooltip('toughness')}
-          onMouseLeave={() => setTooltip(null)}
         >
           <div className="defense-label">
             <span className="defense-name">{t('defenses.toughness')}</span>
-            <button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-expanded={tooltip === 'toughness'} onClick={() => setTooltip('toughness')} onFocus={() => setTooltip('toughness')} onBlur={() => setTooltip(null)}><Info size={14} /></button>
+            <Tooltip content={['STA ' + stamina, ...toughnessBreakdown, '= ' + toughnessTotal].join('\n')}><button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-haspopup="dialog" onClick={() => setDetail('toughness')}><Info size={14} /></button></Tooltip>
           </div>
           <div className="defense-calculation">
           <span className="defense-base">STA {stamina}</span>
@@ -114,19 +105,13 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
             <span className="defense-total">{toughnessTotal}</span>
             <span className="sheet-roll-slot"><RollButton bonus={toughnessTotal} label={t('defenses.toughness')} section={t('defenses.title')} breakdown={[`STA ${stamina}`, ...toughnessBreakdown]} /></span>
           </span>
-          {tooltip === 'toughness' && (
-            <div className="defense-tooltip">
-              <div className="defense-tooltip-title">{t('defenses.toughnessBreakdown')}</div>
-              <div>STA {stamina}</div>
-              {toughnessBreakdown.map((line, i) => (
-                <div key={i}>+ {line}</div>
-              ))}
-              <div className="defense-tooltip-total">= {toughnessTotal}</div>
-            </div>
-          )}
         </div>
 
       </div>
+
+      {detail && <InfoDialog isOpen title={t(detail === 'initiative' ? 'defenses.initiative' : 'defenses.toughnessBreakdown')} onClose={() => setDetail(null)}>
+        {(detail === 'initiative' ? initiativeBreakdown : ['STA ' + stamina, ...toughnessBreakdown, '= ' + toughnessTotal]).map((line, index) => <p key={index}>{line}</p>)}
+      </InfoDialog>}
 
       <style>{`
         .defenses-table { display: flex; flex-direction: column; gap: var(--s-xs); }
@@ -182,39 +167,6 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           font-weight: 700; font-size: 0.95rem;
           color: var(--c-primary); min-width: 40px;
           text-align: right;
-        }
-
-        /* Tooltip */
-        .defense-tooltip {
-          position: absolute;
-          bottom: calc(100% + 6px);
-          left: 50%;
-          transform: translateX(-50%);
-          background: var(--c-surface);
-          border: 1px solid var(--c-border-active);
-          border-radius: var(--r-md);
-          padding: var(--s-sm) var(--s-md);
-          font-size: 0.78rem;
-          color: var(--c-text-secondary);
-          white-space: nowrap;
-          z-index: 100;
-          box-shadow: 0 8px 24px rgba(var(--c-shadow-rgb, 0, 0, 0), calc(var(--c-shadow-alpha, 0.2) * 1.5));
-          pointer-events: none;
-          line-height: 1.7;
-          animation: fadeIn 0.15s ease;
-        }
-        .defense-tooltip-title {
-          font-weight: 700;
-          color: var(--c-text);
-          margin-bottom: 2px;
-          font-size: 0.8rem;
-        }
-        .defense-tooltip-total {
-          margin-top: 4px;
-          padding-top: 4px;
-          border-top: 1px solid var(--c-border);
-          font-weight: 700;
-          color: var(--c-primary);
         }
 
         /* Mobile responsive layout */

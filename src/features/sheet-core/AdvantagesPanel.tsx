@@ -1,3 +1,4 @@
+import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { memo, useState, useMemo, useRef, useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -236,10 +237,10 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
             <div key={`${adv.advantageId}-${i}`} className="adv-chip">
               <div className="adv-details">
               <Tooltip content={def.description!}>
-                <span className="adv-name">
+                <button type="button" className="adv-name adv-name--info" aria-haspopup="dialog" onClick={() => setDescTarget(def)}>
                   {def.name}
                   {adv.subtype && <span className="adv-subtype"> ({adv.subtype})</span>}
-                </span>
+                </button>
               </Tooltip>
               {def.ranked && (
                 <>
@@ -355,11 +356,10 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
 
       {/* Description Modal */}
       {descTarget && (
-        <Modal
+        <InfoDialog
           isOpen={!!descTarget}
           onClose={() => setDescTarget(null)}
           title={descTarget.name}
-          compact
         >
           <div className="adv-desc-meta">
             <span className={`adv-desc-badge adv-desc-badge--${descTarget.advantageType}`}>
@@ -373,7 +373,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
             </span>
           </div>
           <p className="adv-desc-body">{descTarget.longDescription}</p>
-        </Modal>
+        </InfoDialog>
       )}
 
       {/* Subtype Modal */}
@@ -531,6 +531,8 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
       })()}
 
       <style>{`
+        .adv-name--info{background:none;border:0;padding:0;color:inherit;font:inherit;font-weight:600;text-align:left;cursor:pointer;}
+        .adv-name--info:focus-visible{outline:2px solid var(--c-primary);outline-offset:3px;border-radius:3px;}
         .adv-empty { color: var(--c-text-muted); font-size: 0.85rem; font-style: italic; }
         .adv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--s-sm); }
         .adv-chip {

@@ -1,3 +1,4 @@
+import { Tooltip } from '../../shared/ui/Tooltip';
 import { useState } from 'react';
 import { useSessionStore } from '../../store/sessionStore';
 import { useTranslation } from 'react-i18next';
@@ -52,14 +53,12 @@ export function ConditionsPanel() {
             {BASIC_CONDITIONS.filter((c) => c.id !== 'normal').map((cond) => {
               const isActive = activeConditions.has(cond.id);
               return (
-                <button
-                  key={cond.id}
+                <Tooltip key={cond.id} content={cond.description}><button
                   className={`condition-badge ${isActive ? 'condition-badge--active' : ''}`}
                   onClick={() => toggleCondition(cond.id)}
-                  title={cond.description}
                 >
                   {t(`conditions.${cond.id}`, { defaultValue: cond.name })}
-                </button>
+                </button></Tooltip>
               );
             })}
           </div>
@@ -70,14 +69,12 @@ export function ConditionsPanel() {
             {COMBINED_CONDITIONS.map((cond) => {
               const isActive = activeConditions.has(cond.id);
               return (
-                <button
-                  key={cond.id}
+                <Tooltip key={cond.id} content={`${cond.description}${cond.components ? `\n\n= ${cond.components.map((id) => t(`conditions.${id}`, { defaultValue: CONDITIONS.find((c) => c.id === id)?.name ?? id })).join(' + ')}` : ''}`}><button
                   className={`condition-badge condition-badge--combined ${isActive ? 'condition-badge--active' : ''}`}
                   onClick={() => toggleCondition(cond.id)}
-                  title={`${cond.description}${cond.components ? `\n\n= ${cond.components.map((id) => CONDITIONS.find((c) => c.id === id)?.name ?? id).join(' + ')}` : ''}`}
                 >
                   {t(`conditions.${cond.id}`, { defaultValue: cond.name })}
-                </button>
+                </button></Tooltip>
               );
             })}
           </div>

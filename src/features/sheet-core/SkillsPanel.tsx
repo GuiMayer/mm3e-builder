@@ -1,3 +1,5 @@
+import { Tooltip } from '../../shared/ui/Tooltip';
+import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { memo, useState, useMemo, useRef, useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -6,7 +8,6 @@ import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { ICharacterSkill, AbilityKey, ISkillDef } from '../../entities/types';
 import { SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
-import { Modal } from '../../shared/ui/Modal';
 import { Button } from '../../shared/ui/Button';
 import { Plus, Trash2, Search, Info, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -145,13 +146,13 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
 
           return (
             <div key={`${skill.skillId}-${skill.subtype}-${i}`} className="skill-row">
-              <button
+              <Tooltip content={def.description}><button
                 className="skill-name skill-name--clickable"
                 onClick={() => { setDescTarget(def); setAllUsagesOpen(false); }}
-                title={t('skills.viewDescription')}
+                aria-haspopup="dialog"
               >
                 {displayName}
-              </button>
+              </button></Tooltip>
               <div className="skill-check-inputs">
               <span className="skill-ranks-group">
               <span className="skill-base" style={abilityBadgeStyle(def.baseAbility)}>
@@ -289,11 +290,10 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
 
       {/* Description Modal */}
       {descTarget && (
-        <Modal
+        <InfoDialog
           isOpen={!!descTarget}
           onClose={() => setDescTarget(null)}
           title={descTarget.name}
-          compact
         >
           {/* Metadata badges */}
           <div className="sk-desc-meta">
@@ -354,7 +354,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
               </div>
             </>
           )}
-        </Modal>
+        </InfoDialog>
       )}
 
       <style>{`
