@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { CharacterTab } from '../entities/characterTab';
 import type { IResource } from '../entities/types';
 import { CharacterSchema } from '../entities/schemas';
-import { ResourceLibrarySchema } from './storage/resourceLibraryStorage';
+import { ResourceLibrarySchema, RESOURCE_LIBRARY_VERSION } from './storage/resourceLibraryStorage';
 import { normalizeCharacter } from './character-file/normalizeCharacter';
 import { I18nError } from './character-file/errors';
 
@@ -45,14 +45,14 @@ export function parseDraftBundle(text: string): DraftBundle {
 }
 
 export function serializeResourceLibrary(resources: IResource[]): string {
-  return `${[JSON.stringify({ type: 'manifest', format: RESOURCE_MANIFEST, version: 1, exportedAt: new Date().toISOString() }), ...resources.map((resource) => JSON.stringify({ type: 'resource', resource }))].join('\n')}\n`;
+  return `${[JSON.stringify({ type: 'manifest', format: RESOURCE_MANIFEST, version: RESOURCE_LIBRARY_VERSION, exportedAt: new Date().toISOString() }), ...resources.map((resource) => JSON.stringify({ type: 'resource', resource }))].join('\n')}\n`;
 }
 
 export function parseResourceLibrary(text: string): IResource[] {
   const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
   if (!lines.length) throw new I18nError('resources.error.empty');
   const records = lines.map((line, index) => { try { return JSON.parse(line) as unknown; } catch { throw new I18nError('draft.error.invalidJson', { line: String(index + 1) }); } });
-  const manifest = z.object({ type: z.literal('manifest'), format: z.literal(RESOURCE_MANIFEST), version: z.literal(1) }).safeParse(records[0]);
+  const manifest = z.object({ type: z.literal('manifest'), format: z.literal(RESOURCE_MANIFEST), version: z.union([z.literal(1), z.literal(2)]) }).safeParse(records[0]);
   if (!manifest.success) throw new I18nError('resources.error.unsupported');
   return records.slice(1).map((record) => { const line = ResourceLineSchema.safeParse(record); if (!line.success) throw new I18nError('resources.error.invalidRecord'); const result = ResourceLibrarySchema.safeParse({ version: 1, items: [line.data.resource] }); if (!result.success) throw new I18nError('resources.error.invalidResource'); return result.data.items[0] as unknown as IResource; });
 }

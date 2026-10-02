@@ -14,6 +14,7 @@ import { DraftStartupController } from '../shared/ui/DraftStartupController'
 import { PointCalculationUpdateNotice } from '../shared/ui/PointCalculationUpdateNotice'
 import { DiceRoller } from '../features/dice-roller/DiceRoller'
 import { ResourceStorageStatus } from '../shared/ui/ResourceStorageStatus'
+import { ResourceReviewController } from '../features/resources/ResourceReviewController'
 
 const PDFPreviewDialog = lazy(() => import('../features/sheet-core/PDFPreviewDialog').then((module) => ({ default: module.PDFPreviewDialog })));
 const PDFOverflowModal = lazy(() => import('../features/sheet-core/PDFOverflowModal').then((module) => ({ default: module.PDFOverflowModal })));
@@ -72,6 +73,7 @@ export function App() {
       <DraftPersistenceController />
       <DraftStorageStatus />
       <ResourceStorageStatus />
+      <ResourceReviewController />
       <PointCalculationUpdateNotice />
       <div className="app-root">
         <MenuBar 
