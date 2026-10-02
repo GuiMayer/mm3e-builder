@@ -2,10 +2,11 @@
 
 ## Current release
 
-The current application release is **v1.17.0** (2026-10-02). Its latest changes
-are fixed campaign advancement budgets, reviewed migration of old local campaigns,
-an editable progression ledger and complete exports. See the [changelog](../CHANGELOG.md) for the
-complete release record.
+The current application release is **v1.18.0** (2026-10-02). Resources now have
+reviewed acquisition/movement migration, correct PP/EP allocations, contextual
+vehicle/headquarters editing, durable recovery, explicit import conflicts and
+consistent exports. See the [Resources guide](./resources.md) and
+[changelog](../CHANGELOG.md).
 
 ## Current references
 
@@ -15,7 +16,8 @@ complete release record.
 - [Session dice roller](./dice-roller.md) describes manual and contextual checks, advantage shortcuts, responsive controls, and the temporary history boundary.
 - [Campaign mode](./campaign-mode.md) describes the implemented progression panel, reviewed migration, backups and export compatibility.
 - [Campaign overhaul audit and plan](./campaign-overhaul-plan.md) records the original defects, revised migration decision and implementation stages.
-- [Resources audit for 1.18.0](./resources-audit-1.18.md) compares the current library and adapted Power Builder with the supplied official handbook, records reproduced defects and proposes compatible corrections.
+- [Resources guide](./resources.md) documents current costs, editing, reviewed migration, backups and import/export behavior.
+- [Resources audit for 1.18.0](./resources-audit-1.18.md) records the pre-implementation comparison of the library and adapted Power Builder with the supplied official handbook, records reproduced defects and proposes compatible corrections.
 - [Contributing guide](../CONTRIBUTING.md) explains translation and data contributions.
 - [Changelog](../CHANGELOG.md) records released changes and work awaiting release.
 - [Future expansions](../FUTURE_EXPANSIONS.md) records deferred product work and

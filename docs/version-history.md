@@ -57,6 +57,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.15.0 | 2026-10-02 | `0344af3..v1.15.0` | 9 | Temas personalizados e consolidação das versões |
 | v1.16.0 | 2026-10-02 | `v1.15.0..v1.16.0` | 3 | Tooltips e consulta direta das regras de poderes |
 | v1.17.0 | 2026-10-02 | `v1.16.0..v1.17.0` | 8 | Overhaul de campanha, migração revisada e traduções |
+| v1.18.0 | 2026-10-02 | `v1.17.0..v1.18.0` | 10 | Resources, custos PP/EP, Builder contextual e migração revisada |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -146,8 +147,6 @@ Esta versão foi implementada como um novo pacote, após a consolidação retroa
 As consultas são somente para leitura: não alteram fichas, custos, catálogos,
 restrições de modificadores nem as mensagens de aviso.
 
-## Compatibilidade e publicação
-
 ### v1.17.0 — Campanha e orçamento de avanço
 
 - `f00ec25` / `083256f`: traduções de efeitos e resistência/CD na ficha.
@@ -163,6 +162,26 @@ O pacote corrige a duplicação de PP de avanço pela base revisada, sem apagar
 prêmios antigos. Não mantém uma política legada congelada. A compatibilidade
 significa carregar fichas antigas no aplicativo novo conservando seus dados;
 versões antigas não entendem os novos metadados de orçamento fixo.
+
+### v1.18.0 — Resources e custos conforme o contexto
+
+- `5706fcd`: auditoria oficial e verificação dos formatos antes da implementação.
+- `fd27311`: validação completa, recuperação por item e gravações verificadas.
+- `f1f1515`: PP de dispositivos, movimento, contribuições e grupos alternativos.
+- `d4f7fb3`: revisão de aquisição/movimento/NP, backup e compatibilidade v1/v2.
+- `3c06da4`: Builder contextual, características estruturadas, tamanho e propriedade.
+- `8174f5f`: conflitos de importação explícitos, cópias e referências protegidas.
+- `923d539`: unidades/alocações canônicas e descrições completas em PDF/Excel.
+- `557fe4f`: escritas desatualizadas, backups de revisão importada, unidades e celular.
+- `27b4250`: movimento configurado e extensões de efeito preservados.
+- Commit de versão: documentação, 69 arquivos/825 testes e metadados 1.18.0.
+
+O pacote mantém ficha 2.1.0, rascunho 1 e todos os vínculos; Resource library/
+apêndice passam a 2. A revisão de cálculo passa a 6, com escolhas ambíguas revistas
+antes de mudar seus custos. Não copia dispositivos para a lista de poderes nem
+migra campanha. A tag é local; a entrega não inclui push ou deploy.
+
+## Compatibilidade e publicação
 
 Criar tags não altera commits, fichas, schemas ou migrações. As correções de
 regras em v1.12.0/v1.12.1 podem mudar totais recalculados; isso é diferente de

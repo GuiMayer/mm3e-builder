@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.17.0
+# Mutants & Masterminds 3e Character Builder — v1.18.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -88,9 +88,9 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 #### 📦 Resources Library
 - **Reusable resources** — Manage Gadgets, Gear, Vehicles, Headquarters, and custom items in a dedicated library.
 - **Character associations** — Link a library resource to a character without copying it. Linked items are included in PP/EP calculations, targeted effects, PDF, Excel, and JSON exports.
-- **GM-granted items** — A resource can remain visible on the sheet while costing 0 EP, leaving that table decision to the GM.
-- **Structured Vehicles and Headquarters** — Vehicle traits, sizes, features, systems, headquarters features, and effects use the same underlying character-power model where applicable.
-- **Independent history and transfer** — Resources have their own temporary undo/redo history and can be imported/exported as JSONL.
+- **Acquisition and ownership** — Devices cost PP; ordinary equipment costs EP. Configure free items, shared contributions and alternate groups on the link.
+- **Contextual Builder** — Vehicle movement/systems use vehicle Strength; headquarters effects use their own PL, feature type and target, with advisory budgets. Structured feature editing preserves IDs/notes and size changes preserve upgrades.
+- **Reviewed migration and recovery** — Old acquisition/movement choices show before/after costs with verified backups. Valid records remain visible when one is invalid; writes reject storage failures and stale windows. Import conflicts offer local/shared/independent choices. [Resources guide](docs/resources.md).
 
 #### ✅ Validation System
 - **Modular validation engine** — 8-phase validation system covering all M&M 3e core rules.
@@ -141,7 +141,8 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Versioned updates through v1.17.0
+#### Versioned updates through v1.18.0
+- **v1.18.0**: Resource PP/EP costs, contextual movement/HQ Builder, reviewed migration, recovery, ownership, import conflicts and consistent exports.
 - **v1.17.0**: Fixed campaign advancement budgets, reviewed lossless migration, editable ledger and complete exports; Targeted Effects translation fixes.
 - **v1.16.0**: Wider, viewport-aware tooltips and direct rules descriptions for powers/modifiers on the sheet, with keyboard and mobile access.
 - **v1.15.0**: Custom interface themes, local palettes and modern HEX/RGB/HSL color selection.
@@ -324,9 +325,9 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 #### 📦 Biblioteca de Resources
 - **Resources reutilizáveis** — Gerencie Gadgets, Gear, Vehicles, Headquarters e itens personalizados em uma biblioteca própria.
 - **Associação à ficha** — Associe um Resource da biblioteca ao personagem sem copiá-lo. Itens associados entram no cálculo de PP/EP, Efeitos Direcionados e exportações de PDF, Excel e JSON.
-- **Itens gratuitos concedidos pelo mestre** — Um Resource concedido pelo mestre continua visível na ficha sem custo de EP, deixando essa decisão de mesa a cargo do mestre.
-- **Vehicles e Headquarters estruturados** — Traços, tamanhos, features, systems e efeitos usam o mesmo modelo de poderes do personagem quando aplicável.
-- **Histórico e transferência independentes** — Resources têm seu próprio desfazer/refazer temporário e importação/exportação em JSONL.
+- **Aquisição e propriedade** — Dispositivos custam PP; equipamento comum custa EP. Configure itens gratuitos, contribuições compartilhadas e grupos alternativos no vínculo.
+- **Builder com contexto** — Movimento/sistemas usam a Força do veículo; efeitos de bases usam NP próprio, tipo e alvo, com avisos de orçamento. Características preservam IDs/notas e mudanças de tamanho preservam os aumentos comprados.
+- **Migração revisada e recuperação** — Escolhas antigas de aquisição/movimento mostram custos antes/depois com backup verificado. Registros válidos continuam visíveis se um item for inválido; falhas de armazenamento e janelas desatualizadas não publicam alterações. Conflitos de importação oferecem manter/atualizar/copiar. [Guia de Resources](docs/resources.md).
 
 #### ✅ Sistema de Validação
 - **Motor de validação modular** — Sistema de validação em 8 fases cobrindo todas as regras principais do M&M 3e.
@@ -377,7 +378,8 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Atualizações versionadas até a v1.17.0
+#### Atualizações versionadas até a v1.18.0
+- **v1.18.0**: Custos PP/EP de recursos, Builder de movimento/bases com contexto, migração revisada, recuperação, propriedade, conflitos de importação e exportações consistentes.
 - **v1.17.0**: Orçamento de campanha sem duplicação, migração revisada sem perda, registro editável e exportações completas; correções de tradução em Efeitos Direcionados.
 - **v1.16.0**: Tooltips mais largas e ajustadas à tela, descrições de poderes/modificadores diretamente na ficha e acesso por teclado e mobile.
 - **v1.15.0**: Temas personalizados, paletas locais e seletor moderno HEX/RGB/HSL.

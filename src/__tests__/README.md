@@ -2,7 +2,7 @@
 
 Este diretório contém a suíte de testes completa para o MM3e Builder, validando a implementação das regras oficiais do Mutants & Masterminds 3e.
 
-**Estado verificado em 2026-10-02 (v1.17.0):** 64 arquivos de teste, 792 testes aprovados e nenhum teste pendente. Execute `npm test -- --run` para obter o estado real.
+**Estado verificado em 2026-10-02 (v1.18.0):** 69 arquivos de teste, 825 testes aprovados e nenhum teste pendente. Execute `npm test -- --run` para obter o estado real.
 
 ## Estrutura de Testes
 
@@ -17,6 +17,7 @@ Este diretório contém a suíte de testes completa para o MM3e Builder, validan
 | Rolagens da sessão | `diceRoller`, `diceCheckSources`, `diceWindowPosition` | d20, histórico temporário, origens, bônus compartilhados, limites da janela e preservação das fichas |
 | Tradução dos efeitos | `offenseLocalization`, `offenseDisplay` | Troca de idioma em Efeitos Direcionados e rótulos de resistência/CD, preservando nomes personalizados, textos manuais, mecânica e dados da ficha |
 | Temas da interface | `customTheme`, `customThemeStorage`, `colorInput` | Paletas, contraste, transparência, conversão HEX/RGB/HSL, persistência isolada, recuperação e preservação dos temas padrão |
+| Recursos | `resourceStorageSafety`, `resourceRules118`, `resourceReview`, `resourceImport`, `resourceExports` | PP/EP, Força/NP, migração idempotente, backups, falta de espaço, janelas desatualizadas, recuperação por item, conflitos e exportações reais |
 | Campanha | `campaign`, `campaignMigration`, `campaignActions`, `campaignExports` | Base fixa, migração revisada com backup/rollback, dados legados, isolamento de abas, edição/estorno/undo e exportações reais Excel/HTML/JSONL |
 
 ### Testes de Integração

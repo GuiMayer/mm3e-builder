@@ -15,6 +15,28 @@ completion commit, not a verified deployment date.
 
 ---
 
+## [1.18.0] - 2026-10-02
+
+### Added
+- Explicit PP Device/EP Equipment acquisition, full vehicle movement powers and headquarters PL, Effect/Defense System and target settings. Contextual Builder and resource attack profiles use vehicle Strength or headquarters rules.
+- Reviewed legacy acquisition/movement/PL migration with before/after costs, deferral, stable identities, verified original backups and preservation of configured movement. Character schema remains 2.1.0; Resource library/appendix is version 2 with version 1 reading.
+- Ownership controls for free resources, shared EP contributions and alternate groups, structured features with notes, and collapsible cost details.
+- Explicit local/shared/independent import conflict choices; independent copies only remap imported links. Missing references, duplicate identities and malformed appendices fail before changes.
+
+### Fixed
+- Devices enter PP once without being copied into character powers; ordinary equipment retains EP pricing without Removable discounts. Vehicle movement uses its actual effect cost; alternate groups charge the most expensive plus 1 EP per additional item, with shared headquarters paid separately.
+- Preserve valid resources when another record is invalid, retain original bytes and unknown fields, and prevent normal writes over unreadable/future libraries. Verified writes precede store/history updates; quota, backup and stale-window failures preserve pending edits.
+- Preserve feature IDs/notes and purchased trait improvements when changing vehicle size. Device protection uses personal-power stacking; ordinary equipment retains non-stacking protection.
+- Match allocated PP/EP costs across sheet, PDF HTML, legacy PDF fields and Excel; include actual movement, feature notes, HQ context and localized descriptions in complete exports.
+- Correct internal EP labels, resource-source translation, empty movement editing, extension-field retention and mobile footer wrapping without altering existing modifier diagnostics or adding generic modifier blockers.
+
+### Quality
+- 69 test files / 825 passing tests, type checking, lint, production build and static-asset verification. Added recovery, reviewed migration, official cost/context examples, import conflicts, quota/backup/stale-window checks and real PDF/Excel reopening.
+- Isolated browser checks with synthetic sheets covered 10 EP → 8 PP acquisition, Flight 7 review, 18 EP vehicle systems, generic Limited on movement with undo, nonblocking headquarters effect budgets, feature notes, import cancellation/copies, English/Portuguese and 390px layouts. Real user browser drafts were not accessed; native Save dialogs were not automated.
+- [Resources guide](docs/resources.md), [migration preflight](docs/resources-migration-preflight.md) and [commit packages](docs/version-history.md) document compatibility. Calculation revision is 6; no push/deploy is implied by this local release.
+
+---
+
 ## [1.17.0] - 2026-10-02
 
 ### Added

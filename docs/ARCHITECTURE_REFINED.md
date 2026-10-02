@@ -63,14 +63,32 @@ Resources are reusable items stored outside individual characters. Supported
 types are Gadget, Gear, Vehicle, Headquarters, and Custom. A character keeps
 only a link to a resource, not a second copy of it.
 
-- `resourceId` is the stable UUID of the library item.
-- `isFree` keeps GM-granted resources visible while charging 0 EP.
-- `contributionEP` and `alternateSetId` are persisted extension points for
-  shared ownership and Alternate Equipment pricing.
-- Character JSON can include a Resource appendix so linked items travel with a
-  character import/export without forcing unrelated library items into the file.
-- The library can be transferred independently or together with the full Draft
-  through JSONL.
+- `resourceId` is the stable UUID; character schema remains 2.1.0.
+- Resource library/appendix version 2 adds acquisition, movement and headquarters
+  context, while accepting version 1 and preserving unknown Resource fields.
+- `costMode` selects Device PP or Equipment EP independently of the display type.
+  `getLinkedResourceCharges` allocates free items, shared contributions and
+  alternate groups for point summaries, panels, HTML PDF and Excel. Device powers
+  are never duplicated in the character's power array.
+- `resourceContext` supplies vehicle Strength or headquarters PL to the Builder
+  and targeted profiles; Defense Systems use headquarters PL for attack bonus.
+- `resourceReview` changes only explicitly reviewed ambiguous metadata.
+  The first original raw library is verified before upgrade/review/replacement;
+  imported v2 metadata is covered too. Review can be deferred without guessing.
+- `resourceLibraryStorage` fully validates powers/features, preserves readable
+  records and quarantines invalid records, refusing ordinary writes over
+  unreadable/future libraries. Resource store mutations and undo/redo publish
+  only after verified writes, with an original-byte guard against stale windows.
+- Character imports compare matching Resource UUID contents. Keep/update/copy
+  choices are staged until character identity conflicts are resolved; independent
+  copies remap only incoming links. Missing references/invalid appendices fail
+  before mutation. Updating shared identities affects every linked character.
+- Resource JSONL manifests use version 2; whole-Draft JSONL remains version 1.
+  Recovery and import backups are included in pre-update raw snapshots.
+
+See [Resources](./resources.md) for rules, migration keys, examples, persistence
+limits and export coverage. Calculation revision 6 announces corrected Resource
+pricing; existing modifier warning texts and generic selection policy remain.
 
 ## Persisted character pipeline
 

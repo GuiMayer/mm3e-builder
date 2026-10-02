@@ -1,8 +1,11 @@
 # Auditoria de Resources para a versão 1.18.0
 
 Auditoria realizada em 2026-10-02 sobre a versão **1.17.0**, commit `553de6b`.
-Este documento registra o comportamento atual e o escopo recomendado de correção.
-As correções abaixo ainda não foram implementadas; a versão do aplicativo continua 1.17.0.
+Este documento preserva os achados anteriores à implementação. As correções
+foram entregues no pacote **1.18.0**; consulte o [guia atual](./resources.md),
+a [verificação de compatibilidade](./resources-migration-preflight.md) e o
+[histórico de commits](./version-history.md). Os problemas descritos abaixo
+representam a 1.17.0 auditada, não o comportamento atual.
 
 ## Conclusão
 
