@@ -22,6 +22,23 @@ O cartão mostra traços, características, notas, sistemas/efeitos e o custo.
 edições preservam seus IDs. Alterar o tamanho de um veículo preserva os aumentos
 comprados sobre os valores básicos de Força, Defesa e Resistência.
 
+Na ficha e na biblioteca, o nome do poder, cada efeito e cada modificador abrem
+uma referência de regras ao clicar; passar o mouse também mostra a descrição.
+Efeitos alternativos, movimento de veículos, sistemas e efeitos de bases usam
+essa mesma consulta. O lápis ao lado do poder abre seu Builder; na ficha, o
+atalho muda para **Recursos** e abre diretamente o poder selecionado. O lápis
+no cabeçalho do recurso abre seus dados gerais. Consultar ou cancelar a edição
+não altera a ficha nem o recurso.
+
+**Duplicar recurso** (ícone de cópia no cartão da biblioteca) cria imediatamente
+um item independente e abre seus dados para renomear. O nome inicial recebe
+**(cópia)** e um número quando necessário. Cancelar essa edição mantém a cópia
+já criada. Poderes, componentes, efeitos alternativos e características recebem
+IDs novos; notas, modificadores, aquisição e configurações de bases são
+preservados. A cópia não é vinculada automaticamente a nenhuma ficha; editar
+seus poderes não modifica o original ou os vínculos existentes. Essas ações
+não exigem migração nem mudam o formato das fichas ou da biblioteca.
+
 Em **Propriedade e custo**, o vínculo permite marcar um item como gratuito,
 definir uma contribuição em EP e atribuir um grupo alternativo. Um dispositivo
 não oferece divisão em EP. A informação das contribuições locais considera

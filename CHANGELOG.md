@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Clickable resource power/effect/modifier references and description tooltips on both sheet and library, including vehicle movement, systems, whole-power modifiers and alternate effects. Sheet edit shortcuts open the selected resource or power directly in Resources.
+- Independent resource duplication with unique localized names and fresh resource/power/component/alternate/feature IDs. Preserve notes, extension metadata and HQ settings; original character links and allocated costs remain unchanged. No schema changes or migration required.
+
+### Quality
+- 70 test files / 834 passing tests; type checking, lint, production build and 16 static-asset references verified. Isolated synthetic browser checks covered references, direct edit context (vehicle FOR 8 / 18 EP), persistent duplication, unchanged linked costs and 390px controls.
+
 The retrospective commit packages and preserved historical tags are documented
 in [Version history](docs/version-history.md). New release dates identify the
 completion commit, not a verified deployment date.
