@@ -15,6 +15,7 @@ complete release record.
 - [Session dice roller](./dice-roller.md) describes manual and contextual checks, advantage shortcuts, responsive controls, and the temporary history boundary.
 - [Campaign mode](./campaign-mode.md) describes the implemented progression panel, reviewed migration, backups and export compatibility.
 - [Campaign overhaul audit and plan](./campaign-overhaul-plan.md) records the original defects, revised migration decision and implementation stages.
+- [Resources audit for 1.18.0](./resources-audit-1.18.md) compares the current library and adapted Power Builder with the supplied official handbook, records reproduced defects and proposes compatible corrections.
 - [Contributing guide](../CONTRIBUTING.md) explains translation and data contributions.
 - [Changelog](../CHANGELOG.md) records released changes and work awaiting release.
 - [Future expansions](../FUTURE_EXPANSIONS.md) records deferred product work and
