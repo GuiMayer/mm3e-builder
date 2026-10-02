@@ -12,6 +12,7 @@ import { DraftStorageStatus } from '../shared/ui/DraftStorageStatus'
 import { DraftPersistenceController } from '../shared/ui/DraftPersistenceController'
 import { DraftStartupController } from '../shared/ui/DraftStartupController'
 import { PointCalculationUpdateNotice } from '../shared/ui/PointCalculationUpdateNotice'
+import { DiceRoller } from '../features/dice-roller/DiceRoller'
 
 const PDFPreviewDialog = lazy(() => import('../features/sheet-core/PDFPreviewDialog').then((module) => ({ default: module.PDFPreviewDialog })));
 const PDFOverflowModal = lazy(() => import('../features/sheet-core/PDFOverflowModal').then((module) => ({ default: module.PDFOverflowModal })));
@@ -99,6 +100,8 @@ export function App() {
             )}
           </main>
         </ErrorBoundary>
+
+        <DiceRoller />
 
         {isPreviewOpen && (
           <Suspense fallback={<div role="status">{t('common.loading')}</div>}>
