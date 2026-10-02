@@ -286,6 +286,8 @@ export interface IResourceBase {
 export interface IPowerResource extends IResourceBase {
   type: 'gadget' | 'gear' | 'custom';
   power: ICharacterPower;
+  costMode?: 'equipment' | 'device';
+  costReviewRequired?: boolean;
 }
 
 export type VehicleSize = 'medium' | 'large' | 'huge' | 'gargantuan' | 'colossal' | 'awesome';
@@ -295,6 +297,9 @@ export interface IVehicleResource extends IResourceBase {
   size: VehicleSize;
   strength: number;
   speed: number;
+  /** When present, replaces legacy speed cost; the original value remains preserved. */
+  movement?: ICharacterPower;
+  movementReviewRequired?: boolean;
   defense: number;
   toughness: number;
   features: IResourceFeature[];
@@ -311,6 +316,11 @@ export interface IHeadquartersResource extends IResourceBase {
   toughness: number;
   features: IResourceFeature[];
   effects: ICharacterPower[];
+  powerLevel?: number;
+  effectSettings?: Record<string, {
+    kind: 'effect' | 'defense-system';
+    target: 'resource' | 'occupants' | 'both';
+  }>;
 }
 
 export type IResource = IPowerResource | IVehicleResource | IHeadquartersResource;

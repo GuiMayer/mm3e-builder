@@ -41,9 +41,8 @@ export function ResourcesView() {
   const ordered = useMemo(() => [...resources].sort((a, b) => a.name.localeCompare(b.name)), [resources]);
   const save = (resource: IResource) => {
     const savedResource = { ...resource, updatedAt: new Date().toISOString() };
-    if (editing?.isNew) addResource(savedResource);
-    else updateResource(savedResource);
-    setEditing(null);
+    const saved = editing?.isNew ? addResource(savedResource) : updateResource(savedResource);
+    if (saved) setEditing(null);
   };
   const deleteResource = async (resource: IResource) => {
     const uses = tabs.filter((tab) => (tab.character.resourceLinks ?? []).some((link) => link.resourceId === resource.id)).length;

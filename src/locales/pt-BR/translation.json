@@ -971,5 +971,8 @@
   "pdf.customization.content.worksheetHint": "Mantém os dados existentes e acrescenta campos vazios e espaço para escrever a lápis.",
   "pdf.customization.content.allSections": "Todas as seções são incluídas neste modo. Suas escolhas de seções são mantidas para a ficha preenchida.",
   "pdf.customization.appearance": "Aparência",
-  "pdf.customization.sections.hint": "As estatísticas principais sempre aparecem. Seções opcionais só aparecem quando têm conteúdo."
+  "pdf.customization.sections.hint": "As estatísticas principais sempre aparecem. Seções opcionais só aparecem quando têm conteúdo.",
+  "resources.storage.unreadable": "Não foi possível ler a biblioteca de Recursos. Os dados originais foram preservados. Exporte-os para recuperação ou importe uma biblioteca válida.",
+  "resources.storage.recovered": "{{count}} registro(s) de Recursos precisam de recuperação. Os itens válidos continuam disponíveis e os registros originais foram preservados.",
+  "resources.storage.exportOriginal": "Exportar dados originais dos Recursos"
 }

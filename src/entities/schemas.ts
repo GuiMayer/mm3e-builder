@@ -56,7 +56,7 @@ const AlternateEffectSchema = z.union([
 ]);
 
 // Accept both old (effectId at top level) and new (components[]) formats
-const CharacterPowerSchema = z.union([
+export const CharacterPowerSchema = z.union([
   // New format
   z.object({
     id: z.string(),

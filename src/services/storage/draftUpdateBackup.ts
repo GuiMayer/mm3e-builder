@@ -12,6 +12,8 @@ const STORAGE_KEYS = [
   'mm3e-draft-character',
   'mm3e-draft-character-metadata',
   'mm3e-resource-library',
+  'mm3e-resources-before-1.18-v1',
+  'mm3e-resource-recovery-v1',
   'mm3e-draft-recovery-v1',
   'mm3e-draft-character-recovery-v1',
   'mm3e-campaign-migration-backup-v1',

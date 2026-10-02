@@ -2,6 +2,7 @@ import { SCHEMA_VERSION } from '../../entities/constants';
 import type { ICharacter, ICharacterFile, IResource } from '../../entities/types';
 import { downloadBlob, sanitizeFileName } from '../downloadHelper';
 import { sanitizeCharacterForExport } from './sanitizeCharacter';
+import { RESOURCE_LIBRARY_VERSION } from '../storage/resourceLibraryStorage';
 
 export async function exportCharacterJSON(
   character: ICharacter,
@@ -20,7 +21,7 @@ export async function exportCharacterJSON(
     exportedAt: new Date().toISOString(),
     language,
     character: sanitizeCharacterForExport(character),
-    ...(resources.length > 0 ? { appendix: { resources: { version: 1, items: resources } } } : {}),
+    ...(resources.length > 0 ? { appendix: { resources: { version: RESOURCE_LIBRARY_VERSION, items: resources } } } : {}),
   };
   const blob = new Blob([JSON.stringify(file, null, 2)], {
     type: 'application/json',
