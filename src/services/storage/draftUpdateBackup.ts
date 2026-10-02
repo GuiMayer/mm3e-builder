@@ -14,6 +14,7 @@ const STORAGE_KEYS = [
   'mm3e-resource-library',
   'mm3e-draft-recovery-v1',
   'mm3e-draft-character-recovery-v1',
+  'mm3e-campaign-migration-backup-v1',
 ] as const;
 
 type SnapshotKey = (typeof STORAGE_KEYS)[number];

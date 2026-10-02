@@ -382,9 +382,18 @@ export interface IPPLogEntry {
   date: string;     // ISO date: YYYY-MM-DD
   amount: number;   // positive = award, negative = deduction
   note: string;
+  kind?: 'award' | 'adjustment';
+  session?: string;
+  reversesEntryId?: string;
 }
 
 // ── Full Character ──
+export interface ICampaign {
+  version: 1;
+  initialPP: number;
+  initialPowerLevel: number;
+}
+
 export interface ICharacter {
   characterId?: string;          // Unique immutable ID for cross-device sync
   header: ICharacterHeader;
@@ -402,6 +411,7 @@ export interface ICharacter {
   manualOffenseRows?: IManualOffenseRow[]; // F-13: custom attack rows
   campaignMode?: boolean;        // F-17: opt-in PP advancement tracking (default: false)
   ppLog?: IPPLogEntry[];         // F-17: PP award log (only used when campaignMode = true)
+  campaign?: ICampaign;
 }
 
 // ── Exported File Schema ──

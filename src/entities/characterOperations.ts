@@ -69,8 +69,12 @@ export function duplicateCharacterWithNewIds(
     row.id = createId();
   }
 
-  for (const entry of clone.ppLog ?? []) {
-    entry.id = createId();
+  const newLogIds = (clone.ppLog ?? []).map(() => createId());
+  const logIds = new Map<string, string>();
+  (clone.ppLog ?? []).forEach((entry, index) => { if (!logIds.has(entry.id)) logIds.set(entry.id, newLogIds[index]); });
+  for (const [index, entry] of (clone.ppLog ?? []).entries()) {
+    entry.id = newLogIds[index];
+    if (entry.reversesEntryId) entry.reversesEntryId = logIds.get(entry.reversesEntryId) ?? entry.reversesEntryId;
   }
 
   return clone;

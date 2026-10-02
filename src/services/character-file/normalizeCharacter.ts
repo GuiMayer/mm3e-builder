@@ -1,5 +1,6 @@
 import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import type { ICharacter } from '../../entities/types';
+import { migrateCampaignCharacter } from '../../shared/lib/campaign';
 import {
   migrateAdvantages,
   migrateEquipment,
@@ -8,7 +9,7 @@ import {
 
 /** Converts every supported persisted character shape to the current model. */
 export function normalizeCharacter(character: ICharacter): ICharacter {
-  return {
+  return migrateCampaignCharacter({
     ...character,
     powers: migratePowers(character.powers as unknown[]),
     equipment: migrateEquipment((character.equipment as unknown[]) ?? []),
@@ -17,5 +18,5 @@ export function normalizeCharacter(character: ICharacter): ICharacter {
       (character.advantages as unknown[]) ?? [],
       ADVANTAGE_DEFS
     ),
-  };
+  });
 }

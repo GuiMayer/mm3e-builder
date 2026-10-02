@@ -15,6 +15,7 @@ import {
 } from './mathEngine';
 import { getCharacterStrength } from './componentRanks';
 import { getCharacterResourceEPUsed } from './resourceCalculations';
+import { campaignInitialPP } from './campaign';
 
 export interface CharacterPointSummary {
   abilitiesCost: number;
@@ -44,7 +45,7 @@ export function createCharacterPointSummarySelector(powerDefs: IPowerEffect[], m
     const inputs = [character.abilities, character.absentAbilities, character.defenses,
       character.skills, character.advantages, character.powers, character.equipment,
       character.resourceLinks, character.header.powerLevel, character.campaignMode,
-      character.ppLog, resources];
+      character.ppLog, character.campaign, resources];
     if (!summary || inputs.some((value, index) => value !== previous[index])) {
       summary = calculateCharacterPointSummary(character, resources, powerDefs, modifierDefs);
       previous = inputs;
@@ -83,7 +84,7 @@ export function calculateCharacterPointSummary(
   const ppEarned = character.campaignMode
     ? (character.ppLog ?? []).reduce((sum, entry) => sum + entry.amount, 0)
     : 0;
-  const totalAvailable = character.header.powerLevel * 15 + ppEarned;
+  const totalAvailable = (character.campaignMode ? campaignInitialPP(character) : character.header.powerLevel * 15) + ppEarned;
 
   const equipmentPricing = (character.equipment ?? []).map((item) =>
     calculatePowerPricing(item, powerDefs, modifierDefs, getCharacterStrength(character))

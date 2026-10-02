@@ -162,8 +162,11 @@ const ManualOffenseRowSchema = z.object({
 const PPLogEntrySchema = z.object({
   id: z.string(),
   date: z.string(),
-  amount: z.number().int(),
+  amount: z.number(), // Legacy UI accepted fractions; preserve them on read, validate new writes separately.
   note: z.string(),
+  kind: z.enum(['award', 'adjustment']).optional(),
+  session: z.string().optional(),
+  reversesEntryId: z.string().optional(),
 });
 
 const CharacterResourceLinkSchema = z.object({
@@ -207,6 +210,7 @@ export const CharacterSchema = z.object({
   manualOffenseRows: z.array(ManualOffenseRowSchema).optional(), // F-13
   campaignMode: z.boolean().optional(),    // F-17: opt-in mode (default off)
   ppLog: z.array(PPLogEntrySchema).optional(), // F-17: PP award log
+  campaign: z.object({ version: z.literal(1), initialPP: z.number().min(0), initialPowerLevel: z.number().int().min(1) }).optional(),
 });
 
 export const CharacterFileSchema = z.object({

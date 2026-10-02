@@ -12,10 +12,7 @@ export function sanitizeCharacterForExport(
       identity: character.header.identity || '',
       identityType: character.header.identityType,
       base: character.header.base || '',
-      powerLevel: Math.max(
-        1,
-        Math.min(15, character.header.powerLevel || 1)
-      ),
+      powerLevel: Math.max(1, character.header.powerLevel || 1),
       heroPoints: Math.max(0, character.header.heroPoints || 0),
       gender: character.header.gender,
       age: character.header.age,
@@ -61,5 +58,6 @@ export function sanitizeCharacterForExport(
     manualOffenseRows: character.manualOffenseRows,
     campaignMode: character.campaignMode || false,
     ppLog: character.ppLog,
+    campaign: character.campaign,
   };
 }

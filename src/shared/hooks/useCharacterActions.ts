@@ -5,6 +5,7 @@ import type { ICharacter, AbilityKey, IPPLogEntry, IManualOffenseRow } from '../
 import { ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import { createDefaultCharacter } from '../../entities/characterDefaults';
 import { createId } from '../lib/identity';
+import { createCampaign, validCampaignEntry, isCampaignAmount, isCampaignDate, localCampaignDate } from '../lib/campaign';
 
 const getCharactersStore = useCharactersStore.getState;
 
@@ -200,19 +201,21 @@ export function useCharacterActions() {
     getCharactersStore().updateCharacter(activeId, { manualOffenseRows: rows });
   }, []);
 
-  const setCampaignMode = useCallback((enabled: boolean) => {
-    const activeId = getCharactersStore().activeCharacterId;
+  const setCampaignMode = useCallback((enabled: boolean, targetId?: string) => {
+    const activeId = targetId ?? getCharactersStore().activeCharacterId;
     if (!activeId) return;
-
-    getCharactersStore().updateCharacter(activeId, { campaignMode: enabled });
-  }, []);
-
-  const addPPLogEntry = useCallback((entry: Omit<IPPLogEntry, 'id'>) => {
-    const activeId = getCharactersStore().activeCharacterId;
-    if (!activeId) return;
-
     const active = getCharactersStore().getCharacterById(activeId);
     if (!active) return;
+    getCharactersStore().updateCharacter(activeId, { campaignMode: enabled,
+      campaign: active.character.campaign ?? createCampaign(active.character.header.powerLevel) });
+  }, []);
+
+  const addPPLogEntry = useCallback((entry: Omit<IPPLogEntry, 'id'>, targetId?: string) => {
+    const activeId = targetId ?? getCharactersStore().activeCharacterId;
+    if (!activeId || !validCampaignEntry(entry)) return false;
+
+    const active = getCharactersStore().getCharacterById(activeId);
+    if (!active) return false;
 
     const newEntry: IPPLogEntry = {
       ...entry,
@@ -222,20 +225,48 @@ export function useCharacterActions() {
     const ppLog = active.character.ppLog || [];
     getCharactersStore().updateCharacter(activeId, {
       ppLog: [...ppLog, newEntry],
+      campaign: active.character.campaign ?? createCampaign(active.character.header.powerLevel),
     });
+    return true;
   }, []);
 
-  const removePPLogEntry = useCallback((id: string) => {
-    const activeId = getCharactersStore().activeCharacterId;
-    if (!activeId) return;
+  const removePPLogEntry = useCallback((id: string, targetId?: string, index?: number, expected?: IPPLogEntry) => {
+    const activeId = targetId ?? getCharactersStore().activeCharacterId;
+    if (!activeId) return false;
 
     const active = getCharactersStore().getCharacterById(activeId);
-    if (!active) return;
+    if (!active) return false;
 
     const ppLog = active.character.ppLog || [];
-    getCharactersStore().updateCharacter(activeId, {
-      ppLog: ppLog.filter((entry) => entry.id !== id),
-    });
+    const selected = index ?? ppLog.findIndex(entry => entry.id === id);
+    if (!ppLog[selected] || ppLog[selected].id !== id || (expected && JSON.stringify(ppLog[selected]) !== JSON.stringify(expected))) return false;
+    getCharactersStore().updateCharacter(activeId, { ppLog: ppLog.filter((_, position) => position !== selected) });
+    return true;
+  }, []);
+
+  const editPPLogEntry = useCallback((targetId: string, index: number, expected: IPPLogEntry, changes: Omit<IPPLogEntry, 'id'>) => {
+    const active = getCharactersStore().getCharacterById(targetId);
+    const entry = active?.character.ppLog?.[index];
+    if (!active || !entry || JSON.stringify(entry) !== JSON.stringify(expected)) return false;
+    // Permit editing notes on historical fractions/dates without silently changing those values.
+    if ((changes.amount !== entry.amount && !isCampaignAmount(changes.amount)) || (changes.date !== entry.date && !isCampaignDate(changes.date)) || (changes.kind === 'award' && changes.amount <= 0)) return false;
+    getCharactersStore().updateCharacter(targetId, { ppLog: active.character.ppLog!.map((item, position) => position === index ? { ...item, ...changes, id: item.id } : item) });
+    return true;
+  }, []);
+
+  const reversePPLogEntry = useCallback((targetId: string, index: number, expected: IPPLogEntry, note: string) => {
+    const active = getCharactersStore().getCharacterById(targetId);
+    const entry = active?.character.ppLog?.[index];
+    if (!active || !entry || JSON.stringify(entry) !== JSON.stringify(expected) || !Number.isFinite(entry.amount) || entry.amount === 0 || active.character.ppLog!.some(item => item.reversesEntryId === entry.id)) return false;
+    getCharactersStore().updateCharacter(targetId, { ppLog: [...active.character.ppLog!, { id: createId(), date: localCampaignDate(), amount: -entry.amount, note, kind: 'adjustment', reversesEntryId: entry.id }] });
+    return true;
+  }, []);
+
+  const setCampaignBudget = useCallback((targetId: string, initialPP: number) => {
+    const active = getCharactersStore().getCharacterById(targetId);
+    if (!active || !Number.isSafeInteger(initialPP) || initialPP < 0 || initialPP > 1_000_000) return false;
+    getCharactersStore().updateCharacter(targetId, { campaign: { ...(active.character.campaign ?? createCampaign(active.character.header.powerLevel)), initialPP } });
+    return true;
   }, []);
 
   const markClean = useCallback(() => {
@@ -264,6 +295,9 @@ export function useCharacterActions() {
     setCampaignMode,
     addPPLogEntry,
     removePPLogEntry,
+    editPPLogEntry,
+    reversePPLogEntry,
+    setCampaignBudget,
     markClean,
   };
 }

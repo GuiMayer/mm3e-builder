@@ -9,11 +9,12 @@
  * History:
  * - 1.0.0: Initial format (effectId + ranks + modifiers at power root level)
  * - 2.0.0: Multi-component format (components[] replaces flat effectId)
+ * - 2.1.0: Optional fixed campaign budget and advancement metadata
  */
-export const SCHEMA_VERSION = '2.0.0';
+export const SCHEMA_VERSION = '2.1.0';
 
 /**
  * All schema versions that the application can import.
- * Files with unknown versions are rejected with a warning-level error.
+ * Structurally compatible unknown versions are accepted with a warning.
  */
-export const SUPPORTED_SCHEMA_VERSIONS: readonly string[] = ['1.0.0', '2.0.0'];
+export const SUPPORTED_SCHEMA_VERSIONS: readonly string[] = ['1.0.0', '2.0.0', '2.1.0'];

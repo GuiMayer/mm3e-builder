@@ -1,4 +1,5 @@
 import type { ICharacter } from './types';
+import { createCampaign } from '../shared/lib/campaign';
 
 /**
  * Creates an independent character object with all current application defaults.
@@ -47,5 +48,6 @@ export function createDefaultCharacter(
     manualOffenseRows: overrides.manualOffenseRows ?? [],
     campaignMode: overrides.campaignMode ?? false,
     ppLog: overrides.ppLog ?? [],
+    campaign: overrides.campaign ?? (overrides.campaignMode || overrides.ppLog?.length ? createCampaign(overrides.header?.powerLevel ?? 10) : undefined),
   };
 }
