@@ -9,51 +9,118 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Added a custom interface palette editor beside the theme selector, with 36 color roles, opacity controls, preview and informative contrast warnings. The Custom theme option appears only after saving a valid local palette; built-in themes and character/export data remain unchanged.
-- Added a hidden, animation-free d20 roller with a right-edge desktop control, mobile bottom drawer, manual integer bonus, and session-only history (15 results by default, configurable in the footer).
-- Added contextual roll buttons for abilities, skills, initiative, resistance checks, and eligible attack profiles, plus explicit advantage shortcuts and Skill Mastery routine checks. Sources are snapshotted without changing character data or exports.
-- Added a structured **Impervious Resistance** utility effect for Impervious bought directly on an existing resistance. It costs 1 PP/rank and never increases the underlying defense.
-- Added a reproducible community-sheet audit command that validates and recalculates the 63 generated character files with the production pricing engine.
-- Added an explicit, backward-compatible **Strength-based Damage** option. It contributes effective Strength to effect rank and resistance DC without charging those ranks again.
-- Added optional absent-ability warnings for dependent skills, purchased defenses, and Strength-based Damage.
+No pending changes outside the versioned packages below.
 
-### Changed
-- Allow moving the desktop dice window by its header or keyboard, retain its position during the session, and keep it within the viewport after resizing; preserve the mobile bottom drawer.
-- Standardize sheet roll controls at the right edge of rows/cards with grouped totals/actions, consistent button styling and mobile wrapping across abilities, skills, defenses, advantages and targeted effects.
-- Animate the dice drawer from outside the viewport, hide its opener while open, and restore focus on close; respect reduced-motion preferences while keeping rolls immediate.
-- Treat generic Extras and Flaws as player choices for every effect, including Movement and Senses. Applicability, incompatibility, maximum-rank, and PL diagnostics do not block Power Builder saves; effect-specific modifiers remain scoped to their defining effect.
-- Sort effect and modifier options by their displayed names in the active language, retaining alphabetical order after filtering without mutating catalog or character data.
-- Improve PowerBuilder drag handles, keyboard target navigation, full modifier names and mobile palette controls; cache pricing independently of descriptive edits and render styles once per palette.
-- Share point summaries across sheet panels, subscribe panels to their own fields, and load PDF dialogs only when opened.
-- Price partial modifiers by rank boundaries instead of iterating through every rank.
-- Adapt the top bar across desktop, intermediate and mobile widths: separate navigation before controls compete for space, keep named icon actions, and shorten the sheet label on small phones. Settings stay within the viewport.
-- Improve dialog focus, effect-selector accessibility, and keyboard/touch access to derived defenses.
-- The Power Builder now uses one shared parameter editor for main and alternate effects, including modifier ranks, affected ranks, localized subtypes, and canonical cost previews.
-- Repeatable per-rank modifiers are declared explicitly. Adding an ordinary non-repeatable modifier twice no longer changes its price accidentally.
-- Configurable effect fields and their options now use the active game-data translation.
-- Effective ability ranks are derived in one place across the sheet, PL validation, targeted effects, PDF, and Excel; stored ranks remain intact while an ability is absent.
-- Range and duration applicability warnings now appear live in the Power Builder without preventing saves.
+The retrospective commit packages and preserved historical tags are documented
+in [Version history](docs/version-history.md). New release dates identify the
+completion commit, not a verified deployment date.
+
+---
+
+## [1.15.0] - 2026-10-02
+
+### Added
+- Custom interface theme stored separately in localStorage, with 36 semantic color roles, opacity, isolated preview and informative contrast warnings. The Custom theme option appears only after a valid palette is saved.
+- Modern color selection using react-colorful and colord, with typed/pasted HEX, RGB and HSL notation, alpha for compatible roles, and keyboard/touch controls.
 
 ### Fixed
-- Preserve generic/effect-specific modifier sources during drops, restrict alternate-effect targets, clear cancelled drags and prevent a saved drawer height from showing a closed mobile palette.
-- Validate Accurate using the current character's PL, abilities, and combat skills instead of implicit PL 10 defaults.
-- Charge per-rank extras on Strength-based Damage's effective Strength contribution, with consistent sheet, Builder, resource, PDF, and Excel totals.
-- Separate partial Area and range attack profiles; preserve Alternate Resistance and combat-skill miscellaneous bonuses.
-- Include linked armor in Toughness and PL checks without stacking equipment or activating alternate effects.
-- Reject imported modifiers whose declared generic/effect-specific source does not resolve.
-- Correct legacy equipment costs and derived defenses in Excel.
-- Corrected Affliction to 1 PP/rank regardless of its three failure degrees.
-- Corrected Teleport Increased Mass to charge every purchased modifier rank.
-- Corrected Variable Action pricing for Move (+1/rank), Free (+2/rank), and Reaction (+3/rank), while preserving legacy JSON records that encoded the choice as ranks 1–3.
-- Corrected each absent ability to cost −10 PP and contribute rank 0 mechanically, as defined by the source rules.
-- Corrected Increased Duration to one application: Instant becomes Concentration and Sustained becomes Continuous. Legacy rank values remain readable but are not charged repeatedly.
-- Added a one-time calculation revision 5 notice for existing priced drafts. Persisted character data and the character JSON schema are unchanged.
+- Apply custom colors consistently across the interface; retain the four built-in palettes.
+- Let the editor inherit the active app theme; selecting a base immediately updates fields and preview before saving.
+- Keep the top bar and settings above the draggable dice window.
+
+### Documentation
+- Group the commit history into annotated version tags, retain existing tags, and align current package metadata with 1.15.0. See the commit ranges and historical discrepancies in [Version history](docs/version-history.md).
+- Theme and dice preferences do not change character schemas or exported character data. The existing pre-update backup notice follows the application version; no new migration was introduced.
 
 ### Quality
-- Replaced or removed all 16 pending tests: obsolete/duplicated cases were deleted and valid rule expectations became executable regressions.
-- Expanded the verified suite to 56 test files and 744 passing tests with no pending tests (2026-10-02), including session-roll behavior, window bounds, custom palettes and character preservation.
-- Recalculated all 63 generated community sheets: all remain structurally and semantically valid, and 34 of 57 complete sources match their independently published sums under revision 4.
+- Verified the consolidated version with 57 test files and 766 passing tests, strict type checking, lint, production build and static-asset verification (2026-10-02).
+
+---
+
+## [1.14.0] - 2026-10-02
+
+### Added
+- Hidden d20 roller with a desktop right-edge control and mobile bottom drawer, manual integer bonus, and session-only history: 15 results by default, configurable in the footer.
+- Contextual rolls for abilities, skills, initiative, resistance checks and eligible attacks; explicit advantage shortcuts and Skill Mastery routine checks. Results snapshot their source, while manual rolls show only d20 plus bonus.
+- Desktop dice window draggable by its header or keyboard, with session-only position and viewport bounds after resizing.
+
+### Changed
+- Slide the drawer into view, hide the opener while expanded, restore focus on close and respect reduced-motion preferences. Dice results remain immediate, without rolling animation.
+- Align roll buttons at the right edge of rows/cards and group totals/actions consistently across the sheet, including mobile wrapping.
+
+---
+
+## [1.13.1] - 2026-10-02
+
+### Fixed
+- Allow generic Extras and Flaws on every effect, including Movement and Senses. Applicability, incompatibility, maximum-rank and PL diagnostics do not block Power Builder saves; effect-specific modifiers remain scoped to their own effect. Warning messages are retained.
+
+### Documentation
+- Document the player-controlled modifier policy and its limits.
+
+---
+
+## [1.13.0] - 2026-10-01
+
+### Added
+- Compact A4 HTML sheets with explicit pagination, embedded fonts and localized labels.
+- Preview of the exported PDF, editable zoom with reasonable limits, discreet floating zoom controls, selectable text and an initial zoom of 100%.
+- Printable worksheet mode with empty fields and writing space for filling by hand.
+- Reproducible PDF stress fixture and documented layout checks.
+
+### Changed
+- Simplify content modes and optional sections, retaining customization without redundant controls.
+- Preserve offline HTML export alongside PDF export.
+
+### Fixed
+- Preserve full alternate-effect and device details without changing stored character data.
+
+---
+
+## [1.12.1] - 2026-10-01
+
+### Changed
+- Adapt the top bar to desktop, intermediate and mobile widths; retain named actions and keep settings within the viewport.
+- Improve PowerBuilder drag handles, explicit modifier sources, valid alternate-effect targets, keyboard navigation, full modifier labels and mobile palette controls.
+- Sort and filter effect/modifier lists alphabetically by their displayed names in the active language, without mutating catalogs.
+- Share point summaries, subscribe sheet panels to their own fields, cache pricing independently of descriptive edits and load PDF dialogs on demand.
+- Price partial modifiers by rank boundaries instead of iterating through each rank; improve dialog focus and keyboard/touch access to derived defenses.
+
+### Fixed
+- Validate Accurate against the current character's PL, abilities and combat skills.
+- Charge per-rank extras on Strength-based Damage's effective Strength contribution, consistently across the sheet, Builder, Resources, PDF and Excel.
+- Separate partial Area and range attack profiles; preserve Alternate Resistance and combat-skill miscellaneous bonuses.
+- Include linked armor in Toughness and PL checks without stacking equipment or activating alternate effects.
+- Reject imported modifiers whose declared generic/effect-specific source does not resolve; correct legacy equipment costs and derived defenses in Excel.
+- Clear cancelled drags and prevent saved drawer height from revealing a closed mobile palette.
+- Announce calculation revision 5 once for existing priced drafts. Character JSON format remains unchanged.
+
+---
+
+## [1.12.0] - 2026-08-30
+
+### Added
+- Structured Impervious Resistance utility effect: 1 PP/rank, without increasing the underlying defense.
+- Explicit Strength-based Damage option using effective Strength for rank and resistance DC without purchasing those ranks twice.
+- Optional absent-ability warnings for dependent skills, purchased defenses and Strength-based Damage.
+- Reproducible production-engine recalculation of the 63 generated community sheets.
+
+### Changed
+- Centralize contextual power costs and unify sheet/export totals, removing stale pricing paths.
+- Share the parameter editor across main and alternate effects, including localized subtypes, modifier/affected ranks and canonical cost previews.
+- Declare repeatable per-rank modifiers explicitly; ordinary non-repeatable duplicates no longer change prices accidentally.
+- Derive effective ability ranks consistently while preserving stored ranks of absent abilities; show range/duration warnings without preventing saves.
+
+### Fixed
+- Price Affliction at 1 PP/rank regardless of its failure degrees, and charge every purchased rank of Teleport Increased Mass.
+- Correct Variable Action pricing for Move (+1/rank), Free (+2/rank) and Reaction (+3/rank), preserving legacy rank-encoded choices.
+- Charge each absent ability −10 PP and use effective rank 0 mechanically.
+- Apply Increased Duration once: Instant → Concentration, Sustained → Continuous. Legacy repeated ranks remain readable without repeated charges.
+- Add one-time calculation revision notices through revision 4, without changing the persisted character JSON schema.
+
+### Quality
+- Replaced or removed all 16 pending tests; retained valid rule expectations as executable regressions.
+- Recalculated all 63 community sheets: all remain structurally and semantically valid; 34 of 57 complete sources match their independently published sums under revision 4.
 
 ---
 
@@ -484,6 +551,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Key Feature | Schema Version |
 |---------|------|-------------|----------------|
+| 1.15.0 | 2026-10-02 | Custom themes and modern color picker | 2.0.0 |
+| 1.14.0 | 2026-10-02 | Contextual dice rolls and draggable session window | 2.0.0 |
+| 1.13.1 | 2026-10-02 | Player-controlled generic Extras and Flaws | 2.0.0 |
+| 1.13.0 | 2026-10-01 | Compact A4 PDF, zoom preview and printable worksheet | 2.0.0 |
+| 1.12.1 | 2026-10-01 | Rules corrections and responsive interface | 2.0.0 |
+| 1.12.0 | 2026-08-30 | Central pricing, rules audit and structured power options | 2.0.0 |
 | 1.11.0 | 2026-08-16 | Resources, draft recovery, Targeted Effects, and PDF export | 2.0.0 |
 | 1.10.0 | 2026-06-13 | Multi-Character Tabs + Advantage Subtypes | 2.0.0 |
 | 1.9.0 | 2026-05-14 | Empty Component Detection | 2.0.0 |
@@ -548,6 +621,13 @@ If you encounter issues, please report at: https://github.com/GuiMayer/mm3e-buil
 
 ---
 
+[Unreleased]: https://github.com/GuiMayer/mm3e-builder/compare/v1.15.0...HEAD
+[1.15.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.14.0...v1.15.0
+[1.14.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.13.1...v1.14.0
+[1.13.1]: https://github.com/GuiMayer/mm3e-builder/compare/v1.13.0...v1.13.1
+[1.13.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.12.1...v1.13.0
+[1.12.1]: https://github.com/GuiMayer/mm3e-builder/compare/v1.12.0...v1.12.1
+[1.12.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.11.0...v1.12.0
 [1.11.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/GuiMayer/mm3e-builder/compare/v1.8.0...v1.9.0

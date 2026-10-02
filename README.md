@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.11.0
+# Mutants & Masterminds 3e Character Builder — v1.15.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -141,12 +141,12 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Current development
-- Calculation revision 4 adds the official −10 PP cost for absent abilities and corrects Increased Duration, while retaining the revision 3 pricing fixes and the existing character JSON schema.
-- Strength-based Damage is explicit and uses the character's effective Strength without charging those ranks twice; optional warnings cover absent-ability dependencies.
-- Impervious bought directly on an existing resistance can be represented structurally without adding defense ranks.
-- PowerBuilder usability: explicit drag sources, compatible targets, keyboard navigation and responsive mobile palette ([audit](docs/testing/power-builder-ux-audit-2026-10.md)).
-- 697 passing automated tests across 48 test files with no pending tests; all 63 generated community sheets remain valid after recalculation.
+#### Versioned updates through v1.15.0
+- **v1.15.0**: Custom interface themes, local palettes and modern HEX/RGB/HSL color selection.
+- **v1.14.0**: Manual/contextual d20 rolls, configurable session history and draggable dice window.
+- **v1.13.0 / v1.13.1**: Compact A4 PDFs, selectable zoom preview, printable empty fields and player-controlled generic Extras/Flaws.
+- **v1.12.0 / v1.12.1**: Central pricing, Strength-based Damage, Impervious Resistance, rules corrections through calculation revision 5 and responsive PowerBuilder/sheet controls.
+- Commit ranges, annotated tags and historical tag discrepancies: [Version history](docs/version-history.md).
 
 #### v1.11.0 (2026-08-16)
 - Resources Library with Gadgets, Gear, Vehicles, Headquarters, and character associations
@@ -375,12 +375,12 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Desenvolvimento atual
-- A revisão de cálculo 4 adiciona o custo oficial de −10 PP para habilidades ausentes e corrige Duração Aumentada, preservando as correções da revisão 3 e o schema JSON existente.
-- Dano baseado em Força é uma opção explícita que usa a Força efetiva sem cobrar esses ranks duas vezes; avisos opcionais cobrem dependências de habilidades ausentes.
-- Impenetrável comprado diretamente sobre uma resistência existente pode ser representado estruturalmente sem adicionar ranks à defesa.
-- Usabilidade do PowerBuilder: origem explícita no arraste, destinos compatíveis, navegação por teclado e paleta móvel responsiva ([auditoria](docs/testing/power-builder-ux-audit-2026-10.md)).
-- 697 testes automatizados aprovados em 48 arquivos, sem testes pendentes; todas as 63 fichas geradas da comunidade continuam válidas após o recálculo.
+#### Atualizações versionadas até a v1.15.0
+- **v1.15.0**: Temas personalizados, paletas locais e seletor moderno HEX/RGB/HSL.
+- **v1.14.0**: Rolagens d20 manuais/contextuais, histórico configurável da sessão e janela de dados arrastável.
+- **v1.13.0 / v1.13.1**: PDFs A4 compactos, prévia selecionável com zoom, campos vazios para impressão e Extras/Flaws genéricos a critério do jogador.
+- **v1.12.0 / v1.12.1**: Custos centralizados, Dano baseado em Força, Resistência Impenetrável, correções até a revisão de cálculo 5 e controles responsivos da ficha/PowerBuilder.
+- Intervalos de commits, tags anotadas e divergências históricas: [Histórico de versões](docs/version-history.md).
 
 #### v1.11.0 (2026-08-16)
 - Biblioteca de Resources com Gadgets, Gear, Vehicles, Headquarters e associações aos personagens
