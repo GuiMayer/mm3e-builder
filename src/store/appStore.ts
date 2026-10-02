@@ -26,11 +26,7 @@ export const useAppStore = create<AppStoreState>()(
         validationRules: DEFAULT_VALIDATION_RULES,
         useLegacyPdfExporter: false,
 
-        setTheme: (theme) =>
-          set(() => {
-            document.documentElement.setAttribute('data-theme', theme);
-            return { theme };
-          }),
+        setTheme: (theme) => set({ theme }),
 
         setLanguage: (language) =>
           set({

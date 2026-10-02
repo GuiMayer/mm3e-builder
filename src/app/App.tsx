@@ -6,7 +6,7 @@ import { CharacterTabs } from '../features/sheet-core/CharacterTabs'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { ErrorFallback } from '../shared/ui/ErrorBoundary/ErrorFallback'
 import { usePDFExport } from '../shared/hooks/usePDFExport'
-import { useAppStore } from '../store/appStore'
+import { useTheme } from '../shared/hooks/useTheme'
 import { AppDialogProvider } from '../shared/ui/AppDialog'
 import { DraftStorageStatus } from '../shared/ui/DraftStorageStatus'
 import { DraftPersistenceController } from '../shared/ui/DraftPersistenceController'
@@ -54,10 +54,7 @@ export function App() {
   }, [i18n.language, t])
 
   // Apply persisted theme on mount and changes
-  const theme = useAppStore(state => state.theme);
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+  useTheme();
 
   return (
     <ErrorBoundary
