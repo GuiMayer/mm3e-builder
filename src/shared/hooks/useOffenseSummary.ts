@@ -5,6 +5,7 @@ import { POWER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS, MODIFIER_DEFS } from '../../ent
 import { buildOffenseSummary } from '../lib/offenseSummary';
 import { useResourcesStore } from '../../store/resourcesStore';
 import type { IOffenseEntry } from '../lib/offenseSummary';
+import { useLocalizedData } from './useLocalizedData';
 
 export type { IOffenseEntry };
 
@@ -16,12 +17,13 @@ export type { IOffenseEntry };
 export function useOffenseSummary(): IOffenseEntry[] {
   const { character } = useActiveCharacter();
   const { t } = useTranslation();
+  const powerDefs = useLocalizedData(POWER_DEFS);
   const resources = useResourcesStore((state) => state.resources);
 
   return useMemo(
     () => buildOffenseSummary(
       character,
-      POWER_DEFS,
+      powerDefs,
       SKILL_DEFS,
       ADVANTAGE_DEFS,
       MODIFIER_DEFS,
@@ -31,6 +33,6 @@ export function useOffenseSummary(): IOffenseEntry[] {
       },
       resources
     ),
-    [character, resources, t]
+    [character, resources, powerDefs, t]
   );
 }

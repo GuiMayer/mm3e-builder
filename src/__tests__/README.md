@@ -2,7 +2,7 @@
 
 Este diretório contém a suíte de testes completa para o MM3e Builder, validando a implementação das regras oficiais do Mutants & Masterminds 3e.
 
-**Estado verificado em 2026-10-02 (v1.16.0):** 58 arquivos de teste, 770 testes aprovados e nenhum teste pendente. Execute `npm test -- --run` para obter o estado real.
+**Estado verificado em 2026-10-02 (v1.16.0 + correção de tradução):** 59 arquivos de teste, 771 testes aprovados e nenhum teste pendente. Execute `npm test -- --run` para obter o estado real.
 
 ## Estrutura de Testes
 
@@ -15,6 +15,7 @@ Este diretório contém a suíte de testes completa para o MM3e Builder, validan
 | Estado e persistência | `charactersStore.integration`, `characterHistory`, `characterOperations`, `characterDraftStorage`, `draftAutoLoad` | Abas, undo/redo temporário, operações puras, auto-save e recuperação |
 | Exportação e interface lógica | `exportCorrections`, `pdfHtmlSafety`, `powerBuilderModel`, `powerReference` | PDF, Excel, segurança de HTML, modelo do editor, descrições localizadas e resolução contextual de modificadores sem mutação da ficha |
 | Rolagens da sessão | `diceRoller`, `diceCheckSources`, `diceWindowPosition` | d20, histórico temporário, origens, bônus compartilhados, limites da janela e preservação das fichas |
+| Tradução dos efeitos | `offenseLocalization` | Troca de idioma em Efeitos Direcionados, preservando nomes personalizados, textos manuais, mecânica e dados da ficha |
 | Temas da interface | `customTheme`, `customThemeStorage`, `colorInput` | Paletas, contraste, transparência, conversão HEX/RGB/HSL, persistência isolada, recuperação e preservação dos temas padrão |
 
 ### Testes de Integração

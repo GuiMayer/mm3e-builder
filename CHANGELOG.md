@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-No pending changes outside the versioned packages below.
+### Fixed
+- Translate effect names in Targeted Effects using the active-language catalog, including Affliction, power components, alternate effects and equipment. Keep custom names and manually typed effect text unchanged.
 
 The retrospective commit packages and preserved historical tags are documented
 in [Version history](docs/version-history.md). New release dates identify the
