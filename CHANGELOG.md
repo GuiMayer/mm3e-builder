@@ -10,9 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- Allow an intermediate minus sign/empty value while typing measurement ranks, retaining the last valid result until the number is complete. Preserve keyboard arrows and rank selection without changing the shared character inputs.
 - Pack References panels independently into the available column height, removing gaps caused by a taller neighbouring card. Reflow on expansion, search and resizing without remounting query fields; retain wide tables and the single-column mobile layout.
 
 ### Added
+- Persist the reference measurement system under its own localStorage preference key; restore it across view/app reopening, with language defaults and graceful handling of unavailable storage.
 - Visible Metric/Imperial toggles on Measurements and Size tables, sharing the current consultation selection. Convert size heights to metres/centimetres while preserving all official modifiers and the original imperial benchmarks.
 - Remove the Measurements rank field's −5/30 bounds. Extrapolate from the official endpoints by doubling/halving each measure per rank, preserving published rounded values and both unit systems; show scientific notation for extreme magnitudes without infinity/underflow.
 

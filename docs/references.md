@@ -42,7 +42,13 @@ O campo usa inteiros representáveis com precisão pelo JavaScript.
 Para valores intermediários, consulte a próxima
 medida maior. Tamanho humano corresponde à graduação −2 de **tamanho**, não à
 graduação de Crescimento/Encolhimento. O toggle Métrico/Imperial aparece nos
-dois painéis e compartilha a seleção durante a consulta. Na tabela de tamanho,
+dois painéis e compartilha a seleção. A escolha é salva em
+`mm3e-reference-measurement-system` e restaurada ao reabrir a aba ou o app.
+Sem preferência salva, o padrão é métrico em português e imperial em inglês.
+Se o navegador bloquear a gravação, o toggle continua funcionando na sessão.
+O campo de graduação aceita o sinal `-` e o campo vazio durante a digitação,
+sem substituir o último resultado válido; ao sair do campo, normaliza o texto.
+Setas do teclado e botões aumentam/diminuem uma graduação. Na tabela de tamanho,
 a opção métrica converte pés/polegadas para metros/centímetros (1 pé = 0,3048 m),
 arredondando para duas casas decimais; os modificadores não mudam. Essa
 conversão de altura é distinta da escala métrica arredondada de Medidas.
@@ -89,8 +95,9 @@ editora, sem acesso ao interior do PDF comercial do escudo.
 ## Compatibilidade
 
 O catálogo, as tabelas e os campos de consulta pertencem a
-`features/references`. Não dependem dos stores de fichas/recursos, não gravam
-no localStorage e não alteram exportações, histórico, custos ou avisos.
+`features/references`. Não dependem dos stores de fichas/recursos e não alteram exportações,
+histórico, custos ou avisos. Apenas a preferência de unidades é gravada
+numa chave própria do localStorage, fora dos dados do personagem.
 Schema de personagem 2.1.0, biblioteca/apêndice de recursos 2, rascunho 1 e
 revisão de cálculo 6 permanecem iguais. Não há migração nesta atualização.
 A rotina preventiva de backup já existente continua seguindo a versão do app.

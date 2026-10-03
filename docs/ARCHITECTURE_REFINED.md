@@ -62,8 +62,11 @@ a disposable DOM copy, but only a clean render tree is passed to jsPDF.
 `features/references` owns a bilingual display catalog and separately transcribed
 imperial/metric measurement tables. Pure check-degree helpers serve local query
 fields and the optional damage matrix; they do not participate in sheet rules.
-The view imports condition definitions but no character/Resource store, storage
-service or mutation actions. Category/search/expansion/unit state is transient.
+The view imports condition definitions but no character/Resource store or
+mutation actions. Category/search/expansion state is transient. The isolated
+`measurementPreferences` adapter saves only the unit system in
+`mm3e-reference-measurement-system`, with guarded reads/writes and language
+fallbacks; it never reads or writes character/Resource storage.
 There is no schema or calculation revision change. See [References](references.md).
 
 ## Resource library

@@ -1116,5 +1116,7 @@
   "resources.error.storageConflict": "Esta biblioteca mudou em outra janela. Exporte seu trabalho pendente se necessário e recarregue para usar a versão atual. Nenhum recurso foi sobrescrito.",
   "ref119.extrapolated": "Graduação {{rank}} calculada a partir da graduação {{base}}: {{operation}} cada medida {{steps}} vezes. A tabela oficial abaixo permanece inalterada.",
   "ref119.doubling": "dobrando",
-  "ref119.halving": "reduzindo à metade"
+  "ref119.halving": "reduzindo à metade",
+  "ref119.decreaseRank": "Diminuir graduação",
+  "ref119.increaseRank": "Aumentar graduação"
 }

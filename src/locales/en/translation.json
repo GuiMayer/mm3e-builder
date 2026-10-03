@@ -1116,5 +1116,7 @@
   "resources.error.storageConflict": "This library changed in another window. Export your pending work if needed, then reload to use its current version. No resource was overwritten.",
   "ref119.extrapolated": "Calculated rank {{rank}} from rank {{base}}: {{operation}} each measure {{steps}} times. The published table below remains unchanged.",
   "ref119.doubling": "double",
-  "ref119.halving": "halve"
+  "ref119.halving": "halve",
+  "ref119.decreaseRank": "Decrease rank",
+  "ref119.increaseRank": "Increase rank"
 }

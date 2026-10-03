@@ -41,6 +41,12 @@
 .reference-card__note{font-size:.78rem;color:var(--c-text-muted);line-height:1.6;margin:var(--s-sm) 4px}
 .reference-tools{display:flex;flex-wrap:wrap;gap:var(--s-md);margin:var(--s-sm) 4px}
 .reference-tools label{display:flex;flex-direction:column;gap:var(--s-xs);font-size:.75rem;color:var(--c-text-muted);max-width:100%}
+.reference-rank-input{display:flex;max-width:100%;align-items:stretch}
+.reference-rank-input input{width:10ch;min-width:0;flex:1;background:var(--c-surface-elevated);color:var(--c-text);font:inherit;font-size:.9rem;text-align:center;border:1px solid var(--c-border);padding:6px}
+.reference-rank-input input:focus-visible{outline:2px solid var(--c-primary);outline-offset:-2px}
+.reference-rank-input button{display:flex;align-items:center;justify-content:center;width:32px;flex-shrink:0;border-radius:0}
+.reference-rank-input button:first-child{border-right:0;border-radius:var(--r-sm) 0 0 var(--r-sm)}
+.reference-rank-input button:last-child{border-left:0;border-radius:0 var(--r-sm) var(--r-sm) 0}
 .reference-unit-toggle{border:0;padding:0;margin:0;min-width:0}
 .reference-unit-toggle legend{font-size:.75rem;color:var(--c-text-muted);padding:0;margin-bottom:var(--s-xs)}
 .reference-unit-toggle>div{display:flex;gap:4px}
