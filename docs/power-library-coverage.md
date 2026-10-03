@@ -18,7 +18,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 9 | Morphing Powers, Plant Powers, Radiation Powers | 72 receitas/variantes auditadas. |
 | 10 | Sensory Powers, Size Powers, Sonic Powers | 66 receitas/variantes auditadas. |
 | 11 | Speed Powers, Strength Powers, Summoning Powers | 64 receitas/variantes auditadas. |
-| 12 | Talent Powers, Tech Powers, Teleport Powers | Pendente |
+| 12 | Talent Powers, Tech Powers, Teleport Powers | 68 receitas/variantes auditadas; Corpo de Construto é referência. |
 | 13 | Time Powers, Water Powers, Weather Powers | Pendente |
 
 ## Lote 1: diferenças da fonte
@@ -84,3 +84,7 @@ As compras de perícias preservam +2 bônus por graduação selecionada, convert
 ## Lote 11
 
 Extras Aprimorados são compras normais de Atributo Aprimorado (1/2/3 PP por graduação do extra), com o alvo indicado na configuração. Não compram novamente o dano/velocidade já existente nem alteram outro poder automaticamente. Air Cushion custa 4, não os 3 impressos. Constructs com Tipo Amplo custa 6/graduação, não os 5 impressos. Untouchable separa Imunidade 80 limitada por duas condições (27) da compra de Reação na Velocidade existente (3), somando 30.
+
+## Lote 12
+
+Parkour limita somente quatro das cinco graduações de Movimento. Master of Disguise calcula Removível pelo custo real, somando 4 em vez de 5 impressos. Control Technology com apenas terceiro grau e Limitado custa 1/graduação, não 2. Corpo de Construto depende de atributos ausentes fora do poder e não pode ser aplicado como receita incompleta.

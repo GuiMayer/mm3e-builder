@@ -16966,5 +16966,1366 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "summon"
     ]
+  },
+  {
+    "id": "talent-fearsome-presence",
+    "profileId": "talent",
+    "name": {
+      "en": "Fearsome Presence",
+      "pt": "Presença Aterrorizante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Selective · Subtle · Check Required",
+      "pt": "Aflição · Área · Seletivo · Sutil · Teste Necessário"
+    },
+    "page": 187,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "talent-flurry",
+    "profileId": "talent",
+    "name": {
+      "en": "Flurry",
+      "pt": "Rajada de Ataques"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Variable Descriptor",
+      "pt": "Traço Aprimorado · Descritor Variável"
+    },
+    "page": 187,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "talent-hurt-anything",
+    "profileId": "talent",
+    "name": {
+      "en": "Hurt Anything",
+      "pt": "Ferir Qualquer Coisa"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Variable Descriptor",
+      "pt": "Traço Aprimorado · Descritor Variável"
+    },
+    "page": 187,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "talent-pressure-points",
+    "profileId": "talent",
+    "name": {
+      "en": "Pressure Points",
+      "pt": "Pontos de Pressão"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction",
+      "pt": "Aflição"
+    },
+    "page": 187,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "talent-striking-power",
+    "profileId": "talent",
+    "name": {
+      "en": "Striking Power",
+      "pt": "Poder de Golpe"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage",
+      "pt": "Dano"
+    },
+    "page": 187,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "talent-acquired-immunity",
+    "profileId": "talent",
+    "name": {
+      "en": "Acquired Immunity",
+      "pt": "Imunidade Adquirida"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Half Effect",
+      "pt": "Imunidade · Metade do Efeito"
+    },
+    "page": 187,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "talent-perfect-defense-40",
+    "profileId": "talent",
+    "name": {
+      "en": "Perfect Defense — 40",
+      "pt": "Defesa Perfeita — 40"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Concentration",
+      "pt": "Imunidade · Concentração"
+    },
+    "page": 188,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "talent-perfect-defense-80",
+    "profileId": "talent",
+    "name": {
+      "en": "Perfect Defense — 80",
+      "pt": "Defesa Perfeita — 80"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Concentration",
+      "pt": "Imunidade · Concentração"
+    },
+    "page": 188,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "talent-tough",
+    "profileId": "talent",
+    "name": {
+      "en": "Tough",
+      "pt": "Resistente"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection",
+      "pt": "Proteção"
+    },
+    "page": 188,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "talent-unfazeable",
+    "profileId": "talent",
+    "name": {
+      "en": "Unfazeable",
+      "pt": "Imperturbável"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 188,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "talent-parkour",
+    "profileId": "talent",
+    "name": {
+      "en": "Parkour",
+      "pt": "Parkour"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 188,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "talent-perfect-balance",
+    "profileId": "talent",
+    "name": {
+      "en": "Perfect Balance",
+      "pt": "Equilíbrio Perfeito"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 188,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "talent-speed-climbing",
+    "profileId": "talent",
+    "name": {
+      "en": "Speed-Climbing",
+      "pt": "Escalada Rápida"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Check Required",
+      "pt": "Movimento · Teste Necessário"
+    },
+    "page": 188,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "talent-speed-swimming",
+    "profileId": "talent",
+    "name": {
+      "en": "Speed-Swimming",
+      "pt": "Natação Rápida"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Swimming",
+      "pt": "Natação"
+    },
+    "page": 188,
+    "effectIds": [
+      "swimming"
+    ]
+  },
+  {
+    "id": "talent-vaulting",
+    "profileId": "talent",
+    "name": {
+      "en": "Vaulting",
+      "pt": "Salto Acrobático"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping · Check Required",
+      "pt": "Salto · Teste Necessário"
+    },
+    "page": 188,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "talent-triple-jointed",
+    "profileId": "talent",
+    "name": {
+      "en": "Triple-Jointed",
+      "pt": "Articulações Flexíveis"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Shrinking · Innate · Concentration · Check Required",
+      "pt": "Encolhimento · Inato · Concentração · Teste Necessário"
+    },
+    "page": 188,
+    "effectIds": [
+      "shrinking"
+    ]
+  },
+  {
+    "id": "talent-perfect-pitch",
+    "profileId": "talent",
+    "name": {
+      "en": "Perfect Pitch",
+      "pt": "Ouvido Absoluto"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 188,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "talent-refined-palate",
+    "profileId": "talent",
+    "name": {
+      "en": "Refined Palate",
+      "pt": "Paladar Refinado"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 188,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "talent-sensitive-smell",
+    "profileId": "talent",
+    "name": {
+      "en": "Sensitive Smell",
+      "pt": "Olfato Sensível"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 188,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "talent-ambidexterous",
+    "profileId": "talent",
+    "name": {
+      "en": "Ambidexterous",
+      "pt": "Ambidestro"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature",
+      "pt": "Característica"
+    },
+    "page": 189,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "talent-light-sleeper",
+    "profileId": "talent",
+    "name": {
+      "en": "Light Sleeper",
+      "pt": "Sono Leve"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature",
+      "pt": "Característica"
+    },
+    "page": 189,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "talent-at-a-glance",
+    "profileId": "talent",
+    "name": {
+      "en": "At a Glance",
+      "pt": "Num Relance"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 189,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "talent-brilliant-deduction",
+    "profileId": "talent",
+    "name": {
+      "en": "Brilliant Deduction",
+      "pt": "Dedução Brilhante"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Check Required",
+      "pt": "Sentidos · Teste Necessário"
+    },
+    "page": 189,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "talent-daredevil",
+    "profileId": "talent",
+    "name": {
+      "en": "Daredevil",
+      "pt": "Temerário"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Luck Control",
+      "pt": "Controle da Sorte"
+    },
+    "page": 189,
+    "effectIds": [
+      "luck-control"
+    ]
+  },
+  {
+    "id": "talent-eagle-eyed",
+    "profileId": "talent",
+    "name": {
+      "en": "Eagle-Eyed",
+      "pt": "Olhos de Águia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 189,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "talent-master-of-disguise",
+    "profileId": "talent",
+    "name": {
+      "en": "Master of Disguise",
+      "pt": "Mestre do Disfarce"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Morph · Increased Duration · Check Required · Increased Action",
+      "pt": "Metamorfose · Duração Aumentada · Teste Necessário · Ação Aumentada"
+    },
+    "page": 189,
+    "effectIds": [
+      "morph"
+    ]
+  },
+  {
+    "id": "talent-master-escape-artist",
+    "profileId": "talent",
+    "name": {
+      "en": "Master Escape Artist",
+      "pt": "Mestre da Fuga"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Insubstantial · Limited",
+      "pt": "Insubstancial · Limitado"
+    },
+    "page": 189,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "talent-master-linguist",
+    "profileId": "talent",
+    "name": {
+      "en": "Master Linguist",
+      "pt": "Mestre Linguista"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Comprehend · Quirk",
+      "pt": "Compreensão · Peculiaridade"
+    },
+    "page": 189,
+    "effectIds": [
+      "comprehend"
+    ]
+  },
+  {
+    "id": "talent-number-cruncher",
+    "profileId": "talent",
+    "name": {
+      "en": "Number Cruncher",
+      "pt": "Calculista"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Quickness · Limited",
+      "pt": "Rapidez · Limitado"
+    },
+    "page": 189,
+    "effectIds": [
+      "quickness"
+    ]
+  },
+  {
+    "id": "talent-situational-awareness",
+    "profileId": "talent",
+    "name": {
+      "en": "Situational Awareness",
+      "pt": "Consciência Situacional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 189,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "talent-speed-reader",
+    "profileId": "talent",
+    "name": {
+      "en": "Speed Reader",
+      "pt": "Leitura Rápida"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Quickness · Limited",
+      "pt": "Rapidez · Limitado"
+    },
+    "page": 189,
+    "effectIds": [
+      "quickness"
+    ]
+  },
+  {
+    "id": "tech-animate-machines",
+    "profileId": "tech",
+    "name": {
+      "en": "Animate Machines",
+      "pt": "Animar Máquinas"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Summon · Controlled · Variable Type (General) · Self-Powered",
+      "pt": "Invocar · Controlado · Variable Type (General) · Deslocamento Próprio"
+    },
+    "page": 193,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "tech-control-technology",
+    "profileId": "tech",
+    "name": {
+      "en": "Control Technology",
+      "pt": "Controlar Tecnologia"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited Degree · Affects Objects · Limited",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Graus Limitados · Afeta Objetos · Limitado"
+    },
+    "page": 193,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "tech-deactivate-technology",
+    "profileId": "tech",
+    "name": {
+      "en": "Deactivate Technology",
+      "pt": "Desativar Tecnologia"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Nullify · Area · Broad · Simultaneous",
+      "pt": "Anulação · Área · Amplo · Simultâneo"
+    },
+    "page": 193,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "tech-disassemble",
+    "profileId": "tech",
+    "name": {
+      "en": "Disassemble",
+      "pt": "Desmontar"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Transform · Increased Range · Continuous",
+      "pt": "Transformação · Alcance Aumentado · Contínuo"
+    },
+    "page": 193,
+    "effectIds": [
+      "transform"
+    ]
+  },
+  {
+    "id": "tech-machine-body",
+    "profileId": "tech",
+    "name": {
+      "en": "Machine Body",
+      "pt": "Corpo de Máquina"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 193,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "tech-construct-body",
+    "profileId": "tech",
+    "name": {
+      "en": "Construct Body",
+      "pt": "Corpo de Construto"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 194,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "tech-machine-mind",
+    "profileId": "tech",
+    "name": {
+      "en": "Machine Mind",
+      "pt": "Mente de Máquina"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 194,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "tech-cyberspace",
+    "profileId": "tech",
+    "name": {
+      "en": "Cyberspace",
+      "pt": "Ciberespaço"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 194,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "tech-network-jump",
+    "profileId": "tech",
+    "name": {
+      "en": "Network Jump",
+      "pt": "Salto de Rede"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Extended · Medium",
+      "pt": "Teleporte · Preciso · Estendido · Meio"
+    },
+    "page": 194,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "tech-transport-platform",
+    "profileId": "tech",
+    "name": {
+      "en": "Transport Platform",
+      "pt": "Plataforma de Transporte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Platform · Quirk",
+      "pt": "Voo · Platform · Peculiaridade"
+    },
+    "page": 194,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "tech-assemble",
+    "profileId": "tech",
+    "name": {
+      "en": "Assemble",
+      "pt": "Montar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Transform · Increased Range · Continuous",
+      "pt": "Transformação · Alcance Aumentado · Contínuo"
+    },
+    "page": 194,
+    "effectIds": [
+      "transform"
+    ]
+  },
+  {
+    "id": "tech-computer-mind",
+    "profileId": "tech",
+    "name": {
+      "en": "Computer Mind",
+      "pt": "Mente Computacional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Quickness · Limited",
+      "pt": "Traço Aprimorado · Rapidez · Limitado"
+    },
+    "page": 194,
+    "effectIds": [
+      "enhanced-trait",
+      "quickness"
+    ]
+  },
+  {
+    "id": "tech-interface",
+    "profileId": "tech",
+    "name": {
+      "en": "Interface",
+      "pt": "Interface"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Comprehend",
+      "pt": "Compreensão"
+    },
+    "page": 195,
+    "effectIds": [
+      "comprehend"
+    ]
+  },
+  {
+    "id": "tech-manipulate-technology",
+    "profileId": "tech",
+    "name": {
+      "en": "Manipulate Technology",
+      "pt": "Manipular Tecnologia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Perception · Precise · Limited",
+      "pt": "Mover Objetos · Percepção · Preciso · Limitado"
+    },
+    "page": 195,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "tech-sensor-masking",
+    "profileId": "tech",
+    "name": {
+      "en": "Sensor Masking",
+      "pt": "Mascarar Sensores"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Limited",
+      "pt": "Camuflagem · Limitado"
+    },
+    "page": 195,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "tech-sensor-network",
+    "profileId": "tech",
+    "name": {
+      "en": "Sensor Network",
+      "pt": "Rede de Sensores"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Limited",
+      "pt": "Sensoriamento Remoto · Limitado"
+    },
+    "page": 195,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "tech-technomorph",
+    "profileId": "tech",
+    "name": {
+      "en": "Technomorph",
+      "pt": "Tecnomorfo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable · Increased Duration · Action",
+      "pt": "Variável · Duração Aumentada · Ação"
+    },
+    "page": 195,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "tech-tech-savant",
+    "profileId": "tech",
+    "name": {
+      "en": "Tech Savant",
+      "pt": "Especialista em Tecnologia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 195,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "tech-tech-genius",
+    "profileId": "tech",
+    "name": {
+      "en": "Tech Genius",
+      "pt": "Gênio Tecnológico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 195,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "teleport-apport",
+    "profileId": "teleport",
+    "name": {
+      "en": "Apport",
+      "pt": "Apport"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Teleport · Attack",
+      "pt": "Teleporte · Ataque"
+    },
+    "page": 199,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "teleport-apportive-attack",
+    "profileId": "teleport",
+    "name": {
+      "en": "Apportive Attack",
+      "pt": "Ataque por Teleporte"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Alternate Resistance",
+      "pt": "Dano · Alcance Aumentado · Resistência Alternativa"
+    },
+    "page": 199,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "teleport-portal-blast",
+    "profileId": "teleport",
+    "name": {
+      "en": "Portal Blast",
+      "pt": "Rajada de Portal"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Variable Descriptor",
+      "pt": "Dano · Alcance Aumentado · Descritor Variável"
+    },
+    "page": 199,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "teleport-portal-punch",
+    "profileId": "teleport",
+    "name": {
+      "en": "Portal Punch",
+      "pt": "Soco de Portal"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 200,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "teleport-teleport-sickness",
+    "profileId": "teleport",
+    "name": {
+      "en": "Teleport Sickness",
+      "pt": "Mal-estar de Teleporte"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Limited",
+      "pt": "Aflição · Limitado"
+    },
+    "page": 200,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "teleport-teleporting-flurry",
+    "profileId": "teleport",
+    "name": {
+      "en": "Teleporting Flurry",
+      "pt": "Rajada Teleportada"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 200,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "teleport-blink-teleport",
+    "profileId": "teleport",
+    "name": {
+      "en": "Blink Teleport",
+      "pt": "Teleporte Instantâneo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Teleport · Reaction",
+      "pt": "Teleporte · Reação"
+    },
+    "page": 200,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "teleport-immunity-to-teleport",
+    "profileId": "teleport",
+    "name": {
+      "en": "Immunity to Teleport",
+      "pt": "Imunidade a Teleporte"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 200,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "teleport-redirecting-warp",
+    "profileId": "teleport",
+    "name": {
+      "en": "Redirecting Warp",
+      "pt": "Dobra Redirecionadora"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect · Reflect · Redirect",
+      "pt": "Deflexão · Refletir · Redirecionar"
+    },
+    "page": 200,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "teleport-teleporting-dodge",
+    "profileId": "teleport",
+    "name": {
+      "en": "Teleporting Dodge",
+      "pt": "Esquiva Teleportada"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment · Quirk",
+      "pt": "Camuflagem · Peculiaridade"
+    },
+    "page": 200,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "teleport-astroport",
+    "profileId": "teleport",
+    "name": {
+      "en": "Astroport",
+      "pt": "Astroporte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 200,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "teleport-portal-platform",
+    "profileId": "teleport",
+    "name": {
+      "en": "Portal Platform",
+      "pt": "Plataforma de Portal"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Platform",
+      "pt": "Voo · Platform"
+    },
+    "page": 200,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "teleport-teleport",
+    "profileId": "teleport",
+    "name": {
+      "en": "Teleport",
+      "pt": "Teleporte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport",
+      "pt": "Teleporte"
+    },
+    "page": 200,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "teleport-teleportal",
+    "profileId": "teleport",
+    "name": {
+      "en": "Teleportal",
+      "pt": "Teleportal"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Portal",
+      "pt": "Teleporte · Portal"
+    },
+    "page": 201,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "teleport-nullify-teleport",
+    "profileId": "teleport",
+    "name": {
+      "en": "Nullify Teleport",
+      "pt": "Anular Teleporte"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Concentration",
+      "pt": "Anulação · Concentração"
+    },
+    "page": 201,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "teleport-peephole",
+    "profileId": "teleport",
+    "name": {
+      "en": "Peephole",
+      "pt": "Olho Mágico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Simultaneous · Feedback · Noticeable",
+      "pt": "Sensoriamento Remoto · Simultâneo · Retroalimentação · Perceptível"
+    },
+    "page": 201,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "teleport-spatial-beacon",
+    "profileId": "teleport",
+    "name": {
+      "en": "Spatial Beacon",
+      "pt": "Farol Espacial"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Teleport · Affects Others · Limited",
+      "pt": "Teleporte · Afeta Outros · Limitado"
+    },
+    "page": 201,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "teleport-teleport-awareness",
+    "profileId": "teleport",
+    "name": {
+      "en": "Teleport Awareness",
+      "pt": "Consciência de Teleporte"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 201,
+    "effectIds": [
+      "senses"
+    ]
   }
 ] satisfies LibraryEntry[];
