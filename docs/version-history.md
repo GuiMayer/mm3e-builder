@@ -58,6 +58,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.16.0 | 2026-10-02 | `v1.15.0..v1.16.0` | 3 | Tooltips e consulta direta das regras de poderes |
 | v1.17.0 | 2026-10-02 | `v1.16.0..v1.17.0` | 8 | Overhaul de campanha, migração revisada e traduções |
 | v1.18.0 | 2026-10-02 | `v1.17.0..v1.18.0` | 10 | Resources, custos PP/EP, Builder contextual e migração revisada |
+| v1.19.0 | 2026-10-03 | `v1.18.0..v1.19.0` | 6 | Referências oficiais, consulta responsiva e atalhos/cópias de recursos |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -179,7 +180,25 @@ versões antigas não entendem os novos metadados de orçamento fixo.
 O pacote mantém ficha 2.1.0, rascunho 1 e todos os vínculos; Resource library/
 apêndice passam a 2. A revisão de cálculo passa a 6, com escolhas ambíguas revistas
 antes de mudar seus custos. Não copia dispositivos para a lista de poderes nem
-migra campanha. A tag é local; a entrega não inclui push ou deploy.
+migra campanha. A conclusão inicial foi local; a tag e os três complementos
+abaixo foram publicados posteriormente, com deploy bem-sucedido no commit
+`c2fe5b5` (GitHub Pages, execução `37112938500`).
+
+### v1.19.0 — Referências e consulta durante o jogo
+
+O intervalo inclui três complementos de Resources já publicados depois da tag
+v1.18.0: `8cdfee0` (referências e edição direta), `523bf47` (cópias independentes)
+e `c2fe5b5` (documentação). A versão reúne esses complementos e três etapas novas:
+
+- Tabelas imperiais/métricas e catálogo de regras auditados contra o livro,
+  incluindo testes de graus, valores arredondados, tamanho e busca bilíngue.
+- Interface com 16 painéis recolhíveis, categorias, busca global, consultas
+  locais e matriz opcional de dano, com adaptação para celular.
+- Guia de fontes/compatibilidade, documentação da versão e metadados 1.19.0.
+
+Schema de ficha 2.1.0, biblioteca/apêndice 2, rascunho 1 e revisão de cálculo 6
+permanecem iguais. A aba não grava dados ou altera custos. A tag v1.19.0 é local;
+esta etapa não publica os três commits novos nem executa deploy.
 
 ## Compatibilidade e publicação
 
@@ -193,7 +212,8 @@ salva um backup dedicado antes de migrar. O schema passa a 2.1.0; a revisão de
 cálculo de características permanece 5. O orçamento de campanha muda conforme
 a base revisada, mas preços, modificadores e avisos de regras não mudam.
 
-As novas tags são criadas localmente. Sua existência não afirma que cada pacote
+As tags v1.11.0 a v1.18.0 foram publicadas junto ao deploy citado acima.
+A v1.19.0 permanece local. A existência de uma tag não afirma que cada pacote
 foi publicado no GitHub, implantado no Pages ou lançado como GitHub Release.
 Os links de comparação por tag passam a funcionar no GitHub após o push das tags.
 

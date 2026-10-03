@@ -1,4 +1,4 @@
-﻿# Changelog
+# Changelog
 
 All notable changes to the MM3E Character Builder project will be documented in this file.
 
@@ -9,16 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Clickable resource power/effect/modifier references and description tooltips on both sheet and library, including vehicle movement, systems, whole-power modifiers and alternate effects. Sheet edit shortcuts open the selected resource or power directly in Resources.
-- Independent resource duplication with unique localized names and fresh resource/power/component/alternate/feature IDs. Preserve notes, extension metadata and HQ settings; original character links and allocated costs remain unchanged. No schema changes or migration required.
-
-### Quality
-- 70 test files / 834 passing tests; type checking, lint, production build and 16 static-asset references verified. Isolated synthetic browser checks covered references, direct edit context (vehicle FOR 8 / 18 EP), persistent duplication, unchanged linked costs and 390px controls.
+No pending changes.
 
 The retrospective commit packages and preserved historical tags are documented
-in [Version history](docs/version-history.md). New release dates identify the
+in [Version history](docs/version-history.md). Release dates identify the
 completion commit, not a verified deployment date.
+
+---
+
+## [1.19.0] - 2026-10-03
+
+### Added
+- Official imperial/metric Measurements Table (ranks −5 to 30), size modifiers, DC examples, ability benchmarks, material Toughness and PL limits. Printed Handbook page references accompany every panel.
+- Read-only degree/damage query tools and an optional 35 × 20 damage resistance matrix. Metric values preserve the official rounded scale instead of converting imperial values.
+- Resource power/effect/modifier quick references and sheet shortcuts opening the selected resource/power directly in Resources, including vehicle movement and alternate effects.
+- Independent resource duplication with localized unique names and fresh nested IDs, preserving notes/extensions/HQ settings and original links/costs. These three Resource follow-up commits were already deployed after the v1.18.0 tag.
+
+### Changed
+- Replace the long References view with 16 collapsible panels, topic navigation, bilingual/accent-insensitive global search, keyboard controls and mobile summaries. Wide tables scroll within their own panels; the damage matrix mounts only when expanded.
+- Review combat summaries against the supplied Deluxe Handbook, correcting Aid/Defend/Disarm/Escape/Grab/Recover/Trip/Slam/Team Attack reminders. Reuse existing condition data without changing shared names or mechanics.
+- Character schema 2.1.0, Resource version 2, Draft version 1 and calculation revision 6 remain unchanged. No migration, character store writes, cost changes or warning changes. [References guide](docs/references.md) records sources and compatibility.
+
+### Quality
+- 72 test files / 853 passing tests; lint, TypeScript/production build and static-asset verification passed. New checks cover literal rounded scales, fractions, degree boundaries, bilingual search, size baselines and localization.
+- Isolated browser checks covered Portuguese/English, search, rank selection, units, damage matrix, collapse/expand and 390px layout with contained table scrolling. The existing update backup gate restored the synthetic 16/150 PP sheet unchanged; real user drafts were not accessed.
 
 ---
 

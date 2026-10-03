@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.18.0
+# Mutants & Masterminds 3e Character Builder — v1.19.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -103,10 +103,10 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 - **Official builds tested** — Validated against official M&M 3e character builds (Daredevil, Battlesuit, Powerhouse, Paragon).
 
 #### 📚 References Tab
-- **Combat Actions** — Quick reference for Standard, Move, and Free actions with full descriptions and translations.
-- **Combat Maneuvers** — Reference for Grab, Trip, Disarm, and other maneuvers with mechanics and translations.
-- **Conditions** — Complete list of all M&M 3e conditions (Dazed, Stunned, Incapacitated, etc.) with effects and translations.
-- **Instant access** — No need to flip through rulebooks during character creation or gameplay.
+- **16 collapsible panels** — Topics, global bilingual/accent-insensitive search and a compact default selection for play.
+- **Official tables** — Imperial/metric Measurements (−5 to 30), size modifiers, difficulties, ability benchmarks, materials and PL limits, with printed Handbook page references.
+- **Combat and heroic resources** — Reviewed actions/maneuvers, conditions, range/cover, hero points and extra effort. Read-only check-degree tools and an optional damage resistance matrix.
+- **Responsive consultation** — Mobile summaries, keyboard access and contained table scrolling; no character edits or migration. See [References guide and sources](docs/references.md).
 
 #### 📄 Export to PDF
 - **Default exporter:** generates a browser-only HTML-to-PDF sheet through `jsPDF.html()`, loaded on demand. Text remains selectable and supported cards/rows are kept together across pages when possible.
@@ -141,7 +141,8 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Versioned updates through v1.18.0
+#### Versioned updates through v1.19.0
+- **v1.19.0**: Reference overhaul with official tables, bilingual search, responsive panels and reviewed combat summaries; resource quick references/edit shortcuts and independent duplication.
 - **v1.18.0**: Resource PP/EP costs, contextual movement/HQ Builder, reviewed migration, recovery, ownership, import conflicts and consistent exports.
 - **v1.17.0**: Fixed campaign advancement budgets, reviewed lossless migration, editable ledger and complete exports; Targeted Effects translation fixes.
 - **v1.16.0**: Wider, viewport-aware tooltips and direct rules descriptions for powers/modifiers on the sheet, with keyboard and mobile access.
@@ -340,10 +341,10 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 - **Testado com builds oficiais** — Validado contra builds oficiais de personagens do M&M 3e (Daredevil, Battlesuit, Powerhouse, Paragon).
 
 #### 📚 Aba de Referências
-- **Ações de Combate** — Referência rápida para ações Padrão, Movimento e Livres com descrições completas e traduções.
-- **Manobras de Combate** — Referência para Agarrar, Derrubar, Desarmar e outras manobras com mecânicas e traduções.
-- **Condições** — Lista completa de todas as condições do M&M 3e (Atordoado, Atônito, Incapacitado, etc.) com efeitos e traduções.
-- **Acesso instantâneo** — Não é necessário folhear livros de regras durante criação de personagem ou jogo.
+- **16 painéis recolhíveis** — Categorias, busca global bilíngue sem acentos e seleção inicial compacta para jogar.
+- **Tabelas oficiais** — Medidas imperiais/métricas (−5 a 30), tamanho, dificuldades, parâmetros de habilidades, materiais e limites de NP, com páginas impressas do livro.
+- **Combate e recursos heroicos** — Ações/manobras revisadas, condições, alcance/cobertura, pontos heroicos e esforço extra. Consultas de graus e matriz opcional de resistência a dano.
+- **Consulta responsiva** — Resumos no celular, acesso por teclado e rolagem contida de tabelas; sem editar fichas ou migrar dados. Veja [guia e fontes](docs/references.md).
 
 #### 📄 Exportar como PDF
 - **Exportador padrão:** gera a ficha no navegador por HTML-para-PDF com `jsPDF.html()`, carregado sob demanda. O texto permanece selecionável e cards/linhas compatíveis são mantidos juntos entre páginas quando possível.
@@ -378,7 +379,8 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Atualizações versionadas até a v1.18.0
+#### Atualizações versionadas até a v1.19.0
+- **v1.19.0**: Referências com tabelas oficiais, busca bilíngue, painéis responsivos e resumos de combate revisados; consulta/edição rápida e duplicação independente de recursos.
 - **v1.18.0**: Custos PP/EP de recursos, Builder de movimento/bases com contexto, migração revisada, recuperação, propriedade, conflitos de importação e exportações consistentes.
 - **v1.17.0**: Orçamento de campanha sem duplicação, migração revisada sem perda, registro editável e exportações completas; correções de tradução em Efeitos Direcionados.
 - **v1.16.0**: Tooltips mais largas e ajustadas à tela, descrições de poderes/modificadores diretamente na ficha e acesso por teclado e mobile.

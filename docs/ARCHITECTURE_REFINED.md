@@ -57,6 +57,15 @@ text embedded in generated HTML must pass through `escapeHtml` or `nl2br`.
 The default PDF path renders once through `jsPDF.html()`; pagination may measure
 a disposable DOM copy, but only a clean render tree is passed to jsPDF.
 
+## Reference consultation
+
+`features/references` owns a bilingual display catalog and separately transcribed
+imperial/metric measurement tables. Pure check-degree helpers serve local query
+fields and the optional damage matrix; they do not participate in sheet rules.
+The view imports condition definitions but no character/Resource store, storage
+service or mutation actions. Category/search/expansion/unit state is transient.
+There is no schema or calculation revision change. See [References](references.md).
+
 ## Resource library
 
 Resources are reusable items stored outside individual characters. Supported
