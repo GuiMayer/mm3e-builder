@@ -91,6 +91,7 @@ export async function paginateHtmlForPdf(html: string, width: number, height: nu
   const fits = () => fitsOnPdfPage(page.getBoundingClientRect().height, height);
   try {
     await waitForPDFFonts(source.dataset.pdfFont ?? 'Noto Sans');
+    await Promise.all(Array.from(source.querySelectorAll('img')).map(image => image.decode().catch(() => undefined)));
     await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
     newPage();
     for (const element of Array.from(source.children) as HTMLElement[]) {

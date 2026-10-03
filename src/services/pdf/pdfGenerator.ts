@@ -3,6 +3,7 @@
    Orchestrates all PDF components and generates HTML
    ================================================ */
 
+import { getPortraitDataUrl } from '../portraits/portraitPdf';
 import type { ICharacter, IPowerEffect, IModifierDef, ISkillDef, IAdvantageDef, IResource } from '../../entities/types';
 import {
   renderHeaderSection,
@@ -43,6 +44,7 @@ export interface PDFGenerationResult {
   html: string;
   success: boolean;
   error?: string;
+  portraitUnavailable?: boolean;
 }
 
 /**
@@ -109,9 +111,12 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     // Generate sections
     const sections: string[] = [];
 
+    let portraitDataUrl: string | undefined;
+    if (customization.includePortrait) portraitDataUrl = await getPortraitDataUrl(character).catch(() => undefined);
+
     // Header (now includes compact PP summary)
     sections.push(renderHeaderSection({
-      character, labels, worksheet,
+      character, labels, worksheet, portraitDataUrl,
       powerPointsData: {
         abilitiesCost,
         defensesCost,
@@ -210,6 +215,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     return {
       html,
       success: true,
+      portraitUnavailable: Boolean(customization.includePortrait && !portraitDataUrl),
     };
   } catch (error) {
     console.error('PDF generation failed:', error);

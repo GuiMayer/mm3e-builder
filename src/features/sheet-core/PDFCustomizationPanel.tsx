@@ -95,6 +95,10 @@ export function PDFCustomizationPanel({ options, onChange }: PDFCustomizationPan
       </details>
       )}
       <label className="checkbox-label">
+        <input className="app-checkbox" type="checkbox" checked={options.includePortrait === true} onChange={() => onChange({ ...options, includePortrait: !options.includePortrait })} />
+        <span>{t('portrait.pdfInclude')}</span>
+      </label>
+      <label className="checkbox-label">
         <input className="app-checkbox" type="checkbox" checked={options.includeCampaignHistory === true} onChange={() => onChange({ ...options, includeCampaignHistory: !options.includeCampaignHistory })} />
         <span>{t('pdf.customization.sections.campaign')}</span>
       </label>

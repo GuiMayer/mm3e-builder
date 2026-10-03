@@ -96,6 +96,8 @@ export type FontFamily = 'Noto Sans' | 'Noto Serif' | 'Segoe UI' | 'Arial' | 'Ti
  * PDF customization options
  */
 export interface PDFCustomizationOptions {
+  /** Opt-in portrait, resolved separately from character data. */
+  includePortrait?: boolean;
   /** Worksheet includes empty fields and writing space; never changes character data. */
   contentMode?: 'filled' | 'worksheet';
   colorScheme: ColorScheme;
@@ -162,6 +164,7 @@ export const COLOR_THEMES: Record<ColorScheme, ColorTheme> = {
  */
 export const DEFAULT_CUSTOMIZATION: PDFCustomizationOptions = {
   contentMode: 'filled',
+  includePortrait: false,
   colorScheme: 'default',
   layoutMode: 'normal',
   fontFamily: 'Noto Sans',

@@ -111,6 +111,8 @@ export function usePDFExport() {
         language: i18n.language,
       });
       
+      if (generation !== generationRef.current) return;
+      if (result.portraitUnavailable) showToast(t('portrait.pdfMissing'), 'info', 7000);
       if (!result.success) {
         throw new Error(result.error || 'PDF generation failed');
       }
