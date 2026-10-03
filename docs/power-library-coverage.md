@@ -11,7 +11,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 2 | Cold Powers, Cosmic Powers, Darkness Powers | 85 receitas/variantes auditadas: Frio 37, Cósmicos 21, Escuridão 27. Preços coincidem com a fonte. |
 | 3 | Death Powers, Dimension Powers, Dream Powers | 58 receitas/variantes auditadas. Duas formas exigem alterações externas à ficha e são referências. |
 | 4 | Earth Powers, Electrical Powers, Element Powers | 74 receitas/variantes auditadas. |
-| 5 | Fire Powers, Gravity Powers, Illusion Powers | Pendente |
+| 5 | Fire Powers, Gravity Powers, Illusion Powers | 74 receitas/variantes auditadas. |
 | 6 | Kinetic Powers, Life Powers, Light Powers | Pendente |
 | 7 | Luck Powers, Magic Powers, Magnetic Powers | Pendente |
 | 8 | Martial Powers, Mental Powers, Meta Powers | Pendente |
@@ -56,3 +56,7 @@ Dimensional Blade compra Penetrante na graduação escolhida; após aplicação 
 ## Lote 4
 
 Blackout soma 4 PP/graduação (o texto imprime 5); Neutralize Reaction soma 3 (o texto imprime 4, embora Anular já seja à distância). Petrify/Petrifying Gaze têm apenas terceiro grau: Grau Limitado -2 produz 1/2 PP por graduação respectivamente, em vez de 2/3 impressos. Diamond Hard usa o desconto fixo Notável; Strength of Antaeus inicia na graduação 2 exigida. Mud/Sand Form são compras fixas de 15 PP, apesar do texto mencionar por graduação. Absorção Elétrica usa Fonte e Efeito Adicional específicos de Cura, conforme p. 59. Duração de Dano por Concentração é o extra Duração Aumentada, não a flaw Concentração de efeitos sustentados.
+
+## Lote 5
+
+Illusory Damage registra explicitamente Resistência Alternativa vantajosa (+1), coerente com seu preço impresso; o usuário pode adjudicar posteriormente. True Perception compra cinco Contra Ilusão de duas graduações, totalizando 10 como o preço impresso (o rótulo Sentidos 5 é inconsistente). Variantes de imunidade, intensidade ambiental e número de sentidos têm entradas próprias.

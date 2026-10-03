@@ -5911,5 +5911,1488 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "transform"
     ]
+  },
+  {
+    "id": "fire-fireball",
+    "profileId": "fire",
+    "name": {
+      "en": "Fireball",
+      "pt": "Bola de Fogo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area",
+      "pt": "Dano · Alcance Aumentado · Área"
+    },
+    "page": 68,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-firey-breath",
+    "profileId": "fire",
+    "name": {
+      "en": "Firey Breath",
+      "pt": "Sopro de Fogo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area",
+      "pt": "Dano · Área"
+    },
+    "page": 68,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-firey-cloud",
+    "profileId": "fire",
+    "name": {
+      "en": "Firey Cloud",
+      "pt": "Nuvem de Fogo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area",
+      "pt": "Dano · Alcance Aumentado · Área"
+    },
+    "page": 68,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-fire-blast",
+    "profileId": "fire",
+    "name": {
+      "en": "Fire Blast",
+      "pt": "Rajada de Fogo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 68,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-fireflash",
+    "profileId": "fire",
+    "name": {
+      "en": "Fireflash",
+      "pt": "Clarão de Fogo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative · Limited · Alternate Resistance — Vision Impaired, Disabled, Unaware.",
+      "pt": "Aflição · Área · Cumulativo · Limitado · Resistência Alternativa — Visão Prejudicada, Debilitada, Inconsciente dos estímulos."
+    },
+    "page": 68,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "fire-flame-aura",
+    "profileId": "fire",
+    "name": {
+      "en": "Flame Aura",
+      "pt": "Aura de Chamas"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Reaction",
+      "pt": "Dano · Reação"
+    },
+    "page": 69,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-flamethrower",
+    "profileId": "fire",
+    "name": {
+      "en": "Flamethrower",
+      "pt": "Lança-chamas"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area",
+      "pt": "Dano · Área"
+    },
+    "page": 69,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-heatstroke",
+    "profileId": "fire",
+    "name": {
+      "en": "Heatstroke",
+      "pt": "Insolação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative — Fatigued, Exhausted, Incapacitated.",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo — Fatigado, Exausto, Incapacitado."
+    },
+    "page": 69,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "fire-immolate",
+    "profileId": "fire",
+    "name": {
+      "en": "Immolate",
+      "pt": "Imolar"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Increased Duration",
+      "pt": "Dano · Alcance Aumentado · Duração Aumentada"
+    },
+    "page": 69,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-melt",
+    "profileId": "fire",
+    "name": {
+      "en": "Melt",
+      "pt": "Derreter"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Weaken · Increased Range · Affects Objects",
+      "pt": "Enfraquecer · Alcance Aumentado · Afeta Objetos"
+    },
+    "page": 69,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "fire-nova-burst",
+    "profileId": "fire",
+    "name": {
+      "en": "Nova Burst",
+      "pt": "Explosão Nova"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area · Tiring · Feature — Feature allows Extraordinary Effort for +2 effect rank.",
+      "pt": "Dano · Área · Cansativo · Característica — Característica permite Esforço Extraordinário para +2 graduações de efeito."
+    },
+    "page": 69,
+    "effectIds": [
+      "damage",
+      "feature"
+    ]
+  },
+  {
+    "id": "fire-smoke-cloud",
+    "profileId": "fire",
+    "name": {
+      "en": "Smoke Cloud",
+      "pt": "Nuvem de Fumaça"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Concealment · Increased Range · Area · Attack",
+      "pt": "Camuflagem · Alcance Aumentado · Área · Ataque"
+    },
+    "page": 69,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "fire-suffocation",
+    "profileId": "fire",
+    "name": {
+      "en": "Suffocation",
+      "pt": "Sufocamento"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive — Dazed, Stunned, Incapacitated.",
+      "pt": "Aflição · Alcance Aumentado · Progressivo — Atordoado, Aturdido, Incapacitado."
+    },
+    "page": 69,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "fire-fire-form",
+    "profileId": "fire",
+    "name": {
+      "en": "Fire Form",
+      "pt": "Forma de Fogo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 69,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "fire-fire-shield",
+    "profileId": "fire",
+    "name": {
+      "en": "Fire Shield",
+      "pt": "Escudo de Fogo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Limited · Sustained — Only flammable weapons.",
+      "pt": "Proteção · Impenetrável · Limitado · Sustentado — Apenas armas inflamáveis."
+    },
+    "page": 69,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "fire-heat-absorbtion",
+    "profileId": "fire",
+    "name": {
+      "en": "Heat Absorbtion",
+      "pt": "Absorção de Calor"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades · Reaction · Immunity",
+      "pt": "Traço Aprimorado · Desgaste · Reação · Imunidade"
+    },
+    "page": 70,
+    "effectIds": [
+      "enhanced-trait",
+      "immunity"
+    ]
+  },
+  {
+    "id": "fire-immunity-to-cold-environment",
+    "profileId": "fire",
+    "name": {
+      "en": "Immunity to Cold — Environment",
+      "pt": "Imunidade a Frio — Ambiente"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 70,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "fire-immunity-to-cold-damage",
+    "profileId": "fire",
+    "name": {
+      "en": "Immunity to Cold — Damage",
+      "pt": "Imunidade a Frio — Dano"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 70,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "fire-immunity-to-cold-effects",
+    "profileId": "fire",
+    "name": {
+      "en": "Immunity to Cold — Effects",
+      "pt": "Imunidade a Frio — Efeitos"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 70,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "fire-immunity-to-heat-environment",
+    "profileId": "fire",
+    "name": {
+      "en": "Immunity to Heat — Environment",
+      "pt": "Imunidade a Calor — Ambiente"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 70,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "fire-immunity-to-heat-damage",
+    "profileId": "fire",
+    "name": {
+      "en": "Immunity to Heat — Damage",
+      "pt": "Imunidade a Calor — Dano"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 70,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "fire-immunity-to-heat-effects",
+    "profileId": "fire",
+    "name": {
+      "en": "Immunity to Heat — Effects",
+      "pt": "Imunidade a Calor — Efeitos"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 70,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "fire-fireport",
+    "profileId": "fire",
+    "name": {
+      "en": "Fireport",
+      "pt": "Teleportar pelas Chamas"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Extended · Medium",
+      "pt": "Teleporte · Estendido · Meio"
+    },
+    "page": 70,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "fire-rocket-flight",
+    "profileId": "fire",
+    "name": {
+      "en": "Rocket Flight",
+      "pt": "Voo Foguete"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight",
+      "pt": "Voo"
+    },
+    "page": 70,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "fire-tunneling",
+    "profileId": "fire",
+    "name": {
+      "en": "Tunneling",
+      "pt": "Escavação"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing",
+      "pt": "Escavação"
+    },
+    "page": 70,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "fire-fire-creatures",
+    "profileId": "fire",
+    "name": {
+      "en": "Fire Creatures",
+      "pt": "Criaturas de Fogo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon",
+      "pt": "Invocar"
+    },
+    "page": 70,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "fire-firelight",
+    "profileId": "fire",
+    "name": {
+      "en": "Firelight",
+      "pt": "Luz do Fogo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 70,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "fire-fire-shaping",
+    "profileId": "fire",
+    "name": {
+      "en": "Fire Shaping",
+      "pt": "Moldar Fogo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area · Increased Duration · Selective",
+      "pt": "Dano · Alcance Aumentado · Área · Duração Aumentada · Seletivo"
+    },
+    "page": 70,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-infravision",
+    "profileId": "fire",
+    "name": {
+      "en": "Infravision",
+      "pt": "Infravisão"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 70,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "fire-pyrokinesis",
+    "profileId": "fire",
+    "name": {
+      "en": "Pyrokinesis",
+      "pt": "Pirocinese"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area · Limited — Only existing fire.",
+      "pt": "Dano · Alcance Aumentado · Área · Limitado — Apenas fogo existente."
+    },
+    "page": 71,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "fire-warm-1",
+    "profileId": "fire",
+    "name": {
+      "en": "Warm — 1",
+      "pt": "Aquecer — 1"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 71,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "fire-warm-2",
+    "profileId": "fire",
+    "name": {
+      "en": "Warm — 2",
+      "pt": "Aquecer — 2"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 71,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-blast",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Blast",
+      "pt": "Rajada Gravitacional"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 73,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-burst",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Burst",
+      "pt": "Explosão Gravitacional"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area",
+      "pt": "Dano · Área"
+    },
+    "page": 73,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-wave",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Wave",
+      "pt": "Onda Gravitacional"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area",
+      "pt": "Dano · Área"
+    },
+    "page": 73,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "gravity-upalanche",
+    "profileId": "gravity",
+    "name": {
+      "en": "Upalanche",
+      "pt": "Avalanche Ascendente"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area",
+      "pt": "Dano · Alcance Aumentado · Área"
+    },
+    "page": 73,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "gravity-gravity-field",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravity Field",
+      "pt": "Campo Gravitacional"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Area · Limited Direction — Choose the specified pulling direction.",
+      "pt": "Mover Objetos · Área · Direção Limitada — Use a direção de atração indicada pelo poder."
+    },
+    "page": 73,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "gravity-crushing-gravity-field",
+    "profileId": "gravity",
+    "name": {
+      "en": "Crushing Gravity Field",
+      "pt": "Campo Gravitacional Esmagador"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Area · Limited Direction · Damaging — Choose the specified pulling direction.",
+      "pt": "Mover Objetos · Área · Direção Limitada · Causar Dano — Use a direção de atração indicada pelo poder."
+    },
+    "page": 73,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "gravity-null-g-field",
+    "profileId": "gravity",
+    "name": {
+      "en": "Null-G Field",
+      "pt": "Campo de Gravidade Zero"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Area · Limited Direction — Choose the specified pulling direction.",
+      "pt": "Mover Objetos · Área · Direção Limitada — Use a direção de atração indicada pelo poder."
+    },
+    "page": 73,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "gravity-singularity",
+    "profileId": "gravity",
+    "name": {
+      "en": "Singularity",
+      "pt": "Singularidade"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Area · Limited Direction · Damaging — Choose the specified pulling direction.",
+      "pt": "Mover Objetos · Área · Direção Limitada · Causar Dano — Use a direção de atração indicada pelo poder."
+    },
+    "page": 73,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-containment",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Containment",
+      "pt": "Contenção Gravitacional"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Nullify · Reaction",
+      "pt": "Anulação · Reação"
+    },
+    "page": 74,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-deflection",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Deflection",
+      "pt": "Deflexão Gravitacional"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect",
+      "pt": "Deflexão"
+    },
+    "page": 74,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-immunity",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Immunity",
+      "pt": "Imunidade Gravitacional"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 74,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-shield",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Shield",
+      "pt": "Escudo Gravitacional"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Sustained",
+      "pt": "Proteção · Impenetrável · Sustentado"
+    },
+    "page": 74,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "gravity-anti-gravity",
+    "profileId": "gravity",
+    "name": {
+      "en": "Anti-Gravity",
+      "pt": "Antigravidade"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Subtle",
+      "pt": "Voo · Sutil"
+    },
+    "page": 74,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "gravity-directional-pull",
+    "profileId": "gravity",
+    "name": {
+      "en": "Directional Pull",
+      "pt": "Tração Direcional"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 74,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "gravity-free-fall",
+    "profileId": "gravity",
+    "name": {
+      "en": "Free Fall",
+      "pt": "Queda Livre"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 74,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "gravity-free-fall-adaptation",
+    "profileId": "gravity",
+    "name": {
+      "en": "Free Fall Adaptation",
+      "pt": "Adaptação à Queda Livre"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 74,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "gravity-high-gravity-adaptation",
+    "profileId": "gravity",
+    "name": {
+      "en": "High-Gravity Adaptation",
+      "pt": "Adaptação à Alta Gravidade"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 74,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "gravity-gravity-warp",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravity Warp",
+      "pt": "Dobra Gravitacional"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport",
+      "pt": "Teleporte"
+    },
+    "page": 74,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "gravity-low-g-leap",
+    "profileId": "gravity",
+    "name": {
+      "en": "Low-G Leap",
+      "pt": "Salto de Baixa Gravidade"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping",
+      "pt": "Salto"
+    },
+    "page": 75,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "gravity-artificial-gravity",
+    "profileId": "gravity",
+    "name": {
+      "en": "Artificial Gravity",
+      "pt": "Gravidade Artificial"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 75,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "gravity-gravikinesis",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravikinesis",
+      "pt": "Gravicinese"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object",
+      "pt": "Mover Objetos"
+    },
+    "page": 75,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-communication",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Communication",
+      "pt": "Comunicação Gravitacional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Communication · Area · Subtle",
+      "pt": "Comunicação · Área · Sutil"
+    },
+    "page": 75,
+    "effectIds": [
+      "communication"
+    ]
+  },
+  {
+    "id": "gravity-gravitic-sense",
+    "profileId": "gravity",
+    "name": {
+      "en": "Gravitic Sense",
+      "pt": "Sentido Gravitacional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 75,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "gravity-low-g-lifting",
+    "profileId": "gravity",
+    "name": {
+      "en": "Low-G Lifting",
+      "pt": "Erguer com Baixa Gravidade"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Limited",
+      "pt": "Traço Aprimorado · Limitado"
+    },
+    "page": 75,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "illusion-illusory-affliction",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusory Affliction",
+      "pt": "Aflição Ilusória"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Variable Conditions · Reversible · Subtle",
+      "pt": "Aflição · Alcance Aumentado · Condições Variáveis · Reversível · Sutil"
+    },
+    "page": 80,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "illusion-illusory-damage",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusory Damage",
+      "pt": "Dano Ilusório"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Alternate Resistance · Resistible · Variable Descriptor — Will resistance priced as advantageous (+1); Will can also remove damage.",
+      "pt": "Dano · Alcance Aumentado · Resistência Alternativa · Resistível · Descritor Variável — Resistência de Vontade considerada vantajosa (+1); Vontade também pode remover o dano."
+    },
+    "page": 80,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "illusion-sensory-deprivation",
+    "profileId": "illusion",
+    "name": {
+      "en": "Sensory Deprivation",
+      "pt": "Privação Sensorial"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative — Impaired, Disabled, Incapacitated",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo — Impaired, Disabled, Incapacitated"
+    },
+    "page": 80,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "illusion-vertigo",
+    "profileId": "illusion",
+    "name": {
+      "en": "Vertigo",
+      "pt": "Vertigem"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative — Impaired, Prone, Incapacitated",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo — Impaired, Prone, Incapacitated"
+    },
+    "page": 80,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "illusion-hidden-cover",
+    "profileId": "illusion",
+    "name": {
+      "en": "Hidden Cover",
+      "pt": "Cobertura Oculta"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Protection · Fades · Impervious · Subtle · Sustained",
+      "pt": "Traço Aprimorado · Proteção · Desgaste · Impenetrável · Sutil · Sustentado"
+    },
+    "page": 80,
+    "effectIds": [
+      "enhanced-trait",
+      "protection"
+    ]
+  },
+  {
+    "id": "illusion-illusory-concealment-blending",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusory Concealment — blending",
+      "pt": "Ocultação Ilusória — Mescla"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment · Blending",
+      "pt": "Camuflagem · Mesclar"
+    },
+    "page": 80,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "illusion-illusory-concealment-resistible",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusory Concealment — resistible",
+      "pt": "Ocultação Ilusória — Resistível"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment · Resistible",
+      "pt": "Camuflagem · Resistível"
+    },
+    "page": 80,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "illusion-illusory-double",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusory Double",
+      "pt": "Duplo Ilusório"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Illusion · Limited — Visual and auditory; only a double of yourself.",
+      "pt": "Ilusão · Limitado — Visual e auditivo; apenas um duplo de si mesmo."
+    },
+    "page": 81,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "illusion-illusory-projection",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusory Projection",
+      "pt": "Projeção Ilusória"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Remote Sensing · Side Effect · Noticeable — Visual, auditory, mental; body defenseless and immobile.",
+      "pt": "Sensoriamento Remoto · Efeito Colateral · Perceptível — Visual, auditivo, mental; corpo indefeso e imóvel."
+    },
+    "page": 81,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "illusion-illusion-1",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusion — 1",
+      "pt": "Ilusão — 1"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion",
+      "pt": "Ilusão"
+    },
+    "page": 81,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "illusion-illusion-2",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusion — 2",
+      "pt": "Ilusão — 2"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion",
+      "pt": "Ilusão"
+    },
+    "page": 81,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "illusion-illusion-3",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusion — 3",
+      "pt": "Ilusão — 3"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion",
+      "pt": "Ilusão"
+    },
+    "page": 81,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "illusion-illusion-4",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusion — 4",
+      "pt": "Ilusão — 4"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion",
+      "pt": "Ilusão"
+    },
+    "page": 81,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "illusion-illusion-5",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusion — 5",
+      "pt": "Ilusão — 5"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion",
+      "pt": "Ilusão"
+    },
+    "page": 81,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "illusion-illusory-disguise",
+    "profileId": "illusion",
+    "name": {
+      "en": "Illusory Disguise",
+      "pt": "Disfarce Ilusório"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Morph · Resistible",
+      "pt": "Metamorfose · Resistível"
+    },
+    "page": 81,
+    "effectIds": [
+      "morph"
+    ]
+  },
+  {
+    "id": "illusion-sense-memory",
+    "profileId": "illusion",
+    "name": {
+      "en": "Sense Memory",
+      "pt": "Memória Sensorial"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature",
+      "pt": "Característica"
+    },
+    "page": 82,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "illusion-true-perception",
+    "profileId": "illusion",
+    "name": {
+      "en": "True Perception",
+      "pt": "Percepção Verdadeira"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses — Five senses purchase Counter Illusion at 2 PP each; the book labels this Senses 5 but totals 10.",
+      "pt": "Sentidos — Cinco sentidos compram Contra Ilusão por 2 PP cada; o livro chama de Sentidos 5, mas soma 10."
+    },
+    "page": 82,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "illusion-vocal-mimicry",
+    "profileId": "illusion",
+    "name": {
+      "en": "Vocal Mimicry",
+      "pt": "Mimetismo Vocal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion · Limited — Only voices.",
+      "pt": "Ilusão · Limitado — Apenas vozes."
+    },
+    "page": 82,
+    "effectIds": [
+      "illusion"
+    ]
   }
 ] satisfies LibraryEntry[];
