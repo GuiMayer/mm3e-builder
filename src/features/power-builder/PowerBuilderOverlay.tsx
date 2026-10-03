@@ -945,7 +945,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                 <p className="builder-relationship-hint">{t('builder.alternateEffectHint')}</p>
               )}
               {power.alternateEffects.some((ae) => ae.dynamic) && (
-                <label className="applied-mod-checkbox">
+                <label className="applied-mod-checkbox" title={t('builder.dynamicBaseTooltip')}>
                   <input
                     className="app-checkbox"
                     type="checkbox"

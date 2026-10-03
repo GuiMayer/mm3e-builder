@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed — Power Builder layout
+- Clarify the Dynamic toggle as an additional 1 PP (2 PP total per alternate),
+  with localized explanations of the shared budget and the separate 1 PP
+  charge for a Dynamic base effect. Preserve the existing pricing rules.
 - Remove the redundant Add Modifier selector from alternate effects; keep
   palette click-to-add, drag-and-drop and the mobile palette action.
 - Improve desktop reference readability with a wider description column,
