@@ -660,266 +660,270 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                       )}
                     </div>
 
-                    {/* Effect selector with search */}
-                    <div className="build-row" style={{ alignItems: 'flex-end' }}>
-                      <div className="build-section build-section--flex">
-                        <EffectCombobox
-                          value={comp.effectId}
-                          onChange={(effectId) => updateComponent(comp.id, {
-                            effectId,
-                            ranks: 1,
-                            variableCostOption: undefined,
-                            fieldValues: {},
-                            senseTraits: effectId === 'senses' ? [] : undefined,
-                          })}
-                          allEffects={powerDefs}
-                          t={t}
-                          onInfo={(e) => setEffectModalPower(e)}
-                        />
-                      </div>
-                      <div className="build-section">
-                        <label className="build-label">{t('builder.ranks')}</label>
-                        <NumberInput
-                          variant="small"
-                          className="build-input build-input--small"
-                          value={comp.ranks}
-                          onChange={(value) =>
-                            updateComponent(comp.id, {
-                              ranks: Math.max(1, value),
-                            })
-                          }
-                          onClick={(e) => e.stopPropagation()}
-                          min={1}
-                          disabled={effectDef?.variableCost?.costType === 'flat'}
-                        />
-                      </div>
-                    </div>
+                    <div className={`build-effect-layout ${effectDef ? 'build-effect-layout--with-reference' : ''}`}>
+                      <div className="build-effect-controls">
+                        {/* Effect selector with search */}
+                        <div className="build-row" style={{ alignItems: 'flex-end' }}>
+                          <div className="build-section build-section--flex">
+                            <EffectCombobox
+                              value={comp.effectId}
+                              onChange={(effectId) => updateComponent(comp.id, {
+                                effectId,
+                                ranks: 1,
+                                variableCostOption: undefined,
+                                fieldValues: {},
+                                senseTraits: effectId === 'senses' ? [] : undefined,
+                              })}
+                              allEffects={powerDefs}
+                              t={t}
+                              onInfo={(e) => setEffectModalPower(e)}
+                            />
+                          </div>
+                          <div className="build-section">
+                            <label className="build-label">{t('builder.ranks')}</label>
+                            <NumberInput
+                              variant="small"
+                              className="build-input build-input--small"
+                              value={comp.ranks}
+                              onChange={(value) =>
+                                updateComponent(comp.id, {
+                                  ranks: Math.max(1, value),
+                                })
+                              }
+                              onClick={(e) => e.stopPropagation()}
+                              min={1}
+                              disabled={effectDef?.variableCost?.costType === 'flat'}
+                            />
+                          </div>
+                        </div>
 
-                    {effectDef?.variableCost && (
-                      <div onClick={(e) => e.stopPropagation()}>
-                        <VariableCostSelector
-                          options={effectDef.variableCost.options}
-                          costType={effectDef.variableCost.costType}
-                          selected={comp.variableCostOption}
-                          onChange={(optionName) => updateComponent(comp.id, {
-                            variableCostOption: optionName,
-                            ...(effectDef.variableCost?.costType === 'flat' ? { ranks: 1 } : {}),
-                          })}
-                          t={t}
-                          name={`variable-cost-${comp.id}`}
-                        />
-                      </div>
-                    )}
+                        {effectDef?.variableCost && (
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <VariableCostSelector
+                              options={effectDef.variableCost.options}
+                              costType={effectDef.variableCost.costType}
+                              selected={comp.variableCostOption}
+                              onChange={(optionName) => updateComponent(comp.id, {
+                                variableCostOption: optionName,
+                                ...(effectDef.variableCost?.costType === 'flat' ? { ranks: 1 } : {}),
+                              })}
+                              t={t}
+                              name={`variable-cost-${comp.id}`}
+                            />
+                          </div>
+                        )}
 
-                    {effectDef?.configurableFields && effectDef.configurableFields.length > 0 && (
-                      <div onClick={(e) => e.stopPropagation()}>
-                        <ConfigurableFieldSelector
-                          fields={effectDef.configurableFields}
-                          values={comp.fieldValues || {}}
-                          onChange={(fieldId, value) => updateComponent(comp.id, {
-                            fieldValues: { ...(comp.fieldValues || {}), [fieldId]: value },
-                          })}
-                          t={t}
-                        />
-                      </div>
-                    )}
-                    {comp.effectId === 'senses' && comp.senseTraits !== undefined && (
-                      <SenseTraitsEditor traits={comp.senseTraits} onChange={(senseTraits) => updateComponent(comp.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })} />
-                    )}
+                        {effectDef?.configurableFields && effectDef.configurableFields.length > 0 && (
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <ConfigurableFieldSelector
+                              fields={effectDef.configurableFields}
+                              values={comp.fieldValues || {}}
+                              onChange={(fieldId, value) => updateComponent(comp.id, {
+                                fieldValues: { ...(comp.fieldValues || {}), [fieldId]: value },
+                              })}
+                              t={t}
+                            />
+                          </div>
+                        )}
+                        {comp.effectId === 'senses' && comp.senseTraits !== undefined && (
+                          <SenseTraitsEditor traits={comp.senseTraits} onChange={(senseTraits) => updateComponent(comp.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })} />
+                        )}
 
-                    {/* Effect info strip */}
-                    {effectDef && (
-                      <div className="build-effect-info">
-                        <span className="effect-badge">{effectDef.type}</span>
-                        <span className="effect-detail">{t('common.action')}: {effectDef.action}</span>
-                        <span className="effect-detail">{t('common.range')}: {effectDef.range}</span>
-                        <span className="effect-detail">{t('common.duration')}: {effectDef.duration}</span>
-                        <p className="effect-desc">{effectDef.description}</p>
-                        {effectDef.enhancesDefense && (
-                          <div className="defense-warning">
-                            <AlertTriangle size={13} />
-                            {t('builder.defenseWarning')}
+                        {/* Modifier dropzone */}
+                        <div className="build-section" onClick={(e) => e.stopPropagation()}>
+                          <label className="build-label">{t('builder.modifiers')}</label>
+                          <ModifierDropzone componentId={comp.id} effectId={comp.effectId} label={effectDef?.name ?? t('builder.mainEffect')}>
+                            {comp.modifiers.length === 0 && !activeId && (
+                              <span className="dropzone-placeholder">{t(comp.effectId ? 'builder.dropHere' : 'builder.chooseEffectForModifiers')}</span>
+                            )}
+                            {comp.modifiers.map((applied) => {
+                              const def = effectDef
+                                ? resolveModifierDefinition(applied, effectDef, modifierDefs).definition
+                                : undefined;
+                              if (!def) return null;
+
+                              // Check for incompatibilities
+                              const incompatKey = `${comp.id}:${applied.modifierId}`;
+                              const conflicts = modifierIncompatibilities[incompatKey] || [];
+                              const hasIncompatibility = conflicts.length > 0;
+
+                              return (
+                                <div
+                                  key={applied.modifierId}
+                                  className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${applied.isPowerSpecific ? 'applied-mod--specific' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
+                                >
+                                  <span className="applied-mod-name">{def.name}</span>
+                                  <ModifierParameterControls
+                                    applied={applied}
+                                    definition={def}
+                                    effectRanks={Math.max(1, getComponentEffectRanks(comp, getCharacterStrength(character)))}
+                                    effectAction={effectDef?.action}
+                                    onRanksChange={(value) => updateModifierRanks(comp.id, applied.modifierId, value)}
+                                    onOptionsChange={(options) => updateModifierOptions(comp.id, applied.modifierId, options)}
+                                  />
+                                  {/* Sub-option dropdown */}
+                                  {def.options && def.options.length > 0 && (
+                                    <>
+                                      <select
+                                        className="applied-mod-option"
+                                        value={applied.option ?? ''}
+                                        onChange={(e) => updateModifierOption(comp.id, applied.modifierId, e.target.value)}
+                                      >
+                                        <option value="">Shape...</option>
+                                        {def.options.map((opt) => <option key={opt.label} value={opt.label}>{opt.label}</option>)}
+                                      </select>
+                                      {def.id === 'area' && applied.option === 'Perception' && (
+                                        <label className="applied-mod-check"><input className="app-checkbox" type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => updateModifierOptions(comp.id, applied.modifierId, { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
+                                      )}
+                                    </>
+                                  )}
+                                  {/* Conditional checkbox for Affects Objects */}
+                                  {def.id === 'affects_objects' && (
+                                    <label className="applied-mod-checkbox">
+                                      <input
+                                        className="app-checkbox"
+                                        type="checkbox"
+                                        checked={applied.options?.affectsOnlyObjects === true}
+                                        onChange={(e) => {
+                                          const newOptions = {
+                                            ...applied.options,
+                                            affectsOnlyObjects: e.target.checked,
+                                          };
+                                          updateModifierOptions(comp.id, applied.modifierId, newOptions);
+                                        }}
+                                      />
+                                      {t('builder.affectsOnlyObjects')}
+                                    </label>
+                                  )}
+                                  {def.id === 'affects_others' && (
+                                    <label className="applied-mod-checkbox">
+                                      <input
+                                        className="app-checkbox"
+                                        type="checkbox"
+                                        checked={applied.options?.affectsOnlyOthers === true}
+                                        onChange={(e) => {
+                                          updateModifierOptions(comp.id, applied.modifierId, {
+                                            ...applied.options,
+                                            affectsOnlyOthers: e.target.checked,
+                                          });
+                                        }}
+                                      />
+                                      {t('builder.affectsOnlyOthers')}
+                                    </label>
+                                  )}
+                                  {def.id === 'side_effect' && (
+                                    <label className="applied-mod-checkbox">
+                                      <input
+                                        className="app-checkbox"
+                                        type="checkbox"
+                                        checked={applied.options?.sideEffectAlways === true}
+                                        onChange={(e) => {
+                                          updateModifierOptions(comp.id, applied.modifierId, {
+                                            ...applied.options,
+                                            sideEffectAlways: e.target.checked,
+                                          });
+                                        }}
+                                      />
+                                      {t('builder.sideEffectAlways')}
+                                    </label>
+                                  )}
+                                  {def.id === 'alternate_resistance' && (
+                                    <select
+                                      className="applied-mod-subtype"
+                                      value={(applied.options?.alternateResistanceCost as string) ?? 'equal'}
+                                      onChange={(e) => {
+                                        updateModifierOptions(comp.id, applied.modifierId, {
+                                          ...applied.options,
+                                          alternateResistanceCost: e.target.value,
+                                        });
+                                      }}
+                                    >
+                                      <option value="equal">{t('builder.alternateResistanceEqual')}</option>
+                                      <option value="advantageous">{t('builder.alternateResistanceAdvantageous')}</option>
+                                    </select>
+                                  )}
+                                  {(def.id === 'reaction' || def.id === 'triggered') && (
+                                    <input
+                                      className="applied-mod-option"
+                                      value={(applied.options?.trigger as string) ?? ''}
+                                      onChange={(e) => {
+                                        updateModifierOptions(comp.id, applied.modifierId, {
+                                          ...applied.options,
+                                          trigger: e.target.value,
+                                        });
+                                      }}
+                                      placeholder={t('builder.triggerPlaceholder')}
+                                      aria-label={t('builder.trigger')}
+                                    />
+                                  )}
+                                  {hasIncompatibility && (
+                                    <span
+                                      className="applied-mod-incompatible-warning"
+                                      title={`${t('builder.incompatibleWith')}: ${conflicts.map(id => allModDefs.find(d => d.id === id)?.name || id).join(', ')}`}
+                                    >
+                                      <AlertTriangle size={14} />
+                                    </span>
+                                  )}
+                                  <button
+                                    className="applied-mod-remove"
+                                    onClick={() => removeModifier(comp.id, applied.modifierId)}
+                                  >
+                                    <X size={12} />
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </ModifierDropzone>
+                        </div>
+
+                        {/* Cost breakdown for this component */}
+                        {costInfo.breakdown && costInfo.total > 0 && (
+                          <div className="component-breakdown">
+                            {costInfo.breakdown.rankGroups.map((group, groupIndex) => (
+                              <span key={`${group.fromRank}-${group.toRank}`} className={group.isFractional ? 'fractional-cost-line' : undefined}>
+                                {effectDef?.variableCost?.costType === 'flat'
+                                  ? `${costInfo.breakdown?.selectedVariableCost ?? effectDef?.name ?? comp.effectId}: `
+                                  : `R${group.fromRank}${group.toRank > group.fromRank ? `–${group.toRank}` : ''}: `}
+                                {group.isFractional ? (
+                                  <>
+                                    <span className="fractional-cost-badge">1 {costUnit} / {group.ranksPerPP} ranks</span>
+                                    {' '}× {group.rankCount} = {group.subtotal} {costUnit}
+                                  </>
+                                ) : (
+                                  <>{group.costPerRank} {costUnit}/rank × {group.rankCount} = {group.subtotal} {costUnit}</>
+                                )}
+                                {groupIndex < costInfo.breakdown!.rankGroups.length - 1 ? ' + ' : ''}
+                              </span>
+                            ))}
+                            {costInfo.breakdown.flatCost !== 0 && (
+                              <span>{costInfo.breakdown.rankGroups.length > 0 ? ' + ' : ''}{costInfo.breakdown.flatCost} flat</span>
+                            )}
+                            {(costInfo.breakdown.rankGroups.length !== 1
+                              || costInfo.breakdown.flatCost !== 0
+                              || costInfo.breakdown.total !== costInfo.breakdown.rankCost) && (
+                              <span>{' = '}<strong>{costInfo.breakdown.total} {costUnit}</strong></span>
+                            )}
                           </div>
                         )}
                       </div>
-                    )}
-
-                    {/* Modifier dropzone */}
-                    <div className="build-section" onClick={(e) => e.stopPropagation()}>
-                      <label className="build-label">{t('builder.modifiers')}</label>
-                      <ModifierDropzone componentId={comp.id} effectId={comp.effectId} label={effectDef?.name ?? t('builder.mainEffect')}>
-                        {comp.modifiers.length === 0 && !activeId && (
-                          <span className="dropzone-placeholder">{t(comp.effectId ? 'builder.dropHere' : 'builder.chooseEffectForModifiers')}</span>
-                        )}
-                        {comp.modifiers.map((applied) => {
-                          const def = effectDef
-                            ? resolveModifierDefinition(applied, effectDef, modifierDefs).definition
-                            : undefined;
-                          if (!def) return null;
-
-                          // Check for incompatibilities
-                          const incompatKey = `${comp.id}:${applied.modifierId}`;
-                          const conflicts = modifierIncompatibilities[incompatKey] || [];
-                          const hasIncompatibility = conflicts.length > 0;
-
-                          return (
-                            <div
-                              key={applied.modifierId}
-                              className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${applied.isPowerSpecific ? 'applied-mod--specific' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
-                            >
-                              <span className="applied-mod-name">{def.name}</span>
-                              <ModifierParameterControls
-                                applied={applied}
-                                definition={def}
-                                effectRanks={Math.max(1, getComponentEffectRanks(comp, getCharacterStrength(character)))}
-                                effectAction={effectDef?.action}
-                                onRanksChange={(value) => updateModifierRanks(comp.id, applied.modifierId, value)}
-                                onOptionsChange={(options) => updateModifierOptions(comp.id, applied.modifierId, options)}
-                              />
-                              {/* Sub-option dropdown */}
-                              {def.options && def.options.length > 0 && (
-                                <>
-                                  <select
-                                    className="applied-mod-option"
-                                    value={applied.option ?? ''}
-                                    onChange={(e) => updateModifierOption(comp.id, applied.modifierId, e.target.value)}
-                                  >
-                                    <option value="">Shape...</option>
-                                    {def.options.map((opt) => <option key={opt.label} value={opt.label}>{opt.label}</option>)}
-                                  </select>
-                                  {def.id === 'area' && applied.option === 'Perception' && (
-                                    <label className="applied-mod-check"><input className="app-checkbox" type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => updateModifierOptions(comp.id, applied.modifierId, { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
-                                  )}
-                                </>
-                              )}
-                              {/* Conditional checkbox for Affects Objects */}
-                              {def.id === 'affects_objects' && (
-                                <label className="applied-mod-checkbox">
-                                  <input
-                                    className="app-checkbox"
-                                    type="checkbox"
-                                    checked={applied.options?.affectsOnlyObjects === true}
-                                    onChange={(e) => {
-                                      const newOptions = {
-                                        ...applied.options,
-                                        affectsOnlyObjects: e.target.checked,
-                                      };
-                                      updateModifierOptions(comp.id, applied.modifierId, newOptions);
-                                    }}
-                                  />
-                                  {t('builder.affectsOnlyObjects')}
-                                </label>
-                              )}
-                              {def.id === 'affects_others' && (
-                                <label className="applied-mod-checkbox">
-                                  <input
-                                    className="app-checkbox"
-                                    type="checkbox"
-                                    checked={applied.options?.affectsOnlyOthers === true}
-                                    onChange={(e) => {
-                                      updateModifierOptions(comp.id, applied.modifierId, {
-                                        ...applied.options,
-                                        affectsOnlyOthers: e.target.checked,
-                                      });
-                                    }}
-                                  />
-                                  {t('builder.affectsOnlyOthers')}
-                                </label>
-                              )}
-                              {def.id === 'side_effect' && (
-                                <label className="applied-mod-checkbox">
-                                  <input
-                                    className="app-checkbox"
-                                    type="checkbox"
-                                    checked={applied.options?.sideEffectAlways === true}
-                                    onChange={(e) => {
-                                      updateModifierOptions(comp.id, applied.modifierId, {
-                                        ...applied.options,
-                                        sideEffectAlways: e.target.checked,
-                                      });
-                                    }}
-                                  />
-                                  {t('builder.sideEffectAlways')}
-                                </label>
-                              )}
-                              {def.id === 'alternate_resistance' && (
-                                <select
-                                  className="applied-mod-subtype"
-                                  value={(applied.options?.alternateResistanceCost as string) ?? 'equal'}
-                                  onChange={(e) => {
-                                    updateModifierOptions(comp.id, applied.modifierId, {
-                                      ...applied.options,
-                                      alternateResistanceCost: e.target.value,
-                                    });
-                                  }}
-                                >
-                                  <option value="equal">{t('builder.alternateResistanceEqual')}</option>
-                                  <option value="advantageous">{t('builder.alternateResistanceAdvantageous')}</option>
-                                </select>
-                              )}
-                              {(def.id === 'reaction' || def.id === 'triggered') && (
-                                <input
-                                  className="applied-mod-option"
-                                  value={(applied.options?.trigger as string) ?? ''}
-                                  onChange={(e) => {
-                                    updateModifierOptions(comp.id, applied.modifierId, {
-                                      ...applied.options,
-                                      trigger: e.target.value,
-                                    });
-                                  }}
-                                  placeholder={t('builder.triggerPlaceholder')}
-                                  aria-label={t('builder.trigger')}
-                                />
-                              )}
-                              {hasIncompatibility && (
-                                <span
-                                  className="applied-mod-incompatible-warning"
-                                  title={`${t('builder.incompatibleWith')}: ${conflicts.map(id => allModDefs.find(d => d.id === id)?.name || id).join(', ')}`}
-                                >
-                                  <AlertTriangle size={14} />
-                                </span>
-                              )}
-                              <button
-                                className="applied-mod-remove"
-                                onClick={() => removeModifier(comp.id, applied.modifierId)}
-                              >
-                                <X size={12} />
-                              </button>
+                      {/* Effect reference beside the editing controls */}
+                      {effectDef && (
+                        <div className="build-effect-info">
+                          <span className="effect-badge">{effectDef.type}</span>
+                          <span className="effect-detail">{t('common.action')}: {effectDef.action}</span>
+                          <span className="effect-detail">{t('common.range')}: {effectDef.range}</span>
+                          <span className="effect-detail">{t('common.duration')}: {effectDef.duration}</span>
+                          <p className="effect-desc">{effectDef.description}</p>
+                          {effectDef.enhancesDefense && (
+                            <div className="defense-warning">
+                              <AlertTriangle size={13} />
+                              {t('builder.defenseWarning')}
                             </div>
-                          );
-                        })}
-                      </ModifierDropzone>
-                    </div>
+                          )}
+                        </div>
+                      )}
 
-                    {/* Cost breakdown for this component */}
-                    {costInfo.breakdown && costInfo.total > 0 && (
-                      <div className="component-breakdown">
-                        {costInfo.breakdown.rankGroups.map((group, groupIndex) => (
-                          <span key={`${group.fromRank}-${group.toRank}`} className={group.isFractional ? 'fractional-cost-line' : undefined}>
-                            {effectDef?.variableCost?.costType === 'flat'
-                              ? `${costInfo.breakdown?.selectedVariableCost ?? effectDef?.name ?? comp.effectId}: `
-                              : `R${group.fromRank}${group.toRank > group.fromRank ? `–${group.toRank}` : ''}: `}
-                            {group.isFractional ? (
-                              <>
-                                <span className="fractional-cost-badge">1 {costUnit} / {group.ranksPerPP} ranks</span>
-                                {' '}× {group.rankCount} = {group.subtotal} {costUnit}
-                              </>
-                            ) : (
-                              <>{group.costPerRank} {costUnit}/rank × {group.rankCount} = {group.subtotal} {costUnit}</>
-                            )}
-                            {groupIndex < costInfo.breakdown!.rankGroups.length - 1 ? ' + ' : ''}
-                          </span>
-                        ))}
-                        {costInfo.breakdown.flatCost !== 0 && (
-                          <span>{costInfo.breakdown.rankGroups.length > 0 ? ' + ' : ''}{costInfo.breakdown.flatCost} flat</span>
-                        )}
-                        {(costInfo.breakdown.rankGroups.length !== 1
-                          || costInfo.breakdown.flatCost !== 0
-                          || costInfo.breakdown.total !== costInfo.breakdown.rankCost) && (
-                          <span>{' = '}<strong>{costInfo.breakdown.total} {costUnit}</strong></span>
-                        )}
-                      </div>
-                    )}
+                    </div>
                   </div>
                 );
               })}
@@ -1246,7 +1250,17 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           border: 1px solid var(--c-border); border-radius: var(--r-md);
           padding: var(--s-md); display: flex; flex-direction: column; gap: var(--s-sm);
           cursor: pointer; transition: all var(--t-fast);
-          background: var(--c-surface);
+          background: var(--c-surface); container-type: inline-size;
+        }
+        .build-effect-layout { display: grid; gap: var(--s-md); min-width: 0; align-items: start; }
+        .build-effect-controls { display: flex; flex-direction: column; gap: var(--s-sm); min-width: 0; }
+        .build-effect-controls .build-section--flex { min-width: 0; }
+        .build-effect-controls .applied-mod { flex-wrap: wrap; min-width: 0; max-width: 100%; }
+        .build-effect-controls .applied-mod-name { min-width: 0; overflow-wrap: anywhere; }
+        .build-effect-layout > .build-effect-info { min-width: 0; align-content: start; }
+        .build-effect-layout .effect-desc { margin: 0; line-height: 1.6; overflow-wrap: anywhere; }
+        @container (min-width: 680px) {
+          .build-effect-layout--with-reference { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
         }
         .component-card:hover { border-color: var(--c-primary-muted); }
         .component-card--active { border-color: var(--c-primary); box-shadow: 0 0 0 1px var(--c-primary-muted); }
