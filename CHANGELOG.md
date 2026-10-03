@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed — Power Builder layout
+- Fit existing power and alternate-effect notes when their editor opens,
+  retaining manual vertical resizing and the two-row minimum for empty notes.
+  Keep sizing out of sheet data.
 - Clarify the Dynamic toggle as an additional 1 PP (2 PP total per alternate),
   with localized explanations of the shared budget and the separate 1 PP
   charge for a Dynamic base effect. Preserve the existing pricing rules.

@@ -38,6 +38,7 @@ import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelecto
 import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { ModifierParameterControls } from './components/ModifierParameterControls';
 import { EffectReference } from './components/EffectReference';
+import { PowerNotesTextarea } from './components/PowerNotesTextarea';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
 import { addComponentModifier } from './modifierApplication';
 import { getBlockingPowerSaveIssues } from './powerSavePolicy';
@@ -919,7 +920,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             {/* Notes */}
             <div className="build-section">
               <label className="build-label">{t('builder.notes')}</label>
-              <textarea
+              <PowerNotesTextarea
                 className="build-textarea"
                 value={power.notes}
                 onChange={(e) => setPower((p) => ({ ...p, notes: e.target.value }))}
