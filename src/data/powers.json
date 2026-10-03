@@ -1028,6 +1028,22 @@
           "name": "Impede Movement (2 ranks)",
           "cost": 2,
           "description": "Impedir Movimento (2 graduações)"
+        },
+        {
+          "name": "Cold (1 degree)",
+          "cost": 1
+        },
+        {
+          "name": "Cold (2 degrees)",
+          "cost": 2
+        },
+        {
+          "name": "Heat (1 degree)",
+          "cost": 1
+        },
+        {
+          "name": "Heat (2 degrees)",
+          "cost": 2
         }
       ]
     },
@@ -2695,7 +2711,24 @@
     },
     "longDescription": "You have a special form of movement. Each rank provides one option: Dimension Travel (1-3 ranks), Environmental Adaptation, Permeate (1-3 ranks), Safe Fall, Slithering, Space Travel (1-3 ranks), Sure-Footed, Swinging, Time Travel (1-3 ranks), Trackless, Wall-Crawling (1-2 ranks), or Water-Walking (1-2 ranks).",
     "enhancesDefense": null,
-    "extras": [],
+    "extras": [
+      {
+        "id": "portal_movement",
+        "name": "Portal",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 2,
+        "description": "Open a passage others can use with a travel option, such as Space Travel or Dimensional Travel.",
+        "longDescription": "A travel effect creates a portal others can cross. Power Profiles Space Warp uses Movement (Space Travel) with Portal, +2 cost per rank.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Portal",
+            "description": "Abre uma passagem que outras pessoas podem usar com uma opção de viagem, como Viagem Espacial ou Dimensional."
+          }
+        }
+      }
+    ],
     "flaws": []
   },
   {

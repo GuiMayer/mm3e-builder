@@ -1544,5 +1544,1714 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "senses"
     ]
+  },
+  {
+    "id": "cold-cold-blast",
+    "profileId": "cold",
+    "name": {
+      "en": "Cold Blast",
+      "pt": "Rajada Fria"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range — Fatigued, Exhausted, Incapacitated; overcome by Fortitude.",
+      "pt": "Aflição · Alcance Aumentado — Fatigado, Exausto, Incapacitado; superado por Fortitude."
+    },
+    "page": 21,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "cold-cryokinesis",
+    "profileId": "cold",
+    "name": {
+      "en": "Cryokinesis",
+      "pt": "Criocinese"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Affects Objects — Dazed, Stunned, Transformed; also affects objects.",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Afeta Objetos — Atordoado, Aturdido, Transformado; também afeta objetos."
+    },
+    "page": 21,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "cold-flash-freeze",
+    "profileId": "cold",
+    "name": {
+      "en": "Flash Freeze",
+      "pt": "Congelamento Súbito"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Weaken · Increased Range · Affects Objects",
+      "pt": "Enfraquecer · Alcance Aumentado · Afeta Objetos"
+    },
+    "page": 21,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "cold-freezing-aura",
+    "profileId": "cold",
+    "name": {
+      "en": "Freezing Aura",
+      "pt": "Aura Congelante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Reaction",
+      "pt": "Dano · Reação"
+    },
+    "page": 21,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "cold-hailstorm",
+    "profileId": "cold",
+    "name": {
+      "en": "Hailstorm",
+      "pt": "Chuva de Granizo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area · Increased Range · Indirect",
+      "pt": "Dano · Área · Alcance Aumentado · Indireto"
+    },
+    "page": 21,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "cold-ice-blast",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Blast",
+      "pt": "Rajada de Gelo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 21,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "cold-ice-binding",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Binding",
+      "pt": "Aprisionamento de Gelo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Extra Condition · Limited Degree · Alternate Resistance — Hindered and Vulnerable; Defenseless and Immobilized. Overcome by Damage.",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Condição Extra · Graus Limitados · Resistência Alternativa — Impedido e Vulnerável; Indefeso e Imóvel. Superado por Dano."
+    },
+    "page": 21,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "cold-ice-fist",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Fist",
+      "pt": "Punho de Gelo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage",
+      "pt": "Dano"
+    },
+    "page": 22,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "cold-ice-slick",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Slick",
+      "pt": "Piso Escorregadio"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Area · Extra Condition · Limited Degree · Alternate Resistance — Hindered and Vulnerable; Defenseless and Prone. Resisted and overcome by Dodge.",
+      "pt": "Aflição · Alcance Aumentado · Área · Condição Extra · Graus Limitados · Resistência Alternativa — Impedido e Vulnerável; Indefeso e Prostrado. Resistido e superado por Esquiva."
+    },
+    "page": 22,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "cold-snowblind",
+    "profileId": "cold",
+    "name": {
+      "en": "Snowblind",
+      "pt": "Cegueira da Neve"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited · Alternate Resistance — Vision Impaired, Disabled, Unaware; overcome by Fortitude.",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado · Resistência Alternativa — Visão Prejudicada, Debilitada, Inconsciente dos estímulos; superado por Fortitude."
+    },
+    "page": 22,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "cold-immunity-to-cold-environment",
+    "profileId": "cold",
+    "name": {
+      "en": "Immunity to Cold — Environment",
+      "pt": "Imunidade a Frio — Ambiente"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 22,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "cold-immunity-to-cold-damage",
+    "profileId": "cold",
+    "name": {
+      "en": "Immunity to Cold — Damage",
+      "pt": "Imunidade a Frio — Dano"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 22,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "cold-immunity-to-cold-effects",
+    "profileId": "cold",
+    "name": {
+      "en": "Immunity to Cold — Effects",
+      "pt": "Imunidade a Frio — Efeitos"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 22,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "cold-immunity-to-heat-environment",
+    "profileId": "cold",
+    "name": {
+      "en": "Immunity to Heat — Environment",
+      "pt": "Imunidade a Calor — Ambiente"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 22,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "cold-immunity-to-heat-damage",
+    "profileId": "cold",
+    "name": {
+      "en": "Immunity to Heat — Damage",
+      "pt": "Imunidade a Calor — Dano"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 22,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "cold-immunity-to-heat-effects",
+    "profileId": "cold",
+    "name": {
+      "en": "Immunity to Heat — Effects",
+      "pt": "Imunidade a Calor — Efeitos"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 22,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "cold-ice-armor",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Armor",
+      "pt": "Armadura de Gelo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection",
+      "pt": "Proteção"
+    },
+    "page": 22,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "cold-infrared-invisibility",
+    "profileId": "cold",
+    "name": {
+      "en": "Infrared Invisibility",
+      "pt": "Invisibilidade Infravermelha"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment — Conceals only infravision.",
+      "pt": "Camuflagem — Oculta apenas da infravisão."
+    },
+    "page": 22,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "cold-ice-slides",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Slides",
+      "pt": "Trilhos de Gelo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Platform",
+      "pt": "Voo · Platform"
+    },
+    "page": 22,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "cold-ice-passage",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Passage",
+      "pt": "Passagem no Gelo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited — Only ice and snow; up to three ranks.",
+      "pt": "Movimento · Limitado — Apenas gelo e neve; até três graduações."
+    },
+    "page": 22,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "cold-ice-portal",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Portal",
+      "pt": "Portal de Gelo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Medium — Ice is the teleport medium.",
+      "pt": "Teleporte · Meio — Gelo é o meio de teleporte."
+    },
+    "page": 22,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "cold-ice-tunneling",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Tunneling",
+      "pt": "Escavação no Gelo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing · Limited — Only ice and snow.",
+      "pt": "Escavação · Limitado — Apenas gelo e neve."
+    },
+    "page": 22,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "cold-ice-walking",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Walking",
+      "pt": "Caminhar no Gelo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 23,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "cold-snow-shoes",
+    "profileId": "cold",
+    "name": {
+      "en": "Snow Shoes",
+      "pt": "Raquetes de Neve"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited — Only on snow.",
+      "pt": "Movimento · Limitado — Apenas sobre neve."
+    },
+    "page": 23,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "cold-speed-skating",
+    "profileId": "cold",
+    "name": {
+      "en": "Speed Skating",
+      "pt": "Patinação Veloz"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Speed · Limited — Only on ice.",
+      "pt": "Velocidade · Limitado — Apenas sobre gelo."
+    },
+    "page": 23,
+    "effectIds": [
+      "speed"
+    ]
+  },
+  {
+    "id": "cold-blizzard-cold-1-visibility-2",
+    "profileId": "cold",
+    "name": {
+      "en": "Blizzard — Cold 1, Visibility -2",
+      "pt": "Nevasca — Frio 1, Visibilidade -2"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment · Environment",
+      "pt": "Controle Ambiental · Controle Ambiental"
+    },
+    "page": 23,
+    "effectIds": [
+      "environment",
+      "environment"
+    ]
+  },
+  {
+    "id": "cold-blizzard-cold-1-visibility-5",
+    "profileId": "cold",
+    "name": {
+      "en": "Blizzard — Cold 1, Visibility -5",
+      "pt": "Nevasca — Frio 1, Visibilidade -5"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment · Environment",
+      "pt": "Controle Ambiental · Controle Ambiental"
+    },
+    "page": 23,
+    "effectIds": [
+      "environment",
+      "environment"
+    ]
+  },
+  {
+    "id": "cold-blizzard-cold-2-visibility-2",
+    "profileId": "cold",
+    "name": {
+      "en": "Blizzard — Cold 2, Visibility -2",
+      "pt": "Nevasca — Frio 2, Visibilidade -2"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment · Environment",
+      "pt": "Controle Ambiental · Controle Ambiental"
+    },
+    "page": 23,
+    "effectIds": [
+      "environment",
+      "environment"
+    ]
+  },
+  {
+    "id": "cold-blizzard-cold-2-visibility-5",
+    "profileId": "cold",
+    "name": {
+      "en": "Blizzard — Cold 2, Visibility -5",
+      "pt": "Nevasca — Frio 2, Visibilidade -5"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment · Environment",
+      "pt": "Controle Ambiental · Controle Ambiental"
+    },
+    "page": 23,
+    "effectIds": [
+      "environment",
+      "environment"
+    ]
+  },
+  {
+    "id": "cold-cold-projection-1-degree",
+    "profileId": "cold",
+    "name": {
+      "en": "Cold Projection — 1 degree",
+      "pt": "Projeção de Frio — 1 grau"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 23,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "cold-cold-projection-2-degree",
+    "profileId": "cold",
+    "name": {
+      "en": "Cold Projection — 2 degree",
+      "pt": "Projeção de Frio — 2 grau"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 23,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "cold-ice-creatures",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Creatures",
+      "pt": "Criaturas de Gelo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled — Create the creature separately; optional Multiple Minions and Horde are added in the builder.",
+      "pt": "Invocar · Controlado — Crie a criatura separadamente; Múltiplos Lacaios e Horda opcionais podem ser acrescentados no Builder."
+    },
+    "page": 23,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "cold-ice-form",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Form",
+      "pt": "Forma de Gelo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Protection — Immunity to cold effects and life support.",
+      "pt": "Imunidade · Proteção — Imunidade a efeitos de frio e suporte vital."
+    },
+    "page": 23,
+    "effectIds": [
+      "immunity",
+      "protection"
+    ]
+  },
+  {
+    "id": "cold-ice-sculpting",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Sculpting",
+      "pt": "Escultura de Gelo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Create · Permanent",
+      "pt": "Criação · Permanente"
+    },
+    "page": 23,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "cold-ice-shifting",
+    "profileId": "cold",
+    "name": {
+      "en": "Ice Shifting",
+      "pt": "Mover Gelo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Perception · Limited — Only ice and snow.",
+      "pt": "Mover Objetos · Percepção · Limitado — Apenas gelo e neve."
+    },
+    "page": 23,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "cold-snow-form",
+    "profileId": "cold",
+    "name": {
+      "en": "Snow Form",
+      "pt": "Forma de Neve"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Insubstantial — Cold effects and life support; particulate form.",
+      "pt": "Imunidade · Insubstancial — Efeitos de frio e suporte vital; forma de partículas."
+    },
+    "page": 23,
+    "effectIds": [
+      "immunity",
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "cold-thermal-vision",
+    "profileId": "cold",
+    "name": {
+      "en": "Thermal Vision",
+      "pt": "Visão Térmica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 23,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-blast",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Blast",
+      "pt": "Rajada Cósmica"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 26,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-burst",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Burst",
+      "pt": "Explosão Cósmica"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area",
+      "pt": "Dano · Alcance Aumentado · Área"
+    },
+    "page": 26,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-grasp",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Grasp",
+      "pt": "Agarrão Cósmico"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Reversible · Limited Degree · Alternate Resistance — Impaired and Vulnerable; Defenseless and Immobilized. Overcome by Strength.",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Reversível · Graus Limitados · Resistência Alternativa — Prejudicado e Vulnerável; Indefeso e Imóvel. Superado por Força."
+    },
+    "page": 27,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "cosmic-meteor-shower",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Meteor Shower",
+      "pt": "Chuva de Meteoros"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Multiattack",
+      "pt": "Dano · Alcance Aumentado · Ataque Múltiplo"
+    },
+    "page": 27,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "cosmic-nebular-field",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Nebular Field",
+      "pt": "Campo Nebular"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Concealment · Attack · Increased Range · Area",
+      "pt": "Camuflagem · Ataque · Alcance Aumentado · Área"
+    },
+    "page": 27,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-shield",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Shield",
+      "pt": "Escudo Cósmico"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Sustained",
+      "pt": "Proteção · Impenetrável · Sustentado"
+    },
+    "page": 27,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "cosmic-spaceworthy",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Spaceworthy",
+      "pt": "Adaptado ao Espaço"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity — Cold, all suffocation, radiation and vacuum.",
+      "pt": "Imunidade — Frio, todo sufocamento, radiação e vácuo."
+    },
+    "page": 27,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "cosmic-unearthly",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Unearthly",
+      "pt": "Além do Humano"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity — All Fortitude effects.",
+      "pt": "Imunidade — Todos os efeitos de Fortitude."
+    },
+    "page": 27,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "cosmic-faster-than-light",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Faster Than Light",
+      "pt": "Mais Rápido que a Luz"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement — Space Travel, up to three ranks.",
+      "pt": "Movimento — Viagem Espacial, até três graduações."
+    },
+    "page": 27,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "cosmic-space-warp",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Space Warp",
+      "pt": "Dobra Espacial"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Portal — Space Travel portal, up to three ranks.",
+      "pt": "Movimento · Portal — Portal de Viagem Espacial, até três graduações."
+    },
+    "page": 27,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "cosmic-soar-the-spaceways",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Soar the Spaceways",
+      "pt": "Voar pelo Espaço"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 27,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-awareness",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Awareness",
+      "pt": "Consciência Cósmica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Limited — Only the four Precognition ranks are limited to cosmic events.",
+      "pt": "Sentidos · Limitado — Apenas as quatro graduações de Precognição são limitadas a eventos cósmicos."
+    },
+    "page": 28,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-communication",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Communication",
+      "pt": "Comunicação Cósmica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Communication — Subspace audiovisual projection, any distance.",
+      "pt": "Comunicação — Projeção audiovisual pelo subespaço, qualquer distância."
+    },
+    "page": 28,
+    "effectIds": [
+      "communication"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-control",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Control",
+      "pt": "Controle Cósmico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object",
+      "pt": "Mover Objetos"
+    },
+    "page": 28,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-healing",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Healing",
+      "pt": "Cura Cósmica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing",
+      "pt": "Cura"
+    },
+    "page": 28,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-mastery",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Mastery",
+      "pt": "Domínio Cósmico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable",
+      "pt": "Variável"
+    },
+    "page": 28,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-order",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Order",
+      "pt": "Ordem Cósmica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Simultaneous",
+      "pt": "Anulação · Simultâneo"
+    },
+    "page": 28,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-strength",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Strength",
+      "pt": "Força Cósmica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 28,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-tracking",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Tracking",
+      "pt": "Rastreamento Cósmico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 28,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "cosmic-cosmic-transmutation",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Cosmic Transmutation",
+      "pt": "Transmutação Cósmica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Transform",
+      "pt": "Transformação"
+    },
+    "page": 28,
+    "effectIds": [
+      "transform"
+    ]
+  },
+  {
+    "id": "cosmic-universal-translation",
+    "profileId": "cosmic",
+    "name": {
+      "en": "Universal Translation",
+      "pt": "Tradução Universal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Comprehend — Speak, understand and be understood in all languages.",
+      "pt": "Compreensão — Falar, compreender e ser compreendido em todos os idiomas."
+    },
+    "page": 28,
+    "effectIds": [
+      "comprehend"
+    ]
+  },
+  {
+    "id": "darkness-blinding-blast",
+    "profileId": "darkness",
+    "name": {
+      "en": "Blinding Blast",
+      "pt": "Rajada de Cegueira"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Limited · Alternate Resistance — Impaired, Disabled, Unaware; vision only, overcome by Will.",
+      "pt": "Aflição · Alcance Aumentado · Limitado · Resistência Alternativa — Prejudicado, Debilitado, Inconsciente dos estímulos; apenas visão, superado por Vontade."
+    },
+    "page": 31,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "darkness-dark-blast",
+    "profileId": "darkness",
+    "name": {
+      "en": "Dark Blast",
+      "pt": "Rajada Sombria"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 31,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "darkness-night-terrors",
+    "profileId": "darkness",
+    "name": {
+      "en": "Night Terrors",
+      "pt": "Terrores Noturnos"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Limited — Entranced, Compelled, Controlled; only fleeing or cowering in fear.",
+      "pt": "Aflição · Alcance Aumentado · Limitado — Hipnotizado, Compelido, Controlado; apenas fugir ou se encolher de medo."
+    },
+    "page": 31,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "darkness-shadow-bind",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Bind",
+      "pt": "Aprisionamento Sombrio"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative · Increased Range · Extra Condition · Limited Degree · Alternate Resistance — Hindered and Vulnerable; Defenseless and Immobilized. Overcome by Will.",
+      "pt": "Aflição · Cumulativo · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa — Impedido e Vulnerável; Indefeso e Imóvel. Superado por Vontade."
+    },
+    "page": 31,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "darkness-shadow-boxing",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Boxing",
+      "pt": "Combate de Sombras"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Damaging · Limited — Only shadow interactions.",
+      "pt": "Mover Objetos · Causar Dano · Limitado — Apenas interações com sombras."
+    },
+    "page": 31,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "darkness-shadow-shroud",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Shroud",
+      "pt": "Manto de Sombras"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Concealment · Attack · Increased Range · Area",
+      "pt": "Camuflagem · Ataque · Alcance Aumentado · Área"
+    },
+    "page": 31,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "darkness-swallowing-shadow",
+    "profileId": "darkness",
+    "name": {
+      "en": "Swallowing Shadow",
+      "pt": "Sombra Devoradora"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Movement · Attack · Increased Range — Base resistance DC 11. The book prices additional resistance DC separately from dimensional destinations; this recipe loads its base version.",
+      "pt": "Movimento · Ataque · Alcance Aumentado — CD base de resistência 11. O livro cobra aumentos da CD separadamente dos destinos dimensionais; esta receita carrega a versão base."
+    },
+    "page": 31,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "darkness-dark-aura",
+    "profileId": "darkness",
+    "name": {
+      "en": "Dark Aura",
+      "pt": "Aura Sombria"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Damage · Reaction",
+      "pt": "Dano · Reação"
+    },
+    "page": 32,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "darkness-immunity-to-darkness",
+    "profileId": "darkness",
+    "name": {
+      "en": "Immunity to Darkness",
+      "pt": "Imunidade à Escuridão"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 32,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "darkness-immunity-to-light",
+    "profileId": "darkness",
+    "name": {
+      "en": "Immunity to Light",
+      "pt": "Imunidade à Luz"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 32,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "darkness-shadow-meld",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Meld",
+      "pt": "Fundir-se às Sombras"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment · Limited — Only in shadows or darkness.",
+      "pt": "Camuflagem · Limitado — Apenas em sombras ou escuridão."
+    },
+    "page": 32,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "darkness-shadow-shield",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Shield",
+      "pt": "Escudo Sombrio"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 32,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "darkness-dark-flight",
+    "profileId": "darkness",
+    "name": {
+      "en": "Dark Flight",
+      "pt": "Voo Sombrio"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight",
+      "pt": "Voo"
+    },
+    "page": 32,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "darkness-shadow-bridge",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Bridge",
+      "pt": "Ponte de Sombras"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Platform",
+      "pt": "Voo · Platform"
+    },
+    "page": 32,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "darkness-shadow-crawl",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Crawl",
+      "pt": "Deslocamento Sombrio"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Speed",
+      "pt": "Velocidade"
+    },
+    "page": 32,
+    "effectIds": [
+      "speed"
+    ]
+  },
+  {
+    "id": "darkness-shadow-door",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Door",
+      "pt": "Porta de Sombras"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 32,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "darkness-shadow-projection",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Projection",
+      "pt": "Projeção Sombria"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Remote Sensing — Visual, auditory and mental; visual costs two.",
+      "pt": "Sensoriamento Remoto — Visual, auditivo e mental; visual custa duas graduações."
+    },
+    "page": 32,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "darkness-shadow-walk",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Walk",
+      "pt": "Caminhar pelas Sombras"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Medium — Shadows are the teleport medium.",
+      "pt": "Teleporte · Meio — Sombras são o meio de teleporte."
+    },
+    "page": 32,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "darkness-darkvision",
+    "profileId": "darkness",
+    "name": {
+      "en": "Darkvision",
+      "pt": "Visão no Escuro"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 33,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "darkness-gloom-visibility-2",
+    "profileId": "darkness",
+    "name": {
+      "en": "Gloom — Visibility -2",
+      "pt": "Penumbra — Visibilidade -2"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 33,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "darkness-gloom-visibility-5",
+    "profileId": "darkness",
+    "name": {
+      "en": "Gloom — Visibility -5",
+      "pt": "Penumbra — Visibilidade -5"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 33,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "darkness-healing-darkness",
+    "profileId": "darkness",
+    "name": {
+      "en": "Healing Darkness",
+      "pt": "Escuridão Curativa"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Regeneration · Source — Requires darkness.",
+      "pt": "Regeneração · Fonte — Exige escuridão."
+    },
+    "page": 33,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "darkness-scry-through-shadow",
+    "profileId": "darkness",
+    "name": {
+      "en": "Scry Through Shadow",
+      "pt": "Espiar pelas Sombras"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Medium — Visual and auditory; shadows are the medium.",
+      "pt": "Sensoriamento Remoto · Meio — Visual e auditivo; sombras são o meio."
+    },
+    "page": 33,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "darkness-shadow-form",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Form",
+      "pt": "Forma Sombria"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Limited · Immunity · Insubstantial · Movement — Concealment only in darkness; life support and shadow form.",
+      "pt": "Camuflagem · Limitado · Imunidade · Insubstancial · Movimento — Camuflagem apenas na escuridão; suporte vital e forma de sombras."
+    },
+    "page": 33,
+    "effectIds": [
+      "concealment",
+      "immunity",
+      "insubstantial",
+      "movement"
+    ]
+  },
+  {
+    "id": "darkness-shadow-shaping",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Shaping",
+      "pt": "Moldar Sombras"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Create",
+      "pt": "Criação"
+    },
+    "page": 33,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "darkness-shadow-tendrils",
+    "profileId": "darkness",
+    "name": {
+      "en": "Shadow Tendrils",
+      "pt": "Tentáculos de Sombras"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object",
+      "pt": "Mover Objetos"
+    },
+    "page": 33,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "darkness-summon-shadows",
+    "profileId": "darkness",
+    "name": {
+      "en": "Summon Shadows",
+      "pt": "Invocar Sombras"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon — Configure the shadow creature separately.",
+      "pt": "Invocar — Configure a criatura de sombras separadamente."
+    },
+    "page": 33,
+    "effectIds": [
+      "summon"
+    ]
   }
 ] satisfies LibraryEntry[];

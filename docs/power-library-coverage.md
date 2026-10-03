@@ -8,7 +8,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | Lote | Capítulos | Estado |
 | --- | --- | --- |
 | 1 | Air Powers, Armor Powers, Animal Powers | 77 receitas/variantes auditadas: Ar 29, Armadura 24, Animais 24. Duas divergências impressas documentadas abaixo. |
-| 2 | Cold Powers, Cosmic Powers, Darkness Powers | Pendente |
+| 2 | Cold Powers, Cosmic Powers, Darkness Powers | 85 receitas/variantes auditadas: Frio 37, Cósmicos 21, Escuridão 27. Preços coincidem com a fonte. |
 | 3 | Death Powers, Dimension Powers, Dream Powers | Pendente |
 | 4 | Earth Powers, Electrical Powers, Element Powers | Pendente |
 | 5 | Fire Powers, Gravity Powers, Illusion Powers | Pendente |
@@ -33,3 +33,16 @@ fixo inserido para alcançar o preço impresso. As outras 75 receitas/variantes
 passam pela comparação contra o livro em graduações 1, 5 e 10 quando escaláveis,
 ou nos valores fixos definidos pela receita. Escolhas de sentidos e vantagens
 precisam ser concluídas antes de aplicar; o teste usa a compra mínima prevista.
+
+## Lote 2: configuração
+
+Compras fixas de sentidos, imunidades e formas são preservadas. Cosmic Awareness
+limita somente as quatro graduações de Precognição, usando `affectedRanks`;
+a aplicação dessa flaw não reduz os demais sentidos. Receitas de Ambiente com
+mais de uma condição usam compras independentes, sem ajuste de custo final.
+
+Acrescentadas opções normais de Frio/Calor em Ambiente e Portal como extra
+específico de Movimento, conforme Space Warp p. 27. As opções existentes não
+mudam. Swallowing Shadow carrega a versão base (CD 11, 4 PP); o preço dos
+aumentos independentes de CD é referência, não um controle que o modelo atual
+possa confundir com mais destinos dimensionais.

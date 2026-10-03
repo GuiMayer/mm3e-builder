@@ -28,3 +28,11 @@ Não inventar modificadores para fazer uma receita alcançar um número impresso
 Quando composição e custo impresso discordarem, registrar a composição, o
 custo calculado e a justificativa com a regra base, tornando a diferença visível
 na prévia e na auditoria. Os números de auditoria nunca entram no motor.
+
+## Movimento e temperatura
+
+Portal foi cadastrado também como extra específico de Movimento (+2 por
+ graduação), para receitas de Viagem Espacial/Dimensional como Space Warp.
+Isso não libera um modificador específico de Teleporte em outro efeito: cada
+cadastro continua pertencendo ao próprio poder. Novas opções de Frio e Calor
+em Ambiente usam 1/2 por graduação, sem alterar opções antigas.
