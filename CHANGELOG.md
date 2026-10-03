@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed — Power Builder layout
+- Present mobile modifiers as compact rectangular cards with name, cost and
+  removal in the header, labeled rank controls and full-width options. Reuse
+  the layout for base, linked and alternate effects without changing values.
 - Place the effect description and reference metadata to the right of the
   selector, ranks and modifiers. Stack the panels when the component card is
   narrow, preserving rules, warnings, costs and character data.

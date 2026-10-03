@@ -359,6 +359,7 @@ export function AltEffectCard({
                             )}
                             <button
                               className="applied-mod-remove"
+                              aria-label={`${t('common.remove')}: ${def.name}`}
                               onClick={() => onRemoveModifier(comp.id, applied.modifierId)}
                             >
                               <X size={12} />

@@ -866,6 +866,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                   )}
                                   <button
                                     className="applied-mod-remove"
+                                    aria-label={`${t('common.remove')}: ${def.name}`}
                                     onClick={() => removeModifier(comp.id, applied.modifierId)}
                                   >
                                     <X size={12} />
@@ -1329,6 +1330,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           50% { border-color: rgba(var(--c-error-rgb, 239, 68, 68), 0.8); }
         }
         .applied-mod-name { font-weight: 600; }
+        .applied-mod-parameters, .applied-mod-field { display: contents; }
+        .applied-mod-field-label { display: none; }
         .applied-mod-ranks {
           width: 28px; text-align: center; background: var(--c-bg);
           border: 1px solid var(--c-border); border-radius: var(--r-sm);
@@ -1474,6 +1477,37 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           .build-row > .build-section:not(.build-section--flex) { align-self: flex-start; }
           .component-card, .ae-card, .ae-comp-card { min-width: 0; }
           .build-dropzone { min-width: 0; }
+          /* Applied modifiers become structured cards on touch screens. */
+          .build-dropzone .applied-mod {
+            width: 100%; min-width: 0; max-width: 100%; flex-wrap: wrap;
+            border-radius: var(--r-md); padding: 8px 10px; gap: 8px;
+          }
+          .build-dropzone .applied-mod-name { order: 0; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+          .applied-mod-cost { order: 1; flex-shrink: 0; font-size: 0.75rem; }
+          .applied-mod-overlimit, .applied-mod-incompatible-warning { order: 2; flex-shrink: 0; }
+          .applied-mod-remove { order: 3; align-items: center; justify-content: center; flex-shrink: 0; }
+          .applied-mod-parameters {
+            order: 4; display: flex; flex: 0 0 100%; min-width: 0; gap: 8px; flex-wrap: wrap;
+          }
+          .applied-mod-parameters:empty { display: none; }
+          .applied-mod-field { display: flex; flex-direction: column; gap: 4px; flex: 1 1 120px; min-width: 0; }
+          .applied-mod-field-label { display: block; color: var(--c-text-secondary); font-size: 0.7rem; line-height: 1.4; }
+          .applied-mod-field .number-input-wrapper { width: 100%; }
+          .applied-mod-field .applied-mod-ranks { flex: 1; width: 0; font-size: 0.85rem; }
+          .applied-mod > .applied-mod-option,
+          .applied-mod > .applied-mod-subtype,
+          .applied-mod > .applied-mod-checkbox,
+          .applied-mod > .applied-mod-check {
+            order: 5; flex: 0 0 100%; min-width: 0; max-width: 100%;
+          }
+          .applied-mod .applied-mod-option, .applied-mod .applied-mod-subtype {
+            min-height: 44px; width: 100%; max-width: 100%; padding: 8px; font-size: 0.8rem;
+          }
+          .applied-mod > .applied-mod-checkbox, .applied-mod > .applied-mod-check {
+            display: flex; align-items: center; gap: 8px; min-height: 44px; line-height: 1.4;
+          }
+          .applied-mod .app-checkbox { flex-shrink: 0; }
+
           .builder-footer {
             flex-direction: column;
             flex-wrap: nowrap;

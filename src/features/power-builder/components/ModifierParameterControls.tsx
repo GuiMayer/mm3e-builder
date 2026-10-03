@@ -36,51 +36,62 @@ export function ModifierParameterControls({
 
   return (
     <>
-      {ranked && (
-        <NumberInput
-          variant="small"
-          className="applied-mod-ranks"
-          value={applied.ranks}
-          onChange={onRanksChange}
-          min={1}
-          aria-label={`${t('builder.modifierRanks')}: ${definition.name}`}
-        />
-      )}
+      <div className="applied-mod-parameters">
+        {ranked && (
+          <div className="applied-mod-field">
+            <span className="applied-mod-field-label">{t('builder.modifierRanks')}</span>
+            <NumberInput
+              variant="small"
+              className="applied-mod-ranks"
+              value={applied.ranks}
+              onChange={onRanksChange}
+              min={1}
+              aria-label={`${t('builder.modifierRanks')}: ${definition.name}`}
+            />
+          </div>
+        )}
 
-      {definition.costType === 'per_rank' && (
-        <NumberInput
-          variant="small"
-          className="applied-mod-ranks"
-          value={getAffectedRanks(applied) ?? effectRanks}
-          onChange={(value) => onOptionsChange({
-            ...applied.options,
-            affectedRanks: Math.max(1, Math.min(effectRanks, value)),
-          })}
-          min={1}
-          max={effectRanks}
-          aria-label={`${t('builder.effectRanksAffected')}: ${definition.name}`}
-        />
-      )}
+        {definition.costType === 'per_rank' && (
+          <div className="applied-mod-field">
+            <span className="applied-mod-field-label">{t('builder.effectRanksAffected')}</span>
+            <NumberInput
+              variant="small"
+              className="applied-mod-ranks"
+              value={getAffectedRanks(applied) ?? effectRanks}
+              onChange={(value) => onOptionsChange({
+                ...applied.options,
+                affectedRanks: Math.max(1, Math.min(effectRanks, value)),
+              })}
+              min={1}
+              max={effectRanks}
+              aria-label={`${t('builder.effectRanksAffected')}: ${definition.name}`}
+            />
+          </div>
+        )}
 
-      {definition.subtypes && definition.subtypes.length > 0 && (
-        <select
-          className="applied-mod-subtype"
-          value={subtypeId}
-          onChange={(event) => onOptionsChange({
-            ...applied.options,
-            subtypeId: event.target.value,
-          })}
-          title={t('builder.subtypeLabel')}
-        >
-          <option value="">{t('builder.subtypeNone')}</option>
-          {definition.subtypes.map((subtype) => (
-            <option key={subtype.id} value={subtype.id}>
-              {subtype.i18n?.[i18n.language]?.label ?? subtype.label}
-              {' '}({subtype.costValue >= 0 ? '+' : ''}{subtype.costValue}/{t('common.rank')})
-            </option>
-          ))}
-        </select>
-      )}
+        {definition.subtypes && definition.subtypes.length > 0 && (
+          <div className="applied-mod-field">
+            <span className="applied-mod-field-label">{t('builder.subtypeLabel')}</span>
+            <select
+              className="applied-mod-subtype"
+              value={subtypeId}
+              onChange={(event) => onOptionsChange({
+                ...applied.options,
+                subtypeId: event.target.value,
+              })}
+              title={t('builder.subtypeLabel')}
+            >
+              <option value="">{t('builder.subtypeNone')}</option>
+              {definition.subtypes.map((subtype) => (
+                <option key={subtype.id} value={subtype.id}>
+                  {subtype.i18n?.[i18n.language]?.label ?? subtype.label}
+                  {' '}({subtype.costValue >= 0 ? '+' : ''}{subtype.costValue}/{t('common.rank')})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
 
       <span className="applied-mod-cost">
         {definition.costType === 'per_rank'
