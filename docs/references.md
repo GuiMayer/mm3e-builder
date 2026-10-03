@@ -32,7 +32,14 @@ indica as páginas **impressas** do livro, não as linhas do Markdown.
 As tabelas métrica e imperial foram transcritas separadamente: os valores
 oficiais são escalas arredondadas de jogo, não conversões físicas exatas.
 Selecionar uma graduação mostra massa, tempo, distância e volume; clicar numa
-linha seleciona essa graduação. Para valores intermediários, consulte a próxima
+linha seleciona essa graduação. O campo aceita graduações inteiras sem limite
+máximo de jogo: acima de 30, dobra cada medida a cada graduação; abaixo de −5,
+reduz cada medida à metade. O resumo identifica a extrapolação e mantém as
+unidades do extremo correspondente. Números extremos usam notação científica
+para evitar infinito ou zero por limites numéricos. Os valores −5 a 30
+permanecem os arredondamentos publicados, e a tabela não cresce indefinidamente.
+O campo usa inteiros representáveis com precisão pelo JavaScript.
+Para valores intermediários, consulte a próxima
 medida maior. Tamanho humano corresponde à graduação −2 de **tamanho**, não à
 graduação de Crescimento/Encolhimento; suas dimensões conservam as unidades
 imperiais do apêndice, com indicação explícita.

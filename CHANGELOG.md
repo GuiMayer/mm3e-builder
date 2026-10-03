@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Pack References panels independently into the available column height, removing gaps caused by a taller neighbouring card. Reflow on expansion, search and resizing without remounting query fields; retain wide tables and the single-column mobile layout.
 
+### Added
+- Remove the Measurements rank field's −5/30 bounds. Extrapolate from the official endpoints by doubling/halving each measure per rank, preserving published rounded values and both unit systems; show scientific notation for extreme magnitudes without infinity/underflow.
+
 The retrospective commit packages and preserved historical tags are documented
 in [Version history](docs/version-history.md). Release dates identify the
 completion commit, not a verified deployment date.

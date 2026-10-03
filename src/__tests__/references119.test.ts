@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MEASUREMENTS, checkDegree, damageDegree, formatMeasure } from '../features/references/measurements';
+import { MEASUREMENTS, getMeasurement, checkDegree, damageDegree, formatMeasure } from '../features/references/measurements';
 import { REFERENCE_SECTIONS, SIZE_SECTION, BENCHMARK_SECTION, filterReferenceSection, referenceText } from '../features/references/referenceCatalog';
 
 describe('Handbook measurement tables (pp. 11 and 347)', () => {
@@ -25,6 +25,35 @@ describe('Handbook measurement tables (pp. 11 and 347)', () => {
     const original = structuredClone(MEASUREMENTS);
     MEASUREMENTS.forEach(row => formatMeasure(row.metric.volume, 'pt-BR', () => 'm³'));
     expect(MEASUREMENTS).toEqual(original);
+  });
+});
+
+describe('Measurement extrapolation', () => {
+  it('preserves every published value instead of deriving rounded ranks from a formula', () => {
+    MEASUREMENTS.forEach(row => expect(getMeasurement(row.rank)).toBe(row));
+  });
+  it('doubles all four measures above rank 30 using each official unit system', () => {
+    expect(getMeasurement(31)).toMatchObject({ time: [400,'year'], metric: { mass: [50000,'kton'], distance: [16000000,'km'], volume: [60000000,'m3'] }, imperial: { mass: [50000,'kton'], distance: [8000000,'mile'], volume: [2000000000,'cft'] } });
+    expect(getMeasurement(40).time).toEqual([204800,'year']);
+    expect(getMeasurement(40).metric.distance).toEqual([8192000000,'km']);
+  });
+  it('halves values below rank −5, including fractional endpoint values', () => {
+    expect(getMeasurement(-6)).toMatchObject({ time: [.0625,'second'], metric: { mass: [375,'g'], distance: [7.5,'cm'], volume: [.0004,'m3'] }, imperial: { mass: [.75,'lb'], volume: [1/64,'cft'] } });
+    expect(formatMeasure(getMeasurement(-20).metric.volume, 'en', () => 'm³')).not.toBe('0 m³');
+  });
+  it('keeps astronomical and tiny ranks meaningful without overflowing or underflowing', () => {
+    for (const rank of [10000,-10000]) {
+      const text = formatMeasure(getMeasurement(rank).metric.distance, 'pt-BR', () => 'km');
+      expect(text).toContain('× 10^');
+      expect(text).not.toMatch(/Infinity|NaN|∞|^0 /);
+    }
+    expect(formatMeasure(getMeasurement(10000).time, 'en', () => 'years')).toBe('3.71609 × 10^3003 years');
+  });
+  it('does not change the table and rejects invalid numeric ranks', () => {
+    const original = structuredClone(MEASUREMENTS);
+    getMeasurement(40);
+    expect(MEASUREMENTS).toEqual(original);
+    for (const rank of [NaN,Infinity,1.5,Number.MAX_SAFE_INTEGER+1]) expect(() => getMeasurement(rank)).toThrow(RangeError);
   });
 });
 

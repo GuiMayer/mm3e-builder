@@ -688,7 +688,7 @@
   "ref119.volume": "Volume",
   "ref119.fullMeasurements": "Measurements table · ranks −5 to 30",
   "ref119.selectRank": "Select rank {{rank}}",
-  "ref119.measurementHelp": "Select a rank or tap a table row. Values are approximate; use the next higher listed measure for intermediate amounts. The official metric scale has its own rounded values. Scroll the table horizontally on narrow screens.",
+  "ref119.measurementHelp": "Enter any integer rank or tap a table row. Outside −5 to 30, the summary calculates the extension automatically. Published values are approximate and the metric scale has its own rounding. Scroll the table horizontally on narrow screens.",
   "ref119.measurementFormula": "Distance rank = time rank + speed rank. Above 30, each extra rank doubles the measure; below −5, each lower rank halves it. Do not add ranks to sum quantities: add their measures first.",
   "ref119.damageRank": "Damage rank",
   "ref119.matrix": "Damage resistance matrix · p. 346",
@@ -1113,5 +1113,8 @@
   "resources.import.missing": "The file references {{count}} missing resource(s). Include them in the exported file or restore the library before importing.",
   "targeted.source.resource": "Resource",
   "resources.hq.budgetLabel": "Effect cost (2×PL budget)",
-  "resources.error.storageConflict": "This library changed in another window. Export your pending work if needed, then reload to use its current version. No resource was overwritten."
+  "resources.error.storageConflict": "This library changed in another window. Export your pending work if needed, then reload to use its current version. No resource was overwritten.",
+  "ref119.extrapolated": "Calculated rank {{rank}} from rank {{base}}: {{operation}} each measure {{steps}} times. The published table below remains unchanged.",
+  "ref119.doubling": "double",
+  "ref119.halving": "halve"
 }

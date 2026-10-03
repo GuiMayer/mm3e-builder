@@ -4,7 +4,7 @@ import { BookOpen, ChevronDown, ChevronRight, Search, X } from 'lucide-react';
 import { BASIC_CONDITIONS, COMBINED_CONDITIONS, CONDITIONS } from '../../data/conditions';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { BENCHMARK_SECTION, REFERENCE_SECTIONS, SIZE_SECTION, filterReferenceSection, referenceText, type ReferenceCategory, type ReferenceSection } from './referenceCatalog';
-import { MEASUREMENTS, checkDegree, damageDegree, formatMeasure, type Measure, type MeasurementSystem } from './measurements';
+import { MEASUREMENTS, getMeasurement, checkDegree, damageDegree, formatMeasure, type Measure, type MeasurementSystem } from './measurements';
 import './references.css';
 
 type Category = 'quick' | 'all' | ReferenceCategory;
@@ -61,13 +61,14 @@ function ReferenceTable({ section }: { section: ReferenceSection }) {
 function Measurements({ section, system, onSystemChange }: { section: ReferenceSection; system: MeasurementSystem; onSystemChange: (system: MeasurementSystem) => void }) {
   const { t, i18n } = useTranslation();
   const [rank, setRank] = useState(0);
-  const current = MEASUREMENTS.find(row => row.rank === rank)!;
+  const current = getMeasurement(rank);
   const format = (value: Measure) => formatMeasure(value, i18n.language, (unit, count) => t(`ref119.unit.${unit}`, { count }));
   const visible = new Set(section.rows.map(row => row.id));
   return <>
-    <div className="reference-tools"><label>{t('ref119.rank')}<NumberInput aria-label={t('ref119.rank')} value={rank} min={-5} max={30} variant="compact" onChange={value => setRank(Math.trunc(value))}/></label>
+    <div className="reference-tools"><label>{t('ref119.rank')}<NumberInput aria-label={t('ref119.rank')} value={rank} variant="compact" onChange={value => { const integer = Math.trunc(value); if (Number.isSafeInteger(integer)) setRank(integer); }}/></label>
       <label>{t('ref119.units')}<select value={system} onChange={event => onSystemChange(event.target.value as MeasurementSystem)}><option value="metric">{t('ref119.metric')}</option><option value="imperial">{t('ref119.imperial')}</option></select></label></div>
     <dl className="reference-measures">{(['mass','time','distance','volume'] as const).map(key => <div key={key}><dt>{t(`ref119.${key}`)}</dt><dd>{format(key === 'time' ? current.time : current[system][key])}</dd></div>)}</dl>
+    {(rank > 30 || rank < -5) && <p className="reference-card__note" role="status">{t('ref119.extrapolated', { rank, base: rank > 30 ? 30 : -5, steps: Math.abs(rank - (rank > 30 ? 30 : -5)), operation: t(rank > 30 ? 'ref119.doubling' : 'ref119.halving') })}</p>}
     <p className="reference-card__note">{t('ref119.measurementHelp')}</p>
     <div className="reference-measure-scroll" role="region" aria-label={t('ref119.fullMeasurements')} tabIndex={0}>
       <table className="reference-measure-table"><caption className="sr-only">{t('ref119.fullMeasurements')} · {t(`ref119.${system}`)}</caption><thead><tr>{['rank','mass','time','distance','volume'].map(key => <th key={key} scope="col">{t(`ref119.${key}`)}</th>)}</tr></thead>

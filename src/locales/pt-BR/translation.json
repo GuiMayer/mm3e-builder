@@ -688,7 +688,7 @@
   "ref119.volume": "Volume",
   "ref119.fullMeasurements": "Tabela de medidas · graduações −5 a 30",
   "ref119.selectRank": "Selecionar graduação {{rank}}",
-  "ref119.measurementHelp": "Escolha a graduação ou clique na linha. Valores são aproximados; para quantidades intermediárias, use a próxima medida maior da tabela. A escala métrica oficial tem seus próprios arredondamentos. Em telas estreitas, deslize a tabela para os lados.",
+  "ref119.measurementHelp": "Digite uma graduação inteira ou clique na linha. Fora de −5 a 30, o resumo calcula a extensão automaticamente. Os valores publicados são aproximados e a escala métrica tem seus próprios arredondamentos. Em telas estreitas, deslize a tabela para os lados.",
   "ref119.measurementFormula": "Graduação de distância = tempo + velocidade. Acima de 30, cada graduação dobra a medida; abaixo de −5, cada graduação inferior a reduz à metade. Não some graduações para somar quantidades: some as medidas primeiro.",
   "ref119.damageRank": "Graduação de Dano",
   "ref119.matrix": "Matriz de resistência a dano · p. 346",
@@ -1113,5 +1113,8 @@
   "resources.import.missing": "O arquivo faz referência a {{count}} recurso(s) ausente(s). Inclua-os no arquivo exportado ou restaure a biblioteca antes de importar.",
   "targeted.source.resource": "Recurso",
   "resources.hq.budgetLabel": "Custo do efeito (limite 2×NP)",
-  "resources.error.storageConflict": "Esta biblioteca mudou em outra janela. Exporte seu trabalho pendente se necessário e recarregue para usar a versão atual. Nenhum recurso foi sobrescrito."
+  "resources.error.storageConflict": "Esta biblioteca mudou em outra janela. Exporte seu trabalho pendente se necessário e recarregue para usar a versão atual. Nenhum recurso foi sobrescrito.",
+  "ref119.extrapolated": "Graduação {{rank}} calculada a partir da graduação {{base}}: {{operation}} cada medida {{steps}} vezes. A tabela oficial abaixo permanece inalterada.",
+  "ref119.doubling": "dobrando",
+  "ref119.halving": "reduzindo à metade"
 }

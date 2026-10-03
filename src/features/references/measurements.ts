@@ -1,5 +1,6 @@
 export type MeasureUnit = 'g' | 'kg' | 'lb' | 'ton' | 'kton' | 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year' | 'cm' | 'm' | 'km' | 'inch' | 'ft' | 'mile' | 'm3' | 'cft';
-export type Measure = readonly [number | string, MeasureUnit];
+interface ScaledAmount { base: number; doublings: number; }
+export type Measure = readonly [number | string | ScaledAmount, MeasureUnit];
 export type MeasurementSystem = 'metric' | 'imperial';
 export interface MeasurementRow { rank: number; time: Measure; metric: { mass: Measure; distance: Measure; volume: Measure }; imperial: { mass: Measure; distance: Measure; volume: Measure }; }
 
@@ -18,8 +19,42 @@ export const MEASUREMENTS: readonly MeasurementRow[] = times.map((time, index) =
   imperial: { mass: imperialMass[index], distance: imperialDistances[index], volume: [imperialVolumes[index], 'cft'] },
 }));
 
+function scaleMeasure([amount, unit]: Measure, doublings: number): Measure {
+  const base = typeof amount === 'string' ? amount.split('/').map(Number).reduce((a, b) => a / b) : typeof amount === 'number' ? amount : amount.base;
+  const value = base * 2 ** doublings;
+  // Keep extreme ranks as a compact scale rather than overflowing/underflowing.
+  return [Number.isFinite(value) && value > 0 ? value : { base, doublings }, unit];
+}
+
+/** Preserve published rounded values; extend from the closest table endpoint. */
+export function getMeasurement(rank: number): MeasurementRow {
+  if (!Number.isSafeInteger(rank)) throw new RangeError('Measurement rank must be a safe integer');
+  const listed = MEASUREMENTS.find(row => row.rank === rank);
+  if (listed) return listed;
+  const endpoint = rank > 30 ? MEASUREMENTS[MEASUREMENTS.length - 1] : MEASUREMENTS[0];
+  const doublings = rank - endpoint.rank;
+  const scaleSystem = (system: MeasurementSystem) => ({
+    mass: scaleMeasure(endpoint[system].mass, doublings),
+    distance: scaleMeasure(endpoint[system].distance, doublings),
+    volume: scaleMeasure(endpoint[system].volume, doublings),
+  });
+  return { rank, time: scaleMeasure(endpoint.time, doublings), metric: scaleSystem('metric'), imperial: scaleSystem('imperial') };
+}
+
 export function formatMeasure([amount, unit]: Measure, language: string, unitLabel: (unit: MeasureUnit, count?: number) => string): string {
-  const value = typeof amount === 'string' ? amount : new Intl.NumberFormat(language, { maximumFractionDigits: 4 }).format(amount);
+  let value: string;
+  if (typeof amount === 'string') value = amount;
+  else if (typeof amount === 'number') {
+    value = amount >= 1e12 || (amount > 0 && amount < .0001)
+      ? new Intl.NumberFormat(language, { notation: 'scientific', maximumSignificantDigits: 6 }).format(amount)
+      : new Intl.NumberFormat(language, { maximumFractionDigits: 4 }).format(amount);
+  } else {
+    const log = Math.log10(amount.base) + amount.doublings * Math.LOG10E * Math.LN2;
+    let exponent = Math.floor(log);
+    let mantissa = Number((10 ** (log - exponent)).toPrecision(6));
+    if (mantissa >= 10) { mantissa = 1; exponent++; }
+    value = `${new Intl.NumberFormat(language, { maximumSignificantDigits: 6 }).format(mantissa)} × 10^${new Intl.NumberFormat(language, { useGrouping: false }).format(exponent)}`;
+  }
   return `${value} ${unitLabel(unit, typeof amount === 'number' ? amount : undefined)}`;
 }
 
