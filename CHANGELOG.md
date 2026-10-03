@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Preview and save portrait fit: preserve proportions with borders, center crop
   or stretch to fill. Reuse the choice in the sheet and HTML/PDF without changing
   the original image; allow fitting an existing portrait without reloading it.
+- Share the portrait frame between the sheet and editor preview, using the
+  actual responsive frame dimensions and preserving proportions when enlarged.
 - Explain local-only persistence before file selection and during JSON export;
   preserve local portraits across character copies and include them in clear-all.
 - Add opt-in portrait inclusion in the compact HTML/PDF header, preserving text

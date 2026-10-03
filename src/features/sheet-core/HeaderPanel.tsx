@@ -260,24 +260,6 @@ function HeaderPanelComponent() {
           align-items: flex-start;
         }
 
-        .hero-avatar {
-          width: 64px;
-          height: 64px;
-          border-radius: var(--r-lg);
-          background: linear-gradient(135deg, var(--c-primary-muted), var(--c-surface-elevated));
-          border: 2px solid var(--c-border);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--c-primary);
-          flex-shrink: 0;
-          transition: all var(--t-fast);
-        }
-        .hero-avatar:hover {
-          border-color: var(--c-primary);
-          box-shadow: 0 0 16px rgba(var(--c-primary-rgb), 0.3);
-        }
-
         .hero-fields { flex: 1; display: flex; flex-direction: column; gap: var(--s-md); }
 
         .hero-name-input {
@@ -568,10 +550,6 @@ function HeaderPanelComponent() {
           .hero-identity {
             flex-direction: column;
             gap: var(--s-md);
-          }
-          .hero-avatar {
-            width: 80px;
-            height: 80px;
           }
           .hero-fields {
             width: 100%;

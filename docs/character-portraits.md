@@ -43,7 +43,9 @@ local não recebe caminho, base64 ou referência de mídia dentro do JSON.
 Antes de salvar, escolha **Manter com bordas** (imagem inteira, proporção
 preservada), **Cortar pelo centro** (preenche com corte central, sem distorção)
 ou **Esticar para preencher** (preenche todo o espaço, podendo mudar a proporção).
-A prévia mostra o resultado; a imagem original permanece disponível e o corte
+A prévia usa o mesmo componente de moldura da ficha, com as mesmas bordas,
+fundo e proporção do espaço disponível na largura atual da tela. Ampliar
+preserva essa proporção. A imagem original permanece disponível e o corte
 não é destrutivo. O mesmo encaixe é usado no cabeçalho e no PDF.
 
 É possível abrir um retrato existente e salvar apenas a mudança de encaixe,

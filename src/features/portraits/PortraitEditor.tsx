@@ -1,19 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
-import { User, ImagePlus, Link, RefreshCw, Trash2 } from 'lucide-react';
+import { ImagePlus, Link, RefreshCw, Trash2 } from 'lucide-react';
 import type { ICharacterHeader } from '../../entities/types';
 import { Modal } from '../../shared/ui/Modal';
 import { Button } from '../../shared/ui/Button';
 import { useCharactersStore } from '../../store/charactersStore';
 import { collectUnusedPortraitMedia, removeLocalPortrait, savePortrait, type PortraitMedia } from '../../services/storage/portraitStorage';
 import { downloadPortrait, portraitErrorKey, preparePortrait, validatePortraitUrl } from '../../services/portraits/portraitImages';
+import { PortraitFrame, type PortraitFrameSize } from './PortraitFrame';
 import { useBlobUrl } from './usePortrait';
 import { useToast } from '../../shared/hooks/useToast';
 import './portraits.css';
 
-interface Props { tabId: string; characterId: string; portraitUrl?: string; portraitFit?: ICharacterHeader['portraitFit']; currentImage?: string; local: boolean; cached: boolean; onClose: () => void }
+interface Props { tabId: string; characterId: string; portraitUrl?: string; portraitFit?: ICharacterHeader['portraitFit']; frameSize: PortraitFrameSize; currentImage?: string; local: boolean; cached: boolean; onClose: () => void }
 
-export function PortraitEditor({ tabId, characterId, portraitUrl, portraitFit, currentImage, local, cached, onClose }: Props) {
+export function PortraitEditor({ tabId, characterId, portraitUrl, portraitFit, frameSize, currentImage, local, cached, onClose }: Props) {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const [mode, setMode] = useState<'link' | 'file'>(portraitUrl ? 'link' : 'file');
@@ -102,9 +103,14 @@ export function PortraitEditor({ tabId, characterId, portraitUrl, portraitFit, c
         </div>
         <p className="portrait-hint">{t(`portrait.fit.${fit}Hint`)}</p>
       </fieldset>}
-      <button type="button" className={`portrait-preview ${expanded ? 'portrait-preview--expanded' : ''}`} disabled={!source || saving} onClick={() => setExpanded(!expanded)} aria-label={t(expanded ? 'portrait.reduce' : 'portrait.expand')}>
-        {source ? <img style={{ objectFit: fit, objectPosition: 'center' }} key={source} src={source} referrerPolicy="no-referrer" alt={t('portrait.preview')} onLoad={() => { if (source === fallback) setFallbackReady(true); }} onError={() => { if (source === fallback) setFallbackReady(false); setError(t('portrait.displayError')); }} /> : <User size={48} />}
-      </button>
+      <PortraitFrame
+        className={`portrait-preview ${expanded ? 'portrait-preview--expanded' : ''}`}
+        style={{ '--portrait-preview-width': `${frameSize.width}px`, '--portrait-preview-ratio': frameSize.width / frameSize.height } as CSSProperties}
+        src={source} fit={fit} imageAlt={t('portrait.preview')}
+        disabled={!source || saving} onClick={() => setExpanded(!expanded)} aria-label={t(expanded ? 'portrait.reduce' : 'portrait.expand')}
+        onImageLoad={() => { if (source === fallback) setFallbackReady(true); }}
+        onImageError={() => { if (source === fallback) setFallbackReady(false); setError(t('portrait.displayError')); }}
+      />
       <div role="status" aria-live="polite" className="portrait-hint">{busy ? t('portrait.loading') : prepared ? t('portrait.ready') : fallbackReady ? t('portrait.linkOnly') : local ? t('portrait.localSaved') : currentImage ? t(cached ? 'portrait.linkSaved' : 'portrait.linkOnly') : t('portrait.empty')}</div>
       {error && <p role="alert" className="portrait-error">{error}</p>}
       <div className="portrait-actions">
