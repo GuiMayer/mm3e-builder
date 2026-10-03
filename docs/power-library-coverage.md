@@ -17,7 +17,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 8 | Martial Powers, Mental Powers, Meta Powers | 66 receitas/variantes auditadas. |
 | 9 | Morphing Powers, Plant Powers, Radiation Powers | 72 receitas/variantes auditadas. |
 | 10 | Sensory Powers, Size Powers, Sonic Powers | 66 receitas/variantes auditadas. |
-| 11 | Speed Powers, Strength Powers, Summoning Powers | Pendente |
+| 11 | Speed Powers, Strength Powers, Summoning Powers | 64 receitas/variantes auditadas. |
 | 12 | Talent Powers, Tech Powers, Teleport Powers | Pendente |
 | 13 | Time Powers, Water Powers, Weather Powers | Pendente |
 
@@ -80,3 +80,7 @@ Formas preservam compras fixas, invocações usam Múltiplos Lacaios por gradua�
 ## Lote 10
 
 As compras de perícias preservam +2 bônus por graduação selecionada, convertendo para duas graduações reais de perícia. Lie Detector usa a progressão fracionária normal (Limitado muda 1:2 para 1:3), em vez de simplesmente dividir o custo por dois. Afeta Corpóreo acompanha a graduação da Aflição em Internal/Phase Attack. Enhanced Extra é uma compra normal de Atributo Aprimorado; não altera automaticamente o atributo/efeito existente. Sensory Overload custa 3/graduação com Cumulativo, e Shrink-Ray custa 2/graduação com apenas terceiro grau.
+
+## Lote 11
+
+Extras Aprimorados são compras normais de Atributo Aprimorado (1/2/3 PP por graduação do extra), com o alvo indicado na configuração. Não compram novamente o dano/velocidade já existente nem alteram outro poder automaticamente. Air Cushion custa 4, não os 3 impressos. Constructs com Tipo Amplo custa 6/graduação, não os 5 impressos. Untouchable separa Imunidade 80 limitada por duas condições (27) da compra de Reação na Velocidade existente (3), somando 30.

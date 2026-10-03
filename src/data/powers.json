@@ -1007,6 +1007,14 @@
         {
           "name": "Enhanced Extra",
           "cost": 1
+        },
+        {
+          "name": "Enhanced Extra (2 PP)",
+          "cost": 2
+        },
+        {
+          "name": "Enhanced Extra (3 PP)",
+          "cost": 3
         }
       ]
     },

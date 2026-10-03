@@ -15684,5 +15684,1287 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "environment"
     ]
+  },
+  {
+    "id": "speed-flattening-wake",
+    "profileId": "speed",
+    "name": {
+      "en": "Flattening Wake",
+      "pt": "Rastro Derrubador"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Reaction · Area · Instant Recovery · Limited Degree · Limited",
+      "pt": "Aflição · Reação · Área · Recuperação Instantânea · Graus Limitados · Limitado"
+    },
+    "page": 172,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "speed-lightning-disarm",
+    "profileId": "speed",
+    "name": {
+      "en": "Lightning Disarm",
+      "pt": "Desarme Relâmpago"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 172,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "speed-rapid-strike",
+    "profileId": "speed",
+    "name": {
+      "en": "Rapid Strike",
+      "pt": "Golpe Rápido"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 172,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "speed-sonic-boom",
+    "profileId": "speed",
+    "name": {
+      "en": "Sonic Boom",
+      "pt": "Estrondo Sônico"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction",
+      "pt": "Aflição"
+    },
+    "page": 172,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "speed-super-sonic-punch",
+    "profileId": "speed",
+    "name": {
+      "en": "Super-Sonic Punch",
+      "pt": "Soco Supersônico"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage",
+      "pt": "Dano"
+    },
+    "page": 172,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "speed-vacuum",
+    "profileId": "speed",
+    "name": {
+      "en": "Vacuum",
+      "pt": "Vácuo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Concentration · Cumulative",
+      "pt": "Aflição · Área · Concentration · Cumulativo"
+    },
+    "page": 173,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "speed-whirlwind-attack",
+    "profileId": "speed",
+    "name": {
+      "en": "Whirlwind Attack",
+      "pt": "Ataque Turbilhão"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 173,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "speed-fast-defense",
+    "profileId": "speed",
+    "name": {
+      "en": "Fast Defense",
+      "pt": "Defesa Rápida"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Enhanced Trait",
+      "pt": "Traço Aprimorado · Traço Aprimorado"
+    },
+    "page": 173,
+    "effectIds": [
+      "enhanced-trait",
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "speed-frictionless",
+    "profileId": "speed",
+    "name": {
+      "en": "Frictionless",
+      "pt": "Sem Atrito"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 173,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "speed-throwback",
+    "profileId": "speed",
+    "name": {
+      "en": "Throwback",
+      "pt": "Devolver Projétil"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect · Reflect · Limited",
+      "pt": "Deflexão · Refletir · Limitado"
+    },
+    "page": 173,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "speed-untouchable",
+    "profileId": "speed",
+    "name": {
+      "en": "Untouchable",
+      "pt": "Intocável"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Concentration · Limited · Enhanced Trait",
+      "pt": "Imunidade · Concentração · Limitado · Traço Aprimorado"
+    },
+    "page": 173,
+    "effectIds": [
+      "immunity",
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "speed-vibrational-phasing-insubstantial",
+    "profileId": "speed",
+    "name": {
+      "en": "Vibrational Phasing — Insubstantial",
+      "pt": "Fase Vibracional — Intangível"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 173,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "speed-vibrational-phasing-permeate",
+    "profileId": "speed",
+    "name": {
+      "en": "Vibrational Phasing — Permeate",
+      "pt": "Fase Vibracional — Permear"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 173,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "speed-air-brakes",
+    "profileId": "speed",
+    "name": {
+      "en": "Air Brakes",
+      "pt": "Freios Aéreos"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 173,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "speed-air-cushion",
+    "profileId": "speed",
+    "name": {
+      "en": "Air Cushion",
+      "pt": "Almofada de Ar"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Affects Others · Area",
+      "pt": "Movimento · Afeta Outros · Área"
+    },
+    "page": 173,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "speed-dimensional-vibration",
+    "profileId": "speed",
+    "name": {
+      "en": "Dimensional Vibration",
+      "pt": "Vibração Dimensional"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 173,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "speed-run-on-water",
+    "profileId": "speed",
+    "name": {
+      "en": "Run On Water",
+      "pt": "Correr na Água"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 174,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "speed-run-up-walls",
+    "profileId": "speed",
+    "name": {
+      "en": "Run Up Walls",
+      "pt": "Correr nas Paredes"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 174,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "speed-running-jump",
+    "profileId": "speed",
+    "name": {
+      "en": "Running Jump",
+      "pt": "Salto com Impulso"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping · Quirk",
+      "pt": "Salto · Peculiaridade"
+    },
+    "page": 174,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "speed-running-speed",
+    "profileId": "speed",
+    "name": {
+      "en": "Running Speed",
+      "pt": "Velocidade de Corrida"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Speed",
+      "pt": "Velocidade"
+    },
+    "page": 174,
+    "effectIds": [
+      "speed"
+    ]
+  },
+  {
+    "id": "speed-flight-speed",
+    "profileId": "speed",
+    "name": {
+      "en": "Flight Speed",
+      "pt": "Velocidade de Voo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight",
+      "pt": "Voo"
+    },
+    "page": 174,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "speed-share-speed",
+    "profileId": "speed",
+    "name": {
+      "en": "Share Speed",
+      "pt": "Compartilhar Velocidade"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 174,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "speed-spinning-drill",
+    "profileId": "speed",
+    "name": {
+      "en": "Spinning Drill",
+      "pt": "Broca Giratória"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing",
+      "pt": "Escavação"
+    },
+    "page": 174,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "speed-super-temporal-speed",
+    "profileId": "speed",
+    "name": {
+      "en": "Super-Temporal Speed",
+      "pt": "Velocidade Supertemporal"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 174,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "speed-cyclone",
+    "profileId": "speed",
+    "name": {
+      "en": "Cyclone",
+      "pt": "Ciclone"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Area · Concentration · Side Effect",
+      "pt": "Mover Objetos · Área · Concentração · Efeito Colateral"
+    },
+    "page": 174,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "speed-fast-action",
+    "profileId": "speed",
+    "name": {
+      "en": "Fast Action",
+      "pt": "Ação Rápida"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Quickness",
+      "pt": "Rapidez"
+    },
+    "page": 174,
+    "effectIds": [
+      "quickness"
+    ]
+  },
+  {
+    "id": "speed-fast-healing",
+    "profileId": "speed",
+    "name": {
+      "en": "Fast Healing",
+      "pt": "Cura Rápida"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Regeneration",
+      "pt": "Regeneração"
+    },
+    "page": 175,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "speed-lightning-reflexes",
+    "profileId": "speed",
+    "name": {
+      "en": "Lightning Reflexes",
+      "pt": "Reflexos Relâmpago"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 175,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "speed-quicker-than-the-eye",
+    "profileId": "speed",
+    "name": {
+      "en": "Quicker Than the Eye",
+      "pt": "Mais Rápido que o Olho"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Limited",
+      "pt": "Camuflagem · Limitado"
+    },
+    "page": 175,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "speed-speed-learning",
+    "profileId": "speed",
+    "name": {
+      "en": "Speed-Learning",
+      "pt": "Aprendizado Rápido"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 175,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "strength-bullet-toss",
+    "profileId": "strength",
+    "name": {
+      "en": "Bullet Toss",
+      "pt": "Arremesso Balístico"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Quirk",
+      "pt": "Dano · Alcance Aumentado · Peculiaridade"
+    },
+    "page": 177,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "strength-cracking-the-whip",
+    "profileId": "strength",
+    "name": {
+      "en": "Cracking the Whip",
+      "pt": "Estalar o Chicote"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Extra Condition · Limited Degree · Limited · Alternate Resistance",
+      "pt": "Aflição · Área · Condição Extra · Graus Limitados · Limitado · Resistência Alternativa"
+    },
+    "page": 177,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "strength-shockwave",
+    "profileId": "strength",
+    "name": {
+      "en": "Shockwave",
+      "pt": "Onda de Choque"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Extra Condition · Limited Degree · Limited · Alternate Resistance",
+      "pt": "Aflição · Área · Condição Extra · Graus Limitados · Limitado · Resistência Alternativa"
+    },
+    "page": 177,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "strength-cutting-loose",
+    "profileId": "strength",
+    "name": {
+      "en": "Cutting Loose",
+      "pt": "Liberar Força"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 177,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "strength-finger-flick",
+    "profileId": "strength",
+    "name": {
+      "en": "Finger Flick",
+      "pt": "Estalo de Dedo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Subtle",
+      "pt": "Dano · Sutil"
+    },
+    "page": 177,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "strength-massive-knockback",
+    "profileId": "strength",
+    "name": {
+      "en": "Massive Knockback",
+      "pt": "Repulsão Massiva"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Reduced Range · Limited Direction · Linked",
+      "pt": "Mover Objetos · Alcance Reduzido · Direção Limitada · Vinculado"
+    },
+    "page": 177,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "strength-sleeper-hold",
+    "profileId": "strength",
+    "name": {
+      "en": "Sleeper Hold",
+      "pt": "Mata-leão"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Progressive · Grab-Based",
+      "pt": "Aflição · Progressivo · Baseado em Agarrar"
+    },
+    "page": 178,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "strength-thunderclap",
+    "profileId": "strength",
+    "name": {
+      "en": "Thunderclap",
+      "pt": "Palma Trovejante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Extra Condition · Limited Degree",
+      "pt": "Aflição · Área · Condição Extra · Graus Limitados"
+    },
+    "page": 178,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "strength-bracing",
+    "profileId": "strength",
+    "name": {
+      "en": "Bracing",
+      "pt": "Firmar-se"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Sustained",
+      "pt": "Imunidade · Sustentado"
+    },
+    "page": 178,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "strength-stonewall",
+    "profileId": "strength",
+    "name": {
+      "en": "Stonewall",
+      "pt": "Muralha"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Damage · Reaction · Limited",
+      "pt": "Dano · Reação · Limitado"
+    },
+    "page": 178,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "strength-super-endurance",
+    "profileId": "strength",
+    "name": {
+      "en": "Super-Endurance",
+      "pt": "Super-resistência"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Quirk",
+      "pt": "Imunidade · Peculiaridade"
+    },
+    "page": 178,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "strength-super-toughness",
+    "profileId": "strength",
+    "name": {
+      "en": "Super-Toughness",
+      "pt": "Superdureza"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection",
+      "pt": "Proteção"
+    },
+    "page": 179,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "strength-tug-of-war",
+    "profileId": "strength",
+    "name": {
+      "en": "Tug of War",
+      "pt": "Cabo de Guerra"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 179,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "strength-makeshift-handholds",
+    "profileId": "strength",
+    "name": {
+      "en": "Makeshift Handholds",
+      "pt": "Apoios Improvisados"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 179,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "strength-super-leaping",
+    "profileId": "strength",
+    "name": {
+      "en": "Super-Leaping",
+      "pt": "Supersalto"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping",
+      "pt": "Salto"
+    },
+    "page": 179,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "strength-unstoppable",
+    "profileId": "strength",
+    "name": {
+      "en": "Unstoppable",
+      "pt": "Imparável"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing · Penetrating",
+      "pt": "Escavação · Penetrante"
+    },
+    "page": 179,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "strength-power-lifting",
+    "profileId": "strength",
+    "name": {
+      "en": "Power-Lifting",
+      "pt": "Erguer Peso"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Limited",
+      "pt": "Traço Aprimorado · Limitado"
+    },
+    "page": 179,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "strength-strength-boost",
+    "profileId": "strength",
+    "name": {
+      "en": "Strength Boost",
+      "pt": "Aumento de Força"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades",
+      "pt": "Traço Aprimorado · Desgaste"
+    },
+    "page": 179,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "strength-absorption-boost",
+    "profileId": "strength",
+    "name": {
+      "en": "Absorption Boost",
+      "pt": "Aumento por Absorção"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades · Limited",
+      "pt": "Traço Aprimorado · Desgaste · Limitado"
+    },
+    "page": 180,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "strength-raging-strength",
+    "profileId": "strength",
+    "name": {
+      "en": "Raging Strength",
+      "pt": "Força da Fúria"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Limited",
+      "pt": "Traço Aprimorado · Limitado"
+    },
+    "page": 180,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "summoning-animation",
+    "profileId": "summoning",
+    "name": {
+      "en": "Animation",
+      "pt": "Animar Objetos"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Summon · Increased Range · Limited",
+      "pt": "Invocar · Alcance Aumentado · Limitado"
+    },
+    "page": 182,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-constructs",
+    "profileId": "summoning",
+    "name": {
+      "en": "Constructs",
+      "pt": "Construtos"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Summon · Increased Range · Variable Type (Broad) · Controlled",
+      "pt": "Invocar · Alcance Aumentado · Variable Type (Broad) · Controlado"
+    },
+    "page": 182,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-duplication",
+    "profileId": "summoning",
+    "name": {
+      "en": "Duplication",
+      "pt": "Duplicação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Summon · Heroic",
+      "pt": "Invocar · Heroico"
+    },
+    "page": 183,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-necromancy",
+    "profileId": "summoning",
+    "name": {
+      "en": "Necromancy",
+      "pt": "Necromancia"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Summon · Controlled · Horde · Multiple Minions (per effect rank)",
+      "pt": "Invocar · Controlado · Horda · Múltiplos Lacaios (por graduação do efeito)"
+    },
+    "page": 183,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-swarm",
+    "profileId": "summoning",
+    "name": {
+      "en": "Swarm",
+      "pt": "Enxame"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Summon · Active · Controlled",
+      "pt": "Invocar · Ativo · Controlado"
+    },
+    "page": 183,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-decoys",
+    "profileId": "summoning",
+    "name": {
+      "en": "Decoys",
+      "pt": "Iscas"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment · Limited",
+      "pt": "Camuflagem · Limitado"
+    },
+    "page": 183,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "summoning-sacrifice",
+    "profileId": "summoning",
+    "name": {
+      "en": "Sacrifice",
+      "pt": "Sacrifício"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 183,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "summoning-castling",
+    "profileId": "summoning",
+    "name": {
+      "en": "Castling",
+      "pt": "Roque"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Easy · Extended · Limited · Medium",
+      "pt": "Teleporte · Preciso · Fácil · Estendido · Limitado · Meio"
+    },
+    "page": 184,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "summoning-duplicate-ladder",
+    "profileId": "summoning",
+    "name": {
+      "en": "Duplicate Ladder",
+      "pt": "Escada de Duplicatas"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping",
+      "pt": "Salto"
+    },
+    "page": 184,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "summoning-summon-steed",
+    "profileId": "summoning",
+    "name": {
+      "en": "Summon Steed",
+      "pt": "Invocar Montaria"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Summon · Increased Duration",
+      "pt": "Invocar · Duração Aumentada"
+    },
+    "page": 184,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-summon-vehicle",
+    "profileId": "summoning",
+    "name": {
+      "en": "Summon Vehicle",
+      "pt": "Invocar Veículo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Summon · Controlled",
+      "pt": "Invocar · Controlado"
+    },
+    "page": 184,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-anatomic-split",
+    "profileId": "summoning",
+    "name": {
+      "en": "Anatomic Split",
+      "pt": "Divisão Anatômica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled · Mental Link · Multiple Minions (per effect rank) · Side Effect",
+      "pt": "Invocar · Controlado · Mental Link · Múltiplos Lacaios (por graduação do efeito) · Efeito Colateral"
+    },
+    "page": 184,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-combine",
+    "profileId": "summoning",
+    "name": {
+      "en": "Combine",
+      "pt": "Combinar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Heroic · Feedback · Limited",
+      "pt": "Invocar · Heroico · Retroalimentação · Limitado"
+    },
+    "page": 184,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "summoning-empower",
+    "profileId": "summoning",
+    "name": {
+      "en": "Empower",
+      "pt": "Conceder Poder"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Variable Type (General) · Limited",
+      "pt": "Invocar · Variable Type (General) · Limitado"
+    },
+    "page": 185,
+    "effectIds": [
+      "summon"
+    ]
   }
 ] satisfies LibraryEntry[];
