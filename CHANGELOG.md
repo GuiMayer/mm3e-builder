@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed — Power Builder layout
+- Improve desktop reference readability with a wider description column,
+  14px text, balanced line spacing and a separate metadata row. Preserve
+  the existing mobile reference typography and spacing.
 - Show alternate and their linked effect descriptions in the same responsive
   reference panel as the base effect. Render only one plus icon on the linked
   and alternate effect buttons in both languages.

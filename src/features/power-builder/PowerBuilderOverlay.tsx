@@ -1272,6 +1272,18 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           padding: var(--s-sm) var(--s-md);
           background: var(--c-primary-muted); border-radius: var(--r-sm);
         }
+        .build-effect-meta { display: contents; }
+        @media (min-width: 769px) {
+          @container (min-width: 680px) {
+            .build-effect-layout--with-reference { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          }
+          .build-effect-layout > .build-effect-info { padding: 12px 16px; gap: 12px; }
+          .build-effect-layout .build-effect-meta {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; width: 100%; line-height: 1.4;
+          }
+          .build-effect-layout .effect-detail { font-size: 0.8rem; }
+          .build-effect-layout .effect-desc { font-size: 0.875rem; line-height: 1.55; }
+        }
         .effect-badge {
           font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
           padding: 2px 8px; border-radius: var(--r-full);
