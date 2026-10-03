@@ -16,7 +16,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 7 | Luck Powers, Magic Powers, Magnetic Powers | 128 receitas/variantes auditadas; Fifth Wheel é referência de duração. |
 | 8 | Martial Powers, Mental Powers, Meta Powers | 66 receitas/variantes auditadas. |
 | 9 | Morphing Powers, Plant Powers, Radiation Powers | 72 receitas/variantes auditadas. |
-| 10 | Sensory Powers, Size Powers, Sonic Powers | Pendente |
+| 10 | Sensory Powers, Size Powers, Sonic Powers | 66 receitas/variantes auditadas. |
 | 11 | Speed Powers, Strength Powers, Summoning Powers | Pendente |
 | 12 | Talent Powers, Tech Powers, Teleport Powers | Pendente |
 | 13 | Time Powers, Water Powers, Weather Powers | Pendente |
@@ -76,3 +76,7 @@ Possessão usa Fundir-se ao Alvo (+1), e Contra-ataque usa Exige Teste de Ataque
 ## Lote 9
 
 Formas preservam compras fixas, invocações usam Múltiplos Lacaios por graduação e Absorção de Radiação usa Fonte específica de Atributo Aprimorado. Woods Walk com Movimento 2 e Limitado custa 2, embora o texto imprima 1. O desconto Notável de Plant Form é aplicado à forma perceptível, evitando cobrar um mínimo separado sobre Proteção 1.
+
+## Lote 10
+
+As compras de perícias preservam +2 bônus por graduação selecionada, convertendo para duas graduações reais de perícia. Lie Detector usa a progressão fracionária normal (Limitado muda 1:2 para 1:3), em vez de simplesmente dividir o custo por dois. Afeta Corpóreo acompanha a graduação da Aflição em Internal/Phase Attack. Enhanced Extra é uma compra normal de Atributo Aprimorado; não altera automaticamente o atributo/efeito existente. Sensory Overload custa 3/graduação com Cumulativo, e Shrink-Ray custa 2/graduação com apenas terceiro grau.

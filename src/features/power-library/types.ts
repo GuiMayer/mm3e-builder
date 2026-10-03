@@ -8,6 +8,8 @@ export interface PowerTemplateComponent extends Omit<ICharacterPowerComponent, '
   scaledModifiers?: string[];
   /** Purchase flat modifier ranks on an existing trait, without buying a new base effect. */
   modifierRanksOnly?: boolean;
+  /** For recipes that buy two skill bonuses for each selectable power rank. */
+  rankMultiplier?: number;
   chooseSenses?: boolean;
   choices?: Array<{ id: string; label: LibraryText; options: Array<{ value: string; label: LibraryText }> }>;
 }

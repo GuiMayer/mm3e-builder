@@ -14358,5 +14358,1331 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "senses"
     ]
+  },
+  {
+    "id": "sensory-dazzle",
+    "profileId": "sensory",
+    "name": {
+      "en": "Dazzle",
+      "pt": "Ofuscar"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado · Resistência Alternativa"
+    },
+    "page": 154,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "sensory-obscure",
+    "profileId": "sensory",
+    "name": {
+      "en": "Obscure",
+      "pt": "Obscurecer"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Concealment · Increased Range · Area · Attack",
+      "pt": "Camuflagem · Alcance Aumentado · Área · Ataque"
+    },
+    "page": 154,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "sensory-sensory-overload",
+    "profileId": "sensory",
+    "name": {
+      "en": "Sensory Overload",
+      "pt": "Sobrecarga Sensorial"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Resistência Alternativa"
+    },
+    "page": 155,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "sensory-danger-sense",
+    "profileId": "sensory",
+    "name": {
+      "en": "Danger Sense",
+      "pt": "Sentido de Perigo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 155,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-defensive-awareness",
+    "profileId": "sensory",
+    "name": {
+      "en": "Defensive Awareness",
+      "pt": "Consciência Defensiva"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 155,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "sensory-invisibility",
+    "profileId": "sensory",
+    "name": {
+      "en": "Invisibility",
+      "pt": "Invisibilidade"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment",
+      "pt": "Camuflagem"
+    },
+    "page": 155,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "sensory-sensory-shield-2",
+    "profileId": "sensory",
+    "name": {
+      "en": "Sensory Shield — 2",
+      "pt": "Escudo Sensorial — 2"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Half Effect",
+      "pt": "Imunidade · Metade do Efeito"
+    },
+    "page": 155,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "sensory-sensory-shield-5",
+    "profileId": "sensory",
+    "name": {
+      "en": "Sensory Shield — 5",
+      "pt": "Escudo Sensorial — 5"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Half Effect",
+      "pt": "Imunidade · Metade do Efeito"
+    },
+    "page": 155,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "sensory-silence",
+    "profileId": "sensory",
+    "name": {
+      "en": "Silence",
+      "pt": "Silêncio"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment",
+      "pt": "Camuflagem"
+    },
+    "page": 155,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "sensory-pathfinder",
+    "profileId": "sensory",
+    "name": {
+      "en": "Pathfinder",
+      "pt": "Encontrar Caminho"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 156,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-tracking-teleport",
+    "profileId": "sensory",
+    "name": {
+      "en": "Tracking Teleport",
+      "pt": "Rastrear Teleporte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 156,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-aura-reading",
+    "profileId": "sensory",
+    "name": {
+      "en": "Aura Reading",
+      "pt": "Leitura de Aura"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 156,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-cosmic-awareness",
+    "profileId": "sensory",
+    "name": {
+      "en": "Cosmic Awareness",
+      "pt": "Consciência Cósmica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature · Senses",
+      "pt": "Característica · Sentidos"
+    },
+    "page": 156,
+    "effectIds": [
+      "feature",
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-lie-detector",
+    "profileId": "sensory",
+    "name": {
+      "en": "Lie Detector",
+      "pt": "Detector de Mentiras"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Limited",
+      "pt": "Traço Aprimorado · Limitado"
+    },
+    "page": 156,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "sensory-radar",
+    "profileId": "sensory",
+    "name": {
+      "en": "Radar",
+      "pt": "Radar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 156,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-sonar",
+    "profileId": "sensory",
+    "name": {
+      "en": "Sonar",
+      "pt": "Sonar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 156,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-spatial-awareness",
+    "profileId": "sensory",
+    "name": {
+      "en": "Spatial Awareness",
+      "pt": "Consciência Espacial"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 156,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-x-ray-vision",
+    "profileId": "sensory",
+    "name": {
+      "en": "X-Ray Vision",
+      "pt": "Visão de Raios X"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 156,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sensory-enhanced-senses",
+    "profileId": "sensory",
+    "name": {
+      "en": "Enhanced Senses",
+      "pt": "Sentidos Aprimorados"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 156,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "sensory-synesthesia",
+    "profileId": "sensory",
+    "name": {
+      "en": "Synesthesia",
+      "pt": "Sinestesia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature · Variable Descriptor",
+      "pt": "Característica · Descritor Variável"
+    },
+    "page": 156,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "size-growth-momentum",
+    "profileId": "size",
+    "name": {
+      "en": "Growth Momentum",
+      "pt": "Impulso de Crescimento"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Limited",
+      "pt": "Dano · Limitado"
+    },
+    "page": 160,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "size-internal-attack",
+    "profileId": "size",
+    "name": {
+      "en": "Internal Attack",
+      "pt": "Ataque Interno"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative · Affects Corporeal · Subtle · Quirk",
+      "pt": "Aflição · Cumulativo · Afeta Corpóreos · Sutil · Peculiaridade"
+    },
+    "page": 160,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "size-phase-attack",
+    "profileId": "size",
+    "name": {
+      "en": "Phase Attack",
+      "pt": "Ataque de Fase"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative · Affects Corporeal",
+      "pt": "Aflição · Cumulativo · Afeta Corpóreos"
+    },
+    "page": 160,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "size-massive-missile",
+    "profileId": "size",
+    "name": {
+      "en": "Massive Missile",
+      "pt": "Míssil Massivo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area · Increased Range · Quirk",
+      "pt": "Dano · Área · Alcance Aumentado · Peculiaridade"
+    },
+    "page": 160,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "size-shrink-ray",
+    "profileId": "size",
+    "name": {
+      "en": "Shrink-Ray",
+      "pt": "Raio Encolhedor"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive · Limited Degree · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Progressivo · Graus Limitados · Resistência Alternativa"
+    },
+    "page": 160,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "size-density-decrease",
+    "profileId": "size",
+    "name": {
+      "en": "Density Decrease",
+      "pt": "Diminuir Densidade"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 160,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "size-massive-armor",
+    "profileId": "size",
+    "name": {
+      "en": "Massive Armor",
+      "pt": "Armadura Massiva"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 161,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "size-shrinking-dodge",
+    "profileId": "size",
+    "name": {
+      "en": "Shrinking Dodge",
+      "pt": "Esquiva por Encolhimento"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 161,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "size-microflight",
+    "profileId": "size",
+    "name": {
+      "en": "Microflight",
+      "pt": "Microvoo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Quirk",
+      "pt": "Voo · Peculiaridade"
+    },
+    "page": 161,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "size-microport",
+    "profileId": "size",
+    "name": {
+      "en": "Microport",
+      "pt": "Microteleporte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Extended · Medium",
+      "pt": "Teleporte · Preciso · Estendido · Meio"
+    },
+    "page": 161,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "size-microverse",
+    "profileId": "size",
+    "name": {
+      "en": "Microverse",
+      "pt": "Microverso"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 161,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "size-density-increase",
+    "profileId": "size",
+    "name": {
+      "en": "Density Increase",
+      "pt": "Aumentar Densidade"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Growth — Does not change size, +0; density Growth.",
+      "pt": "Crescimento — Não altera tamanho, +0; Crescimento de densidade."
+    },
+    "page": 161,
+    "effectIds": [
+      "growth"
+    ]
+  },
+  {
+    "id": "size-mass-compaction",
+    "profileId": "size",
+    "name": {
+      "en": "Mass Compaction",
+      "pt": "Compactar Massa"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Limited · Protection · Limited",
+      "pt": "Traço Aprimorado · Limitado · Proteção · Limitado"
+    },
+    "page": 161,
+    "effectIds": [
+      "enhanced-trait",
+      "protection"
+    ]
+  },
+  {
+    "id": "size-mass-dispersal",
+    "profileId": "size",
+    "name": {
+      "en": "Mass Dispersal",
+      "pt": "Dispersar Massa"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Insubstantial · Linked · Growth · Limited",
+      "pt": "Insubstancial · Vinculado · Crescimento · Limitado"
+    },
+    "page": 161,
+    "effectIds": [
+      "insubstantial",
+      "growth"
+    ]
+  },
+  {
+    "id": "size-microvision-1",
+    "profileId": "size",
+    "name": {
+      "en": "Microvision — 1",
+      "pt": "Microvisão — 1"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 161,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "size-microvision-2",
+    "profileId": "size",
+    "name": {
+      "en": "Microvision — 2",
+      "pt": "Microvisão — 2"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 161,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "size-microvision-3",
+    "profileId": "size",
+    "name": {
+      "en": "Microvision — 3",
+      "pt": "Microvisão — 3"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 161,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "size-microvision-4",
+    "profileId": "size",
+    "name": {
+      "en": "Microvision — 4",
+      "pt": "Microvisão — 4"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 161,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "size-shrinking-storage",
+    "profileId": "size",
+    "name": {
+      "en": "Shrinking Storage",
+      "pt": "Armazenamento Reduzido"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature",
+      "pt": "Característica"
+    },
+    "page": 161,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "sonic-buzzsaw",
+    "profileId": "sonic",
+    "name": {
+      "en": "Buzzsaw",
+      "pt": "Serra Vibratória"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Penetrating",
+      "pt": "Dano · Penetrante"
+    },
+    "page": 167,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "sonic-deafening-shriek",
+    "profileId": "sonic",
+    "name": {
+      "en": "Deafening Shriek",
+      "pt": "Grito Ensurdecedor"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado"
+    },
+    "page": 167,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "sonic-hypnotic-song",
+    "profileId": "sonic",
+    "name": {
+      "en": "Hypnotic Song",
+      "pt": "Canção Hipnótica"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative · Area · Concentration · Instant Recovery",
+      "pt": "Aflição · Cumulativo · Área · Concentration · Recuperação Instantânea"
+    },
+    "page": 167,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "sonic-shatter",
+    "profileId": "sonic",
+    "name": {
+      "en": "Shatter",
+      "pt": "Estilhaçar"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Weaken · Increased Range · Affects Objects",
+      "pt": "Enfraquecer · Alcance Aumentado · Afeta Objetos"
+    },
+    "page": 167,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "sonic-sonic-blast",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Blast",
+      "pt": "Rajada Sônica"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 167,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "sonic-vertigo",
+    "profileId": "sonic",
+    "name": {
+      "en": "Vertigo",
+      "pt": "Vertigem"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive · Sense-Dependent",
+      "pt": "Aflição · Alcance Aumentado · Progressivo · Dependente de Sentido"
+    },
+    "page": 168,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "sonic-protected-hearing",
+    "profileId": "sonic",
+    "name": {
+      "en": "Protected Hearing",
+      "pt": "Audição Protegida"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Half Effect",
+      "pt": "Imunidade · Metade do Efeito"
+    },
+    "page": 168,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "sonic-sonic-absorption",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Absorption",
+      "pt": "Absorção Sônica"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades · Limited",
+      "pt": "Traço Aprimorado · Desgaste · Limitado"
+    },
+    "page": 168,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "sonic-immunity-to-sonic-damage",
+    "profileId": "sonic",
+    "name": {
+      "en": "Immunity to Sonic Damage",
+      "pt": "Imunidade a Dano Sônico"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 168,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "sonic-sonic-immunity",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Immunity",
+      "pt": "Imunidade Sônica"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 168,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "sonic-sonic-shield",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Shield",
+      "pt": "Escudo Sônico"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 168,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "sonic-sonic-drilling",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Drilling",
+      "pt": "Escavação Sônica"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing",
+      "pt": "Escavação"
+    },
+    "page": 168,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "sonic-sonic-flight",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Flight",
+      "pt": "Voo Sônico"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Noticeable",
+      "pt": "Voo · Perceptível"
+    },
+    "page": 168,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "sonic-sound-wave",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sound Wave",
+      "pt": "Onda Sonora"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Medium",
+      "pt": "Teleporte · Meio"
+    },
+    "page": 168,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "sonic-enhanced-hearing",
+    "profileId": "sonic",
+    "name": {
+      "en": "Enhanced Hearing",
+      "pt": "Audição Aprimorada"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 168,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sonic-phase-cancellation",
+    "profileId": "sonic",
+    "name": {
+      "en": "Phase Cancellation",
+      "pt": "Cancelamento de Fase"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Area · Concentration · Simultaneous",
+      "pt": "Anulação · Área · Concentração · Simultâneo"
+    },
+    "page": 168,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "sonic-silence",
+    "profileId": "sonic",
+    "name": {
+      "en": "Silence",
+      "pt": "Silêncio"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Area · Attack",
+      "pt": "Camuflagem · Área · Ataque"
+    },
+    "page": 169,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "sonic-solid-sound",
+    "profileId": "sonic",
+    "name": {
+      "en": "Solid Sound",
+      "pt": "Som Sólido"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Create",
+      "pt": "Criação"
+    },
+    "page": 169,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "sonic-sonar",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonar",
+      "pt": "Sonar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 169,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sonic-sonic-form",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Form",
+      "pt": "Forma Sônica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Flight · Immunity · Insubstantial",
+      "pt": "Dano · Voo · Imunidade · Insubstancial"
+    },
+    "page": 169,
+    "effectIds": [
+      "damage",
+      "flight",
+      "immunity",
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "sonic-sonic-masking",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Masking",
+      "pt": "Mascaramento Sônico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment",
+      "pt": "Camuflagem"
+    },
+    "page": 169,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "sonic-sonic-projection",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sonic Projection",
+      "pt": "Projeção Sônica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion",
+      "pt": "Ilusão"
+    },
+    "page": 169,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "sonic-sound-analysis",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sound Analysis",
+      "pt": "Análise Sonora"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 169,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sonic-sound-creatures",
+    "profileId": "sonic",
+    "name": {
+      "en": "Sound Creatures",
+      "pt": "Criaturas de Som"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled",
+      "pt": "Invocar · Controlado"
+    },
+    "page": 169,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "sonic-ultrasonic-hearing",
+    "profileId": "sonic",
+    "name": {
+      "en": "Ultrasonic Hearing",
+      "pt": "Audição Ultrassônica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 169,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "sonic-white-noise-2",
+    "profileId": "sonic",
+    "name": {
+      "en": "White Noise — 2",
+      "pt": "Ruído Branco — 2"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment — Affects hearing instead of vision (+0).",
+      "pt": "Controle Ambiental — Afeta audição em vez de visão (+0)."
+    },
+    "page": 169,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "sonic-white-noise-5",
+    "profileId": "sonic",
+    "name": {
+      "en": "White Noise — 5",
+      "pt": "Ruído Branco — 5"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment — Affects hearing instead of vision (+0).",
+      "pt": "Controle Ambiental — Afeta audição em vez de visão (+0)."
+    },
+    "page": 169,
+    "effectIds": [
+      "environment"
+    ]
   }
 ] satisfies LibraryEntry[];
