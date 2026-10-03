@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, ChevronDown, ChevronRight, Search, X } from 'lucide-react';
 import { BASIC_CONDITIONS, COMBINED_CONDITIONS, CONDITIONS } from '../../data/conditions';
@@ -10,6 +10,35 @@ import './references.css';
 type Category = 'quick' | 'all' | ReferenceCategory;
 const CATEGORIES: Category[] = ['quick', 'measurements', 'combat', 'conditions', 'checks', 'hero', 'all'];
 const QUICK = new Set(['measurements', 'damage', 'turn', 'checks']);
+
+function ReferenceGrid({ children }: { children: ReactNode }) {
+  const gridRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    let frame = 0;
+    const cards = Array.from(grid.children) as HTMLElement[];
+    const update = () => {
+      const masonry = getComputedStyle(grid).gridAutoRows === '1px';
+      for (const card of cards) {
+        // One-pixel tracks let the next card occupy the shorter column without
+        // stretching its neighbour. Keep DOM order and component state intact.
+        const gap = parseFloat(getComputedStyle(card).marginBottom) || 0;
+        const span = Math.ceil(card.getBoundingClientRect().height + gap);
+        card.style.gridRowEnd = masonry ? `span ${span}` : '';
+      }
+    };
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    });
+    observer.observe(grid);
+    cards.forEach(card => observer.observe(card));
+    update();
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
+  }, [children]);
+  return <div className="reference-grid" ref={gridRef}>{children}</div>;
+}
 
 function ReferenceCard({ section, open, onToggle, children }: { section: ReferenceSection; open: boolean; onToggle: () => void; children: ReactNode }) {
   const { t, i18n } = useTranslation();
@@ -112,9 +141,9 @@ export function ReferencesView() {
     <div className="reference-layout"><nav className="reference-nav" aria-label={t('ref119.topics')}>{CATEGORIES.map(item => <button type="button" key={item} aria-pressed={!searching && item === category} onClick={() => chooseCategory(item)}>{t(`ref119.category.${item}`)}</button>)}</nav>
       <div className="reference-content"><div className="reference-toolbar"><p role="status">{searching ? t('ref119.searchResults', { count: sections.length }) : t(`ref119.category.${category}`)}</p><div><button type="button" onClick={() => searching ? setSearchCollapsed(new Set()) : setExpanded(new Set(sections.map(section => section.id)))}>{t('ref119.expandAll')}</button><button type="button" onClick={() => searching ? setSearchCollapsed(new Set(sections.map(section => section.id))) : setExpanded(new Set())}>{t('ref119.collapseAll')}</button></div></div>
         {!sections.length && <p className="reference-empty">{t('ref119.noResults')}</p>}
-        <div className="reference-grid">{sections.map(section => <ReferenceCard key={section.id} section={section} open={searching ? !searchCollapsed.has(section.id) : expanded.has(section.id)} onToggle={() => toggle(section.id)}>
+        <ReferenceGrid>{sections.map(section => <ReferenceCard key={section.id} section={section} open={searching ? !searchCollapsed.has(section.id) : expanded.has(section.id)} onToggle={() => toggle(section.id)}>
           {section.id === 'measurements' ? <Measurements section={section} system={system} onSystemChange={setSystem}/> : <>{section.id === 'damage' && <CheckTools damage/>}{section.id === 'checks' && <CheckTools/>}<ReferenceTable section={section}/></>}
-        </ReferenceCard>)}</div>
+        </ReferenceCard>)}</ReferenceGrid>
       </div>
     </div>
     <footer className="reference-source">{t('ref119.source')} <a href="https://greenroninstore.com/products/mutants-masterminds-gamemaster-s-kit-revised-edition" target="_blank" rel="noreferrer">{t('ref119.screenLink')}</a></footer>

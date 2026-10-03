@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-No pending changes.
+### Fixed
+- Pack References panels independently into the available column height, removing gaps caused by a taller neighbouring card. Reflow on expansion, search and resizing without remounting query fields; retain wide tables and the single-column mobile layout.
 
 The retrospective commit packages and preserved historical tags are documented
 in [Version history](docs/version-history.md). Release dates identify the
