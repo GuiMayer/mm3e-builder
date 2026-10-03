@@ -983,7 +983,6 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   onAddComponent={() => addAEComponent(ae.id)}
                   onRemoveComponent={(cId) => removeAEComponent(ae.id, cId)}
                   onUpdateComponent={(cId, upd) => updateAEComponent(ae.id, cId, upd)}
-                  onAddModifier={(cId, modId, sp) => addModifierToAEComponent(ae.id, cId, modId, sp)}
                   onRemoveModifier={(cId, modId) => removeModifierFromAEComponent(ae.id, cId, modId)}
                   onUpdateModifierRanks={(cId, modId, ranks) => updateAEModifierRanks(ae.id, cId, modId, ranks)}
                   onUpdateModifierOption={(cId, modId, opt) => updateAEModifierOption(ae.id, cId, modId, opt)}

@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed — Power Builder layout
+- Remove the redundant Add Modifier selector from alternate effects; keep
+  palette click-to-add, drag-and-drop and the mobile palette action.
 - Improve desktop reference readability with a wider description column,
   14px text, balanced line spacing and a separate metadata row. Preserve
   the existing mobile reference typography and spacing.

@@ -19,7 +19,6 @@ import { ModifierParameterControls } from './components/ModifierParameterControl
 import { EffectReference } from './components/EffectReference';
 import { getComponentCostBreakdown } from '../../shared/lib/mathEngine';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
-import { useNameComparator } from '../../shared/hooks/useAlphabeticalList';
 
 interface AltEffectCardProps {
   strength?: number;
@@ -44,7 +43,6 @@ interface AltEffectCardProps {
   onAddComponent: () => void;
   onRemoveComponent: (cId: string) => void;
   onUpdateComponent: (cId: string, u: Partial<ICharacterPowerComponent>) => void;
-  onAddModifier: (cId: string, modId: string, sp?: boolean) => void;
   onRemoveModifier: (cId: string, modId: string) => void;
   onUpdateModifierRanks: (cId: string, modId: string, ranks: number) => void;
   onUpdateModifierOption: (cId: string, modId: string, opt: string) => void;
@@ -59,11 +57,10 @@ export function AltEffectCard({
   allEffects, allModDefs, genericModifierDefs, modifierIncompatibilities,
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
-  onAddModifier, onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption, onUpdateModifierOptions,
+  onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption, onUpdateModifierOptions,
   onInfoClick, t,
 }: AltEffectCardProps) {
   const { valid, overageBy } = validation;
-  const compareNames = useNameComparator();
 
 
 
@@ -361,37 +358,6 @@ export function AltEffectCard({
                             );
                           })}
                         </ModifierDropzone>
-                        {/* Modifier fallback select — for touch/accessibility when DnD is unavailable */}
-                        {isActiveComp && (
-                          <select
-                            className="ae-mod-fallback-select"
-                            value=""
-                            disabled={!effectDef}
-                            aria-label={t('builder.addModifier')}
-                            onChange={(e) => {
-                              if (e.target.value) {
-                                const isPowerSpecific = e.target.value.startsWith('specific:');
-                                const modId = e.target.value.slice(e.target.value.indexOf(':') + 1);
-                                onAddModifier(comp.id, modId, isPowerSpecific);
-                                e.currentTarget.value = '';
-                              }
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <option value="">{t('builder.addModifier')} ▾</option>
-                            {[...genericModifierDefs.map((definition) => ({ definition, specific: false })),
-                              ...(effectDef ? [...effectDef.extras, ...effectDef.flaws].map((definition) => ({ definition, specific: true })) : [])]
-                              .filter(({ definition }) => !['alternate_effect', 'activation', 'removable'].includes(definition.id)
-                                && !comp.modifiers.some((modifier) => modifier.modifierId === definition.id))
-                              .sort((first, second) => compareNames(first.definition, second.definition))
-                              .map(({ definition, specific }) => (
-                                <option key={`${specific}:${definition.id}`} value={`${specific ? 'specific' : 'generic'}:${definition.id}`}>
-                                  {definition.name}{specific ? ` · ${t('palette.specific')}` : ''} ({definition.costValue > 0 ? '+' : ''}{definition.costValue} {definition.costType === 'per_rank' ? '/rank' : costUnit})
-                                </option>
-                              ))}
-
-                          </select>
-                        )}
                       </div>
                     </div>
                     {effectDef && <EffectReference effect={effectDef} t={t} />}
@@ -450,15 +416,6 @@ export function AltEffectCard({
         .component-breakdown--fractional { color: var(--c-warning); border-color: rgba(var(--c-warning-rgb, 251, 191, 36), 0.35); background: rgba(var(--c-warning-rgb, 251, 191, 36), 0.08); }
         .fractional-cost-badge { font-weight: 800; }
         .cost-comp-val--invalid { color: var(--c-error); }
-        .ae-mod-fallback-select {
-          width: 100%; padding: 4px 8px; border-radius: var(--r-sm);
-          border: 1px dashed var(--c-border); background: var(--c-surface);
-          color: var(--c-text-muted); font-size: 0.75rem; cursor: pointer;
-          font-family: var(--f-body); transition: border-color var(--t-fast), color var(--t-fast);
-          margin-top: 4px;
-        }
-        .ae-mod-fallback-select:hover { border-color: var(--c-accent); color: var(--c-accent); }
-        .ae-mod-fallback-select:focus { outline: none; border-color: var(--c-accent); }
       `}</style>
     </div>
   );
