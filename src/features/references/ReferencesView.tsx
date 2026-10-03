@@ -1,287 +1,122 @@
-import { useState } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { BookOpen, ChevronDown, ChevronRight, Search, X } from 'lucide-react';
 import { BASIC_CONDITIONS, COMBINED_CONDITIONS, CONDITIONS } from '../../data/conditions';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { NumberInput } from '../../shared/ui/NumberInput';
+import { BENCHMARK_SECTION, REFERENCE_SECTIONS, SIZE_SECTION, filterReferenceSection, referenceText, type ReferenceCategory, type ReferenceSection } from './referenceCatalog';
+import { MEASUREMENTS, checkDegree, damageDegree, formatMeasure, type Measure, type MeasurementSystem } from './measurements';
+import './references.css';
 
-/* -- Static combat reference data ---------------------------------------- */
+type Category = 'quick' | 'all' | ReferenceCategory;
+const CATEGORIES: Category[] = ['quick', 'measurements', 'combat', 'conditions', 'checks', 'hero', 'all'];
+const QUICK = new Set(['measurements', 'damage', 'turn', 'checks']);
 
-interface CombatAction {
-  id: string;
-  action: string;
-  type: string;
-  effect: string;
+function ReferenceCard({ section, open, onToggle, children }: { section: ReferenceSection; open: boolean; onToggle: () => void; children: ReactNode }) {
+  const { t, i18n } = useTranslation();
+  return <section className={`reference-card ${['measurements','size','actions','maneuvers'].includes(section.id) ? 'reference-card--wide' : ''}`}>
+    <h2><button type="button" className="reference-card__toggle" aria-expanded={open} aria-controls={`reference-${section.id}`} onClick={onToggle}>
+      {open ? <ChevronDown size={17}/> : <ChevronRight size={17}/>}<span>{referenceText(section.title, i18n.language)}</span><small>{t('ref119.pages', { pages: section.pages })}</small>
+    </button></h2>
+    {open && <div className="reference-card__body" id={`reference-${section.id}`}>{children}{section.note && <p className="reference-card__note">{referenceText(section.note, i18n.language)}</p>}</div>}
+  </section>;
 }
 
-interface CombatManeuver {
-  id: string;
-  name: string;
-  atkMod: string;
-  defMod: string;
-  effect: string;
+function ReferenceTable({ section }: { section: ReferenceSection }) {
+  const { i18n } = useTranslation();
+  return <table className="reference-table"><caption className="sr-only">{referenceText(section.title, i18n.language)}</caption>
+    <thead><tr>{section.columns.map((column, index) => <th scope="col" key={index}>{referenceText(column, i18n.language)}</th>)}</tr></thead>
+    <tbody>{section.rows.map(row => <tr key={row.id}>{row.cells.map((cell, index) => index === 0 ? <th scope="row" key={index}>{referenceText(cell, i18n.language)}</th> : <td key={index} data-label={referenceText(section.columns[index], i18n.language)}>{referenceText(cell, i18n.language)}</td>)}</tr>)}</tbody>
+  </table>;
 }
 
-const COMBAT_ACTIONS: CombatAction[] = [
-  { id: 'aid',     action: 'Aid',     type: 'standard', effect: "+2 (or +5 on 2+ degrees) to an ally's check on the character's next turn" },
-  { id: 'aim',     action: 'Aim',     type: 'standard', effect: '+2 circumstance bonus to the next ranged attack check (readied)' },
-  { id: 'charge',  action: 'Charge',  type: 'standard', effect: 'Move in a straight line then make a close attack at the end' },
-  { id: 'defend',  action: 'Defend',  type: 'standard', effect: "Opposed check; treat rolls of 10 or less as 10 for active defenses until next turn" },
-  { id: 'disarm',  action: 'Disarm',  type: 'standard', effect: '-2 attack check; target makes STR check vs. attack result to retain weapon' },
-  { id: 'escape',  action: 'Escape',  type: 'move',     effect: 'Opposed STR or Acrobatics check to break a Grab or restraint' },
-  { id: 'grab',    action: 'Grab',    type: 'standard', effect: 'Attack check; target resists with STR or Dodge; if caught, target is hindered and vulnerable' },
-  { id: 'recover', action: 'Recover', type: 'standard', effect: "Remove the character's highest active condition; once per combat encounter" },
-  { id: 'smash',   action: 'Smash',   type: 'standard', effect: '-5 attack check against held or stationary objects; ignores Toughness cap' },
-  { id: 'trip',    action: 'Trip',    type: 'standard', effect: '-2 attack check; target resists with STR or Acrobatics; on failure, target goes prone' },
-];
-
-const COMBAT_MANEUVERS: CombatManeuver[] = [
-  { id: 'accurate_attack',  name: 'Accurate Attack',  atkMod: '+1 or +2', defMod: '--',       effect: '-1 or -2 to effect rank' },
-  { id: 'allout_attack',    name: 'All-out Attack',   atkMod: '+1 or +2', defMod: '-1 or -2', effect: '--' },
-  { id: 'defensive_attack', name: 'Defensive Attack', atkMod: '-1 or -2', defMod: '+1 or +2', effect: '--' },
-  { id: 'power_attack',     name: 'Power Attack',     atkMod: '-1 or -2', defMod: '--',       effect: '+1 or +2 to effect rank' },
-  { id: 'slam_attack',      name: 'Slam Attack',      atkMod: '-1 or -2', defMod: '+1 or +2', effect: "Charge variant; attacker takes half Toughness damage on a hit" },
-  { id: 'team_attack',      name: 'Team Attack',      atkMod: '--',        defMod: '--',       effect: 'Multiple attackers hit simultaneously vs. one target; use highest result + 2 per extra' },
-];
-
-/* -- Accordion helper ------------------------------------------------------- */
-
-function Accordion({ title, children }: { title: string; children: React.ReactNode }) {
-  const [open, setOpen] = useState(true);
-  return (
-    <div className="ref-accordion">
-      <button className="ref-accordion-toggle" onClick={() => setOpen((v) => !v)}>
-        {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-        {title}
-      </button>
-      {open && <div className="ref-accordion-body">{children}</div>}
-    </div>
-  );
+function Measurements({ section, system, onSystemChange }: { section: ReferenceSection; system: MeasurementSystem; onSystemChange: (system: MeasurementSystem) => void }) {
+  const { t, i18n } = useTranslation();
+  const [rank, setRank] = useState(0);
+  const current = MEASUREMENTS.find(row => row.rank === rank)!;
+  const format = (value: Measure) => formatMeasure(value, i18n.language, (unit, count) => t(`ref119.unit.${unit}`, { count }));
+  const visible = new Set(section.rows.map(row => row.id));
+  return <>
+    <div className="reference-tools"><label>{t('ref119.rank')}<NumberInput aria-label={t('ref119.rank')} value={rank} min={-5} max={30} variant="compact" onChange={value => setRank(Math.trunc(value))}/></label>
+      <label>{t('ref119.units')}<select value={system} onChange={event => onSystemChange(event.target.value as MeasurementSystem)}><option value="metric">{t('ref119.metric')}</option><option value="imperial">{t('ref119.imperial')}</option></select></label></div>
+    <dl className="reference-measures">{(['mass','time','distance','volume'] as const).map(key => <div key={key}><dt>{t(`ref119.${key}`)}</dt><dd>{format(key === 'time' ? current.time : current[system][key])}</dd></div>)}</dl>
+    <p className="reference-card__note">{t('ref119.measurementHelp')}</p>
+    <div className="reference-measure-scroll" role="region" aria-label={t('ref119.fullMeasurements')} tabIndex={0}>
+      <table className="reference-measure-table"><caption className="sr-only">{t('ref119.fullMeasurements')} · {t(`ref119.${system}`)}</caption><thead><tr>{['rank','mass','time','distance','volume'].map(key => <th key={key} scope="col">{t(`ref119.${key}`)}</th>)}</tr></thead>
+        <tbody>{MEASUREMENTS.filter(row => visible.has(String(row.rank))).map(row => <tr key={row.rank} className={row.rank === rank ? 'reference-table__selected' : undefined}>
+          <th scope="row"><button type="button" onClick={() => setRank(row.rank)} aria-pressed={row.rank === rank} aria-label={t('ref119.selectRank', { rank: row.rank })}>{row.rank}</button></th>
+          <td>{format(row[system].mass)}</td><td>{format(row.time)}</td><td>{format(row[system].distance)}</td><td>{format(row[system].volume)}</td>
+        </tr>)}</tbody></table>
+    </div><p className="reference-card__note">{t('ref119.measurementFormula')}</p>
+  </>;
 }
 
-/* -- Main view -------------------------------------------------------------- */
+function CheckTools({ damage }: { damage?: boolean }) {
+  const { t } = useTranslation();
+  const [result, setResult] = useState(20);
+  const [difficulty, setDifficulty] = useState(damage ? 10 : 20);
+  const dc = damage ? 15 + difficulty : difficulty;
+  const check = checkDegree(result, dc);
+  const degree = damage ? damageDegree(result, difficulty) : undefined;
+  return <div className="reference-check">
+    <div className="reference-tools"><label>{t(damage ? 'ref119.damageRank' : 'ref119.dc')}<NumberInput aria-label={t(damage ? 'ref119.damageRank' : 'ref119.dc')} value={difficulty} min={damage ? -5 : -100} max={100} variant="compact" onChange={value => setDifficulty(Math.trunc(value))}/></label>
+      <label>{t('ref119.checkTotal')}<NumberInput aria-label={t('ref119.checkTotal')} value={result} min={-100} max={200} variant="compact" onChange={value => setResult(Math.trunc(value))}/></label></div>
+    <p role="status" aria-live="polite">{damage ? t('ref119.damageResult', { dc, result: t(`ref119.damage.${degree}`) }) : t(check.success ? 'ref119.success' : 'ref119.failure', { count: check.degrees })}</p>
+    <small>{t('ref119.queryOnly')}</small>
+    {damage && <DamageMatrix/>}
+  </div>;
+}
+
+function DamageMatrix() {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  return <div className="reference-matrix">
+    <button type="button" aria-expanded={open} aria-controls="reference-damage-matrix" onClick={() => setOpen(value => !value)}>{open ? <ChevronDown size={15}/> : <ChevronRight size={15}/>} {t('ref119.matrix')}</button>
+    {open && <div id="reference-damage-matrix"><p className="reference-card__note">{t('ref119.matrixHelp')}</p>
+      <div className="reference-matrix__scroll" role="region" tabIndex={0} aria-label={t('ref119.matrix')}><table className="reference-matrix__table"><caption className="sr-only">{t('ref119.matrix')}</caption><thead><tr><th scope="col">{t('ref119.totalVsRank')}</th>{Array.from({ length: 20 }, (_, index) => <th scope="col" key={index}>{index + 1}</th>)}</tr></thead>
+        <tbody>{Array.from({ length: 35 }, (_, result) => <tr key={result}><th scope="row">{result + 1}</th>{Array.from({ length: 20 }, (_, rank) => { const degree = damageDegree(result + 1, rank + 1); return <td key={rank} className={`reference-matrix__degree-${degree}`}><span aria-label={t(`ref119.damage.${degree}`)}>{degree || '—'}</span></td>; })}</tr>)}</tbody>
+      </table></div></div>}
+  </div>;
+}
 
 export function ReferencesView() {
-  const { t } = useTranslation();
-
-  return (
-    <div className="references-view">
-      <div className="ref-header">
-        <h1 className="ref-title">{t('ref.title')}</h1>
-        <p className="ref-subtitle">{t('ref.subtitle')}</p>
+  const { t, i18n } = useTranslation();
+  const [category, setCategory] = useState<Category>('quick');
+  const [query, setQuery] = useState('');
+  const [expanded, setExpanded] = useState(new Set(QUICK));
+  const [searchCollapsed, setSearchCollapsed] = useState(new Set<string>());
+  const headerRef = useRef<HTMLElement>(null);
+  const [system, setSystem] = useState<MeasurementSystem>(() => i18n.language.startsWith('pt') ? 'metric' : 'imperial');
+  const catalog = useMemo(() => {
+    const conditionSections: ReferenceSection[] = [BASIC_CONDITIONS, COMBINED_CONDITIONS].map((conditions, index) => ({ id: index ? 'combined-conditions' : 'basic-conditions', category: 'conditions', title: index ? ['Combined conditions','Condições combinadas'] : ['Basic conditions','Condições básicas'], pages: '17–19', columns: index ? [['Condition','Condição'],['Components','Componentes'],['Effect','Efeito']] : [['Condition','Condição'],['Effect','Efeito']], rows: conditions.map(condition => {
+      const title = t(`conditions.${condition.id}`, { lng: 'pt-BR', defaultValue: condition.name });
+      const cells: [string,string][] = [[condition.name, `${title} (${condition.name})`]];
+      if (index) cells.push([(condition.components ?? []).map(id => CONDITIONS.find(item => item.id === id)?.name ?? id).join(' + '), (condition.components ?? []).map(id => t(`conditions.${id}`, { lng: 'pt-BR', defaultValue: id })).join(' + ')]);
+      cells.push([condition.description, t(`conditions.desc.${condition.id}`, { lng: 'pt-BR', defaultValue: condition.description })]);
+      return { id: condition.id, cells };
+    }) }));
+    const measurements: ReferenceSection = { id: 'measurements', category: 'measurements', title: ['Measurements table','Tabela de medidas'], pages: '10–11, 347', columns: [['Rank','Graduação'],['Mass','Massa'],['Time','Tempo'],['Distance','Distância'],['Volume','Volume']], rows: MEASUREMENTS.map(row => ({ id: String(row.rank), cells: [[String(row.rank),String(row.rank)], ...(['mass','time','distance','volume'] as const).map((key): [string,string] => [formatMeasure(key === 'time' ? row.time : row.imperial[key], 'en', (unit, count) => t(`ref119.unit.${unit}`, { lng: 'en', count })), formatMeasure(key === 'time' ? row.time : row.metric[key], 'pt-BR', (unit, count) => t(`ref119.unit.${unit}`, { lng: 'pt-BR', count }))])] })) };
+    return [measurements, ...REFERENCE_SECTIONS, ...conditionSections, SIZE_SECTION, BENCHMARK_SECTION];
+  }, [t]);
+  const searching = query.trim().length > 0;
+  const sections = catalog.filter(section => searching || category === 'all' || (category === 'quick' ? QUICK.has(section.id) : section.category === category)).map(section => filterReferenceSection(section, query)).filter((section): section is ReferenceSection => !!section);
+  function chooseCategory(next: Category) {
+    setCategory(next); setQuery('');
+    setExpanded(new Set(next === 'all' ? [] : catalog.filter(section => next === 'quick' ? QUICK.has(section.id) : section.category === next).map(section => section.id)));
+    headerRef.current?.scrollIntoView({ block: 'start' });
+  }
+  function toggle(id: string) { const update = (previous: Set<string>) => { const next = new Set(previous); if (next.has(id)) next.delete(id); else next.add(id); return next; }; if (searching) setSearchCollapsed(update); else setExpanded(update); }
+  return <div className="references-view">
+    <header className="reference-header" ref={headerRef}><div><h1><BookOpen size={24}/> {t('ref.title')}</h1><p>{t('ref119.subtitle')}</p></div>
+      <label className="reference-search"><span className="sr-only">{t('ref119.search')}</span><Search size={18}/><input type="search" aria-label={t('ref119.search')} placeholder={t('ref119.searchPlaceholder')} value={query} onChange={event => { setQuery(event.target.value); setSearchCollapsed(new Set()); }}/>{query && <button type="button" aria-label={t('ref119.clearSearch')} onClick={() => setQuery('')}><X size={17}/></button>}</label>
+    </header>
+    <div className="reference-layout"><nav className="reference-nav" aria-label={t('ref119.topics')}>{CATEGORIES.map(item => <button type="button" key={item} aria-pressed={!searching && item === category} onClick={() => chooseCategory(item)}>{t(`ref119.category.${item}`)}</button>)}</nav>
+      <div className="reference-content"><div className="reference-toolbar"><p role="status">{searching ? t('ref119.searchResults', { count: sections.length }) : t(`ref119.category.${category}`)}</p><div><button type="button" onClick={() => searching ? setSearchCollapsed(new Set()) : setExpanded(new Set(sections.map(section => section.id)))}>{t('ref119.expandAll')}</button><button type="button" onClick={() => searching ? setSearchCollapsed(new Set(sections.map(section => section.id))) : setExpanded(new Set())}>{t('ref119.collapseAll')}</button></div></div>
+        {!sections.length && <p className="reference-empty">{t('ref119.noResults')}</p>}
+        <div className="reference-grid">{sections.map(section => <ReferenceCard key={section.id} section={section} open={searching ? !searchCollapsed.has(section.id) : expanded.has(section.id)} onToggle={() => toggle(section.id)}>
+          {section.id === 'measurements' ? <Measurements section={section} system={system} onSystemChange={setSystem}/> : <>{section.id === 'damage' && <CheckTools damage/>}{section.id === 'checks' && <CheckTools/>}<ReferenceTable section={section}/></>}
+        </ReferenceCard>)}</div>
       </div>
-
-      <div className="ref-grid">
-        {/* Combat Actions (F-19) */}
-        <div className="ref-card">
-          <Accordion title={t('ref.combatActions')}>
-            <table className="ref-table">
-              <thead>
-                <tr>
-                  <th>{t('ref.col.action')}</th>
-                  <th>{t('ref.col.type')}</th>
-                  <th>{t('ref.col.effect')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMBAT_ACTIONS.map((row, i) => (
-                  <tr key={i}>
-                    <td className="ref-td--name">{t(`ref.actions.${row.id}`)}</td>
-                    <td className="ref-td--type">{t(`ref.actionTypes.${row.type}`)}</td>
-                    <td>{t(`ref.actionEffects.${row.id}`)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Accordion>
-        </div>
-
-        {/* Combat Maneuvers (F-19) */}
-        <div className="ref-card">
-          <Accordion title={t('ref.combatManeuvers')}>
-            <table className="ref-table">
-              <thead>
-                <tr>
-                  <th>{t('ref.col.action')}</th>
-                  <th>{t('ref.col.atk')}</th>
-                  <th>{t('ref.col.def')}</th>
-                  <th>{t('ref.col.effect')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMBAT_MANEUVERS.map((row, i) => (
-                  <tr key={i}>
-                    <td className="ref-td--name">{t(`ref.maneuvers.${row.id}`)}</td>
-                    <td className="ref-td--type">{row.atkMod}</td>
-                    <td className="ref-td--type">{row.defMod}</td>
-                    <td>{t(`ref.maneuverEffects.${row.id}`)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Accordion>
-        </div>
-
-        {/* Basic Conditions (F-20) */}
-        <div className="ref-card">
-          <Accordion title={t('ref.conditions')}>
-            <table className="ref-table">
-              <thead>
-                <tr>
-                  <th>{t('ref.col.condition')}</th>
-                  <th>{t('ref.col.description')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {BASIC_CONDITIONS.map((cond) => (
-                  <tr key={cond.id}>
-                    <td className="ref-td--name">{t(`conditions.${cond.id}`, { defaultValue: cond.name })}</td>
-                    <td className="ref-td--desc">{t(`conditions.desc.${cond.id}`, { defaultValue: cond.description })}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Accordion>
-        </div>
-
-        {/* Combined Conditions (F-20) */}
-        <div className="ref-card">
-          <Accordion title={t('ref.combinedConditions')}>
-            <table className="ref-table">
-              <thead>
-                <tr>
-                  <th>{t('ref.col.condition')}</th>
-                  <th>{t('ref.col.components')}</th>
-                  <th>{t('ref.col.description')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMBINED_CONDITIONS.map((cond) => (
-                  <tr key={cond.id}>
-                    <td className="ref-td--name">{t(`conditions.${cond.id}`, { defaultValue: cond.name })}</td>
-                    <td className="ref-td--components">
-                      {(cond.components ?? [])
-                        .map((id) => CONDITIONS.find((c) => c.id === id)?.name ?? id)
-                        .join(' + ')}
-                    </td>
-                    <td className="ref-td--desc">{t(`conditions.desc.${cond.id}`, { defaultValue: cond.description })}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Accordion>
-        </div>
-      </div>
-
-      <style>{`
-        .references-view {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: var(--s-xl) var(--s-lg);
-          display: flex;
-          flex-direction: column;
-          gap: var(--s-xl);
-        }
-        .ref-header {
-          text-align: center;
-          margin-bottom: var(--s-md);
-        }
-        .ref-title {
-          font-family: var(--f-heading);
-          font-size: 2rem;
-          font-weight: 900;
-          background: linear-gradient(135deg, var(--c-primary), var(--c-accent));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          margin: 0 0 var(--s-xs);
-        }
-        .ref-subtitle {
-          color: var(--c-text-muted);
-          font-size: 0.9rem;
-          margin: 0;
-        }
-        .ref-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: var(--s-lg);
-        }
-        @media (max-width: 900px) {
-          .ref-grid { grid-template-columns: 1fr; }
-        }
-        .ref-card {
-          background: var(--c-surface);
-          border: 1px solid var(--c-border);
-          border-radius: var(--r-lg);
-          overflow: hidden;
-        }
-        .ref-accordion-toggle {
-          display: flex;
-          align-items: center;
-          gap: var(--s-xs);
-          width: 100%;
-          padding: var(--s-md) var(--s-lg);
-          background: var(--c-surface-elevated);
-          border: none;
-          border-bottom: 1px solid var(--c-border);
-          color: var(--c-text);
-          font-family: var(--f-heading);
-          font-size: 0.95rem;
-          font-weight: 700;
-          cursor: pointer;
-          text-align: left;
-          transition: background var(--t-fast);
-        }
-        .ref-accordion-toggle:hover { background: var(--c-primary-muted); }
-        .ref-accordion-body {
-          overflow-x: auto;
-        }
-        .ref-table {
-          width: 100%;
-          border-collapse: collapse;
-          font-size: 0.82rem;
-        }
-        .ref-table th {
-          background: var(--c-bg);
-          padding: var(--s-xs) var(--s-md);
-          text-align: left;
-          font-size: 0.68rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          color: var(--c-text-muted);
-          border-bottom: 1px solid var(--c-border);
-        }
-        .ref-table td {
-          padding: var(--s-xs) var(--s-md);
-          border-bottom: 1px solid var(--c-border);
-          color: var(--c-text-secondary);
-          vertical-align: top;
-          line-height: 1.5;
-        }
-        .ref-table tr:last-child td { border-bottom: none; }
-        .ref-table tr:hover td { background: var(--c-surface-elevated); }
-        .ref-td--name {
-          font-weight: 600;
-          color: var(--c-text);
-          white-space: nowrap;
-          width: 130px;
-        }
-        .ref-td--type {
-          white-space: nowrap;
-          color: var(--c-primary);
-          font-weight: 600;
-          width: 80px;
-        }
-        .ref-td--components {
-          white-space: nowrap;
-          color: var(--c-accent);
-          font-size: 0.75rem;
-          width: 160px;
-        }
-        .ref-td--desc {
-          font-size: 0.8rem;
-          color: var(--c-text-muted);
-        }
-      `}</style>
     </div>
-  );
+    <footer className="reference-source">{t('ref119.source')} <a href="https://greenroninstore.com/products/mutants-masterminds-gamemaster-s-kit-revised-edition" target="_blank" rel="noreferrer">{t('ref119.screenLink')}</a></footer>
+  </div>;
 }
