@@ -927,10 +927,22 @@
     "description": "You can temporarily improve one of your existing traits by its rank while active. VARIABLE COST: Abilities cost 2 PP/rank, Skills cost 1 PP per 2 ranks (0.5 PP/rank), Advantages and Defenses cost 1 PP/rank. Enhanced Trait is a power effect (not a natural trait) and can be combined with extra effort. Subject to power level limits: unenhanced rank must be below the limit by at least the enhancement amount.",
     "variableCost": {
       "options": [
-        { "name": "Enhanced Ability", "cost": 2 },
-        { "name": "Enhanced Skill", "cost": 0.5 },
-        { "name": "Enhanced Advantage", "cost": 1 },
-        { "name": "Enhanced Defense", "cost": 1 }
+        {
+          "name": "Enhanced Ability",
+          "cost": 2
+        },
+        {
+          "name": "Enhanced Skill",
+          "cost": 0.5
+        },
+        {
+          "name": "Enhanced Advantage",
+          "cost": 1
+        },
+        {
+          "name": "Enhanced Defense",
+          "cost": 1
+        }
       ]
     },
     "i18n": {
@@ -989,8 +1001,34 @@
     "description": "You can change the environment in an area. Affects a 30-foot radius at rank 1, increasing one distance rank per additional rank. VARIABLE COST: 1 PP/rank for distraction or impediment effects. 2 PP/rank if the environment causes damage. Options: Cold (intense/extreme), Heat (intense/extreme), Impede Movement (reduce speed by 1-2 ranks), Light (reduce/eliminate darkness concealment), Visibility (-2 or -5 to Perception). Multiple effects stack or use Selective modifier.",
     "variableCost": {
       "options": [
-        { "name": "Distraction/Impediment", "cost": 1 },
-        { "name": "Damaging Environment", "cost": 2 }
+        {
+          "name": "Distraction/Impediment",
+          "cost": 1
+        },
+        {
+          "name": "Damaging Environment",
+          "cost": 2
+        },
+        {
+          "name": "Visibility (-2)",
+          "cost": 1,
+          "description": "Visibilidade (-2)"
+        },
+        {
+          "name": "Visibility (-5)",
+          "cost": 2,
+          "description": "Visibilidade (-5)"
+        },
+        {
+          "name": "Impede Movement (1 rank)",
+          "cost": 1,
+          "description": "Impedir Movimento (1 graduação)"
+        },
+        {
+          "name": "Impede Movement (2 ranks)",
+          "cost": 2,
+          "description": "Impedir Movimento (2 graduações)"
+        }
       ]
     },
     "i18n": {
@@ -3522,6 +3560,25 @@
         "description": "You can summon different minions of a broad type (like animals, demons, humanoids, etc.).",
         "incompatibleWith": [],
         "i18n": {}
+      },
+      {
+        "id": "multiple_minions_ranked",
+        "name": "Multiple Minions (per effect rank)",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 2,
+        "repeatable": true,
+        "maxRanks": 20,
+        "description": "Each purchase doubles the number of minions and adds 2 PP per Summon rank.",
+        "longDescription": "Each application doubles the number of summoned minions and adds +2 cost per rank of Summon. The original flat-price modifier is retained for existing characters. Deluxe Hero’s Handbook, Summon: Multiple Minions.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Múltiplos Lacaios (por graduação do efeito)",
+            "description": "Cada compra dobra a quantidade de lacaios e acrescenta 2 PP por graduação de Invocar.",
+            "longDescription": "Cada aplicação dobra a quantidade de lacaios e custa +2 por graduação de Invocar. O modificador original com custo fixo é preservado para personagens existentes. Deluxe Hero’s Handbook, Summon: Multiple Minions."
+          }
+        }
       }
     ],
     "flaws": [
@@ -3557,6 +3614,22 @@
           "pt-BR": {
             "name": "Resistível",
             "description": "Lacaios fazem teste para evitar a invocação."
+          }
+        }
+      },
+      {
+        "id": "self_powered",
+        "name": "Self-Powered",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Summoned agents must travel to the summoner using their own movement.",
+        "longDescription": "The summoned agents do not appear near the summoner. They must travel there from their current location using their own movement. Power Profiles p. 181. -1 cost per rank.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Deslocamento Próprio",
+            "description": "Os agentes invocados precisam viajar até o invocador com seu próprio movimento."
           }
         }
       }
