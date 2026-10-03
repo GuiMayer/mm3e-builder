@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Character portraits
+- Click the sheet avatar to choose an HTTPS image link or a browser-local file,
+  preview, enlarge, replace, refresh or remove the portrait.
+- Store image files separately in IndexedDB; keep only an optional portrait URL
+  in character schema 2.2.0, preserving older sheet compatibility.
+- Explain local-only persistence before file selection and during JSON export;
+  preserve local portraits across character copies and include them in clear-all.
+- Add opt-in portrait inclusion in the compact HTML/PDF header, preserving text
+  selection and exporting without the image when it is unavailable.
+- Document persistence, CORS fallback, image limits and legacy PDF limitations.
+
+
 ### Fixed
 - Save the language-based measurement default on the first References visit even without clicking the toggle. Later language changes preserve that preference; explicit unit selections continue updating it.
 - Allow an intermediate minus sign/empty value while typing measurement ranks, retaining the last valid result until the number is complete. Preserve keyboard arrows and rank selection without changing the shared character inputs.

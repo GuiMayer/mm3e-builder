@@ -69,6 +69,21 @@ mutation actions. Category/search/expansion state is transient. The isolated
 fallbacks; it never reads or writes character/Resource storage.
 There is no schema or calculation revision change. See [References](references.md).
 
+## Character portraits
+
+Character schema 2.2.0 adds only the optional `header.portraitUrl`; older files
+remain accepted without a portrait field. Image bytes are stored in the separate
+`mm3e-portraits` IndexedDB database, with media, local identity associations and
+URL caches. UI/file coordinators copy local associations after pure character
+duplication. Closed tabs retain portraits, and the existing clear-all action
+also clears the image database. No rule/calculation revision changes.
+
+The portrait editor explains that local files stay in this browser and never
+travel with JSON. Remote URLs can be shown without offline storage when CORS
+blocks download. PDF inclusion is opt-in and resolves image bytes before
+pagination; exported HTML/PDF can embed them while character JSON cannot.
+See [Character portraits](character-portraits.md).
+
 ## Resource library
 
 Resources are reusable items stored outside individual characters. Supported

@@ -11,6 +11,7 @@ consistent exports. See the [Resources guide](./resources.md) and
 ## Current references
 
 - [Refined architecture](./ARCHITECTURE_REFINED.md) is the authoritative guide for product scope, module boundaries, persistence, import/export compatibility, and verification gates.
+- [Character portraits](./character-portraits.md) explains link caching, browser-local files, compatibility and opt-in PDF inclusion.
 - [Project README](../README.md) describes the user-facing capabilities and local setup.
 - [Power Builder modifier policy](./power-builder-modifier-policy.md) documents generic and effect-specific modifier selection, save diagnostics, and stored-source behavior.
 - [Session dice roller](./dice-roller.md) describes manual and contextual checks, advantage shortcuts, responsive controls, and the temporary history boundary.

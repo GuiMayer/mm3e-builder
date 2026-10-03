@@ -39,6 +39,13 @@ describe('separate portrait persistence', () => {
     await clearPortraits();
     expect(await getPortrait('hero')).toBeUndefined();
   });
+  it('preserves a saved portrait when a browser write fails for lack of space', async () => {
+    await savePortrait(media('old'), { characterId: 'hero' });
+    const failure = vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementationOnce(() => { throw new DOMException('No space', 'QuotaExceededError'); });
+    try { await expect(savePortrait(media('replacement'), { characterId: 'hero' })).rejects.toThrow('No space'); }
+    finally { failure.mockRestore(); }
+    expect(await (await getPortrait('hero'))?.image.text()).toBe('old');
+  });
 });
 
 describe('portrait inputs', () => {

@@ -3,7 +3,9 @@ import { getPortrait, savePortrait, type PortraitMedia } from '../storage/portra
 export const MAX_PORTRAIT_BYTES = 10 * 1024 * 1024;
 const TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 export function validatePortraitUrl(value: string): string {
-  const url = new URL(value.trim());
+  let url: URL;
+  try { url = new URL(value.trim()); }
+  catch { throw new Error('portrait.invalidUrl'); }
   if (url.protocol !== 'https:' || url.username || url.password || url.href.length > 2048) throw new Error('portrait.invalidUrl');
   return url.href;
 }

@@ -61,6 +61,12 @@ The Power Builder is the most feature-rich section, built for full M&M 3e rules 
 - **Audited variable modifiers** — Affliction, Teleport Increased Mass, Variable Action tiers, repeatable modifiers, and direct Impervious Resistance purchases use the same canonical pricing path in the Builder, sheet, and exports.
 - **Strict Mode** — Optional PL cap enforcement that validates Attack + Damage and Defense + Toughness bounds per-power.
 
+#### Character portraits
+Click the avatar to use an image link or a local file. Only the optional URL
+travels with character JSON; image bytes stay in IndexedDB. Local files remain
+in this browser, as the editor explains before selection. PDF portrait inclusion
+is optional. See [Portraits](docs/character-portraits.md).
+
 #### 🔀 Alternate Effects (Arrays) — v2
 A complete redesign of the Alternate Effects system with full rule compliance and interface parity with the main builder:
 

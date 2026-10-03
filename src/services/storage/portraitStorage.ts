@@ -42,17 +42,21 @@ function read<T>(request: IDBRequest<T>): Promise<T> {
   });
 }
 function complete(transaction: IDBTransaction): Promise<void> {
-  return new Promise((resolve, reject) => {
+  const result = new Promise<void>((resolve, reject) => {
     transaction.oncomplete = () => resolve();
     transaction.onabort = () => reject(transaction.error ?? new Error('portrait.storageError'));
     transaction.onerror = () => reject(transaction.error);
   });
+  // A failed individual request can reject before its transaction is awaited.
+  // Keep that abort handled while preserving rejection for callers awaiting it.
+  void result.catch(() => undefined);
+  return result;
 }
 function validMedia(value: unknown): value is PortraitMedia {
   if (!value || typeof value !== 'object') return false;
   const media = value as PortraitMedia;
   return media.image instanceof Blob && media.thumbnail instanceof Blob &&
-    media.width > 0 && media.height > 0 && Number.isFinite(media.width * media.height);
+    typeof media.width === 'number' && typeof media.height === 'number' && media.width > 0 && media.height > 0 && Number.isFinite(media.width * media.height);
 }
 
 export async function getPortrait(characterId?: string, url?: string): Promise<PortraitMedia | undefined> {

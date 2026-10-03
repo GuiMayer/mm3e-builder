@@ -4,7 +4,7 @@
 
 /**
  * Version of the character file schema.
- * Increment when the exported JSON structure changes in a breaking way.
+ * Increment when the exported format gains versioned features.
  *
  * History:
  * - 1.0.0: Initial format (effectId + ranks + modifiers at power root level)

@@ -27,7 +27,7 @@ describe('portrait file compatibility', () => {
     expect(header).toEqual(sanitizeCharacterForExport(character).header);
   });
 
-  it.each(['blob:https://example.com/123', 'data:image/png;base64,abc', 'file:///portrait.png', 'http://example.com/portrait.png'])('rejects nonportable portrait address %s', portraitUrl => {
+  it.each(['blob:https://example.com/123', 'data:image/png;base64,abc', 'file:///portrait.png', 'http://example.com/portrait.png', 'https://user:pass@example.com/a.png', 'invalid'])('rejects nonportable portrait address %s', portraitUrl => {
     const character = createDefaultCharacter();
     expect(CharacterSchema.safeParse({ ...character, header: { ...character.header, portraitUrl } }).success).toBe(false);
   });

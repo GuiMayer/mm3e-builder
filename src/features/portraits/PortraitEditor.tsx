@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { User, ImagePlus, Link, RefreshCw, Trash2 } from 'lucide-react';
 import { Modal } from '../../shared/ui/Modal';
@@ -30,7 +30,8 @@ export function PortraitEditor({ tabId, characterId, portraitUrl, currentImage, 
   const [expanded, setExpanded] = useState(false);
   const close = () => { operation.current++; controller.current?.abort(); onClose(); };
   const reset = () => { operation.current++; controller.current?.abort(); setBusy(false); setPrepared(undefined); setPreparedUrl(''); setFallback(''); setFallbackReady(false); setError(''); };
-  const source = preview ?? fallback ?? currentImage;
+  const source = preview || fallback || currentImage;
+  useEffect(() => () => { operation.current++; controller.current?.abort(); }, []);
 
   async function prepare(file?: File) {
     reset();
