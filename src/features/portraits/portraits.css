@@ -10,7 +10,7 @@
 .portrait-avatar-wrap--filled > .portrait-frame{position:absolute;inset:0;width:100%;height:100%;}
 .portrait-avatar-wrap--filled .portrait-local-label{position:absolute;bottom:6px;left:6px;padding:3px 6px;border-radius:var(--r-sm);background:var(--c-surface);color:var(--c-text-secondary);pointer-events:none;}
 @media(max-width:768px){.portrait-avatar-wrap--filled{align-self:flex-start;min-height:0;}.portrait-avatar-wrap--filled,.portrait-size-probe{width:120px;height:160px;}}
-.portrait-dialog .modal-content--compact{width:min(520px,calc(100vw - 24px));max-width:520px;max-height:90dvh;}
+.portrait-dialog .modal-content--compact{width:min(620px,calc(100vw - 24px));max-width:620px;max-height:90dvh;}
 .portrait-editor{display:flex;flex-direction:column;gap:var(--s-md);}
 .portrait-modes{display:flex;gap:var(--s-sm);}
 .portrait-modes button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px;border:1px solid var(--c-border);border-radius:var(--r-md);background:var(--c-surface-elevated);color:var(--c-text);cursor:pointer;}
