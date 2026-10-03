@@ -105,12 +105,13 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
           {selected && draft && pricing ? <>
             <h3>{libraryText(selected.name, language)}</h3><p>{libraryText(selected.summary, language)}</p><p className="power-library-source">Power Profiles · p. {selected.page}{language.startsWith('pt') ? ` · ${selected.name.en}` : ''}</p>
             {selected.audit.discrepancy && <p role="note" className="power-library-discrepancy">{libraryText(selected.audit.discrepancy.reason, language)}</p>}
+            {selected.requiresCharacterChanges && <p role="alert" className="power-library-discrepancy">{libraryText(selected.requiresCharacterChanges, language)}</p>}
             {allComponents.map((component, index) => {
               const definition = effects.find(effect => effect.id === component.effectId);
               const originalComponent = originalComponents[index];
               if (!definition) return null;
               return <article className="power-library-component" key={component.id}>
-                <div className="power-library-component-header"><strong>{definition.name}</strong>{originalComponent.scalable ? <NumberInput value={component.ranks} min={1} onChange={ranks => update(component.id, { ranks })} aria-label={`${t('builder.ranks')}: ${definition.name}`}/> : <span>{t('powerLibrary.fixedRanks', { count: component.ranks })}</span>}</div>
+                <div className="power-library-component-header"><strong>{definition.name}</strong>{originalComponent.scalable ? <NumberInput value={component.ranks} min={1} onChange={ranks => update(component.id, { ranks, modifiers: component.modifiers.map((modifier, modIndex) => originalComponent.scaledModifiers?.includes(modifier.modifierId) ? { ...modifier, ranks: originalComponent.modifiers[modIndex].ranks * ranks } : modifier) })} aria-label={`${t('builder.ranks')}: ${definition.name}`}/> : <span>{t('powerLibrary.fixedRanks', { count: component.ranks })}</span>}</div>
                 <div className="power-library-modifiers">{component.modifiers.map((modifier, modifierIndex) => {
                   const resolved = resolveModifierDefinition(modifier, definition, MODIFIER_DEFS).definition;
                   return <Tooltip key={`${modifier.modifierId}-${modifierIndex}`} content={resolved?.i18n?.[language]?.description ?? resolved?.description ?? ''}><span tabIndex={0}>{resolved?.i18n?.[language]?.name ?? resolved?.name ?? modifier.modifierId}{modifier.ranks > 1 ? ` ${modifier.ranks}` : ''}{modifier.option ? ` (${modifier.option})` : ''}</span></Tooltip>;
@@ -128,7 +129,7 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
             <p className="power-library-impact">{t(draft.alternateEffects.length ? 'powerLibrary.replaceArray' : target.kind === 'alternate' ? 'powerLibrary.replaceAlternate' : 'powerLibrary.replaceComponent')}</p>
             {!compatible && <p role="alert">{t('powerLibrary.incompatible')}</p>}
             {missingFields && <p role="status">{t('powerLibrary.requiredChoices')}</p>}
-            <footer><div><strong>{cost(pricing)} {costUnit}</strong>{finalPricing && <small>{t('powerLibrary.resultTotal', { cost: cost(finalPricing), unit: costUnit })}</small>}</div><button type="button" className="power-library-apply" disabled={!compatible || missingFields || pricing.diagnostics.length > 0} onClick={apply}>{t(draft.alternateEffects.length ? 'powerLibrary.applyArray' : 'powerLibrary.apply')}</button></footer>
+            <footer><div><strong>{cost(pricing)} {costUnit}</strong>{finalPricing && <small>{t('powerLibrary.resultTotal', { cost: cost(finalPricing), unit: costUnit })}</small>}</div><button type="button" className="power-library-apply" disabled={!compatible || missingFields || pricing.diagnostics.length > 0 || !!selected.requiresCharacterChanges} onClick={apply}>{t(draft.alternateEffects.length ? 'powerLibrary.applyArray' : 'powerLibrary.apply')}</button></footer>
           </> : status === 'idle' && <p>{t('powerLibrary.choose')}</p>}
         </section>
       </div>

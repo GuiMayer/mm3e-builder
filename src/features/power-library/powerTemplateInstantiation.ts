@@ -6,10 +6,13 @@ import { libraryText } from './types';
 export function instantiatePowerTemplate(template: PowerTemplate, ranks = 1, language = 'en'): ICharacterPower {
   if (!Number.isSafeInteger(ranks) || ranks < 1) throw new Error('Invalid template ranks');
   const instantiate = (component: PowerTemplateComponent): ICharacterPowerComponent => {
-    const { scalable, chooseSenses, choices, ...fields } = component;
+    const { scalable, scaledModifiers, chooseSenses, choices, ...fields } = component;
     // These describe catalog choices, not fields in the saved character model.
     void chooseSenses; void choices;
-    return { ...structuredClone(fields), id: createId(), ranks: scalable ? ranks : component.ranks };
+    const result = { ...structuredClone(fields), id: createId(), ranks: scalable ? ranks : component.ranks };
+    result.modifiers = result.modifiers.map(modifier => scaledModifiers?.includes(modifier.modifierId)
+      ? { ...modifier, ranks: modifier.ranks * result.ranks } : modifier);
+    return result;
   };
   return {
     id: createId(), name: libraryText(template.name, language),

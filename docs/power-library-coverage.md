@@ -9,7 +9,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | --- | --- | --- |
 | 1 | Air Powers, Armor Powers, Animal Powers | 77 receitas/variantes auditadas: Ar 29, Armadura 24, Animais 24. Duas divergências impressas documentadas abaixo. |
 | 2 | Cold Powers, Cosmic Powers, Darkness Powers | 85 receitas/variantes auditadas: Frio 37, Cósmicos 21, Escuridão 27. Preços coincidem com a fonte. |
-| 3 | Death Powers, Dimension Powers, Dream Powers | Pendente |
+| 3 | Death Powers, Dimension Powers, Dream Powers | 58 receitas/variantes auditadas. Duas formas exigem alterações externas à ficha e são referências. |
 | 4 | Earth Powers, Electrical Powers, Element Powers | Pendente |
 | 5 | Fire Powers, Gravity Powers, Illusion Powers | Pendente |
 | 6 | Kinetic Powers, Life Powers, Light Powers | Pendente |
@@ -46,3 +46,9 @@ específico de Movimento, conforme Space Warp p. 27. As opções existentes não
 mudam. Swallowing Shadow carrega a versão base (CD 11, 4 PP); o preço dos
 aumentos independentes de CD é referência, não um controle que o modelo atual
 possa confundir com mais destinos dimensionais.
+
+## Lote 3: limites e divergências
+
+Ghost Form e Undead Form incluem Vigor ausente: esse desconto é um atributo da ficha, não uma flaw. A prévia mostra somente o custo dos poderes e impede aplicar uma receita incompleta. Ghost Form imprime 41, embora seus poderes somem 52 e o desconto de Vigor seja 10. Dream Trap aplica Grau Limitado duas vezes (apenas terceiro grau) e Limitado a alvos dormindo: o resultado é 1 PP/2 graduações, divergindo do 1 PP/graduação impresso. Sleep Substitute soma Cura 2 + Energizar 1 - Limitado 1 = 2, como Energize na p. 91, embora a p. 50 indique 1.
+
+Dimensional Blade compra Penetrante na graduação escolhida; após aplicação é uma compra normal editável. Dimensional Window/Four-Dimensional Form usam componentes de zero graduações como suporte para modificadores fixos de sentidos/ataques existentes, sem cobrar um efeito novo. Banimento Dimensional mantém sua CD base; aumentos independentes de CD não são destinos. Condições Variáveis é extra específico de Aflição, conforme p. 80.

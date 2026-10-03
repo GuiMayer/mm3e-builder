@@ -3253,5 +3253,1174 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "summon"
     ]
+  },
+  {
+    "id": "death-banshee-s-wail",
+    "profileId": "death",
+    "name": {
+      "en": "Banshee’s Wail",
+      "pt": "Lamento da Banshee"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area — Hearing; Dazed, Stunned, Dying.",
+      "pt": "Aflição · Área — Audição; Atordoado, Aturdido, Morrendo."
+    },
+    "page": 36,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "death-command-the-undead",
+    "profileId": "death",
+    "name": {
+      "en": "Command the Undead",
+      "pt": "Comandar Mortos-vivos"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Affects Objects · Limited — Hearing; Dazed, Compelled, Controlled. Undead only.",
+      "pt": "Aflição · Área · Afeta Objetos · Limitado — Audição; Atordoado, Compelido, Controlado. Apenas mortos-vivos."
+    },
+    "page": 36,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "death-death-curse",
+    "profileId": "death",
+    "name": {
+      "en": "Death Curse",
+      "pt": "Maldição da Morte"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive · Limited — Impaired, Disabled, Dying; one recovery check per day.",
+      "pt": "Aflição · Alcance Aumentado · Progressivo · Limitado — Prejudicado, Debilitado, Morrendo; um teste de recuperação por dia."
+    },
+    "page": 36,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "death-death-stare",
+    "profileId": "death",
+    "name": {
+      "en": "Death Stare",
+      "pt": "Olhar Mortal"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Sense-Dependent — Impaired, Stunned, Paralyzed.",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Dependente de Sentido — Prejudicado, Aturdido, Paralisado."
+    },
+    "page": 36,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "death-death-touch",
+    "profileId": "death",
+    "name": {
+      "en": "Death Touch",
+      "pt": "Toque Mortal"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative — Impaired, Disabled, Dying.",
+      "pt": "Aflição · Cumulativo — Prejudicado, Debilitado, Morrendo."
+    },
+    "page": 37,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "death-grasping-graves",
+    "profileId": "death",
+    "name": {
+      "en": "Grasping Graves",
+      "pt": "Túmulos que Agarram"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance — Hindered/Vulnerable, Defenseless/Immobilized; overcome by Damage.",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa — Impedido/Vulnerável, Indefeso/Imóvel; superado por Dano."
+    },
+    "page": 37,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "death-soulfire",
+    "profileId": "death",
+    "name": {
+      "en": "Soulfire",
+      "pt": "Fogo da Alma"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Alternate Resistance",
+      "pt": "Dano · Resistência Alternativa"
+    },
+    "page": 37,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "death-suppress-life",
+    "profileId": "death",
+    "name": {
+      "en": "Suppress Life",
+      "pt": "Suprimir Vida"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Weaken · Incurable · Insidious · Limited — Limited to recovery checks.",
+      "pt": "Enfraquecer · Incurável · Insidioso · Limitado — Limitado a testes de recuperação."
+    },
+    "page": 37,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "death-blood-healing",
+    "profileId": "death",
+    "name": {
+      "en": "Blood Healing",
+      "pt": "Cura pelo Sangue"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Regeneration · Source — Source: blood.",
+      "pt": "Regeneração · Fonte — Fonte: sangue."
+    },
+    "page": 37,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "death-deathless",
+    "profileId": "death",
+    "name": {
+      "en": "Deathless",
+      "pt": "Imortal"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immortality · Limited — Choose a means of permanent death.",
+      "pt": "Imortalidade · Limitado — Escolha uma causa de morte permanente."
+    },
+    "page": 37,
+    "effectIds": [
+      "immortality"
+    ]
+  },
+  {
+    "id": "death-ghost-shield",
+    "profileId": "death",
+    "name": {
+      "en": "Ghost Shield",
+      "pt": "Escudo Fantasma"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 37,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "death-shielded-soul",
+    "profileId": "death",
+    "name": {
+      "en": "Shielded Soul",
+      "pt": "Alma Protegida"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity — Death effects.",
+      "pt": "Imunidade — Efeitos de morte."
+    },
+    "page": 37,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "death-death-s-gate",
+    "profileId": "death",
+    "name": {
+      "en": "Death’s Gate",
+      "pt": "Portal da Morte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Portal",
+      "pt": "Movimento · Portal"
+    },
+    "page": 37,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "death-valkyrie-s-ride",
+    "profileId": "death",
+    "name": {
+      "en": "Valkyrie’s Ride",
+      "pt": "Cavalgada da Valquíria"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Extended · Limited — Limited to dying subjects.",
+      "pt": "Teleporte · Preciso · Estendido · Limitado — Limitado a pessoas morrendo."
+    },
+    "page": 38,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "death-death-sight",
+    "profileId": "death",
+    "name": {
+      "en": "Death Sight",
+      "pt": "Visão da Morte"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 38,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "death-death-visions",
+    "profileId": "death",
+    "name": {
+      "en": "Death Visions",
+      "pt": "Visões da Morte"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Limited — Only visions of death.",
+      "pt": "Sentidos · Limitado — Apenas visões de morte."
+    },
+    "page": 38,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "death-ghost-form",
+    "profileId": "death",
+    "name": {
+      "en": "Ghost Form",
+      "pt": "Forma Fantasma"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Flight · Immunity · Insubstantial",
+      "pt": "Voo · Imunidade · Insubstancial"
+    },
+    "page": 38,
+    "effectIds": [
+      "flight",
+      "immunity",
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "death-undead-form",
+    "profileId": "death",
+    "name": {
+      "en": "Undead Form",
+      "pt": "Forma Morta-viva"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 38,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "death-necromancy",
+    "profileId": "death",
+    "name": {
+      "en": "Necromancy",
+      "pt": "Necromancia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled · Horde · Multiple Minions (per effect rank)",
+      "pt": "Invocar · Controlado · Horda · Múltiplos Lacaios (por graduação do efeito)"
+    },
+    "page": 38,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "death-speak-with-the-dead",
+    "profileId": "death",
+    "name": {
+      "en": "Speak With the Dead",
+      "pt": "Falar com os Mortos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 38,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-banishment",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Banishment",
+      "pt": "Banimento Dimensional"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Movement · Attack · Increased Range — Base DC 11. Independent +3 PP per extra DC is not a destination rank.",
+      "pt": "Movimento · Ataque · Alcance Aumentado — CD base 11. O aumento independente de +3 PP por CD não é uma graduação de destinos."
+    },
+    "page": 43,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-blade",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Blade",
+      "pt": "Lâmina Dimensional"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Penetrating · Subtle",
+      "pt": "Dano · Penetrante · Sutil"
+    },
+    "page": 43,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-cascade",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Cascade",
+      "pt": "Cascata Dimensional"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area · Variable Descriptor",
+      "pt": "Dano · Área · Descritor Variável"
+    },
+    "page": 43,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-adaptation",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Adaptation",
+      "pt": "Adaptação Dimensional"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Limited — Life support only in hazardous dimensions.",
+      "pt": "Imunidade · Limitado — Suporte vital apenas em dimensões perigosas."
+    },
+    "page": 44,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-anchor",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Anchor",
+      "pt": "Âncora Dimensional"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity — Dimension powers.",
+      "pt": "Imunidade — Poderes dimensionais."
+    },
+    "page": 44,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-shunt",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Shunt",
+      "pt": "Desvio Dimensional"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect",
+      "pt": "Deflexão"
+    },
+    "page": 44,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "dimension-dimension-walk",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimension Walk",
+      "pt": "Caminhada Dimensional"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Quirk · Check Required — Only while moving; Perception DC 12 required.",
+      "pt": "Movimento · Peculiaridade · Teste Necessário — Apenas em movimento; exige Percepção CD 12."
+    },
+    "page": 44,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-jump",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Jump",
+      "pt": "Salto Dimensional"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 44,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-portal",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Portal",
+      "pt": "Portal Dimensional"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Portal",
+      "pt": "Movimento · Portal"
+    },
+    "page": 44,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "dimension-dimension-sense",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimension Sense",
+      "pt": "Sentido Dimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 44,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-grab",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Grab",
+      "pt": "Busca Dimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Variable Descriptor",
+      "pt": "Traço Aprimorado · Descritor Variável"
+    },
+    "page": 45,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-perspective",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Perspective",
+      "pt": "Perspectiva Dimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 45,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-pocket",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Pocket",
+      "pt": "Bolso Dimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature — Stores material of mass rank equal to the Feature rank.",
+      "pt": "Característica — Guarda material com graduação de massa igual à graduação da Característica."
+    },
+    "page": 45,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-shift",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Shift",
+      "pt": "Deslocamento Dimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 45,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-stability",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Stability",
+      "pt": "Estabilidade Dimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Area · Concentration · Simultaneous · Reduced Range",
+      "pt": "Anulação · Área · Concentração · Simultâneo · Alcance Reduzido"
+    },
+    "page": 45,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-summoning",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Summoning",
+      "pt": "Invocação Dimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon",
+      "pt": "Invocar"
+    },
+    "page": 45,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-window-1",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Window — 1",
+      "pt": "Janela Dimensional — Uma dimensão"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Dimensional · Senses · Dimensional — Dimensional modifiers bought for existing vision and hearing, not new senses.",
+      "pt": "Sentidos · Dimensional · Sentidos · Dimensional — Modificadores Dimensionais para visão e audição existentes; não compra novos sentidos."
+    },
+    "page": 45,
+    "effectIds": [
+      "senses",
+      "senses"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-window-2",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Window — 2",
+      "pt": "Janela Dimensional — Grupo de dimensões"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Dimensional · Senses · Dimensional — Dimensional modifiers bought for existing vision and hearing, not new senses.",
+      "pt": "Sentidos · Dimensional · Sentidos · Dimensional — Modificadores Dimensionais para visão e audição existentes; não compra novos sentidos."
+    },
+    "page": 45,
+    "effectIds": [
+      "senses",
+      "senses"
+    ]
+  },
+  {
+    "id": "dimension-dimensional-window-3",
+    "profileId": "dimension",
+    "name": {
+      "en": "Dimensional Window — 3",
+      "pt": "Janela Dimensional — Qualquer dimensão"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Dimensional · Senses · Dimensional — Dimensional modifiers bought for existing vision and hearing, not new senses.",
+      "pt": "Sentidos · Dimensional · Sentidos · Dimensional — Modificadores Dimensionais para visão e audição existentes; não compra novos sentidos."
+    },
+    "page": 45,
+    "effectIds": [
+      "senses",
+      "senses"
+    ]
+  },
+  {
+    "id": "dimension-two-dimensional-form",
+    "profileId": "dimension",
+    "name": {
+      "en": "Two-Dimensional Form",
+      "pt": "Forma Bidimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Limited · Insubstantial · Quirk — Visual concealment on one side only; body-width restriction.",
+      "pt": "Camuflagem · Limitado · Insubstancial · Peculiaridade — Ocultação visual de apenas um lado; restrição pela largura do corpo."
+    },
+    "page": 45,
+    "effectIds": [
+      "concealment",
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "dimension-four-dimensional-form",
+    "profileId": "dimension",
+    "name": {
+      "en": "Four-Dimensional Form",
+      "pt": "Forma Quadridimensional"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature · Indirect · Variable Descriptor · Senses · Teleport — Zero-rank carrier purchases only the flat Indirect/Variable Descriptor modifiers for existing attacks.",
+      "pt": "Característica · Indireto · Descritor Variável · Sentidos · Teleporte — O componente sem graduações compra apenas os modificadores fixos Indireto/Descritor Variável para ataques existentes."
+    },
+    "page": 46,
+    "effectIds": [
+      "feature",
+      "senses",
+      "teleport"
+    ]
+  },
+  {
+    "id": "dream-dream-trap",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Trap",
+      "pt": "Prisão de Sonho"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Limited Degree · Limited — Third degree only: Transformed asleep; sleeping targets only.",
+      "pt": "Aflição · Alcance Aumentado · Graus Limitados · Limitado — Apenas terceiro grau: Transformado adormecido; apenas alvos dormindo."
+    },
+    "page": 48,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "dream-nightmare-blast",
+    "profileId": "dream",
+    "name": {
+      "en": "Nightmare Blast",
+      "pt": "Rajada de Pesadelos"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Variable Conditions · Variable Descriptor · Limited — Variable conditions; sleeping targets only.",
+      "pt": "Aflição · Alcance Aumentado · Condições Variáveis · Descritor Variável · Limitado — Condições variáveis; apenas alvos dormindo."
+    },
+    "page": 48,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "dream-sleep",
+    "profileId": "dream",
+    "name": {
+      "en": "Sleep",
+      "pt": "Sono"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative — Fatigued, Exhausted, Asleep.",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo — Fatigado, Exausto, Adormecido."
+    },
+    "page": 49,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "dream-sleep-deprivation",
+    "profileId": "dream",
+    "name": {
+      "en": "Sleep Deprivation",
+      "pt": "Privação de Sono"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive · Subtle · Limited — Fatigued, Exhausted, Incapacitated; one recovery check per day.",
+      "pt": "Aflição · Alcance Aumentado · Progressivo · Sutil · Limitado — Fatigado, Exausto, Incapacitado; um teste de recuperação por dia."
+    },
+    "page": 49,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "dream-dream-dissipation",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Dissipation",
+      "pt": "Dissipação de Sonhos"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Nullify · Simultaneous",
+      "pt": "Anulação · Simultâneo"
+    },
+    "page": 49,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "dream-dream-immunity",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Immunity",
+      "pt": "Imunidade a Sonhos"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 49,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "dream-healing-trance",
+    "profileId": "dream",
+    "name": {
+      "en": "Healing Trance",
+      "pt": "Transe Curativo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Regeneration · Source — Source: sleep.",
+      "pt": "Regeneração · Fonte — Fonte: sono."
+    },
+    "page": 49,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "dream-sleepless",
+    "profileId": "dream",
+    "name": {
+      "en": "Sleepless",
+      "pt": "Sem Sono"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 49,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "dream-dreamport",
+    "profileId": "dream",
+    "name": {
+      "en": "Dreamport",
+      "pt": "Teleporte Onírico"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Medium — Medium: dreamers.",
+      "pt": "Teleporte · Preciso · Meio — Meio: sonhadores."
+    },
+    "page": 49,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "dream-dream-projection",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Projection",
+      "pt": "Projeção Onírica"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Communication · Limited — Mental; limited to dreamers.",
+      "pt": "Comunicação · Limitado — Mental; limitado a sonhadores."
+    },
+    "page": 49,
+    "effectIds": [
+      "communication"
+    ]
+  },
+  {
+    "id": "dream-dream-travel",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Travel",
+      "pt": "Viagem Onírica"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 50,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "dream-dream-control",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Control",
+      "pt": "Controle de Sonhos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion · Limited — Minds only, sleeping subjects only.",
+      "pt": "Ilusão · Limitado — Apenas mentes de pessoas adormecidas."
+    },
+    "page": 50,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "dream-dream-mastery",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Mastery",
+      "pt": "Domínio dos Sonhos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable · Action · Limited — Only while asleep and in dreams.",
+      "pt": "Variável · Ação · Limitado — Apenas dormindo e em sonhos."
+    },
+    "page": 50,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "dream-dream-reading",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Reading",
+      "pt": "Leitura de Sonhos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Mind Reading · Limited — Sleeping subjects only.",
+      "pt": "Leitura Mental · Limitado — Apenas pessoas dormindo."
+    },
+    "page": 50,
+    "effectIds": [
+      "mind-reading"
+    ]
+  },
+  {
+    "id": "dream-dream-touch",
+    "profileId": "dream",
+    "name": {
+      "en": "Dream Touch",
+      "pt": "Toque Onírico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Senses",
+      "pt": "Sensoriamento Remoto · Sentidos"
+    },
+    "page": 50,
+    "effectIds": [
+      "remote-sensing",
+      "senses"
+    ]
+  },
+  {
+    "id": "dream-precognitive-dreams",
+    "profileId": "dream",
+    "name": {
+      "en": "Precognitive Dreams",
+      "pt": "Sonhos Precognitivos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Limited — Only while dreaming.",
+      "pt": "Sentidos · Limitado — Apenas durante sonhos."
+    },
+    "page": 50,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "dream-sleep-substitute",
+    "profileId": "dream",
+    "name": {
+      "en": "Sleep Substitute",
+      "pt": "Substituto do Sono"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing · Energizing · Limited — Limited to Energizing.",
+      "pt": "Cura · Energizing · Limitado — Limitado a Energizar."
+    },
+    "page": 50,
+    "effectIds": [
+      "healing"
+    ]
   }
 ] satisfies LibraryEntry[];

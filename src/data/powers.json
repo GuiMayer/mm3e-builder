@@ -116,6 +116,36 @@
         "longDescription": "Once you have hit with a Concentration Affliction, so long as you continue to take a standard action each turn to maintain the effect, the target must make a new resistance check against it, with no attack check required.",
         "incompatibleWith": [],
         "i18n": {}
+      },
+      {
+        "id": "variable_conditions",
+        "name": "Variable Conditions",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 2,
+        "description": "Choose conditions when using Affliction. Power Profiles p. 80. All degrees.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Condições Variáveis",
+            "description": "Escolha as condições ao usar Aflição. Power Profiles p. 80. Todos os graus."
+          }
+        }
+      },
+      {
+        "id": "variable_condition_degree",
+        "name": "Variable Condition Degree",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Choose conditions when using Affliction. Power Profiles p. 80. One chosen degree only.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Um Grau de Condição Variável",
+            "description": "Escolha as condições ao usar Aflição. Power Profiles p. 80. Apenas um grau escolhido."
+          }
+        }
       }
     ],
     "flaws": [
