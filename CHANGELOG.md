@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed — Power Builder layout
+- Tighten wrapped PP summary rows with a 4px vertical gap and compact line
+  height, preserving horizontal spacing and all cost calculations.
 - Present mobile modifiers as compact rectangular cards with name, cost and
   removal in the header, labeled rank controls and full-width options. Reuse
   the layout for base, linked and alternate effects without changing values.

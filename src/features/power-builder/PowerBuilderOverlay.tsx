@@ -1390,7 +1390,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           padding: var(--s-sm) var(--s-lg);
           background: var(--c-surface); border-top: 1px solid var(--c-border);
         }
-        .cost-breakdown { display: flex; align-items: center; gap: var(--s-md); flex-wrap: wrap; }
+        .cost-breakdown { display: flex; align-items: center; gap: 4px var(--s-md); flex-wrap: wrap; line-height: 1.4; }
         .cost-comp-item { display: flex; align-items: center; gap: 6px; }
         .cost-comp-name { font-size: 0.8rem; color: var(--c-text-secondary); }
         .cost-comp-val { font-size: 0.8rem; font-weight: 700; color: var(--c-primary); }
