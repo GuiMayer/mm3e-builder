@@ -1132,8 +1132,13 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           if (libraryTarget.alternateId) {
             const alternate = next.alternateEffects.find(ae => ae.id === libraryTarget.alternateId);
             setExpandedAEId(libraryTarget.alternateId);
-            if (alternate) setActiveAEComponentId(previous => ({ ...previous, [alternate.id]: alternate.components[0].id }));
-          } else setActiveComponentId(next.components[0].id);
+            if (alternate) {
+              const selected = libraryTarget.kind === 'component' && alternate.components.some(component => component.id === libraryTarget.componentId)
+                ? libraryTarget.componentId : alternate.components[0].id;
+              setActiveAEComponentId(previous => ({ ...previous, [alternate.id]: selected }));
+            }
+          } else setActiveComponentId(libraryTarget.kind === 'component' && next.components.some(component => component.id === libraryTarget.componentId)
+            ? libraryTarget.componentId : next.components[0].id);
           setLibraryTarget(null);
         }}/></Suspense>}
 

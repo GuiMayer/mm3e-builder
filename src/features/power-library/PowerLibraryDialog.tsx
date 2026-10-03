@@ -8,6 +8,7 @@ import { calculatePowerPricing } from '../../shared/lib/mathEngine';
 import { validateRequiredPowerFields } from '../../shared/lib/validation';
 import { useDialogFocus } from '../../shared/hooks/useDialogFocus';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { Tooltip } from '../../shared/ui/Tooltip';
 import { ConfigurableFieldSelector } from '../power-builder/components/ConfigurableFieldSelector';
 import { EffectReference } from '../power-builder/components/EffectReference';
 import { SenseTraitsEditor } from '../power-builder/components/SenseTraitsEditor';
@@ -75,6 +76,15 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
   const targetName = target.kind === 'alternate'
     ? power.alternateEffects.find(ae => ae.id === target.alternateId)?.name || t('builder.addAlternate')
     : target.alternateId ? t('builder.addLinkedEffect') : power.components[0]?.id === target.componentId ? t('builder.baseEffect') : t('builder.addLinkedEffect');
+  const apply = () => {
+    if (!draft) return;
+    const choices = allComponents.flatMap((component, index) => (originalComponents[index].choices ?? []).map(choice => {
+      const value = component.fieldValues?.[choice.id];
+      const option = choice.options.find(item => item.value === value);
+      return option ? `${libraryText(choice.label, language)}: ${libraryText(option.label, language)}` : '';
+    })).filter(Boolean);
+    onApply({ ...draft, notes: [draft.notes, ...choices].join('\n') }, useName);
+  };
 
   return <div className="power-library-overlay" onClick={onClose}>
     <div ref={contentRef} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1} className={`power-library-dialog ${draft || status !== 'idle' ? 'power-library-dialog--detail' : ''}`} onClick={event => event.stopPropagation()}>
@@ -103,8 +113,10 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
                 <div className="power-library-component-header"><strong>{definition.name}</strong>{originalComponent.scalable ? <NumberInput value={component.ranks} min={1} onChange={ranks => update(component.id, { ranks })} aria-label={`${t('builder.ranks')}: ${definition.name}`}/> : <span>{t('powerLibrary.fixedRanks', { count: component.ranks })}</span>}</div>
                 <div className="power-library-modifiers">{component.modifiers.map((modifier, modifierIndex) => {
                   const resolved = resolveModifierDefinition(modifier, definition, MODIFIER_DEFS).definition;
-                  return <span key={`${modifier.modifierId}-${modifierIndex}`}>{resolved?.i18n?.[language]?.name ?? resolved?.name ?? modifier.modifierId}{modifier.ranks > 1 ? ` ${modifier.ranks}` : ''}{modifier.option ? ` (${modifier.option})` : ''}</span>;
+                  return <Tooltip key={`${modifier.modifierId}-${modifierIndex}`} content={resolved?.i18n?.[language]?.description ?? resolved?.description ?? ''}><span tabIndex={0}>{resolved?.i18n?.[language]?.name ?? resolved?.name ?? modifier.modifierId}{modifier.ranks > 1 ? ` ${modifier.ranks}` : ''}{modifier.option ? ` (${modifier.option})` : ''}</span></Tooltip>;
                 })}</div>
+                {component.senseTraits?.length ? <ul className="power-library-purchases">{component.senseTraits.map((trait, traitIndex) => <li key={traitIndex}>{t(`powerLibrary.sense.${trait.id}`, { defaultValue: SENSE_TRAITS.find(item => item.id === trait.id)?.label ?? trait.id })} {trait.ranks}{trait.senseType ? ` · ${trait.senseType}` : ''}{trait.detail ? ` · ${trait.detail}` : ''}</li>)}</ul> : null}
+                {Object.entries(component.fieldValues ?? {}).filter(([id]) => !originalComponent.choices?.some(choice => choice.id === id)).map(([id, value]) => <p className="power-library-field-value" key={id}><strong>{definition.configurableFields?.find(field => field.id === id)?.label ?? id}: </strong>{Array.isArray(value) ? value.join(', ') : value}</p>)}
                 {definition.configurableFields?.some(field => field.required && !originalComponent.fieldValues?.[field.id]) && <ConfigurableFieldSelector fields={definition.configurableFields} values={component.fieldValues ?? {}} onChange={(id, value) => update(component.id, { fieldValues: { ...component.fieldValues, [id]: value } })} t={t}/>}
                 {originalComponent.choices?.map(choice => <label className="power-library-choice" key={choice.id}>{libraryText(choice.label, language)}<select className="app-select" value={component.fieldValues?.[choice.id] as string ?? ''} onChange={event => update(component.id, { fieldValues: { ...component.fieldValues, [choice.id]: event.target.value } })}><option value="">{t('builder.selectOption')}</option>{choice.options.map(option => <option key={option.value} value={option.value}>{libraryText(option.label, language)}</option>)}</select></label>)}
                 {originalComponent.chooseSenses && <SenseTraitsEditor traits={component.senseTraits ?? []} onChange={senseTraits => update(component.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })}/>}
@@ -116,7 +128,7 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
             <p className="power-library-impact">{t(draft.alternateEffects.length ? 'powerLibrary.replaceArray' : target.kind === 'alternate' ? 'powerLibrary.replaceAlternate' : 'powerLibrary.replaceComponent')}</p>
             {!compatible && <p role="alert">{t('powerLibrary.incompatible')}</p>}
             {missingFields && <p role="status">{t('powerLibrary.requiredChoices')}</p>}
-            <footer><div><strong>{cost(pricing)} {costUnit}</strong>{finalPricing && <small>{t('powerLibrary.resultTotal', { cost: cost(finalPricing), unit: costUnit })}</small>}</div><button type="button" className="power-library-apply" disabled={!compatible || missingFields || pricing.diagnostics.length > 0} onClick={() => onApply(draft, useName)}>{t(draft.alternateEffects.length ? 'powerLibrary.applyArray' : 'powerLibrary.apply')}</button></footer>
+            <footer><div><strong>{cost(pricing)} {costUnit}</strong>{finalPricing && <small>{t('powerLibrary.resultTotal', { cost: cost(finalPricing), unit: costUnit })}</small>}</div><button type="button" className="power-library-apply" disabled={!compatible || missingFields || pricing.diagnostics.length > 0} onClick={apply}>{t(draft.alternateEffects.length ? 'powerLibrary.applyArray' : 'powerLibrary.apply')}</button></footer>
           </> : status === 'idle' && <p>{t('powerLibrary.choose')}</p>}
         </section>
       </div>

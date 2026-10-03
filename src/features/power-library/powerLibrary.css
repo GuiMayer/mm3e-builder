@@ -28,6 +28,7 @@
 .power-library-component-header .number-input { max-width: 160px; }
 .power-library-modifiers { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0; }
 .power-library-modifiers span { padding: 4px 7px; background: var(--c-surface); border-radius: var(--r-sm); font-size: .75rem; }
+.power-library-purchases, .power-library-field-value { font-size: .8rem; color: var(--c-text-secondary); line-height: 1.5; }
 .power-library-component summary { cursor: pointer; font-size: .8rem; color: var(--c-text-secondary); padding: 7px 0; }
 .power-library-component .build-effect-info { margin-top: 8px; }
 .power-library-name-option { display: flex; gap: 8px; align-items: center; font-size: .85rem; margin: 16px 0; }
