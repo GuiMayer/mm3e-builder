@@ -191,6 +191,8 @@ export interface ICharacterAdvantage {
 
 // ── Applied Modifier (on a power component) ──
 export interface IAppliedModifier {
+  /** Optional editing identity; legacy entries remain valid without it. */
+  instanceId?: string;
   modifierId: string;
   ranks: number;                 // modifier ranks; per_rank only scales when its definition is repeatable
   isPowerSpecific?: boolean;     // modifier comes from power's own extras/flaws list

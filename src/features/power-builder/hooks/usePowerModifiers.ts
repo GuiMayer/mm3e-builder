@@ -2,6 +2,8 @@ import type {
   ICharacterPower,
   IAppliedModifier,
 } from '../../../entities/types';
+import { createId } from '../../../shared/lib/identity';
+import { removeComponentModifier, updateComponentModifier } from '../modifierInstances';
 
 /* ================================================
    usePowerModifiers Hook
@@ -21,50 +23,40 @@ export function usePowerModifiers({
       ...p,
       components: p.components.map((c) =>
         c.id === compId
-          ? { ...c, modifiers: [...c.modifiers, modifier] }
+          ? { ...c, modifiers: [...c.modifiers, { ...modifier, instanceId: createId() }] }
           : c
       ),
     }));
   }
 
-  function removeModifierFromComponent(compId: string, modifierId: string) {
+  function removeModifierFromComponent(compId: string, instanceKey: string) {
     setPower((p) => ({
       ...p,
       components: p.components.map((c) =>
         c.id === compId
-          ? { ...c, modifiers: c.modifiers.filter((m) => m.modifierId !== modifierId) }
+          ? removeComponentModifier(c, instanceKey)
           : c
       ),
     }));
   }
 
-  function updateModifierRanks(compId: string, modifierId: string, ranks: number) {
+  function updateModifierRanks(compId: string, instanceKey: string, ranks: number) {
     setPower((p) => ({
       ...p,
       components: p.components.map((c) =>
         c.id === compId
-          ? {
-              ...c,
-              modifiers: c.modifiers.map((m) =>
-                m.modifierId === modifierId ? { ...m, ranks } : m
-              ),
-            }
+          ? updateComponentModifier(c, instanceKey, { ranks })
           : c
       ),
     }));
   }
 
-  function updateModifierOption(compId: string, modifierId: string, option: string) {
+  function updateModifierOption(compId: string, instanceKey: string, option: string) {
     setPower((p) => ({
       ...p,
       components: p.components.map((c) =>
         c.id === compId
-          ? {
-              ...c,
-              modifiers: c.modifiers.map((m) =>
-                m.modifierId === modifierId ? { ...m, option } : m
-              ),
-            }
+          ? updateComponentModifier(c, instanceKey, { option })
           : c
       ),
     }));
@@ -72,19 +64,14 @@ export function usePowerModifiers({
 
   function updateModifierOptions(
     compId: string,
-    modifierId: string,
+    instanceKey: string,
     options: Record<string, boolean | number | string>
   ) {
     setPower((p) => ({
       ...p,
       components: p.components.map((c) =>
         c.id === compId
-          ? {
-              ...c,
-              modifiers: c.modifiers.map((m) =>
-                m.modifierId === modifierId ? { ...m, options } : m
-              ),
-            }
+          ? updateComponentModifier(c, instanceKey, { options, ...(typeof options.affectedRanks === 'number' ? { affectedRanks: options.affectedRanks } : {}) })
           : c
       ),
     }));

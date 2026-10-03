@@ -14,6 +14,7 @@ interface ModifierParameterControlsProps {
   definition: IModifierDef;
   effectRanks: number;
   effectAction?: string;
+  applicationNumber?: number;
   onRanksChange: (ranks: number) => void;
   onOptionsChange: (options: Record<string, boolean | number | string>) => void;
 }
@@ -23,11 +24,13 @@ export function ModifierParameterControls({
   definition,
   effectRanks,
   effectAction,
+  applicationNumber,
   onRanksChange,
   onOptionsChange,
 }: ModifierParameterControlsProps) {
   const { t, i18n } = useTranslation();
   const ranked = isRankedModifier(definition);
+  const applicationLabel = `${definition.name}${applicationNumber ? ` (#${applicationNumber})` : ''}`;
   const subtypeId = getSelectedModifierSubtypeId(applied, definition);
   const overLimit = definition.maxRanks !== undefined && applied.ranks > definition.maxRanks;
   const cost = definition.costType === 'per_rank'
@@ -46,7 +49,7 @@ export function ModifierParameterControls({
               value={applied.ranks}
               onChange={onRanksChange}
               min={1}
-              aria-label={`${t('builder.modifierRanks')}: ${definition.name}`}
+              aria-label={`${t('builder.modifierRanks')}: ${applicationLabel}`}
             />
           </div>
         )}
@@ -64,7 +67,7 @@ export function ModifierParameterControls({
               })}
               min={1}
               max={effectRanks}
-              aria-label={`${t('builder.effectRanksAffected')}: ${definition.name}`}
+              aria-label={`${t('builder.effectRanksAffected')}: ${applicationLabel}`}
             />
           </div>
         )}
@@ -92,6 +95,16 @@ export function ModifierParameterControls({
           </div>
         )}
       </div>
+
+      {(applicationNumber !== undefined || applied.options?.note !== undefined) && (
+        <input
+          className="applied-mod-instance-note"
+          value={typeof applied.options?.note === 'string' ? applied.options.note : ''}
+          placeholder={t('builder.modifierNotePlaceholder')}
+          aria-label={`${t('builder.modifierNote')}: ${applicationLabel}`}
+          onChange={event => onOptionsChange({ ...applied.options, note: event.target.value })}
+        />
+      )}
 
       <span className="applied-mod-cost">
         {definition.costType === 'per_rank'

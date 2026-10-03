@@ -10,8 +10,8 @@ export function instantiatePowerTemplate(template: PowerTemplate, ranks = 1, lan
     // These describe catalog choices, not fields in the saved character model.
     void chooseSenses; void choices;
     const result = { ...structuredClone(fields), id: createId(), ranks: scalable && !modifierRanksOnly ? ranks * (rankMultiplier ?? 1) : component.ranks };
-    result.modifiers = result.modifiers.map(modifier => scaledModifiers?.includes(modifier.modifierId)
-      ? { ...modifier, ranks: modifier.ranks * (modifierRanksOnly ? ranks : result.ranks) } : modifier);
+    result.modifiers = result.modifiers.map(modifier => ({ ...modifier, instanceId: createId(),
+      ranks: scaledModifiers?.includes(modifier.modifierId) ? modifier.ranks * (modifierRanksOnly ? ranks : result.ranks) : modifier.ranks }));
     if (scaledSenseTraits) result.senseTraits = result.senseTraits?.map(trait => ({ ...trait, ranks: trait.ranks * ranks }));
     return result;
   };

@@ -508,6 +508,8 @@
   "builder.subtypeLabel": "Escolha a opção do modificador",
   "builder.subtypeNone": "— escolha uma opção —",
   "builder.modifierRanks": "Ranks do modificador",
+  "builder.modifierNote": "Observação da aplicação",
+  "builder.modifierNotePlaceholder": "Natureza ou condição (opcional)",
   "builder.effectRanksAffected": "Ranks do efeito afetados",
   "builder.affectsOnlyObjects": "Afeta Apenas Objetos",
   "builder.affectsOnlyOthers": "Afeta Apenas Outros",

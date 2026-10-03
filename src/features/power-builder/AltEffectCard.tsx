@@ -22,6 +22,7 @@ import { PowerLibraryButton } from '../power-library/PowerLibraryButton';
 import type { PowerLibraryTarget } from '../power-library/types';
 import { getComponentCostBreakdown } from '../../shared/lib/mathEngine';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
+import { modifierInstanceKey } from './modifierInstances';
 
 interface AltEffectCardProps {
   strength?: number;
@@ -245,11 +246,13 @@ export function AltEffectCard({
                           {comp.modifiers.length === 0 && !activeId && (
                             <span className="dropzone-placeholder">{t('builder.dropHere')}</span>
                           )}
-                          {comp.modifiers.map((applied) => {
+                          {comp.modifiers.map((applied, modifierIndex) => {
                             const def = effectDef
                               ? resolveModifierDefinition(applied, effectDef, genericModifierDefs).definition
                               : undefined;
                             if (!def) return null;
+                            const applicationNumber = comp.modifiers.filter(modifier => modifier.modifierId === applied.modifierId).length > 1
+                              ? comp.modifiers.slice(0, modifierIndex + 1).filter(modifier => modifier.modifierId === applied.modifierId).length : undefined;
                             // Check for incompatibilities
                             const incompatKey = `${ae.id}:${comp.id}:${applied.modifierId}`;
                             const conflicts = modifierIncompatibilities[incompatKey] || [];
@@ -257,26 +260,27 @@ export function AltEffectCard({
 
                             return (
                               <div
-                                key={applied.modifierId}
+                                key={modifierInstanceKey(applied, modifierIndex)}
                                 className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                               >
-                                <span className="applied-mod-name">{def.name}</span>
+                                <span className="applied-mod-name">{def.name}{applicationNumber && <small className="applied-mod-instance-number"> #{applicationNumber}</small>}</span>
                                 <ModifierParameterControls
                                   applied={applied}
                                   definition={def}
+                                  applicationNumber={applicationNumber}
                                   effectRanks={Math.max(1, getComponentEffectRanks(comp, strength))}
                                   effectAction={effectDef?.action}
-                                  onRanksChange={(value) => onUpdateModifierRanks(comp.id, applied.modifierId, value)}
-                                  onOptionsChange={(options) => onUpdateModifierOptions(comp.id, applied.modifierId, options)}
+                                  onRanksChange={(value) => onUpdateModifierRanks(comp.id, modifierInstanceKey(applied, modifierIndex), value)}
+                                  onOptionsChange={(options) => onUpdateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), options)}
                                 />
                                 {def.options && def.options.length > 0 && (
                                   <>
-                                    <select className="applied-mod-option" value={applied.option ?? ''} onChange={(e) => onUpdateModifierOption(comp.id, applied.modifierId, e.target.value)}>
+                                    <select className="applied-mod-option" value={applied.option ?? ''} onChange={(e) => onUpdateModifierOption(comp.id, modifierInstanceKey(applied, modifierIndex), e.target.value)}>
                                       <option value="">Shape...</option>
                                       {def.options.map((opt) => <option key={opt.label} value={opt.label}>{opt.label}</option>)}
                                     </select>
                                     {def.id === 'area' && applied.option === 'Perception' && (
-                                      <label className="applied-mod-check"><input className="app-checkbox" type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
+                                      <label className="applied-mod-check"><input className="app-checkbox" type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => onUpdateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
                                     )}
                                   </>
                                 )}
@@ -286,7 +290,7 @@ export function AltEffectCard({
                                       className="app-checkbox"
                                       type="checkbox"
                                       checked={applied.options?.affectsOnlyObjects === true}
-                                      onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                      onChange={(e) => onUpdateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                         ...applied.options,
                                         affectsOnlyObjects: e.target.checked,
                                       })}
@@ -300,7 +304,7 @@ export function AltEffectCard({
                                       className="app-checkbox"
                                       type="checkbox"
                                       checked={applied.options?.affectsOnlyOthers === true}
-                                      onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                      onChange={(e) => onUpdateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                         ...applied.options,
                                         affectsOnlyOthers: e.target.checked,
                                       })}
@@ -314,7 +318,7 @@ export function AltEffectCard({
                                       className="app-checkbox"
                                       type="checkbox"
                                       checked={applied.options?.sideEffectAlways === true}
-                                      onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                      onChange={(e) => onUpdateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                         ...applied.options,
                                         sideEffectAlways: e.target.checked,
                                       })}
@@ -326,7 +330,7 @@ export function AltEffectCard({
                                   <select
                                     className="applied-mod-subtype"
                                     value={(applied.options?.alternateResistanceCost as string) ?? 'equal'}
-                                    onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                    onChange={(e) => onUpdateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                       ...applied.options,
                                       alternateResistanceCost: e.target.value,
                                     })}
@@ -339,7 +343,7 @@ export function AltEffectCard({
                                   <input
                                     className="applied-mod-option"
                                     value={(applied.options?.trigger as string) ?? ''}
-                                    onChange={(e) => onUpdateModifierOptions(comp.id, applied.modifierId, {
+                                    onChange={(e) => onUpdateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                       ...applied.options,
                                       trigger: e.target.value,
                                     })}
@@ -357,8 +361,8 @@ export function AltEffectCard({
                                 )}
                                 <button
                                   className="applied-mod-remove"
-                                  aria-label={`${t('common.remove')}: ${def.name}`}
-                                  onClick={() => onRemoveModifier(comp.id, applied.modifierId)}
+                                  aria-label={`${t('common.remove')}: ${def.name}${applicationNumber ? ` (#${applicationNumber})` : ''}`}
+                                  onClick={() => onRemoveModifier(comp.id, modifierInstanceKey(applied, modifierIndex))}
                                 >
                                   <X size={12} />
                                 </button>

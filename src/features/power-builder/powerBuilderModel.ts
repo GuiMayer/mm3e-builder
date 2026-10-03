@@ -6,9 +6,10 @@ import type {
 import { calculatePowerPricing, type PowerPricing } from '../../shared/lib/mathEngine';
 import { createId } from '../../shared/lib/identity';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
+import { prepareModifierInstances } from './modifierInstances';
 
 export function createPowerDraft(existingPower?: ICharacterPower): ICharacterPower {
-  return existingPower ?? {
+  return existingPower ? prepareModifierInstances(existingPower) : {
     id: createId(),
     name: '',
     components: [{

@@ -44,6 +44,7 @@ import type { PowerLibraryTarget } from '../power-library/types';
 import { applyPowerTemplate } from '../power-library/powerTemplateApplication';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
 import { addComponentModifier } from './modifierApplication';
+import { modifierInstanceKey, removeComponentModifier, updateComponentModifier } from './modifierInstances';
 import { getBlockingPowerSaveIssues } from './powerSavePolicy';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 import {
@@ -328,61 +329,46 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
     addModifierToComponent(activeComponentId, modId, isPowerSpecific);
   }, [equipmentMode, expandedAEId, power.alternateEffects, activeAEComponentId, activeComponentId, addModifierToComponent, addModifierToAEComponent]);
 
-  function removeModifier(componentId: string, modId: string) {
+  function removeModifier(componentId: string, instanceKey: string) {
     setPower((p) => ({
       ...p,
       components: p.components.map((comp) =>
         comp.id !== componentId
           ? comp
-          : { ...comp, modifiers: comp.modifiers.filter((m) => m.modifierId !== modId) }
+          : removeComponentModifier(comp, instanceKey)
       ),
     }));
   }
 
-  function updateModifierRanks(componentId: string, modId: string, ranks: number) {
+  function updateModifierRanks(componentId: string, instanceKey: string, ranks: number) {
     setPower((p) => ({
       ...p,
       components: p.components.map((comp) =>
         comp.id !== componentId
           ? comp
-          : {
-              ...comp,
-              modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, ranks: Math.max(1, ranks) } : m
-              ),
-            }
+          : updateComponentModifier(comp, instanceKey, { ranks: Math.max(1, ranks) })
       ),
     }));
   }
 
-  function updateModifierOption(componentId: string, modId: string, option: string) {
+  function updateModifierOption(componentId: string, instanceKey: string, option: string) {
     setPower((p) => ({
       ...p,
       components: p.components.map((comp) =>
         comp.id !== componentId
           ? comp
-          : {
-              ...comp,
-              modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, option } : m
-              ),
-            }
+          : updateComponentModifier(comp, instanceKey, { option })
       ),
     }));
   }
 
-  function updateModifierOptions(componentId: string, modId: string, options: Record<string, boolean | number | string>) {
+  function updateModifierOptions(componentId: string, instanceKey: string, options: Record<string, boolean | number | string>) {
     setPower((p) => ({
       ...p,
       components: p.components.map((comp) =>
         comp.id !== componentId
           ? comp
-          : {
-              ...comp,
-              modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, options, ...(typeof options.affectedRanks === 'number' ? { affectedRanks: options.affectedRanks } : {}) } : m
-              ),
-            }
+          : updateComponentModifier(comp, instanceKey, { options, ...(typeof options.affectedRanks === 'number' ? { affectedRanks: options.affectedRanks } : {}) })
       ),
     }));
   }
@@ -746,12 +732,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                             {comp.modifiers.length === 0 && !activeId && (
                               <span className="dropzone-placeholder">{t(comp.effectId ? 'builder.dropHere' : 'builder.chooseEffectForModifiers')}</span>
                             )}
-                            {comp.modifiers.map((applied) => {
+                            {comp.modifiers.map((applied, modifierIndex) => {
                               const def = effectDef
                                 ? resolveModifierDefinition(applied, effectDef, modifierDefs).definition
                                 : undefined;
                               if (!def) return null;
 
+                              const applicationNumber = comp.modifiers.filter(modifier => modifier.modifierId === applied.modifierId).length > 1
+                                ? comp.modifiers.slice(0, modifierIndex + 1).filter(modifier => modifier.modifierId === applied.modifierId).length : undefined;
                               // Check for incompatibilities
                               const incompatKey = `${comp.id}:${applied.modifierId}`;
                               const conflicts = modifierIncompatibilities[incompatKey] || [];
@@ -759,17 +747,18 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
                               return (
                                 <div
-                                  key={applied.modifierId}
+                                  key={modifierInstanceKey(applied, modifierIndex)}
                                   className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${applied.isPowerSpecific ? 'applied-mod--specific' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                                 >
-                                  <span className="applied-mod-name">{def.name}</span>
+                                  <span className="applied-mod-name">{def.name}{applicationNumber && <small className="applied-mod-instance-number"> #{applicationNumber}</small>}</span>
                                   <ModifierParameterControls
                                     applied={applied}
                                     definition={def}
+                                    applicationNumber={applicationNumber}
                                     effectRanks={Math.max(1, getComponentEffectRanks(comp, getCharacterStrength(character)))}
                                     effectAction={effectDef?.action}
-                                    onRanksChange={(value) => updateModifierRanks(comp.id, applied.modifierId, value)}
-                                    onOptionsChange={(options) => updateModifierOptions(comp.id, applied.modifierId, options)}
+                                    onRanksChange={(value) => updateModifierRanks(comp.id, modifierInstanceKey(applied, modifierIndex), value)}
+                                    onOptionsChange={(options) => updateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), options)}
                                   />
                                   {/* Sub-option dropdown */}
                                   {def.options && def.options.length > 0 && (
@@ -777,13 +766,13 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                       <select
                                         className="applied-mod-option"
                                         value={applied.option ?? ''}
-                                        onChange={(e) => updateModifierOption(comp.id, applied.modifierId, e.target.value)}
+                                        onChange={(e) => updateModifierOption(comp.id, modifierInstanceKey(applied, modifierIndex), e.target.value)}
                                       >
                                         <option value="">Shape...</option>
                                         {def.options.map((opt) => <option key={opt.label} value={opt.label}>{opt.label}</option>)}
                                       </select>
                                       {def.id === 'area' && applied.option === 'Perception' && (
-                                        <label className="applied-mod-check"><input className="app-checkbox" type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => updateModifierOptions(comp.id, applied.modifierId, { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
+                                        <label className="applied-mod-check"><input className="app-checkbox" type="checkbox" checked={applied.options?.includesSenseDependent === true} onChange={(e) => updateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), { ...applied.options, includesSenseDependent: e.target.checked })} /> Includes Sense-Dependent</label>
                                       )}
                                     </>
                                   )}
@@ -799,7 +788,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                             ...applied.options,
                                             affectsOnlyObjects: e.target.checked,
                                           };
-                                          updateModifierOptions(comp.id, applied.modifierId, newOptions);
+                                          updateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), newOptions);
                                         }}
                                       />
                                       {t('builder.affectsOnlyObjects')}
@@ -812,7 +801,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                         type="checkbox"
                                         checked={applied.options?.affectsOnlyOthers === true}
                                         onChange={(e) => {
-                                          updateModifierOptions(comp.id, applied.modifierId, {
+                                          updateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                             ...applied.options,
                                             affectsOnlyOthers: e.target.checked,
                                           });
@@ -828,7 +817,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                         type="checkbox"
                                         checked={applied.options?.sideEffectAlways === true}
                                         onChange={(e) => {
-                                          updateModifierOptions(comp.id, applied.modifierId, {
+                                          updateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                             ...applied.options,
                                             sideEffectAlways: e.target.checked,
                                           });
@@ -842,7 +831,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                       className="applied-mod-subtype"
                                       value={(applied.options?.alternateResistanceCost as string) ?? 'equal'}
                                       onChange={(e) => {
-                                        updateModifierOptions(comp.id, applied.modifierId, {
+                                        updateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                           ...applied.options,
                                           alternateResistanceCost: e.target.value,
                                         });
@@ -857,7 +846,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                       className="applied-mod-option"
                                       value={(applied.options?.trigger as string) ?? ''}
                                       onChange={(e) => {
-                                        updateModifierOptions(comp.id, applied.modifierId, {
+                                        updateModifierOptions(comp.id, modifierInstanceKey(applied, modifierIndex), {
                                           ...applied.options,
                                           trigger: e.target.value,
                                         });
@@ -876,8 +865,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                                   )}
                                   <button
                                     className="applied-mod-remove"
-                                    aria-label={`${t('common.remove')}: ${def.name}`}
-                                    onClick={() => removeModifier(comp.id, applied.modifierId)}
+                                    aria-label={`${t('common.remove')}: ${def.name}${applicationNumber ? ` (#${applicationNumber})` : ''}`}
+                                    onClick={() => removeModifier(comp.id, modifierInstanceKey(applied, modifierIndex))}
                                   >
                                     <X size={12} />
                                   </button>
@@ -1356,6 +1345,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
           50% { border-color: rgba(var(--c-error-rgb, 239, 68, 68), 0.8); }
         }
         .applied-mod-name { font-weight: 600; }
+        .applied-mod-instance-number { font-size: .7rem; color: var(--c-text-muted); white-space: nowrap; }
+        .applied-mod:has(.applied-mod-instance-note) { flex-basis: 100%; border-radius: var(--r-md); }
+        .applied-mod-instance-note { order: 2; flex: 1 1 100%; min-width: 0; width: 100%; max-width: 100%; padding: 4px 6px; border: 1px solid var(--c-border); border-radius: var(--r-sm); background: var(--c-bg); color: var(--c-text); font: inherit; }
         .applied-mod-parameters, .applied-mod-field { display: contents; }
         .applied-mod-field-label { display: none; }
         .applied-mod-ranks {
@@ -1516,6 +1508,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             order: 4; display: flex; flex: 0 0 100%; min-width: 0; gap: 8px; flex-wrap: wrap;
           }
           .applied-mod-parameters:empty { display: none; }
+          .applied-mod-instance-note { order: 5; flex: 0 0 100%; width: 100%; min-height: 44px; padding: 8px; }
           .applied-mod-field { display: flex; flex-direction: column; gap: 4px; flex: 1 1 120px; min-width: 0; }
           .applied-mod-field-label { display: block; color: var(--c-text-secondary); font-size: 0.7rem; line-height: 1.4; }
           .applied-mod-field .number-input-wrapper { width: 100%; }

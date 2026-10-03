@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — Independent modifier applications
+- Adding an extra/flaw again creates a separate application, with independent ranks, affected ranks, options, notes and removal on base, linked and alternate components.
+- Repeated applications are numbered in the Builder. Player/GM choices remain saveable with the existing diagnostic messages and power-specific scoping.
+- Optional modifier instance IDs survive JSON import/export. Legacy sheets remain valid; identities are prepared only in an editing draft, with no automatic rewrite or price migration.
+- Verified with 82 files / 1,900 passing tests, including independent partial-rank costs and legacy/JSON round trips.
+
 ## [1.20.0] - 2026-10-03
 
 ### Added — Power Profiles library

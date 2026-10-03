@@ -19,9 +19,11 @@ describe('Player-controlled modifier application', () => {
     const original = component(id);
     const before = JSON.stringify(original);
     const first = addComponentModifier(original, effect(id), MODIFIER_DEFS, 'limited');
-    expect(first.modifiers).toEqual([{ modifierId: 'limited', ranks: 1, isPowerSpecific: false }]);
+    expect(first.modifiers).toEqual([expect.objectContaining({ modifierId: 'limited', ranks: 1, isPowerSpecific: false })]);
     const second = addComponentModifier(first, effect(id), MODIFIER_DEFS, 'limited');
-    expect(second.modifiers[0]).toMatchObject({ ranks: 2, isPowerSpecific: false });
+    expect(second.modifiers).toHaveLength(2);
+    expect(second.modifiers.every(modifier => modifier.ranks === 1 && !modifier.isPowerSpecific)).toBe(true);
+    expect(second.modifiers[0].instanceId).not.toBe(second.modifiers[1].instanceId);
     expect(getBlockingPowerSaveIssues(power(first), DEFAULT_VALIDATION_RULES, context)).toEqual([]);
     expect(calculatePowerPricing(power(first), POWER_DEFS, MODIFIER_DEFS).total).toBeLessThan(calculatePowerPricing(power(original), POWER_DEFS, MODIFIER_DEFS).total);
     expect(JSON.stringify(original)).toBe(before);
@@ -31,8 +33,10 @@ describe('Player-controlled modifier application', () => {
     for (const definition of POWER_DEFS) {
       for (const modifier of MODIFIER_DEFS) {
         const target = component(definition.id);
-        expect(addComponentModifier(target, definition, MODIFIER_DEFS, modifier.id, false).modifiers,
-          `${definition.id}: ${modifier.id}`).toContainEqual({ modifierId: modifier.id, ranks: 1, isPowerSpecific: false });
+        const first = addComponentModifier(target, definition, MODIFIER_DEFS, modifier.id, false);
+        const repeated = addComponentModifier(first, definition, MODIFIER_DEFS, modifier.id, false);
+        expect(repeated.modifiers, `${definition.id}: ${modifier.id}`).toHaveLength(2);
+        expect(repeated.modifiers).toEqual([expect.objectContaining({ modifierId: modifier.id, ranks: 1, isPowerSpecific: false }), expect.objectContaining({ modifierId: modifier.id, ranks: 1, isPowerSpecific: false })]);
         expect(resolveModifierDrop({ kind: 'modifier', modifier, isPowerSpecific: false, sourceEffectId: 'different-effect' },
           { kind: 'modifier-target', componentId: target.id, effectId: definition.id, label: definition.name }, POWER_DEFS, MODIFIER_DEFS)).not.toBeNull();
       }
@@ -47,10 +51,11 @@ describe('Player-controlled modifier application', () => {
     expect(getBlockingPowerSaveIssues(invalid, DEFAULT_VALIDATION_RULES, context)).toContainEqual(expect.objectContaining({ severity: 'error', path: 'components.0.modifiers.limited_senses' }));
   });
 
-  it('preserves existing modifier options when increasing a legacy generic entry', () => {
+  it('preserves existing modifier purchases and options when adding another legacy generic entry', () => {
     const original = { ...component('senses'), modifiers: [{ modifierId: 'limited', ranks: 2, affectedRanks: 3, option: 'vision', options: { note: 'Only at night' } }] };
     const updated = addComponentModifier(original, effect('senses'), MODIFIER_DEFS, 'limited');
-    expect(updated.modifiers[0]).toEqual({ ...original.modifiers[0], ranks: 3 });
+    expect(updated.modifiers[0]).toEqual(original.modifiers[0]);
+    expect(updated.modifiers[1]).toMatchObject({ modifierId: 'limited', ranks: 1, isPowerSpecific: false });
     expect(original.modifiers[0].ranks).toBe(2);
   });
 

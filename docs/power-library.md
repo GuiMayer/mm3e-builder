@@ -39,6 +39,21 @@ Nenhuma referência viva ao catálogo, preço editorial ou política de graduaç
 é gravada no JSON. Não há migração de fichas antigas nem alteração dos custos
 anteriores. Cada capítulo é carregado sob demanda.
 
+O Builder aceita aplicações independentes do mesmo extra/flaw. Ao adicioná-lo
+novamente, aparece outra entrada, numerada quando houver repetição. Graduações,
+graduações afetadas e opções são editadas separadamente; uma observação opcional
+identifica a natureza/condição de cada aplicação. Remover uma mantém as demais.
+Esse comportamento vale para componentes base, vinculados e alternativos,
+inclusive no Builder de recursos. Os avisos existentes continuam presentes;
+a escolha de combinação fica com o jogador/narrador e modificadores específicos
+continuam limitados ao efeito ao qual pertencem.
+
+`instanceId` é uma identidade opcional da aplicação, sem efeito nos custos.
+Fichas antigas não precisam conter esse campo: ele é preparado no rascunho ao
+abrir o editor e só é persistido ao salvar. Importação/exportação preservam
+todas as aplicações, graduações e opções. Ativação e Removível continuam sendo
+configurações globais do poder, com seus controles e cálculos próprios.
+
 Implementação e cobertura: [plano](power-library-plan.md),
 [13 lotes de três capítulos](power-library-coverage.md) e
 [definições de regras](power-library-rules.md).

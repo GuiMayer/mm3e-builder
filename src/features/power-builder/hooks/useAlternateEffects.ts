@@ -8,6 +8,7 @@ import type {
 } from '../../../entities/types';
 import { createId } from '../../../shared/lib/identity';
 import { addComponentModifier } from '../modifierApplication';
+import { removeComponentModifier, updateComponentModifier } from '../modifierInstances';
 
 interface UseAlternateEffectsParams {
   setPower: React.Dispatch<React.SetStateAction<ICharacterPower>>;
@@ -146,7 +147,7 @@ export function useAlternateEffects({
     }));
   }, [powerDefs, modifierDefs, setPower]);
 
-  function removeModifierFromAEComponent(aeId: string, compId: string, modId: string) {
+  function removeModifierFromAEComponent(aeId: string, compId: string, instanceKey: string) {
     setPower((p) => ({
       ...p,
       alternateEffects: p.alternateEffects.map((ae) =>
@@ -155,45 +156,35 @@ export function useAlternateEffects({
           components: ae.components.map((comp) =>
             comp.id !== compId
               ? comp
-              : { ...comp, modifiers: comp.modifiers.filter((m) => m.modifierId !== modId) }
+              : removeComponentModifier(comp, instanceKey)
           ),
         }
       ),
     }));
   }
 
-  function updateAEModifierRanks(aeId: string, compId: string, modId: string, ranks: number) {
+  function updateAEModifierRanks(aeId: string, compId: string, instanceKey: string, ranks: number) {
     setPower((p) => ({
       ...p,
       alternateEffects: p.alternateEffects.map((ae) =>
         ae.id !== aeId ? ae : {
           ...ae,
           components: ae.components.map((comp) =>
-            comp.id !== compId ? comp : {
-              ...comp,
-              modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, ranks: Math.max(1, ranks) } : m
-              ),
-            }
+            comp.id !== compId ? comp : updateComponentModifier(comp, instanceKey, { ranks: Math.max(1, ranks) })
           ),
         }
       ),
     }));
   }
 
-  function updateAEModifierOption(aeId: string, compId: string, modId: string, option: string) {
+  function updateAEModifierOption(aeId: string, compId: string, instanceKey: string, option: string) {
     setPower((p) => ({
       ...p,
       alternateEffects: p.alternateEffects.map((ae) =>
         ae.id !== aeId ? ae : {
           ...ae,
           components: ae.components.map((comp) =>
-            comp.id !== compId ? comp : {
-              ...comp,
-              modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, option } : m
-              ),
-            }
+            comp.id !== compId ? comp : updateComponentModifier(comp, instanceKey, { option })
           ),
         }
       ),
@@ -203,7 +194,7 @@ export function useAlternateEffects({
   function updateAEModifierOptions(
     aeId: string,
     compId: string,
-    modId: string,
+    instanceKey: string,
     options: Record<string, boolean | number | string>
   ) {
     setPower((p) => ({
@@ -212,12 +203,7 @@ export function useAlternateEffects({
         ae.id !== aeId ? ae : {
           ...ae,
           components: ae.components.map((comp) =>
-            comp.id !== compId ? comp : {
-              ...comp,
-              modifiers: comp.modifiers.map((m) =>
-                m.modifierId === modId ? { ...m, options, ...(typeof options.affectedRanks === 'number' ? { affectedRanks: options.affectedRanks } : {}) } : m
-              ),
-            }
+            comp.id !== compId ? comp : updateComponentModifier(comp, instanceKey, { options, ...(typeof options.affectedRanks === 'number' ? { affectedRanks: options.affectedRanks } : {}) })
           ),
         }
       ),

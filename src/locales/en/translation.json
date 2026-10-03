@@ -508,6 +508,8 @@
   "builder.subtypeLabel": "Choose modifier option",
   "builder.subtypeNone": "— choose an option —",
   "builder.modifierRanks": "Modifier ranks",
+  "builder.modifierNote": "Application note",
+  "builder.modifierNotePlaceholder": "Nature or condition (optional)",
   "builder.effectRanksAffected": "Effect ranks affected",
   "builder.affectsOnlyObjects": "Affects Only Objects",
   "builder.affectsOnlyOthers": "Affects Only Others",

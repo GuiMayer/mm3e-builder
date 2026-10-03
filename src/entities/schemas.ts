@@ -8,6 +8,7 @@ import { z } from 'zod';
 const AbilityKeySchema = z.enum(['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre']);
 
 const AppliedModifierSchema = z.object({
+  instanceId: z.string().optional(),
   modifierId: z.string(),
   ranks: z.number().int().min(1),
   isPowerSpecific: z.boolean().optional(),
