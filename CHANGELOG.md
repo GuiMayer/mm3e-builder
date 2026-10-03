@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.20.0] - 2026-10-03
+
+### Added — Power Profiles library
+- Four-square library actions on base, linked and alternate effect headers.
+- 39 book chapters with 982 bilingual recipes/variants, searchable without accent sensitivity, source configuration, editable previews and costs from the normal rules engine.
+- 13 catalog commits containing three chapters each. Fixed functional ranks remain intact; scalable effects start at one.
+- Seven reference-only recipes clearly identify character-level changes or unsupported Sustained Affliction duration; partial recipes cannot be applied.
+- Editorial price discrepancies are shown and documented rather than forced with artificial modifiers.
+- Chapter chunks load on demand. Applied powers are independent copies in the existing sheet format; no migration or legacy price changes.
+
+### Validation
+- Full suite: 81 files / 1,893 passing tests, including all recipes at ranks 1, 5 and 10; typecheck, lint, production build and static verification.
+
+
 ### Changed — Power Builder layout
 - Fit existing power and alternate-effect notes when their editor opens,
   retaining manual vertical resizing and the two-row minimum for empty notes.

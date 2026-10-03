@@ -59,6 +59,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.17.0 | 2026-10-02 | `v1.16.0..v1.17.0` | 8 | Overhaul de campanha, migração revisada e traduções |
 | v1.18.0 | 2026-10-02 | `v1.17.0..v1.18.0` | 10 | Resources, custos PP/EP, Builder contextual e migração revisada |
 | v1.19.0 | 2026-10-03 | `v1.18.0..v1.19.0` | 6 | Referências oficiais, consulta responsiva e atalhos/cópias de recursos |
+| 1.20.0 (local, sem tag) | 2026-10-03 | `v1.19.0..commit de versão 1.20.0` | 47 | Refinamentos de referências, retratos, Power Builder e biblioteca Power Profiles |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -199,6 +200,49 @@ e `c2fe5b5` (documentação). A versão reúne esses complementos e três etapas
 Schema de ficha 2.1.0, biblioteca/apêndice 2, rascunho 1 e revisão de cálculo 6
 permanecem iguais. A aba não grava dados ou altera custos. A tag v1.19.0 é local;
 esta etapa não publica os três commits novos nem executa deploy.
+
+### 1.20.0 — Biblioteca Power Profiles e refinamentos da ficha
+
+O pacote inclui os 27 commits já existentes entre `v1.19.0` e `00b0ffd`:
+referências com colunas independentes, medidas métricas/imperiais e preferências;
+retratos por URL ou arquivo local em IndexedDB, ajuste de enquadramento e PDF;
+estado dos detalhes por personagem; navegação, modificadores, descrições,
+explicações de Dynamic e altura das notas no Power Builder.
+
+A biblioteca foi implementada em 20 commits adicionais, incluindo a consolidação
+da versão. A infraestrutura está em `50427f0`, `1f9928b`, `5694ae1`, `76b5f8c` e
+`1b83759`. Cada lote do catálogo reúne três capítulos do livro:
+
+| Lote | Capítulos | Commit |
+| --- | --- | --- |
+| 1 | Ar, Armadura, Animais | `14330cd` |
+| 2 | Frio, Cósmicos, Escuridão | `11a3bd3` |
+| 3 | Morte, Dimensões, Sonhos | `2db6508` |
+| 4 | Terra, Eletricidade, Elementos | `dd5d940` |
+| 5 | Fogo, Gravidade, Ilusão | `75589fd` |
+| 6 | Cinéticos, Vida, Luz | `5bb9481` |
+| 7 | Sorte, Magia, Magnetismo | `c5b4d8e` |
+| 8 | Marciais, Mentais, Meta | `5a705a5` |
+| 9 | Transformação, Plantas, Radiação | `0f16db9` |
+| 10 | Sensoriais, Tamanho, Sônicos | `af23d19` |
+| 11 | Velocidade, Força, Invocação | `f723b09` |
+| 12 | Talentos, Tecnologia, Teleporte | `2709f13` |
+| 13 | Tempo, Água, Clima | `0fe2f95` |
+
+`a53c97c` conclui referências mecânicas originais, identificação de entradas
+apenas para consulta, auditoria e carregamento dos capítulos sob demanda.
+O commit de versão documenta a entrega e alinha os metadados em 1.20.0.
+
+São 982 receitas/variantes nos 39 capítulos: 975 podem ser aplicadas e sete
+exigem alterações externas ao poder ou uma duração ainda não representada.
+O custo usa efeitos e modificadores normais; divergências impressas são
+explicadas na [auditoria](testing/power-library-audit.md), sem ajustes artificiais.
+O schema e o motor matemático permanecem iguais e as definições anteriores
+foram preservadas. Validação final: 81 arquivos, 1.893 testes, lint, build,
+verificação estática e conferência visual em desktop/celular.
+
+Os commits desta implementação são locais. Esta etapa não faz push, deploy
+nem cria uma tag de versão.
 
 ## Compatibilidade e publicação
 

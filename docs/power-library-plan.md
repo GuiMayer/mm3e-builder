@@ -1,7 +1,7 @@
 # Plano: biblioteca de poderes do Power Profiles
 
-Data: 2026-10-03. Estado: em implementação; receitas auditadas em lotes de três capítulos.
-Versão proposta: 1.20.0, após a versão atual 1.19.0.
+Data: 2026-10-03. Estado: implementado; 13 lotes de três capítulos auditados e commitados.
+Versão: 1.20.0.
 
 ## Objetivo
 
@@ -294,3 +294,7 @@ Executar verificações de tipos, lint, testes apropriados, build e verificaçã
 estática. A entrega só termina com cobertura dos capítulos documentada, fluxo
 validado em todos os destinos e fichas antigas preservadas. Push e deploy são
 uma etapa posterior quando solicitados.
+
+## Resultado e limites da implementação
+
+982 receitas/variantes, sendo 975 aplicáveis e sete referências com aplicação bloqueada para não inserir configurações incompletas. Consulte [cobertura](power-library-coverage.md), [auditoria](testing/power-library-audit.md) e [guia](power-library.md). Variantes aparecem como entradas separadas. Graduações variáveis de componentes são independentes; compras de Penetrante/Afeta Corpóreo e sentidos Rápidos seguem a política declarada da receita durante a prévia e viram campos normais ao aplicar. A composição original é preservada nas notas para condições, gatilhos e restrições que não têm campos próprios no Builder.

@@ -2,11 +2,7 @@
 
 ## Current release
 
-The current application release is **v1.18.0** (2026-10-02). Resources now have
-reviewed acquisition/movement migration, correct PP/EP allocations, contextual
-vehicle/headquarters editing, durable recovery, explicit import conflicts and
-consistent exports. See the [Resources guide](./resources.md) and
-[changelog](../CHANGELOG.md).
+The current application release is **v1.20.0** (2026-10-03). The Power Profiles library adds 39 chapters, 982 recipes/variants, editable previews and normal rules-engine pricing. See the [Power library guide](./power-library.md), [catalog audit](./testing/power-library-audit.md) and [changelog](../CHANGELOG.md).
 
 ## Current references
 

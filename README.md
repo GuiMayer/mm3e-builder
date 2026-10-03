@@ -1,4 +1,4 @@
-# Mutants & Masterminds 3e Character Builder — v1.19.0
+# Mutants & Masterminds 3e Character Builder — v1.20.0
 
 *Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
 
@@ -147,7 +147,8 @@ A complete redesign of the Alternate Effects system with full rule compliance an
 
 For detailed changelog, see **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Versioned updates through v1.19.0
+#### Versioned updates through v1.20.0
+- **v1.20.0**: Power Profiles library: 39 chapters, 982 recipes/variants, editable previews and normal engine pricing. [Guide](docs/power-library.md).
 - **v1.19.0**: Reference overhaul with official tables, bilingual search, responsive panels and reviewed combat summaries; resource quick references/edit shortcuts and independent duplication.
 - **v1.18.0**: Resource PP/EP costs, contextual movement/HQ Builder, reviewed migration, recovery, ownership, import conflicts and consistent exports.
 - **v1.17.0**: Fixed campaign advancement budgets, reviewed lossless migration, editable ledger and complete exports; Targeted Effects translation fixes.
@@ -385,7 +386,8 @@ Redesenho completo do sistema de Efeitos Alternativos com plena conformidade com
 
 Para changelog detalhado, veja **[CHANGELOG.md](./CHANGELOG.md)**.
 
-#### Atualizações versionadas até a v1.19.0
+#### Atualizações versionadas até a v1.20.0
+- **v1.20.0**: Biblioteca Power Profiles: 39 capítulos, 982 receitas/variantes, prévia editável e cálculo pelo motor normal. [Guia](docs/power-library.md).
 - **v1.19.0**: Referências com tabelas oficiais, busca bilíngue, painéis responsivos e resumos de combate revisados; consulta/edição rápida e duplicação independente de recursos.
 - **v1.18.0**: Custos PP/EP de recursos, Builder de movimento/bases com contexto, migração revisada, recuperação, propriedade, conflitos de importação e exportações consistentes.
 - **v1.17.0**: Orçamento de campanha sem duplicação, migração revisada sem perda, registro editável e exportações completas; correções de tradução em Efeitos Direcionados.

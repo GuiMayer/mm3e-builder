@@ -36,3 +36,9 @@ Portal foi cadastrado também como extra específico de Movimento (+2 por
 Isso não libera um modificador específico de Teleporte em outro efeito: cada
 cadastro continua pertencendo ao próprio poder. Novas opções de Frio e Calor
 em Ambiente usam 1/2 por graduação, sem alterar opções antigas.
+
+## Definições adicionais e compatibilidade
+
+Condições Variáveis (+2, ou +1 para um único grau) e Fundir-se ao Alvo (+1) pertencem a Aflição. Fonte (-1) e Efeito Adicional (+1) de Absorção Elétrica pertencem a Cura. Persistente de Cura tem uma compra fixa de +1, sem alterar o identificador legado que cobrava por graduação. Exige Teste de Ataque (-1) pertence a Dano, e Fonte (-1) de Absorção de Radiação pertence a Atributo Aprimorado. As opções Extra Aprimorado registram o orçamento de melhorias de atributos existentes conforme seu custo real; não modificam outros poderes automaticamente.
+
+Todas as definições anteriores ao pacote foram comparadas com `00b0ffd`: nenhum custo ou campo anterior mudou. As receitas não carregam custos de auditoria para a ficha. A lista completa de divergências e referências está na [auditoria](testing/power-library-audit.md).
