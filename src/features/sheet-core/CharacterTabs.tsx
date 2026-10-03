@@ -1,3 +1,5 @@
+import { copyCharacterPortrait } from '../../services/portraits/portraitLifecycle';
+import { useToast } from '../../shared/hooks/useToast';
 import { useTranslation } from 'react-i18next';
 import { useCharactersStore } from '../../store/charactersStore';
 import { Copy, Plus, X } from 'lucide-react';
@@ -6,6 +8,7 @@ import { useAppDialog } from '../../shared/ui/appDialogContext';
 
 export function CharacterTabs() {
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const tabs = useCharactersStore((s) => s.tabs);
   const activeCharacterId = useCharactersStore((s) => s.activeCharacterId);
   const setActiveCharacter = useCharactersStore((s) => s.setActiveCharacter);
@@ -30,7 +33,11 @@ export function CharacterTabs() {
   };
 
   const handleDuplicateCharacter = () => {
-    if (activeCharacterId) duplicateCharacter(activeCharacterId);
+    if (!activeCharacterId) return;
+    const source = useCharactersStore.getState().getCharacterById(activeCharacterId)?.character;
+    const copyId = duplicateCharacter(activeCharacterId);
+    const copy = useCharactersStore.getState().getCharacterById(copyId)?.character;
+    if (source && copy) void copyCharacterPortrait(source, copy).catch(() => showToast(t('portrait.copyError'), 'error'));
   };
 
   // Handle close tab

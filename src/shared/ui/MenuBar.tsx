@@ -1,3 +1,4 @@
+import { clearPortraits } from '../../services/storage/portraitStorage';
 import { lazy, Suspense, useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { AppView } from '../../app/App';
@@ -159,8 +160,17 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     setCampaignMode(!campaignMode, targetId);
   }
 
-  function handleClearDraft() {
-    void dialog.confirm({ title: t('draft.clearTitle'), message: t('draft.clearMessage'), confirmLabel: t('draft.clearAction'), danger: true, requireAcknowledgement: true, acknowledgementLabel: t('draft.clearAcknowledgement') }).then((confirmed) => { if (confirmed) { localStorage.clear(); clearDraftMulti(); window.location.reload(); } });
+  async function handleClearDraft() {
+    const confirmed = await dialog.confirm({ title: t('draft.clearTitle'), message: `${t('draft.clearMessage')}\n\n${t('portrait.clearNotice')}`, confirmLabel: t('draft.clearAction'), danger: true, requireAcknowledgement: true, acknowledgementLabel: t('draft.clearAcknowledgement') });
+    if (!confirmed) return;
+    try {
+      await clearPortraits();
+      localStorage.clear();
+      clearDraftMulti();
+      window.location.reload();
+    } catch {
+      await dialog.alert({ message: t('portrait.clearError') });
+    }
   }
 
   async function handleDraftImport(event: React.ChangeEvent<HTMLInputElement>) {

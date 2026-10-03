@@ -1,3 +1,5 @@
+import { copyCharacterPortrait, hasLocalPortrait } from '../../services/portraits/portraitLifecycle';
+import { useToast } from './useToast';
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
@@ -29,6 +31,7 @@ export interface PendingCharacterImport {
  */
 export function useFileOperations() {
   const { t, i18n } = useTranslation();
+  const { showToast } = useToast();
   const dialog = useAppDialog();
   const { character } = useActiveCharacter();
   const resources = useResourcesStore((state) => state.resources);
@@ -63,7 +66,7 @@ export function useFileOperations() {
    * Export current character as JSON file
    * Flushes draft to localStorage before exporting to ensure latest changes are saved
    */
-  function exportCharacter() {
+  async function exportCharacter() {
     // Force immediate save to draft before exporting
     // This ensures any pending changes (within debounce window) are saved
     const tabs = useCharactersStore.getState().tabs;
@@ -73,7 +76,8 @@ export function useFileOperations() {
     const linkedResources = resources.filter((resource) =>
       (character.resourceLinks ?? []).some((link) => link.resourceId === resource.id)
     );
-    exportCharacterJSON(character, i18n.language, undefined, linkedResources);
+    await exportCharacterJSON(character, i18n.language, undefined, linkedResources);
+    if (await hasLocalPortrait(character)) showToast(t('portrait.exportNotice'), 'info', 7000);
   }
 
   /**
@@ -160,7 +164,9 @@ export function useFileOperations() {
     if (!persistImportedResources(pending.resources, pending.replaceExisting)) return;
 
     const existingNames = useCharactersStore.getState().tabs.map((tab) => tab.label);
-    openImportedCharacter(duplicateImportedCharacter(pending.character, existingNames));
+    const copy = duplicateImportedCharacter(pending.character, existingNames);
+    openImportedCharacter(copy);
+    void copyCharacterPortrait(pending.character, copy).catch(() => showToast(t('portrait.copyError'), 'error'));
     setPendingImport(null);
   }
 
