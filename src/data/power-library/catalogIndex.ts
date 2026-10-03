@@ -18327,5 +18327,1397 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "senses"
     ]
+  },
+  {
+    "id": "time-age-manipulation",
+    "profileId": "time",
+    "name": {
+      "en": "Age Manipulation",
+      "pt": "Manipular Idade"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative",
+      "pt": "Aflição · Cumulativo"
+    },
+    "page": 203,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "time-temporal-ambush",
+    "profileId": "time",
+    "name": {
+      "en": "Temporal Ambush",
+      "pt": "Emboscada Temporal"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Indirect · Variable Descriptor",
+      "pt": "Dano · Alcance Aumentado · Indireto · Descritor Variável"
+    },
+    "page": 203,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "time-time-freeze",
+    "profileId": "time",
+    "name": {
+      "en": "Time Freeze",
+      "pt": "Congelar o Tempo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative",
+      "pt": "Aflição · Cumulativo"
+    },
+    "page": 204,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "time-temporal-phase",
+    "profileId": "time",
+    "name": {
+      "en": "Temporal Phase",
+      "pt": "Fase Temporal"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 204,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "time-temporal-sidestep",
+    "profileId": "time",
+    "name": {
+      "en": "Temporal Sidestep",
+      "pt": "Passo Temporal"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Concentration · Limited · Teleport · Reaction",
+      "pt": "Imunidade · Concentração · Limitado · Teleporte · Reação"
+    },
+    "page": 204,
+    "effectIds": [
+      "immunity",
+      "teleport"
+    ]
+  },
+  {
+    "id": "time-timeless",
+    "profileId": "time",
+    "name": {
+      "en": "Timeless",
+      "pt": "Atemporal"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 204,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "time-temporal-shift",
+    "profileId": "time",
+    "name": {
+      "en": "Temporal Shift",
+      "pt": "Deslocamento Temporal"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Limited",
+      "pt": "Teleporte · Preciso · Limitado"
+    },
+    "page": 204,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "time-manipulative-temporal-shift",
+    "profileId": "time",
+    "name": {
+      "en": "Manipulative Temporal Shift",
+      "pt": "Deslocamento Temporal Manipulativo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Attack · Increased Range · Limited",
+      "pt": "Teleporte · Ataque · Alcance Aumentado · Limitado"
+    },
+    "page": 204,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "time-manipulative-area-temporal-shift",
+    "profileId": "time",
+    "name": {
+      "en": "Manipulative Area Temporal Shift",
+      "pt": "Deslocamento Temporal Manipulativo em Área"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Attack · Increased Range · Limited · Area",
+      "pt": "Teleporte · Ataque · Alcance Aumentado · Limitado · Área"
+    },
+    "page": 204,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "time-time-portal",
+    "profileId": "time",
+    "name": {
+      "en": "Time Portal",
+      "pt": "Portal do Tempo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Portal",
+      "pt": "Movimento · Portal"
+    },
+    "page": 204,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "time-time-travel",
+    "profileId": "time",
+    "name": {
+      "en": "Time Travel",
+      "pt": "Viagem no Tempo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 204,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "time-accelerated-healing",
+    "profileId": "time",
+    "name": {
+      "en": "Accelerated Healing",
+      "pt": "Cura Acelerada"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Regeneration",
+      "pt": "Regeneração"
+    },
+    "page": 205,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "time-rapid-perception",
+    "profileId": "time",
+    "name": {
+      "en": "Rapid Perception",
+      "pt": "Percepção Rápida"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Senses · Senses · Senses · Senses",
+      "pt": "Sentidos · Sentidos · Sentidos · Sentidos · Sentidos"
+    },
+    "page": 205,
+    "effectIds": [
+      "senses",
+      "senses",
+      "senses",
+      "senses",
+      "senses"
+    ]
+  },
+  {
+    "id": "time-replay",
+    "profileId": "time",
+    "name": {
+      "en": "Replay",
+      "pt": "Repetir"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Feature",
+      "pt": "Sentidos · Característica"
+    },
+    "page": 205,
+    "effectIds": [
+      "senses",
+      "feature"
+    ]
+  },
+  {
+    "id": "time-see-the-future",
+    "profileId": "time",
+    "name": {
+      "en": "See the Future",
+      "pt": "Ver o Futuro"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 205,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "time-temporal-duplication",
+    "profileId": "time",
+    "name": {
+      "en": "Temporal Duplication",
+      "pt": "Duplicação Temporal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Heroic",
+      "pt": "Invocar · Heroico"
+    },
+    "page": 205,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "time-temporal-summoning",
+    "profileId": "time",
+    "name": {
+      "en": "Temporal Summoning",
+      "pt": "Invocação Temporal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Variable Type (Broad)",
+      "pt": "Invocar · Variable Type (Broad)"
+    },
+    "page": 205,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "time-time-sense",
+    "profileId": "time",
+    "name": {
+      "en": "Time Sense",
+      "pt": "Sentido do Tempo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 205,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "time-time-stop",
+    "profileId": "time",
+    "name": {
+      "en": "Time Stop",
+      "pt": "Parar o Tempo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Quickness · Subtle · Quirk · Speed · Subtle · Quirk — The shared -4 PP Quirk is distributed between both effects: routine actions only.",
+      "pt": "Rapidez · Sutil · Peculiaridade · Velocidade · Sutil · Peculiaridade — A Peculiaridade de -4 PP é distribuída entre ambos: apenas ações rotineiras."
+    },
+    "page": 205,
+    "effectIds": [
+      "quickness",
+      "speed"
+    ]
+  },
+  {
+    "id": "time-view-the-past",
+    "profileId": "time",
+    "name": {
+      "en": "View the Past",
+      "pt": "Ver o Passado"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 206,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "water-blinding-splash",
+    "profileId": "water",
+    "name": {
+      "en": "Blinding Splash",
+      "pt": "Jato Cegante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado · Resistência Alternativa"
+    },
+    "page": 208,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "water-dehydrate",
+    "profileId": "water",
+    "name": {
+      "en": "Dehydrate",
+      "pt": "Desidratar"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative",
+      "pt": "Aflição · Cumulativo"
+    },
+    "page": 208,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "water-drown",
+    "profileId": "water",
+    "name": {
+      "en": "Drown",
+      "pt": "Afogar"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Concentration",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Concentration"
+    },
+    "page": 208,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "water-tsunami",
+    "profileId": "water",
+    "name": {
+      "en": "Tsunami",
+      "pt": "Tsunami"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area · Limited",
+      "pt": "Dano · Alcance Aumentado · Área · Limitado"
+    },
+    "page": 208,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "water-water-blast",
+    "profileId": "water",
+    "name": {
+      "en": "Water Blast",
+      "pt": "Rajada de Água"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 208,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "water-water-cannon",
+    "profileId": "water",
+    "name": {
+      "en": "Water Cannon",
+      "pt": "Canhão de Água"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative · Limited Degree · Alternate Resistance",
+      "pt": "Aflição · Área · Cumulativo · Graus Limitados · Resistência Alternativa"
+    },
+    "page": 208,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "water-water-weapon",
+    "profileId": "water",
+    "name": {
+      "en": "Water Weapon",
+      "pt": "Arma de Água"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage",
+      "pt": "Dano"
+    },
+    "page": 208,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "water-aquatic-regeneration",
+    "profileId": "water",
+    "name": {
+      "en": "Aquatic Regeneration",
+      "pt": "Regeneração Aquática"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Regeneration · Source",
+      "pt": "Regeneração · Fonte"
+    },
+    "page": 208,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "water-fire-resistance",
+    "profileId": "water",
+    "name": {
+      "en": "Fire Resistance",
+      "pt": "Resistência ao Fogo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Half Effect",
+      "pt": "Imunidade · Metade do Efeito"
+    },
+    "page": 209,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "water-mist",
+    "profileId": "water",
+    "name": {
+      "en": "Mist",
+      "pt": "Névoa"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 209,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "water-wall-of-water",
+    "profileId": "water",
+    "name": {
+      "en": "Wall of Water",
+      "pt": "Muralha de Água"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Create · Limited",
+      "pt": "Criação · Limitado"
+    },
+    "page": 209,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "water-water-shaping",
+    "profileId": "water",
+    "name": {
+      "en": "Water Shaping",
+      "pt": "Moldar Água"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Create",
+      "pt": "Criação"
+    },
+    "page": 209,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "water-waterproof",
+    "profileId": "water",
+    "name": {
+      "en": "Waterproof",
+      "pt": "À Prova de Água"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 209,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "water-water-shield",
+    "profileId": "water",
+    "name": {
+      "en": "Water Shield",
+      "pt": "Escudo de Água"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Sustained",
+      "pt": "Proteção · Impenetrável · Sustentado"
+    },
+    "page": 209,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "water-aqua-port",
+    "profileId": "water",
+    "name": {
+      "en": "Aqua-Port",
+      "pt": "Aquaporte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Medium",
+      "pt": "Teleporte · Meio"
+    },
+    "page": 209,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "water-dolphin-leap",
+    "profileId": "water",
+    "name": {
+      "en": "Dolphin Leap",
+      "pt": "Salto de Golfinho"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping · Limited",
+      "pt": "Salto · Limitado"
+    },
+    "page": 209,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "water-swimming",
+    "profileId": "water",
+    "name": {
+      "en": "Swimming",
+      "pt": "Natação"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Swimming",
+      "pt": "Natação"
+    },
+    "page": 209,
+    "effectIds": [
+      "swimming"
+    ]
+  },
+  {
+    "id": "water-water-walking",
+    "profileId": "water",
+    "name": {
+      "en": "Water Walking",
+      "pt": "Caminhar na Água"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 209,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "water-aqua-healing",
+    "profileId": "water",
+    "name": {
+      "en": "Aqua-Healing",
+      "pt": "Cura Aquática"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing",
+      "pt": "Cura"
+    },
+    "page": 209,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "water-aquatic",
+    "profileId": "water",
+    "name": {
+      "en": "Aquatic",
+      "pt": "Aquático"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Movement · Senses",
+      "pt": "Imunidade · Movimento · Sentidos"
+    },
+    "page": 209,
+    "effectIds": [
+      "immunity",
+      "movement",
+      "senses"
+    ]
+  },
+  {
+    "id": "water-aquatic-advantage",
+    "profileId": "water",
+    "name": {
+      "en": "Aquatic Advantage",
+      "pt": "Vantagem Aquática"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 209,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "water-dousing",
+    "profileId": "water",
+    "name": {
+      "en": "Dousing",
+      "pt": "Apagar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Broad · Simultaneous",
+      "pt": "Anulação · Amplo · Simultâneo"
+    },
+    "page": 210,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "water-hydrokinesis",
+    "profileId": "water",
+    "name": {
+      "en": "Hydrokinesis",
+      "pt": "Hidrocinese"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Perception · Limited",
+      "pt": "Mover Objetos · Percepção · Limitado"
+    },
+    "page": 210,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "water-marine-mastery",
+    "profileId": "water",
+    "name": {
+      "en": "Marine Mastery",
+      "pt": "Domínio Marinho"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Horde · Mental Link · Multiple Minions (per effect rank) · Variable Type (General) · Limited · Self-Powered",
+      "pt": "Invocar · Horda · Mental Link · Múltiplos Lacaios (por graduação do efeito) · Variable Type (General) · Limitado · Deslocamento Próprio"
+    },
+    "page": 210,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "water-marine-telepathy",
+    "profileId": "water",
+    "name": {
+      "en": "Marine Telepathy",
+      "pt": "Telepatia Marinha"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Comprehend · Limited",
+      "pt": "Compreensão · Limitado"
+    },
+    "page": 210,
+    "effectIds": [
+      "comprehend"
+    ]
+  },
+  {
+    "id": "water-water-creatures",
+    "profileId": "water",
+    "name": {
+      "en": "Water Creatures",
+      "pt": "Criaturas de Água"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon",
+      "pt": "Invocar"
+    },
+    "page": 210,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "water-water-form",
+    "profileId": "water",
+    "name": {
+      "en": "Water Form",
+      "pt": "Forma de Água"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Limited · Immunity · Insubstantial · Swimming",
+      "pt": "Camuflagem · Limitado · Imunidade · Insubstancial · Natação"
+    },
+    "page": 210,
+    "effectIds": [
+      "concealment",
+      "immunity",
+      "insubstantial",
+      "swimming"
+    ]
+  },
+  {
+    "id": "water-amass-water",
+    "profileId": "water",
+    "name": {
+      "en": "Amass Water",
+      "pt": "Acumular Água"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Growth · Limited",
+      "pt": "Crescimento · Limitado"
+    },
+    "page": 210,
+    "effectIds": [
+      "growth"
+    ]
+  },
+  {
+    "id": "water-water-scrying",
+    "profileId": "water",
+    "name": {
+      "en": "Water Scrying",
+      "pt": "Vidência pela Água"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Medium",
+      "pt": "Sensoriamento Remoto · Meio"
+    },
+    "page": 210,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "weather-arctic-freeze",
+    "profileId": "weather",
+    "name": {
+      "en": "Arctic Freeze",
+      "pt": "Congelamento Ártico"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Extra Condition · Limited Degree · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Condição Extra · Graus Limitados · Resistência Alternativa"
+    },
+    "page": 213,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "weather-blinding-arc",
+    "profileId": "weather",
+    "name": {
+      "en": "Blinding Arc",
+      "pt": "Arco Cegante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado · Resistência Alternativa"
+    },
+    "page": 213,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "weather-cyclone",
+    "profileId": "weather",
+    "name": {
+      "en": "Cyclone",
+      "pt": "Ciclone"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Increased Range · Concentration · Extra Condition · Instant Recovery · Alternate Resistance",
+      "pt": "Aflição · Área · Alcance Aumentado · Concentration · Condição Extra · Recuperação Instantânea · Resistência Alternativa"
+    },
+    "page": 213,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "weather-exposure",
+    "profileId": "weather",
+    "name": {
+      "en": "Exposure",
+      "pt": "Exposição"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Subtle",
+      "pt": "Aflição · Alcance Aumentado · Sutil"
+    },
+    "page": 213,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "weather-hailstorm",
+    "profileId": "weather",
+    "name": {
+      "en": "Hailstorm",
+      "pt": "Chuva de Granizo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area · Indirect",
+      "pt": "Dano · Alcance Aumentado · Área · Indireto"
+    },
+    "page": 213,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "weather-lightning-bolt",
+    "profileId": "weather",
+    "name": {
+      "en": "Lightning Bolt",
+      "pt": "Relâmpago"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 213,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "weather-thunderclap",
+    "profileId": "weather",
+    "name": {
+      "en": "Thunderclap",
+      "pt": "Estrondo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado"
+    },
+    "page": 214,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "weather-wind-blast",
+    "profileId": "weather",
+    "name": {
+      "en": "Wind Blast",
+      "pt": "Rajada de Vento"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Area · Reduced Range · Limited Direction",
+      "pt": "Mover Objetos · Área · Alcance Reduzido · Direção Limitada"
+    },
+    "page": 214,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "weather-fog-visibility-2",
+    "profileId": "weather",
+    "name": {
+      "en": "Fog — Visibility -2",
+      "pt": "Nevoeiro — Visibilidade -2"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 214,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "weather-fog-visibility-5",
+    "profileId": "weather",
+    "name": {
+      "en": "Fog — Visibility -5",
+      "pt": "Nevoeiro — Visibilidade -5"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 214,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "weather-fog-concealment",
+    "profileId": "weather",
+    "name": {
+      "en": "Fog — Concealment",
+      "pt": "Nevoeiro — Ocultação"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment · Attack · Area",
+      "pt": "Camuflagem · Ataque · Área"
+    },
+    "page": 214,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "weather-immunity-to-weather-2",
+    "profileId": "weather",
+    "name": {
+      "en": "Immunity to Weather — 2",
+      "pt": "Imunidade ao Clima — 2"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 214,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "weather-immunity-to-weather-10",
+    "profileId": "weather",
+    "name": {
+      "en": "Immunity to Weather — 10",
+      "pt": "Imunidade ao Clima — 10"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 214,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "weather-whirlwind",
+    "profileId": "weather",
+    "name": {
+      "en": "Whirlwind",
+      "pt": "Redemoinho"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect · Area · Limited",
+      "pt": "Deflexão · Área · Limitado"
+    },
+    "page": 214,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "weather-wind-screen",
+    "profileId": "weather",
+    "name": {
+      "en": "Wind Screen",
+      "pt": "Barreira de Vento"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Sustained · Limited",
+      "pt": "Proteção · Impenetrável · Sustentado · Limitado"
+    },
+    "page": 214,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "weather-weatherproof",
+    "profileId": "weather",
+    "name": {
+      "en": "Weatherproof",
+      "pt": "Proteção Climática"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 214,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "weather-wind-riding",
+    "profileId": "weather",
+    "name": {
+      "en": "Wind-Riding",
+      "pt": "Cavalgar o Vento"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight",
+      "pt": "Voo"
+    },
+    "page": 214,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "weather-weather-control",
+    "profileId": "weather",
+    "name": {
+      "en": "Weather Control",
+      "pt": "Controle Climático"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment · Selective",
+      "pt": "Controle Ambiental · Seletivo"
+    },
+    "page": 215,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "weather-weather-prediction",
+    "profileId": "weather",
+    "name": {
+      "en": "Weather Prediction",
+      "pt": "Previsão do Tempo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Limited",
+      "pt": "Sentidos · Limitado"
+    },
+    "page": 215,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "weather-wind-lifting",
+    "profileId": "weather",
+    "name": {
+      "en": "Wind-Lifting",
+      "pt": "Erguer pelo Vento"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Area · Selective",
+      "pt": "Mover Objetos · Área · Seletivo"
+    },
+    "page": 215,
+    "effectIds": [
+      "move-object"
+    ]
   }
 ] satisfies LibraryEntry[];

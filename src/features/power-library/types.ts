@@ -10,6 +10,7 @@ export interface PowerTemplateComponent extends Omit<ICharacterPowerComponent, '
   modifierRanksOnly?: boolean;
   /** For recipes that buy two skill bonuses for each selectable power rank. */
   rankMultiplier?: number;
+  scaledSenseTraits?: boolean;
   chooseSenses?: boolean;
   choices?: Array<{ id: string; label: LibraryText; options: Array<{ value: string; label: LibraryText }> }>;
 }

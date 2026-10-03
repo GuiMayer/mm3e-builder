@@ -1144,6 +1144,10 @@
         {
           "name": "Bright Light",
           "cost": 2
+        },
+        {
+          "name": "Combined Conditions (3 PP)",
+          "cost": 3
         }
       ]
     },

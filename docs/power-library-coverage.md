@@ -19,7 +19,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 10 | Sensory Powers, Size Powers, Sonic Powers | 66 receitas/variantes auditadas. |
 | 11 | Speed Powers, Strength Powers, Summoning Powers | 64 receitas/variantes auditadas. |
 | 12 | Talent Powers, Tech Powers, Teleport Powers | 68 receitas/variantes auditadas; Corpo de Construto é referência. |
-| 13 | Time Powers, Water Powers, Weather Powers | Pendente |
+| 13 | Time Powers, Water Powers, Weather Powers | 69 receitas/variantes auditadas. |
 
 ## Lote 1: diferenças da fonte
 
@@ -88,3 +88,7 @@ Extras Aprimorados são compras normais de Atributo Aprimorado (1/2/3 PP por gra
 ## Lote 12
 
 Parkour limita somente quatro das cinco graduações de Movimento. Master of Disguise calcula Removível pelo custo real, somando 4 em vez de 5 impressos. Control Technology com apenas terceiro grau e Limitado custa 1/graduação, não 2. Corpo de Construto depende de atributos ausentes fora do poder e não pode ser aplicado como receita incompleta.
+
+## Lote 13
+
+Percepção Rápida preserva cada compra de sentido e sua graduação. Marine Mastery custa 4/graduação +1, incluindo Múltiplos Lacaios por graduação. Water Form aplica Ativação ao poder inteiro. Controle Climático usa um orçamento de três PP de condições ambientais com Seletivo (+1), com escolhas explícitas. Time Portal soma 12 com Portal +2 por graduação; os 15 impressos não incluem uma justificativa para +3. Manipulative Temporal Shift soma 3/graduação (4 em Área); o texto imprime 4/5 sem listar o extra adicional.
