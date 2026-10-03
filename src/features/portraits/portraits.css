@@ -2,7 +2,7 @@
 .portrait-avatar-wrap .hero-avatar{padding:0;overflow:hidden;cursor:pointer;}
 .hero-avatar img{width:100%;height:100%;object-fit:cover;}
 .portrait-local-label{font-size:.65rem;color:var(--c-text-muted);}
-.portrait-avatar-wrap--filled{position:relative;align-self:stretch;width:clamp(112px,12vw,160px);min-height:112px;}
+.portrait-avatar-wrap--filled{position:relative;align-self:stretch;width:clamp(160px,18vw,224px);min-height:112px;}
 .portrait-avatar-wrap--filled .hero-avatar{position:absolute;inset:0;width:100%;height:100%;}
 .portrait-avatar-wrap--filled .hero-avatar img{object-fit:contain;}
 .portrait-avatar-wrap--filled .portrait-local-label{position:absolute;bottom:6px;left:6px;padding:3px 6px;border-radius:var(--r-sm);background:var(--c-surface);color:var(--c-text-secondary);pointer-events:none;}

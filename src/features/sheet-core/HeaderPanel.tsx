@@ -23,210 +23,215 @@ function HeaderPanelComponent() {
 
   return (
     <section className="header-panel">
-      {/* Hero Identity Section */}
-      <div className="hero-identity">
+      <div className="hero-overview">
         <CharacterPortrait />
-        <div className="hero-fields">
-          <div className="hero-name-field">
-            <input
-              className="hero-name-input"
-              value={header.name}
-              onChange={(e) => updateHeader({ name: e.target.value })}
-              placeholder={t('header.heroName')}
-            />
-          </div>
-          <div className="hero-meta-row">
-            <div className="hero-meta-field">
-              <label>{t('header.player')}</label>
-              <input
-                value={header.player}
-                onChange={(e) => updateHeader({ player: e.target.value })}
-                placeholder={t('header.player')}
-              />
-            </div>
-            {/* F-03: Identity + Secret/Public toggle */}
-            <div className="hero-meta-field hero-meta-field--identity">
-              <label>{t('header.identity')}</label>
-              <div className="hero-identity-row">
+        <div className="hero-summary">
+          {/* Hero Identity Section */}
+          <div className="hero-identity">
+            <div className="hero-fields">
+              <div className="hero-name-field">
                 <input
-                  value={header.identity}
-                  onChange={(e) => updateHeader({ identity: e.target.value })}
-                  placeholder={t('header.identity')}
+                  className="hero-name-input"
+                  value={header.name}
+                  onChange={(e) => updateHeader({ name: e.target.value })}
+                  placeholder={t('header.heroName')}
                 />
-                <div className="identity-type-toggle" title={t('header.identityTypeHint')}>
-                  {(['secret', 'public'] as const).map((opt) => (
-                    <button
-                      key={opt}
-                      className={`identity-type-opt ${(header.identityType ?? '') === opt ? 'identity-type-opt--active' : ''}`}
-                      onClick={() =>
-                        updateHeader({
-                          identityType: header.identityType === opt ? undefined : opt,
-                        })
-                      }
-                      title={t(`header.identityType.${opt}`)}
-                    >
-                      {opt === 'secret' ? '🔒' : '🌐'} {t(`header.identityType.${opt}`)}
-                    </button>
-                  ))}
+              </div>
+              <div className="hero-meta-row">
+                <div className="hero-meta-field">
+                  <label>{t('header.player')}</label>
+                  <input
+                    value={header.player}
+                    onChange={(e) => updateHeader({ player: e.target.value })}
+                    placeholder={t('header.player')}
+                  />
+                </div>
+                {/* F-03: Identity + Secret/Public toggle */}
+                <div className="hero-meta-field hero-meta-field--identity">
+                  <label>{t('header.identity')}</label>
+                  <div className="hero-identity-row">
+                    <input
+                      value={header.identity}
+                      onChange={(e) => updateHeader({ identity: e.target.value })}
+                      placeholder={t('header.identity')}
+                    />
+                    <div className="identity-type-toggle" title={t('header.identityTypeHint')}>
+                      {(['secret', 'public'] as const).map((opt) => (
+                        <button
+                          key={opt}
+                          className={`identity-type-opt ${(header.identityType ?? '') === opt ? 'identity-type-opt--active' : ''}`}
+                          onClick={() =>
+                            updateHeader({
+                              identityType: header.identityType === opt ? undefined : opt,
+                            })
+                          }
+                          title={t(`header.identityType.${opt}`)}
+                        >
+                          {opt === 'secret' ? '🔒' : '🌐'} {t(`header.identityType.${opt}`)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="hero-meta-field">
+                  <label><MapPin size={12} /> {t('header.base')}</label>
+                  <input
+                    value={header.base}
+                    onChange={(e) => updateHeader({ base: e.target.value })}
+                    placeholder={t('header.base')}
+                  />
                 </div>
               </div>
             </div>
-            <div className="hero-meta-field">
-              <label><MapPin size={12} /> {t('header.base')}</label>
-              <input
-                value={header.base}
-                onChange={(e) => updateHeader({ base: e.target.value })}
-                placeholder={t('header.base')}
-              />
-            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Stats Row */}
-      <div className="hero-stats-row">
-        <div className="hero-stat-card hero-stat-card--pl">
-          <Shield size={16} />
-          <div className="hero-stat-info">
-            <span className="hero-stat-label">{t('header.powerLevel')}</span>
-            <NumberInput
-              variant="large"
-              className="hero-stat-input"
-              value={header.powerLevel}
-              onChange={(value) => updateHeader({ powerLevel: Math.max(1, value) })}
-              min={1}
-            />
-          </div>
-        </div>
-        <div className="hero-stat-card hero-stat-card--hp">
-          <Star size={16} />
-          <div className="hero-stat-info">
-            <span className="hero-stat-label">{t('header.heroPoints')}</span>
-            <NumberInput
-              variant="large"
-              className="hero-stat-input"
-              value={header.heroPoints}
-              onChange={(value) => updateHeader({ heroPoints: Math.max(0, value) })}
-              min={0}
-            />
-          </div>
-        </div>
-        <div className="hero-stat-card hero-stat-card--pp">
-          <div className="hero-stat-info">
-            <span className="hero-stat-label">{t('header.powerPoints')}</span>
-            <span className={`hero-pp-display ${pp.isBudgetEnforced && isOver ? 'hero-pp-display--over' : ''}`}>
-              <strong>{pp.totalSpent}</strong>
-              <span className="hero-pp-sep">/</span>
-              <span>{pp.isBudgetEnforced ? pp.totalAvailable : <span className="infinity-symbol">∞</span>}</span>
-            </span>
-          </div>
-          <div className="hero-pp-bar">
-            <div
-              className={`hero-pp-bar-fill ${!pp.isBudgetEnforced ? 'hero-pp-bar-fill--limitless' : ''}`}
-              style={{ width: pp.isBudgetEnforced ? `${pct}%` : '100%' }}
-              data-over={pp.isBudgetEnforced && isOver}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* F-07: Character Details accordion */}
-      <div className="char-details-accordion">
-        <button
-          className="char-details-toggle"
-          onClick={() => setDetailsOpen((v) => !v)}
-          aria-expanded={detailsOpen}
-        >
-          {detailsOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          {t('header.characterDetails')}
-          {/* Show a subtle indicator when any field is filled */}
-          {(header.gender || header.age || header.height || header.weight ||
-            header.eyes || header.hair || header.groupAffiliation ||
-            header.series || header.gameMaster) && (
-            <span className="char-details-filled-dot" title={t('header.characterDetailsFilled')} />
-          )}
-        </button>
-
-        {detailsOpen && (
-          <div className="char-details-body">
-            <div className="char-details-grid">
-              <div className="hero-meta-field">
-                <label>{t('header.gender')}</label>
-                <input
-                  value={header.gender ?? ''}
-                  onChange={(e) => updateHeader({ gender: e.target.value || undefined })}
-                  placeholder="—"
-                />
-              </div>
-              <div className="hero-meta-field">
-                <label>{t('header.age')}</label>
-                <input
-                  value={header.age ?? ''}
-                  onChange={(e) => updateHeader({ age: e.target.value || undefined })}
-                  placeholder="—"
-                />
-              </div>
-              <div className="hero-meta-field">
-                <label>{t('header.height')}</label>
-                <input
-                  value={header.height ?? ''}
-                  onChange={(e) => updateHeader({ height: e.target.value || undefined })}
-                  placeholder="—"
-                />
-              </div>
-              <div className="hero-meta-field">
-                <label>{t('header.weight')}</label>
-                <input
-                  value={header.weight ?? ''}
-                  onChange={(e) => updateHeader({ weight: e.target.value || undefined })}
-                  placeholder="—"
-                />
-              </div>
-              <div className="hero-meta-field">
-                <label>{t('header.eyes')}</label>
-                <input
-                  value={header.eyes ?? ''}
-                  onChange={(e) => updateHeader({ eyes: e.target.value || undefined })}
-                  placeholder="—"
-                />
-              </div>
-              <div className="hero-meta-field">
-                <label>{t('header.hair')}</label>
-                <input
-                  value={header.hair ?? ''}
-                  onChange={(e) => updateHeader({ hair: e.target.value || undefined })}
-                  placeholder="—"
+          {/* Stats Row */}
+          <div className="hero-stats-row">
+            <div className="hero-stat-card hero-stat-card--pl">
+              <Shield size={16} />
+              <div className="hero-stat-info">
+                <span className="hero-stat-label">{t('header.powerLevel')}</span>
+                <NumberInput
+                  variant="compact"
+                  className="hero-stat-input"
+                  value={header.powerLevel}
+                  onChange={(value) => updateHeader({ powerLevel: Math.max(1, value) })}
+                  min={1}
                 />
               </div>
             </div>
-            <div className="char-details-grid char-details-grid--wide">
-              <div className="hero-meta-field">
-                <label>{t('header.groupAffiliation')}</label>
-                <input
-                  value={header.groupAffiliation ?? ''}
-                  onChange={(e) => updateHeader({ groupAffiliation: e.target.value || undefined })}
-                  placeholder="—"
+            <div className="hero-stat-card hero-stat-card--hp">
+              <Star size={16} />
+              <div className="hero-stat-info">
+                <span className="hero-stat-label">{t('header.heroPoints')}</span>
+                <NumberInput
+                  variant="compact"
+                  className="hero-stat-input"
+                  value={header.heroPoints}
+                  onChange={(value) => updateHeader({ heroPoints: Math.max(0, value) })}
+                  min={0}
                 />
               </div>
-              <div className="hero-meta-field">
-                <label>{t('header.series')}</label>
-                <input
-                  value={header.series ?? ''}
-                  onChange={(e) => updateHeader({ series: e.target.value || undefined })}
-                  placeholder="—"
-                />
+            </div>
+            <div className="hero-stat-card hero-stat-card--pp">
+              <div className="hero-stat-info">
+                <span className="hero-stat-label">{t('header.powerPoints')}</span>
+                <span className={`hero-pp-display ${pp.isBudgetEnforced && isOver ? 'hero-pp-display--over' : ''}`}>
+                  <strong>{pp.totalSpent}</strong>
+                  <span className="hero-pp-sep">/</span>
+                  <span>{pp.isBudgetEnforced ? pp.totalAvailable : <span className="infinity-symbol">∞</span>}</span>
+                </span>
               </div>
-              <div className="hero-meta-field">
-                <label>{t('header.gameMaster')}</label>
-                <input
-                  value={header.gameMaster ?? ''}
-                  onChange={(e) => updateHeader({ gameMaster: e.target.value || undefined })}
-                  placeholder="—"
+              <div className="hero-pp-bar">
+                <div
+                  className={`hero-pp-bar-fill ${!pp.isBudgetEnforced ? 'hero-pp-bar-fill--limitless' : ''}`}
+                  style={{ width: pp.isBudgetEnforced ? `${pct}%` : '100%' }}
+                  data-over={pp.isBudgetEnforced && isOver}
                 />
               </div>
             </div>
           </div>
-        )}
+
+          {/* F-07: Character Details accordion */}
+          <div className="char-details-accordion">
+            <button
+              className="char-details-toggle"
+              onClick={() => setDetailsOpen((v) => !v)}
+              aria-expanded={detailsOpen}
+            >
+              {detailsOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+              {t('header.characterDetails')}
+              {/* Show a subtle indicator when any field is filled */}
+              {(header.gender || header.age || header.height || header.weight ||
+                header.eyes || header.hair || header.groupAffiliation ||
+                header.series || header.gameMaster) && (
+                <span className="char-details-filled-dot" title={t('header.characterDetailsFilled')} />
+              )}
+            </button>
+
+            {detailsOpen && (
+              <div className="char-details-body">
+                <div className="char-details-grid">
+                  <div className="hero-meta-field">
+                    <label>{t('header.gender')}</label>
+                    <input
+                      value={header.gender ?? ''}
+                      onChange={(e) => updateHeader({ gender: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                  <div className="hero-meta-field">
+                    <label>{t('header.age')}</label>
+                    <input
+                      value={header.age ?? ''}
+                      onChange={(e) => updateHeader({ age: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                  <div className="hero-meta-field">
+                    <label>{t('header.height')}</label>
+                    <input
+                      value={header.height ?? ''}
+                      onChange={(e) => updateHeader({ height: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                  <div className="hero-meta-field">
+                    <label>{t('header.weight')}</label>
+                    <input
+                      value={header.weight ?? ''}
+                      onChange={(e) => updateHeader({ weight: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                  <div className="hero-meta-field">
+                    <label>{t('header.eyes')}</label>
+                    <input
+                      value={header.eyes ?? ''}
+                      onChange={(e) => updateHeader({ eyes: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                  <div className="hero-meta-field">
+                    <label>{t('header.hair')}</label>
+                    <input
+                      value={header.hair ?? ''}
+                      onChange={(e) => updateHeader({ hair: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                </div>
+                <div className="char-details-grid char-details-grid--wide">
+                  <div className="hero-meta-field">
+                    <label>{t('header.groupAffiliation')}</label>
+                    <input
+                      value={header.groupAffiliation ?? ''}
+                      onChange={(e) => updateHeader({ groupAffiliation: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                  <div className="hero-meta-field">
+                    <label>{t('header.series')}</label>
+                    <input
+                      value={header.series ?? ''}
+                      onChange={(e) => updateHeader({ series: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                  <div className="hero-meta-field">
+                    <label>{t('header.gameMaster')}</label>
+                    <input
+                      value={header.gameMaster ?? ''}
+                      onChange={(e) => updateHeader({ gameMaster: e.target.value || undefined })}
+                      placeholder="—"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+        </div>
       </div>
 
       <style>{`
@@ -240,6 +245,14 @@ function HeaderPanelComponent() {
           gap: var(--s-lg);
           animation: fadeIn 0.3s ease;
         }
+
+        .hero-overview {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: var(--s-lg);
+          align-items: stretch;
+        }
+        .hero-summary { display: flex; flex-direction: column; gap: var(--s-md); min-width: 0; }
 
         .hero-identity {
           display: flex;
@@ -374,7 +387,8 @@ function HeaderPanelComponent() {
 
         .hero-stats-row {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          grid-template-columns: max-content max-content minmax(140px, 200px);
+          justify-content: start;
           gap: var(--s-sm);
         }
 
@@ -382,7 +396,8 @@ function HeaderPanelComponent() {
           display: flex;
           align-items: center;
           gap: var(--s-sm);
-          padding: var(--s-md);
+          padding: 8px 10px;
+          min-width: 0;
           background: var(--c-surface-elevated);
           border: 1px solid var(--c-border);
           border-radius: var(--r-md);
@@ -395,14 +410,16 @@ function HeaderPanelComponent() {
 
         .hero-stat-card--pl { color: var(--c-primary); }
         .hero-stat-card--hp { color: var(--c-accent); }
-        .hero-stat-card--pp { flex-direction: column; align-items: stretch; }
+        .hero-stat-card--pp { flex-direction: column; align-items: stretch; gap: 4px; }
 
         .hero-stat-info {
+          min-width: 0;
           display: flex;
           flex-direction: column;
           gap: 2px;
         }
         .hero-stat-label {
+          line-height: 1.2;
           font-size: 0.65rem;
           font-weight: 600;
           text-transform: uppercase;
@@ -410,14 +427,15 @@ function HeaderPanelComponent() {
           color: var(--c-text-muted);
         }
         .hero-stat-input {
-          width: 60px;
+          line-height: 1.2;
+          width: 48px;
           background: var(--c-bg);
           border: 1px solid var(--c-border);
           border-radius: var(--r-sm);
           padding: var(--s-xs) var(--s-sm);
           color: var(--c-text);
           font-family: var(--f-heading);
-          font-size: 1.2rem;
+          font-size: 1.05rem;
           font-weight: 800;
           text-align: center;
         }
@@ -427,8 +445,9 @@ function HeaderPanelComponent() {
         }
 
         .hero-pp-display {
+          line-height: 1.2;
           font-family: var(--f-heading);
-          font-size: 1.3rem;
+          font-size: 1.15rem;
           font-weight: 800;
           color: var(--c-text);
           font-variant-numeric: tabular-nums;
@@ -453,7 +472,7 @@ function HeaderPanelComponent() {
           background: var(--c-bg);
           border-radius: var(--r-full);
           overflow: hidden;
-          margin-top: var(--s-xs);
+          margin-top: 0;
         }
         .hero-pp-bar-fill {
           height: 100%;
@@ -527,8 +546,25 @@ function HeaderPanelComponent() {
           grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         }
 
+        @media (max-width: 1050px) {
+          .hero-stats-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          .hero-stat-card--pl > svg, .hero-stat-card--hp > svg { display: none; }
+        }
+
+        @media (max-width: 560px) {
+          .hero-stats-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .hero-stat-card--pp { grid-column: 1 / -1; }
+        }
+        @media (max-width: 360px) {
+          .hero-stats-row { grid-template-columns: minmax(0, 1fr); }
+        }
+
         /* Mobile responsive layout */
         @media (max-width: 768px) {
+          .hero-overview { grid-template-columns: minmax(0, 1fr); gap: var(--s-md); }
+          .hero-stat-card { padding: 8px; gap: 4px; }
+          .hero-stat-card--pl > svg, .hero-stat-card--hp > svg { display: none; }
+          .hero-stat-label { font-size: 0.6rem; }
           .hero-identity {
             flex-direction: column;
             gap: var(--s-md);
