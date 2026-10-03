@@ -357,6 +357,8 @@ export interface IComplication {
 
 // ── Character Header ──
 export interface ICharacterHeader {
+  /** Portable remote portrait address; image bytes live outside the character. */
+  portraitUrl?: string;
   name: string;
   player: string;
   identity: string;

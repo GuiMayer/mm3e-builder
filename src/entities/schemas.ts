@@ -111,6 +111,7 @@ const ComplicationSchema = z.object({
 });
 
 const CharacterHeaderSchema = z.object({
+  portraitUrl: z.string().max(2048).url().refine((value) => value.startsWith('https://'), 'Portrait URL must use HTTPS').optional(),
   name: z.string(),
   player: z.string(),
   identity: z.string(),

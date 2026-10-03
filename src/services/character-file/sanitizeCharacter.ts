@@ -7,6 +7,7 @@ export function sanitizeCharacterForExport(
   return {
     characterId: character.characterId,
     header: {
+      ...(character.header.portraitUrl ? { portraitUrl: character.header.portraitUrl } : {}),
       name: character.header.name || 'Unnamed',
       player: character.header.player || '',
       identity: character.header.identity || '',
