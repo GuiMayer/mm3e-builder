@@ -1074,6 +1074,14 @@
         {
           "name": "Heat (2 degrees)",
           "cost": 2
+        },
+        {
+          "name": "Light",
+          "cost": 1
+        },
+        {
+          "name": "Negate Impeded Movement",
+          "cost": 1
         }
       ]
     },
@@ -1535,6 +1543,21 @@
         "longDescription": "Area Healing may have this extra, allowing you to choose who in the area does and does not gain the benefits.",
         "incompatibleWith": [],
         "i18n": {}
+      },
+      {
+        "id": "bonus_effect_healing",
+        "name": "Bonus Effect",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Electrical Absorption, Power Profiles p. 59. Can counter extra effort fatigue.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Efeito Adicional",
+            "description": "Absorção Elétrica, Power Profiles p. 59. Pode remover fadiga por esforço extra."
+          }
+        }
       }
     ],
     "flaws": [
@@ -1570,6 +1593,21 @@
         "longDescription": "The benefits of your Healing are temporary, lasting for one hour. The subject then regains any damage conditions you healed. These conditions stack with others the subject acquired since the initial healing, which may result in more severe damage or even death.",
         "incompatibleWith": [],
         "i18n": {}
+      },
+      {
+        "id": "source_healing",
+        "name": "Source",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Electrical Absorption, Power Profiles p. 59. Only with an external source.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Fonte",
+            "description": "Absorção Elétrica, Power Profiles p. 59. Somente com fonte externa."
+          }
+        }
       }
     ]
   },

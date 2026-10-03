@@ -10,7 +10,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 1 | Air Powers, Armor Powers, Animal Powers | 77 receitas/variantes auditadas: Ar 29, Armadura 24, Animais 24. Duas divergências impressas documentadas abaixo. |
 | 2 | Cold Powers, Cosmic Powers, Darkness Powers | 85 receitas/variantes auditadas: Frio 37, Cósmicos 21, Escuridão 27. Preços coincidem com a fonte. |
 | 3 | Death Powers, Dimension Powers, Dream Powers | 58 receitas/variantes auditadas. Duas formas exigem alterações externas à ficha e são referências. |
-| 4 | Earth Powers, Electrical Powers, Element Powers | Pendente |
+| 4 | Earth Powers, Electrical Powers, Element Powers | 74 receitas/variantes auditadas. |
 | 5 | Fire Powers, Gravity Powers, Illusion Powers | Pendente |
 | 6 | Kinetic Powers, Life Powers, Light Powers | Pendente |
 | 7 | Luck Powers, Magic Powers, Magnetic Powers | Pendente |
@@ -52,3 +52,7 @@ possa confundir com mais destinos dimensionais.
 Ghost Form e Undead Form incluem Vigor ausente: esse desconto é um atributo da ficha, não uma flaw. A prévia mostra somente o custo dos poderes e impede aplicar uma receita incompleta. Ghost Form imprime 41, embora seus poderes somem 52 e o desconto de Vigor seja 10. Dream Trap aplica Grau Limitado duas vezes (apenas terceiro grau) e Limitado a alvos dormindo: o resultado é 1 PP/2 graduações, divergindo do 1 PP/graduação impresso. Sleep Substitute soma Cura 2 + Energizar 1 - Limitado 1 = 2, como Energize na p. 91, embora a p. 50 indique 1.
 
 Dimensional Blade compra Penetrante na graduação escolhida; após aplicação é uma compra normal editável. Dimensional Window/Four-Dimensional Form usam componentes de zero graduações como suporte para modificadores fixos de sentidos/ataques existentes, sem cobrar um efeito novo. Banimento Dimensional mantém sua CD base; aumentos independentes de CD não são destinos. Condições Variáveis é extra específico de Aflição, conforme p. 80.
+
+## Lote 4
+
+Blackout soma 4 PP/graduação (o texto imprime 5); Neutralize Reaction soma 3 (o texto imprime 4, embora Anular já seja à distância). Petrify/Petrifying Gaze têm apenas terceiro grau: Grau Limitado -2 produz 1/2 PP por graduação respectivamente, em vez de 2/3 impressos. Diamond Hard usa o desconto fixo Notável; Strength of Antaeus inicia na graduação 2 exigida. Mud/Sand Form são compras fixas de 15 PP, apesar do texto mencionar por graduação. Absorção Elétrica usa Fonte e Efeito Adicional específicos de Cura, conforme p. 59. Duração de Dano por Concentração é o extra Duração Aumentada, não a flaw Concentração de efeitos sustentados.

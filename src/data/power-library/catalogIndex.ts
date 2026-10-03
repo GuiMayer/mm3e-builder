@@ -4422,5 +4422,1494 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "healing"
     ]
+  },
+  {
+    "id": "earth-chasm",
+    "profileId": "earth",
+    "name": {
+      "en": "Chasm",
+      "pt": "Abismo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Increased Range · Instant Recovery · Limited Degree · Linked · Burrowing · Area · Attack · Limited · Linked · Damage · Area · Increased Range · Limited — Affliction: Dazed, Prone; downward burrowing; damage only targets affected by second degree.",
+      "pt": "Aflição · Área · Alcance Aumentado · Recuperação Instantânea · Graus Limitados · Vinculado · Escavação · Área · Ataque · Limitado · Vinculado · Dano · Área · Alcance Aumentado · Limitado — Aflição: Atordoado, Prostrado; escavação para baixo; dano apenas em alvos afetados pelo segundo grau."
+    },
+    "page": 53,
+    "effectIds": [
+      "affliction",
+      "burrowing",
+      "damage"
+    ]
+  },
+  {
+    "id": "earth-dust-storm",
+    "profileId": "earth",
+    "name": {
+      "en": "Dust Storm",
+      "pt": "Tempestade de Poeira"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 53,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "earth-earth-blast",
+    "profileId": "earth",
+    "name": {
+      "en": "Earth Blast",
+      "pt": "Rajada de Terra"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 53,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "earth-earthquake",
+    "profileId": "earth",
+    "name": {
+      "en": "Earthquake",
+      "pt": "Terremoto"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Area · Extra Condition · Secondary Effect · Limited Degree · Limited · Alternate Resistance — Dazed/Vulnerable, Stunned/Prone; only along ground, 120-foot radius.",
+      "pt": "Aflição · Alcance Aumentado · Área · Condição Extra · Efeito Secundário · Graus Limitados · Limitado · Resistência Alternativa — Atordoado/Vulnerável, Aturdido/Prostrado; apenas pelo solo, raio de 36 m."
+    },
+    "page": 53,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "earth-earth-spray",
+    "profileId": "earth",
+    "name": {
+      "en": "Earth Spray",
+      "pt": "Jato de Terra"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited — Vision Impaired, Disabled, Unaware.",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado — Visão Prejudicada, Debilitada, Inconsciente dos estímulos."
+    },
+    "page": 53,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "earth-spike-stones",
+    "profileId": "earth",
+    "name": {
+      "en": "Spike Stones",
+      "pt": "Pedras Pontiagudas"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Penetrating · Multiattack",
+      "pt": "Dano · Alcance Aumentado · Penetrante · Ataque Múltiplo"
+    },
+    "page": 53,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "earth-stone-grip",
+    "profileId": "earth",
+    "name": {
+      "en": "Stone Grip",
+      "pt": "Agarrão de Pedra"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance — Hindered/Vulnerable, Defenseless/Immobilized; overcome by Damage.",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa — Impedido/Vulnerável, Indefeso/Imóvel; superado por Dano."
+    },
+    "page": 53,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "earth-stone-strike",
+    "profileId": "earth",
+    "name": {
+      "en": "Stone Strike",
+      "pt": "Golpe de Pedra"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Variable Descriptor",
+      "pt": "Dano · Descritor Variável"
+    },
+    "page": 53,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "earth-earth-healing",
+    "profileId": "earth",
+    "name": {
+      "en": "Earth Healing",
+      "pt": "Cura pela Terra"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Regeneration · Source",
+      "pt": "Regeneração · Fonte"
+    },
+    "page": 53,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "earth-earth-immunity",
+    "profileId": "earth",
+    "name": {
+      "en": "Earth Immunity",
+      "pt": "Imunidade à Terra"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 53,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "earth-rock-armor",
+    "profileId": "earth",
+    "name": {
+      "en": "Rock Armor",
+      "pt": "Armadura Rochosa"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious",
+      "pt": "Proteção · Impenetrável"
+    },
+    "page": 53,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "earth-rooting",
+    "profileId": "earth",
+    "name": {
+      "en": "Rooting",
+      "pt": "Enraizamento"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Feature · Limited — Resists being moved; only touching ground.",
+      "pt": "Característica · Limitado — Resiste a ser movido; apenas tocando o solo."
+    },
+    "page": 54,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "earth-immovable",
+    "profileId": "earth",
+    "name": {
+      "en": "Immovable",
+      "pt": "Imóvel"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Limited — Being moved; only touching ground.",
+      "pt": "Imunidade · Limitado — Ser movido; apenas tocando o solo."
+    },
+    "page": 54,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "earth-earth-meld",
+    "profileId": "earth",
+    "name": {
+      "en": "Earth Meld",
+      "pt": "Fusão com a Terra"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited · Immunity · Limited — Immunity to suffocation only while earth melding.",
+      "pt": "Movimento · Limitado · Imunidade · Limitado — Imunidade a sufocamento apenas durante a fusão."
+    },
+    "page": 54,
+    "effectIds": [
+      "movement",
+      "immunity"
+    ]
+  },
+  {
+    "id": "earth-earth-wave",
+    "profileId": "earth",
+    "name": {
+      "en": "Earth Wave",
+      "pt": "Onda de Terra"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Platform · Limited — Within 60 feet of ground.",
+      "pt": "Voo · Platform · Limitado — Até 18 m do solo."
+    },
+    "page": 54,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "earth-flying-rock",
+    "profileId": "earth",
+    "name": {
+      "en": "Flying Rock",
+      "pt": "Rocha Voadora"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Platform",
+      "pt": "Voo · Platform"
+    },
+    "page": 54,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "earth-terraport",
+    "profileId": "earth",
+    "name": {
+      "en": "Terraport",
+      "pt": "Terraporte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Medium",
+      "pt": "Teleporte · Preciso · Meio"
+    },
+    "page": 54,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "earth-tunneling",
+    "profileId": "earth",
+    "name": {
+      "en": "Tunneling",
+      "pt": "Escavação"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing",
+      "pt": "Escavação"
+    },
+    "page": 54,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "earth-earth-creatures",
+    "profileId": "earth",
+    "name": {
+      "en": "Earth Creatures",
+      "pt": "Criaturas de Terra"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon — 60-point creature; build its traits separately.",
+      "pt": "Invocar — Criatura de 60 pontos; crie seus atributos separadamente."
+    },
+    "page": 54,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "earth-earth-moving",
+    "profileId": "earth",
+    "name": {
+      "en": "Earth Moving",
+      "pt": "Mover Terra"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Perception · Limited",
+      "pt": "Mover Objetos · Percepção · Limitado"
+    },
+    "page": 55,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "earth-stone-shape",
+    "profileId": "earth",
+    "name": {
+      "en": "Stone Shape",
+      "pt": "Moldar Pedra"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Transform",
+      "pt": "Transformação"
+    },
+    "page": 55,
+    "effectIds": [
+      "transform"
+    ]
+  },
+  {
+    "id": "earth-earthsight",
+    "profileId": "earth",
+    "name": {
+      "en": "Earthsight",
+      "pt": "Visão da Terra"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Limited",
+      "pt": "Sentidos · Limitado"
+    },
+    "page": 55,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "earth-earthworks",
+    "profileId": "earth",
+    "name": {
+      "en": "Earthworks",
+      "pt": "Construções de Terra"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Create",
+      "pt": "Criação"
+    },
+    "page": 55,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "earth-mountain-form",
+    "profileId": "earth",
+    "name": {
+      "en": "Mountain Form",
+      "pt": "Forma de Montanha"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Growth",
+      "pt": "Crescimento"
+    },
+    "page": 55,
+    "effectIds": [
+      "growth"
+    ]
+  },
+  {
+    "id": "earth-mud-form",
+    "profileId": "earth",
+    "name": {
+      "en": "Mud Form",
+      "pt": "Forma de Lama"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Insubstantial — Life support and fluid/particulate form.",
+      "pt": "Imunidade · Insubstancial — Suporte vital e forma fluida/particulada."
+    },
+    "page": 55,
+    "effectIds": [
+      "immunity",
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "earth-sand-form",
+    "profileId": "earth",
+    "name": {
+      "en": "Sand Form",
+      "pt": "Forma de Areia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Insubstantial — Life support and fluid/particulate form.",
+      "pt": "Imunidade · Insubstancial — Suporte vital e forma fluida/particulada."
+    },
+    "page": 55,
+    "effectIds": [
+      "immunity",
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "earth-stone-form",
+    "profileId": "earth",
+    "name": {
+      "en": "Stone Form",
+      "pt": "Forma de Pedra"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Immunity · Protection · Impervious",
+      "pt": "Traço Aprimorado · Imunidade · Proteção · Impenetrável"
+    },
+    "page": 55,
+    "effectIds": [
+      "enhanced-trait",
+      "immunity",
+      "protection"
+    ]
+  },
+  {
+    "id": "earth-strength-of-antaeus",
+    "profileId": "earth",
+    "name": {
+      "en": "Strength of Antaeus",
+      "pt": "Força de Anteu"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Quirk — Starts at required rank 2; only touching ground. Higher ranks cost +2 each.",
+      "pt": "Traço Aprimorado · Peculiaridade — Começa na graduação necessária 2; apenas tocando o solo. Graduações adicionais custam +2 cada."
+    },
+    "page": 55,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "earth-tremorsense",
+    "profileId": "earth",
+    "name": {
+      "en": "Tremorsense",
+      "pt": "Sentido Sísmico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 55,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "electrical-emp",
+    "profileId": "electrical",
+    "name": {
+      "en": "EMP",
+      "pt": "Pulso Eletromagnético"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Weaken · Affects Objects · Broad · Area · Simultaneous",
+      "pt": "Enfraquecer · Afeta Objetos · Amplo · Área · Simultâneo"
+    },
+    "page": 58,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "electrical-lightning-bolt",
+    "profileId": "electrical",
+    "name": {
+      "en": "Lightning Bolt",
+      "pt": "Raio"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 58,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "electrical-ball-lightning",
+    "profileId": "electrical",
+    "name": {
+      "en": "Ball Lightning",
+      "pt": "Relâmpago Globular"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area",
+      "pt": "Dano · Alcance Aumentado · Área"
+    },
+    "page": 58,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "electrical-chain-lightning",
+    "profileId": "electrical",
+    "name": {
+      "en": "Chain Lightning",
+      "pt": "Relâmpago em Cadeia"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Multiattack",
+      "pt": "Dano · Alcance Aumentado · Ataque Múltiplo"
+    },
+    "page": 58,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "electrical-lightning-flash",
+    "profileId": "electrical",
+    "name": {
+      "en": "Lightning Flash",
+      "pt": "Clarão de Relâmpago"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative · Limited · Alternate Resistance — Visual Impaired, Disabled, Unaware.",
+      "pt": "Aflição · Área · Cumulativo · Limitado · Resistência Alternativa — Visão Prejudicada, Debilitada, Inconsciente dos estímulos."
+    },
+    "page": 58,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "electrical-seizure",
+    "profileId": "electrical",
+    "name": {
+      "en": "Seizure",
+      "pt": "Convulsão"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range — Entranced, Stunned, Incapacitated.",
+      "pt": "Aflição · Alcance Aumentado — Em Transe, Aturdido, Incapacitado."
+    },
+    "page": 58,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "electrical-shock-field",
+    "profileId": "electrical",
+    "name": {
+      "en": "Shock Field",
+      "pt": "Campo de Choque"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Reaction · Cumulative — Dazed, Stunned, Incapacitated.",
+      "pt": "Aflição · Reação · Cumulativo — Atordoado, Aturdido, Incapacitado."
+    },
+    "page": 58,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "electrical-dc-shock-field",
+    "profileId": "electrical",
+    "name": {
+      "en": "DC Shock Field",
+      "pt": "Campo de Choque Contínuo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Reaction · Progressive — Dazed, Stunned, Incapacitated.",
+      "pt": "Aflição · Reação · Progressivo — Atordoado, Aturdido, Incapacitado."
+    },
+    "page": 58,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "electrical-taser",
+    "profileId": "electrical",
+    "name": {
+      "en": "Taser",
+      "pt": "Taser"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range — Dazed, Stunned, Incapacitated.",
+      "pt": "Aflição · Alcance Aumentado — Atordoado, Aturdido, Incapacitado."
+    },
+    "page": 58,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "electrical-electrical-absorption-healing",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electrical Absorption — Healing",
+      "pt": "Absorção Elétrica — Cura"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Healing · Reaction · Bonus Effect · Limited · Source — Self only, limited to absorbed electricity rank; source: electricity.",
+      "pt": "Cura · Reação · Efeito Adicional · Limitado · Fonte — Apenas pessoal, limitado à graduação elétrica absorvida; fonte: eletricidade."
+    },
+    "page": 59,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "electrical-electrical-absorption-enhanced-trait",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electrical Absorption — Enhanced Trait",
+      "pt": "Absorção Elétrica — Atributo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades · Reaction — Choose enhanced trait; reaction to absorbing electricity.",
+      "pt": "Traço Aprimorado · Desgaste · Reação — Escolha o atributo; reação ao absorver eletricidade."
+    },
+    "page": 59,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "electrical-electrical-immunity",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electrical Immunity",
+      "pt": "Imunidade Elétrica"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 59,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "electrical-electrical-resistance",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electrical Resistance",
+      "pt": "Resistência Elétrica"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Half Effect",
+      "pt": "Imunidade · Metade do Efeito"
+    },
+    "page": 59,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "electrical-electrical-conductor",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electrical Conductor",
+      "pt": "Condutor Elétrico"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Reflect · Redirect",
+      "pt": "Imunidade · Refletir · Redirecionar"
+    },
+    "page": 59,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "electrical-electromagnetic-field",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electromagnetic Field",
+      "pt": "Campo Eletromagnético"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 59,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "electrical-arc-riding",
+    "profileId": "electrical",
+    "name": {
+      "en": "Arc Riding",
+      "pt": "Cavalgar Arcos"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping",
+      "pt": "Salto"
+    },
+    "page": 59,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "electrical-electro-flight",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electro-Flight",
+      "pt": "Voo Elétrico"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight",
+      "pt": "Voo"
+    },
+    "page": 59,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "electrical-lightning-flight",
+    "profileId": "electrical",
+    "name": {
+      "en": "Lightning Flight",
+      "pt": "Voo Relâmpago"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Easy · Extended · Limited — Pass through intervening space in lightning form.",
+      "pt": "Teleporte · Preciso · Fácil · Estendido · Limitado — Atravessa o espaço intermediário em forma de relâmpago."
+    },
+    "page": 59,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "electrical-arclight",
+    "profileId": "electrical",
+    "name": {
+      "en": "Arclight",
+      "pt": "Luz de Arco"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 60,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "electrical-blackout",
+    "profileId": "electrical",
+    "name": {
+      "en": "Blackout",
+      "pt": "Apagão"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Broad · Area · Concentration · Simultaneous · Reduced Range",
+      "pt": "Anulação · Amplo · Área · Concentração · Simultâneo · Alcance Reduzido"
+    },
+    "page": 60,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "electrical-electrical-form",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electrical Form",
+      "pt": "Forma Elétrica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 60,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "electrical-electrosense",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electrosense",
+      "pt": "Sentido Elétrico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 60,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "electrical-electro-shaping",
+    "profileId": "electrical",
+    "name": {
+      "en": "Electro-Shaping",
+      "pt": "Moldagem Elétrica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area · Increased Duration · Selective — Base volume; add Area ranks to increase volume.",
+      "pt": "Dano · Alcance Aumentado · Área · Duração Aumentada · Seletivo — Volume base; acrescente graduações de Área para aumentar."
+    },
+    "page": 60,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "electrical-lightning-creatures",
+    "profileId": "electrical",
+    "name": {
+      "en": "Lightning Creatures",
+      "pt": "Criaturas de Relâmpago"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon",
+      "pt": "Invocar"
+    },
+    "page": 60,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "electrical-static-electricity",
+    "profileId": "electrical",
+    "name": {
+      "en": "Static Electricity",
+      "pt": "Eletricidade Estática"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object",
+      "pt": "Mover Objetos"
+    },
+    "page": 60,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "element-corrosive",
+    "profileId": "element",
+    "name": {
+      "en": "Corrosive",
+      "pt": "Corrosivo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Weaken · Affects Objects · Secondary Effect · Linked · Damage · Secondary Effect",
+      "pt": "Enfraquecer · Afeta Objetos · Efeito Secundário · Vinculado · Dano · Efeito Secundário"
+    },
+    "page": 63,
+    "effectIds": [
+      "weaken",
+      "damage"
+    ]
+  },
+  {
+    "id": "element-encase",
+    "profileId": "element",
+    "name": {
+      "en": "Encase",
+      "pt": "Encapsular"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance — Hindered/Vulnerable, Defenseless/Immobilized; overcome by Damage.",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa — Impedido/Vulnerável, Indefeso/Imóvel; superado por Dano."
+    },
+    "page": 63,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "element-explosion",
+    "profileId": "element",
+    "name": {
+      "en": "Explosion",
+      "pt": "Explosão"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area",
+      "pt": "Dano · Área"
+    },
+    "page": 63,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "element-gas-cloud",
+    "profileId": "element",
+    "name": {
+      "en": "Gas Cloud",
+      "pt": "Nuvem de Gás"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative — Fatigued, Exhausted, Incapacitated.",
+      "pt": "Aflição · Área · Cumulativo — Fatigado, Exausto, Incapacitado."
+    },
+    "page": 64,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "element-immolation",
+    "profileId": "element",
+    "name": {
+      "en": "Immolation",
+      "pt": "Imolação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Reaction",
+      "pt": "Dano · Reação"
+    },
+    "page": 64,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "element-petrify",
+    "profileId": "element",
+    "name": {
+      "en": "Petrify",
+      "pt": "Petrificar"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Limited Degree · Progressive — Third degree only: Transformed.",
+      "pt": "Aflição · Graus Limitados · Progressivo — Apenas terceiro grau: Transformado."
+    },
+    "page": 64,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "element-petrifying-gaze",
+    "profileId": "element",
+    "name": {
+      "en": "Petrifying Gaze",
+      "pt": "Olhar Petrificante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Limited Degree · Progressive · Sense-Dependent",
+      "pt": "Aflição · Alcance Aumentado · Graus Limitados · Progressivo · Dependente de Sentido"
+    },
+    "page": 64,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "element-tarpit",
+    "profileId": "element",
+    "name": {
+      "en": "Tarpit",
+      "pt": "Poço de Piche"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative · Extra Condition · Limited Degree · Alternate Resistance — Hindered/Vulnerable, Defenseless/Immobilized; overcome by Strength.",
+      "pt": "Aflição · Área · Cumulativo · Condição Extra · Graus Limitados · Resistência Alternativa — Impedido/Vulnerável, Indefeso/Imóvel; superado por Força."
+    },
+    "page": 64,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "element-chemical-immunity",
+    "profileId": "element",
+    "name": {
+      "en": "Chemical Immunity",
+      "pt": "Imunidade Química"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 64,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "element-destroy-projectiles",
+    "profileId": "element",
+    "name": {
+      "en": "Destroy Projectiles",
+      "pt": "Destruir Projéteis"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Sustained",
+      "pt": "Imunidade · Sustentado"
+    },
+    "page": 64,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "element-diamond-hard",
+    "profileId": "element",
+    "name": {
+      "en": "Diamond Hard",
+      "pt": "Dureza de Diamante"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Noticeable",
+      "pt": "Proteção · Impenetrável · Perceptível"
+    },
+    "page": 64,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "element-molecular-phasing",
+    "profileId": "element",
+    "name": {
+      "en": "Molecular Phasing",
+      "pt": "Fase Molecular"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 64,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "element-unliving",
+    "profileId": "element",
+    "name": {
+      "en": "Unliving",
+      "pt": "Não Vivo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 65,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "element-chemical-rocket",
+    "profileId": "element",
+    "name": {
+      "en": "Chemical Rocket",
+      "pt": "Foguete Químico"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight",
+      "pt": "Voo"
+    },
+    "page": 65,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "element-quantum-breakdown",
+    "profileId": "element",
+    "name": {
+      "en": "Quantum Breakdown",
+      "pt": "Decomposição Quântica"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport",
+      "pt": "Teleporte"
+    },
+    "page": 65,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "element-explosive-quantum-breakdown",
+    "profileId": "element",
+    "name": {
+      "en": "Explosive Quantum Breakdown",
+      "pt": "Decomposição Quântica Explosiva"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Damage · Area · Reaction — Burst upon teleporting; Damage rank is a separate purchase.",
+      "pt": "Teleporte · Dano · Área · Reação — Explosão ao teleportar; a graduação de Dano é uma compra separada."
+    },
+    "page": 65,
+    "effectIds": [
+      "teleport",
+      "damage"
+    ]
+  },
+  {
+    "id": "element-transmutative-tunneling",
+    "profileId": "element",
+    "name": {
+      "en": "Transmutative Tunneling",
+      "pt": "Escavação Transmutativa"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing",
+      "pt": "Escavação"
+    },
+    "page": 65,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "element-chemical-analysis",
+    "profileId": "element",
+    "name": {
+      "en": "Chemical Analysis",
+      "pt": "Análise Química"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 65,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "element-neutralize-reaction",
+    "profileId": "element",
+    "name": {
+      "en": "Neutralize Reaction",
+      "pt": "Neutralizar Reação"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Broad · Simultaneous",
+      "pt": "Anulação · Amplo · Simultâneo"
+    },
+    "page": 65,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "element-transmutation",
+    "profileId": "element",
+    "name": {
+      "en": "Transmutation",
+      "pt": "Transmutação"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Transform",
+      "pt": "Transformação"
+    },
+    "page": 66,
+    "effectIds": [
+      "transform"
+    ]
   }
 ] satisfies LibraryEntry[];
