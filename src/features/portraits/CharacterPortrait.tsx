@@ -15,7 +15,7 @@ export function CharacterPortrait() {
   const [openIdentity, setOpenIdentity] = useState<string>();
   const [failed, setFailed] = useState('');
   const src = portrait.thumbnail;
-  return <div className="portrait-avatar-wrap">
+  return <div className={`portrait-avatar-wrap ${src && failed !== src ? 'portrait-avatar-wrap--filled' : ''}`}>
     <button type="button" className="hero-avatar" disabled={!tabId || !characterId} aria-label={t('portrait.edit')} title={t(portrait.local ? 'portrait.localSaved' : 'portrait.edit')} onClick={() => setOpenIdentity(characterId)}>
       {src && failed !== src ? <img src={src} referrerPolicy="no-referrer" alt={t('portrait.alt', { name: character.header.name })} onError={() => setFailed(src)} /> : <User size={32} />}
     </button>

@@ -51,7 +51,9 @@ local não recebe caminho, base64 ou referência de mídia dentro do JSON.
   navegador pode ser negada, e a limpeza manual do site remove as imagens.
 - JPEG, PNG e WebP: limite de 10 MiB de arquivo e 20 megapixels. Imagens são
   reduzidas a no máximo 1024 pixels no maior lado; miniaturas usam até 256 pixels.
-- O avatar usa enquadramento central; a prévia ampliada mostra a imagem completa.
+- O retrato acompanha a altura do bloco de identificação no desktop, mostrando
+  a imagem inteira e preservando a proporção. No celular, usa espaço vertical
+  de 120 × 160 pixels acima dos campos. A prévia também pode ser ampliada.
 - O histórico de desfazer/refazer da ficha continua cobrindo o link como campo
   do cabeçalho; arquivos locais são operações independentes no banco de imagens.
 
