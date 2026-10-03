@@ -1,7 +1,7 @@
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { getResourceCharacter, getResourceAttackBonus, type ResourceBuilderContext } from '../../shared/lib/resourceContext';
 import { getResourcePowerWarnings } from '../../shared/lib/resourceWarnings';
-import { useState, useMemo, useCallback, useId, useRef } from 'react';
+import { lazy, Suspense, useState, useMemo, useCallback, useId, useRef } from 'react';
 import { DndContext, DragOverlay, type Announcements } from '@dnd-kit/core';
 import type {
   ICharacterPower,
@@ -39,6 +39,9 @@ import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { ModifierParameterControls } from './components/ModifierParameterControls';
 import { EffectReference } from './components/EffectReference';
 import { PowerNotesTextarea } from './components/PowerNotesTextarea';
+import { PowerLibraryButton } from '../power-library/PowerLibraryButton';
+import type { PowerLibraryTarget } from '../power-library/types';
+import { applyPowerTemplate } from '../power-library/powerTemplateApplication';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
 import { addComponentModifier } from './modifierApplication';
 import { getBlockingPowerSaveIssues } from './powerSavePolicy';
@@ -62,6 +65,8 @@ interface Props {
   resourceContext?: ResourceBuilderContext;
   saveError?: string | null;
 }
+
+const PowerLibraryDialog = lazy(() => import('../power-library/PowerLibraryDialog').then(module => ({ default: module.PowerLibraryDialog })));
 
 export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
   const { t } = useTranslation();
@@ -95,6 +100,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   );
 
   const [effectModalPower, setEffectModalPower] = useState<IPowerEffect | null>(null);
+  const [libraryTarget, setLibraryTarget] = useState<PowerLibraryTarget | null>(null);
   // AE state: which AE card is expanded + which component within each AE is active
   const [expandedAEId, setExpandedAEId] = useState<string | null>(null);
   const [activeAEComponentId, setActiveAEComponentId] = useState<Record<string, string>>({});
@@ -648,6 +654,8 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                           ? (power.alternateEffects.length > 0 ? t('builder.baseEffect') : t('builder.mainEffect'))
                           : t('builder.linkedComponent', { n: idx + 1 })}
                       </span>
+                      <PowerLibraryButton targetLabel={idx === 0 ? t('builder.baseEffect') : t('builder.linkedComponent', { n: idx + 1 })}
+                        onClick={() => setLibraryTarget({ kind: 'component', componentId: comp.id })}/>
                       {costInfo.total > 0 && (
                         <span className="component-cost">{costInfo.total} {costUnit}</span>
                       )}
@@ -989,6 +997,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                   onUpdateModifierOption={(cId, modId, opt) => updateAEModifierOption(ae.id, cId, modId, opt)}
                   onUpdateModifierOptions={(cId, modId, opts) => updateAEModifierOptions(ae.id, cId, modId, opts)}
                   onInfoClick={setEffectModalPower}
+                  onOpenLibrary={setLibraryTarget}
                   t={t}
                 />
               ))}
@@ -1113,6 +1122,20 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
 
 
       </DndContext>
+
+      {libraryTarget && <Suspense fallback={null}><PowerLibraryDialog
+        power={power} target={libraryTarget} strength={getCharacterStrength(character)} costUnit={costUnit}
+        onClose={() => setLibraryTarget(null)}
+        onApply={(recipe, useName) => {
+          const next = applyPowerTemplate(power, recipe, libraryTarget, useName);
+          setPower(next);
+          if (libraryTarget.alternateId) {
+            const alternate = next.alternateEffects.find(ae => ae.id === libraryTarget.alternateId);
+            setExpandedAEId(libraryTarget.alternateId);
+            if (alternate) setActiveAEComponentId(previous => ({ ...previous, [alternate.id]: alternate.components[0].id }));
+          } else setActiveComponentId(next.components[0].id);
+          setLibraryTarget(null);
+        }}/></Suspense>}
 
       {/* Effect Detail Modal */}
       {effectModalPower && (

@@ -18,6 +18,8 @@ import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { ModifierParameterControls } from './components/ModifierParameterControls';
 import { EffectReference } from './components/EffectReference';
 import { PowerNotesTextarea } from './components/PowerNotesTextarea';
+import { PowerLibraryButton } from '../power-library/PowerLibraryButton';
+import type { PowerLibraryTarget } from '../power-library/types';
 import { getComponentCostBreakdown } from '../../shared/lib/mathEngine';
 import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 
@@ -49,6 +51,7 @@ interface AltEffectCardProps {
   onUpdateModifierOption: (cId: string, modId: string, opt: string) => void;
   onUpdateModifierOptions: (cId: string, modId: string, opts: Record<string, boolean | number | string>) => void;
   onInfoClick: (e: IPowerEffect) => void;
+  onOpenLibrary: (target: PowerLibraryTarget) => void;
   t: TFunction;
 }
 
@@ -59,7 +62,7 @@ export function AltEffectCard({
   activeId,
   onUpdateAE, onRemoveAE, onAddComponent, onRemoveComponent, onUpdateComponent,
   onRemoveModifier, onUpdateModifierRanks, onUpdateModifierOption, onUpdateModifierOptions,
-  onInfoClick, t,
+  onInfoClick, onOpenLibrary, t,
 }: AltEffectCardProps) {
   const { valid, overageBy } = validation;
 
@@ -82,6 +85,8 @@ export function AltEffectCard({
           {valid ? '✅' : '⚠️'} {cost}/{cap} {costUnit}
           {!valid && <span className="ae-overage"> {t('builder.aeOverageLabel', { overageBy })}</span>}
         </span>
+        <PowerLibraryButton targetLabel={ae.name || `AE ${aeIdx + 1}`}
+          onClick={() => onOpenLibrary({ kind: 'alternate', alternateId: ae.id })}/>
         <label
           className="ae-dynamic-label"
           title={t('builder.dynamicTooltip')}
@@ -131,6 +136,8 @@ export function AltEffectCard({
                   {/* Component header */}
                   <div className="ae-comp-header">
                     <span className="ae-comp-label">Comp. {cIdx + 1}</span>
+                    <PowerLibraryButton targetLabel={`${ae.name || `AE ${aeIdx + 1}`} · ${cIdx + 1}`}
+                      onClick={() => onOpenLibrary({ kind: 'component', componentId: comp.id, alternateId: ae.id })}/>
                     {ae.components.length > 1 && (
                       <button
                         className="component-remove"
