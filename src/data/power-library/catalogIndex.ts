@@ -7394,5 +7394,1628 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "illusion"
     ]
+  },
+  {
+    "id": "kinetic-force-cage",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Force Cage",
+      "pt": "Jaula de Força"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Create · Limited",
+      "pt": "Criação · Limitado"
+    },
+    "page": 84,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "kinetic-friction-blindness",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Friction Blindness",
+      "pt": "Cegueira por Atrito"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Instant Recovery · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Recuperação Instantânea · Graus Limitados · Limitado"
+    },
+    "page": 85,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "kinetic-friction-muzzle",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Friction Muzzle",
+      "pt": "Mordaça por Atrito"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Instant Recovery · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Recuperação Instantânea · Graus Limitados · Limitado"
+    },
+    "page": 85,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "kinetic-friction-heat",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Friction Heat",
+      "pt": "Calor de Atrito"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Weaken · Increased Range · Broad · Linked · Damage · Increased Range · Limited",
+      "pt": "Enfraquecer · Alcance Aumentado · Amplo · Vinculado · Dano · Alcance Aumentado · Limitado"
+    },
+    "page": 85,
+    "effectIds": [
+      "weaken",
+      "damage"
+    ]
+  },
+  {
+    "id": "kinetic-internal-attack",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Internal Attack",
+      "pt": "Ataque Interno"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Alternate Resistance · Affects Objects",
+      "pt": "Dano · Alcance Aumentado · Resistência Alternativa · Afeta Objetos"
+    },
+    "page": 85,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-blast",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Blast",
+      "pt": "Rajada Cinética"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 85,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-bullet",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Bullet",
+      "pt": "Bala Cinética"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Quirk",
+      "pt": "Dano · Alcance Aumentado · Peculiaridade"
+    },
+    "page": 85,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-burst",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Burst",
+      "pt": "Explosão Cinética"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area",
+      "pt": "Dano · Alcance Aumentado · Área"
+    },
+    "page": 85,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-weapon",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Weapon",
+      "pt": "Arma Cinética"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage",
+      "pt": "Dano"
+    },
+    "page": 85,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "kinetic-suffocating-bubble",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Suffocating Bubble",
+      "pt": "Bolha Sufocante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive — Fatigued, Exhausted, Incapacitated.",
+      "pt": "Aflição · Alcance Aumentado · Progressivo — Fatigado, Exausto, Incapacitado."
+    },
+    "page": 85,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "kinetic-frictionless",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Frictionless",
+      "pt": "Sem Atrito"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Sustained",
+      "pt": "Imunidade · Sustentado"
+    },
+    "page": 85,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "kinetic-immovable",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Immovable",
+      "pt": "Imóvel"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Sustained",
+      "pt": "Imunidade · Sustentado"
+    },
+    "page": 85,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-absorption",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Absorption",
+      "pt": "Absorção Cinética"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades · Reaction · Limited",
+      "pt": "Traço Aprimorado · Desgaste · Reação · Limitado"
+    },
+    "page": 85,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-deflection",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Deflection",
+      "pt": "Deflexão Cinética"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect · Limited",
+      "pt": "Deflexão · Limitado"
+    },
+    "page": 86,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-immunity",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Immunity",
+      "pt": "Imunidade Cinética"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 86,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-shield",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Shield",
+      "pt": "Escudo Cinético"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Sustained",
+      "pt": "Proteção · Impenetrável · Sustentado"
+    },
+    "page": 86,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "kinetic-friction-cling-1",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Friction Cling — 1",
+      "pt": "Aderência por Atrito — 1"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 86,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "kinetic-friction-cling-2",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Friction Cling — 2",
+      "pt": "Aderência por Atrito — 2"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 86,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-transport",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Transport",
+      "pt": "Transporte Cinético"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Limited — Due west only, never through barriers.",
+      "pt": "Teleporte · Limitado — Apenas para oeste, nunca através de barreiras."
+    },
+    "page": 86,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "kinetic-kinetic-rebound",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Kinetic Rebound",
+      "pt": "Ricochete Cinético"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 86,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "kinetic-friction-control",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Friction Control",
+      "pt": "Controle de Atrito"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Area · Progressive · Limited Degree · Reversible",
+      "pt": "Aflição · Alcance Aumentado · Área · Progressivo · Graus Limitados · Reversível"
+    },
+    "page": 86,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "kinetic-force-constructs",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Force Constructs",
+      "pt": "Construtos de Força"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Create",
+      "pt": "Criação"
+    },
+    "page": 86,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "kinetic-momentum-boost",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Momentum Boost",
+      "pt": "Aumentar Impulso"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Speed · Affects Others · Increased Range · Variable Descriptor",
+      "pt": "Velocidade · Afeta Outros · Alcance Aumentado · Descritor Variável"
+    },
+    "page": 86,
+    "effectIds": [
+      "speed"
+    ]
+  },
+  {
+    "id": "kinetic-momentum-drain",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Momentum Drain",
+      "pt": "Drenar Impulso"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Weaken · Increased Range · Affects Objects · Broad",
+      "pt": "Enfraquecer · Alcance Aumentado · Afeta Objetos · Amplo"
+    },
+    "page": 86,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "kinetic-tactile-telekinesis",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Tactile Telekinesis",
+      "pt": "Telecinese Tátil"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Limited · Feature",
+      "pt": "Traço Aprimorado · Limitado · Característica"
+    },
+    "page": 86,
+    "effectIds": [
+      "enhanced-trait",
+      "feature"
+    ]
+  },
+  {
+    "id": "kinetic-telekinesis",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Telekinesis",
+      "pt": "Telecinese"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object",
+      "pt": "Mover Objetos"
+    },
+    "page": 87,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "kinetic-psychokinesis",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Psychokinesis",
+      "pt": "Psicocinese"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Perception",
+      "pt": "Mover Objetos · Percepção"
+    },
+    "page": 87,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "kinetic-telekinetic-touch",
+    "profileId": "kinetic",
+    "name": {
+      "en": "Telekinetic Touch",
+      "pt": "Toque Telecinético"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 87,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "life-bio-disruption",
+    "profileId": "life",
+    "name": {
+      "en": "Bio-Disruption",
+      "pt": "Biodisrupção"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative",
+      "pt": "Aflição · Cumulativo"
+    },
+    "page": 89,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "life-bio-override",
+    "profileId": "life",
+    "name": {
+      "en": "Bio-Override",
+      "pt": "Controle Biológico"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo"
+    },
+    "page": 89,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "life-bio-sculpting",
+    "profileId": "life",
+    "name": {
+      "en": "Bio-Sculpting",
+      "pt": "Bioescultura"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative",
+      "pt": "Aflição · Cumulativo"
+    },
+    "page": 89,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "life-pathogen",
+    "profileId": "life",
+    "name": {
+      "en": "Pathogen",
+      "pt": "Patógeno"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Progressive",
+      "pt": "Aflição · Progressivo"
+    },
+    "page": 89,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "life-seizure",
+    "profileId": "life",
+    "name": {
+      "en": "Seizure",
+      "pt": "Convulsão"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction",
+      "pt": "Aflição"
+    },
+    "page": 89,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "life-cellular-disruption",
+    "profileId": "life",
+    "name": {
+      "en": "Cellular Disruption",
+      "pt": "Disrupção Celular"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Alternate Resistance",
+      "pt": "Dano · Resistência Alternativa"
+    },
+    "page": 90,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "life-bio-adaptation",
+    "profileId": "life",
+    "name": {
+      "en": "Bio-Adaptation",
+      "pt": "Bioadaptação"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Limited",
+      "pt": "Imunidade · Limitado"
+    },
+    "page": 90,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "life-enhanced-immune-system",
+    "profileId": "life",
+    "name": {
+      "en": "Enhanced Immune System",
+      "pt": "Sistema Imune Aprimorado"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 90,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "life-insensate",
+    "profileId": "life",
+    "name": {
+      "en": "Insensate",
+      "pt": "Insensível"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 90,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "life-lifeport",
+    "profileId": "life",
+    "name": {
+      "en": "Lifeport",
+      "pt": "Teleporte Vital"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Quirk",
+      "pt": "Teleporte · Peculiaridade"
+    },
+    "page": 90,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "life-adrenal-control",
+    "profileId": "life",
+    "name": {
+      "en": "Adrenal Control",
+      "pt": "Controle Adrenal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades",
+      "pt": "Traço Aprimorado · Desgaste"
+    },
+    "page": 90,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "life-biokinesis",
+    "profileId": "life",
+    "name": {
+      "en": "Biokinesis",
+      "pt": "Biocinese"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Limited",
+      "pt": "Mover Objetos · Limitado"
+    },
+    "page": 90,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "life-cure",
+    "profileId": "life",
+    "name": {
+      "en": "Cure",
+      "pt": "Curar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing · Limited",
+      "pt": "Cura · Limitado"
+    },
+    "page": 91,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "life-energize",
+    "profileId": "life",
+    "name": {
+      "en": "Energize",
+      "pt": "Energizar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing · Energizing · Limited",
+      "pt": "Cura · Energizing · Limitado"
+    },
+    "page": 91,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "life-life-sense",
+    "profileId": "life",
+    "name": {
+      "en": "Life Sense",
+      "pt": "Sentido Vital"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 91,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "life-pharmacopeia",
+    "profileId": "life",
+    "name": {
+      "en": "Pharmacopeia",
+      "pt": "Farmacopeia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing",
+      "pt": "Cura"
+    },
+    "page": 91,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "life-psychic-diagnosis",
+    "profileId": "life",
+    "name": {
+      "en": "Psychic Diagnosis",
+      "pt": "Diagnóstico Psíquico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 91,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "life-skin-shifting",
+    "profileId": "life",
+    "name": {
+      "en": "Skin-Shifting",
+      "pt": "Alterar Pele"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Morph",
+      "pt": "Metamorfose"
+    },
+    "page": 91,
+    "effectIds": [
+      "morph"
+    ]
+  },
+  {
+    "id": "life-suspended-animation",
+    "profileId": "life",
+    "name": {
+      "en": "Suspended Animation",
+      "pt": "Animação Suspensa"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Limited",
+      "pt": "Imunidade · Limitado"
+    },
+    "page": 91,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "life-total-healing",
+    "profileId": "life",
+    "name": {
+      "en": "Total Healing",
+      "pt": "Cura Total"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing · Persistent (flat purchase) · Restorative · Resurrection",
+      "pt": "Cura · Persistente (compra fixa) · Restaurativo · Resurrection"
+    },
+    "page": 91,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "life-total-self-healing",
+    "profileId": "life",
+    "name": {
+      "en": "Total Self Healing",
+      "pt": "Autocura Total"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing · Reaction · Energizing · Persistent (flat purchase) · Restorative · Resurrection · Limited",
+      "pt": "Cura · Reação · Energizing · Persistente (compra fixa) · Restaurativo · Resurrection · Limitado"
+    },
+    "page": 91,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "light-blinding-beam",
+    "profileId": "light",
+    "name": {
+      "en": "Blinding Beam",
+      "pt": "Raio Cegante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado"
+    },
+    "page": 94,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "light-blinding-burst",
+    "profileId": "light",
+    "name": {
+      "en": "Blinding Burst",
+      "pt": "Explosão Cegante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative · Limited",
+      "pt": "Aflição · Área · Cumulativo · Limitado"
+    },
+    "page": 94,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "light-dazzling-burst",
+    "profileId": "light",
+    "name": {
+      "en": "Dazzling Burst",
+      "pt": "Explosão Ofuscante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative · Sense-Dependent",
+      "pt": "Aflição · Área · Cumulativo · Dependente de Sentido"
+    },
+    "page": 94,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "light-hypnotic-strobe",
+    "profileId": "light",
+    "name": {
+      "en": "Hypnotic Strobe",
+      "pt": "Estrobo Hipnótico"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Limited Degree · Sense-Dependent",
+      "pt": "Aflição · Alcance Aumentado · Graus Limitados · Dependente de Sentido"
+    },
+    "page": 94,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "light-blinding-aura",
+    "profileId": "light",
+    "name": {
+      "en": "Blinding Aura",
+      "pt": "Aura Cegante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative · Limited · Increased Duration — Concentration version; sustained extension requires adjudication.",
+      "pt": "Aflição · Área · Cumulativo · Limitado · Duração Aumentada — Versão por Concentração; extensão Sustentada requer adjudicação."
+    },
+    "page": 94,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "light-blinding-field",
+    "profileId": "light",
+    "name": {
+      "en": "Blinding Field",
+      "pt": "Campo Cegante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Concealment · Area · Attack",
+      "pt": "Camuflagem · Área · Ataque"
+    },
+    "page": 94,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "light-laser-beam",
+    "profileId": "light",
+    "name": {
+      "en": "Laser Beam",
+      "pt": "Raio Laser"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 94,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "light-pulse-laser",
+    "profileId": "light",
+    "name": {
+      "en": "Pulse Laser",
+      "pt": "Laser Pulsado"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Multiattack",
+      "pt": "Dano · Alcance Aumentado · Ataque Múltiplo"
+    },
+    "page": 94,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "light-laser-burst",
+    "profileId": "light",
+    "name": {
+      "en": "Laser Burst",
+      "pt": "Explosão Laser"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Area",
+      "pt": "Dano · Área"
+    },
+    "page": 94,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "light-invisible-laser-beam",
+    "profileId": "light",
+    "name": {
+      "en": "Invisible Laser Beam",
+      "pt": "Raio Laser Invisível"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Subtle",
+      "pt": "Dano · Alcance Aumentado · Sutil"
+    },
+    "page": 94,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "light-laser-weapon",
+    "profileId": "light",
+    "name": {
+      "en": "Laser Weapon",
+      "pt": "Arma Laser"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage",
+      "pt": "Dano"
+    },
+    "page": 94,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "light-targeting-laser",
+    "profileId": "light",
+    "name": {
+      "en": "Targeting Laser",
+      "pt": "Laser de Mira"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Feature · Accurate — Flat modifier carrier: add Accurate to the selected attack.",
+      "pt": "Característica · Preciso — Suporte de modificador fixo: acrescente Acurado ao ataque escolhido."
+    },
+    "page": 95,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "light-immunity-to-light",
+    "profileId": "light",
+    "name": {
+      "en": "Immunity to Light",
+      "pt": "Imunidade à Luz"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 95,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "light-light-absorption",
+    "profileId": "light",
+    "name": {
+      "en": "Light Absorption",
+      "pt": "Absorção de Luz"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades · Limited",
+      "pt": "Traço Aprimorado · Desgaste · Limitado"
+    },
+    "page": 95,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "light-light-form",
+    "profileId": "light",
+    "name": {
+      "en": "Light Form",
+      "pt": "Forma de Luz"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 95,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "light-photonic-shield",
+    "profileId": "light",
+    "name": {
+      "en": "Photonic Shield",
+      "pt": "Escudo Fotônico"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 95,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "light-reflective",
+    "profileId": "light",
+    "name": {
+      "en": "Reflective",
+      "pt": "Refletivo"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect · Reflect · Reduced Range · Limited",
+      "pt": "Deflexão · Refletir · Alcance Reduzido · Limitado"
+    },
+    "page": 95,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "light-lightflight",
+    "profileId": "light",
+    "name": {
+      "en": "Lightflight",
+      "pt": "Voo de Luz"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight",
+      "pt": "Voo"
+    },
+    "page": 95,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "light-light-bridge",
+    "profileId": "light",
+    "name": {
+      "en": "Light Bridge",
+      "pt": "Ponte de Luz"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Platform",
+      "pt": "Voo · Platform"
+    },
+    "page": 95,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "light-lightspeed",
+    "profileId": "light",
+    "name": {
+      "en": "Lightspeed",
+      "pt": "Velocidade da Luz"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Movement",
+      "pt": "Voo · Movimento"
+    },
+    "page": 95,
+    "effectIds": [
+      "flight",
+      "movement"
+    ]
+  },
+  {
+    "id": "light-banish-darkness",
+    "profileId": "light",
+    "name": {
+      "en": "Banish Darkness",
+      "pt": "Banir Escuridão"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Area · Simultaneous",
+      "pt": "Anulação · Área · Simultâneo"
+    },
+    "page": 96,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "light-healing-light",
+    "profileId": "light",
+    "name": {
+      "en": "Healing Light",
+      "pt": "Luz Curativa"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing",
+      "pt": "Cura"
+    },
+    "page": 96,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "light-holograms",
+    "profileId": "light",
+    "name": {
+      "en": "Holograms",
+      "pt": "Hologramas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion",
+      "pt": "Ilusão"
+    },
+    "page": 96,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "light-illuminate",
+    "profileId": "light",
+    "name": {
+      "en": "Illuminate",
+      "pt": "Iluminar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment",
+      "pt": "Controle Ambiental"
+    },
+    "page": 96,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "light-laser-comm",
+    "profileId": "light",
+    "name": {
+      "en": "Laser Comm",
+      "pt": "Comunicação Laser"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Communication",
+      "pt": "Comunicação"
+    },
+    "page": 96,
+    "effectIds": [
+      "communication"
+    ]
+  },
+  {
+    "id": "light-laser-hearing",
+    "profileId": "light",
+    "name": {
+      "en": "Laser Hearing",
+      "pt": "Audição Laser"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 96,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "light-light-constructs",
+    "profileId": "light",
+    "name": {
+      "en": "Light Constructs",
+      "pt": "Construtos de Luz"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Create",
+      "pt": "Criação"
+    },
+    "page": 96,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "light-solar-sustenance",
+    "profileId": "light",
+    "name": {
+      "en": "Solar Sustenance",
+      "pt": "Sustento Solar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Limited — Sleep/starvation immunity only with light source.",
+      "pt": "Imunidade · Limitado — Imunidade a sono/inanição apenas com fonte de luz."
+    },
+    "page": 96,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "light-vision-enhancement",
+    "profileId": "light",
+    "name": {
+      "en": "Vision Enhancement",
+      "pt": "Visão Aprimorada"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 96,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "light-warp-light-2",
+    "profileId": "light",
+    "name": {
+      "en": "Warp Light — 2",
+      "pt": "Dobrar Luz — 2"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment",
+      "pt": "Camuflagem"
+    },
+    "page": 96,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "light-warp-light-4",
+    "profileId": "light",
+    "name": {
+      "en": "Warp Light — 4",
+      "pt": "Dobrar Luz — 4"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment",
+      "pt": "Camuflagem"
+    },
+    "page": 96,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "light-infrared-invisibility",
+    "profileId": "light",
+    "name": {
+      "en": "Infrared Invisibility",
+      "pt": "Invisibilidade Infravermelha"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment",
+      "pt": "Camuflagem"
+    },
+    "page": 96,
+    "effectIds": [
+      "concealment"
+    ]
   }
 ] satisfies LibraryEntry[];

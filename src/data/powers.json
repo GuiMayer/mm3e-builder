@@ -1558,6 +1558,21 @@
             "description": "Absorção Elétrica, Power Profiles p. 59. Pode remover fadiga por esforço extra."
           }
         }
+      },
+      {
+        "id": "persistent_flat",
+        "name": "Persistent (flat purchase)",
+        "category": "extra",
+        "costType": "flat",
+        "costValue": 1,
+        "description": "Heals Incurable damage. Flat +1 PP, Deluxe Hero’s Handbook p. 167. Existing per-rank records are preserved.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Persistente (compra fixa)",
+            "description": "Cura dano Incurável. +1 PP fixo, Deluxe Hero’s Handbook p. 167. Registros antigos por graduação são preservados."
+          }
+        }
       }
     ],
     "flaws": [

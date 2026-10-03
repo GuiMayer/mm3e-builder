@@ -12,7 +12,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 3 | Death Powers, Dimension Powers, Dream Powers | 58 receitas/variantes auditadas. Duas formas exigem alterações externas à ficha e são referências. |
 | 4 | Earth Powers, Electrical Powers, Element Powers | 74 receitas/variantes auditadas. |
 | 5 | Fire Powers, Gravity Powers, Illusion Powers | 74 receitas/variantes auditadas. |
-| 6 | Kinetic Powers, Life Powers, Light Powers | Pendente |
+| 6 | Kinetic Powers, Life Powers, Light Powers | 81 receitas/variantes auditadas; três Aflições Sustentadas são referências. |
 | 7 | Luck Powers, Magic Powers, Magnetic Powers | Pendente |
 | 8 | Martial Powers, Mental Powers, Meta Powers | Pendente |
 | 9 | Morphing Powers, Plant Powers, Radiation Powers | Pendente |
@@ -60,3 +60,7 @@ Blackout soma 4 PP/graduação (o texto imprime 5); Neutralize Reaction soma 3 (
 ## Lote 5
 
 Illusory Damage registra explicitamente Resistência Alternativa vantajosa (+1), coerente com seu preço impresso; o usuário pode adjudicar posteriormente. True Perception compra cinco Contra Ilusão de duas graduações, totalizando 10 como o preço impresso (o rótulo Sentidos 5 é inconsistente). Variantes de imunidade, intensidade ambiental e número de sentidos têm entradas próprias.
+
+## Lote 6
+
+Friction Blindness, Friction Muzzle e Blinding Aura têm Aflição Sustentada que o modelo atual não representa; a prévia explica e impede aplicar versões incompletas. Friction Control coloca o efeito mais caro como base do array, mantendo a composição e o preço 4×graduação +2. Insensate exige Imunidade 5 e custa 5, não os 2 impressos. Total Healing soma 4×graduação +1, não 6×graduação +1. Persistente de Cura é +1 fixo no Handbook: adicionada uma compra correta separada, preservando registros antigos por graduação.
