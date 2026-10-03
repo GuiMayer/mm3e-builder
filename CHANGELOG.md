@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Sheet preferences
+- Remember the Character Details accordion state per persistent character ID in
+  localStorage. Keep new sheets collapsed by default and UI preferences out of
+  character JSON, calculations and undo history.
+
 ### Added — Character portraits
 - Click the sheet avatar to choose an HTTPS image link or a browser-local file,
   preview, enlarge, replace, refresh or remove the portrait.

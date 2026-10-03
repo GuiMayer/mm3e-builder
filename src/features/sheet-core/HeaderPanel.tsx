@@ -1,5 +1,6 @@
 import { CharacterPortrait } from '../portraits/CharacterPortrait';
-import { memo, useState } from 'react';
+import { memo } from 'react';
+import { useCharacterDetailsPreference } from '../../shared/hooks/useCharacterDetailsPreference';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
@@ -11,15 +12,14 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 
 function HeaderPanelComponent() {
   const { t } = useTranslation();
-  const character = useCharacterSelector(useShallow((value) => ({ header: value.header })));
+  const character = useCharacterSelector(useShallow((value) => ({ header: value.header, characterId: value.characterId })));
   const { updateHeader } = useCharacterActions();
   const header = character.header;
   const pp = useCalculatedPP();
   const isOver = pp.isOverBudget;
   const pct = pp.totalAvailable > 0 ? Math.min(100, (pp.totalSpent / pp.totalAvailable) * 100) : 0;
 
-  // F-07: accordion open state (collapsed by default)
-  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [detailsOpen, toggleDetails] = useCharacterDetailsPreference(character.characterId);
 
   return (
     <section className="header-panel">
@@ -136,7 +136,7 @@ function HeaderPanelComponent() {
           <div className="char-details-accordion">
             <button
               className="char-details-toggle"
-              onClick={() => setDetailsOpen((v) => !v)}
+              onClick={toggleDetails}
               aria-expanded={detailsOpen}
             >
               {detailsOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
