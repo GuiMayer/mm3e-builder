@@ -16,8 +16,10 @@ export function getPDFStyles(options: PDFCustomizationOptions): string {
 .pdf-section-title{display:flex;justify-content:space-between;align-items:baseline;font-size:${size + 1}pt;font-weight:700;color:${color};border-bottom:1px solid ${color};padding-bottom:3px;margin:0 0 5px;}
 .section-cost{font-weight:400;font-size:${Math.max(8, size - 1)}pt;color:#536070;white-space:nowrap;margin-left:8px;}
 .pdf-header{border-bottom:2px solid ${color};margin-bottom:${gap + 4}px;padding-bottom:${gap}px;}
-.pdf-portrait{width:64px;height:64px;object-fit:contain;flex-shrink:0;border-radius:4px;}
-.header-main:has(.pdf-portrait){align-items:center;}
+.pdf-header--portrait{display:grid;grid-template-columns:112px minmax(0,1fr);gap:12px;padding-bottom:0;}
+.pdf-header--portrait .pdf-header-content{min-width:0;padding-bottom:${gap}px;}
+.pdf-portrait-frame{position:relative;min-height:112px;margin-bottom:-2px;}
+.pdf-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:4px;}
 .header-main{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
 .character-name{flex:1;min-width:0;font-size:${size + 8}pt;line-height:1.15;font-weight:700;color:${color};}
 .header-stats{font-weight:700;white-space:nowrap;color:${color};}

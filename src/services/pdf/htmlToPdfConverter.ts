@@ -1,4 +1,5 @@
 import { jsPDF } from 'jspdf';
+import { rasterizePdfPortraits } from './portraitLayout';
 import { paginateHtmlForPdf } from './pdfPagination';
 import { PDF_GEOMETRY, PDF_CONTENT_WIDTH_PX, PDF_CONTENT_HEIGHT_PX } from './pdfGeometry';
 import { embedPDFFontsInHTML, getPDFFontFaces } from './pdfFonts';
@@ -45,7 +46,10 @@ async function renderPdf(html: string, options: HtmlToPdfOptions): Promise<Blob>
         width: PDF_GEOMETRY.widthMm,
         windowWidth: PDF_GEOMETRY.widthMm / PDF_GEOMETRY.mmPerPx, autoPaging: false,
         fontFaces: getPDFFontFaces(root.dataset.pdfFont ?? 'Noto Sans'),
-        html2canvas: { scale: PDF_GEOMETRY.mmPerPx, useCORS: true, logging: false },
+        html2canvas: {
+          scale: PDF_GEOMETRY.mmPerPx, useCORS: true, logging: false,
+          onclone: document => rasterizePdfPortraits(document.body),
+        },
       });
       pdf.setFont((root.dataset.pdfFont ?? 'Noto Sans').toLowerCase(), 'normal normal 400');
       pdf.setFontSize(8); pdf.setTextColor('#536070');

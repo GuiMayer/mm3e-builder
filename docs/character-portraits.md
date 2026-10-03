@@ -79,7 +79,11 @@ Sem esse campo, o retrato mostra a imagem inteira com bordas.
 
 Na personalização do PDF, marque **Incluir retrato**. Essa opção começa
 desativada e é salva junto das preferências de exportação existentes.
-O retrato ocupa 64 × 64 pixels no cabeçalho, sem criar uma seção inteira.
+O retrato fica ao lado de todo o cabeçalho (nome, detalhes e resumo de pontos),
+com 112 pixels de largura e altura acompanhando essa seção. A base do retrato
+fica alinhada à linha inferior de separação, inclusive no modo para preencher
+a lápis. O exportador aplica o encaixe à cópia usada no PDF, sem alterar
+a mídia original; o restante do documento continua em texto selecionável.
 O PDF e o HTML exportado podem incorporar a imagem; o JSON continua sem bytes.
 Se a imagem estiver indisponível para renderização, o app avisa e gera a ficha
 sem retrato. O texto do PDF continua selecionável. O exportador PDF legado
@@ -97,7 +101,7 @@ Exportação ZIP de ficha + imagem permanece uma evolução posterior.
 
 ## Validação desta entrega
 
-- 77 arquivos de teste e 895 testes aprovados, além de lint, typecheck, build
+- 78 arquivos de teste e 900 testes aprovados, além de lint, typecheck, build
   e verificação de 16 referências a arquivos estáticos.
 - Testes dirigidos cobrem fichas antigas, round-trip do link, payload real do
   JSON sem imagem local, cópias independentes, falha de escrita/quota, remoção,

@@ -37,6 +37,14 @@ describe('portrait exports and copies', () => {
     });
     expect(html).toContain(`object-fit:${portraitFit ?? 'contain'};object-position:center`);
   });
+  it('omits malformed portrait sources', () => {
+    const html = renderHeaderSection({
+      character: createDefaultCharacter(), portraitDataUrl: "data:image/png;base64,YQ==');background:red",
+      powerPointsData: { abilitiesCost: 0, defensesCost: 0, skillsCost: 0, advantagesCost: 0, powersCost: 0, totalAvailable: 150, totalSpent: 0, remaining: 150, ppEarned: 0 },
+    });
+    expect(html).not.toContain('<img');
+    expect(html).not.toContain('pdf-header--portrait');
+  });
   it('reports a missing portrait without breaking export', async () => {
     const character = createDefaultCharacter({ characterId: crypto.randomUUID() });
     const result = await generateCharacterPDF({ ...definitions, character, customization: { ...DEFAULT_CUSTOMIZATION, includePortrait: true } });

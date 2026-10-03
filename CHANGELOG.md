@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   actual responsive frame dimensions and preserving proportions when enlarged.
 - Explain local-only persistence before file selection and during JSON export;
   preserve local portraits across character copies and include them in clear-all.
+- Enlarge the HTML/PDF portrait to span the entire header, including details
+  and point totals, with its bottom aligned to the section separator. Preserve
+  contain/cover/stretch in PDF canvas rendering without rasterizing sheet text.
 - Add opt-in portrait inclusion in the compact HTML/PDF header, preserving text
   selection and exporting without the image when it is unavailable.
 - Document persistence, CORS fallback, image limits and legacy PDF limitations.
