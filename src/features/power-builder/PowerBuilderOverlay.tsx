@@ -37,6 +37,7 @@ import { VariableCostSelector } from './components/VariableCostSelector';
 import { ConfigurableFieldSelector } from './components/ConfigurableFieldSelector';
 import { SenseTraitsEditor } from './components/SenseTraitsEditor';
 import { ModifierParameterControls } from './components/ModifierParameterControls';
+import { EffectReference } from './components/EffectReference';
 import { validatePowerForSave } from '../../shared/lib/semanticValidation';
 import { addComponentModifier } from './modifierApplication';
 import { getBlockingPowerSaveIssues } from './powerSavePolicy';
@@ -907,22 +908,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
                           </div>
                         )}
                       </div>
-                      {/* Effect reference beside the editing controls */}
-                      {effectDef && (
-                        <div className="build-effect-info">
-                          <span className="effect-badge">{effectDef.type}</span>
-                          <span className="effect-detail">{t('common.action')}: {effectDef.action}</span>
-                          <span className="effect-detail">{t('common.range')}: {effectDef.range}</span>
-                          <span className="effect-detail">{t('common.duration')}: {effectDef.duration}</span>
-                          <p className="effect-desc">{effectDef.description}</p>
-                          {effectDef.enhancesDefense && (
-                            <div className="defense-warning">
-                              <AlertTriangle size={13} />
-                              {t('builder.defenseWarning')}
-                            </div>
-                          )}
-                        </div>
-                      )}
+                      {effectDef && <EffectReference effect={effectDef} t={t} />}
 
                     </div>
                   </div>

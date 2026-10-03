@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed — Power Builder layout
+- Show alternate and their linked effect descriptions in the same responsive
+  reference panel as the base effect. Render only one plus icon on the linked
+  and alternate effect buttons in both languages.
 - Tighten wrapped PP summary rows with a 4px vertical gap and compact line
   height, preserving horizontal spacing and all cost calculations.
 - Present mobile modifiers as compact rectangular cards with name, cost and
