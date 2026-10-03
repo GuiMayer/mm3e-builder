@@ -14,7 +14,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 5 | Fire Powers, Gravity Powers, Illusion Powers | 74 receitas/variantes auditadas. |
 | 6 | Kinetic Powers, Life Powers, Light Powers | 81 receitas/variantes auditadas; três Aflições Sustentadas são referências. |
 | 7 | Luck Powers, Magic Powers, Magnetic Powers | 128 receitas/variantes auditadas; Fifth Wheel é referência de duração. |
-| 8 | Martial Powers, Mental Powers, Meta Powers | Pendente |
+| 8 | Martial Powers, Mental Powers, Meta Powers | 66 receitas/variantes auditadas. |
 | 9 | Morphing Powers, Plant Powers, Radiation Powers | Pendente |
 | 10 | Sensory Powers, Size Powers, Sonic Powers | Pendente |
 | 11 | Speed Powers, Strength Powers, Summoning Powers | Pendente |
@@ -68,3 +68,7 @@ Friction Blindness, Friction Muzzle e Blinding Aura têm Aflição Sustentada qu
 ## Lote 7
 
 As divergências de Magia/Sorte estão identificadas nas prévias e no inventário final de auditoria. Find Weakness compra graduações reais de Penetrante sobre um componente sem efeito-base novo; o controle de graduação modifica apenas essa compra. Invocações diferenciam Tipo Geral (+1) e Amplo (+2), e Múltiplos Lacaios por graduação.
+
+## Lote 8
+
+Possessão usa Fundir-se ao Alvo (+1), e Contra-ataque usa Exige Teste de Ataque (-1), específicos dos respectivos efeitos. Breaking Blow compra Penetrante sobre dano de Força existente, com Ativação de movimento no poder inteiro. Defesas pareadas são compras independentes; a limitação fixa é distribuída entre elas. Grau Limitado em Mind Switch/Power Control e Energizar em Psychic Vampirism produzem divergências explicadas nas prévias.

@@ -11590,5 +11590,1330 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "transform"
     ]
+  },
+  {
+    "id": "martial-analyze-style",
+    "profileId": "martial",
+    "name": {
+      "en": "Analyze Style",
+      "pt": "Analisar Estilo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Limited · Limited Degree · Insidious · Subtle",
+      "pt": "Aflição · Alcance Aumentado · Limitado · Graus Limitados · Insidioso · Sutil"
+    },
+    "page": 121,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "martial-berserker-rage",
+    "profileId": "martial",
+    "name": {
+      "en": "Berserker Rage",
+      "pt": "Fúria Berserker"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Feature · Quirk — Feature grants Fearless; -1 active defenses.",
+      "pt": "Traço Aprimorado · Característica · Peculiaridade — Característica concede Destemido; -1 nas defesas ativas."
+    },
+    "page": 121,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "martial-breaking-blow",
+    "profileId": "martial",
+    "name": {
+      "en": "Breaking Blow",
+      "pt": "Golpe Quebrador"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Penetrating · Limited — Adds Penetrating 2 to existing Strength damage; objects only. +1 per further Penetrating rank.",
+      "pt": "Dano · Penetrante · Limitado — Acrescenta Penetrante 2 ao dano de Força existente; apenas objetos. +1 por graduação adicional de Penetrante."
+    },
+    "page": 121,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "martial-chi-strike",
+    "profileId": "martial",
+    "name": {
+      "en": "Chi Strike",
+      "pt": "Golpe de Chi"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage",
+      "pt": "Dano"
+    },
+    "page": 122,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "martial-dim-mak",
+    "profileId": "martial",
+    "name": {
+      "en": "Dim Mak",
+      "pt": "Dim Mak"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Extra Condition · Progressive · Reversible",
+      "pt": "Aflição · Condição Extra · Progressivo · Reversível"
+    },
+    "page": 122,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "martial-ear-boxing",
+    "profileId": "martial",
+    "name": {
+      "en": "Ear Boxing",
+      "pt": "Golpe nos Ouvidos"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Extra Condition · Limited Degree",
+      "pt": "Aflição · Condição Extra · Graus Limitados"
+    },
+    "page": 122,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "martial-ghost-fighting-1",
+    "profileId": "martial",
+    "name": {
+      "en": "Ghost Fighting — 1",
+      "pt": "Combate Fantasma — 1"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Affects Insubstantial",
+      "pt": "Dano · Afeta Insubstanciais"
+    },
+    "page": 122,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "martial-ghost-fighting-2",
+    "profileId": "martial",
+    "name": {
+      "en": "Ghost Fighting — 2",
+      "pt": "Combate Fantasma — 2"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Affects Insubstantial",
+      "pt": "Dano · Afeta Insubstanciais"
+    },
+    "page": 122,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "martial-kiai-shout",
+    "profileId": "martial",
+    "name": {
+      "en": "Kiai Shout",
+      "pt": "Grito Kiai"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area · Extra Condition · Sense-Dependent · Limited Degree",
+      "pt": "Aflição · Área · Condição Extra · Dependente de Sentido · Graus Limitados"
+    },
+    "page": 122,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "martial-natural-fighter",
+    "profileId": "martial",
+    "name": {
+      "en": "Natural Fighter",
+      "pt": "Lutador Natural"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 122,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "martial-catfall",
+    "profileId": "martial",
+    "name": {
+      "en": "Catfall",
+      "pt": "Queda Felina"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Movement · Limited",
+      "pt": "Traço Aprimorado · Movimento · Limitado"
+    },
+    "page": 122,
+    "effectIds": [
+      "enhanced-trait",
+      "movement"
+    ]
+  },
+  {
+    "id": "martial-counterstrike",
+    "profileId": "martial",
+    "name": {
+      "en": "Counterstrike",
+      "pt": "Contra-ataque"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Reaction · Attack Check Required",
+      "pt": "Dano · Reação · Exige Teste de Ataque"
+    },
+    "page": 122,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "martial-deflecting-projectile",
+    "profileId": "martial",
+    "name": {
+      "en": "Deflecting Projectile",
+      "pt": "Projétil Defletor"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Deflect · Quirk — Needs a projectile/throwing weapon; base starts at 1 PP.",
+      "pt": "Deflexão · Peculiaridade — Exige projétil/arma de arremesso; custo mínimo de 1 PP."
+    },
+    "page": 122,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "martial-feather-step",
+    "profileId": "martial",
+    "name": {
+      "en": "Feather Step",
+      "pt": "Passo de Pluma"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 122,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "martial-run-up-walls",
+    "profileId": "martial",
+    "name": {
+      "en": "Run Up Walls",
+      "pt": "Correr pelas Paredes"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 123,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "martial-wire-fu",
+    "profileId": "martial",
+    "name": {
+      "en": "Wire-Fu",
+      "pt": "Voo de Acrobata"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping",
+      "pt": "Salto"
+    },
+    "page": 123,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "martial-blind-fighting",
+    "profileId": "martial",
+    "name": {
+      "en": "Blind Fighting",
+      "pt": "Combate às Cegas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 123,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "martial-chi-balance",
+    "profileId": "martial",
+    "name": {
+      "en": "Chi Balance",
+      "pt": "Equilíbrio de Chi"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing",
+      "pt": "Cura"
+    },
+    "page": 123,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "martial-chi-focus",
+    "profileId": "martial",
+    "name": {
+      "en": "Chi Focus",
+      "pt": "Foco de Chi"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 123,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "martial-chi-reading",
+    "profileId": "martial",
+    "name": {
+      "en": "Chi Reading",
+      "pt": "Leitura de Chi"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 123,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "martial-second-wind",
+    "profileId": "martial",
+    "name": {
+      "en": "Second Wind",
+      "pt": "Segundo Fôlego"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Healing · Triggered · Limited",
+      "pt": "Cura · Gatilho · Limitado"
+    },
+    "page": 123,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "mental-emotion-control",
+    "profileId": "mental",
+    "name": {
+      "en": "Emotion Control",
+      "pt": "Controle Emocional"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Subtle · Variable Descriptor",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Sutil · Descritor Variável"
+    },
+    "page": 128,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "mental-hallucination",
+    "profileId": "mental",
+    "name": {
+      "en": "Hallucination",
+      "pt": "Alucinação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Illusion · Selective · Limited to One Subject · Resistible",
+      "pt": "Ilusão · Seletivo · Limited to One Subject · Resistível"
+    },
+    "page": 128,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "mental-mental-blast",
+    "profileId": "mental",
+    "name": {
+      "en": "Mental Blast",
+      "pt": "Rajada Mental"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Alternate Resistance · Subtle",
+      "pt": "Dano · Alcance Aumentado · Resistência Alternativa · Sutil"
+    },
+    "page": 128,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "mental-mind-control",
+    "profileId": "mental",
+    "name": {
+      "en": "Mind Control",
+      "pt": "Controle Mental"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Subtle",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Sutil"
+    },
+    "page": 129,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "mental-mind-switch",
+    "profileId": "mental",
+    "name": {
+      "en": "Mind Switch",
+      "pt": "Troca de Mentes"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Insidious · Subtle · Limited Degree · Side Effect",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Insidioso · Sutil · Graus Limitados · Efeito Colateral"
+    },
+    "page": 129,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "mental-possession",
+    "profileId": "mental",
+    "name": {
+      "en": "Possession",
+      "pt": "Possessão"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Merge with Subject · Subtle",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Fundir-se ao Alvo · Sutil"
+    },
+    "page": 129,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "mental-psychic-vampirism",
+    "profileId": "mental",
+    "name": {
+      "en": "Psychic Vampirism",
+      "pt": "Vampirismo Psíquico"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Subtle · Linked · Healing · Energizing · Subtle · Limited",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Sutil · Vinculado · Cura · Energizing · Sutil · Limitado"
+    },
+    "page": 129,
+    "effectIds": [
+      "affliction",
+      "healing"
+    ]
+  },
+  {
+    "id": "mental-psychic-weapon",
+    "profileId": "mental",
+    "name": {
+      "en": "Psychic Weapon",
+      "pt": "Arma Psíquica"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Alternate Resistance",
+      "pt": "Dano · Resistência Alternativa"
+    },
+    "page": 129,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "mental-mental-invisibility",
+    "profileId": "mental",
+    "name": {
+      "en": "Mental Invisibility",
+      "pt": "Invisibilidade Mental"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment · Limited · Resistible",
+      "pt": "Camuflagem · Limitado · Resistível"
+    },
+    "page": 129,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "mental-mind-shield",
+    "profileId": "mental",
+    "name": {
+      "en": "Mind Shield",
+      "pt": "Escudo Mental"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Impervious · Limited",
+      "pt": "Traço Aprimorado · Impenetrável · Limitado"
+    },
+    "page": 129,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "mental-mind-trap",
+    "profileId": "mental",
+    "name": {
+      "en": "Mind Trap",
+      "pt": "Armadilha Mental"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Alternate Resistance · Reaction · Subtle · Limited",
+      "pt": "Dano · Alcance Aumentado · Resistência Alternativa · Reação · Sutil · Limitado"
+    },
+    "page": 129,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "mental-predictive-defense",
+    "profileId": "mental",
+    "name": {
+      "en": "Predictive Defense",
+      "pt": "Defesa Preditiva"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Quirk · Enhanced Trait · Quirk — Paired defense purchase, 2 PP each; starts at required two pairs.",
+      "pt": "Traço Aprimorado · Peculiaridade · Traço Aprimorado · Peculiaridade — Compra pareada de defesas, 2 PP cada; inicia nos dois pares necessários."
+    },
+    "page": 129,
+    "effectIds": [
+      "enhanced-trait",
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "mental-astral-projection",
+    "profileId": "mental",
+    "name": {
+      "en": "Astral Projection",
+      "pt": "Projeção Astral"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Side Effect",
+      "pt": "Sensoriamento Remoto · Efeito Colateral"
+    },
+    "page": 130,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "mental-aura-reading",
+    "profileId": "mental",
+    "name": {
+      "en": "Aura Reading",
+      "pt": "Leitura de Aura"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 130,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "mental-clairvoyance",
+    "profileId": "mental",
+    "name": {
+      "en": "Clairvoyance",
+      "pt": "Clarividência"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing",
+      "pt": "Sensoriamento Remoto"
+    },
+    "page": 130,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "mental-clairaudience",
+    "profileId": "mental",
+    "name": {
+      "en": "Clairaudience",
+      "pt": "Clariaudiência"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing",
+      "pt": "Sensoriamento Remoto"
+    },
+    "page": 130,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "mental-clairsentience",
+    "profileId": "mental",
+    "name": {
+      "en": "Clairsentience",
+      "pt": "Clarissenciência"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing",
+      "pt": "Sensoriamento Remoto"
+    },
+    "page": 130,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "mental-empathy",
+    "profileId": "mental",
+    "name": {
+      "en": "Empathy",
+      "pt": "Empatia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 130,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "mental-knowledge-transplant",
+    "profileId": "mental",
+    "name": {
+      "en": "Knowledge Transplant",
+      "pt": "Transplante de Conhecimento"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable · Affects Others · Action · Limited · Increased Range · Sense-Dependent",
+      "pt": "Variável · Afeta Outros · Ação · Limitado · Alcance Aumentado · Dependente de Sentido"
+    },
+    "page": 130,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "mental-mental-communication",
+    "profileId": "mental",
+    "name": {
+      "en": "Mental Communication",
+      "pt": "Comunicação Mental"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Communication",
+      "pt": "Comunicação"
+    },
+    "page": 130,
+    "effectIds": [
+      "communication"
+    ]
+  },
+  {
+    "id": "mental-mental-awareness",
+    "profileId": "mental",
+    "name": {
+      "en": "Mental Awareness",
+      "pt": "Consciência Mental"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 130,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "mental-mental-detection",
+    "profileId": "mental",
+    "name": {
+      "en": "Mental Detection",
+      "pt": "Detecção Mental"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 131,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "mental-mind-reading",
+    "profileId": "mental",
+    "name": {
+      "en": "Mind Reading",
+      "pt": "Leitura Mental"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Mind Reading",
+      "pt": "Leitura Mental"
+    },
+    "page": 131,
+    "effectIds": [
+      "mind-reading"
+    ]
+  },
+  {
+    "id": "mental-sensory-link",
+    "profileId": "mental",
+    "name": {
+      "en": "Sensory Link",
+      "pt": "Vínculo Sensorial"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Limited · Sense-Dependent",
+      "pt": "Sensoriamento Remoto · Limitado · Dependente de Sentido"
+    },
+    "page": 131,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "mental-telepathic-translation",
+    "profileId": "mental",
+    "name": {
+      "en": "Telepathic Translation",
+      "pt": "Tradução Telepática"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Comprehend · Affects Others · Area",
+      "pt": "Compreensão · Afeta Outros · Área"
+    },
+    "page": 131,
+    "effectIds": [
+      "comprehend"
+    ]
+  },
+  {
+    "id": "meta-nemesis",
+    "profileId": "meta",
+    "name": {
+      "en": "Nemesis",
+      "pt": "Nêmesis"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Variable · Action · Limited",
+      "pt": "Variável · Ação · Limitado"
+    },
+    "page": 133,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "meta-power-control",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Control",
+      "pt": "Controle de Poderes"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Graus Limitados · Limitado"
+    },
+    "page": 133,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "meta-power-nullification",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Nullification",
+      "pt": "Anulação de Poder"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Nullify",
+      "pt": "Anulação"
+    },
+    "page": 133,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "meta-nullification-field",
+    "profileId": "meta",
+    "name": {
+      "en": "Nullification Field",
+      "pt": "Campo de Anulação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Nullify · Area · Concentration · Simultaneous",
+      "pt": "Anulação · Área · Concentração · Simultâneo"
+    },
+    "page": 134,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "meta-power-theft-affliction",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Theft — Affliction",
+      "pt": "Roubo de Poder — Aflição"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative · Linked · Variable · Action · Fades · Limited",
+      "pt": "Aflição · Cumulativo · Vinculado · Variável · Ação · Desgaste · Limitado"
+    },
+    "page": 134,
+    "effectIds": [
+      "affliction",
+      "variable"
+    ]
+  },
+  {
+    "id": "meta-power-theft-nullify",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Theft — Nullify",
+      "pt": "Roubo de Poder — Anular"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Nullify · Broad · Simultaneous · Reduced Range · Linked · Variable · Action · Fades · Limited",
+      "pt": "Anulação · Amplo · Simultâneo · Alcance Reduzido · Vinculado · Variável · Ação · Desgaste · Limitado"
+    },
+    "page": 134,
+    "effectIds": [
+      "nullify",
+      "variable"
+    ]
+  },
+  {
+    "id": "meta-adaptation",
+    "profileId": "meta",
+    "name": {
+      "en": "Adaptation",
+      "pt": "Adaptação"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Variable · Action · Limited",
+      "pt": "Variável · Ação · Limitado"
+    },
+    "page": 134,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "meta-adaptive-immunity",
+    "profileId": "meta",
+    "name": {
+      "en": "Adaptive Immunity",
+      "pt": "Imunidade Adaptativa"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Limited",
+      "pt": "Imunidade · Limitado"
+    },
+    "page": 134,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "meta-power-defense",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Defense",
+      "pt": "Defesa de Poder"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Nullify · Broad · Reaction · Reduced Range · Limited",
+      "pt": "Anulação · Amplo · Reação · Alcance Reduzido · Limitado"
+    },
+    "page": 134,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "meta-power-immunity-2",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Immunity — 2",
+      "pt": "Imunidade a Poder — 2"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 134,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "meta-power-immunity-5",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Immunity — 5",
+      "pt": "Imunidade a Poder — 5"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 134,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "meta-power-immunity-10",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Immunity — 10",
+      "pt": "Imunidade a Poder — 10"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 134,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "meta-power-immunity-20",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Immunity — 20",
+      "pt": "Imunidade a Poder — 20"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 134,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "meta-power-seeker",
+    "profileId": "meta",
+    "name": {
+      "en": "Power-Seeker",
+      "pt": "Buscador de Poder"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Extended · Limited",
+      "pt": "Teleporte · Preciso · Estendido · Limitado"
+    },
+    "page": 135,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "meta-power-detection",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Detection",
+      "pt": "Detecção de Poder"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 135,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "meta-power-enhancement",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Enhancement",
+      "pt": "Aprimorar Poder"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable · Affects Others · Limited",
+      "pt": "Variável · Afeta Outros · Limitado"
+    },
+    "page": 135,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "meta-power-mimicry",
+    "profileId": "meta",
+    "name": {
+      "en": "Power Mimicry",
+      "pt": "Mimetismo de Poder"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable · Limited",
+      "pt": "Variável · Limitado"
+    },
+    "page": 135,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "meta-serial-super-forms",
+    "profileId": "meta",
+    "name": {
+      "en": "Serial Super Forms",
+      "pt": "Superformas em Série"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable · Increased Duration",
+      "pt": "Variável · Duração Aumentada"
+    },
+    "page": 136,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "meta-skill-download",
+    "profileId": "meta",
+    "name": {
+      "en": "Skill Download",
+      "pt": "Download de Perícias"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable",
+      "pt": "Variável"
+    },
+    "page": 136,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "meta-skill-mimicry",
+    "profileId": "meta",
+    "name": {
+      "en": "Skill Mimicry",
+      "pt": "Mimetismo de Perícia"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable · Action · Limited",
+      "pt": "Variável · Ação · Limitado"
+    },
+    "page": 136,
+    "effectIds": [
+      "variable"
+    ]
   }
 ] satisfies LibraryEntry[];

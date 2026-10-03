@@ -146,6 +146,21 @@
             "description": "Escolha as condições ao usar Aflição. Power Profiles p. 80. Apenas um grau escolhido."
           }
         }
+      },
+      {
+        "id": "merge_with_subject",
+        "name": "Merge with Subject",
+        "category": "extra",
+        "costType": "per_rank",
+        "costValue": 1,
+        "description": "Power Profiles, Possession p. 129: user merges into the subject.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Fundir-se ao Alvo",
+            "description": "Power Profiles, Possessão p. 129: usuário se funde ao alvo."
+          }
+        }
       }
     ],
     "flaws": [
@@ -869,7 +884,23 @@
     "longDescription": "You inflict damage on a target via a close attack. Target resists with Toughness vs. DC [rank + 15]. One degree: -1 penalty to further Toughness checks. Two degrees: dazed + -1 penalty. Three degrees: staggered + -1 penalty. Four degrees: incapacitated. Penalties are cumulative. Incapacitated targets failing again become dying, then dead. Can be Strength-based to add Strength ranks to damage.",
     "enhancesDefense": null,
     "extras": [],
-    "flaws": []
+    "flaws": [
+      {
+        "id": "attack_check_required",
+        "name": "Attack Check Required",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Power Profiles, Counterstrike p. 122: Reaction attack still requires an attack check.",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Exige Teste de Ataque",
+            "description": "Power Profiles, Contra-ataque p. 122: reação ainda exige teste de ataque."
+          }
+        }
+      }
+    ]
   },
   {
     "id": "deflect",
