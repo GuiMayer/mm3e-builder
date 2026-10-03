@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- Save the language-based measurement default on the first References visit even without clicking the toggle. Later language changes preserve that preference; explicit unit selections continue updating it.
 - Allow an intermediate minus sign/empty value while typing measurement ranks, retaining the last valid result until the number is complete. Preserve keyboard arrows and rank selection without changing the shared character inputs.
 - Pack References panels independently into the available column height, removing gaps caused by a taller neighbouring card. Reflow on expansion, search and resizing without remounting query fields; retain wide tables and the single-column mobile layout.
 

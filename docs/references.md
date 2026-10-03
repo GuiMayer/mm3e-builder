@@ -44,7 +44,10 @@ medida maior. Tamanho humano corresponde à graduação −2 de **tamanho**, nã
 graduação de Crescimento/Encolhimento. O toggle Métrico/Imperial aparece nos
 dois painéis e compartilha a seleção. A escolha é salva em
 `mm3e-reference-measurement-system` e restaurada ao reabrir a aba ou o app.
-Sem preferência salva, o padrão é métrico em português e imperial em inglês.
+Na primeira abertura, sem preferência salva, o padrão é métrico em português
+e imperial em inglês. Essa escolha inicial já é salva, mesmo sem clicar no
+toggle; mudar o idioma depois não a substitui. As próximas escolhas no toggle
+atualizam a preferência normalmente.
 Se o navegador bloquear a gravação, o toggle continua funcionando na sessão.
 O campo de graduação aceita o sinal `-` e o campo vazio durante a digitação,
 sem substituir o último resultado válido; ao sair do campo, normaliza o texto.

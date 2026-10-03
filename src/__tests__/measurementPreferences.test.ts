@@ -20,6 +20,16 @@ describe('Reference measurement preference', () => {
     expect(stored.get('mm3e-draft-characters')).toBe('unchanged');
     expect(stored.size).toBe(2);
   });
+  it.each([['pt-BR','en','metric'],['en','pt-BR','imperial']] as const)('keeps the first %s default after switching language to %s', (firstLanguage, nextLanguage, expected) => {
+    const values = new Map<string,string>();
+    const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key,value); } };
+    const initial = loadMeasurementSystem(firstLanguage, storage);
+    saveMeasurementSystem(initial, storage);
+    expect(loadMeasurementSystem(nextLanguage, storage)).toBe(expected);
+    const chosen = expected === 'metric' ? 'imperial' : 'metric';
+    saveMeasurementSystem(chosen, storage);
+    expect(loadMeasurementSystem(firstLanguage, storage)).toBe(chosen);
+  });
   it('keeps the view available when preference storage is blocked', () => {
     expect(loadMeasurementSystem('pt-BR', { getItem: () => { throw new Error('blocked'); } })).toBe('metric');
     expect(() => saveMeasurementSystem('imperial', { setItem: () => { throw new Error('quota'); } })).not.toThrow();

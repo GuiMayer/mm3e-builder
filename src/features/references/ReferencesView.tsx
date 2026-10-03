@@ -140,7 +140,9 @@ export function ReferencesView() {
   const [searchCollapsed, setSearchCollapsed] = useState(new Set<string>());
   const headerRef = useRef<HTMLElement>(null);
   const [system, setSystem] = useState<MeasurementSystem>(() => loadMeasurementSystem(i18n.language));
-  function changeSystem(next: MeasurementSystem) { setSystem(next); saveMeasurementSystem(next); }
+  // Persist the initial language default too, even before the first toggle click.
+  useEffect(() => { saveMeasurementSystem(system); }, [system]);
+  function changeSystem(next: MeasurementSystem) { setSystem(next); }
   const catalog = useMemo(() => {
     const conditionSections: ReferenceSection[] = [BASIC_CONDITIONS, COMBINED_CONDITIONS].map((conditions, index) => ({ id: index ? 'combined-conditions' : 'basic-conditions', category: 'conditions', title: index ? ['Combined conditions','Condições combinadas'] : ['Basic conditions','Condições básicas'], pages: '17–19', columns: index ? [['Condition','Condição'],['Components','Componentes'],['Effect','Efeito']] : [['Condition','Condição'],['Effect','Efeito']], rows: conditions.map(condition => {
       const title = t(`conditions.${condition.id}`, { lng: 'pt-BR', defaultValue: condition.name });
