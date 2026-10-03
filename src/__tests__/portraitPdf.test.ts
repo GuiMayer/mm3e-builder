@@ -1,4 +1,5 @@
 import 'fake-indexeddb/auto';
+import { renderHeaderSection } from '../services/pdf/components/HeaderSection';
 import { describe, expect, it } from 'vitest';
 import { createDefaultCharacter } from '../entities/characterDefaults';
 import { clearPortraits, savePortrait } from '../services/storage/portraitStorage';
@@ -26,6 +27,15 @@ describe('portrait exports and copies', () => {
     const copy = duplicateImportedCharacter(character, []);
     await copyCharacterPortrait(character, copy);
     expect(await hasLocalPortrait(copy)).toBe(true);
+  });
+  it.each([undefined, 'contain', 'cover', 'fill'] as const)('renders PDF with portrait fit %s', portraitFit => {
+    const character = createDefaultCharacter();
+    character.header.portraitFit = portraitFit;
+    const html = renderHeaderSection({
+      character, portraitDataUrl: 'data:image/png;base64,YQ==',
+      powerPointsData: { abilitiesCost: 0, defensesCost: 0, skillsCost: 0, advantagesCost: 0, powersCost: 0, totalAvailable: 150, totalSpent: 0, remaining: 150, ppEarned: 0 },
+    });
+    expect(html).toContain(`object-fit:${portraitFit ?? 'contain'};object-position:center`);
   });
   it('reports a missing portrait without breaking export', async () => {
     const character = createDefaultCharacter({ characterId: crypto.randomUUID() });

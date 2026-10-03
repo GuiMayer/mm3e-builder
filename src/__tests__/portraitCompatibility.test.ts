@@ -14,6 +14,7 @@ describe('portrait file compatibility', () => {
     const imported = await importCharacterJSON(file);
     expect(imported.header).toEqual(old.header);
     expect(JSON.parse(JSON.stringify(sanitizeCharacterForExport(imported))).header).not.toHaveProperty('portraitUrl');
+    expect(JSON.parse(JSON.stringify(sanitizeCharacterForExport(imported))).header).not.toHaveProperty('portraitFit');
   });
 
   it('round-trips only a portable URL and leaves calculations unchanged', async () => {
@@ -25,6 +26,23 @@ describe('portrait file compatibility', () => {
     expect(calculateCharacterPointSummary(withPortrait, [], POWER_DEFS, MODIFIER_DEFS)).toEqual(calculateCharacterPointSummary(character, [], POWER_DEFS, MODIFIER_DEFS));
     const header = { ...imported.header }; delete header.portraitUrl;
     expect(header).toEqual(sanitizeCharacterForExport(character).header);
+  });
+
+  it.each(['contain', 'cover', 'fill'] as const)('preserves %s fit through export/import without changing game data', async portraitFit => {
+    const original = createDefaultCharacter();
+    const character = { ...original, header: { ...original.header, portraitFit } };
+    const exported = sanitizeCharacterForExport(character);
+    const imported = await importCharacterJSON(new File([JSON.stringify({ schemaVersion: SCHEMA_VERSION, exportedAt: new Date().toISOString(), character: exported })], 'fit.json'));
+    expect(imported.header.portraitFit).toBe(portraitFit);
+    expect(imported.header).not.toHaveProperty('portraitUrl');
+    expect(calculateCharacterPointSummary(imported, [], POWER_DEFS, MODIFIER_DEFS)).toEqual(calculateCharacterPointSummary(original, [], POWER_DEFS, MODIFIER_DEFS));
+    const header = { ...imported.header }; delete header.portraitFit;
+    expect(header).toEqual(sanitizeCharacterForExport(original).header);
+  });
+
+  it('rejects unsupported fit values', () => {
+    const character = createDefaultCharacter();
+    expect(CharacterSchema.safeParse({ ...character, header: { ...character.header, portraitFit: 'invalid' } }).success).toBe(false);
   });
 
   it.each(['blob:https://example.com/123', 'data:image/png;base64,abc', 'file:///portrait.png', 'http://example.com/portrait.png', 'https://user:pass@example.com/a.png', 'invalid'])('rejects nonportable portrait address %s', portraitUrl => {

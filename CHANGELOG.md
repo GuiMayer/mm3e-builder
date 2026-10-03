@@ -12,8 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added — Character portraits
 - Click the sheet avatar to choose an HTTPS image link or a browser-local file,
   preview, enlarge, replace, refresh or remove the portrait.
-- Store image files separately in IndexedDB; keep only an optional portrait URL
-  in character schema 2.2.0, preserving older sheet compatibility.
+- Store image files separately in IndexedDB; keep optional portrait URL and
+  display fit in character schema 2.2.0, preserving older sheet compatibility.
+- Preview and save portrait fit: preserve proportions with borders, center crop
+  or stretch to fill. Reuse the choice in the sheet and HTML/PDF without changing
+  the original image; allow fitting an existing portrait without reloading it.
 - Explain local-only persistence before file selection and during JSON export;
   preserve local portraits across character copies and include them in clear-all.
 - Add opt-in portrait inclusion in the compact HTML/PDF header, preserving text

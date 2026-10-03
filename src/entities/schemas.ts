@@ -111,6 +111,7 @@ const ComplicationSchema = z.object({
 });
 
 const CharacterHeaderSchema = z.object({
+  portraitFit: z.enum(['contain', 'cover', 'fill']).optional(),
   portraitUrl: z.string().max(2048).url().refine((value) => {
     try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password; }
     catch { return false; }

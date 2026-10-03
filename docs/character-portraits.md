@@ -7,7 +7,8 @@ ficha até clicar em **Salvar retrato**. Cancelar mantém o retrato anterior.
 ## Link da imagem
 
 Informe um endereço HTTPS direto de imagem e carregue a prévia. Ao salvar,
-somente `header.portraitUrl` acompanha o JSON da ficha. A imagem fica em um
+`header.portraitUrl` acompanha o JSON da ficha, junto do modo de encaixe
+quando ele foi escolhido. A imagem fica em um
 banco IndexedDB separado sempre que o servidor permite baixá-la.
 
 O app usa essa cópia local nas próximas aberturas. **Atualizar imagem** permite
@@ -37,6 +38,20 @@ rascunhos: reimportá-los em outro navegador não transporta o retrato.
 Trocar um link por arquivo remove o endereço anterior da ficha. Uma imagem
 local não recebe caminho, base64 ou referência de mídia dentro do JSON.
 
+## Encaixe da imagem
+
+Antes de salvar, escolha **Manter com bordas** (imagem inteira, proporção
+preservada), **Cortar pelo centro** (preenche com corte central, sem distorção)
+ou **Esticar para preencher** (preenche todo o espaço, podendo mudar a proporção).
+A prévia mostra o resultado; a imagem original permanece disponível e o corte
+não é destrutivo. O mesmo encaixe é usado no cabeçalho e no PDF.
+
+É possível abrir um retrato existente e salvar apenas a mudança de encaixe,
+sem carregar novamente a imagem. Cancelar mantém a escolha anterior.
+`header.portraitFit` guarda apenas `contain`, `cover` ou `fill` e acompanha
+as cópias e a exportação JSON. Não contém imagem ou referência ao arquivo local.
+Sem esse campo, o retrato mostra a imagem inteira com bordas.
+
 ## Persistência, cópias e limites
 
 - Renomear ou recarregar a ficha mantém o retrato local.
@@ -53,7 +68,7 @@ local não recebe caminho, base64 ou referência de mídia dentro do JSON.
   reduzidas a no máximo 1024 pixels no maior lado; miniaturas usam até 256 pixels.
 - O retrato acompanha toda a altura do cabeçalho no desktop, incluindo os
   indicadores de NP, pontos heroicos, Power Points e a linha de detalhes, mostrando
-  a imagem inteira e preservando a proporção. No celular, usa espaço vertical
+  a imagem conforme o encaixe escolhido. No celular, usa espaço vertical
   de 120 × 160 pixels acima dos campos. A prévia também pode ser ampliada.
 - O histórico de desfazer/refazer da ficha continua cobrindo o link como campo
   do cabeçalho; arquivos locais são operações independentes no banco de imagens.
@@ -68,9 +83,10 @@ Se a imagem estiver indisponível para renderização, o app avisa e gera a fich
 sem retrato. O texto do PDF continua selecionável. O exportador PDF legado
 com formulário fixo não inclui retratos.
 
-Schema de ficha **2.2.0** adiciona apenas `header.portraitUrl`, opcional. Schemas
+Schema de ficha **2.2.0** adiciona `header.portraitUrl` e `header.portraitFit`,
+ambos opcionais. Schemas
 1.0.0, 2.0.0 e 2.1.0 continuam aceitos, sem migração em massa. Uma ficha sem link
-não recebe o campo. Nenhum atributo, poder, recurso, regra ou cálculo é alterado.
+não recebe campos de retrato automaticamente. Nenhum atributo, poder, recurso, regra ou cálculo é alterado.
 Versões anteriores do app podem descartar o URL ao reexportar, preservando os
 dados de jogo suportados por elas.
 
@@ -79,7 +95,7 @@ Exportação ZIP de ficha + imagem permanece uma evolução posterior.
 
 ## Validação desta entrega
 
-- 77 arquivos de teste e 887 testes aprovados, além de lint, typecheck, build
+- 77 arquivos de teste e 895 testes aprovados, além de lint, typecheck, build
   e verificação de 16 referências a arquivos estáticos.
 - Testes dirigidos cobrem fichas antigas, round-trip do link, payload real do
   JSON sem imagem local, cópias independentes, falha de escrita/quota, remoção,
@@ -87,5 +103,8 @@ Exportação ZIP de ficha + imagem permanece uma evolução posterior.
 - Verificação no navegador com personagens de teste: escolher arquivo,
   salvar/recarregar, duplicar, cancelar, carregar link com cache, fallback de
   exibição sem CORS, PDF com retrato e texto disponível na camada selecionável.
+- Testes de encaixe cobrem os três modos no JSON e no HTML/PDF; verificação no
+  navegador cobre prévia, cancelamento, mudança sem recarregar o arquivo e
+  persistência para imagem local e por link.
 - Diálogo conferido em desktop e celular de 390 pixels, com aviso local antes
   da seleção, controles acessíveis e ausência de transbordamento horizontal.

@@ -1,4 +1,12 @@
 {
+  "portrait.fit": "Encaixe do retrato",
+  "portrait.fit.contain": "Manter com bordas",
+  "portrait.fit.cover": "Cortar pelo centro",
+  "portrait.fit.fill": "Esticar para preencher",
+  "portrait.fit.containHint": "Mostra a imagem inteira, preservando a proporção e deixando espaço nas bordas.",
+  "portrait.fit.coverHint": "Preenche o espaço preservando a proporção; corta as bordas e mantém o centro.",
+  "portrait.fit.fillHint": "Preenche todo o espaço esticando a imagem. A proporção pode mudar.",
+  "portrait.fitSaved": "Encaixe do retrato salvo.",
   "portrait.title": "Retrato do personagem",
   "portrait.source": "Origem do retrato",
   "portrait.link": "Link da imagem",

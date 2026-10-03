@@ -1,4 +1,12 @@
 {
+  "portrait.fit": "Portrait fit",
+  "portrait.fit.contain": "Keep with borders",
+  "portrait.fit.cover": "Center crop",
+  "portrait.fit.fill": "Stretch to fill",
+  "portrait.fit.containHint": "Shows the entire image, preserving its proportions and leaving space around it.",
+  "portrait.fit.coverHint": "Fills the space while preserving proportions; crops the edges and keeps the center.",
+  "portrait.fit.fillHint": "Fills the entire space by stretching the image. Its proportions may change.",
+  "portrait.fitSaved": "Portrait fit saved.",
   "portrait.title": "Character portrait",
   "portrait.source": "Portrait source",
   "portrait.link": "Image link",

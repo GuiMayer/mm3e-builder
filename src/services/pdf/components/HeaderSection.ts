@@ -33,8 +33,9 @@ export function renderHeaderSection(data: HeaderSectionData): string {
   const labels = data.labels ?? englishPDFLabels;
   const { character, powerPointsData } = data;
   const { header } = character;
+  const fit = header.portraitFit === 'fill' || header.portraitFit === 'cover' ? header.portraitFit : 'contain';
   const portrait = data.portraitDataUrl && /^data:image\/(png|jpeg|webp);base64,/.test(data.portraitDataUrl)
-    ? `<img class="pdf-portrait" src="${escapeHtml(data.portraitDataUrl)}" alt="${escapeHtml(header.name)}" width="64" height="64" />` : '';
+    ? `<img class="pdf-portrait" src="${escapeHtml(data.portraitDataUrl)}" alt="${escapeHtml(header.name)}" width="64" height="64" style="object-fit:${fit};object-position:center" />` : '';
 
   const identity = header.identity ? `${header.identity}${header.identityType ? ` (${labels(header.identityType)})` : ''}` : '';
   const details = [['Gender', header.gender], ['Age', header.age], ['Height', header.height], ['Weight', header.weight], ['Eyes', header.eyes], ['Hair', header.hair], ['Group Affiliation', header.groupAffiliation], ['Series', header.series], ['Game Master', header.gameMaster]];
