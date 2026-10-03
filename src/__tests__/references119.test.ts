@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { MEASUREMENTS, getMeasurement, checkDegree, damageDegree, formatMeasure } from '../features/references/measurements';
-import { REFERENCE_SECTIONS, SIZE_SECTION, BENCHMARK_SECTION, filterReferenceSection, referenceText } from '../features/references/referenceCatalog';
+import { REFERENCE_SECTIONS, SIZE_SECTION, getSizeSection, BENCHMARK_SECTION, filterReferenceSection, referenceText } from '../features/references/referenceCatalog';
 
 describe('Handbook measurement tables (pp. 11 and 347)', () => {
   it('includes every rank from −5 through 30 exactly once', () => {
@@ -95,6 +95,16 @@ describe('Searchable reference catalog', () => {
     expect(SIZE_SECTION.rows.find(row => row.id === '-2')?.cells.map(cell => cell[0])).toEqual(['-2','6 ft.','0','0','0','0','0','0']);
     expect(SIZE_SECTION.rows.find(row => row.id === '3')?.cells.map(cell => cell[0])).toEqual(['3','250 ft.','-10','-20','+10','+20','+20','+2']);
     expect(BENCHMARK_SECTION.rows.find(row => row.id === '7')).toBeDefined();
+  });
+  it('converts size heights to metres/centimetres without changing any modifier or imperial source', () => {
+    const before = structuredClone(SIZE_SECTION);
+    const metric = getSizeSection('metric');
+    expect(metric.rows.find(row => row.id === '-2')?.cells[1]).toEqual(['1.83 m','1,83 m']);
+    expect(metric.rows.find(row => row.id === '-7')?.cells[1]).toEqual(['2.54 cm','2,54 cm']);
+    expect(metric.rows.find(row => row.id === '3')?.cells[1]).toEqual(['76.2 m','76,2 m']);
+    metric.rows.forEach((row, index) => expect(row.cells.filter((_,column) => column !== 1)).toEqual(SIZE_SECTION.rows[index].cells.filter((_,column) => column !== 1)));
+    expect(SIZE_SECTION).toEqual(before);
+    expect(getSizeSection('imperial')).toBe(SIZE_SECTION);
   });
 
 });

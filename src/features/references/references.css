@@ -41,7 +41,11 @@
 .reference-card__note{font-size:.78rem;color:var(--c-text-muted);line-height:1.6;margin:var(--s-sm) 4px}
 .reference-tools{display:flex;flex-wrap:wrap;gap:var(--s-md);margin:var(--s-sm) 4px}
 .reference-tools label{display:flex;flex-direction:column;gap:var(--s-xs);font-size:.75rem;color:var(--c-text-muted);max-width:100%}
-.reference-tools select{background:var(--c-surface-elevated);color:var(--c-text);font:inherit;font-size:.85rem;border:1px solid var(--c-border);border-radius:var(--r-sm);padding:8px;min-height:36px}
+.reference-unit-toggle{border:0;padding:0;margin:0;min-width:0}
+.reference-unit-toggle legend{font-size:.75rem;color:var(--c-text-muted);padding:0;margin-bottom:var(--s-xs)}
+.reference-unit-toggle>div{display:flex;gap:4px}
+.reference-unit-toggle button{padding:6px 12px;font-size:.85rem}
+.reference-unit-toggle button[aria-pressed=true]{color:var(--c-primary);border-color:var(--c-primary);background:var(--c-primary-muted);font-weight:600}
 .reference-measures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s-sm);margin:var(--s-md) 4px}
 .reference-measures>div{border:1px solid var(--c-border);border-radius:var(--r-sm);padding:var(--s-sm);background:var(--c-surface-elevated);min-width:0}
 .reference-measures dt{color:var(--c-text-muted);font-size:.72rem;margin-bottom:4px}

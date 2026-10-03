@@ -41,8 +41,11 @@ permanecem os arredondamentos publicados, e a tabela não cresce indefinidamente
 O campo usa inteiros representáveis com precisão pelo JavaScript.
 Para valores intermediários, consulte a próxima
 medida maior. Tamanho humano corresponde à graduação −2 de **tamanho**, não à
-graduação de Crescimento/Encolhimento; suas dimensões conservam as unidades
-imperiais do apêndice, com indicação explícita.
+graduação de Crescimento/Encolhimento. O toggle Métrico/Imperial aparece nos
+dois painéis e compartilha a seleção durante a consulta. Na tabela de tamanho,
+a opção métrica converte pés/polegadas para metros/centímetros (1 pé = 0,3048 m),
+arredondando para duas casas decimais; os modificadores não mudam. Essa
+conversão de altura é distinta da escala métrica arredondada de Medidas.
 
 As consultas de graus recebem o **total final** do teste, incluindo penalidades.
 O cálculo de dano usa CD 15 + graduação, com falhas de 1–5, 6–10, 11–15 e

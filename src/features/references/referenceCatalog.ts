@@ -1,3 +1,5 @@
+import type { MeasurementSystem } from './measurements';
+
 export type ReferenceText = readonly [en: string, pt: string];
 export type ReferenceCategory = 'measurements' | 'combat' | 'conditions' | 'checks' | 'hero';
 export interface ReferenceRow { id: string; cells: readonly ReferenceText[]; }
@@ -123,6 +125,24 @@ export const SIZE_SECTION: ReferenceSection = { id: 'size', category: 'measureme
   const number = index > 1 && value > 0 ? `+${value}` : String(value);
   return [number, number];
 }))) };
+
+/** Size benchmarks use physical conversion, unlike the rounded game measure scale. */
+export function getSizeSection(system: MeasurementSystem): ReferenceSection {
+  if (system === 'imperial') return SIZE_SECTION;
+  return { ...SIZE_SECTION, note: [
+    'Human size is rank −2, not a Growth/Shrinking effect rank. Metric heights convert the original imperial benchmarks (1 ft. = 0.3048 m), rounded to two decimals; they are not the metric Measurements scale.',
+    'Tamanho humano é graduação −2, não a graduação de Crescimento/Encolhimento. Alturas métricas convertem os parâmetros imperiais originais (1 pé = 0,3048 m), com duas casas decimais; não são a escala métrica de Medidas.',
+  ], rows: SIZE_SECTION.rows.map((item, index) => {
+    const metres = sizes[index][1] * .3048;
+    const unit = metres >= 1 ? 'm' : 'cm';
+    const value = metres >= 1 ? metres : metres * 100;
+    const length: ReferenceText = [
+      `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value)} ${unit}`,
+      `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(value)} ${unit}`,
+    ];
+    return { ...item, cells: item.cells.map((cell, column) => column === 1 ? length : cell) };
+  }) };
+}
 
 const benchmarks: [number, string, string][] = [[-5,'Completely inept or disabled','Completamente inapto'],[-4,'Weak / infant','Fraco / bebê'],[-3,'Young child','Criança pequena'],[-2,'Child / elderly / impaired','Criança / idoso / prejudicado'],[-1,'Below average / teenager','Abaixo da média / adolescente'],[0,'Average adult','Adulto médio'],[1,'Above average','Acima da média'],[2,'Well above average','Muito acima da média'],[3,'Gifted','Talentoso'],[4,'Highly gifted','Muito talentoso'],[5,'Best in a nation','Melhor de uma nação'],[6,'Among the world’s best','Entre os melhores do mundo'],[7,'Peak human achievement','Ápice humano'],[8,'Low superhuman','Super-humano baixo'],[10,'Moderate superhuman','Super-humano moderado'],[13,'High superhuman','Super-humano alto'],[15,'Very high superhuman','Super-humano muito alto'],[20,'Cosmic','Cósmico']];
 export const BENCHMARK_SECTION: ReferenceSection = { id: 'benchmarks', category: 'checks', title: ['Ability benchmarks','Parâmetros de habilidades'], pages: '107', columns: [['Rank','Graduação'], ['Benchmark','Parâmetro']], rows: benchmarks.map(([rank,en,pt]) => row(String(rank), [String(rank),String(rank)], [en,pt])) };

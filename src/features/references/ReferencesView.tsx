@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { BookOpen, ChevronDown, ChevronRight, Search, X } from 'lucide-react';
 import { BASIC_CONDITIONS, COMBINED_CONDITIONS, CONDITIONS } from '../../data/conditions';
 import { NumberInput } from '../../shared/ui/NumberInput';
-import { BENCHMARK_SECTION, REFERENCE_SECTIONS, SIZE_SECTION, filterReferenceSection, referenceText, type ReferenceCategory, type ReferenceSection } from './referenceCatalog';
+import { BENCHMARK_SECTION, REFERENCE_SECTIONS, getSizeSection, filterReferenceSection, referenceText, type ReferenceCategory, type ReferenceSection } from './referenceCatalog';
 import { MEASUREMENTS, getMeasurement, checkDegree, damageDegree, formatMeasure, type Measure, type MeasurementSystem } from './measurements';
 import './references.css';
 
@@ -58,6 +58,11 @@ function ReferenceTable({ section }: { section: ReferenceSection }) {
   </table>;
 }
 
+function UnitToggle({ system, onChange }: { system: MeasurementSystem; onChange: (system: MeasurementSystem) => void }) {
+  const { t } = useTranslation();
+  return <fieldset className="reference-unit-toggle"><legend>{t('ref119.units')}</legend><div>{(['metric','imperial'] as const).map(unit => <button type="button" key={unit} aria-pressed={system === unit} onClick={() => onChange(unit)}>{t(`ref119.${unit}`)}</button>)}</div></fieldset>;
+}
+
 function Measurements({ section, system, onSystemChange }: { section: ReferenceSection; system: MeasurementSystem; onSystemChange: (system: MeasurementSystem) => void }) {
   const { t, i18n } = useTranslation();
   const [rank, setRank] = useState(0);
@@ -66,7 +71,7 @@ function Measurements({ section, system, onSystemChange }: { section: ReferenceS
   const visible = new Set(section.rows.map(row => row.id));
   return <>
     <div className="reference-tools"><label>{t('ref119.rank')}<NumberInput aria-label={t('ref119.rank')} value={rank} variant="compact" onChange={value => { const integer = Math.trunc(value); if (Number.isSafeInteger(integer)) setRank(integer); }}/></label>
-      <label>{t('ref119.units')}<select value={system} onChange={event => onSystemChange(event.target.value as MeasurementSystem)}><option value="metric">{t('ref119.metric')}</option><option value="imperial">{t('ref119.imperial')}</option></select></label></div>
+      <UnitToggle system={system} onChange={onSystemChange}/></div>
     <dl className="reference-measures">{(['mass','time','distance','volume'] as const).map(key => <div key={key}><dt>{t(`ref119.${key}`)}</dt><dd>{format(key === 'time' ? current.time : current[system][key])}</dd></div>)}</dl>
     {(rank > 30 || rank < -5) && <p className="reference-card__note" role="status">{t('ref119.extrapolated', { rank, base: rank > 30 ? 30 : -5, steps: Math.abs(rank - (rank > 30 ? 30 : -5)), operation: t(rank > 30 ? 'ref119.doubling' : 'ref119.halving') })}</p>}
     <p className="reference-card__note">{t('ref119.measurementHelp')}</p>
@@ -125,8 +130,8 @@ export function ReferencesView() {
       return { id: condition.id, cells };
     }) }));
     const measurements: ReferenceSection = { id: 'measurements', category: 'measurements', title: ['Measurements table','Tabela de medidas'], pages: '10–11, 347', columns: [['Rank','Graduação'],['Mass','Massa'],['Time','Tempo'],['Distance','Distância'],['Volume','Volume']], rows: MEASUREMENTS.map(row => ({ id: String(row.rank), cells: [[String(row.rank),String(row.rank)], ...(['mass','time','distance','volume'] as const).map((key): [string,string] => [formatMeasure(key === 'time' ? row.time : row.imperial[key], 'en', (unit, count) => t(`ref119.unit.${unit}`, { lng: 'en', count })), formatMeasure(key === 'time' ? row.time : row.metric[key], 'pt-BR', (unit, count) => t(`ref119.unit.${unit}`, { lng: 'pt-BR', count }))])] })) };
-    return [measurements, ...REFERENCE_SECTIONS, ...conditionSections, SIZE_SECTION, BENCHMARK_SECTION];
-  }, [t]);
+    return [measurements, ...REFERENCE_SECTIONS, ...conditionSections, getSizeSection(system), BENCHMARK_SECTION];
+  }, [t, system]);
   const searching = query.trim().length > 0;
   const sections = catalog.filter(section => searching || category === 'all' || (category === 'quick' ? QUICK.has(section.id) : section.category === category)).map(section => filterReferenceSection(section, query)).filter((section): section is ReferenceSection => !!section);
   function chooseCategory(next: Category) {
@@ -143,7 +148,7 @@ export function ReferencesView() {
       <div className="reference-content"><div className="reference-toolbar"><p role="status">{searching ? t('ref119.searchResults', { count: sections.length }) : t(`ref119.category.${category}`)}</p><div><button type="button" onClick={() => searching ? setSearchCollapsed(new Set()) : setExpanded(new Set(sections.map(section => section.id)))}>{t('ref119.expandAll')}</button><button type="button" onClick={() => searching ? setSearchCollapsed(new Set(sections.map(section => section.id))) : setExpanded(new Set())}>{t('ref119.collapseAll')}</button></div></div>
         {!sections.length && <p className="reference-empty">{t('ref119.noResults')}</p>}
         <ReferenceGrid>{sections.map(section => <ReferenceCard key={section.id} section={section} open={searching ? !searchCollapsed.has(section.id) : expanded.has(section.id)} onToggle={() => toggle(section.id)}>
-          {section.id === 'measurements' ? <Measurements section={section} system={system} onSystemChange={setSystem}/> : <>{section.id === 'damage' && <CheckTools damage/>}{section.id === 'checks' && <CheckTools/>}<ReferenceTable section={section}/></>}
+          {section.id === 'measurements' ? <Measurements section={section} system={system} onSystemChange={setSystem}/> : <>{section.id === 'size' && <div className="reference-tools"><UnitToggle system={system} onChange={setSystem}/></div>}{section.id === 'damage' && <CheckTools damage/>}{section.id === 'checks' && <CheckTools/>}<ReferenceTable section={section}/></>}
         </ReferenceCard>)}</ReferenceGrid>
       </div>
     </div>
