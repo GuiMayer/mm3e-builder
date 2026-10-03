@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "earth-chasm",
@@ -112,7 +113,8 @@ export default [
       "formula": "Line Area Ranged Affliction (Resisted by Dodge; Dazed, Prone), Instant Recovery (the Dazed and Prone conditions only last for a round), Limited Degree, Linked Line Area Burrowing Attack (Limited to downward), Linked to Line Area Ranged Damage, Limited to Targets Affected by Second Degree of Affliction • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Line Area Ranged Affliction (Resisted by Dodge; Dazed, Prone), Instant Recovery (the Dazed and Prone conditions only last for a round), Limited Degree, Linked Line Area Burrowing Attack (Limited to downward), Linked to Line Area Ranged Damage, Limited to Targets Affected by Second Degree of Affliction"
   },
   {
     "id": "earth-dust-storm",
@@ -146,7 +148,8 @@ export default [
       "formula": "Environment (–5 visibility) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (–5 visibility)"
   },
   {
     "id": "earth-earth-blast",
@@ -185,7 +188,8 @@ export default [
       "formula": "Ranged Damage (rock impact) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (rock impact)"
   },
   {
     "id": "earth-earthquake",
@@ -261,7 +265,8 @@ export default [
       "formula": "Ranged Burst Area 3 Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed and Vulnerable, Stunned and Prone), Extra Condition, Secondary Effect, Limited Degree, Limited to along the ground; 120-foot radius • 5 points per rank,",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Ranged Burst Area 3 Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed and Vulnerable, Stunned and Prone), Extra Condition, Secondary Effect, Limited Degree, Limited to along the ground; 120-foot radius"
   },
   {
     "id": "earth-earth-spray",
@@ -313,7 +318,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Impaired, Disabled, Unaware), Limited to Vision • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Impaired, Disabled, Unaware), Limited to Vision"
   },
   {
     "id": "earth-spike-stones",
@@ -365,7 +371,8 @@ export default [
       "formula": "Ranged Penetrating Multiattack Damage • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Penetrating Multiattack Damage"
   },
   {
     "id": "earth-stone-grip",
@@ -425,7 +432,8 @@ export default [
       "formula": "Ranged Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree"
   },
   {
     "id": "earth-stone-strike",
@@ -467,7 +475,8 @@ export default [
       "formula": "Strength-based Damage, Variable (stone weapons) • 1 point + 1 point per rank",
       "fixed": 1,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Strength-based Damage, Variable (stone weapons)"
   },
   {
     "id": "earth-earth-healing",
@@ -506,7 +515,8 @@ export default [
       "formula": "Regeneration, Source (Earth) • 1 point per 2 ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Regeneration, Source (Earth)"
   },
   {
     "id": "earth-earth-immunity",
@@ -538,7 +548,8 @@ export default [
       "formula": "Immunity 10 (Earth Effects) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Earth Effects)"
   },
   {
     "id": "earth-rock-armor",
@@ -577,7 +588,8 @@ export default [
       "formula": "Impervious Protection • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Impervious Protection"
   },
   {
     "id": "earth-rooting",
@@ -616,7 +628,8 @@ export default [
       "formula": "Feature (Resistance to being moved), Limited to While Touching the Ground • 1 point per 2 ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Feature (Resistance to being moved), Limited to While Touching the Ground"
   },
   {
     "id": "earth-immovable",
@@ -654,7 +667,8 @@ export default [
       "formula": "Immunity 10 (Being Moved), Limited to While Touching the Ground • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Being Moved), Limited to While Touching the Ground"
   },
   {
     "id": "earth-earth-meld",
@@ -706,7 +720,8 @@ export default [
       "formula": "Movement 3 (Permeate), Limited to Earth; Immunity 2 (Suffocation), Limited to While Earth Melding • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 3 (Permeate), Limited to Earth; Immunity 2 (Suffocation), Limited to While Earth Melding"
   },
   {
     "id": "earth-earth-wave",
@@ -750,7 +765,8 @@ export default [
       "formula": "Flight, Limited to within 60 feet (distance rank 1) of the ground, Platform • 1 point per 2 ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Flight, Limited to within 60 feet (distance rank 1) of the ground, Platform"
   },
   {
     "id": "earth-flying-rock",
@@ -789,7 +805,8 @@ export default [
       "formula": "Flight, Platform • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Platform"
   },
   {
     "id": "earth-terraport",
@@ -833,7 +850,8 @@ export default [
       "formula": "Teleport, Accurate, Medium (Earth) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport, Accurate, Medium (Earth)"
   },
   {
     "id": "earth-tunneling",
@@ -866,7 +884,8 @@ export default [
       "formula": "Burrowing • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burrowing"
   },
   {
     "id": "earth-earth-creatures",
@@ -898,7 +917,8 @@ export default [
       "formula": "Summon Earth Creature 4 • 60-point",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Earth Creature 4"
   },
   {
     "id": "earth-earth-moving",
@@ -942,7 +962,8 @@ export default [
       "formula": "Perception Ranged Move Object, Limited to Earth • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Perception Ranged Move Object, Limited to Earth"
   },
   {
     "id": "earth-stone-shape",
@@ -976,7 +997,8 @@ export default [
       "formula": "Transform (earth and stone From one shape to another) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Transform (earth and stone From one shape to another)"
   },
   {
     "id": "earth-earthsight",
@@ -1021,7 +1043,8 @@ export default [
       "formula": "Senses 4 (Vision Penetrates Concealment), Limited to Earthen Materials • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Vision Penetrates Concealment), Limited to Earthen Materials"
   },
   {
     "id": "earth-earthworks",
@@ -1054,7 +1077,8 @@ export default [
       "formula": "Create Earthworks • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create Earthworks"
   },
   {
     "id": "earth-mountain-form",
@@ -1087,7 +1111,8 @@ export default [
       "formula": "Growth • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Growth"
   },
   {
     "id": "earth-mud-form",
@@ -1124,7 +1149,8 @@ export default [
       "formula": "Immunity 10 (Life Support), Insubstantial 1 • 15 points per rank",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Life Support), Insubstantial 1"
   },
   {
     "id": "earth-sand-form",
@@ -1161,7 +1187,8 @@ export default [
       "formula": "Immunity 10 (Life Support), Insubstantial 1 • 15 points per rank",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Life Support), Insubstantial 1"
   },
   {
     "id": "earth-stone-form",
@@ -1215,7 +1242,8 @@ export default [
       "formula": "Enhanced Strength, Immunity 10 (Life Support), Impervious Protection • 10 points +4 points per rank",
       "fixed": 10,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Immunity 10 (Life Support), Impervious Protection"
   },
   {
     "id": "earth-strength-of-antaeus",
@@ -1257,7 +1285,8 @@ export default [
       "formula": "Enhanced Strength, Quirk (Only While Touching the Ground, –2 points) • 2 points for rank 2, +2 points per rank",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Quirk (Only While Touching the Ground, –2 points)"
   },
   {
     "id": "earth-tremorsense",
@@ -1296,6 +1325,7 @@ export default [
       "formula": "Senses 1 (Ranged Touch) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Ranged Touch)"
   }
 ] satisfies PowerTemplate[];

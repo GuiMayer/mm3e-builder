@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "kinetic-force-cage",
@@ -37,7 +38,8 @@ export default [
       "formula": "Create Force Cage, Limited to Entrapping • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Create Force Cage, Limited to Entrapping"
   },
   {
     "id": "kinetic-friction-blindness",
@@ -97,7 +99,7 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Reference only: the current model has no Sustained Affliction definition. The displayed instant version is not the complete book recipe.",
-          "pt": "Divergência da fonte: Reference only: the current model has no Sustained Affliction definition. The displayed instant version is not the complete book recipe."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 0.25 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 0.25
@@ -106,7 +108,8 @@ export default [
     "requiresCharacterChanges": {
       "en": "Reference only: Sustained Affliction requires a duration rule not represented in this builder; this incomplete version cannot be applied.",
       "pt": "Apenas referência: Aflição Sustentada exige uma regra de duração não representada neste Builder; esta versão incompleta não pode ser aplicada."
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted by Dodge; Unaware), Sustained, Instant Recovery, Limited Degree (Third Only), Limited to Targets with Eyelids, Limited to Vision"
   },
   {
     "id": "kinetic-friction-muzzle",
@@ -166,7 +169,7 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Reference only: the current model has no Sustained Affliction definition. The displayed instant version is not the complete book recipe.",
-          "pt": "Divergência da fonte: Reference only: the current model has no Sustained Affliction definition. The displayed instant version is not the complete book recipe."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 0.25 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 0.25
@@ -175,7 +178,8 @@ export default [
     "requiresCharacterChanges": {
       "en": "Reference only: Sustained Affliction requires a duration rule not represented in this builder; this incomplete version cannot be applied.",
       "pt": "Apenas referência: Aflição Sustentada exige uma regra de duração não representada neste Builder; esta versão incompleta não pode ser aplicada."
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted by Dodge; Transformed), Sustained, Instant Recovery, Limited Degree (Third Only), Limited to Keeping Target’s Mouth Closed (–2)"
   },
   {
     "id": "kinetic-friction-heat",
@@ -245,7 +249,8 @@ export default [
       "formula": "Ranged Weaken Movement Effects, Broad; Linked to Ranged Damage (Heat), Damage Limited to Reduction in Speed Rank • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Weaken Movement Effects, Broad; Linked to Ranged Damage (Heat), Damage Limited to Reduction in Speed Rank"
   },
   {
     "id": "kinetic-internal-attack",
@@ -298,7 +303,8 @@ export default [
       "formula": "Perception Ranged Damage, Alternate Resistance (Fortitude), Affects Objects • 5 points per rank",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Perception Ranged Damage, Alternate Resistance (Fortitude), Affects Objects"
   },
   {
     "id": "kinetic-kinetic-blast",
@@ -337,7 +343,8 @@ export default [
       "formula": "Ranged Damage (kinetic) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (kinetic)"
   },
   {
     "id": "kinetic-kinetic-bullet",
@@ -381,7 +388,8 @@ export default [
       "formula": "Ranged Damage (projectile), Quirk (requires objects as ammo, –1 point) • 1 point for rank 1 + 2 points",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (projectile), Quirk (requires objects as ammo, –1 point)"
   },
   {
     "id": "kinetic-kinetic-burst",
@@ -426,7 +434,8 @@ export default [
       "formula": "Ranged Burst Area Damage (kinetic) • 3 points",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Damage (kinetic)"
   },
   {
     "id": "kinetic-kinetic-weapon",
@@ -459,7 +468,8 @@ export default [
       "formula": "Damage • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Damage"
   },
   {
     "id": "kinetic-suffocating-bubble",
@@ -506,7 +516,8 @@ export default [
       "formula": "Ranged Progressive Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Progressive Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated)"
   },
   {
     "id": "kinetic-frictionless",
@@ -544,7 +555,8 @@ export default [
       "formula": "Immunity 10 (Grabbing, Ensnaring, and Restraining effects), Sustained • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Grabbing, Ensnaring, and Restraining effects), Sustained"
   },
   {
     "id": "kinetic-immovable",
@@ -582,7 +594,8 @@ export default [
       "formula": "Immunity 10 (Being Moved), Sustained • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Being Moved), Sustained"
   },
   {
     "id": "kinetic-kinetic-absorption",
@@ -632,7 +645,8 @@ export default [
       "formula": "Enhanced Trait, Fades, Reaction (When Absorbing Kinetic Energy), Limited to When Absorbing Energy • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Trait, Fades, Reaction (When Absorbing Kinetic Energy), Limited to When Absorbing Energy"
   },
   {
     "id": "kinetic-kinetic-deflection",
@@ -671,7 +685,8 @@ export default [
       "formula": "Deflect, Limited to Kinetic Attacks • 1",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Deflect, Limited to Kinetic Attacks"
   },
   {
     "id": "kinetic-kinetic-immunity",
@@ -703,7 +718,8 @@ export default [
       "formula": "Immunity 40 (Kinetic Attacks) • 1 point per rank",
       "fixed": 40,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 40 (Kinetic Attacks)"
   },
   {
     "id": "kinetic-kinetic-shield",
@@ -747,7 +763,8 @@ export default [
       "formula": "Impervious Protection, Sustained • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Impervious Protection, Sustained"
   },
   {
     "id": "kinetic-friction-cling-1",
@@ -782,7 +799,8 @@ export default [
       "formula": "Movement (Wall-Crawling 1 or 2) • 2 or 4 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement (Wall-Crawling 1 or 2)"
   },
   {
     "id": "kinetic-friction-cling-2",
@@ -817,7 +835,8 @@ export default [
       "formula": "Movement (Wall-Crawling 1 or 2) • 2 or 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement (Wall-Crawling 1 or 2)"
   },
   {
     "id": "kinetic-kinetic-transport",
@@ -855,7 +874,8 @@ export default [
       "formula": "Teleport 8, Limited to Due West, Not Through Barriers • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Teleport 8, Limited to Due West, Not Through Barriers"
   },
   {
     "id": "kinetic-kinetic-rebound",
@@ -890,7 +910,8 @@ export default [
       "formula": "Movement 1 (Safe Fall) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Safe Fall)"
   },
   {
     "id": "kinetic-friction-control",
@@ -994,7 +1015,8 @@ export default [
           }
         ]
       }
-    ]
+    ],
+    "sourceFormula": "Burst Area Ranged Affliction (Resisted and Overcome by Dodge; Hindered, Prone), Progressive, Limited Degree; AE: Burst Area Ranged Affliction (Resisted by Dodge, Overcome by Strength; Hindered, Immobile), Progressive, Reversible, Limited Degree"
   },
   {
     "id": "kinetic-force-constructs",
@@ -1027,7 +1049,8 @@ export default [
       "formula": "Create Force Constructs • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create Force Constructs"
   },
   {
     "id": "kinetic-momentum-boost",
@@ -1076,7 +1099,8 @@ export default [
       "formula": "Enhanced Speed, Affects Others, Ranged, Variable Descriptor (movement effects) • 2 points +3 points",
       "fixed": 2,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Enhanced Speed, Affects Others, Ranged, Variable Descriptor (movement effects)"
   },
   {
     "id": "kinetic-momentum-drain",
@@ -1129,7 +1153,8 @@ export default [
       "formula": "Ranged Weaken Movement Effects, Affects Objects, Broad • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Weaken Movement Effects, Affects Objects, Broad"
   },
   {
     "id": "kinetic-tactile-telekinesis",
@@ -1177,7 +1202,8 @@ export default [
       "formula": "Enhanced Strength, Limited to Lifting and Moving (No Damage), Feature 1 (Able to Exert Strength Without Moving) • 1 point + 1 point per rank",
       "fixed": 1,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Limited to Lifting and Moving (No Damage), Feature 1 (Able to Exert Strength Without Moving)"
   },
   {
     "id": "kinetic-telekinesis",
@@ -1210,7 +1236,8 @@ export default [
       "formula": "Move Object • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Move Object"
   },
   {
     "id": "kinetic-psychokinesis",
@@ -1249,7 +1276,8 @@ export default [
       "formula": "Perception Ranged Move Object • 3 points",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Ranged Move Object"
   },
   {
     "id": "kinetic-telekinetic-touch",
@@ -1288,6 +1316,7 @@ export default [
       "formula": "Senses 1 (Ranged Tactile) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Ranged Tactile)"
   }
 ] satisfies PowerTemplate[];

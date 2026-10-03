@@ -20,6 +20,8 @@ export interface PowerTemplate {
   section: LibraryText;
   name: LibraryText;
   summary: LibraryText;
+  /** Original mechanical configuration for conditions/triggers without structured Builder fields. */
+  sourceFormula?: string;
   page: number;
   components: PowerTemplateComponent[];
   descriptors?: string[];

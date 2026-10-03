@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "radiation-blinding-radiance",
@@ -58,7 +59,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Vision • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Vision"
   },
   {
     "id": "radiation-melting-heat",
@@ -101,7 +103,8 @@ export default [
       "formula": "Ranged Weaken Toughness (melting) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Weaken Toughness (melting)"
   },
   {
     "id": "radiation-mutation",
@@ -148,7 +151,8 @@ export default [
       "formula": "Progressive Ranged Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Transformed) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Progressive Ranged Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Transformed)"
   },
   {
     "id": "radiation-radiation-sickness",
@@ -165,7 +169,7 @@ export default [
       "en": "Affliction · Progressive · Increased Range",
       "pt": "Aflição · Progressivo · Alcance Aumentado"
     },
-    "page": 149,
+    "page": 150,
     "components": [
       {
         "effectId": "affliction",
@@ -195,7 +199,8 @@ export default [
       "formula": "Progressive Ranged Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Incapacitated) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Progressive Ranged Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Incapacitated)"
   },
   {
     "id": "radiation-radiation-blast",
@@ -234,7 +239,8 @@ export default [
       "formula": "Ranged Damage (radiation) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (radiation)"
   },
   {
     "id": "radiation-radiation-burst",
@@ -279,7 +285,8 @@ export default [
       "formula": "Ranged Burst Area Damage (radiation) • 3",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Damage (radiation)"
   },
   {
     "id": "radiation-radioactive-aura",
@@ -318,7 +325,8 @@ export default [
       "formula": "Reaction Damage (being touched, radiation) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Reaction Damage (being touched, radiation)"
   },
   {
     "id": "radiation-deflection-field",
@@ -362,7 +370,8 @@ export default [
       "formula": "Impervious Protection (deflection field), Sustained • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Impervious Protection (deflection field), Sustained"
   },
   {
     "id": "radiation-kinetic-nullification",
@@ -401,7 +410,8 @@ export default [
       "formula": "Deflect, Limited to Kinetic Attacks • 1",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Deflect, Limited to Kinetic Attacks"
   },
   {
     "id": "radiation-radiation-absorption",
@@ -446,7 +456,8 @@ export default [
       "formula": "Enhanced Trait, Fades, Source (radiation) • 1 point per 3 points of Enhanced Trait cost.",
       "fixed": 0,
       "perRank": 0.3333333333333333
-    }
+    },
+    "sourceFormula": "Enhanced Trait, Fades, Source (radiation)"
   },
   {
     "id": "radiation-radiation-immunity-1",
@@ -478,7 +489,8 @@ export default [
       "formula": "Immunity 1, 2, 5, or 10 • 1, 2, 5, or 10 points",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1, 2, 5, or 10"
   },
   {
     "id": "radiation-radiation-immunity-2",
@@ -510,7 +522,8 @@ export default [
       "formula": "Immunity 1, 2, 5, or 10 • 1, 2, 5, or 10 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1, 2, 5, or 10"
   },
   {
     "id": "radiation-radiation-immunity-5",
@@ -542,7 +555,8 @@ export default [
       "formula": "Immunity 1, 2, 5, or 10 • 1, 2, 5, or 10 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1, 2, 5, or 10"
   },
   {
     "id": "radiation-radiation-immunity-10",
@@ -574,7 +588,8 @@ export default [
       "formula": "Immunity 1, 2, 5, or 10 • 1, 2, 5, or 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1, 2, 5, or 10"
   },
   {
     "id": "radiation-radiation-shield",
@@ -623,7 +638,8 @@ export default [
       "formula": "Immunity 1 (background radiation), Affects Others, Burst Area, Sustained • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (background radiation), Affects Others, Burst Area, Sustained"
   },
   {
     "id": "radiation-air-wave",
@@ -662,7 +678,8 @@ export default [
       "formula": "Teleport, Medium (radio transmissions) • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Teleport, Medium (radio transmissions)"
   },
   {
     "id": "radiation-nuclear-shift",
@@ -701,7 +718,8 @@ export default [
       "formula": "Teleport, Medium (radiation sources) • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Teleport, Medium (radiation sources)"
   },
   {
     "id": "radiation-melt-through",
@@ -734,7 +752,8 @@ export default [
       "formula": "Burrowing • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burrowing"
   },
   {
     "id": "radiation-carbon-dating",
@@ -785,7 +804,8 @@ export default [
       "formula": "Senses 2 (Detect Age, Acute), Limited to Non- living Items • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Detect Age, Acute), Limited to Non- living Items"
   },
   {
     "id": "radiation-irradiate",
@@ -825,7 +845,8 @@ export default [
       "formula": "Subtle Environment (radiation, equivalent to heat) •",
       "fixed": 1,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Subtle Environment (radiation, equivalent to heat)"
   },
   {
     "id": "radiation-radar",
@@ -868,7 +889,8 @@ export default [
       "formula": "Senses 3 (Accurate Radio) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 3 (Accurate Radio)"
   },
   {
     "id": "radiation-radio-hearing",
@@ -906,7 +928,8 @@ export default [
       "formula": "Senses 1 (Radio) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Radio)"
   },
   {
     "id": "radiation-radiation-form",
@@ -943,7 +966,8 @@ export default [
       "formula": "Immunity 10 (Life Support), Insubstantial 3 (radiation) • 25 points",
       "fixed": 25,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Life Support), Insubstantial 3 (radiation)"
   },
   {
     "id": "radiation-scrub-radiation",
@@ -991,7 +1015,8 @@ export default [
       "formula": "Nullify Radiation, Burst Area, Simultaneous • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Nullify Radiation, Burst Area, Simultaneous"
   },
   {
     "id": "radiation-sense-radiation",
@@ -1036,7 +1061,8 @@ export default [
       "formula": "Senses 2 (Detect Radiation, Ranged) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Detect Radiation, Ranged)"
   },
   {
     "id": "radiation-static-field",
@@ -1090,7 +1116,8 @@ export default [
       "formula": "Ranged Burst Area Concealment Attack 2 (all radio) • 8 points + 2 points per +1 distance rank to area.",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Concealment Attack 2 (all radio)"
   },
   {
     "id": "radiation-x-ray-vision",
@@ -1129,6 +1156,7 @@ export default [
       "formula": "Senses 4 (Vision Penetrates Concealment, except for lead and radiation shielding) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Vision Penetrates Concealment, except for lead and radiation shielding)"
   }
 ] satisfies PowerTemplate[];

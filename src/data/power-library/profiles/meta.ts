@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "meta-nemesis",
@@ -45,7 +46,8 @@ export default [
       "formula": "Variable (Powers Suited to an Opponent), Move Action, Limited Choice of Powers • 7 points per rank",
       "fixed": 0,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Variable (Powers Suited to an Opponent), Move Action, Limited Choice of Powers"
   },
   {
     "id": "meta-power-control",
@@ -105,12 +107,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Third degree only is -2/rank; Limited Powers -1. 1 + Range 2 + Cumulative 1 - 3 = 1/rank.",
-          "pt": "Divergência da fonte: Third degree only is -2/rank; Limited Powers -1. 1 + Range 2 + Cumulative 1 - 3 = 1/rank."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 1 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 1
       }
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Controlled), Limited Degree (third only), Limited to Controlling Target’s Powers"
   },
   {
     "id": "meta-power-nullification",
@@ -146,7 +149,8 @@ export default [
       "formula": "Nullify • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Nullify"
   },
   {
     "id": "meta-nullification-field",
@@ -199,7 +203,8 @@ export default [
       "formula": "Burst Area Nullify, Concentration, Simultaneous • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Burst Area Nullify, Concentration, Simultaneous"
   },
   {
     "id": "meta-power-theft-affliction",
@@ -271,7 +276,8 @@ export default [
       "formula": "Cumulative Affliction (Resisted and Overcome by Will; Powers Impaired, Powers Disabled, Transformed— Powerless); Variable (Powers Lost to Affliction), Free Action, Fades (as target recovers), Limited to Affliction Targets • 9 points per rank",
       "fixed": 0,
       "perRank": 9
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (Resisted and Overcome by Will; Powers Impaired, Powers Disabled, Transformed— Powerless); Variable (Powers Lost to Affliction), Free Action, Fades (as target recovers), Limited to Affliction Targets"
   },
   {
     "id": "meta-power-theft-nullify",
@@ -353,7 +359,8 @@ export default [
       "formula": "Cumulative Affliction (Resisted and Overcome by Will; Powers Impaired, Powers Disabled, Transformed— Powerless); Variable (Powers Lost to Affliction), Free Action, Fades (as target recovers), Limited to Affliction Targets • 9 points per rank",
       "fixed": 0,
       "perRank": 9
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (Resisted and Overcome by Will; Powers Impaired, Powers Disabled, Transformed— Powerless); Variable (Powers Lost to Affliction), Free Action, Fades (as target recovers), Limited to Affliction Targets"
   },
   {
     "id": "meta-adaptation",
@@ -400,7 +407,8 @@ export default [
       "formula": "Variable (Powers Suited to a Challenge), Reaction, Limited Choice of Powers, Limited (No Offensive Powers) • 8 points per rank",
       "fixed": 0,
       "perRank": 8
-    }
+    },
+    "sourceFormula": "Variable (Powers Suited to a Challenge), Reaction, Limited Choice of Powers, Limited (No Offensive Powers)"
   },
   {
     "id": "meta-adaptive-immunity",
@@ -438,7 +446,8 @@ export default [
       "formula": "Immunity 140 (Fortitude, Toughness, and Will Effects), Limited to effects you have experienced at least once • 70 points",
       "fixed": 70,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 140 (Fortitude, Toughness, and Will Effects), Limited to effects you have experienced at least once"
   },
   {
     "id": "meta-power-defense",
@@ -495,7 +504,8 @@ export default [
       "formula": "Nullify, Broad, Reaction, Close Range, Limited to Self • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Nullify, Broad, Reaction, Close Range, Limited to Self"
   },
   {
     "id": "meta-power-immunity-2",
@@ -527,7 +537,8 @@ export default [
       "formula": "Immunity 2, 5, 10, or 20 • 1 point per rank",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2, 5, 10, or 20"
   },
   {
     "id": "meta-power-immunity-5",
@@ -559,7 +570,8 @@ export default [
       "formula": "Immunity 2, 5, 10, or 20 • 1 point per rank",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2, 5, 10, or 20"
   },
   {
     "id": "meta-power-immunity-10",
@@ -591,7 +603,8 @@ export default [
       "formula": "Immunity 2, 5, 10, or 20 • 1 point per rank",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2, 5, 10, or 20"
   },
   {
     "id": "meta-power-immunity-20",
@@ -623,7 +636,8 @@ export default [
       "formula": "Immunity 2, 5, 10, or 20 • 1 point per rank",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2, 5, 10, or 20"
   },
   {
     "id": "meta-power-seeker",
@@ -672,7 +686,8 @@ export default [
       "formula": "Teleport, Accurate, Extended, Limited to the Nearest Power Source • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Teleport, Accurate, Extended, Limited to the Nearest Power Source"
   },
   {
     "id": "meta-power-detection",
@@ -717,7 +732,8 @@ export default [
       "formula": "Senses 2 (Detect Power, Ranged) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Detect Power, Ranged)"
   },
   {
     "id": "meta-power-enhancement",
@@ -761,7 +777,8 @@ export default [
       "formula": "Variable (Enhanced Power Ranks and Modifiers), Affects Others, Limited to Others • 7 points per rank",
       "fixed": 0,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Variable (Enhanced Power Ranks and Modifiers), Affects Others, Limited to Others"
   },
   {
     "id": "meta-power-mimicry",
@@ -800,7 +817,8 @@ export default [
       "formula": "Variable (Powers Possessed by Catalyst), Limited to Catalysts in Perception Range • 6 points per rank",
       "fixed": 0,
       "perRank": 6
-    }
+    },
+    "sourceFormula": "Variable (Powers Possessed by Catalyst), Limited to Catalysts in Perception Range"
   },
   {
     "id": "meta-serial-super-forms",
@@ -839,7 +857,8 @@ export default [
       "formula": "Variable (Serial Form Traits), Continuous • 8 points per rank",
       "fixed": 0,
       "perRank": 8
-    }
+    },
+    "sourceFormula": "Variable (Serial Form Traits), Continuous"
   },
   {
     "id": "meta-skill-download",
@@ -872,7 +891,8 @@ export default [
       "formula": "Variable (Skills and Advantages) • 7 points",
       "fixed": 0,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Variable (Skills and Advantages)"
   },
   {
     "id": "meta-skill-mimicry",
@@ -919,6 +939,7 @@ export default [
       "formula": "Variable (Physical Skills and Advantages), Free Action, Limited to Traits Seen in Action, Limited to Catalyst’s Total Bonus • 7 points per rank",
       "fixed": 0,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Variable (Physical Skills and Advantages), Free Action, Limited to Traits Seen in Action, Limited to Catalyst’s Total Bonus"
   }
 ] satisfies PowerTemplate[];

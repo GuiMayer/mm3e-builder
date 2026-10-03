@@ -5,6 +5,10 @@ import type { PowerTemplate } from '../features/power-library/types';
 import { calculatePowerPricing } from '../shared/lib/mathEngine';
 import { POWER_DEFS, MODIFIER_DEFS } from '../entities/gameDataLoaders';
 import { CharacterPowerSchema } from '../entities/schemas';
+import dimension from '../data/power-library/profiles/dimension';
+import luck from '../data/power-library/profiles/luck';
+import sensory from '../data/power-library/profiles/sensory';
+import time from '../data/power-library/profiles/time';
 
 const missile: PowerTemplate = {
   id: 'test-missile', profileId: 'armor', name: { en: 'Missile', pt: 'Míssil' },
@@ -20,6 +24,21 @@ const missile: PowerTemplate = {
 const price = (power: ReturnType<typeof instantiatePowerTemplate>) => calculatePowerPricing(power, POWER_DEFS, MODIFIER_DEFS).total;
 
 describe('power library drafts', () => {
+  it('materializes scalable flat purchases, modifier-only purchases and skill/sense bonuses without catalog fields', () => {
+    const blade = instantiatePowerTemplate(dimension.find(item => item.name.en === 'Dimensional Blade')!, 10);
+    expect(blade.components[0].modifiers.find(modifier => modifier.modifierId === 'penetrating')?.ranks).toBe(10);
+    expect(price(blade)).toBe(21);
+    const weakness = instantiatePowerTemplate(luck.find(item => item.name.en === 'Find Weakness')!, 5);
+    expect(weakness.components[0].ranks).toBe(0);
+    expect(price(weakness)).toBe(5);
+    const senses = instantiatePowerTemplate(sensory.find(item => item.name.en === 'Enhanced Senses')!, 5);
+    expect(senses.components[0].ranks).toBe(10);
+    expect(price(senses)).toBe(5);
+    const rapid = instantiatePowerTemplate(time.find(item => item.name.en === 'Rapid Perception')!, 5);
+    expect(rapid.components.every(component => component.ranks === 5 && component.senseTraits?.[0].ranks === 5)).toBe(true);
+    expect(price(rapid)).toBe(25);
+    for (const power of [blade, weakness, senses, rapid]) expect(CharacterPowerSchema.parse(power)).toEqual(power);
+  });
   it('scales only declared effect ranks and calculates using the existing engine', () => {
     for (const ranks of [1, 5, 10]) {
       const power = instantiatePowerTemplate(missile, ranks);

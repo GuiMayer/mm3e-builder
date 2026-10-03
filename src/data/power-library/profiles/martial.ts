@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "martial-analyze-style",
@@ -60,7 +61,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will; Vulnerable, Defenseless), Conditions Limited to Your Attacks, Limited Degree, Insidious, Subtle • 2",
       "fixed": 2,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will; Vulnerable, Defenseless), Conditions Limited to Your Attacks, Limited Degree, Insidious, Subtle"
   },
   {
     "id": "martial-berserker-rage",
@@ -108,7 +110,8 @@ export default [
       "formula": "Enhanced Advantage 1 (Fearless), Enhanced Strength, Sustained, Quirk (–1 to active defenses, –2 points) • 1 point +2 points per additional Strength rank",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Enhanced Advantage 1 (Fearless), Enhanced Strength, Sustained, Quirk (–1 to active defenses, –2 points)"
   },
   {
     "id": "martial-breaking-blow",
@@ -155,7 +158,8 @@ export default [
       "fixed": 1,
       "perRank": 0
     },
-    "activation": "move"
+    "activation": "move",
+    "sourceFormula": "Strength-based Damage, Penetrating, Limited to Objects, Activation (move action, –1 point)"
   },
   {
     "id": "martial-chi-strike",
@@ -191,7 +195,8 @@ export default [
       "formula": "Strength-based Damage • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Strength-based Damage"
   },
   {
     "id": "martial-dim-mak",
@@ -243,7 +248,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Fortitude; Fatigued and Impaired, Disabled and Exhausted, Incapacitated), Extra Condition, Progressive, Reversible •1 point + 4 points per rank",
       "fixed": 1,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Fatigued and Impaired, Disabled and Exhausted, Incapacitated), Extra Condition, Progressive, Reversible"
   },
   {
     "id": "martial-ear-boxing",
@@ -290,7 +296,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Will; Dazed and Impaired, Disabled and Stunned), Extra Condition, Limited Degree • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Will; Dazed and Impaired, Disabled and Stunned), Extra Condition, Limited Degree"
   },
   {
     "id": "martial-ghost-fighting-1",
@@ -331,7 +338,8 @@ export default [
       "formula": "Strength Damage Affects Insubstantial • 1 point (half Damage rank) or 2 points (full Damage rank).",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Strength Damage Affects Insubstantial"
   },
   {
     "id": "martial-ghost-fighting-2",
@@ -372,7 +380,8 @@ export default [
       "formula": "Strength Damage Affects Insubstantial • 1 point (half Damage rank) or 2 points (full Damage rank).",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Strength Damage Affects Insubstantial"
   },
   {
     "id": "martial-kiai-shout",
@@ -430,7 +439,8 @@ export default [
       "formula": "Cone Area Affliction (Resisted and Overcome by Will; Dazed and Vulnerable, Stunned and Defenseless), Extra Condition, Hearing-Dependent, Limited Degree • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Cone Area Affliction (Resisted and Overcome by Will; Dazed and Vulnerable, Stunned and Defenseless), Extra Condition, Hearing-Dependent, Limited Degree"
   },
   {
     "id": "martial-natural-fighter",
@@ -464,7 +474,8 @@ export default [
       "formula": "Enhanced Advantage • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Advantage"
   },
   {
     "id": "martial-catfall",
@@ -514,7 +525,8 @@ export default [
       "formula": "Enhanced Advantage 1 (Instant Up), Movement 1 (Safe Fall), Limited to distance rank 0 • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Enhanced Advantage 1 (Instant Up), Movement 1 (Safe Fall), Limited to distance rank 0"
   },
   {
     "id": "martial-counterstrike",
@@ -558,7 +570,8 @@ export default [
       "formula": "Reaction Damage (when attacked in close combat), Attack Check Required • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Reaction Damage (when attacked in close combat), Attack Check Required"
   },
   {
     "id": "martial-deflecting-projectile",
@@ -611,7 +624,8 @@ export default [
           "total": 9
         }
       ]
-    }
+    },
+    "sourceFormula": "Deflect, Quirk (requires a projectile or throwing weapon, –1 point)"
   },
   {
     "id": "martial-feather-step",
@@ -655,7 +669,8 @@ export default [
       "formula": "Movement 2 (Trackless, Water-walking), Limited to solid surfaces • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 2 (Trackless, Water-walking), Limited to solid surfaces"
   },
   {
     "id": "martial-run-up-walls",
@@ -696,7 +711,8 @@ export default [
       "formula": "Movement 2 (Wall-crawling), Limited to one move action, Limited to while moving • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 2 (Wall-crawling), Limited to one move action, Limited to while moving"
   },
   {
     "id": "martial-wire-fu",
@@ -729,7 +745,8 @@ export default [
       "formula": "Leaping • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Leaping"
   },
   {
     "id": "martial-blind-fighting",
@@ -768,7 +785,8 @@ export default [
       "formula": "Senses 2 (Accurate Hearing) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Accurate Hearing)"
   },
   {
     "id": "martial-chi-balance",
@@ -801,7 +819,8 @@ export default [
       "formula": "Healing (chi) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Healing (chi)"
   },
   {
     "id": "martial-chi-focus",
@@ -835,7 +854,8 @@ export default [
       "formula": "Enhanced Trait, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Trait, Sustained"
   },
   {
     "id": "martial-chi-reading",
@@ -885,7 +905,8 @@ export default [
       "formula": "Senses 3 (Detect Chi, Acute, Analytical) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 3 (Detect Chi, Acute, Analytical)"
   },
   {
     "id": "martial-second-wind",
@@ -929,6 +950,7 @@ export default [
       "formula": "Healing, Triggered 1 (when suffering two or more degrees of damage), Limited to Self • 1 point + 1 point per rank",
       "fixed": 1,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Healing, Triggered 1 (when suffering two or more degrees of damage), Limited to Self"
   }
 ] satisfies PowerTemplate[];

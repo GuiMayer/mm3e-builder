@@ -18,6 +18,10 @@ export default defineConfig({
     rolldownOptions: {
       output: {
         manualChunks(id) {
+          // Keep the on-demand Power Profiles chapters out of initial game data.
+          const profile = id.match(/\/src\/data\/power-library\/profiles\/([^/]+)\.ts$/);
+          if (profile) return `power-profile-${profile[1]}`;
+          if (id.includes('/src/data/power-library/')) return;
           if (id.includes('/src/data/') || id.includes('/src/entities/gameDataLoaders')) return 'game-data';
           if (id.includes('/src/locales/')) return 'locales';
 

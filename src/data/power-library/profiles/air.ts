@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "air-air-blast",
@@ -40,7 +41,8 @@ export default [
       "formula": "Ranged Damage (air pressure) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (air pressure)"
   },
   {
     "id": "air-air-burst",
@@ -88,7 +90,8 @@ export default [
       "formula": "Ranged Burst Area Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated) • 3",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "air-air-rifle",
@@ -130,7 +133,8 @@ export default [
       "formula": "Ranged Damage (projectiles) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (projectiles)"
   },
   {
     "id": "air-blinding-gust",
@@ -190,7 +194,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Vision • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Vision"
   },
   {
     "id": "air-flinging-gust",
@@ -229,7 +234,8 @@ export default [
       "formula": "Move Object, Limited Direction • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Move Object, Limited Direction"
   },
   {
     "id": "air-stench",
@@ -284,7 +290,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Smell-Dependent • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Smell-Dependent"
   },
   {
     "id": "air-stench-cloud",
@@ -345,7 +352,8 @@ export default [
       "formula": "Ranged Cloud Area Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Smell-Dependent • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Cloud Area Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Smell-Dependent"
   },
   {
     "id": "air-suffocation",
@@ -392,7 +400,8 @@ export default [
       "formula": "Ranged Progressive Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Progressive Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated)"
   },
   {
     "id": "air-tornado",
@@ -437,7 +446,8 @@ export default [
       "formula": "Cylinder Area Move Object, Damaging • 4 points per rank, +1 point per rank per +1 area distance rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Cylinder Area Move Object, Damaging"
   },
   {
     "id": "air-air-bubble",
@@ -486,7 +496,8 @@ export default [
       "formula": "Immunity 2 (Suffocation), Affects Others, Cloud Area, Sustained • 6 points + 2 points per +1 area distance rank",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (Suffocation), Affects Others, Cloud Area, Sustained"
   },
   {
     "id": "air-air-shield",
@@ -525,7 +536,8 @@ export default [
       "formula": "Protection, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection, Sustained"
   },
   {
     "id": "air-air-supply",
@@ -563,7 +575,8 @@ export default [
       "formula": "Immunity 2 (suffocation), Sustained • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (suffocation), Sustained"
   },
   {
     "id": "air-deflecting-winds",
@@ -608,7 +621,8 @@ export default [
       "formula": "Deflect, Burst Area, Limited to Physical Projectiles • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Deflect, Burst Area, Limited to Physical Projectiles"
   },
   {
     "id": "air-mist-visibility-2",
@@ -642,7 +656,8 @@ export default [
       "formula": "Environment (Visibility) • 1 point per rank (–2 modifier) or",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Visibility)"
   },
   {
     "id": "air-mist-visibility-5",
@@ -676,7 +691,8 @@ export default [
       "formula": "Environment (Visibility) • 1 point per rank (–2 modifier) or",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (Visibility)"
   },
   {
     "id": "air-wind-wall",
@@ -721,7 +737,8 @@ export default [
       "formula": "Line Area Move Object, Limited Direction (along the length of the line) • 2 points per rank +1 point per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Line Area Move Object, Limited Direction (along the length of the line)"
   },
   {
     "id": "air-air-walking",
@@ -767,7 +784,8 @@ export default [
       "formula": "Flight 1, Subtle, Quirk (the prone condition causes you to fall, –1 point) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Flight 1, Subtle, Quirk (the prone condition causes you to fall, –1 point)"
   },
   {
     "id": "air-full-sail",
@@ -849,7 +867,8 @@ export default [
           }
         ]
       }
-    ]
+    ],
+    "sourceFormula": "Swimming, Affects Objects, Limited to Wind-Powered Vehicles, Alternate Effect: Flight, Affects Objects, Gliding, Limited to Wind-Powered Vehicles"
   },
   {
     "id": "air-gliding",
@@ -888,7 +907,8 @@ export default [
       "formula": "Flight, Gliding • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Gliding"
   },
   {
     "id": "air-grounding",
@@ -941,7 +961,8 @@ export default [
       "formula": "Nullify Flight and Swimming Based on Air, Concentration, Cylinder Area, Effortless • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Nullify Flight and Swimming Based on Air, Concentration, Cylinder Area, Effortless"
   },
   {
     "id": "air-wind-riding",
@@ -974,7 +995,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "air-aerokinesis",
@@ -1007,7 +1029,8 @@ export default [
       "formula": "Move Object • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Move Object"
   },
   {
     "id": "air-air-creatures",
@@ -1039,7 +1062,8 @@ export default [
       "formula": "Summon Air Creature 6 (90-point minion) • 12 points",
       "fixed": 12,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Air Creature 6 (90-point minion)"
   },
   {
     "id": "air-air-form",
@@ -1086,7 +1110,8 @@ export default [
       "formula": "Concealment 4 (visual), Flight 1, Insubstantial 2 (gaseous) • 20 points",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 4 (visual), Flight 1, Insubstantial 2 (gaseous)"
   },
   {
     "id": "air-air-sense",
@@ -1131,7 +1156,8 @@ export default [
       "formula": "Senses 2 (Air Awareness, Ranged Touch) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Air Awareness, Ranged Touch)"
   },
   {
     "id": "air-solid-air",
@@ -1164,7 +1190,8 @@ export default [
       "formula": "Create Solid Air Objects • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create Solid Air Objects"
   },
   {
     "id": "air-wind-conditions-1-rank",
@@ -1198,7 +1225,8 @@ export default [
       "formula": "Environment (Impede Movement) • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Impede Movement)"
   },
   {
     "id": "air-wind-conditions-2-rank",
@@ -1232,7 +1260,8 @@ export default [
       "formula": "Environment (Impede Movement) • 1 point",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (Impede Movement)"
   },
   {
     "id": "air-whispering-wind",
@@ -1271,6 +1300,7 @@ export default [
       "formula": "Communication (auditory, air), Subtle 1 • 1",
       "fixed": 1,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Communication (auditory, air), Subtle 1"
   }
 ] satisfies PowerTemplate[];

@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "sensory-dazzle",
@@ -58,7 +59,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Senses Impaired, Senses Disabled, Unaware), Limited to One Sense • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Senses Impaired, Senses Disabled, Unaware), Limited to One Sense"
   },
   {
     "id": "sensory-obscure",
@@ -113,7 +115,8 @@ export default [
       "formula": "Ranged Burst Area Concealment Attack • 4 points per rank, +1 point per rank per +1 area distance rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Concealment Attack"
   },
   {
     "id": "sensory-sensory-overload",
@@ -171,12 +174,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Affliction 1 + Ranged 1 + Cumulative 1 = 3/rank; the printed 2 omits Cumulative.",
-          "pt": "Divergência da fonte: Affliction 1 + Ranged 1 + Cumulative 1 = 3/rank; the printed 2 omits Cumulative."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 3 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 3
       }
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "sensory-danger-sense",
@@ -215,7 +219,8 @@ export default [
       "formula": "Senses 1 (Danger Sense) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Danger Sense)"
   },
   {
     "id": "sensory-defensive-awareness",
@@ -252,7 +257,8 @@ export default [
       "formula": "Enhanced Advantage (Defensive Roll) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Advantage (Defensive Roll)"
   },
   {
     "id": "sensory-invisibility",
@@ -289,7 +295,8 @@ export default [
       "formula": "Concealment 2 (normal sight) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 2 (normal sight)"
   },
   {
     "id": "sensory-sensory-shield-2",
@@ -327,7 +334,8 @@ export default [
       "formula": "Immunity 2 (effects against one sense), Immunity 5 (effects against all senses), Limited to Half Effect • 1 or 3 points",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (effects against one sense), Immunity 5 (effects against all senses), Limited to Half Effect"
   },
   {
     "id": "sensory-sensory-shield-5",
@@ -365,7 +373,8 @@ export default [
       "formula": "Immunity 2 (effects against one sense), Immunity 5 (effects against all senses), Limited to Half Effect • 1 or 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (effects against one sense), Immunity 5 (effects against all senses), Limited to Half Effect"
   },
   {
     "id": "sensory-silence",
@@ -402,7 +411,8 @@ export default [
       "formula": "Concealment 1 (Auditory) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 1 (Auditory)"
   },
   {
     "id": "sensory-pathfinder",
@@ -470,7 +480,8 @@ export default [
       "formula": "Senses 8 (Detect Path, Accurate, Acute, Direction Sense, Distance Sense, Ranged, Tracking 2) • 9 points",
       "fixed": 9,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 8 (Detect Path, Accurate, Acute, Direction Sense, Distance Sense, Ranged, Tracking 2)"
   },
   {
     "id": "sensory-tracking-teleport",
@@ -515,7 +526,8 @@ export default [
       "formula": "Senses 2 (Teleport Awareness, Tracking) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Teleport Awareness, Tracking)"
   },
   {
     "id": "sensory-aura-reading",
@@ -577,7 +589,8 @@ export default [
       "formula": "You can “read” the invisible psychic auras around all creatures, showing their mood, physical con- dition, and any outside psychic influences. Aura Reading is a mental sense, although the information (the aura) is perceived visually. Aura Reading: Senses 5 (Detect Mood, Ranged; Detect Physical Condition, Ranged; Psychic Awareness) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "You can “read” the invisible psychic auras around all creatures, showing their mood, physical con- dition, and any outside psychic influences. Aura Reading is a mental sense, although the information (the aura) is perceived visually. Aura Reading: Senses 5 (Detect Mood, Ranged; Detect Physical Condition, Ranged; Psychic Awareness)"
   },
   {
     "id": "sensory-cosmic-awareness",
@@ -622,7 +635,8 @@ export default [
       "formula": "Feature 1 (directed inspiration), Senses 1 (Cosmic Awareness) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Feature 1 (directed inspiration), Senses 1 (Cosmic Awareness)"
   },
   {
     "id": "sensory-lie-detector",
@@ -669,12 +683,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Enhanced Skill costs 1 PP/2 bonuses; a -1 flaw advances its ratio to 1 PP/3 bonuses. Two bonuses per selectable rank cost ceil(2 ranks/3), not a halved 1 PP/4 bonuses.",
-          "pt": "Divergência da fonte: Enhanced Skill costs 1 PP/2 bonuses; a -1 flaw advances its ratio to 1 PP/3 bonuses. Two bonuses per selectable rank cost ceil(2 ranks/3), not a halved 1 PP/4 bonuses."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 0.666667 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 0.6666666666666666
       }
-    }
+    },
+    "sourceFormula": "With enhanced awareness of nonverbal cues and things like heartbeat and perspiration, you can more easily sense when someone is lying. Lie Detector: Enhanced Insight, Limited to Detecting Deception"
   },
   {
     "id": "sensory-radar",
@@ -713,7 +728,8 @@ export default [
       "formula": "By sending out radio wave emissions that reflect off solid surfaces, you can build an accurate picture of your surroundings. Radar: Senses 2 (Accurate Radio) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "By sending out radio wave emissions that reflect off solid surfaces, you can build an accurate picture of your surroundings. Radar: Senses 2 (Accurate Radio)"
   },
   {
     "id": "sensory-sonar",
@@ -756,7 +772,8 @@ export default [
       "formula": "By sending out ultrasonic emissions that reflect off solid surfaces, you can build an accurate picture of your surroundings. Sonar: Senses 3 (Accurate Hearing, Ultra-Hearing) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "By sending out ultrasonic emissions that reflect off solid surfaces, you can build an accurate picture of your surroundings. Sonar: Senses 3 (Accurate Hearing, Ultra-Hearing)"
   },
   {
     "id": "sensory-spatial-awareness",
@@ -805,7 +822,8 @@ export default [
       "formula": "You are mentally aware of your sur- roundings, even when you cannot see them. Spatial Awareness: Senses 4 (Accurate, Radius, Ranged Mental Sense) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "You are mentally aware of your sur- roundings, even when you cannot see them. Spatial Awareness: Senses 4 (Accurate, Radius, Ranged Mental Sense)"
   },
   {
     "id": "sensory-x-ray-vision",
@@ -844,7 +862,8 @@ export default [
       "formula": "You can see through solid objects as if they weren’t there. A subject with no concealment relative to you cannot use Stealth to hide from you. X-Ray Vision may be Limited to particular substances (natural earth, for example) or have a Quirk of being unable to penetrate a particular substance (like lead) worth –1 point. X-Ray Vision: Senses 4 (Vision Penetrates Concealment) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "You can see through solid objects as if they weren’t there. A subject with no concealment relative to you cannot use Stealth to hide from you. X-Ray Vision may be Limited to particular substances (natural earth, for example) or have a Quirk of being unable to penetrate a particular substance (like lead) worth –1 point. X-Ray Vision: Senses 4 (Vision Penetrates Concealment)"
   },
   {
     "id": "sensory-enhanced-senses",
@@ -882,7 +901,8 @@ export default [
       "formula": "Enhanced Perception • 1 point per rank (+2 Perception per rank)",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Perception"
   },
   {
     "id": "sensory-synesthesia",
@@ -920,6 +940,7 @@ export default [
       "formula": "Variable Descriptor 2 (Senses) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Variable Descriptor 2 (Senses)"
   }
 ] satisfies PowerTemplate[];

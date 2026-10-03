@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "mental-emotion-control",
@@ -55,7 +56,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Impaired, Disabled, Incapacitated), Resisted and Overcome by Will, Subtle, Variable Descriptor (Emotions) • 2 points + 4",
       "fixed": 2,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Impaired, Disabled, Incapacitated), Resisted and Overcome by Will, Subtle, Variable Descriptor (Emotions)"
   },
   {
     "id": "mental-hallucination",
@@ -105,7 +107,8 @@ export default [
       "formula": "Illusion (All Senses), Selective, Limited to One Subject, Resistible by Will • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Illusion (All Senses), Selective, Limited to One Subject, Resistible by Will"
   },
   {
     "id": "mental-mental-blast",
@@ -158,7 +161,8 @@ export default [
       "formula": "Perception Ranged Damage, Alternate Resistance (Will), Subtle • 1 point + 4 points per rank",
       "fixed": 1,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Damage, Alternate Resistance (Will), Subtle"
   },
   {
     "id": "mental-mind-control",
@@ -210,7 +214,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Dazed, Compelled, Controlled), Resisted and Overcome by Will, Subtle • 1 point + 4 points per rank",
       "fixed": 1,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Dazed, Compelled, Controlled), Resisted and Overcome by Will, Subtle"
   },
   {
     "id": "mental-mind-switch",
@@ -280,12 +285,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Third-degree only is -2/rank; Side Effect -1. The stated composition is 1 PP/rank plus 2 flat.",
-          "pt": "Divergência da fonte: Third-degree only is -2/rank; Side Effect -1. The stated composition is 1 PP/rank plus 2 flat."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 2 PP fixos + 1 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 2,
         "perRank": 1
       }
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Transformed), Resisted and Overcome by Will, Insidious, Subtle, Limited Degree (Third Only), Side Effect (Target’s mind controls your body)"
   },
   {
     "id": "mental-possession",
@@ -342,7 +348,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Dazed,Compelled, Controlled), Resisted and Overcome by Will,Extra: merge with subject, Subtle • 1 point + 5 points per rank",
       "fixed": 1,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Dazed,Compelled, Controlled), Resisted and Overcome by Will,Extra: merge with subject, Subtle"
   },
   {
     "id": "mental-psychic-vampirism",
@@ -424,12 +431,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Healing limited to Energizing must include Energizing; Healing 2 + Energizing 1 - two Limits 2 adds 1/rank to the 4/rank Affliction.",
-          "pt": "Divergência da fonte: Healing limited to Energizing must include Energizing; Healing 2 + Energizing 1 - two Limits 2 adds 1/rank to the 4/rank Affliction."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 2 PP fixos + 5 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 2,
         "perRank": 5
       }
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Fatigued, Exhausted, Incapacitated), Resisted and Overcome by Will, Subtle, Linked to Healing, Subtle, Limited (Energizing Only), Limited (Self Only)"
   },
   {
     "id": "mental-psychic-weapon",
@@ -472,7 +480,8 @@ export default [
       "formula": "Damage, Alternate Resistance (Will) • 2",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Damage, Alternate Resistance (Will)"
   },
   {
     "id": "mental-mental-invisibility",
@@ -520,7 +529,8 @@ export default [
       "formula": "Concealment 10 (All Senses), Limited to Minds, Resistible by Will (DC 20) • 5 points +1 point per +1 to",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 10 (All Senses), Limited to Minds, Resistible by Will (DC 20)"
   },
   {
     "id": "mental-mind-shield",
@@ -568,7 +578,8 @@ export default [
       "formula": "Enhanced Defense (Will), Impervious, Limited to Mental Powers, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Defense (Will), Impervious, Limited to Mental Powers, Sustained"
   },
   {
     "id": "mental-mind-trap",
@@ -631,7 +642,8 @@ export default [
       "formula": "Perception Ranged Damage, Alternate Resistance (Will), Reaction (When you make a Will resistance check against a mental power), Subtle, Limited to the source of the mental power • 1 point + 6 points per rank",
       "fixed": 1,
       "perRank": 6
-    }
+    },
+    "sourceFormula": "Perception Ranged Damage, Alternate Resistance (Will), Reaction (When you make a Will resistance check against a mental power), Subtle, Limited to the source of the mental power"
   },
   {
     "id": "mental-predictive-defense",
@@ -688,7 +700,8 @@ export default [
       "formula": "Enhanced Defenses (Dodge and Parry), Quirk (not against opponents Immune to Mental Powers, –2 points) • 2 points for the first 2 ranks, +2 points per additional rank",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Enhanced Defenses (Dodge and Parry), Quirk (not against opponents Immune to Mental Powers, –2 points)"
   },
   {
     "id": "mental-astral-projection",
@@ -731,7 +744,8 @@ export default [
       "formula": "Remote Sensing (Visual, Aural, and Mental), Side-Effect (physical body is defenseless and immobile, –2) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Remote Sensing (Visual, Aural, and Mental), Side-Effect (physical body is defenseless and immobile, –2)"
   },
   {
     "id": "mental-aura-reading",
@@ -787,7 +801,8 @@ export default [
       "formula": "Senses 3 (Detect Emotional and Physical State, Ranged), visual and mental • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 3 (Detect Emotional and Physical State, Ranged), visual and mental"
   },
   {
     "id": "mental-clairvoyance",
@@ -821,7 +836,8 @@ export default [
       "formula": "Remote Sensing (Visual) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Remote Sensing (Visual)"
   },
   {
     "id": "mental-clairaudience",
@@ -855,7 +871,8 @@ export default [
       "formula": "Remote Sensing (Auditory) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Remote Sensing (Auditory)"
   },
   {
     "id": "mental-clairsentience",
@@ -889,7 +906,8 @@ export default [
       "formula": "Remote Sensing (All Senses) • 5 points per rank",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Remote Sensing (All Senses)"
   },
   {
     "id": "mental-empathy",
@@ -939,7 +957,8 @@ export default [
       "formula": "Senses 3 (Detect Emotion, Acute, Ranged) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 3 (Detect Emotion, Acute, Ranged)"
   },
   {
     "id": "mental-knowledge-transplant",
@@ -1001,7 +1020,8 @@ export default [
       "formula": "Variable (Enhanced Skills and Languages), Affects Others, Free Action, Limited to Intellect skills, Limited to subject’s skill rank, Perception Range, Sense- Dependent (mental contact with subjects) • 9 points per rank",
       "fixed": 0,
       "perRank": 9
-    }
+    },
+    "sourceFormula": "Variable (Enhanced Skills and Languages), Affects Others, Free Action, Limited to Intellect skills, Limited to subject’s skill rank, Perception Range, Sense- Dependent (mental contact with subjects)"
   },
   {
     "id": "mental-mental-communication",
@@ -1034,7 +1054,8 @@ export default [
       "formula": "Communication (Mental) • 4 points",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Communication (Mental)"
   },
   {
     "id": "mental-mental-awareness",
@@ -1074,7 +1095,8 @@ export default [
       "formula": "Senses 1 (Awareness, Mental) • 1 point",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Awareness, Mental)"
   },
   {
     "id": "mental-mental-detection",
@@ -1129,7 +1151,8 @@ export default [
       "formula": "Senses 5 (Detect Minds, Ranged, Acute, Accurate) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 5 (Detect Minds, Ranged, Acute, Accurate)"
   },
   {
     "id": "mental-mind-reading",
@@ -1162,7 +1185,8 @@ export default [
       "formula": "Mind Reading • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Mind Reading"
   },
   {
     "id": "mental-sensory-link",
@@ -1207,7 +1231,8 @@ export default [
       "formula": "Remote Sensing (All Senses), Limited to Subjects of Mental Communication or Mind Reading, Sense Dependent • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Remote Sensing (All Senses), Limited to Subjects of Mental Communication or Mind Reading, Sense Dependent"
   },
   {
     "id": "mental-telepathic-translation",
@@ -1254,6 +1279,7 @@ export default [
       "formula": "Comprehend 3 (Languages), Affects Others, Perception Area (Hearing) • 12 points",
       "fixed": 12,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend 3 (Languages), Affects Others, Perception Area (Hearing)"
   }
 ] satisfies PowerTemplate[];

@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "light-blinding-beam",
@@ -50,7 +51,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to Vision • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to Vision"
   },
   {
     "id": "light-blinding-burst",
@@ -103,7 +105,8 @@ export default [
       "formula": "Burst Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to Vision • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to Vision"
   },
   {
     "id": "light-dazzling-burst",
@@ -156,7 +159,8 @@ export default [
       "formula": "Burst Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed, Stunned, Incapacitated), Sight-Dependent • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed, Stunned, Incapacitated), Sight-Dependent"
   },
   {
     "id": "light-hypnotic-strobe",
@@ -208,7 +212,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will; Entranced, Compelled), Limited Degree, Sight-Dependent • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will; Entranced, Compelled), Limited Degree, Sight-Dependent"
   },
   {
     "id": "light-blinding-aura",
@@ -270,7 +275,8 @@ export default [
     "requiresCharacterChanges": {
       "en": "Reference only: the book requires Sustained Affliction; this builder only models its Concentration step.",
       "pt": "Apenas referência: o livro exige Aflição Sustentada; este Builder representa apenas sua etapa de Concentração."
-    }
+    },
+    "sourceFormula": "Perception Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to Vision, Sustained Duration"
   },
   {
     "id": "light-blinding-field",
@@ -319,7 +325,8 @@ export default [
       "formula": "Burst Area Visual Concealment 4 Attack (all visual senses) • 12 points + 4 points per +1 area distance rank",
       "fixed": 12,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Burst Area Visual Concealment 4 Attack (all visual senses)"
   },
   {
     "id": "light-laser-beam",
@@ -358,7 +365,8 @@ export default [
       "formula": "Ranged Damage (Laser) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (Laser)"
   },
   {
     "id": "light-pulse-laser",
@@ -402,7 +410,8 @@ export default [
       "formula": "Ranged Multiattack Damage (Laser) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Multiattack Damage (Laser)"
   },
   {
     "id": "light-laser-burst",
@@ -442,7 +451,8 @@ export default [
       "formula": "Burst Area Damage (Laser) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area Damage (Laser)"
   },
   {
     "id": "light-invisible-laser-beam",
@@ -459,7 +469,7 @@ export default [
       "en": "Damage · Increased Range · Subtle",
       "pt": "Dano · Alcance Aumentado · Sutil"
     },
-    "page": 94,
+    "page": 95,
     "components": [
       {
         "effectId": "damage",
@@ -486,7 +496,8 @@ export default [
       "formula": "Ranged Damage (Laser), Subtle • 1",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (Laser), Subtle"
   },
   {
     "id": "light-laser-weapon",
@@ -503,7 +514,7 @@ export default [
       "en": "Damage",
       "pt": "Dano"
     },
-    "page": 94,
+    "page": 95,
     "components": [
       {
         "effectId": "damage",
@@ -519,7 +530,8 @@ export default [
       "formula": "Damage (Laser) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Damage (Laser)"
   },
   {
     "id": "light-targeting-laser",
@@ -557,7 +569,8 @@ export default [
       "formula": "Add Accurate to any Laser power • 1 point",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Add Accurate to any Laser power"
   },
   {
     "id": "light-immunity-to-light",
@@ -589,7 +602,8 @@ export default [
       "formula": "Immunity 10 (Light Effects) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Light Effects)"
   },
   {
     "id": "light-light-absorption",
@@ -634,7 +648,8 @@ export default [
       "formula": "Enhanced Trait, Fades, Limited to the lesser of effect rank or absorbed energy rank • As base trait –2 per rank",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Enhanced Trait, Fades, Limited to the lesser of effect rank or absorbed energy rank"
   },
   {
     "id": "light-light-form",
@@ -666,7 +681,8 @@ export default [
       "formula": "Insubstantial 3 (Energy Form – Light) • 15 points",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 3 (Energy Form – Light)"
   },
   {
     "id": "light-photonic-shield",
@@ -705,7 +721,8 @@ export default [
       "formula": "Protection, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection, Sustained"
   },
   {
     "id": "light-reflective",
@@ -754,7 +771,8 @@ export default [
       "formula": "Deflect, Reflect, Close Range, Limited to Light Effects • 1 point per 2 ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Deflect, Reflect, Close Range, Limited to Light Effects"
   },
   {
     "id": "light-lightflight",
@@ -787,7 +805,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "light-light-bridge",
@@ -826,7 +845,8 @@ export default [
       "formula": "Flight, Platform • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Platform"
   },
   {
     "id": "light-lightspeed",
@@ -866,7 +886,8 @@ export default [
       "formula": "Flight 24, Movement 1 (Space Travel 1) • 50 points",
       "fixed": 50,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Flight 24, Movement 1 (Space Travel 1)"
   },
   {
     "id": "light-banish-darkness",
@@ -914,7 +935,8 @@ export default [
       "formula": "Burst Area Nullify Darkness, Simultaneous • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Burst Area Nullify Darkness, Simultaneous"
   },
   {
     "id": "light-healing-light",
@@ -947,7 +969,8 @@ export default [
       "formula": "Healing • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Healing"
   },
   {
     "id": "light-holograms",
@@ -981,7 +1004,8 @@ export default [
       "formula": "Visual Illusion • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Visual Illusion"
   },
   {
     "id": "light-illuminate",
@@ -1015,7 +1039,8 @@ export default [
       "formula": "Environment (Light) • 1 or 2 points per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Light)"
   },
   {
     "id": "light-laser-comm",
@@ -1048,7 +1073,8 @@ export default [
       "formula": "Communication (Visual, Laser) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Communication (Visual, Laser)"
   },
   {
     "id": "light-laser-hearing",
@@ -1092,7 +1118,8 @@ export default [
       "formula": "Senses 5 (Extended Hearing, Hearing Penetrates Concealment) • 5 points +1 point per additional",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 5 (Extended Hearing, Hearing Penetrates Concealment)"
   },
   {
     "id": "light-light-constructs",
@@ -1125,7 +1152,8 @@ export default [
       "formula": "Create • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create"
   },
   {
     "id": "light-solar-sustenance",
@@ -1163,7 +1191,8 @@ export default [
       "formula": "Immunity 2 (sleep and starvation), Source (light) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (sleep and starvation), Source (light)"
   },
   {
     "id": "light-vision-enhancement",
@@ -1197,7 +1226,8 @@ export default [
       "formula": "Senses: choose any of Vision Counters Concealment (Invisibility), Vision Counters Illusion, Darkvision (all requiring 2 ranks), Extended Vision, Infravision, Low-Light Vision, Microscopic Vision, Radius Vision, and Ultravision • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Senses: choose any of Vision Counters Concealment (Invisibility), Vision Counters Illusion, Darkvision (all requiring 2 ranks), Extended Vision, Infravision, Low-Light Vision, Microscopic Vision, Radius Vision, and Ultravision"
   },
   {
     "id": "light-warp-light-2",
@@ -1234,7 +1264,8 @@ export default [
       "formula": "Visual Concealment 2 • 4 points, 4 ranks (8 points)",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Visual Concealment 2"
   },
   {
     "id": "light-warp-light-4",
@@ -1271,7 +1302,8 @@ export default [
       "formula": "Visual Concealment 2 • 4 points, 4 ranks (8 points)",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Visual Concealment 2"
   },
   {
     "id": "light-infrared-invisibility",
@@ -1308,6 +1340,7 @@ export default [
       "formula": "Infravision Concealment 2 • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Infravision Concealment 2"
   }
 ] satisfies PowerTemplate[];

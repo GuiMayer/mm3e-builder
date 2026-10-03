@@ -4,6 +4,7 @@ export { POWER_LIBRARY_INDEX } from './catalogIndex';
 export interface LibraryEntry {
   id: string; profileId: string; name: LibraryText; section: LibraryText;
   summary: LibraryText; page: number; effectIds: string[];
+  referenceOnly?: boolean;
 }
 const profiles = import.meta.glob<PowerTemplate[]>('./profiles/*.ts', { import: 'default' });
 const cache = new Map<string, Promise<PowerTemplate[]>>();

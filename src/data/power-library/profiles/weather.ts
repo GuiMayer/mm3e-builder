@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "weather-arctic-freeze",
@@ -63,7 +64,8 @@ export default [
       "formula": "Cumulative Ranged Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Cumulative Ranged Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree"
   },
   {
     "id": "weather-blinding-arc",
@@ -123,7 +125,8 @@ export default [
       "formula": "Cumulative Ranged Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Vision • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Ranged Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Vision"
   },
   {
     "id": "weather-cyclone",
@@ -194,7 +197,8 @@ export default [
       "formula": "Burst Area Ranged Affliction (Resisted and Overcome by Strength; Hindered and Impaired, Prone and Stunned, Incapacitated), Alternate Resistance (Strength), Concentration, Extra Condition, Instant Recovery • 4 points",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Burst Area Ranged Affliction (Resisted and Overcome by Strength; Hindered and Impaired, Prone and Stunned, Incapacitated), Alternate Resistance (Strength), Concentration, Extra Condition, Instant Recovery"
   },
   {
     "id": "weather-exposure",
@@ -241,7 +245,8 @@ export default [
       "formula": "Ranged Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated), Subtle • 1",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated), Subtle"
   },
   {
     "id": "weather-hailstorm",
@@ -291,7 +296,8 @@ export default [
       "formula": "Burst Area Ranged Damage (bludgeoning), Indirect 2 (falling from above) • 2 points + 3 points per rank",
       "fixed": 2,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Burst Area Ranged Damage (bludgeoning), Indirect 2 (falling from above)"
   },
   {
     "id": "weather-lightning-bolt",
@@ -330,7 +336,8 @@ export default [
       "formula": "Ranged Damage (electrical) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (electrical)"
   },
   {
     "id": "weather-thunderclap",
@@ -382,7 +389,8 @@ export default [
       "formula": "Cumulative Ranged Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Hearing • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Ranged Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Hearing"
   },
   {
     "id": "weather-wind-blast",
@@ -432,7 +440,8 @@ export default [
       "formula": "Cone Area Move Object, Close Range, Limited to Pushing Away • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Cone Area Move Object, Close Range, Limited to Pushing Away"
   },
   {
     "id": "weather-fog-visibility-2",
@@ -466,7 +475,8 @@ export default [
       "formula": "Environment (Visibility) • 1 point per rank (impairment) or",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Visibility)"
   },
   {
     "id": "weather-fog-visibility-5",
@@ -500,7 +510,8 @@ export default [
       "formula": "Environment (Visibility) • 1 point per rank (impairment) or",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (Visibility)"
   },
   {
     "id": "weather-fog-concealment",
@@ -549,7 +560,8 @@ export default [
       "formula": "Environment (Visibility) • 1 point per rank (impairment) or",
       "fixed": 12,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Environment (Visibility)"
   },
   {
     "id": "weather-immunity-to-weather-2",
@@ -581,7 +593,8 @@ export default [
       "formula": "Immunity 2 (Earthly Weather) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (Earthly Weather)"
   },
   {
     "id": "weather-immunity-to-weather-10",
@@ -613,7 +626,8 @@ export default [
       "formula": "Immunity 2 (Earthly Weather) • 2 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (Earthly Weather)"
   },
   {
     "id": "weather-whirlwind",
@@ -658,7 +672,8 @@ export default [
       "formula": "Deflect, Cloud Area 2 (30-foot radius), Limited to Attacks Targeting Dodge • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Deflect, Cloud Area 2 (30-foot radius), Limited to Attacks Targeting Dodge"
   },
   {
     "id": "weather-wind-screen",
@@ -707,7 +722,8 @@ export default [
       "formula": "Impervious Protection, Sustained, Limited to Physical Damage • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Impervious Protection, Sustained, Limited to Physical Damage"
   },
   {
     "id": "weather-weatherproof",
@@ -742,7 +758,8 @@ export default [
       "formula": "Movement 1 (Environmental Adaptation: Weather) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Environmental Adaptation: Weather)"
   },
   {
     "id": "weather-wind-riding",
@@ -775,7 +792,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "weather-weather-control",
@@ -847,7 +865,8 @@ export default [
       "formula": "Environment (3 points of effect), Selective • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Environment (3 points of effect), Selective"
   },
   {
     "id": "weather-weather-prediction",
@@ -891,7 +910,8 @@ export default [
       "formula": "Senses 4 (Precognition), Limited to Weather • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Precognition), Limited to Weather"
   },
   {
     "id": "weather-wind-lifting",
@@ -936,6 +956,7 @@ export default [
       "formula": "Burst Area Move Object, Selective • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Burst Area Move Object, Selective"
   }
 ] satisfies PowerTemplate[];

@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "summoning-animation",
@@ -42,7 +43,8 @@ export default [
       "formula": "Perception Range Summon Animated Object, Limited to Available Objects • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Range Summon Animated Object, Limited to Available Objects"
   },
   {
     "id": "summoning-constructs",
@@ -94,12 +96,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Summon 2 + Ranged 1 + Broad Type 2 + Controlled 1 = 6/rank, not printed 5.",
-          "pt": "Divergência da fonte: Summon 2 + Ranged 1 + Broad Type 2 + Controlled 1 = 6/rank, not printed 5."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 6 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 6
       }
-    }
+    },
+    "sourceFormula": "Ranged Summon Construct, Broad Type, Controlled"
   },
   {
     "id": "summoning-duplication",
@@ -138,7 +141,8 @@ export default [
       "formula": "Summon Duplicate, Heroic • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Summon Duplicate, Heroic"
   },
   {
     "id": "summoning-necromancy",
@@ -187,7 +191,8 @@ export default [
       "formula": "Summon Undead, Controlled, Horde, Multiple Minions (32 total) • 14 points per rank",
       "fixed": 0,
       "perRank": 14
-    }
+    },
+    "sourceFormula": "Summon Undead, Controlled, Horde, Multiple Minions (32 total)"
   },
   {
     "id": "summoning-swarm",
@@ -231,7 +236,8 @@ export default [
       "formula": "Summon Swarm (Active, Controlled) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Summon Swarm (Active, Controlled)"
   },
   {
     "id": "summoning-decoys",
@@ -274,7 +280,8 @@ export default [
       "formula": "Concealment 4 (All Visual Senses), Limited to Decoy Images • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 4 (All Visual Senses), Limited to Decoy Images"
   },
   {
     "id": "summoning-sacrifice",
@@ -311,7 +318,8 @@ export default [
       "formula": "Add Sacrifice modifier to Summon • 1 point.",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Add Sacrifice modifier to Summon"
   },
   {
     "id": "summoning-castling",
@@ -370,7 +378,8 @@ export default [
       "formula": "Teleport, Accurate (wherever duplicate is), Easy, Extended, Limited to Switching Places With Duplicate (–2), Medium (Duplicate) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport, Accurate (wherever duplicate is), Easy, Extended, Limited to Switching Places With Duplicate (–2), Medium (Duplicate)"
   },
   {
     "id": "summoning-duplicate-ladder",
@@ -403,7 +412,8 @@ export default [
       "formula": "Leaping • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Leaping"
   },
   {
     "id": "summoning-summon-steed",
@@ -441,7 +451,8 @@ export default [
       "formula": "Summon Steed 1, Continuous • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Steed 1, Continuous"
   },
   {
     "id": "summoning-summon-vehicle",
@@ -480,7 +491,8 @@ export default [
       "formula": "Summon Vehicle",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Summon Vehicle, Controlled"
   },
   {
     "id": "summoning-anatomic-split",
@@ -534,7 +546,8 @@ export default [
       "formula": "Summon Body Part, Controlled, Mental Link, Multiple Minions 3, Side-Effect (Lose use of the separated part) • 1 point + 8 points per rank",
       "fixed": 1,
       "perRank": 8
-    }
+    },
+    "sourceFormula": "Summon Body Part, Controlled, Mental Link, Multiple Minions 3, Side-Effect (Lose use of the separated part)"
   },
   {
     "id": "summoning-combine",
@@ -583,7 +596,8 @@ export default [
       "formula": "Summon Combined Form, Heroic, Feedback, Limited (requires all components be present), Limited (components vanish while combined form is present) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Summon Combined Form, Heroic, Feedback, Limited (requires all components be present), Limited (components vanish while combined form is present)"
   },
   {
     "id": "summoning-empower",
@@ -627,6 +641,7 @@ export default [
       "formula": "Summon Empowered Version, General Type, Limited to Available Subjects • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Summon Empowered Version, General Type, Limited to Available Subjects"
   }
 ] satisfies PowerTemplate[];

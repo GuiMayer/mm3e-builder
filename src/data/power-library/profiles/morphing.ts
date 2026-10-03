@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "morphing-baneful-transformation",
@@ -45,7 +46,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted and Overcome by Will; Hindered, Stunned, Transformed) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted and Overcome by Will; Hindered, Stunned, Transformed)"
   },
   {
     "id": "morphing-natural-weapons",
@@ -81,7 +83,8 @@ export default [
       "formula": "Strength-based Damage • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Strength-based Damage"
   },
   {
     "id": "morphing-pseudopods",
@@ -120,7 +123,8 @@ export default [
       "formula": "Extra Limbs, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Extra Limbs, Sustained"
   },
   {
     "id": "morphing-slingshot",
@@ -163,7 +167,8 @@ export default [
       "formula": "Enhanced Strength, Limited to Throwing • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Limited to Throwing"
   },
   {
     "id": "morphing-bounceback-attack",
@@ -207,7 +212,8 @@ export default [
       "formula": "Deflect, Reflect, Close Range • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Deflect, Reflect, Close Range"
   },
   {
     "id": "morphing-metamorphic-healing",
@@ -246,7 +252,8 @@ export default [
       "formula": "Healing, Limited to Self • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Healing, Limited to Self"
   },
   {
     "id": "morphing-metamorphic-regeneration",
@@ -279,7 +286,8 @@ export default [
       "formula": "Regeneration • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Regeneration"
   },
   {
     "id": "morphing-flat-form",
@@ -338,7 +346,8 @@ export default [
       "formula": "Concealment 4 (Visual), Limited to One Edge, Partial; Insubstantial 1, Limited by Width • 6 points",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 4 (Visual), Limited to One Edge, Partial; Insubstantial 1, Limited by Width"
   },
   {
     "id": "morphing-malleable-form",
@@ -370,7 +379,8 @@ export default [
       "formula": "Insubstantial 1 • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 1"
   },
   {
     "id": "morphing-transformed-toughness",
@@ -403,7 +413,8 @@ export default [
       "formula": "Protection • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection"
   },
   {
     "id": "morphing-bouncing-ball",
@@ -436,7 +447,8 @@ export default [
       "formula": "Leaping • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Leaping"
   },
   {
     "id": "morphing-living-glider",
@@ -475,7 +487,8 @@ export default [
       "formula": "Flight, Gliding • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Gliding"
   },
   {
     "id": "morphing-stretching-stride",
@@ -508,7 +521,8 @@ export default [
       "formula": "Speed • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Speed"
   },
   {
     "id": "morphing-wings",
@@ -547,7 +561,8 @@ export default [
       "formula": "Flight, Wings • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Wings"
   },
   {
     "id": "morphing-living-trampoline",
@@ -588,7 +603,8 @@ export default [
       "formula": "Movement 1 (Safe Fall), Affects Others • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Safe Fall), Affects Others"
   },
   {
     "id": "morphing-swinging-arms",
@@ -623,7 +639,8 @@ export default [
       "formula": "Movement 1 (Swinging) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Swinging)"
   },
   {
     "id": "morphing-extended-eyes",
@@ -657,7 +674,8 @@ export default [
       "formula": "Remote Sensing (Visual) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Remote Sensing (Visual)"
   },
   {
     "id": "morphing-fingertip-lockpick",
@@ -690,7 +708,8 @@ export default [
       "formula": "Feature (+10 circumstance bonus to Technology checks to pick mechanical locks) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Feature (+10 circumstance bonus to Technology checks to pick mechanical locks)"
   },
   {
     "id": "morphing-metamorphic-minions",
@@ -739,7 +758,8 @@ export default [
       "formula": "Summon, Controlled, Horde, Multiple Minions 3 (up to eight minions) • 10 points per rank",
       "fixed": 0,
       "perRank": 10
-    }
+    },
+    "sourceFormula": "Summon, Controlled, Horde, Multiple Minions 3 (up to eight minions)"
   },
   {
     "id": "morphing-shapeshift",
@@ -772,7 +792,8 @@ export default [
       "formula": "Variable (assumed forms, allocate 5 power points per rank) • 7 points per rank",
       "fixed": 0,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Variable (assumed forms, allocate 5 power points per rank)"
   },
   {
     "id": "morphing-stretching",
@@ -805,6 +826,7 @@ export default [
       "formula": "Elongation • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Elongation"
   }
 ] satisfies PowerTemplate[];

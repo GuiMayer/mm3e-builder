@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "cosmic-cosmic-blast",
@@ -37,7 +38,8 @@ export default [
       "formula": "Ranged Damage • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage"
   },
   {
     "id": "cosmic-cosmic-burst",
@@ -82,7 +84,8 @@ export default [
       "formula": "Ranged Burst Area Damage • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Damage"
   },
   {
     "id": "cosmic-cosmic-grasp",
@@ -147,7 +150,8 @@ export default [
       "formula": "Ranged Affliction (Resisted by Dodge, Overcome by Strength; Impaired and Vulnerable, Defenseless and Immobilized), Extra Condition, Reversible, Limited Degree • 1 point + 2 points per rank",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Affliction (Resisted by Dodge, Overcome by Strength; Impaired and Vulnerable, Defenseless and Immobilized), Extra Condition, Reversible, Limited Degree"
   },
   {
     "id": "cosmic-meteor-shower",
@@ -191,7 +195,8 @@ export default [
       "formula": "Ranged Multiattack Damage (fire and impact) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Multiattack Damage (fire and impact)"
   },
   {
     "id": "cosmic-nebular-field",
@@ -245,7 +250,8 @@ export default [
       "formula": "Ranged Cloud Area Concealment Attack 4 (Visual) • 16 points +4 points per +1 distance rank to area.",
       "fixed": 16,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Ranged Cloud Area Concealment Attack 4 (Visual)"
   },
   {
     "id": "cosmic-cosmic-shield",
@@ -289,7 +295,8 @@ export default [
       "formula": "Impervious Protection, Sustained • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Impervious Protection, Sustained"
   },
   {
     "id": "cosmic-spaceworthy",
@@ -321,7 +328,8 @@ export default [
       "formula": "Immunity 5 (cold, all suffocation, radiation, vacuum) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (cold, all suffocation, radiation, vacuum)"
   },
   {
     "id": "cosmic-unearthly",
@@ -353,7 +361,8 @@ export default [
       "formula": "Immunity 30 (Fortitude effects) • 30 points",
       "fixed": 30,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 30 (Fortitude effects)"
   },
   {
     "id": "cosmic-faster-than-light",
@@ -389,7 +398,8 @@ export default [
       "formula": "Movement (Space Travel) • 2 points per rank up to rank 3 (6 points).",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Movement (Space Travel)"
   },
   {
     "id": "cosmic-space-warp",
@@ -431,7 +441,8 @@ export default [
       "formula": "Movement (Space Travel), Portal • 4 points per rank up to rank 3 (12 points).",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Movement (Space Travel), Portal"
   },
   {
     "id": "cosmic-soar-the-spaceways",
@@ -466,7 +477,8 @@ export default [
       "formula": "Movement 1 (Environmental Adaptation: Space) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Environmental Adaptation: Space)"
   },
   {
     "id": "cosmic-cosmic-awareness",
@@ -522,7 +534,8 @@ export default [
       "formula": "Senses 6 (Acute Cosmic Awareness, Precognition Limited to Cosmic Events) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 6 (Acute Cosmic Awareness, Precognition Limited to Cosmic Events)"
   },
   {
     "id": "cosmic-cosmic-communication",
@@ -554,7 +567,8 @@ export default [
       "formula": "Communication 5 (subspace audio- visual projection, any distance) • 20 points",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Communication 5 (subspace audio- visual projection, any distance)"
   },
   {
     "id": "cosmic-cosmic-control",
@@ -587,7 +601,8 @@ export default [
       "formula": "Move Object • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Move Object"
   },
   {
     "id": "cosmic-cosmic-healing",
@@ -620,7 +635,8 @@ export default [
       "formula": "Healing • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Healing"
   },
   {
     "id": "cosmic-cosmic-mastery",
@@ -653,7 +669,8 @@ export default [
       "formula": "Variable (cosmic powers) • 7 points per rank",
       "fixed": 0,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Variable (cosmic powers)"
   },
   {
     "id": "cosmic-cosmic-order",
@@ -695,7 +712,8 @@ export default [
       "formula": "Nullify Chaos Effects, Simultaneous • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Nullify Chaos Effects, Simultaneous"
   },
   {
     "id": "cosmic-cosmic-strength",
@@ -732,7 +750,8 @@ export default [
       "formula": "Enhanced Strength • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Enhanced Strength"
   },
   {
     "id": "cosmic-cosmic-tracking",
@@ -794,7 +813,8 @@ export default [
       "formula": "Senses 8 (Accurate, Acute, Direction Sense, Distance Sense, Extended, Tracking 2) • 8 points",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 8 (Accurate, Acute, Direction Sense, Distance Sense, Extended, Tracking 2)"
   },
   {
     "id": "cosmic-cosmic-transmutation",
@@ -828,7 +848,8 @@ export default [
       "formula": "Transform (anything into anything else) • 5 points per rank",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Transform (anything into anything else)"
   },
   {
     "id": "cosmic-universal-translation",
@@ -860,6 +881,7 @@ export default [
       "formula": "Comprehend 3 (speak, understand, understood, all languages) • 6 points",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend 3 (speak, understand, understood, all languages)"
   }
 ] satisfies PowerTemplate[];

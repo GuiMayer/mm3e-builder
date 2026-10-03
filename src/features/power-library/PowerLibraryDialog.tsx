@@ -95,7 +95,7 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
         <nav className="power-library-profiles" aria-label={t('powerLibrary.profile')}><button type="button" aria-pressed={!profile} onClick={() => setProfile('')}>{t('powerLibrary.allProfiles')}</button>{POWER_PROFILES.filter(item => POWER_LIBRARY_INDEX.some(entry => entry.profileId === item.id)).map(item => <button type="button" key={item.id} aria-pressed={item.id === profile} onClick={() => setProfile(item.id)}>{libraryText(item.name, language)}</button>)}</nav>
         <div className="power-library-results" aria-label={t('powerLibrary.results')}>
           <p className="power-library-count">{t('powerLibrary.count', { count: results.length })}</p>
-          {results.map(entry => <button type="button" className="power-library-result" key={entry.id} aria-pressed={selected?.id === entry.id} onClick={() => { void select(entry); }}><strong>{libraryText(entry.name, language)}</strong><small>{libraryText(POWER_PROFILES.find(item => item.id === entry.profileId)!.name, language)} · {libraryText(entry.section, language)} · p. {entry.page}</small><span>{libraryText(entry.summary, language)}</span></button>)}
+          {results.map(entry => <button type="button" className="power-library-result" key={entry.id} aria-pressed={selected?.id === entry.id} onClick={() => { void select(entry); }}><strong>{libraryText(entry.name, language)}</strong><small>{libraryText(POWER_PROFILES.find(item => item.id === entry.profileId)!.name, language)} · {libraryText(entry.section, language)} · p. {entry.page}{entry.referenceOnly ? ` · ${t('powerLibrary.referenceOnly')}` : ''}</small><span>{libraryText(entry.summary, language)}</span></button>)}
           {!results.length && <p>{t('powerLibrary.noResults')}</p>}
         </div>
         <section className="power-library-preview" aria-label={t('powerLibrary.preview')}>
@@ -106,6 +106,7 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
             <h3>{libraryText(selected.name, language)}</h3><p>{libraryText(selected.summary, language)}</p><p className="power-library-source">Power Profiles · p. {selected.page}{language.startsWith('pt') ? ` · ${selected.name.en}` : ''}</p>
             {selected.audit.discrepancy && <p role="note" className="power-library-discrepancy">{libraryText(selected.audit.discrepancy.reason, language)}</p>}
             {selected.requiresCharacterChanges && <p role="alert" className="power-library-discrepancy">{libraryText(selected.requiresCharacterChanges, language)}</p>}
+            {selected.sourceFormula && <details className="power-library-book-reference"><summary>{t('powerLibrary.sourceFormula')}</summary><p>{selected.sourceFormula}</p></details>}
             {allComponents.map((component, index) => {
               const definition = effects.find(effect => effect.id === component.effectId);
               const originalComponent = originalComponents[index];

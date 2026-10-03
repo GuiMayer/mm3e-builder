@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "size-growth-momentum",
@@ -40,7 +41,8 @@ export default [
       "formula": "Strength-based Damage, Limited to size rank difference between you and your target • 1 point",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Strength-based Damage, Limited to size rank difference between you and your target"
   },
   {
     "id": "size-internal-attack",
@@ -100,7 +102,8 @@ export default [
       "formula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Affects Corporeal, Subtle, Quirk (Must use the Atomic modifier on Shrinking, –1 point) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Affects Corporeal, Subtle, Quirk (Must use the Atomic modifier on Shrinking, –1 point)"
   },
   {
     "id": "size-phase-attack",
@@ -150,7 +153,8 @@ export default [
       "formula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Affects Corporeal • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Affects Corporeal"
   },
   {
     "id": "size-massive-missile",
@@ -200,7 +204,8 @@ export default [
       "formula": "Burst Area Ranged Damage, Quirk (Requires objects to throw, –1 point) • 2 points for rank 1 +",
       "fixed": -1,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Burst Area Ranged Damage, Quirk (Requires objects to throw, –1 point)"
   },
   {
     "id": "size-shrink-ray",
@@ -263,12 +268,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Only third degree removes two degrees: Affliction 1 + Ranged 1 + Progressive 2 - 2 = 2/rank.",
-          "pt": "Divergência da fonte: Only third degree removes two degrees: Affliction 1 + Ranged 1 + Progressive 2 - 2 = 2/rank."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 2 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 2
       }
-    }
+    },
+    "sourceFormula": "Ranged Progressive Affliction (Resisted by Dodge, Overcome by Fortitude; Transformed – reduced to tiny size), Limited (Third Degree Only)"
   },
   {
     "id": "size-density-decrease",
@@ -300,7 +306,8 @@ export default [
       "formula": "Insubstantial 4 (Incorporeal) • 20 points",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 4 (Incorporeal)"
   },
   {
     "id": "size-massive-armor",
@@ -337,7 +344,8 @@ export default [
       "formula": "Impervious modifier on Toughness • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Impervious modifier on Toughness"
   },
   {
     "id": "size-shrinking-dodge",
@@ -374,7 +382,8 @@ export default [
       "formula": "Reaction modifier on Shrinking (when attacked) • 1 point per Shrinking rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Reaction modifier on Shrinking (when attacked)"
   },
   {
     "id": "size-microflight",
@@ -413,7 +422,8 @@ export default [
       "formula": "Flight, Quirk (Must be using Shrinking, –1 point) •",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight, Quirk (Must be using Shrinking, –1 point)"
   },
   {
     "id": "size-microport",
@@ -462,7 +472,8 @@ export default [
       "formula": "Teleport, Accurate, Extended, Medium (transmission networks) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Teleport, Accurate, Extended, Medium (transmission networks)"
   },
   {
     "id": "size-microverse",
@@ -497,7 +508,8 @@ export default [
       "formula": "Movement 1 (Dimensional Travel 1, microverse) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Dimensional Travel 1, microverse)"
   },
   {
     "id": "size-density-increase",
@@ -530,7 +542,8 @@ export default [
       "formula": "Growth, Does Not Change Size (+0 modifier) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Growth, Does Not Change Size (+0 modifier)"
   },
   {
     "id": "size-mass-compaction",
@@ -588,12 +601,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Strength 2 - Limited 1 = 1/rank; Toughness 1 - Limited 1 = 1 PP/2 ranks. Each purchase is rounded independently.",
-          "pt": "Divergência da fonte: Strength 2 - Limited 1 = 1/rank; Toughness 1 - Limited 1 = 1 PP/2 ranks. Each purchase is rounded independently."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 1.5 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 1.5
       }
-    }
+    },
+    "sourceFormula": "Enhanced Strength and Toughness, Limited to active Shrinking rank"
   },
   {
     "id": "size-mass-dispersal",
@@ -643,7 +657,8 @@ export default [
       "formula": "Insubstantial Linked to Growth, Limited to Increasing Size Only (–2) • 5 points per Insubstantial rank + 1",
       "fixed": 5,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Insubstantial Linked to Growth, Limited to Increasing Size Only (–2)"
   },
   {
     "id": "size-microvision-1",
@@ -681,7 +696,8 @@ export default [
       "formula": "Senses (Microscopic Vision) • 1 point per rank (to",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses (Microscopic Vision)"
   },
   {
     "id": "size-microvision-2",
@@ -719,7 +735,8 @@ export default [
       "formula": "Senses (Microscopic Vision) • 1 point per rank (to",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses (Microscopic Vision)"
   },
   {
     "id": "size-microvision-3",
@@ -757,7 +774,8 @@ export default [
       "formula": "Senses (Microscopic Vision) • 1 point per rank (to",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses (Microscopic Vision)"
   },
   {
     "id": "size-microvision-4",
@@ -795,7 +813,8 @@ export default [
       "formula": "Senses (Microscopic Vision) • 1 point per rank (to",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses (Microscopic Vision)"
   },
   {
     "id": "size-shrinking-storage",
@@ -828,6 +847,7 @@ export default [
       "formula": "Feature (reduce mass of carried items by rank) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Feature (reduce mass of carried items by rank)"
   }
 ] satisfies PowerTemplate[];

@@ -1224,5 +1224,7 @@
   "powerLibrary.sense.time_sense": "Senso de Tempo",
   "powerLibrary.sense.tracking": "Rastreamento",
   "powerLibrary.sense.ultra_hearing": "Ultra-Audição",
-  "powerLibrary.sense.ultravision": "Ultravisão"
+  "powerLibrary.sense.ultravision": "Ultravisão",
+  "powerLibrary.referenceOnly": "Apenas referência",
+  "powerLibrary.sourceFormula": "Composição original do livro (inglês)"
 }

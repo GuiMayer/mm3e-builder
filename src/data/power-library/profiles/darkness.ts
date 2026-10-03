@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "darkness-blinding-blast",
@@ -53,7 +54,8 @@ export default [
       "formula": "Ranged Affliction (darkness; Resisted by Dodge, Overcome by Will; Impaired, Disabled, Unaware), Limited to Vision • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Ranged Affliction (darkness; Resisted by Dodge, Overcome by Will; Impaired, Disabled, Unaware), Limited to Vision"
   },
   {
     "id": "darkness-dark-blast",
@@ -92,7 +94,8 @@ export default [
       "formula": "Ranged Damage (cold, force, or life-drain) • 2",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (cold, force, or life-drain)"
   },
   {
     "id": "darkness-night-terrors",
@@ -139,7 +142,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will; Entranced, Compelled, Controlled), Limited to fleeing or cowering in terror • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will; Entranced, Compelled, Controlled), Limited to fleeing or cowering in terror"
   },
   {
     "id": "darkness-shadow-bind",
@@ -204,7 +208,8 @@ export default [
       "formula": "Cumulative Ranged Affliction (Resisted by Dodge, Overcome by Will; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Cumulative Ranged Affliction (Resisted by Dodge, Overcome by Will; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree"
   },
   {
     "id": "darkness-shadow-boxing",
@@ -248,7 +253,8 @@ export default [
       "formula": "Damaging Move Object, Limited to Shadow Interactions • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Damaging Move Object, Limited to Shadow Interactions"
   },
   {
     "id": "darkness-shadow-shroud",
@@ -302,7 +308,8 @@ export default [
       "formula": "Ranged Burst Area Visual Concealment 4 Attack • 16 points +4 points per +1 area distance rank",
       "fixed": 16,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Visual Concealment 4 Attack"
   },
   {
     "id": "darkness-swallowing-shadow",
@@ -349,7 +356,8 @@ export default [
       "formula": "Perception Ranged Movement (Dimensional Travel to a “shadow world”) Attack (Resisted by Will, base DC 11) • 4 points +3 points per +1 in",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Perception Ranged Movement (Dimensional Travel to a “shadow world”) Attack (Resisted by Will, base DC 11)"
   },
   {
     "id": "darkness-dark-aura",
@@ -391,7 +399,8 @@ export default [
       "formula": "Reaction Damage (to being touched; cold, force, or life-drain) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Reaction Damage (to being touched; cold, force, or life-drain)"
   },
   {
     "id": "darkness-immunity-to-darkness",
@@ -423,7 +432,8 @@ export default [
       "formula": "Immunity 5 (darkness effects) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (darkness effects)"
   },
   {
     "id": "darkness-immunity-to-light",
@@ -455,7 +465,8 @@ export default [
       "formula": "Immunity 10 (light effects) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (light effects)"
   },
   {
     "id": "darkness-shadow-meld",
@@ -498,7 +509,8 @@ export default [
       "formula": "Concealment 4 (Visual), Limited to areas of shadow or darkness • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 4 (Visual), Limited to areas of shadow or darkness"
   },
   {
     "id": "darkness-shadow-shield",
@@ -537,7 +549,8 @@ export default [
       "formula": "Protection (dark force), Sustained • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection (dark force), Sustained"
   },
   {
     "id": "darkness-dark-flight",
@@ -570,7 +583,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "darkness-shadow-bridge",
@@ -609,7 +623,8 @@ export default [
       "formula": "Flight, Platform (shadow bridge) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Platform (shadow bridge)"
   },
   {
     "id": "darkness-shadow-crawl",
@@ -642,7 +657,8 @@ export default [
       "formula": "Speed • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Speed"
   },
   {
     "id": "darkness-shadow-door",
@@ -678,7 +694,8 @@ export default [
       "formula": "Movement (Permeate) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Movement (Permeate)"
   },
   {
     "id": "darkness-shadow-projection",
@@ -712,7 +729,8 @@ export default [
       "formula": "Remote Sensing (visual, auditory, mental) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Remote Sensing (visual, auditory, mental)"
   },
   {
     "id": "darkness-shadow-walk",
@@ -751,7 +769,8 @@ export default [
       "formula": "Teleport, Medium (shadows) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Teleport, Medium (shadows)"
   },
   {
     "id": "darkness-darkvision",
@@ -791,7 +810,8 @@ export default [
       "formula": "Senses 2 (Vision Counters Concealment – darkness) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Vision Counters Concealment – darkness)"
   },
   {
     "id": "darkness-gloom-visibility-2",
@@ -825,7 +845,8 @@ export default [
       "formula": "Environment (visibility) • 1 or 2 points per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (visibility)"
   },
   {
     "id": "darkness-gloom-visibility-5",
@@ -859,7 +880,8 @@ export default [
       "formula": "Environment (visibility) • 1 or 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (visibility)"
   },
   {
     "id": "darkness-healing-darkness",
@@ -898,7 +920,8 @@ export default [
       "formula": "Regeneration, Source (darkness) • 1 point",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Regeneration, Source (darkness)"
   },
   {
     "id": "darkness-scry-through-shadow",
@@ -938,7 +961,8 @@ export default [
       "formula": "Remote Sensing (visual and auditory), Medium (shadows and darkness) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Remote Sensing (visual and auditory), Medium (shadows and darkness)"
   },
   {
     "id": "darkness-shadow-form",
@@ -1002,7 +1026,8 @@ export default [
       "formula": "Concealment 2 (Visual, Limited to Darkness and Shadows), Immunity 10 (life support), Insubstantial 3 (shadow form), Movement 3 (Slithering, Wall-crawling 2) • 33 points",
       "fixed": 33,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 2 (Visual, Limited to Darkness and Shadows), Immunity 10 (life support), Insubstantial 3 (shadow form), Movement 3 (Slithering, Wall-crawling 2)"
   },
   {
     "id": "darkness-shadow-shaping",
@@ -1035,7 +1060,8 @@ export default [
       "formula": "Create Shadow Shapes • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create Shadow Shapes"
   },
   {
     "id": "darkness-shadow-tendrils",
@@ -1068,7 +1094,8 @@ export default [
       "formula": "Move Object (shadows) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Move Object (shadows)"
   },
   {
     "id": "darkness-summon-shadows",
@@ -1100,6 +1127,7 @@ export default [
       "formula": "Summon Shadow Creature 4 (58-point minion) • 8 points",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Shadow Creature 4 (58-point minion)"
   }
 ] satisfies PowerTemplate[];

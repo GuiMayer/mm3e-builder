@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "speed-flattening-wake",
@@ -61,7 +62,8 @@ export default [
       "formula": "Reaction (while moving at high speed) Line Area Affliction (Resisted by Dodge; Dazed, Prone), Instant Recovery, Limited Degree, Limited to Directly Behind You • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Reaction (while moving at high speed) Line Area Affliction (Resisted by Dodge; Dazed, Prone), Instant Recovery, Limited Degree, Limited to Directly Behind You"
   },
   {
     "id": "speed-lightning-disarm",
@@ -98,7 +100,8 @@ export default [
       "formula": "Burst Area on Strength for Disarming, Selective • 2 points per rank (maximum rank equal to Strength).",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area on Strength for Disarming, Selective"
   },
   {
     "id": "speed-rapid-strike",
@@ -135,7 +138,8 @@ export default [
       "formula": "Multiattack on Strength Damage • 1 point per rank up to Strength rank, 2 points per additional rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Multiattack on Strength Damage"
   },
   {
     "id": "speed-sonic-boom",
@@ -171,7 +175,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "speed-super-sonic-punch",
@@ -207,7 +212,8 @@ export default [
       "formula": "Strength-based Damage (momentum) •",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Strength-based Damage (momentum)"
   },
   {
     "id": "speed-vacuum",
@@ -260,7 +266,8 @@ export default [
       "formula": "Burst Area Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated), Concentration, Cumulative • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Burst Area Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated), Concentration, Cumulative"
   },
   {
     "id": "speed-whirlwind-attack",
@@ -297,7 +304,8 @@ export default [
       "formula": "Burst Area on Strength Damage, Selective • 2 points per rank up to Strength rank, 3 points per additional rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area on Strength Damage, Selective"
   },
   {
     "id": "speed-fast-defense",
@@ -344,7 +352,8 @@ export default [
       "formula": "Enhanced Dodge, Enhanced Parry • 1 point per rank of Enhanced Defense, 2 points per rank for both.",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Enhanced Dodge, Enhanced Parry"
   },
   {
     "id": "speed-frictionless",
@@ -376,7 +385,8 @@ export default [
       "formula": "Immunity 5 (grab and entrapment effects) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (grab and entrapment effects)"
   },
   {
     "id": "speed-throwback",
@@ -420,7 +430,8 @@ export default [
       "formula": "Deflect, Reflect, Limited to Projectiles • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Deflect, Reflect, Limited to Projectiles"
   },
   {
     "id": "speed-untouchable",
@@ -472,7 +483,8 @@ export default [
       "formula": "Immunity 80 (Dodge and Parry based attacks), Concentration, Limited (not against surprise attacks or sufficiently large area effects); Reaction (when targeted by an attack) on Speed 1 • 30 points + 3 points per additional",
       "fixed": 30,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 80 (Dodge and Parry based attacks), Concentration, Limited (not against surprise attacks or sufficiently large area effects); Reaction (when targeted by an attack) on Speed 1"
   },
   {
     "id": "speed-vibrational-phasing-insubstantial",
@@ -504,7 +516,8 @@ export default [
       "formula": "Insubstantial 4 (Incorporeal) • 20 points",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 4 (Incorporeal)"
   },
   {
     "id": "speed-vibrational-phasing-permeate",
@@ -539,7 +552,8 @@ export default [
       "formula": "Insubstantial 4 (Incorporeal) • 20 points",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 4 (Incorporeal)"
   },
   {
     "id": "speed-air-brakes",
@@ -574,7 +588,8 @@ export default [
       "formula": "Movement 1 (Safe Fall) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Safe Fall)"
   },
   {
     "id": "speed-air-cushion",
@@ -624,12 +639,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Movement 2 + Affects Others 1 + Area 1 = 4, not printed 3.",
-          "pt": "Divergência da fonte: Movement 2 + Affects Others 1 + Area 1 = 4, not printed 3."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 4 PP fixos + 0 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 4,
         "perRank": 0
       }
-    }
+    },
+    "sourceFormula": "Movement 1 (Safe Fall), Affects Others, Burst Area"
   },
   {
     "id": "speed-dimensional-vibration",
@@ -664,7 +680,8 @@ export default [
       "formula": "Movement 2 (Dimensional Travel, parallel universes) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 2 (Dimensional Travel, parallel universes)"
   },
   {
     "id": "speed-run-on-water",
@@ -705,7 +722,8 @@ export default [
       "formula": "Movement 1 (Water-Walking), Limited to while moving • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Water-Walking), Limited to while moving"
   },
   {
     "id": "speed-run-up-walls",
@@ -746,7 +764,8 @@ export default [
       "formula": "Movement 1 (Wall-crawling), Limited to while moving • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Wall-crawling), Limited to while moving"
   },
   {
     "id": "speed-running-jump",
@@ -784,7 +803,8 @@ export default [
       "formula": "Leaping, Quirk (Requires a running start, –1 point) • 1 point for 2 ranks, then +1 point per rank",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Leaping, Quirk (Requires a running start, –1 point)"
   },
   {
     "id": "speed-running-speed",
@@ -817,7 +837,8 @@ export default [
       "formula": "Speed • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Speed"
   },
   {
     "id": "speed-flight-speed",
@@ -850,7 +871,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "speed-share-speed",
@@ -887,7 +909,8 @@ export default [
       "formula": "Affects Others on Running Speed • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Affects Others on Running Speed"
   },
   {
     "id": "speed-spinning-drill",
@@ -920,7 +943,8 @@ export default [
       "formula": "Burrowing • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burrowing"
   },
   {
     "id": "speed-super-temporal-speed",
@@ -955,7 +979,8 @@ export default [
       "formula": "Movement 3 (Time Travel) • 6 points",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 3 (Time Travel)"
   },
   {
     "id": "speed-cyclone",
@@ -1005,7 +1030,8 @@ export default [
       "formula": "Burst Area Move Object, Concentration, Side-Effect (limited fine movement and powerful winds) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burst Area Move Object, Concentration, Side-Effect (limited fine movement and powerful winds)"
   },
   {
     "id": "speed-fast-action",
@@ -1038,7 +1064,8 @@ export default [
       "formula": "Quickness • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Quickness"
   },
   {
     "id": "speed-fast-healing",
@@ -1071,7 +1098,8 @@ export default [
       "formula": "Regeneration • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Regeneration"
   },
   {
     "id": "speed-lightning-reflexes",
@@ -1108,7 +1136,8 @@ export default [
       "formula": "Enhanced Advantage (Improved Initiative) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Advantage (Improved Initiative)"
   },
   {
     "id": "speed-quicker-than-the-eye",
@@ -1151,7 +1180,8 @@ export default [
       "formula": "Concealment 4 (Visual), Limited to while moving • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 4 (Visual), Limited to while moving"
   },
   {
     "id": "speed-speed-learning",
@@ -1187,6 +1217,7 @@ export default [
       "formula": "Enhanced Advantage 1 (Beginner’s Luck) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Enhanced Advantage 1 (Beginner’s Luck)"
   }
 ] satisfies PowerTemplate[];

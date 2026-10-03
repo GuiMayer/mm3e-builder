@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "element-corrosive",
@@ -63,7 +64,8 @@ export default [
       "formula": "Weaken Toughness, Affects Objects, Secondary Effect, Linked to Damage, Secondary Effect • 5 points per rank",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Weaken Toughness, Affects Objects, Secondary Effect, Linked to Damage, Secondary Effect"
   },
   {
     "id": "element-encase",
@@ -123,7 +125,8 @@ export default [
       "formula": "Ranged Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree"
   },
   {
     "id": "element-explosion",
@@ -163,7 +166,8 @@ export default [
       "formula": "Burst Area Damage • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area Damage"
   },
   {
     "id": "element-gas-cloud",
@@ -211,7 +215,8 @@ export default [
       "formula": "Cloud Area Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated), Cumulative • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Cloud Area Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated), Cumulative"
   },
   {
     "id": "element-immolation",
@@ -250,7 +255,8 @@ export default [
       "formula": "Damage (heat), Reaction (touching or being touched) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Damage (heat), Reaction (touching or being touched)"
   },
   {
     "id": "element-petrify",
@@ -300,12 +306,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Affliction 1 - Limited Degree (third only) 2 + Progressive 2 = 1 PP/rank, not printed 2.",
-          "pt": "Divergência da fonte: Affliction 1 - Limited Degree (third only) 2 + Progressive 2 = 1 PP/rank, not printed 2."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 1 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 1
       }
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Transformed), Limited Degree (third only), Progressive"
   },
   {
     "id": "element-petrifying-gaze",
@@ -365,12 +372,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Perception Range adds 2 and Sight Dependent subtracts 1 from Petrify: 2 PP/rank.",
-          "pt": "Divergência da fonte: Perception Range adds 2 and Sight Dependent subtracts 1 from Petrify: 2 PP/rank."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 2 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 2
       }
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Fortitude; Transformed), Limited Degree (third only), Progressive, Sight-Dependent"
   },
   {
     "id": "element-tarpit",
@@ -436,7 +444,8 @@ export default [
       "formula": "Cloud Area Affliction (Resisted by Dodge, Overcome by Strength; Hindered and Vulnerable, Defenseless and Immobilized), Cumulative, Extra Condition, Limited Degree • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Cloud Area Affliction (Resisted by Dodge, Overcome by Strength; Hindered and Vulnerable, Defenseless and Immobilized), Cumulative, Extra Condition, Limited Degree"
   },
   {
     "id": "element-chemical-immunity",
@@ -468,7 +477,8 @@ export default [
       "formula": "Immunity 2 (chemical effects) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (chemical effects)"
   },
   {
     "id": "element-destroy-projectiles",
@@ -506,7 +516,8 @@ export default [
       "formula": "Immunity 10 (projectiles), Sustained • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (projectiles), Sustained"
   },
   {
     "id": "element-diamond-hard",
@@ -550,7 +561,8 @@ export default [
       "formula": "Impervious Protection, Noticeable • 1 point",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Impervious Protection, Noticeable"
   },
   {
     "id": "element-molecular-phasing",
@@ -582,7 +594,8 @@ export default [
       "formula": "Insubstantial 4 • 20 points",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 4"
   },
   {
     "id": "element-unliving",
@@ -614,7 +627,8 @@ export default [
       "formula": "Immunity 30 (Fortitude Effects) • 30 points",
       "fixed": 30,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 30 (Fortitude Effects)"
   },
   {
     "id": "element-chemical-rocket",
@@ -647,7 +661,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "element-quantum-breakdown",
@@ -680,7 +695,8 @@ export default [
       "formula": "Teleport • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport"
   },
   {
     "id": "element-explosive-quantum-breakdown",
@@ -730,7 +746,8 @@ export default [
       "formula": "Teleport, Burst Area Reaction Damage (explosion, upon teleporting) • 2 points",
       "fixed": 5,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport, Burst Area Reaction Damage (explosion, upon teleporting)"
   },
   {
     "id": "element-transmutative-tunneling",
@@ -763,7 +780,8 @@ export default [
       "formula": "Burrowing • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burrowing"
   },
   {
     "id": "element-chemical-analysis",
@@ -813,7 +831,8 @@ export default [
       "formula": "Senses 3 (Detect Chemical Compounds, Acute, Analytical) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 3 (Detect Chemical Compounds, Acute, Analytical)"
   },
   {
     "id": "element-neutralize-reaction",
@@ -863,12 +882,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Nullify is already Ranged: 1 + Broad 1 + Simultaneous 1 = 3 PP/rank, not printed 4.",
-          "pt": "Divergência da fonte: Nullify is already Ranged: 1 + Broad 1 + Simultaneous 1 = 3 PP/rank, not printed 4."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 3 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 3
       }
-    }
+    },
+    "sourceFormula": "Ranged Nullify Chemical Effects, Broad, Simultaneous"
   },
   {
     "id": "element-transmutation",
@@ -902,6 +922,7 @@ export default [
       "formula": "Transform (any material into anything else) •",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Transform (any material into anything else)"
   }
 ] satisfies PowerTemplate[];

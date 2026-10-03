@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "magnetic-magnetic-binding",
@@ -63,7 +64,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Strength; Hindered and Vulnerable, Defenseless and Immobile), Extra Condition, Limited Degree • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Strength; Hindered and Vulnerable, Defenseless and Immobile), Extra Condition, Limited Degree"
   },
   {
     "id": "magnetic-magnetic-blast",
@@ -102,7 +104,8 @@ export default [
       "formula": "Ranged Damage (magnetic force) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (magnetic force)"
   },
   {
     "id": "magnetic-magnetic-repulsion",
@@ -141,7 +144,8 @@ export default [
       "formula": "Move Object, Limited to Flinging Targets Away • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Move Object, Limited to Flinging Targets Away"
   },
   {
     "id": "magnetic-magnetic-seizure",
@@ -188,7 +192,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will; Dazed, Stunned, Incapacitated), Subtle •",
       "fixed": 1,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will; Dazed, Stunned, Incapacitated), Subtle"
   },
   {
     "id": "magnetic-railgun",
@@ -232,7 +237,8 @@ export default [
       "formula": "Ranged Damage (projectile), Quirk (requires objects as ammo, –1 point) • 1 point for rank 1 + 2 points per rank",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (projectile), Quirk (requires objects as ammo, –1 point)"
   },
   {
     "id": "magnetic-magnetic-deflection",
@@ -276,7 +282,8 @@ export default [
       "formula": "Perception Ranged Deflect, Limited to Metallic Attacks • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Perception Ranged Deflect, Limited to Metallic Attacks"
   },
   {
     "id": "magnetic-magnetic-immunity",
@@ -308,7 +315,8 @@ export default [
       "formula": "Immunity 5 (magnetic effects) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (magnetic effects)"
   },
   {
     "id": "magnetic-magnetic-shield",
@@ -347,7 +355,8 @@ export default [
       "formula": "Protection, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection, Sustained"
   },
   {
     "id": "magnetic-magnetic-cling-1",
@@ -388,7 +397,8 @@ export default [
       "formula": "Movement (Wall-Crawling), Quirk (Only Magnetic Surfaces, –1 point) • 1 point (rank 1) or 3 points",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement (Wall-Crawling), Quirk (Only Magnetic Surfaces, –1 point)"
   },
   {
     "id": "magnetic-magnetic-cling-2",
@@ -429,7 +439,8 @@ export default [
       "formula": "Movement (Wall-Crawling), Quirk (Only Magnetic Surfaces, –1 point) • 1 point (rank 1) or 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement (Wall-Crawling), Quirk (Only Magnetic Surfaces, –1 point)"
   },
   {
     "id": "magnetic-magnetic-flight",
@@ -468,7 +479,8 @@ export default [
       "formula": "Flight, Subtle • 1 point + 2 points per rank",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight, Subtle"
   },
   {
     "id": "magnetic-magnetic-levitation",
@@ -513,7 +525,8 @@ export default [
       "formula": "Movement 3 (Sure-Footed, Trackless, Water Walking), Speed • 6 points + 1 point per rank",
       "fixed": 6,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Movement 3 (Sure-Footed, Trackless, Water Walking), Speed"
   },
   {
     "id": "magnetic-magnoport",
@@ -546,7 +559,8 @@ export default [
       "formula": "Teleport • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport"
   },
   {
     "id": "magnetic-degauss",
@@ -588,7 +602,8 @@ export default [
       "formula": "Nullify Magnetism, Simultaneous • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Nullify Magnetism, Simultaneous"
   },
   {
     "id": "magnetic-degauss-burst-burst",
@@ -636,7 +651,8 @@ export default [
       "formula": "Nullify Magnetism, Simultaneous, Burst or Cone Area • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Nullify Magnetism, Simultaneous, Burst or Cone Area"
   },
   {
     "id": "magnetic-degauss-burst-cone",
@@ -684,7 +700,8 @@ export default [
       "formula": "Nullify Magnetism, Simultaneous, Burst or Cone Area • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Nullify Magnetism, Simultaneous, Burst or Cone Area"
   },
   {
     "id": "magnetic-ferrokinesis",
@@ -728,7 +745,8 @@ export default [
       "formula": "Perception Ranged Move Object, Limited to Ferrous Metals • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Perception Ranged Move Object, Limited to Ferrous Metals"
   },
   {
     "id": "magnetic-magnetize",
@@ -778,7 +796,8 @@ export default [
       "formula": "Burst Area Move Object, Limited to Ferrous Metals, One Direction (Attract or Repel) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burst Area Move Object, Limited to Ferrous Metals, One Direction (Attract or Repel)"
   },
   {
     "id": "magnetic-magnetic-encoding",
@@ -816,7 +835,8 @@ export default [
       "formula": "Comprehend 2 (Machines), Limited to Encoding Information • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend 2 (Machines), Limited to Encoding Information"
   },
   {
     "id": "magnetic-magnetic-reading",
@@ -854,7 +874,8 @@ export default [
       "formula": "Comprehend 2 (Machines), Limited to Reading Information • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend 2 (Machines), Limited to Reading Information"
   },
   {
     "id": "magnetic-magnetic-form",
@@ -917,7 +938,8 @@ export default [
       "formula": "Concealment 4 (All Visual), Flight 1, Immunity 10 (Life Support), Insubstantial 4 (Incorporeal), Move Object 1 (Limited to Ferrous Metals) • 41 points",
       "fixed": 41,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 4 (All Visual), Flight 1, Immunity 10 (Life Support), Insubstantial 4 (Incorporeal), Move Object 1 (Limited to Ferrous Metals)"
   },
   {
     "id": "magnetic-magnetic-interference",
@@ -971,7 +993,8 @@ export default [
       "formula": "Burst Area Ranged Concealment Attack 2 (all magnetic and radio) • 8 points, +1 point per +1 distance rank to area.",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Burst Area Ranged Concealment Attack 2 (all magnetic and radio)"
   },
   {
     "id": "magnetic-magnetic-radar",
@@ -1026,7 +1049,8 @@ export default [
       "formula": "Senses 5 (magnetic; Detect Objects, Accurate, Radius, Ranged) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 5 (magnetic; Detect Objects, Accurate, Radius, Ranged)"
   },
   {
     "id": "magnetic-magnetic-sense",
@@ -1071,7 +1095,8 @@ export default [
       "formula": "Senses 2 (Detect Magnetic Fields, Radius) •",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Detect Magnetic Fields, Radius)"
   },
   {
     "id": "magnetic-magnetic-scan",
@@ -1110,7 +1135,8 @@ export default [
       "formula": "Senses 4 (Vision Penetrates Concealment) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Vision Penetrates Concealment)"
   },
   {
     "id": "magnetic-shape-metal",
@@ -1150,6 +1176,7 @@ export default [
       "formula": "Transform (ferrous metal from one shape to another), Continuous • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Transform (ferrous metal from one shape to another), Continuous"
   }
 ] satisfies PowerTemplate[];

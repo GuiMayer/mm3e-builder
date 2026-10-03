@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "armor-blaster",
@@ -37,7 +38,8 @@ export default [
       "formula": "Ranged Damage • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage"
   },
   {
     "id": "armor-capture-weapon",
@@ -79,7 +81,8 @@ export default [
       "formula": "Ranged Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Incapacitated) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Incapacitated)"
   },
   {
     "id": "armor-homing-missile",
@@ -139,7 +142,8 @@ export default [
       "formula": "Ranged Damage, Homing 2 Linked to Senses 1 (Infravision) • 3 points + 2 points per rank",
       "fixed": 3,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage, Homing 2 Linked to Senses 1 (Infravision)"
   },
   {
     "id": "armor-machine-gun",
@@ -183,7 +187,8 @@ export default [
       "formula": "Ranged Multiattack Damage • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Multiattack Damage"
   },
   {
     "id": "armor-micro-missiles",
@@ -228,7 +233,8 @@ export default [
       "formula": "Burst Area Ranged Damage • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Burst Area Ranged Damage"
   },
   {
     "id": "armor-surface-shock-affliction",
@@ -273,7 +279,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Reaction (when touched) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Reaction (when touched)"
   },
   {
     "id": "armor-surface-shock-damage",
@@ -315,7 +322,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Reaction (when touched) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Reaction (when touched)"
   },
   {
     "id": "armor-strength-enhancement",
@@ -352,7 +360,8 @@ export default [
       "formula": "Enhanced Strength • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Enhanced Strength"
   },
   {
     "id": "armor-armor",
@@ -385,7 +394,8 @@ export default [
       "formula": "Protection • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection"
   },
   {
     "id": "armor-force-field",
@@ -418,7 +428,8 @@ export default [
       "formula": "Protection • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection"
   },
   {
     "id": "armor-life-support-system",
@@ -450,7 +461,8 @@ export default [
       "formula": "Immunity 10 (Life Support) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Life Support)"
   },
   {
     "id": "armor-mind-shield-impervious-will",
@@ -498,7 +510,8 @@ export default [
       "formula": "Enhanced Impervious Will, Limited to Mental Effects • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Impervious Will, Limited to Mental Effects"
   },
   {
     "id": "armor-mind-shield-one-power",
@@ -515,7 +528,7 @@ export default [
       "en": "Immunity — One power",
       "pt": "Imunidade — Um poder"
     },
-    "page": 13,
+    "page": 12,
     "components": [
       {
         "effectId": "immunity",
@@ -530,7 +543,8 @@ export default [
       "formula": "Enhanced Impervious Will, Limited to Mental Effects • 1 point per rank",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Enhanced Impervious Will, Limited to Mental Effects"
   },
   {
     "id": "armor-mind-shield-mental-effects",
@@ -547,7 +561,7 @@ export default [
       "en": "Immunity — Mental effects",
       "pt": "Imunidade — Efeitos mentais"
     },
-    "page": 13,
+    "page": 12,
     "components": [
       {
         "effectId": "immunity",
@@ -562,7 +576,8 @@ export default [
       "formula": "Enhanced Impervious Will, Limited to Mental Effects • 1 point per rank",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Enhanced Impervious Will, Limited to Mental Effects"
   },
   {
     "id": "armor-sensory-shield",
@@ -594,7 +609,8 @@ export default [
       "formula": "Immunity 5 (Sensory Affliction Effects) • 5",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (Sensory Affliction Effects)"
   },
   {
     "id": "armor-aquatic-turbines",
@@ -627,7 +643,8 @@ export default [
       "formula": "Swimming • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Swimming"
   },
   {
     "id": "armor-leg-hydraulics",
@@ -660,7 +677,8 @@ export default [
       "formula": "Leaping • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Leaping"
   },
   {
     "id": "armor-limb-extenders",
@@ -693,7 +711,8 @@ export default [
       "formula": "Elongation • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Elongation"
   },
   {
     "id": "armor-skates",
@@ -726,7 +745,8 @@ export default [
       "formula": "Speed • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Speed"
   },
   {
     "id": "armor-thrusters",
@@ -759,7 +779,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "armor-tunneling",
@@ -792,7 +813,8 @@ export default [
       "formula": "Burrowing • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burrowing"
   },
   {
     "id": "armor-combat-computer",
@@ -899,7 +921,8 @@ export default [
       "formula": "Enhanced Advantages (choose from Assessment, Close Attack, Favored Opponent (previously assessed), Improved Initiative, Ranged Attack, and Uncanny Dodge) plus Enhanced Defense (Dodge and Parry) • 1 point",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Enhanced Advantages (choose from Assessment, Close Attack, Favored Opponent (previously assessed), Improved Initiative, Ranged Attack, and Uncanny Dodge) plus Enhanced Defense (Dodge and Parry)"
   },
   {
     "id": "armor-comm-system",
@@ -940,7 +963,8 @@ export default [
         "fixed": 0,
         "perRank": 4
       }
-    }
+    },
+    "sourceFormula": "Radio Communication"
   },
   {
     "id": "armor-sensors",
@@ -974,6 +998,7 @@ export default [
       "formula": "Senses • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Senses"
   }
 ] satisfies PowerTemplate[];

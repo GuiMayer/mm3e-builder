@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "water-blinding-splash",
@@ -58,7 +59,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Vision • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Impaired, Disabled, Unaware), Limited to Vision"
   },
   {
     "id": "water-dehydrate",
@@ -100,7 +102,8 @@ export default [
       "formula": "Cumulative Affliction (Fatigued, Exhausted, Incapacitated), Resisted and Overcome by Fortitude • 2",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (Fatigued, Exhausted, Incapacitated), Resisted and Overcome by Fortitude"
   },
   {
     "id": "water-drown",
@@ -152,7 +155,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated), Concentration • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated), Concentration"
   },
   {
     "id": "water-tsunami",
@@ -202,7 +206,8 @@ export default [
       "formula": "Ranged Damage, Line Area 7 (250 feet long, 60 feet inland), Limited to Along Shoreline, Limited to Originating from Bodies of Water • 7 points per rank",
       "fixed": 0,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Ranged Damage, Line Area 7 (250 feet long, 60 feet inland), Limited to Along Shoreline, Limited to Originating from Bodies of Water"
   },
   {
     "id": "water-water-blast",
@@ -241,7 +246,8 @@ export default [
       "formula": "Ranged Damage (water impact) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (water impact)"
   },
   {
     "id": "water-water-cannon",
@@ -302,7 +308,8 @@ export default [
       "formula": "Line Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed, Prone), Limited Degree; 5 feet wide, 30 feet long • 2 points per rank + 1 point",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Line Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed, Prone), Limited Degree; 5 feet wide, 30 feet long"
   },
   {
     "id": "water-water-weapon",
@@ -338,7 +345,8 @@ export default [
       "formula": "Strength-based Damage • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Strength-based Damage"
   },
   {
     "id": "water-aquatic-regeneration",
@@ -377,7 +385,8 @@ export default [
       "formula": "Regeneration, Medium (Water) • 1",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Regeneration, Medium (Water)"
   },
   {
     "id": "water-fire-resistance",
@@ -415,7 +424,8 @@ export default [
       "formula": "Immunity 10 (Fire Effects), Limited to Half Effect • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Fire Effects), Limited to Half Effect"
   },
   {
     "id": "water-mist",
@@ -449,7 +459,8 @@ export default [
       "formula": "Environment (Limited Visibility) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (Limited Visibility)"
   },
   {
     "id": "water-wall-of-water",
@@ -488,7 +499,8 @@ export default [
       "formula": "Create Barrier, Limited to Walls • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Create Barrier, Limited to Walls"
   },
   {
     "id": "water-water-shaping",
@@ -521,7 +533,8 @@ export default [
       "formula": "Create Water Shapes • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create Water Shapes"
   },
   {
     "id": "water-waterproof",
@@ -553,7 +566,8 @@ export default [
       "formula": "Immunity 10 (Water Effects) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Water Effects)"
   },
   {
     "id": "water-water-shield",
@@ -597,7 +611,8 @@ export default [
       "formula": "Impervious Protection, Sustained • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Impervious Protection, Sustained"
   },
   {
     "id": "water-aqua-port",
@@ -636,7 +651,8 @@ export default [
       "formula": "Teleport, Medium (Bodies of Water) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Teleport, Medium (Bodies of Water)"
   },
   {
     "id": "water-dolphin-leap",
@@ -675,7 +691,8 @@ export default [
       "formula": "Leaping, Limited to Leaping From Water • 1",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Leaping, Limited to Leaping From Water"
   },
   {
     "id": "water-swimming",
@@ -708,7 +725,8 @@ export default [
       "formula": "Swimming • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Swimming"
   },
   {
     "id": "water-water-walking",
@@ -743,7 +761,8 @@ export default [
       "formula": "Movement 1 (Water-Walking) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Water-Walking)"
   },
   {
     "id": "water-aqua-healing",
@@ -776,7 +795,8 @@ export default [
       "formula": "Healing • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Healing"
   },
   {
     "id": "water-aquatic",
@@ -827,7 +847,8 @@ export default [
       "formula": "Immunity 3 (Cold, Drowning, Pressure), Movement 1 (Environmental Adaptation: Aquatic), Senses 1 (Low-light Vision) • 6 points",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 3 (Cold, Drowning, Pressure), Movement 1 (Environmental Adaptation: Aquatic), Senses 1 (Low-light Vision)"
   },
   {
     "id": "water-aquatic-advantage",
@@ -863,7 +884,8 @@ export default [
       "formula": "Add Enhanced Advantage (Favored Environment: Aquatic) to the previous power • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Add Enhanced Advantage (Favored Environment: Aquatic) to the previous power"
   },
   {
     "id": "water-dousing",
@@ -910,7 +932,8 @@ export default [
       "formula": "Nullify Water-Soluble Effects, Broad, Simultaneous •",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Nullify Water-Soluble Effects, Broad, Simultaneous"
   },
   {
     "id": "water-hydrokinesis",
@@ -954,7 +977,8 @@ export default [
       "formula": "Move Object, Perception Range, Limited to Water • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Move Object, Perception Range, Limited to Water"
   },
   {
     "id": "water-marine-mastery",
@@ -1018,7 +1042,8 @@ export default [
       "formula": "Summon Marine Life, Horde, Mental Link, Multiple Minions, Variable General Type (Marine Life), Limited to in or near water, Self-Powered (see the Summoning Powers section) • 1 point + 4 points per rank,",
       "fixed": 1,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Summon Marine Life, Horde, Mental Link, Multiple Minions, Variable General Type (Marine Life), Limited to in or near water, Self-Powered (see the Summoning Powers section)"
   },
   {
     "id": "water-marine-telepathy",
@@ -1056,7 +1081,8 @@ export default [
       "formula": "Comprehend 2 (Animals), Limited to Marine Life • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend 2 (Animals), Limited to Marine Life"
   },
   {
     "id": "water-water-creatures",
@@ -1088,7 +1114,8 @@ export default [
       "formula": "Summon Water Creature 8 • 120-point",
       "fixed": 16,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Water Creature 8"
   },
   {
     "id": "water-water-form",
@@ -1147,7 +1174,8 @@ export default [
       "fixed": 45,
       "perRank": 0
     },
-    "activation": "move"
+    "activation": "move",
+    "sourceFormula": "Concealment 4 (Visual, Limited to Underwater), Immunity 30 (Fortitude Effects), Insubstantial 2, Swimming 2 (2 MPH), Activation (Move Action, –1 point)"
   },
   {
     "id": "water-amass-water",
@@ -1186,7 +1214,8 @@ export default [
       "formula": "Growth, Limited to While in Water Form and in a large body of water • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Growth, Limited to While in Water Form and in a large body of water"
   },
   {
     "id": "water-water-scrying",
@@ -1226,6 +1255,7 @@ export default [
       "formula": "Remote Sensing (Visual and Auditory), Medium (Water) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Remote Sensing (Visual and Auditory), Medium (Water)"
   }
 ] satisfies PowerTemplate[];

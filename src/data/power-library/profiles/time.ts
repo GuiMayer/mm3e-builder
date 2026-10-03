@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "time-age-manipulation",
@@ -40,7 +41,8 @@ export default [
       "formula": "Cumulative Affliction (aging; Resisted and Overcome by Fortitude; Impaired, Disabled, Transformed) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (aging; Resisted and Overcome by Fortitude; Impaired, Disabled, Transformed)"
   },
   {
     "id": "time-temporal-ambush",
@@ -89,7 +91,8 @@ export default [
       "formula": "Percpetion Ranged Damage (objects and hazards of opportunity), Indirect 4, Variable Descriptor 1 • 5 points +3 points per rank",
       "fixed": 5,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Percpetion Ranged Damage (objects and hazards of opportunity), Indirect 4, Variable Descriptor 1"
   },
   {
     "id": "time-time-freeze",
@@ -131,7 +134,8 @@ export default [
       "formula": "Cumulative Affliction (time freeze; Resisted and Overcome by Will; Dazed, Stunned, Incapacitated) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (time freeze; Resisted and Overcome by Will; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "time-temporal-phase",
@@ -163,7 +167,8 @@ export default [
       "formula": "Insubstantial 4 • 20 points",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 4"
   },
   {
     "id": "time-temporal-sidestep",
@@ -217,7 +222,8 @@ export default [
       "formula": "Immunity 80 (Dodge and Parry based attacks), Concentration, Limited (not against surprise attacks); Reaction Teleport 1 (when attacked) • 32 points + 5",
       "fixed": 32,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 80 (Dodge and Parry based attacks), Concentration, Limited (not against surprise attacks); Reaction Teleport 1 (when attacked)"
   },
   {
     "id": "time-timeless",
@@ -249,7 +255,8 @@ export default [
       "formula": "Immunity 5 (temporal effects) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (temporal effects)"
   },
   {
     "id": "time-temporal-shift",
@@ -293,7 +300,8 @@ export default [
       "formula": "Accurate Teleport, Limited to places you can reach physically • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Accurate Teleport, Limited to places you can reach physically"
   },
   {
     "id": "time-manipulative-temporal-shift",
@@ -345,12 +353,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Teleport 2 + Perception Range 2 - Limited 1 costs 3/rank (4 with Area). The printed total has an unlisted extra point per rank.",
-          "pt": "Divergência da fonte: Teleport 2 + Perception Range 2 - Limited 1 costs 3/rank (4 with Area). The printed total has an unlisted extra point per rank."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 3 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 3
       }
-    }
+    },
+    "sourceFormula": "Perception Range Teleport Attack (Resisted by (Choose a Defense when purchased)), Limited to things you can physically move"
   },
   {
     "id": "time-manipulative-area-temporal-shift",
@@ -408,12 +417,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Teleport 2 + Perception Range 2 - Limited 1 costs 3/rank (4 with Area). The printed total has an unlisted extra point per rank.",
-          "pt": "Divergência da fonte: Teleport 2 + Perception Range 2 - Limited 1 costs 3/rank (4 with Area). The printed total has an unlisted extra point per rank."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 4 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 4
       }
-    }
+    },
+    "sourceFormula": "Perception Range Burst Area Teleport Attack (Resisted by (Choose a Defense when purchased)), Limited to things you can physically move"
   },
   {
     "id": "time-time-portal",
@@ -457,12 +467,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Movement 3 costs 6 and Portal adds +2 per rank (6), totaling 12 rather than printed 15.",
-          "pt": "Divergência da fonte: Movement 3 costs 6 and Portal adds +2 per rank (6), totaling 12 rather than printed 15."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 12 PP fixos + 0 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 12,
         "perRank": 0
       }
-    }
+    },
+    "sourceFormula": "Movement 3 (Time Travel 3), Portal"
   },
   {
     "id": "time-time-travel",
@@ -498,7 +509,8 @@ export default [
       "formula": "Movement (Time Travel) • 2 points per rank up to",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Movement (Time Travel)"
   },
   {
     "id": "time-accelerated-healing",
@@ -531,7 +543,8 @@ export default [
       "formula": "Regeneration • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Regeneration"
   },
   {
     "id": "time-rapid-perception",
@@ -628,7 +641,8 @@ export default [
       "formula": "Senses (Rapid, all senses) • 5 points per rank",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Senses (Rapid, all senses)"
   },
   {
     "id": "time-replay",
@@ -671,7 +685,8 @@ export default [
       "formula": "Senses 4 (Precognition), Feature 1 (retcon events) • 5 points +1 point per additional Feature rank",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Precognition), Feature 1 (retcon events)"
   },
   {
     "id": "time-see-the-future",
@@ -709,7 +724,8 @@ export default [
       "formula": "Senses 4 (Precognition) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Precognition)"
   },
   {
     "id": "time-temporal-duplication",
@@ -748,7 +764,8 @@ export default [
       "formula": "Summon Duplicate, Heroic • 4 points",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Summon Duplicate, Heroic"
   },
   {
     "id": "time-temporal-summoning",
@@ -787,7 +804,8 @@ export default [
       "formula": "Summon, Broad Type (beings from history) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Summon, Broad Type (beings from history)"
   },
   {
     "id": "time-time-sense",
@@ -827,7 +845,8 @@ export default [
       "formula": "Senses 1 (Temporal Awareness) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Temporal Awareness)"
   },
   {
     "id": "time-time-stop",
@@ -888,7 +907,8 @@ export default [
       "formula": "Quickness (Subtle 2), Speed (Subtle 2), Quirk: Limited to routine actions while active (–4 points) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Quickness (Subtle 2), Speed (Subtle 2), Quirk: Limited to routine actions while active (–4 points)"
   },
   {
     "id": "time-view-the-past",
@@ -926,6 +946,7 @@ export default [
       "formula": "Senses 4 (Postcognition) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Postcognition)"
   }
 ] satisfies PowerTemplate[];

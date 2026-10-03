@@ -16,6 +16,8 @@ describe('Power Profiles catalog audit', () => {
     const ids = templates.map(template => template.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(POWER_LIBRARY_INDEX.map(entry => entry.id).sort()).toEqual([...ids].sort());
+    expect([...new Set(templates.map(template => template.profileId))].sort()).toEqual(POWER_PROFILES.map(profile => profile.id).sort());
+    expect(POWER_LIBRARY_INDEX.filter(entry => entry.referenceOnly).map(entry => entry.id).sort()).toEqual(templates.filter(template => template.requiresCharacterChanges).map(template => template.id).sort());
     for (const template of templates) expect(POWER_PROFILES.some(profile => profile.id === template.profileId)).toBe(true);
   });
   for (const template of templates) {

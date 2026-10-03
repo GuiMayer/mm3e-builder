@@ -25,4 +25,10 @@ describe('rules needed by Power Profiles recipes', () => {
       expect(pricing.total).toBe(cost * 5);
     }
   });
+  it('uses flat Persistent Healing for new recipes while preserving the legacy per-rank purchase', () => {
+    const healing = POWER_DEFS.find(effect => effect.id === 'healing')!;
+    const component: ICharacterPowerComponent = { id: 'healing', effectId: 'healing', ranks: 10, modifiers: [{ modifierId: 'persistent_flat', ranks: 1, isPowerSpecific: true }] };
+    expect(calculateComponentPricing(component, healing, MODIFIER_DEFS).total).toBe(21);
+    expect(calculateComponentPricing({ ...component, modifiers: [{ modifierId: 'persistent', ranks: 1, isPowerSpecific: true }] }, healing, MODIFIER_DEFS).total).toBe(30);
+  });
 });

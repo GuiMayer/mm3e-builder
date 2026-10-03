@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "talent-fearsome-presence",
@@ -59,7 +60,8 @@ export default [
       "formula": "Perception (Visual) Area Affliction (Resisted and Overcome by Will; Impaired, Disabled, Paralyzed), Selective, Subtle, Intimidation Check Required (DC 11) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception (Visual) Area Affliction (Resisted and Overcome by Will; Impaired, Disabled, Paralyzed), Selective, Subtle, Intimidation Check Required (DC 11)"
   },
   {
     "id": "talent-flurry",
@@ -102,7 +104,8 @@ export default [
       "formula": "Multiattack, Variable Descriptor 2 (any attack effect you wield, only up to the attack’s rank) • 2 points +1 point per rank",
       "fixed": 2,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Multiattack, Variable Descriptor 2 (any attack effect you wield, only up to the attack’s rank)"
   },
   {
     "id": "talent-hurt-anything",
@@ -145,7 +148,8 @@ export default [
       "formula": "Penetrating, Variable Descriptor (any Damage Effect you wield) • 1 point +1 point per rank",
       "fixed": 1,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Penetrating, Variable Descriptor (any Damage Effect you wield)"
   },
   {
     "id": "talent-pressure-points",
@@ -181,7 +185,8 @@ export default [
       "formula": "Affliction (Dazed, Stunned, Incapacitated), Resisted and Overcome by Fortitude • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Affliction (Dazed, Stunned, Incapacitated), Resisted and Overcome by Fortitude"
   },
   {
     "id": "talent-striking-power",
@@ -217,7 +222,8 @@ export default [
       "formula": "Strength-based Damage • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Strength-based Damage"
   },
   {
     "id": "talent-acquired-immunity",
@@ -255,7 +261,8 @@ export default [
       "formula": "Immunity 2 (diseases and poisons), Limited to Half Effect • 1 point",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (diseases and poisons), Limited to Half Effect"
   },
   {
     "id": "talent-perfect-defense-40",
@@ -293,7 +300,8 @@ export default [
       "formula": "Immunity 40 (attacks targeting Dodge or Parry), Concentration Duration • 20 points (40 for both)",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 40 (attacks targeting Dodge or Parry), Concentration Duration"
   },
   {
     "id": "talent-perfect-defense-80",
@@ -331,7 +339,8 @@ export default [
       "formula": "Immunity 40 (attacks targeting Dodge or Parry), Concentration Duration • 20 points (40 for both)",
       "fixed": 40,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 40 (attacks targeting Dodge or Parry), Concentration Duration"
   },
   {
     "id": "talent-tough",
@@ -364,7 +373,8 @@ export default [
       "formula": "Protection • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection"
   },
   {
     "id": "talent-unfazeable",
@@ -396,7 +406,8 @@ export default [
       "formula": "Immunity 5 (Interaction Skills) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (Interaction Skills)"
   },
   {
     "id": "talent-parkour",
@@ -443,7 +454,8 @@ export default [
       "formula": "Movement 5 (Environmental Adaptation (Urban), Safe Fall, Sure-Footed 2, Wall-Crawling 1), Limited to Moving in Urban Environments (4 ranks) • 6 points",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 5 (Environmental Adaptation (Urban), Safe Fall, Sure-Footed 2, Wall-Crawling 1), Limited to Moving in Urban Environments (4 ranks)"
   },
   {
     "id": "talent-perfect-balance",
@@ -484,7 +496,8 @@ export default [
       "formula": "Movement 2 (Wall-crawling 2), Limited to upright movement • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 2 (Wall-crawling 2), Limited to upright movement"
   },
   {
     "id": "talent-speed-climbing",
@@ -525,7 +538,8 @@ export default [
       "formula": "Movement 1 (Wall-crawling 1), Athletics Check Required (DC 11) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Wall-crawling 1), Athletics Check Required (DC 11)"
   },
   {
     "id": "talent-speed-swimming",
@@ -557,7 +571,8 @@ export default [
       "formula": "Swimming 1 • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Swimming 1"
   },
   {
     "id": "talent-vaulting",
@@ -595,7 +610,8 @@ export default [
       "formula": "Leaping 2, Acrobatics Check Required (DC 11) • 1",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Leaping 2, Acrobatics Check Required (DC 11)"
   },
   {
     "id": "talent-triple-jointed",
@@ -643,7 +659,8 @@ export default [
       "formula": "Shrinking 4, Innate, Concentration, Acrobatics or Sleight of Hand Check Required (DC 12) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Shrinking 4, Innate, Concentration, Acrobatics or Sleight of Hand Check Required (DC 12)"
   },
   {
     "id": "talent-perfect-pitch",
@@ -682,7 +699,8 @@ export default [
       "formula": "Senses 1 (Analytical Auditory) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Analytical Auditory)"
   },
   {
     "id": "talent-refined-palate",
@@ -721,7 +739,8 @@ export default [
       "formula": "Senses 1 (Acute Taste) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Acute Taste)"
   },
   {
     "id": "talent-sensitive-smell",
@@ -760,7 +779,8 @@ export default [
       "formula": "Senses 1 (Acute Olfactory) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Acute Olfactory)"
   },
   {
     "id": "talent-ambidexterous",
@@ -792,7 +812,8 @@ export default [
       "formula": "Feature 1 (no circumstance penalties for off-hand use) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Feature 1 (no circumstance penalties for off-hand use)"
   },
   {
     "id": "talent-light-sleeper",
@@ -824,7 +845,8 @@ export default [
       "formula": "Feature 1 (ignore hearing penalties for sleeping) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Feature 1 (ignore hearing penalties for sleeping)"
   },
   {
     "id": "talent-at-a-glance",
@@ -863,7 +885,8 @@ export default [
       "formula": "Senses 1 (Rapid Vision) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Rapid Vision)"
   },
   {
     "id": "talent-brilliant-deduction",
@@ -907,7 +930,8 @@ export default [
       "formula": "Senses 4 (Postcognition), Investigation Check Required (DC 12) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Postcognition), Investigation Check Required (DC 12)"
   },
   {
     "id": "talent-daredevil",
@@ -940,7 +964,8 @@ export default [
       "formula": "Luck Control • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Luck Control"
   },
   {
     "id": "talent-eagle-eyed",
@@ -979,7 +1004,8 @@ export default [
       "formula": "Senses 1 (Extended Vision) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Extended Vision)"
   },
   {
     "id": "talent-master-of-disguise",
@@ -1030,13 +1056,14 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Morph 2 with Continuous +1 and Standard Action -2 costs 8, minus Check Required 2 gives 6. Removable reduces by ceil(6/5)=2, total 4.",
-          "pt": "Divergência da fonte: Morph 2 with Continuous +1 and Standard Action -2 costs 8, minus Check Required 2 gives 6. Removable reduces by ceil(6/5)=2, total 4."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 4 PP fixos + 0 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 4,
         "perRank": 0
       }
     },
-    "removable": "removable"
+    "removable": "removable",
+    "sourceFormula": "Morph 2 (Other People), Continuous, Deception Check Required (DC 12), Removable (–1 point), Standard Action"
   },
   {
     "id": "talent-master-escape-artist",
@@ -1074,7 +1101,8 @@ export default [
       "formula": "Insubstantial 1, Limited to Escaping • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 1, Limited to Escaping"
   },
   {
     "id": "talent-master-linguist",
@@ -1112,7 +1140,8 @@ export default [
       "formula": "Comprehend 2 (Languages, Understand and Be Understood), Quirk (takes at least a scene to pick up a new language) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend 2 (Languages, Understand and Be Understood), Quirk (takes at least a scene to pick up a new language)"
   },
   {
     "id": "talent-number-cruncher",
@@ -1151,7 +1180,8 @@ export default [
       "formula": "Quickness, Limited to Mathematical Calculations • 1 point per 3 ranks",
       "fixed": 0,
       "perRank": 0.3333333333333333
-    }
+    },
+    "sourceFormula": "Quickness, Limited to Mathematical Calculations"
   },
   {
     "id": "talent-situational-awareness",
@@ -1190,7 +1220,8 @@ export default [
       "formula": "Senses 1 (Danger Sense, visual) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Danger Sense, visual)"
   },
   {
     "id": "talent-speed-reader",
@@ -1229,6 +1260,7 @@ export default [
       "formula": "Quickness, Limited to Reading • 1 point",
       "fixed": 0,
       "perRank": 0.3333333333333333
-    }
+    },
+    "sourceFormula": "Quickness, Limited to Reading"
   }
 ] satisfies PowerTemplate[];

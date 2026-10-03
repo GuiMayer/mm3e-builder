@@ -1,5 +1,6 @@
 import type { LibraryEntry } from './index';
-export const POWER_LIBRARY_INDEX = [
+
+export const POWER_LIBRARY_INDEX: LibraryEntry[] = [
   {
     "id": "air-air-blast",
     "profileId": "air",
@@ -357,7 +358,8 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 7,
     "effectIds": [
-      "swimming"
+      "swimming",
+      "flight"
     ]
   },
   {
@@ -1318,7 +1320,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Immunity — One power",
       "pt": "Imunidade — Um poder"
     },
-    "page": 13,
+    "page": 12,
     "effectIds": [
       "immunity"
     ]
@@ -1338,7 +1340,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Immunity — Mental effects",
       "pt": "Imunidade — Efeitos mentais"
     },
-    "page": 13,
+    "page": 12,
     "effectIds": [
       "immunity"
     ]
@@ -1500,8 +1502,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 13,
     "effectIds": [
-      "enhanced-trait",
-      "enhanced-trait",
       "enhanced-trait"
     ]
   },
@@ -2062,7 +2062,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 23,
     "effectIds": [
-      "environment",
       "environment"
     ]
   },
@@ -2083,7 +2082,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 23,
     "effectIds": [
-      "environment",
       "environment"
     ]
   },
@@ -2104,7 +2102,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 23,
     "effectIds": [
-      "environment",
       "environment"
     ]
   },
@@ -2125,7 +2122,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 23,
     "effectIds": [
-      "environment",
       "environment"
     ]
   },
@@ -3594,7 +3590,8 @@ export const POWER_LIBRARY_INDEX = [
       "flight",
       "immunity",
       "insubstantial"
-    ]
+    ],
+    "referenceOnly": true
   },
   {
     "id": "death-undead-form",
@@ -3614,7 +3611,8 @@ export const POWER_LIBRARY_INDEX = [
     "page": 38,
     "effectIds": [
       "immunity"
-    ]
+    ],
+    "referenceOnly": true
   },
   {
     "id": "death-necromancy",
@@ -3993,7 +3991,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 45,
     "effectIds": [
-      "senses",
       "senses"
     ]
   },
@@ -4014,7 +4011,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 45,
     "effectIds": [
-      "senses",
       "senses"
     ]
   },
@@ -4035,7 +4031,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 45,
     "effectIds": [
-      "senses",
       "senses"
     ]
   },
@@ -6629,7 +6624,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Damage · Increased Range · Area",
       "pt": "Dano · Alcance Aumentado · Área"
     },
-    "page": 73,
+    "page": 74,
     "effectIds": [
       "damage"
     ]
@@ -6889,7 +6884,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Movement",
       "pt": "Movimento"
     },
-    "page": 74,
+    "page": 75,
     "effectIds": [
       "movement"
     ]
@@ -7433,7 +7428,8 @@ export const POWER_LIBRARY_INDEX = [
     "page": 85,
     "effectIds": [
       "affliction"
-    ]
+    ],
+    "referenceOnly": true
   },
   {
     "id": "kinetic-friction-muzzle",
@@ -7453,7 +7449,8 @@ export const POWER_LIBRARY_INDEX = [
     "page": 85,
     "effectIds": [
       "affliction"
-    ]
+    ],
+    "referenceOnly": true
   },
   {
     "id": "kinetic-friction-heat",
@@ -8032,7 +8029,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Affliction · Progressive",
       "pt": "Aflição · Progressivo"
     },
-    "page": 89,
+    "page": 90,
     "effectIds": [
       "affliction"
     ]
@@ -8052,7 +8049,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Affliction",
       "pt": "Aflição"
     },
-    "page": 89,
+    "page": 90,
     "effectIds": [
       "affliction"
     ]
@@ -8274,7 +8271,8 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 91,
     "effectIds": [
-      "healing"
+      "healing",
+      "affliction"
     ]
   },
   {
@@ -8475,7 +8473,8 @@ export const POWER_LIBRARY_INDEX = [
     "page": 94,
     "effectIds": [
       "affliction"
-    ]
+    ],
+    "referenceOnly": true
   },
   {
     "id": "light-blinding-field",
@@ -8572,7 +8571,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Damage · Increased Range · Subtle",
       "pt": "Dano · Alcance Aumentado · Sutil"
     },
-    "page": 94,
+    "page": 95,
     "effectIds": [
       "damage"
     ]
@@ -8592,7 +8591,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Damage",
       "pt": "Dano"
     },
-    "page": 94,
+    "page": 95,
     "effectIds": [
       "damage"
     ]
@@ -9073,7 +9072,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Feature · Variable Descriptor · Quirk — Enhanced Extra: upgrade an existing ranged attack to Perception; limited to lower of attack and extra ranks.",
       "pt": "Característica · Descritor Variável · Peculiaridade — Extra Aprimorado: aumenta um ataque à distância existente para Percepção; limitado à menor graduação do ataque/extra."
     },
-    "page": 99,
+    "page": 100,
     "effectIds": [
       "feature"
     ]
@@ -9196,8 +9195,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 100,
     "effectIds": [
-      "enhanced-trait",
-      "enhanced-trait",
       "enhanced-trait"
     ]
   },
@@ -9236,7 +9233,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Healing · Limited · Subtle",
       "pt": "Cura · Limitado · Sutil"
     },
-    "page": 101,
+    "page": 100,
     "effectIds": [
       "healing"
     ]
@@ -9389,8 +9386,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Raio Místico"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Damage · Increased Range",
@@ -9409,8 +9406,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Passagem Mística"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Teleport",
@@ -9429,8 +9426,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Escudo Místico"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Protection · Sustained",
@@ -9449,8 +9446,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Levitação"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Flight",
@@ -9469,8 +9466,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Égide de Abbridon"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Protection · Impervious · Sustained",
@@ -9489,8 +9486,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Vidência"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Remote Sensing",
@@ -9509,8 +9506,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Olhos Reveladores de Abbridon"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Remote Sensing",
@@ -9529,8 +9526,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Abjurações de Abbridon"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Nullify · Simultaneous",
@@ -9549,8 +9546,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Luz Reveladora de Abbridon"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Nullify · Area · Simultaneous · Reduced Range",
@@ -9569,8 +9566,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Iluminação de Abbridon"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Environment · Feature",
@@ -9590,8 +9587,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Bússola de Ahgrazul"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Remote Sensing · Simultaneous · Limited",
@@ -9610,8 +9607,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Caminhos de Ahgrazul"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Movement",
@@ -9630,8 +9627,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Augúrio Auspicioso de Ahgrazul"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Enhanced Trait · Senses · Limited",
@@ -9651,8 +9648,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Amarras Maléficas de Bal’Hemoth"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance · Affects Insubstantial",
@@ -9671,8 +9668,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Agarrão de Ghorummaz"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance · Affects Insubstantial · Indirect",
@@ -9691,14 +9688,14 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Correntes de Kar’Kradas"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance · Affects Insubstantial · Cumulative",
       "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa · Afeta Insubstanciais · Cumulativo"
     },
-    "page": 106,
+    "page": 108,
     "effectIds": [
       "affliction"
     ]
@@ -9711,14 +9708,14 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Grilhões Brilhantes de Sirrion"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance",
       "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa"
     },
-    "page": 106,
+    "page": 111,
     "effectIds": [
       "affliction"
     ]
@@ -9731,8 +9728,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Besta de Bal’Hemoth"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon",
@@ -9751,8 +9748,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Comando de Bal’Hemoth"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Cumulative",
@@ -9771,8 +9768,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Chicote Amargo"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Cumulative · Reach",
@@ -9791,8 +9788,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Decreto de Ghorummaz"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Progressive · Limited Degree · Limited",
@@ -9811,8 +9808,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Vendaval de Ghorummaz"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Environment · Environment",
@@ -9820,7 +9817,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 106,
     "effectIds": [
-      "environment",
       "environment"
     ]
   },
@@ -9832,8 +9828,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Tempestade de Ghorummaz"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Damage · Increased Range · Indirect",
@@ -9852,8 +9848,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Passo Trovejante"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Instant Recovery · Limited Degree · Limited",
@@ -9872,8 +9868,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Mão de Heshem"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Move Object",
@@ -9892,8 +9888,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Lar Sagrado"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Progressive · Limited",
@@ -9912,8 +9908,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Caminho de Heshem"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Movement · Portal",
@@ -9932,8 +9928,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Estrada do Choro"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Movement · Portal",
@@ -9952,14 +9948,14 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Sétima Roda de Weyan"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Movement · Portal",
       "pt": "Movimento · Portal"
     },
-    "page": 107,
+    "page": 113,
     "effectIds": [
       "movement"
     ]
@@ -9972,8 +9968,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Hostes Sagradas"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Nullify · Broad",
@@ -9992,8 +9988,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Capuz de Heshem"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Concealment · Area · Attack",
@@ -10012,14 +10008,14 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Névoas de Malador"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Concealment · Area · Increased Range · Attack",
       "pt": "Camuflagem · Área · Alcance Aumentado · Ataque"
     },
-    "page": 107,
+    "page": 109,
     "effectIds": [
       "concealment"
     ]
@@ -10032,14 +10028,14 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Sombras Escarlates de Sirrion"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Concealment · Area · Increased Range · Attack",
       "pt": "Camuflagem · Área · Alcance Aumentado · Ataque"
     },
-    "page": 107,
+    "page": 111,
     "effectIds": [
       "concealment"
     ]
@@ -10052,14 +10048,14 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Orbe Obscurecedor de Obroros"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Concealment · Area · Increased Range · Attack · Selective",
       "pt": "Camuflagem · Área · Alcance Aumentado · Ataque · Seletivo"
     },
-    "page": 107,
+    "page": 110,
     "effectIds": [
       "concealment"
     ]
@@ -10072,8 +10068,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Gancho de Heshem"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Damage · Penetrating",
@@ -10092,14 +10088,14 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Foice de Shatachna"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Damage · Penetrating · Reach",
       "pt": "Dano · Penetrante · Alcance de Luta"
     },
-    "page": 107,
+    "page": 111,
     "effectIds": [
       "damage"
     ]
@@ -10112,8 +10108,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Maldição da Loucura Uivante"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Progressive · Limited",
@@ -10132,8 +10128,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Demência Onírica"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Cumulative · Insidious · Variable Descriptor",
@@ -10152,8 +10148,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Habitantes dos Sonhos"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Active · Variable Type (Broad) · Mental Link",
@@ -10172,8 +10168,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Manto de Idolon"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Concealment",
@@ -10192,8 +10188,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Ilusões de Idolon"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Illusion · Resistible · Selective",
@@ -10212,8 +10208,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Véu de Idolon"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Concealment · Area · Affects Others",
@@ -10232,8 +10228,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Oito Olhos de Ios"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Senses",
@@ -10252,8 +10248,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Encantamento de Ios"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Enhanced Trait",
@@ -10272,8 +10268,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Olho Vigilante de Ios"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Enhanced Trait · Senses",
@@ -10293,8 +10289,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Chamado de Kar’Kradas"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Active · Variable Type (Broad) · Controlled",
@@ -10313,8 +10309,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Caminho Tortuoso de Kar’Kradas"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Teleport · Accurate · Medium",
@@ -10333,8 +10329,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Cães de Kar’Kradas"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Controlled · Heroic · Mental Link",
@@ -10353,8 +10349,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Kraken Sombrio de Kar’Kradas"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Active · Controlled · Heroic",
@@ -10373,8 +10369,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Labirinto de Lamal"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Extra Condition",
@@ -10393,8 +10389,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Mãos Poderosas de Lamal"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Move Object · Precise · Subtle",
@@ -10413,8 +10409,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Repreensão de Lamal"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Extra Condition · Limited",
@@ -10433,8 +10429,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Luz de Lamal"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Progressive · Limited Degree · Limited",
@@ -10453,8 +10449,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Lacaio de Malador"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Controlled · Horde · Multiple Minions (per effect rank)",
@@ -10473,8 +10469,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Miasma de Malador"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Damage · Increased Range · Area · Linked · Affliction · Increased Range · Area · Cumulative · Limited",
@@ -10494,8 +10490,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Poder de Malador"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Damage · Increased Range",
@@ -10514,8 +10510,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Névoas dos Modrossus"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Progressive · Selective · Limited",
@@ -10534,8 +10530,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Sinal dos Modrossus"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Extra Condition · Limited",
@@ -10554,8 +10550,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Exorcismo Oculto"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Nullify · Simultaneous",
@@ -10574,8 +10570,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Presságios de Obroros"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Remote Sensing · Dimensional · No Conduit · Subtle",
@@ -10594,8 +10590,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Fantasmas dos Phoros"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Illusion",
@@ -10614,8 +10610,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Flagelo de Shatachna"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Cumulative · Extra Condition · Reach",
@@ -10634,8 +10630,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Servos de Shatachna"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Variable Type (Broad)",
@@ -10654,8 +10650,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Sombras de Shatachna"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Area · Progressive · Extra Condition",
@@ -10674,8 +10670,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Selo do Silêncio"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Increased Range · Progressive · Limited Degree · Limited",
@@ -10694,8 +10690,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Escudo Brilhante de Sirrion"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Protection · Sustained",
@@ -10714,8 +10710,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Feitiço Sonâmbulo"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Cumulative",
@@ -10734,8 +10730,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Demônios Estelares de Sirrion"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Controlled",
@@ -10754,8 +10750,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Mandíbula de Vhoka"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Damage · Increased Range · Homing",
@@ -10774,8 +10770,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Veneno Vil"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Weaken · Progressive · Variable Descriptor",
@@ -10794,8 +10790,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Proteção de Weyan"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Progressive · Limited",
@@ -10814,8 +10810,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Canto do Caos"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Cumulative",
@@ -10834,8 +10830,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Invocação Inominável"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Heroic",
@@ -10854,8 +10850,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "O Sinal Amarelo"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Progressive",
@@ -10874,8 +10870,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Dança de Vhoka"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Active · Controlled · Variable Type (General) · Increased Range",
@@ -10894,8 +10890,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Obra Maravilhosa de Weyan"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Weaken · Area · Affects Objects · Broad · Concentration · Simultaneous · Side Effect",
@@ -10914,8 +10910,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Maldição de Yig"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Summon · Multiple Minions (per effect rank)",
@@ -10934,8 +10930,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Presas de Yig"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Progressive",
@@ -10954,8 +10950,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Transformação Inexorável de Yig"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Progressive · Limited Degree · Limited",
@@ -10974,8 +10970,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Segunda Roda de Weyan"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Remote Sensing",
@@ -10994,8 +10990,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Terceira Roda de Weyan"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Deflect · Reflect",
@@ -11014,8 +11010,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Quarta Roda de Weyan"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Move Object · Perception · Limited Direction",
@@ -11034,8 +11030,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Quinta Roda de Weyan"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Affliction · Area · Affects Objects · Progressive · Increased Duration · Instant Recovery · Limited Degree",
@@ -11044,7 +11040,8 @@ export const POWER_LIBRARY_INDEX = [
     "page": 113,
     "effectIds": [
       "affliction"
-    ]
+    ],
+    "referenceOnly": true
   },
   {
     "id": "magic-sixth-wheel-of-weyan",
@@ -11054,8 +11051,8 @@ export const POWER_LIBRARY_INDEX = [
       "pt": "Sexta Roda de Weyan"
     },
     "section": {
-      "en": "Utility powers",
-      "pt": "Poderes utilitários"
+      "en": "Standard spells",
+      "pt": "Feitiços padrão"
     },
     "summary": {
       "en": "Communication",
@@ -12250,7 +12247,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 129,
     "effectIds": [
-      "enhanced-trait",
       "enhanced-trait"
     ]
   },
@@ -13893,7 +13889,7 @@ export const POWER_LIBRARY_INDEX = [
       "en": "Affliction · Progressive · Increased Range",
       "pt": "Aflição · Progressivo · Alcance Aumentado"
     },
-    "page": 149,
+    "page": 150,
     "effectIds": [
       "affliction"
     ]
@@ -15842,7 +15838,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 173,
     "effectIds": [
-      "enhanced-trait",
       "enhanced-trait"
     ]
   },
@@ -17705,7 +17700,8 @@ export const POWER_LIBRARY_INDEX = [
     "page": 194,
     "effectIds": [
       "immunity"
-    ]
+    ],
+    "referenceOnly": true
   },
   {
     "id": "tech-machine-mind",
@@ -18586,10 +18582,6 @@ export const POWER_LIBRARY_INDEX = [
     },
     "page": 205,
     "effectIds": [
-      "senses",
-      "senses",
-      "senses",
-      "senses",
       "senses"
     ]
   },
@@ -19720,4 +19712,4 @@ export const POWER_LIBRARY_INDEX = [
       "move-object"
     ]
   }
-] satisfies LibraryEntry[];
+];

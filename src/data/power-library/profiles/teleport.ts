@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "teleport-apport",
@@ -37,7 +38,8 @@ export default [
       "formula": "Teleport Attack • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport Attack"
   },
   {
     "id": "teleport-apportive-attack",
@@ -85,7 +87,8 @@ export default [
       "formula": "Perception Ranged Damage, Resisted by Fortitude • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Damage, Resisted by Fortitude"
   },
   {
     "id": "teleport-portal-blast",
@@ -129,7 +132,8 @@ export default [
       "formula": "Ranged Damage, Variable Descriptor 1 (Environmental Effects) • 1 point + 2 points per rank",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage, Variable Descriptor 1 (Environmental Effects)"
   },
   {
     "id": "teleport-portal-punch",
@@ -168,7 +172,8 @@ export default [
       "formula": "Ranged Damage • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage"
   },
   {
     "id": "teleport-teleport-sickness",
@@ -210,7 +215,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Limited to Teleport Passengers • 1 point per 2 ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Limited to Teleport Passengers"
   },
   {
     "id": "teleport-teleporting-flurry",
@@ -247,7 +253,8 @@ export default [
       "formula": "Ranged Shapeable Area on Strength Damage, Selective • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Shapeable Area on Strength Damage, Selective"
   },
   {
     "id": "teleport-blink-teleport",
@@ -286,7 +293,8 @@ export default [
       "formula": "Reaction Teleport (Imminent Attack) • 5 points",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Reaction Teleport (Imminent Attack)"
   },
   {
     "id": "teleport-immunity-to-teleport",
@@ -318,7 +326,8 @@ export default [
       "formula": "Immunity 2 (Teleport Effects) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (Teleport Effects)"
   },
   {
     "id": "teleport-redirecting-warp",
@@ -362,7 +371,8 @@ export default [
       "formula": "Deflect, Reflect, Redirect • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Deflect, Reflect, Redirect"
   },
   {
     "id": "teleport-teleporting-dodge",
@@ -405,7 +415,8 @@ export default [
       "formula": "Visual Concealment 4, Quirk (visible until attacked, –1 point) • 7 points",
       "fixed": 7,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Visual Concealment 4, Quirk (visible until attacked, –1 point)"
   },
   {
     "id": "teleport-astroport",
@@ -441,7 +452,8 @@ export default [
       "formula": "Movement (Space Travel) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Movement (Space Travel)"
   },
   {
     "id": "teleport-portal-platform",
@@ -480,7 +492,8 @@ export default [
       "formula": "Flight, Platform • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Platform"
   },
   {
     "id": "teleport-teleport",
@@ -513,7 +526,8 @@ export default [
       "formula": "Teleport • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport"
   },
   {
     "id": "teleport-teleportal",
@@ -552,7 +566,8 @@ export default [
       "formula": "Teleport, Portal • 4 points per rank +1 point per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Teleport, Portal"
   },
   {
     "id": "teleport-nullify-teleport",
@@ -594,7 +609,8 @@ export default [
       "formula": "Nullify Teleport, Concentration • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Nullify Teleport, Concentration"
   },
   {
     "id": "teleport-peephole",
@@ -644,7 +660,8 @@ export default [
       "formula": "Remote Sensing, Simultaneous, Feedback, Noticeable • 1 point for rank 1, +2 points per additional rank",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Remote Sensing, Simultaneous, Feedback, Noticeable"
   },
   {
     "id": "teleport-spatial-beacon",
@@ -691,7 +708,8 @@ export default [
       "formula": "Enhanced Teleport, Affects Others Only, Limited to Teleporters • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Teleport, Affects Others Only, Limited to Teleporters"
   },
   {
     "id": "teleport-teleport-awareness",
@@ -731,6 +749,7 @@ export default [
       "formula": "Senses 1 (Teleport Awareness, mental) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Teleport Awareness, mental)"
   }
 ] satisfies PowerTemplate[];

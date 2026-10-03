@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "luck-catastrophe",
@@ -52,7 +53,8 @@ export default [
       "formula": "Perception Ranged Damage, Indirect 4, Subtle 2, Variable Descriptor 1 (Accidents) • 7 points +3 points per rank",
       "fixed": 7,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Ranged Damage, Indirect 4, Subtle 2, Variable Descriptor 1 (Accidents)"
   },
   {
     "id": "luck-find-weakness",
@@ -105,7 +107,8 @@ export default [
       "formula": "Enhanced Extra (Penetrating), Variable Descriptor (Attacks), Quirk (Limited to Lower of Attack or Extra’s Rank, –1 point) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Extra (Penetrating), Variable Descriptor (Attacks), Quirk (Limited to Lower of Attack or Extra’s Rank, –1 point)"
   },
   {
     "id": "luck-lucky-shot",
@@ -122,7 +125,7 @@ export default [
       "en": "Feature · Variable Descriptor · Quirk — Enhanced Extra: upgrade an existing ranged attack to Perception; limited to lower of attack and extra ranks.",
       "pt": "Característica · Descritor Variável · Peculiaridade — Extra Aprimorado: aumenta um ataque à distância existente para Percepção; limitado à menor graduação do ataque/extra."
     },
-    "page": 99,
+    "page": 100,
     "components": [
       {
         "effectId": "feature",
@@ -149,7 +152,8 @@ export default [
       "formula": "Enhanced Extra (Perception Range), Variable Descriptor (Attacks), Quirk (Limited to Lower of Attack or Extra’s Rank, –1 point) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Extra (Perception Range), Variable Descriptor (Attacks), Quirk (Limited to Lower of Attack or Extra’s Rank, –1 point)"
   },
   {
     "id": "luck-jinx",
@@ -216,7 +220,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will; Impaired and Vulnerable, Defenseless and Disabled), Extra Condition, Indirect 4, Insidious, Subtle 2, Limited Degree • 7 points + 3 points per rank",
       "fixed": 7,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will; Impaired and Vulnerable, Defenseless and Disabled), Extra Condition, Indirect 4, Insidious, Subtle 2, Limited Degree"
   },
   {
     "id": "luck-poltergeist",
@@ -302,12 +307,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Radius Vision costs 2, Counter All Concealment 5, Penetrates 4: 11 ranks, limited cost 6, plus fixed modifiers 7. The book specifies Senses 10.",
-          "pt": "Divergência da fonte: Radius Vision costs 2, Counter All Concealment 5, Penetrates 4: 11 ranks, limited cost 6, plus fixed modifiers 7. The book specifies Senses 10."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 13 PP fixos + 3 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 13,
         "perRank": 3
       }
-    }
+    },
+    "sourceFormula": "Perception Ranged Move Object, Indirect 4, Precise, Subtle 2; Senses 10 (Radius Vision Counters and Penetrates All Concealment, Limited to Targeting Move Object)"
   },
   {
     "id": "luck-breakfall",
@@ -348,7 +354,8 @@ export default [
       "formula": "Movement 1 (Safe Fall), Reaction •3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Safe Fall), Reaction"
   },
   {
     "id": "luck-defensive-luck",
@@ -387,7 +394,8 @@ export default [
       "formula": "Protection, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection, Sustained"
   },
   {
     "id": "luck-fortunate-failure",
@@ -449,7 +457,8 @@ export default [
       "formula": "Reaction Nullify (Effects Countered by Coincidence), Broad, Effortless, Simultaneous, Close Range • 6 points per rank",
       "fixed": 0,
       "perRank": 6
-    }
+    },
+    "sourceFormula": "Reaction Nullify (Effects Countered by Coincidence), Broad, Effortless, Simultaneous, Close Range"
   },
   {
     "id": "luck-lucky-dodge",
@@ -505,7 +514,8 @@ export default [
       "formula": "Enhanced Advantage 1 (Uncanny Dodge), Enhanced Dodge, Enhanced Parry • 1 point + 1 point per rank",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Enhanced Advantage 1 (Uncanny Dodge), Enhanced Dodge, Enhanced Parry"
   },
   {
     "id": "luck-lucky-escape-immortality",
@@ -544,7 +554,8 @@ export default [
       "formula": "Immortality, Limited to Circumstances of Plausible Survival • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Immortality, Limited to Circumstances of Plausible Survival"
   },
   {
     "id": "luck-lucky-escape-healing",
@@ -561,7 +572,7 @@ export default [
       "en": "Healing · Limited · Subtle",
       "pt": "Cura · Limitado · Sutil"
     },
-    "page": 101,
+    "page": 100,
     "components": [
       {
         "effectId": "healing",
@@ -588,7 +599,8 @@ export default [
       "formula": "Immortality, Limited to Circumstances of Plausible Survival • 1 point per rank",
       "fixed": 2,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Immortality, Limited to Circumstances of Plausible Survival"
   },
   {
     "id": "luck-ease-of-movement",
@@ -623,7 +635,8 @@ export default [
       "formula": "Movement 2 (Sure-Footed) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 2 (Sure-Footed)"
   },
   {
     "id": "luck-perfect-timing",
@@ -656,7 +669,8 @@ export default [
       "formula": "Feature (Edit Scene to appear in it) • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Feature (Edit Scene to appear in it)"
   },
   {
     "id": "luck-escape-notice",
@@ -699,7 +713,8 @@ export default [
       "formula": "Concealment 10 (All Senses), Passive • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 10 (All Senses), Passive"
   },
   {
     "id": "luck-lucky",
@@ -736,7 +751,8 @@ export default [
       "formula": "Enhanced Advantage (Luck) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Advantage (Luck)"
   },
   {
     "id": "luck-reality-control",
@@ -778,7 +794,8 @@ export default [
       "formula": "Variable (Probability Effects), Free Action • 9",
       "fixed": 0,
       "perRank": 9
-    }
+    },
+    "sourceFormula": "Variable (Probability Effects), Free Action"
   },
   {
     "id": "luck-sense-of-luck",
@@ -818,7 +835,8 @@ export default [
       "formula": "Senses 1 (Luck Awareness) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Luck Awareness)"
   },
   {
     "id": "luck-visions-of-fortune",
@@ -862,6 +880,7 @@ export default [
       "formula": "Senses 4 (Precognition), Limited to Luck Trends • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Precognition), Limited to Luck Trends"
   }
 ] satisfies PowerTemplate[];

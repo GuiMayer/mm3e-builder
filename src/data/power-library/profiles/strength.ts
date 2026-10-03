@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "strength-bullet-toss",
@@ -42,7 +43,8 @@ export default [
       "formula": "Ranged Damage (ballistic), Quirk (requires objects to throw, –1 point) • 1 point for rank 1, +2 points per additional rank",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (ballistic), Quirk (requires objects to throw, –1 point)"
   },
   {
     "id": "strength-cracking-the-whip",
@@ -108,7 +110,8 @@ export default [
       "formula": "Line Area Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed and Vulnerable, Prone and Stunned), Extra Condition, Limited Degree, Limited to targets on an appropriate surface • 1 point per rank, +1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Line Area Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed and Vulnerable, Prone and Stunned), Extra Condition, Limited Degree, Limited to targets on an appropriate surface"
   },
   {
     "id": "strength-shockwave",
@@ -174,7 +177,8 @@ export default [
       "formula": "Burst Area Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed and Vulnerable, Stunned and Prone), Extra Condition, Limited Degree, Limited to targets on the ground • 1 point per rank, +1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burst Area Affliction (Resisted by Dodge, Overcome by Fortitude; Dazed and Vulnerable, Stunned and Prone), Extra Condition, Limited Degree, Limited to targets on the ground"
   },
   {
     "id": "strength-cutting-loose",
@@ -211,7 +215,8 @@ export default [
       "formula": "Penetrating on Strength Damage • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Penetrating on Strength Damage"
   },
   {
     "id": "strength-finger-flick",
@@ -252,7 +257,8 @@ export default [
       "formula": "Subtle 1 on Strength Damage • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Subtle 1 on Strength Damage"
   },
   {
     "id": "strength-massive-knockback",
@@ -301,7 +307,8 @@ export default [
       "formula": "Move Object, Close Range, Limited to Flinging Targets Away, Linked to Strength Damage • 1 point",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Move Object, Close Range, Limited to Flinging Targets Away, Linked to Strength Damage"
   },
   {
     "id": "strength-sleeper-hold",
@@ -348,7 +355,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Progressive, Grab-Based • 2",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Progressive, Grab-Based"
   },
   {
     "id": "strength-thunderclap",
@@ -401,7 +409,8 @@ export default [
       "formula": "Burst Area Affliction (Resisted by Fortitude, Overcome by Fortitude; Dazed and Vulnerable, Defenseless and Stunned), Extra Condition, Limited Degree • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area Affliction (Resisted by Fortitude, Overcome by Fortitude; Dazed and Vulnerable, Defenseless and Stunned), Extra Condition, Limited Degree"
   },
   {
     "id": "strength-bracing",
@@ -439,7 +448,8 @@ export default [
       "formula": "Immunity 10 (being moved), Sustained • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (being moved), Sustained"
   },
   {
     "id": "strength-stonewall",
@@ -483,7 +493,8 @@ export default [
       "formula": "Reaction Damage (to being hit), Limited to effect rank or attack’s Damage rank, whichever is less • 3 points",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Reaction Damage (to being hit), Limited to effect rank or attack’s Damage rank, whichever is less"
   },
   {
     "id": "strength-super-endurance",
@@ -521,7 +532,8 @@ export default [
       "formula": "Immunity 10 (Life Support), Quirk (limited to approximately 30 minutes at a time, –1 point) • 9 points",
       "fixed": 9,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Life Support), Quirk (limited to approximately 30 minutes at a time, –1 point)"
   },
   {
     "id": "strength-super-toughness",
@@ -554,7 +566,8 @@ export default [
       "formula": "Protection • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection"
   },
   {
     "id": "strength-tug-of-war",
@@ -591,7 +604,8 @@ export default [
       "formula": "Reaction on Strength Damage (when grabbed) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Reaction on Strength Damage (when grabbed)"
   },
   {
     "id": "strength-makeshift-handholds",
@@ -632,7 +646,8 @@ export default [
       "formula": "Movement 1 (Wall-crawling), Limited to surfaces with material Toughness less than Strength modifier • 1 point per rank",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Wall-crawling), Limited to surfaces with material Toughness less than Strength modifier"
   },
   {
     "id": "strength-super-leaping",
@@ -665,7 +680,8 @@ export default [
       "formula": "Leaping • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Leaping"
   },
   {
     "id": "strength-unstoppable",
@@ -707,7 +723,8 @@ export default [
       "formula": "Penetrating Burrowing • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Penetrating Burrowing"
   },
   {
     "id": "strength-power-lifting",
@@ -750,7 +767,8 @@ export default [
       "formula": "Enhanced Strength, Limited to Lifting • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Limited to Lifting"
   },
   {
     "id": "strength-strength-boost",
@@ -793,7 +811,8 @@ export default [
       "formula": "Enhanced Strength, Fades • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Fades"
   },
   {
     "id": "strength-absorption-boost",
@@ -841,7 +860,8 @@ export default [
       "formula": "Enhanced Strength, Fades, Limited to the lesser of effect rank or absorbed energy rank • 1 point per 2 ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Fades, Limited to the lesser of effect rank or absorbed energy rank"
   },
   {
     "id": "strength-raging-strength",
@@ -884,6 +904,7 @@ export default [
       "formula": "Enhanced Strength, Limited to while angry • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Limited to while angry"
   }
 ] satisfies PowerTemplate[];

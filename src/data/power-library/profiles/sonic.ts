@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "sonic-buzzsaw",
@@ -40,7 +41,8 @@ export default [
       "formula": "Penetrating Damage (cutting, vibrational) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Penetrating Damage (cutting, vibrational)"
   },
   {
     "id": "sonic-deafening-shriek",
@@ -92,7 +94,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Hearing Impaired, Hearing Disabled, Hearing Unaware), Limited to One Sense • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Hearing Impaired, Hearing Disabled, Hearing Unaware), Limited to One Sense"
   },
   {
     "id": "sonic-hypnotic-song",
@@ -153,7 +156,8 @@ export default [
       "formula": "Cumulative Hearing Area Affliction (Resisted and Overcome by Will; Entranced, Compelled, Controlled), Concentration Duration, Instant Recovery • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Cumulative Hearing Area Affliction (Resisted and Overcome by Will; Entranced, Compelled, Controlled), Concentration Duration, Instant Recovery"
   },
   {
     "id": "sonic-shatter",
@@ -204,7 +208,8 @@ export default [
       "formula": "Ranged Weaken Toughness, Affects Only Objects • 2",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Weaken Toughness, Affects Only Objects"
   },
   {
     "id": "sonic-sonic-blast",
@@ -243,7 +248,8 @@ export default [
       "formula": "Ranged Damage (sonic) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (sonic)"
   },
   {
     "id": "sonic-vertigo",
@@ -295,7 +301,8 @@ export default [
       "formula": "Ranged Progressive Affliction (Resisted and Overcome by Will; Dazed, Stunned, Incapacitated), Hearing- Dependent • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Progressive Affliction (Resisted and Overcome by Will; Dazed, Stunned, Incapacitated), Hearing- Dependent"
   },
   {
     "id": "sonic-protected-hearing",
@@ -333,7 +340,8 @@ export default [
       "formula": "Immunity 5 (harmful Hearing-Dependent effects), Limited to Half Effect • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (harmful Hearing-Dependent effects), Limited to Half Effect"
   },
   {
     "id": "sonic-sonic-absorption",
@@ -378,7 +386,8 @@ export default [
       "formula": "Enhanced Trait, Fades, Limited to rank of absorbed sonic effect • 1 point per 3 ranks",
       "fixed": 0,
       "perRank": 0.3333333333333333
-    }
+    },
+    "sourceFormula": "Enhanced Trait, Fades, Limited to rank of absorbed sonic effect"
   },
   {
     "id": "sonic-immunity-to-sonic-damage",
@@ -410,7 +419,8 @@ export default [
       "formula": "Immunity 5 (sonic damage) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (sonic damage)"
   },
   {
     "id": "sonic-sonic-immunity",
@@ -442,7 +452,8 @@ export default [
       "formula": "Immunity 10 (sonic effects) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (sonic effects)"
   },
   {
     "id": "sonic-sonic-shield",
@@ -481,7 +492,8 @@ export default [
       "formula": "Protection, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection, Sustained"
   },
   {
     "id": "sonic-sonic-drilling",
@@ -514,7 +526,8 @@ export default [
       "formula": "Burrowing • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burrowing"
   },
   {
     "id": "sonic-sonic-flight",
@@ -553,7 +566,8 @@ export default [
       "formula": "Flight, Noticeable • 1 point for rank 1, + 2 points",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight, Noticeable"
   },
   {
     "id": "sonic-sound-wave",
@@ -592,7 +606,8 @@ export default [
       "formula": "Teleport, Medium (sound) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Teleport, Medium (sound)"
   },
   {
     "id": "sonic-enhanced-hearing",
@@ -631,7 +646,8 @@ export default [
       "formula": "Senses (Extended Hearing) • 1 point per rank",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses (Extended Hearing)"
   },
   {
     "id": "sonic-phase-cancellation",
@@ -684,7 +700,8 @@ export default [
       "formula": "Burst Area Nullify Sonic Effects, Concentration, Simultaneous • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Burst Area Nullify Sonic Effects, Concentration, Simultaneous"
   },
   {
     "id": "sonic-silence",
@@ -733,7 +750,8 @@ export default [
       "formula": "Burst Area Auditory Concealment Attack • 6 points + 2",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Burst Area Auditory Concealment Attack"
   },
   {
     "id": "sonic-solid-sound",
@@ -766,7 +784,8 @@ export default [
       "formula": "Create Solid Sound Objects • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create Solid Sound Objects"
   },
   {
     "id": "sonic-sonar",
@@ -805,7 +824,8 @@ export default [
       "formula": "Senses (Accurate Hearing) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses (Accurate Hearing)"
   },
   {
     "id": "sonic-sonic-form",
@@ -852,7 +872,8 @@ export default [
       "formula": "Damage 1 (sonic), Flight 8, Immunity 10 (life support), Insubstantial 3 • 42 points +1 point per +1 rank of",
       "fixed": 42,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Damage 1 (sonic), Flight 8, Immunity 10 (life support), Insubstantial 3"
   },
   {
     "id": "sonic-sonic-masking",
@@ -889,7 +910,8 @@ export default [
       "formula": "Concealment 2 (auditory) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 2 (auditory)"
   },
   {
     "id": "sonic-sonic-projection",
@@ -923,7 +945,8 @@ export default [
       "formula": "Illusion (Aural) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Illusion (Aural)"
   },
   {
     "id": "sonic-sound-analysis",
@@ -962,7 +985,8 @@ export default [
       "formula": "Senses 1 (Analytical Hearing) • 1 point",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Analytical Hearing)"
   },
   {
     "id": "sonic-sound-creatures",
@@ -1000,7 +1024,8 @@ export default [
       "formula": "Summon Sound Creature 5, Controlled • 15 points + 10 points per doubling of number of creatures + 5",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Sound Creature 5, Controlled"
   },
   {
     "id": "sonic-ultrasonic-hearing",
@@ -1038,7 +1063,8 @@ export default [
       "formula": "Senses 1 (Ultra-Hearing) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Ultra-Hearing)"
   },
   {
     "id": "sonic-white-noise-2",
@@ -1072,7 +1098,8 @@ export default [
       "formula": "Environment (Visibility), Affects Hearing Instead of Vision (+0) • 1 point per rank for –2 penalty, 2 points per rank for –5 penalty.",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Visibility), Affects Hearing Instead of Vision (+0)"
   },
   {
     "id": "sonic-white-noise-5",
@@ -1106,6 +1133,7 @@ export default [
       "formula": "Environment (Visibility), Affects Hearing Instead of Vision (+0) • 1 point per rank for –2 penalty, 2 points per rank for –5 penalty.",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (Visibility), Affects Hearing Instead of Vision (+0)"
   }
 ] satisfies PowerTemplate[];

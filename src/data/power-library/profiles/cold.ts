@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "cold-cold-blast",
@@ -40,7 +41,8 @@ export default [
       "formula": "Ranged Affliction (cold; Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Affliction (cold; Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated)"
   },
   {
     "id": "cold-cryokinesis",
@@ -92,7 +94,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Transformed), Affects Objects • 5 points per rank",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Transformed), Affects Objects"
   },
   {
     "id": "cold-flash-freeze",
@@ -143,7 +146,8 @@ export default [
       "formula": "Ranged Weaken Toughness, Affects Only Objects • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Weaken Toughness, Affects Only Objects"
   },
   {
     "id": "cold-freezing-aura",
@@ -185,7 +189,8 @@ export default [
       "formula": "Reaction Damage (cold; being touched) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Reaction Damage (cold; being touched)"
   },
   {
     "id": "cold-hailstorm",
@@ -235,7 +240,8 @@ export default [
       "formula": "Cloud Area Ranged Damage (cold and bludgeoning), Indirect 2 • 2 points + 3 points per rank",
       "fixed": 2,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Cloud Area Ranged Damage (cold and bludgeoning), Indirect 2"
   },
   {
     "id": "cold-ice-blast",
@@ -274,7 +280,8 @@ export default [
       "formula": "Ranged Damage (cold and bludgeoning or slashing) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (cold and bludgeoning or slashing)"
   },
   {
     "id": "cold-ice-binding",
@@ -339,7 +346,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (ice; Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (ice; Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree"
   },
   {
     "id": "cold-ice-fist",
@@ -375,7 +383,8 @@ export default [
       "formula": "Strength-based Damage (cold and bludgeoning) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Strength-based Damage (cold and bludgeoning)"
   },
   {
     "id": "cold-ice-slick",
@@ -441,7 +450,8 @@ export default [
       "formula": "Ranged Burst Area Affliction (ice; Resisted and Overcome by Dodge; Hindered and Vulnerable, Defenseless and Prone), Alternate Resistance, Extra Condition, Limited Degree • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Affliction (ice; Resisted and Overcome by Dodge; Hindered and Vulnerable, Defenseless and Prone), Alternate Resistance, Extra Condition, Limited Degree"
   },
   {
     "id": "cold-snowblind",
@@ -501,7 +511,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Vision Impaired, Vision Disabled, Vision Unaware), Limited to One Sense • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Vision Impaired, Vision Disabled, Vision Unaware), Limited to One Sense"
   },
   {
     "id": "cold-immunity-to-cold-environment",
@@ -533,7 +544,8 @@ export default [
       "formula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), Immunity 10 (Cold Effects) • 1, 5, or 10 points",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), Immunity 10 (Cold Effects)"
   },
   {
     "id": "cold-immunity-to-cold-damage",
@@ -565,7 +577,8 @@ export default [
       "formula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), Immunity 10 (Cold Effects) • 1, 5, or 10 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), Immunity 10 (Cold Effects)"
   },
   {
     "id": "cold-immunity-to-cold-effects",
@@ -597,7 +610,8 @@ export default [
       "formula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), Immunity 10 (Cold Effects) • 1, 5, or 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), Immunity 10 (Cold Effects)"
   },
   {
     "id": "cold-immunity-to-heat-environment",
@@ -629,7 +643,8 @@ export default [
       "formula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), Immunity 10 (Heat Effects) • 1, 5, or 10 points",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), Immunity 10 (Heat Effects)"
   },
   {
     "id": "cold-immunity-to-heat-damage",
@@ -661,7 +676,8 @@ export default [
       "formula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), Immunity 10 (Heat Effects) • 1, 5, or 10 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), Immunity 10 (Heat Effects)"
   },
   {
     "id": "cold-immunity-to-heat-effects",
@@ -693,7 +709,8 @@ export default [
       "formula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), Immunity 10 (Heat Effects) • 1, 5, or 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), Immunity 10 (Heat Effects)"
   },
   {
     "id": "cold-ice-armor",
@@ -726,7 +743,8 @@ export default [
       "formula": "Protection • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection"
   },
   {
     "id": "cold-infrared-invisibility",
@@ -763,7 +781,8 @@ export default [
       "formula": "Concealment 2 (Infravision) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 2 (Infravision)"
   },
   {
     "id": "cold-ice-slides",
@@ -802,7 +821,8 @@ export default [
       "formula": "Flight, Platform (ice slides) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Platform (ice slides)"
   },
   {
     "id": "cold-ice-passage",
@@ -844,7 +864,8 @@ export default [
       "formula": "Movement (Permeate), Limited to Ice and Snow •",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Movement (Permeate), Limited to Ice and Snow"
   },
   {
     "id": "cold-ice-portal",
@@ -883,7 +904,8 @@ export default [
       "formula": "Teleport, Medium (ice) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Teleport, Medium (ice)"
   },
   {
     "id": "cold-ice-tunneling",
@@ -922,7 +944,8 @@ export default [
       "formula": "Burrowing, Limited to Ice and Snow • 1 point",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Burrowing, Limited to Ice and Snow"
   },
   {
     "id": "cold-ice-walking",
@@ -957,7 +980,8 @@ export default [
       "formula": "Movement 1 (Environmental Adaptation – Ice) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Environmental Adaptation – Ice)"
   },
   {
     "id": "cold-snow-shoes",
@@ -1001,7 +1025,8 @@ export default [
       "formula": "Movement 2 (Trackless, Water-Walking), Limited to Snow • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 2 (Trackless, Water-Walking), Limited to Snow"
   },
   {
     "id": "cold-speed-skating",
@@ -1040,7 +1065,8 @@ export default [
       "formula": "Speed, Limited to Ice • 1 point per 2 ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Speed, Limited to Ice"
   },
   {
     "id": "cold-blizzard-cold-1-visibility-2",
@@ -1081,7 +1107,8 @@ export default [
       "formula": "Environment (Cold, Visibility) • 2, 3, or 4 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (Cold, Visibility)"
   },
   {
     "id": "cold-blizzard-cold-1-visibility-5",
@@ -1122,7 +1149,8 @@ export default [
       "formula": "Environment (Cold, Visibility) • 2, 3, or 4 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Environment (Cold, Visibility)"
   },
   {
     "id": "cold-blizzard-cold-2-visibility-2",
@@ -1163,7 +1191,8 @@ export default [
       "formula": "Environment (Cold, Visibility) • 2, 3, or 4 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Environment (Cold, Visibility)"
   },
   {
     "id": "cold-blizzard-cold-2-visibility-5",
@@ -1204,7 +1233,8 @@ export default [
       "formula": "Environment (Cold, Visibility) • 2, 3, or 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Environment (Cold, Visibility)"
   },
   {
     "id": "cold-cold-projection-1-degree",
@@ -1238,7 +1268,8 @@ export default [
       "formula": "Environment (Cold) • 1 or 2 points per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Cold)"
   },
   {
     "id": "cold-cold-projection-2-degree",
@@ -1272,7 +1303,8 @@ export default [
       "formula": "Environment (Cold) • 1 or 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (Cold)"
   },
   {
     "id": "cold-ice-creatures",
@@ -1310,7 +1342,8 @@ export default [
       "formula": "Summon Ice Creature 5, Controlled • 15 points",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Ice Creature 5, Controlled"
   },
   {
     "id": "cold-ice-form",
@@ -1348,7 +1381,8 @@ export default [
       "formula": "Immunity 20 (Cold Effects, Life Support), Protection • 20 points +1 point per Protection rank",
       "fixed": 20,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Immunity 20 (Cold Effects, Life Support), Protection"
   },
   {
     "id": "cold-ice-sculpting",
@@ -1387,7 +1421,8 @@ export default [
       "formula": "Create Ice, Permanent • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create Ice, Permanent"
   },
   {
     "id": "cold-ice-shifting",
@@ -1431,7 +1466,8 @@ export default [
       "formula": "Move Object, Perception Range, Limited to Ice and Snow • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Move Object, Perception Range, Limited to Ice and Snow"
   },
   {
     "id": "cold-snow-form",
@@ -1468,7 +1504,8 @@ export default [
       "formula": "Immunity 20 (Cold Effects, Life Support), Insubstantial 1 • 25 points",
       "fixed": 25,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 20 (Cold Effects, Life Support), Insubstantial 1"
   },
   {
     "id": "cold-thermal-vision",
@@ -1506,6 +1543,7 @@ export default [
       "formula": "Senses 1 (Infravision) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Infravision)"
   }
 ] satisfies PowerTemplate[];

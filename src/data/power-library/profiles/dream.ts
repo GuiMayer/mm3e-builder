@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "dream-dream-trap",
@@ -53,12 +54,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "The printed 1 PP/rank conflicts with Limited Degree (third only, -2) and Limited to sleeping targets (-1). The actual composition is 1 PP per 2 ranks.",
-          "pt": "Divergência da fonte: The printed 1 PP/rank conflicts with Limited Degree (third only, -2) and Limited to sleeping targets (-1). The actual composition is 1 PP per 2 ranks."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 0.5 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 0.5
       }
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will; Transformed—Asleep), Limited Degree (third only), Limited to Sleeping Targets"
   },
   {
     "id": "dream-nightmare-blast",
@@ -115,7 +117,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will; conditions vary), Variable Conditions, Variable Descriptor 1 (nightmares), Limited to Sleeping Targets • 1 point + 4 points per rank",
       "fixed": 1,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will; conditions vary), Variable Conditions, Variable Descriptor 1 (nightmares), Limited to Sleeping Targets"
   },
   {
     "id": "dream-sleep",
@@ -162,7 +165,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Fatigued, Exhausted, Asleep) • 4 points",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Fatigued, Exhausted, Asleep)"
   },
   {
     "id": "dream-sleep-deprivation",
@@ -219,7 +223,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will; Fatigued, Exhausted, Incapacitated), Progressive, Subtle, Limited to one check per day • 1 point +",
       "fixed": 1,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will; Fatigued, Exhausted, Incapacitated), Progressive, Subtle, Limited to one check per day"
   },
   {
     "id": "dream-dream-dissipation",
@@ -261,7 +266,8 @@ export default [
       "formula": "Nullify Dream Powers, Simultaneous • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Nullify Dream Powers, Simultaneous"
   },
   {
     "id": "dream-dream-immunity",
@@ -293,7 +299,8 @@ export default [
       "formula": "Immunity 2 (Dream Powers) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (Dream Powers)"
   },
   {
     "id": "dream-healing-trance",
@@ -332,7 +339,8 @@ export default [
       "formula": "Regeneration, Source (Sleep) • 1 point per 2",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Regeneration, Source (Sleep)"
   },
   {
     "id": "dream-sleepless",
@@ -364,7 +372,8 @@ export default [
       "formula": "Immunity 1 (Sleep) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Sleep)"
   },
   {
     "id": "dream-dreamport",
@@ -408,7 +417,8 @@ export default [
       "formula": "Teleport, Accurate, Medium (dreamers) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport, Accurate, Medium (dreamers)"
   },
   {
     "id": "dream-dream-projection",
@@ -447,7 +457,8 @@ export default [
       "formula": "Communication (Mental), Limited to Dreamers • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Communication (Mental), Limited to Dreamers"
   },
   {
     "id": "dream-dream-travel",
@@ -482,7 +493,8 @@ export default [
       "formula": "Movement 1 (Dimensional Travel) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Dimensional Travel)"
   },
   {
     "id": "dream-dream-control",
@@ -522,7 +534,8 @@ export default [
       "formula": "Illusion (All Senses), Limited to Minds, Limited to Sleeping Subjects • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Illusion (All Senses), Limited to Minds, Limited to Sleeping Subjects"
   },
   {
     "id": "dream-dream-mastery",
@@ -569,7 +582,8 @@ export default [
       "formula": "Variable (dream powers, Free Action, Limited to while asleep, Limited to while in dreams) • 7 points per rank",
       "fixed": 0,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Variable (dream powers, Free Action, Limited to while asleep, Limited to while in dreams)"
   },
   {
     "id": "dream-dream-reading",
@@ -608,7 +622,8 @@ export default [
       "formula": "Mind Reading, Limited to Sleeping Subjects • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Mind Reading, Limited to Sleeping Subjects"
   },
   {
     "id": "dream-dream-touch",
@@ -665,7 +680,8 @@ export default [
       "formula": "Remote Sensing (mental), Senses 4 (Accurate Ranged Detect Dreamers, mental) • 4 points + 1 point per rank",
       "fixed": 4,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Remote Sensing (mental), Senses 4 (Accurate Ranged Detect Dreamers, mental)"
   },
   {
     "id": "dream-precognitive-dreams",
@@ -709,7 +725,8 @@ export default [
       "formula": "Senses 4 (Precognition), Limited to Dreaming • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Precognition), Limited to Dreaming"
   },
   {
     "id": "dream-sleep-substitute",
@@ -756,11 +773,12 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Healing 2 + Energizing 1 - Limited 1 costs 2 PP/rank. The identical Energize recipe on p. 91 also prints 2 PP/rank.",
-          "pt": "Divergência da fonte: Healing 2 + Energizing 1 - Limited 1 costs 2 PP/rank. The identical Energize recipe on p. 91 also prints 2 PP/rank."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 2 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 2
       }
-    }
+    },
+    "sourceFormula": "Healing (Energizing, Limited to Energizing)"
   }
 ] satisfies PowerTemplate[];

@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "dimension-dimensional-banishment",
@@ -45,7 +46,8 @@ export default [
       "formula": "Perception Ranged Movement (Dimensional Travel 1) Attack (Resisted by Dodge or Will) • 4 points + 3 points per +1 to resistance DC.",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Perception Ranged Movement (Dimensional Travel 1) Attack (Resisted by Dodge or Will)"
   },
   {
     "id": "dimension-dimensional-blade",
@@ -92,7 +94,8 @@ export default [
       "formula": "Penetrating Damage (cutting), Subtle • 1",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Penetrating Damage (cutting), Subtle"
   },
   {
     "id": "dimension-dimensional-cascade",
@@ -137,7 +140,8 @@ export default [
       "formula": "Cone Area Damage (environmental effect), Variable Descriptor 1 (environmental effects) • 1",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cone Area Damage (environmental effect), Variable Descriptor 1 (environmental effects)"
   },
   {
     "id": "dimension-dimensional-adaptation",
@@ -175,7 +179,8 @@ export default [
       "formula": "Immunity 10 (life support), Limited to Hazardous Dimensions • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (life support), Limited to Hazardous Dimensions"
   },
   {
     "id": "dimension-dimensional-anchor",
@@ -207,7 +212,8 @@ export default [
       "formula": "Immunity 5 (dimension powers) • 5",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (dimension powers)"
   },
   {
     "id": "dimension-dimensional-shunt",
@@ -240,7 +246,8 @@ export default [
       "formula": "Deflect (dimensional) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Deflect (dimensional)"
   },
   {
     "id": "dimension-dimension-walk",
@@ -286,7 +293,8 @@ export default [
       "formula": "Movement 3 (Dimensional Travel, any dimension), Quirk (Only While Moving, –1 point), Requires a Perception Check (DC 12, –2 points) • 3 points + 6 points with",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 3 (Dimensional Travel, any dimension), Quirk (Only While Moving, –1 point), Requires a Perception Check (DC 12, –2 points)"
   },
   {
     "id": "dimension-dimensional-jump",
@@ -322,7 +330,8 @@ export default [
       "formula": "Movement (Dimensional Travel) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Movement (Dimensional Travel)"
   },
   {
     "id": "dimension-dimensional-portal",
@@ -364,7 +373,8 @@ export default [
       "formula": "Movement (Dimensional Travel), Portal •",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Movement (Dimensional Travel), Portal"
   },
   {
     "id": "dimension-dimension-sense",
@@ -409,7 +419,8 @@ export default [
       "formula": "Senses 2 (Detect Dimension, Acute) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Detect Dimension, Acute)"
   },
   {
     "id": "dimension-dimensional-grab",
@@ -452,7 +463,8 @@ export default [
       "formula": "Enhanced Advantage (Equipment; dimensional), Variable Descriptor 2 (equipment) • 2 points +",
       "fixed": 2,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Advantage (Equipment; dimensional), Variable Descriptor 2 (equipment)"
   },
   {
     "id": "dimension-dimensional-perspective",
@@ -491,7 +503,8 @@ export default [
       "formula": "Senses 4 (Penetrates Concealment) • 4 points per sense.",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Penetrates Concealment)"
   },
   {
     "id": "dimension-dimensional-pocket",
@@ -524,7 +537,8 @@ export default [
       "formula": "Feature (extradimensional storage of mass rank in material) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Feature (extradimensional storage of mass rank in material)"
   },
   {
     "id": "dimension-dimensional-shift",
@@ -556,7 +570,8 @@ export default [
       "formula": "Insubstantial 4 • 20 points",
       "fixed": 20,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 4"
   },
   {
     "id": "dimension-dimensional-stability",
@@ -614,7 +629,8 @@ export default [
       "formula": "Nullify Dimension Powers, Cloud Area, Concentration, Simultaneous, Close Range • 3 points",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Nullify Dimension Powers, Cloud Area, Concentration, Simultaneous, Close Range"
   },
   {
     "id": "dimension-dimensional-summoning",
@@ -647,7 +663,8 @@ export default [
       "formula": "Summon Extradimensional Beings • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Summon Extradimensional Beings"
   },
   {
     "id": "dimension-dimensional-window-1",
@@ -706,7 +723,8 @@ export default [
       "formula": "Dimensional Vision and Hearing • 2 points (one other dimension), 4 points (related group of",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Dimensional Vision and Hearing"
   },
   {
     "id": "dimension-dimensional-window-2",
@@ -765,7 +783,8 @@ export default [
       "formula": "Dimensional Vision and Hearing • 2 points (one other dimension), 4 points (related group of",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Dimensional Vision and Hearing"
   },
   {
     "id": "dimension-dimensional-window-3",
@@ -824,7 +843,8 @@ export default [
       "formula": "Dimensional Vision and Hearing • 2 points (one other dimension), 4 points (related group of",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Dimensional Vision and Hearing"
   },
   {
     "id": "dimension-two-dimensional-form",
@@ -878,7 +898,8 @@ export default [
       "formula": "Concealment 4 (all visual, Limited to One Side), Insubstantial 1, Quirk (Limited by body width, –1 point) • 8 points",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 4 (all visual, Limited to One Side), Insubstantial 1, Quirk (Limited by body width, –1 point)"
   },
   {
     "id": "dimension-four-dimensional-form",
@@ -943,6 +964,7 @@ export default [
       "formula": "Indirect 3 (Variable Descriptor 2, all attacks), Senses 8 (Vision and Hearing Penetrate Concealment), Teleport 1 • 15 points",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Indirect 3 (Variable Descriptor 2, all attacks), Senses 8 (Vision and Hearing Penetrate Concealment), Teleport 1"
   }
 ] satisfies PowerTemplate[];

@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "tech-animate-machines",
@@ -47,7 +48,8 @@ export default [
       "formula": "Summon Animated Object, Controlled, General Type (Machines), Self-Powered (see Summoning Powers section) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Summon Animated Object, Controlled, General Type (Machines), Self-Powered (see Summoning Powers section)"
   },
   {
     "id": "tech-control-technology",
@@ -115,12 +117,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Affliction 1 + Perception 2 + Cumulative 1 - third-degree only 2 - technology only 1 = 1/rank. Affects Only Objects costs +0.",
-          "pt": "Divergência da fonte: Affliction 1 + Perception 2 + Cumulative 1 - third-degree only 2 - technology only 1 = 1/rank. Affects Only Objects costs +0."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 1 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 1
       }
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Controlled; Resisted by Fortitude, Overcome by skill or Fortitude), Limited to third degree only, Affects Objects Only, Limited to Technology"
   },
   {
     "id": "tech-deactivate-technology",
@@ -173,7 +176,8 @@ export default [
       "formula": "Nullify Technology, Burst Area (30- foot radius), Broad (Technological), Simultaneous • 4 points",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Nullify Technology, Burst Area (30- foot radius), Broad (Technological), Simultaneous"
   },
   {
     "id": "tech-disassemble",
@@ -218,7 +222,8 @@ export default [
       "formula": "Ranged Continuous Transform (assembled to disassembled) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Continuous Transform (assembled to disassembled)"
   },
   {
     "id": "tech-machine-body",
@@ -250,7 +255,8 @@ export default [
       "formula": "Immunity 30 (Fortitude effects) • 30 points",
       "fixed": 30,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 30 (Fortitude effects)"
   },
   {
     "id": "tech-construct-body",
@@ -285,7 +291,7 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "The 0-point construct package also removes character abilities; the powers alone cost 30.",
-          "pt": "Divergência da fonte: The 0-point construct package also removes character abilities; the powers alone cost 30."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 30 PP fixos + 0 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 30,
         "perRank": 0
@@ -294,7 +300,8 @@ export default [
     "requiresCharacterChanges": {
       "en": "Reference only: a construct changes absent character abilities, beyond the power model. Configure the character separately.",
       "pt": "Apenas referência: um construto muda atributos ausentes do personagem, fora do modelo de poder. Configure o personagem separadamente."
-    }
+    },
+    "sourceFormula": "Construct"
   },
   {
     "id": "tech-machine-mind",
@@ -326,7 +333,8 @@ export default [
       "formula": "Immunity 10 (mental powers) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (mental powers)"
   },
   {
     "id": "tech-cyberspace",
@@ -361,7 +369,8 @@ export default [
       "formula": "Movement 1 (Dimensional Travel, Cyberspace) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Dimensional Travel, Cyberspace)"
   },
   {
     "id": "tech-network-jump",
@@ -410,7 +419,8 @@ export default [
       "formula": "Teleport, Accurate, Extended, Medium (Networks) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Teleport, Accurate, Extended, Medium (Networks)"
   },
   {
     "id": "tech-transport-platform",
@@ -453,7 +463,8 @@ export default [
       "formula": "Transport Platform",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Flight, Platform, Quirk: Requires available technology or machine parts (–1 point)"
   },
   {
     "id": "tech-assemble",
@@ -498,7 +509,8 @@ export default [
       "formula": "Ranged Continuous Transform (parts into finished machine) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Continuous Transform (parts into finished machine)"
   },
   {
     "id": "tech-computer-mind",
@@ -546,7 +558,8 @@ export default [
       "formula": "Enhanced Advantages (Eidetic Memory) plus Quickness, Limited to Mental Tasks • 1 point + 1 point",
       "fixed": 1,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Enhanced Advantages (Eidetic Memory) plus Quickness, Limited to Mental Tasks"
   },
   {
     "id": "tech-interface",
@@ -578,7 +591,8 @@ export default [
       "formula": "Comprehend Machines 2 • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend Machines 2"
   },
   {
     "id": "tech-manipulate-technology",
@@ -626,7 +640,8 @@ export default [
       "formula": "Perception Ranged Move Object 1, Precise, Limited to Operating Machines • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Perception Ranged Move Object 1, Precise, Limited to Operating Machines"
   },
   {
     "id": "tech-sensor-masking",
@@ -669,7 +684,8 @@ export default [
       "formula": "Concealment 10 (All Senses), Limited to Technology • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 10 (All Senses), Limited to Technology"
   },
   {
     "id": "tech-sensor-network",
@@ -709,7 +725,8 @@ export default [
       "formula": "Remote Sensing (Visual and Auditory), Limited to Technological Sensors • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Remote Sensing (Visual and Auditory), Limited to Technological Sensors"
   },
   {
     "id": "tech-technomorph",
@@ -756,7 +773,8 @@ export default [
       "formula": "Variable (Tech Powers), Continuous Duration, Move Action • 9 points per rank",
       "fixed": 0,
       "perRank": 9
-    }
+    },
+    "sourceFormula": "Variable (Tech Powers), Continuous Duration, Move Action"
   },
   {
     "id": "tech-tech-savant",
@@ -794,7 +812,8 @@ export default [
       "formula": "Enhanced Skill (Technology) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Skill (Technology)"
   },
   {
     "id": "tech-tech-genius",
@@ -830,6 +849,7 @@ export default [
       "formula": "Enhanced Advantage (Inventor) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Enhanced Advantage (Inventor)"
   }
 ] satisfies PowerTemplate[];

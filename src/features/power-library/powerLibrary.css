@@ -59,3 +59,6 @@
   .power-library-dialog--detail .power-library-preview { display: block; }
   .power-library-back { display: inline-flex; gap: 6px; align-items: center; padding: 10px 0; background: transparent; color: var(--c-primary); border: 0; cursor: pointer; margin-bottom: 12px; }
 }
+
+.power-library-book-reference { font-size: .85rem; line-height: 1.6; margin: 12px 0; overflow-wrap: anywhere; }
+.power-library-book-reference summary { cursor: pointer; color: var(--c-primary); }

@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "electrical-emp",
@@ -60,7 +61,8 @@ export default [
       "formula": "Weaken Electronics, Affects Only Objects, Broad, Burst Area, Simultaneous • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Weaken Electronics, Affects Only Objects, Broad, Burst Area, Simultaneous"
   },
   {
     "id": "electrical-lightning-bolt",
@@ -99,7 +101,8 @@ export default [
       "formula": "Ranged Damage (electrical) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (electrical)"
   },
   {
     "id": "electrical-ball-lightning",
@@ -144,7 +147,8 @@ export default [
       "formula": "Burst Area Ranged Damage (electrical) • 3",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Burst Area Ranged Damage (electrical)"
   },
   {
     "id": "electrical-chain-lightning",
@@ -188,7 +192,8 @@ export default [
       "formula": "Multiattack Ranged Damage (electrical) • 3",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Multiattack Ranged Damage (electrical)"
   },
   {
     "id": "electrical-lightning-flash",
@@ -249,7 +254,8 @@ export default [
       "formula": "Perception Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to One Sense • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to One Sense"
   },
   {
     "id": "electrical-seizure",
@@ -291,7 +297,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will ; Entranced, Stunned, Incapacitated) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will ; Entranced, Stunned, Incapacitated)"
   },
   {
     "id": "electrical-shock-field",
@@ -338,7 +345,8 @@ export default [
       "formula": "Reaction Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated) • 5",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Reaction Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "electrical-dc-shock-field",
@@ -385,7 +393,8 @@ export default [
       "formula": "Reaction Progressive Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated) • 6",
       "fixed": 0,
       "perRank": 6
-    }
+    },
+    "sourceFormula": "Reaction Progressive Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "electrical-taser",
@@ -427,7 +436,8 @@ export default [
       "formula": "Ranged Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "electrical-electrical-absorption-healing",
@@ -481,7 +491,8 @@ export default [
       "formula": "Reaction Healing, Bonus Effect (Can Counter Extra Effort Fatigue), Limited to Self, Limited to Absorbed Electricity Rank, Source (Electricity) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Reaction Healing, Bonus Effect (Can Counter Extra Effort Fatigue), Limited to Self, Limited to Absorbed Electricity Rank, Source (Electricity)"
   },
   {
     "id": "electrical-electrical-absorption-enhanced-trait",
@@ -526,7 +537,8 @@ export default [
       "formula": "Reaction Healing, Bonus Effect (Can Counter Extra Effort Fatigue), Limited to Self, Limited to Absorbed Electricity Rank, Source (Electricity) • 3 points per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Reaction Healing, Bonus Effect (Can Counter Extra Effort Fatigue), Limited to Self, Limited to Absorbed Electricity Rank, Source (Electricity)"
   },
   {
     "id": "electrical-electrical-immunity",
@@ -558,7 +570,8 @@ export default [
       "formula": "Immunity 10 (Electrical Effects) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Electrical Effects)"
   },
   {
     "id": "electrical-electrical-resistance",
@@ -596,7 +609,8 @@ export default [
       "formula": "Immunity 10 (Electrical Effects), Limited to Half Effect • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Electrical Effects), Limited to Half Effect"
   },
   {
     "id": "electrical-electrical-conductor",
@@ -639,7 +653,8 @@ export default [
       "formula": "Immunity 10 (Electrical Effects), Reflect, Redirect • 30 points",
       "fixed": 30,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 10 (Electrical Effects), Reflect, Redirect"
   },
   {
     "id": "electrical-electromagnetic-field",
@@ -678,7 +693,8 @@ export default [
       "formula": "Protection, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection, Sustained"
   },
   {
     "id": "electrical-arc-riding",
@@ -711,7 +727,8 @@ export default [
       "formula": "Leaping • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Leaping"
   },
   {
     "id": "electrical-electro-flight",
@@ -744,7 +761,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "electrical-lightning-flight",
@@ -798,7 +816,8 @@ export default [
       "formula": "Teleport, Accurate, Easy, Extended, Limited (must pass through intervening space in lightning form) • 4",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Teleport, Accurate, Easy, Extended, Limited (must pass through intervening space in lightning form)"
   },
   {
     "id": "electrical-arclight",
@@ -832,7 +851,8 @@ export default [
       "formula": "Environment (Light) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Light)"
   },
   {
     "id": "electrical-blackout",
@@ -898,12 +918,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Nullify 1 + Broad 1 + Area 1 + Concentration 1 + Simultaneous 1 - Close Range 1 = 4 PP/rank, not printed 5.",
-          "pt": "Divergência da fonte: Nullify 1 + Broad 1 + Area 1 + Concentration 1 + Simultaneous 1 - Close Range 1 = 4 PP/rank, not printed 5."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 4 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 0,
         "perRank": 4
       }
-    }
+    },
+    "sourceFormula": "Nullify Electronics, Broad, Burst Area, Concentration, Simultaneous, Close Range"
   },
   {
     "id": "electrical-electrical-form",
@@ -935,7 +956,8 @@ export default [
       "formula": "Insubstantial 3 (electricity) • 15 points",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 3 (electricity)"
   },
   {
     "id": "electrical-electrosense",
@@ -985,7 +1007,8 @@ export default [
       "formula": "Detect Electricity, Ranged, Acute • 3 points per rank",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Detect Electricity, Ranged, Acute"
   },
   {
     "id": "electrical-electro-shaping",
@@ -1040,7 +1063,8 @@ export default [
       "formula": "Ranged Shapeable Area Electrical Damage, Concentration Duration, Selective • 5 points per rank, +1 point per rank per +1 volume rank",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Ranged Shapeable Area Electrical Damage, Concentration Duration, Selective"
   },
   {
     "id": "electrical-lightning-creatures",
@@ -1072,7 +1096,8 @@ export default [
       "formula": "Summon Lightning Creature 6 (90- point minion (see the following template)) • 12 points",
       "fixed": 12,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Lightning Creature 6 (90- point minion (see the following template))"
   },
   {
     "id": "electrical-static-electricity",
@@ -1105,6 +1130,7 @@ export default [
       "formula": "Move Object • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Move Object"
   }
 ] satisfies PowerTemplate[];

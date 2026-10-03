@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "death-banshee-s-wail",
@@ -44,7 +45,8 @@ export default [
       "formula": "Hearing Perception Area Affliction (Resisted and Overcome by Will; Dazed, Stunned, Dying) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Hearing Perception Area Affliction (Resisted and Overcome by Will; Dazed, Stunned, Dying)"
   },
   {
     "id": "death-command-the-undead",
@@ -100,7 +102,8 @@ export default [
       "formula": "Hearing Perception Area Affliction (Resisted and Overcome by Will; Dazed, Compelled, Controlled), Affects Objects, Limited to the Undead • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Hearing Perception Area Affliction (Resisted and Overcome by Will; Dazed, Compelled, Controlled), Affects Objects, Limited to the Undead"
   },
   {
     "id": "death-death-curse",
@@ -152,7 +155,8 @@ export default [
       "formula": "Perception Ranged Progressive Affliction (Resisted and Overcome by Will; Impaired, Disabled, Dying), Limited to one check per day • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Progressive Affliction (Resisted and Overcome by Will; Impaired, Disabled, Dying), Limited to one check per day"
   },
   {
     "id": "death-death-stare",
@@ -207,7 +211,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Impaired, Stunned, Paralyzed), Vision Dependent • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Impaired, Stunned, Paralyzed), Vision Dependent"
   },
   {
     "id": "death-death-touch",
@@ -249,7 +254,8 @@ export default [
       "formula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Dying) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Dying)"
   },
   {
     "id": "death-grasping-graves",
@@ -309,7 +315,8 @@ export default [
       "formula": "Ranged Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree"
   },
   {
     "id": "death-soulfire",
@@ -351,7 +358,8 @@ export default [
       "formula": "Damage (soul), Alternate Resistance (Will) • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Damage (soul), Alternate Resistance (Will)"
   },
   {
     "id": "death-suppress-life",
@@ -404,7 +412,8 @@ export default [
       "formula": "Weaken Stamina, Incurable, Insidious, Limited to Recovery Checks • 2 points + 1 point per 2 ranks",
       "fixed": 2,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Weaken Stamina, Incurable, Insidious, Limited to Recovery Checks"
   },
   {
     "id": "death-blood-healing",
@@ -443,7 +452,8 @@ export default [
       "formula": "Regeneration, Source (blood) • 1 point per 2",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Regeneration, Source (blood)"
   },
   {
     "id": "death-deathless",
@@ -482,7 +492,8 @@ export default [
       "formula": "Immortality, Limited (means of permanent death) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Immortality, Limited (means of permanent death)"
   },
   {
     "id": "death-ghost-shield",
@@ -521,7 +532,8 @@ export default [
       "formula": "Protection (necromantic), Sustained • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection (necromantic), Sustained"
   },
   {
     "id": "death-shielded-soul",
@@ -553,7 +565,8 @@ export default [
       "formula": "Immunity 5 (death effects) • 5 points",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (death effects)"
   },
   {
     "id": "death-death-s-gate",
@@ -594,7 +607,8 @@ export default [
       "formula": "Movement 2 (Dimensional 2, afterlives), Portal • 8 points",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 2 (Dimensional 2, afterlives), Portal"
   },
   {
     "id": "death-valkyrie-s-ride",
@@ -643,7 +657,8 @@ export default [
       "formula": "Teleport, Accurate (see description), Extended, Limited to Dying Subjects • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Teleport, Accurate (see description), Extended, Limited to Dying Subjects"
   },
   {
     "id": "death-death-sight",
@@ -688,7 +703,8 @@ export default [
       "formula": "Senses 2 (Detect Dying, Ranged) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 2 (Detect Dying, Ranged)"
   },
   {
     "id": "death-death-visions",
@@ -732,7 +748,8 @@ export default [
       "formula": "Senses 4 (Precognition), Limited to Visions of Death • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Precognition), Limited to Visions of Death"
   },
   {
     "id": "death-ghost-form",
@@ -777,7 +794,7 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "The displayed total counts powers only. Absent Stamina is a character-level -10 PP trait; Ghost Form also has a printed one-point mismatch.",
-          "pt": "Divergência da fonte: The displayed total counts powers only. Absent Stamina is a character-level -10 PP trait; Ghost Form also has a printed one-point mismatch."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 52 PP fixos + 0 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 52,
         "perRank": 0
@@ -785,8 +802,9 @@ export default [
     },
     "requiresCharacterChanges": {
       "en": "Reference only: this form also removes the character’s Stamina. A power template cannot safely make that character-level change. Configure absent Stamina separately; these powers do not include its refund.",
-      "pt": "Apenas referência: esta forma também remove a Vigor do personagem. Um modelo de poder não pode fazer essa alteração com segurança. Configure Vigor ausente separadamente; estes poderes não incluem o desconto."
-    }
+      "pt": "Apenas referência: esta forma também remove o Vigor do personagem. Um modelo de poder não pode fazer essa alteração com segurança. Configure Vigor ausente separadamente; estes poderes não incluem o desconto."
+    },
+    "sourceFormula": "Flight 1, Immunity 30 (Fortitude effects), Insubstantial 4 (incorporeal), No Stamina rank (–10 points)"
   },
   {
     "id": "death-undead-form",
@@ -821,7 +839,7 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "The displayed total counts powers only. Absent Stamina is a character-level -10 PP trait; Ghost Form also has a printed one-point mismatch.",
-          "pt": "Divergência da fonte: The displayed total counts powers only. Absent Stamina is a character-level -10 PP trait; Ghost Form also has a printed one-point mismatch."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 30 PP fixos + 0 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 30,
         "perRank": 0
@@ -829,8 +847,9 @@ export default [
     },
     "requiresCharacterChanges": {
       "en": "Reference only: this form also removes the character’s Stamina. A power template cannot safely make that character-level change. Configure absent Stamina separately; these powers do not include its refund.",
-      "pt": "Apenas referência: esta forma também remove a Vigor do personagem. Um modelo de poder não pode fazer essa alteração com segurança. Configure Vigor ausente separadamente; estes poderes não incluem o desconto."
-    }
+      "pt": "Apenas referência: esta forma também remove o Vigor do personagem. Um modelo de poder não pode fazer essa alteração com segurança. Configure Vigor ausente separadamente; estes poderes não incluem o desconto."
+    },
+    "sourceFormula": "Immunity 30 (Fortitude effects), No Stamina rank (–10 points)"
   },
   {
     "id": "death-necromancy",
@@ -879,7 +898,8 @@ export default [
       "formula": "Summon Undead, Controlled, Horde, Multiple Minions (32 total) • 14 points per rank",
       "fixed": 0,
       "perRank": 14
-    }
+    },
+    "sourceFormula": "Summon Undead, Controlled, Horde, Multiple Minions (32 total)"
   },
   {
     "id": "death-speak-with-the-dead",
@@ -917,6 +937,7 @@ export default [
       "formula": "Senses 4 (Postcognition) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Postcognition)"
   }
 ] satisfies PowerTemplate[];

@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "fire-fireball",
@@ -43,7 +44,8 @@ export default [
       "formula": "Ranged Burst Area Fire Damage • 30-foot radius,",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Fire Damage"
   },
   {
     "id": "fire-firey-breath",
@@ -83,7 +85,8 @@ export default [
       "formula": "Cone Area Fire Damage • 60-foot length and",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cone Area Fire Damage"
   },
   {
     "id": "fire-firey-cloud",
@@ -128,7 +131,8 @@ export default [
       "formula": "Ranged Cloud Area Fire Damage • 15-foot",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Cloud Area Fire Damage"
   },
   {
     "id": "fire-fire-blast",
@@ -167,7 +171,8 @@ export default [
       "formula": "Ranged Fire Damage • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Fire Damage"
   },
   {
     "id": "fire-fireflash",
@@ -228,7 +233,8 @@ export default [
       "formula": "Perception Area Cumulative Affliction (Visually Impaired, Visually Disabled, Visually Unaware), Limited to One Sense • Resisted by Dodge (DC 10 + rank), Overcome",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Area Cumulative Affliction (Visually Impaired, Visually Disabled, Visually Unaware), Limited to One Sense"
   },
   {
     "id": "fire-flame-aura",
@@ -267,7 +273,8 @@ export default [
       "formula": "Reaction Fire Damage (When Touched) • 4 points",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Reaction Fire Damage (When Touched)"
   },
   {
     "id": "fire-flamethrower",
@@ -307,7 +314,8 @@ export default [
       "formula": "Line Area Fire Damage • 5 feet wide, 30 feet",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Line Area Fire Damage"
   },
   {
     "id": "fire-heatstroke",
@@ -354,7 +362,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Fatigued, Exhausted, Incapacitated) • Resisted by Fortitude",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Fatigued, Exhausted, Incapacitated)"
   },
   {
     "id": "fire-immolate",
@@ -398,7 +407,8 @@ export default [
       "formula": "Perception Ranged Fire Damage, Concentration Duration • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Fire Damage, Concentration Duration"
   },
   {
     "id": "fire-melt",
@@ -449,7 +459,8 @@ export default [
       "formula": "Ranged Weaken Toughness, Affects Only Objects •",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Weaken Toughness, Affects Only Objects"
   },
   {
     "id": "fire-nova-burst",
@@ -499,7 +510,8 @@ export default [
       "formula": "Burst Area Fire Damage, Area 3, Feature 1 (Extraordinary Effort for +2 effect rank), Tiring • 120-foot",
       "fixed": 1,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Burst Area Fire Damage, Area 3, Feature 1 (Extraordinary Effort for +2 effect rank), Tiring"
   },
   {
     "id": "fire-smoke-cloud",
@@ -553,7 +565,8 @@ export default [
       "formula": "Ranged Cloud Area Visual Concealment Attack • 15-foot radius • 8 points (+4 points per +1 distance rank to",
       "fixed": 8,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Ranged Cloud Area Visual Concealment Attack"
   },
   {
     "id": "fire-suffocation",
@@ -600,7 +613,8 @@ export default [
       "formula": "Ranged Progressive Affliction (Dazed, Stunned, Incapacitated) • Resisted by Fortitude (DC 10 + rank),",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Ranged Progressive Affliction (Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "fire-fire-form",
@@ -632,7 +646,8 @@ export default [
       "formula": "Insubstantial 3 (Energy Form) • 15 points",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Insubstantial 3 (Energy Form)"
   },
   {
     "id": "fire-fire-shield",
@@ -681,7 +696,8 @@ export default [
       "formula": "Protection, Impervious, Limited to Flammable Weapons, Sustained • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection, Impervious, Limited to Flammable Weapons, Sustained"
   },
   {
     "id": "fire-heat-absorbtion",
@@ -731,7 +747,8 @@ export default [
       "formula": "Enhanced Trait (Fades, Reaction: When Absorbing Heat), Immunity 10 (Heat Effects) • 10 points +",
       "fixed": 10,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Trait (Fades, Reaction: When Absorbing Heat), Immunity 10 (Heat Effects)"
   },
   {
     "id": "fire-immunity-to-cold-environment",
@@ -763,7 +780,8 @@ export default [
       "formula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), or Immunity 10 (Cold Effects) •",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), or Immunity 10 (Cold Effects)"
   },
   {
     "id": "fire-immunity-to-cold-damage",
@@ -795,7 +813,8 @@ export default [
       "formula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), or Immunity 10 (Cold Effects) •",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), or Immunity 10 (Cold Effects)"
   },
   {
     "id": "fire-immunity-to-cold-effects",
@@ -827,7 +846,8 @@ export default [
       "formula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), or Immunity 10 (Cold Effects) •",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Cold), Immunity 5 (Cold Damage), or Immunity 10 (Cold Effects)"
   },
   {
     "id": "fire-immunity-to-heat-environment",
@@ -859,7 +879,8 @@ export default [
       "formula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), or Immunity 10 (Heat Effects) •",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), or Immunity 10 (Heat Effects)"
   },
   {
     "id": "fire-immunity-to-heat-damage",
@@ -891,7 +912,8 @@ export default [
       "formula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), or Immunity 10 (Heat Effects) •",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), or Immunity 10 (Heat Effects)"
   },
   {
     "id": "fire-immunity-to-heat-effects",
@@ -923,7 +945,8 @@ export default [
       "formula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), or Immunity 10 (Heat Effects) •",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (Environmental Heat), Immunity 5 (Heat Damage), or Immunity 10 (Heat Effects)"
   },
   {
     "id": "fire-fireport",
@@ -967,7 +990,8 @@ export default [
       "formula": "Teleport, Extended, Medium: Flames • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport, Extended, Medium: Flames"
   },
   {
     "id": "fire-rocket-flight",
@@ -1000,7 +1024,8 @@ export default [
       "formula": "Flight • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight"
   },
   {
     "id": "fire-tunneling",
@@ -1033,7 +1058,8 @@ export default [
       "formula": "Burrowing • 1 point per rank.",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burrowing"
   },
   {
     "id": "fire-fire-creatures",
@@ -1065,7 +1091,8 @@ export default [
       "formula": "Summon Fire Creature 8 • 120-point minion",
       "fixed": 16,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Fire Creature 8"
   },
   {
     "id": "fire-firelight",
@@ -1099,7 +1126,8 @@ export default [
       "formula": "Environment (Light) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Light)"
   },
   {
     "id": "fire-fire-shaping",
@@ -1154,7 +1182,8 @@ export default [
       "formula": "Ranged Shapeable Area Fire Damage, Concentration Duration, Selective • 30 cubic feet",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Ranged Shapeable Area Fire Damage, Concentration Duration, Selective"
   },
   {
     "id": "fire-infravision",
@@ -1192,7 +1221,8 @@ export default [
       "formula": "Senses 1 (Infravision) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 1 (Infravision)"
   },
   {
     "id": "fire-pyrokinesis",
@@ -1242,7 +1272,8 @@ export default [
       "formula": "Perception Range Shapeable Area Fire Damage, Limited to Existing Fire • 30 cubic feet (volume rank 5) • 3",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Range Shapeable Area Fire Damage, Limited to Existing Fire"
   },
   {
     "id": "fire-warm-1",
@@ -1276,7 +1307,8 @@ export default [
       "formula": "Environment (Heat) • 1 point per rank, 2 points per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (Heat)"
   },
   {
     "id": "fire-warm-2",
@@ -1310,6 +1342,7 @@ export default [
       "formula": "Environment (Heat) • 1 point per rank, 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Environment (Heat)"
   }
 ] satisfies PowerTemplate[];

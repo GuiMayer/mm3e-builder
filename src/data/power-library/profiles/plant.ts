@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "plant-control-plants",
@@ -55,7 +56,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Dazed, Compelled, Controlled), Limited to Plants (–2), Subtle • 1 point + 2",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Dazed, Compelled, Controlled), Limited to Plants (–2), Subtle"
   },
   {
     "id": "plant-internal-flora",
@@ -107,7 +109,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Subtle • 1 point + 4 points per rank",
       "fixed": 1,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated), Subtle"
   },
   {
     "id": "plant-phytotoxin",
@@ -149,7 +152,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Paralyzed), Secondary Effect • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Paralyzed), Secondary Effect"
   },
   {
     "id": "plant-pollen-cloud",
@@ -192,7 +196,8 @@ export default [
       "formula": "Cloud Area Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated) • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cloud Area Affliction (Resisted and Overcome by Fortitude; Fatigued, Exhausted, Incapacitated)"
   },
   {
     "id": "plant-sap-snare",
@@ -257,7 +262,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree"
   },
   {
     "id": "plant-tanglevines",
@@ -328,7 +334,8 @@ export default [
       "formula": "Ranged Burst Area Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Indirect 3, Limited Degree • 3 points + 3 points per rank",
       "fixed": 3,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Burst Area Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Indirect 3, Limited Degree"
   },
   {
     "id": "plant-thornskin",
@@ -367,7 +374,8 @@ export default [
       "formula": "Damage (piercing), Reaction (to being touched or struck) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Damage (piercing), Reaction (to being touched or struck)"
   },
   {
     "id": "plant-throwing-thorns",
@@ -411,7 +419,8 @@ export default [
       "formula": "Ranged Damage (piercing), Multiattack • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Damage (piercing), Multiattack"
   },
   {
     "id": "plant-photosynthesis",
@@ -443,7 +452,8 @@ export default [
       "formula": "Immunity 1 (starvation) • 1 point",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 1 (starvation)"
   },
   {
     "id": "plant-regrowth",
@@ -476,7 +486,8 @@ export default [
       "formula": "Regeneration • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Regeneration"
   },
   {
     "id": "plant-woodskin",
@@ -514,7 +525,8 @@ export default [
       "formula": "Protection, Noticeable • 1 point for 2 ranks + 1 point",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Protection, Noticeable"
   },
   {
     "id": "plant-brachiation",
@@ -549,7 +561,8 @@ export default [
       "formula": "Movement 1 (Swinging) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Swinging)"
   },
   {
     "id": "plant-carrier-vine",
@@ -588,7 +601,8 @@ export default [
       "formula": "Flight 1, Platform • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight 1, Platform"
   },
   {
     "id": "plant-pass-through-plants",
@@ -629,7 +643,8 @@ export default [
       "formula": "Movement 3 (Permeate 3), Limited to Vegetation • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 3 (Permeate 3), Limited to Vegetation"
   },
   {
     "id": "plant-root-digging",
@@ -662,7 +677,8 @@ export default [
       "formula": "Burrowing • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Burrowing"
   },
   {
     "id": "plant-root-transport",
@@ -701,7 +717,8 @@ export default [
       "formula": "Teleport, Medium (Plants) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Teleport, Medium (Plants)"
   },
   {
     "id": "plant-woods-walk",
@@ -740,17 +757,18 @@ export default [
     ],
     "audit": {
       "formula": "Movement 2 (Trackless), Limited to Plant Life • 1 point.",
-      "fixed": 2,
+      "fixed": 1,
       "perRank": 0,
       "discrepancy": {
         "reason": {
           "en": "Movement 2 costs 4, Limited -1 per rank reduces it to 2, not printed 1.",
-          "pt": "Divergência da fonte: Movement 2 costs 4, Limited -1 per rank reduces it to 2, not printed 1."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 2 PP fixos + 0 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 2,
         "perRank": 0
       }
-    }
+    },
+    "sourceFormula": "Movement 2 (Trackless), Limited to Plant Life"
   },
   {
     "id": "plant-animate-plants",
@@ -794,7 +812,8 @@ export default [
       "formula": "Summon Animated Plant, Controlled, General Type • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Summon Animated Plant, Controlled, General Type"
   },
   {
     "id": "plant-green-memory",
@@ -838,7 +857,8 @@ export default [
       "formula": "Senses 4 (Postcognition), Limited to Areas of Plant-Life • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 4 (Postcognition), Limited to Areas of Plant-Life"
   },
   {
     "id": "plant-green-network",
@@ -878,7 +898,8 @@ export default [
       "formula": "Remote Sensing (visual, auditory, tactile), Medium (Plants) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Remote Sensing (visual, auditory, tactile), Medium (Plants)"
   },
   {
     "id": "plant-plant-form",
@@ -922,7 +943,8 @@ export default [
       "formula": "Immunity 3 (Sleep, Starvation, Suffocation), Protection, Noticeable • 2 points +1 point per rank",
       "fixed": 2,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Immunity 3 (Sleep, Starvation, Suffocation), Protection, Noticeable"
   },
   {
     "id": "plant-plant-growth",
@@ -961,7 +983,8 @@ export default [
       "formula": "Create Plants, Permanent • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Create Plants, Permanent"
   },
   {
     "id": "plant-speak-with-plants",
@@ -993,7 +1016,8 @@ export default [
       "formula": "Comprehend 2 (Plants) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend 2 (Plants)"
   },
   {
     "id": "plant-warp-wood",
@@ -1027,6 +1051,7 @@ export default [
       "formula": "Transform (wooden objects into different shapes) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Transform (wooden objects into different shapes)"
   }
 ] satisfies PowerTemplate[];

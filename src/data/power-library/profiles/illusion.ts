@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "illusion-illusory-affliction",
@@ -55,7 +56,8 @@ export default [
       "formula": "Perception Ranged Affliction (Resisted and Overcome by Will), Variable Conditions, Reversible, Subtle • 2 points + 5 points per rank",
       "fixed": 2,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Perception Ranged Affliction (Resisted and Overcome by Will), Variable Conditions, Reversible, Subtle"
   },
   {
     "id": "illusion-illusory-damage",
@@ -113,7 +115,8 @@ export default [
       "formula": "Perception Ranged Damage, Alternate Resistance (Will), Resistible by Will (removes damage), Variable 2 (illusionary effects) • 2 points + 3 points per rank",
       "fixed": 2,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Perception Ranged Damage, Alternate Resistance (Will), Resistible by Will (removes damage), Variable 2 (illusionary effects)"
   },
   {
     "id": "illusion-sensory-deprivation",
@@ -160,7 +163,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Impaired, Disabled, Incapacitated) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Impaired, Disabled, Incapacitated)"
   },
   {
     "id": "illusion-vertigo",
@@ -207,7 +211,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Impaired, Prone, Incapacitated) • 4",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Will; Impaired, Prone, Incapacitated)"
   },
   {
     "id": "illusion-hidden-cover",
@@ -270,7 +275,8 @@ export default [
       "formula": "Enhanced Advantage (Evasion 2), Protection, Fades, Impervious, Subtle, Sustained • 3 points +1 point per rank",
       "fixed": 3,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Advantage (Evasion 2), Protection, Fades, Impervious, Subtle, Sustained"
   },
   {
     "id": "illusion-illusory-concealment-blending",
@@ -313,7 +319,8 @@ export default [
       "formula": "Concealment 10 (all senses), Blending or Resistible by Will • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 10 (all senses), Blending or Resistible by Will"
   },
   {
     "id": "illusion-illusory-concealment-resistible",
@@ -356,7 +363,8 @@ export default [
       "formula": "Concealment 10 (all senses), Blending or Resistible by Will • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment 10 (all senses), Blending or Resistible by Will"
   },
   {
     "id": "illusion-illusory-double",
@@ -395,7 +403,8 @@ export default [
       "formula": "Illusion 2 (Visual and Aural), Limited to a Double of Yourself • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Illusion 2 (Visual and Aural), Limited to a Double of Yourself"
   },
   {
     "id": "illusion-illusory-projection",
@@ -443,7 +452,8 @@ export default [
       "formula": "Remote Sensing (Visual, Aural, and Mental), Side-Effect (physical body is defenseless and immobile, –2), Noticeable • 1 point for rank 1 + 2 points per additional rank",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Remote Sensing (Visual, Aural, and Mental), Side-Effect (physical body is defenseless and immobile, –2), Noticeable"
   },
   {
     "id": "illusion-illusion-1",
@@ -477,7 +487,8 @@ export default [
       "formula": "Illusion • 1–5 points per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Illusion"
   },
   {
     "id": "illusion-illusion-2",
@@ -511,7 +522,8 @@ export default [
       "formula": "Illusion • 1–5 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Illusion"
   },
   {
     "id": "illusion-illusion-3",
@@ -545,7 +557,8 @@ export default [
       "formula": "Illusion • 1–5 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Illusion"
   },
   {
     "id": "illusion-illusion-4",
@@ -579,7 +592,8 @@ export default [
       "formula": "Illusion • 1–5 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Illusion"
   },
   {
     "id": "illusion-illusion-5",
@@ -613,7 +627,8 @@ export default [
       "formula": "Illusion • 1–5 points per rank",
       "fixed": 0,
       "perRank": 5
-    }
+    },
+    "sourceFormula": "Illusion"
   },
   {
     "id": "illusion-illusory-disguise",
@@ -652,7 +667,8 @@ export default [
       "formula": "Morph, Resistible by Will • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Morph, Resistible by Will"
   },
   {
     "id": "illusion-sense-memory",
@@ -684,7 +700,8 @@ export default [
       "formula": "Feature 1 (Perfect Sense Recall) • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Feature 1 (Perfect Sense Recall)"
   },
   {
     "id": "illusion-true-perception",
@@ -748,7 +765,8 @@ export default [
       "formula": "Senses 5 (all senses Counter Illusions) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 5 (all senses Counter Illusions)"
   },
   {
     "id": "illusion-vocal-mimicry",
@@ -787,6 +805,7 @@ export default [
       "formula": "Illusion 2 (Aural), Limited to Voices • 1 point.",
       "fixed": 1,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Illusion 2 (Aural), Limited to Voices"
   }
 ] satisfies PowerTemplate[];

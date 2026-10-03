@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "gravity-gravitic-blast",
@@ -37,7 +38,8 @@ export default [
       "formula": "Ranged Damage (force) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Ranged Damage (force)"
   },
   {
     "id": "gravity-gravitic-burst",
@@ -77,7 +79,8 @@ export default [
       "formula": "Burst Area Damage (force) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area Damage (force)"
   },
   {
     "id": "gravity-gravitic-wave",
@@ -117,7 +120,8 @@ export default [
       "formula": "Cone Area Damage (force) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cone Area Damage (force)"
   },
   {
     "id": "gravity-upalanche",
@@ -134,7 +138,7 @@ export default [
       "en": "Damage · Increased Range · Area",
       "pt": "Dano · Alcance Aumentado · Área"
     },
-    "page": 73,
+    "page": 74,
     "components": [
       {
         "effectId": "damage",
@@ -162,7 +166,8 @@ export default [
       "formula": "Ranged Cloud Area Damage (bludgeoning) • 3",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Cloud Area Damage (bludgeoning)"
   },
   {
     "id": "gravity-gravity-field",
@@ -207,7 +212,8 @@ export default [
       "formula": "Burst Area Move Object (gravity), Limited to Pulling Downwards • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area Move Object (gravity), Limited to Pulling Downwards"
   },
   {
     "id": "gravity-crushing-gravity-field",
@@ -257,7 +263,8 @@ export default [
       "formula": "Burst Area Move Object (gravity), Limited to Pulling Downwards, Damaging • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Burst Area Move Object (gravity), Limited to Pulling Downwards, Damaging"
   },
   {
     "id": "gravity-null-g-field",
@@ -302,7 +309,8 @@ export default [
       "formula": "Burst Area Move Object, Limited to Lifting Upwards • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Burst Area Move Object, Limited to Lifting Upwards"
   },
   {
     "id": "gravity-singularity",
@@ -352,7 +360,8 @@ export default [
       "formula": "Burst Area 2 Damaging Move Object, Limited to Pulling Towards the Center of the Area • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Burst Area 2 Damaging Move Object, Limited to Pulling Towards the Center of the Area"
   },
   {
     "id": "gravity-gravitic-containment",
@@ -394,7 +403,8 @@ export default [
       "formula": "Nullify Explosions, Reaction • 4 points",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Nullify Explosions, Reaction"
   },
   {
     "id": "gravity-gravitic-deflection",
@@ -427,7 +437,8 @@ export default [
       "formula": "Deflect • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Deflect"
   },
   {
     "id": "gravity-gravitic-immunity",
@@ -459,7 +470,8 @@ export default [
       "formula": "Immunity 2 (Gravity Effects) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (Gravity Effects)"
   },
   {
     "id": "gravity-gravitic-shield",
@@ -503,7 +515,8 @@ export default [
       "formula": "Impervious Protection, Sustained • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Impervious Protection, Sustained"
   },
   {
     "id": "gravity-anti-gravity",
@@ -542,7 +555,8 @@ export default [
       "formula": "Flight, Subtle • 1 point + 2 points per rank",
       "fixed": 1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Flight, Subtle"
   },
   {
     "id": "gravity-directional-pull",
@@ -578,7 +592,8 @@ export default [
       "formula": "Movement (Wall-Crawling) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Movement (Wall-Crawling)"
   },
   {
     "id": "gravity-free-fall",
@@ -613,7 +628,8 @@ export default [
       "formula": "Movement 1 (Safe Fall) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Safe Fall)"
   },
   {
     "id": "gravity-free-fall-adaptation",
@@ -648,7 +664,8 @@ export default [
       "formula": "Movement 1 (Environmental Adaptation—Zero Gravity) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Environmental Adaptation—Zero Gravity)"
   },
   {
     "id": "gravity-high-gravity-adaptation",
@@ -665,7 +682,7 @@ export default [
       "en": "Movement",
       "pt": "Movimento"
     },
-    "page": 74,
+    "page": 75,
     "components": [
       {
         "effectId": "movement",
@@ -683,7 +700,8 @@ export default [
       "formula": "Movement 1 (Environmental Adaptation—High-Gravity) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Environmental Adaptation—High-Gravity)"
   },
   {
     "id": "gravity-gravity-warp",
@@ -716,7 +734,8 @@ export default [
       "formula": "Teleport • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport"
   },
   {
     "id": "gravity-low-g-leap",
@@ -749,7 +768,8 @@ export default [
       "formula": "Leaping • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Leaping"
   },
   {
     "id": "gravity-artificial-gravity",
@@ -783,7 +803,8 @@ export default [
       "formula": "Environment (negate impeded movement due to gravity) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Environment (negate impeded movement due to gravity)"
   },
   {
     "id": "gravity-gravikinesis",
@@ -816,7 +837,8 @@ export default [
       "formula": "Move Object • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Move Object"
   },
   {
     "id": "gravity-gravitic-communication",
@@ -860,7 +882,8 @@ export default [
       "formula": "Communication 5, Area, Subtle 1 • 26 points",
       "fixed": 26,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Communication 5, Area, Subtle 1"
   },
   {
     "id": "gravity-gravitic-sense",
@@ -905,7 +928,8 @@ export default [
       "formula": "Senses (Detect Gravity, Ranged) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses (Detect Gravity, Ranged)"
   },
   {
     "id": "gravity-low-g-lifting",
@@ -948,6 +972,7 @@ export default [
       "formula": "Enhanced Strength, Limited to Lifting • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Limited to Lifting"
   }
 ] satisfies PowerTemplate[];

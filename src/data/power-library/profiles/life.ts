@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "life-bio-disruption",
@@ -40,7 +41,8 @@ export default [
       "formula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated) • 2",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "life-bio-override",
@@ -87,7 +89,8 @@ export default [
       "formula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Entranced, Compelled, Controlled) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Perception Ranged Cumulative Affliction (Resisted and Overcome by Fortitude; Entranced, Compelled, Controlled)"
   },
   {
     "id": "life-bio-sculpting",
@@ -129,7 +132,8 @@ export default [
       "formula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Transformed) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Transformed)"
   },
   {
     "id": "life-pathogen",
@@ -146,7 +150,7 @@ export default [
       "en": "Affliction · Progressive",
       "pt": "Aflição · Progressivo"
     },
-    "page": 89,
+    "page": 90,
     "components": [
       {
         "effectId": "affliction",
@@ -171,7 +175,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Incapacitated), Progressive • 3 points",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Fortitude; Impaired, Disabled, Incapacitated), Progressive"
   },
   {
     "id": "life-seizure",
@@ -188,7 +193,7 @@ export default [
       "en": "Affliction",
       "pt": "Aflição"
     },
-    "page": 89,
+    "page": 90,
     "components": [
       {
         "effectId": "affliction",
@@ -207,7 +212,8 @@ export default [
       "formula": "Affliction (Resisted and Overcome by Will; Dazed, Stunned, Incapacitated) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Affliction (Resisted and Overcome by Will; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "life-cellular-disruption",
@@ -249,7 +255,8 @@ export default [
       "formula": "Damage, Alternate Resistance (Fortitude) • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Damage, Alternate Resistance (Fortitude)"
   },
   {
     "id": "life-bio-adaptation",
@@ -287,7 +294,8 @@ export default [
       "formula": "Immunity 30 (Fortitude effects), Limited to effects you have experienced at least once • 15 points",
       "fixed": 15,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 30 (Fortitude effects), Limited to effects you have experienced at least once"
   },
   {
     "id": "life-enhanced-immune-system",
@@ -319,7 +327,8 @@ export default [
       "formula": "Immunity 2 (diseases and parasitic infections) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 2 (diseases and parasitic infections)"
   },
   {
     "id": "life-insensate",
@@ -354,12 +363,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "The text specifies Immunity 5 but prints 2 points; without a flaw the cost is 5.",
-          "pt": "Divergência da fonte: The text specifies Immunity 5 but prints 2 points; without a flaw the cost is 5."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 5 PP fixos + 0 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 5,
         "perRank": 0
       }
-    }
+    },
+    "sourceFormula": "Immunity 5 (pain effects)"
   },
   {
     "id": "life-lifeport",
@@ -398,7 +408,8 @@ export default [
       "formula": "Teleport, Quirk (Not into areas where there is little or no life, –1 point) • 1 point for rank 1, +2 points per rank",
       "fixed": -1,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Teleport, Quirk (Not into areas where there is little or no life, –1 point)"
   },
   {
     "id": "life-adrenal-control",
@@ -441,7 +452,8 @@ export default [
       "formula": "Enhanced Strength, Fades • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Fades"
   },
   {
     "id": "life-biokinesis",
@@ -480,7 +492,8 @@ export default [
       "formula": "Move Object, Limited to Biological Material • 1",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Move Object, Limited to Biological Material"
   },
   {
     "id": "life-cure",
@@ -519,7 +532,8 @@ export default [
       "formula": "Healing, Limited to Disease and Poison • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Healing, Limited to Disease and Poison"
   },
   {
     "id": "life-energize",
@@ -563,7 +577,8 @@ export default [
       "formula": "Healing, Energizing, Limited to Energizing • 2 points",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Healing, Energizing, Limited to Energizing"
   },
   {
     "id": "life-life-sense",
@@ -613,7 +628,8 @@ export default [
       "formula": "Senses 3 (Detect Life, Ranged, Acute) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 3 (Detect Life, Ranged, Acute)"
   },
   {
     "id": "life-pharmacopeia",
@@ -671,7 +687,8 @@ export default [
           }
         ]
       }
-    ]
+    ],
+    "sourceFormula": "Healing (Alternate Effect: Bio-Disruption)"
   },
   {
     "id": "life-psychic-diagnosis",
@@ -716,7 +733,8 @@ export default [
       "formula": "Senses 3 (Detect Health, Analytical) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses 3 (Detect Health, Analytical)"
   },
   {
     "id": "life-skin-shifting",
@@ -748,7 +766,8 @@ export default [
       "formula": "Morph 2 (outward appearance limited by size and shape) • 10 points",
       "fixed": 10,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Morph 2 (outward appearance limited by size and shape)"
   },
   {
     "id": "life-suspended-animation",
@@ -786,7 +805,8 @@ export default [
       "formula": "Immunity 5 (aging, starvation and dehydration, suffocation, ongoing biological effects), Limited (subject is incapacitated) • 3 points",
       "fixed": 3,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Immunity 5 (aging, starvation and dehydration, suffocation, ongoing biological effects), Limited (subject is incapacitated)"
   },
   {
     "id": "life-total-healing",
@@ -838,12 +858,13 @@ export default [
       "discrepancy": {
         "reason": {
           "en": "Healing 2 + Restorative 1 + Resurrection 1 = 4/rank; Persistent is a flat +1, as the Handbook states. Printed 6/rank has two unexplained points.",
-          "pt": "Divergência da fonte: Healing 2 + Restorative 1 + Resurrection 1 = 4/rank; Persistent is a flat +1, as the Handbook states. Printed 6/rank has two unexplained points."
+          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 1 PP fixos + 4 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
         },
         "fixed": 1,
         "perRank": 4
       }
-    }
+    },
+    "sourceFormula": "Healing, Persistent, Restorative, Resurrection"
   },
   {
     "id": "life-total-self-healing",
@@ -907,6 +928,7 @@ export default [
       "formula": "Healing, Reaction (when hurt), Energizing, Persistent, Restorative, Resurrection, Self-Only • 1 point + 7",
       "fixed": 1,
       "perRank": 7
-    }
+    },
+    "sourceFormula": "Healing, Reaction (when hurt), Energizing, Persistent, Restorative, Resurrection, Self-Only"
   }
 ] satisfies PowerTemplate[];

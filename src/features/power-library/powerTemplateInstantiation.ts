@@ -18,7 +18,7 @@ export function instantiatePowerTemplate(template: PowerTemplate, ranks = 1, lan
   return {
     id: createId(), name: libraryText(template.name, language),
     components: template.components.map(instantiate),
-    notes: `${libraryText(template.summary, language)}\nPower Profiles · ${libraryText(template.name, language)} · p. ${template.page}`,
+    notes: [libraryText(template.summary, language), template.sourceFormula ? `${language.startsWith('pt') ? 'Composição original do livro' : 'Original book configuration'}: ${template.sourceFormula}` : '', `Power Profiles · ${libraryText(template.name, language)} · p. ${template.page}`].filter(Boolean).join('\n'),
     descriptors: [...(template.descriptors ?? [])],
     alternateEffects: (template.alternateEffects ?? []).map(alternate => ({
       id: createId(), name: libraryText(alternate.name, language), notes: '',

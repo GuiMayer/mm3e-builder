@@ -1,4 +1,5 @@
 import type { PowerTemplate } from '../../../features/power-library/types';
+
 export default [
   {
     "id": "animal-crushing-grip",
@@ -41,7 +42,8 @@ export default [
       "formula": "Enhanced Strength, Limited to Grabs • 1 point",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Enhanced Strength, Limited to Grabs"
   },
   {
     "id": "animal-ferocious-charge",
@@ -83,7 +85,8 @@ export default [
       "formula": "Strength-based Damage, Limited to While Charging • 1 point per 2 ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Strength-based Damage, Limited to While Charging"
   },
   {
     "id": "animal-natural-weapons",
@@ -119,7 +122,8 @@ export default [
       "formula": "Strength-based Damage • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Strength-based Damage"
   },
   {
     "id": "animal-quills",
@@ -161,7 +165,8 @@ export default [
       "formula": "Reaction Damage (to being touched) • 4 points per rank",
       "fixed": 0,
       "perRank": 4
-    }
+    },
+    "sourceFormula": "Reaction Damage (to being touched)"
   },
   {
     "id": "animal-shock",
@@ -203,7 +208,8 @@ export default [
       "formula": "Cumulative Affliction (electric shock; Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated) • 2 points per rank",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Cumulative Affliction (electric shock; Resisted and Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "animal-terrifying-roar",
@@ -240,7 +246,8 @@ export default [
       "formula": "Enhanced Intimidation • 1 point per 2 skill ranks",
       "fixed": 0,
       "perRank": 0.5
-    }
+    },
+    "sourceFormula": "Enhanced Intimidation"
   },
   {
     "id": "animal-venom",
@@ -290,7 +297,8 @@ export default [
       "formula": "Progressive Affliction (Resisted by Toughness, Overcome by Fortitude; Dazed, Stunned, Incapacitated) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Progressive Affliction (Resisted by Toughness, Overcome by Fortitude; Dazed, Stunned, Incapacitated)"
   },
   {
     "id": "animal-webbing",
@@ -355,7 +363,8 @@ export default [
       "formula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Ranged Cumulative Affliction (Resisted by Dodge, Overcome by Damage; Hindered and Vulnerable, Defenseless and Immobilized), Extra Condition, Limited Degree"
   },
   {
     "id": "animal-protective-hide",
@@ -388,7 +397,8 @@ export default [
       "formula": "Protection • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Protection"
   },
   {
     "id": "animal-regrowth",
@@ -421,7 +431,8 @@ export default [
       "formula": "Regeneration • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Regeneration"
   },
   {
     "id": "animal-squeeze-through",
@@ -463,7 +474,8 @@ export default [
       "formula": "Movement (Permeate), Limited to Small Spaces • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Movement (Permeate), Limited to Small Spaces"
   },
   {
     "id": "animal-serpent-slither",
@@ -498,7 +510,8 @@ export default [
       "formula": "Movement 1 (Slithering) • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Movement 1 (Slithering)"
   },
   {
     "id": "animal-wall-walker",
@@ -534,7 +547,8 @@ export default [
       "formula": "Movement (Wall-Crawling) • 2 points per rank (up",
       "fixed": 0,
       "perRank": 2
-    }
+    },
+    "sourceFormula": "Movement (Wall-Crawling)"
   },
   {
     "id": "animal-wings",
@@ -573,7 +587,8 @@ export default [
       "formula": "Flight, Wings • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Flight, Wings"
   },
   {
     "id": "animal-animal-companion",
@@ -617,7 +632,8 @@ export default [
       "formula": "Summon Animal Companion, Heroic, Self-Powered (see Summoning Powers) • 3 points per rank",
       "fixed": 0,
       "perRank": 3
-    }
+    },
+    "sourceFormula": "Summon Animal Companion, Heroic, Self-Powered (see Summoning Powers)"
   },
   {
     "id": "animal-animal-form",
@@ -655,7 +671,8 @@ export default [
       "formula": "Morph 1 (Animal Form), Metamorph • 6 points",
       "fixed": 6,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Morph 1 (Animal Form), Metamorph"
   },
   {
     "id": "animal-animal-mimicry",
@@ -694,7 +711,8 @@ export default [
       "formula": "Variable (physical traits), Limited to traits possessed by animals • 6 points per rank",
       "fixed": 0,
       "perRank": 6
-    }
+    },
+    "sourceFormula": "Variable (physical traits), Limited to traits possessed by animals"
   },
   {
     "id": "animal-animal-senses",
@@ -728,7 +746,8 @@ export default [
       "formula": "Senses • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Senses"
   },
   {
     "id": "animal-animal-senses-variable",
@@ -766,7 +785,8 @@ export default [
       "formula": "Senses • 1 point per rank",
       "fixed": 5,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Senses"
   },
   {
     "id": "animal-animal-summoning",
@@ -819,7 +839,8 @@ export default [
       "formula": "Summon Animals 3, Broad Type (Animals), Horde, Multiple Minions 5 (32 animals), Self- Powered (see Summoning Powers) • 42 points",
       "fixed": 42,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Summon Animals 3, Broad Type (Animals), Horde, Multiple Minions 5 (32 animals), Self- Powered (see Summoning Powers)"
   },
   {
     "id": "animal-chameleon-camouflage",
@@ -862,7 +883,8 @@ export default [
       "formula": "Concealment (Visual) 2, Blending • 2 points",
       "fixed": 2,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Concealment (Visual) 2, Blending"
   },
   {
     "id": "animal-create-chimera",
@@ -919,7 +941,8 @@ export default [
         "fixed": 0,
         "perRank": 5
       }
-    }
+    },
+    "sourceFormula": "Summon Chimera, Broad Type (Mixed Animals), Heroic, Limited to Available Animals"
   },
   {
     "id": "animal-multiple-limbs",
@@ -952,7 +975,8 @@ export default [
       "formula": "Extra Limbs • 1 point per rank",
       "fixed": 0,
       "perRank": 1
-    }
+    },
+    "sourceFormula": "Extra Limbs"
   },
   {
     "id": "animal-speak-with-animals",
@@ -984,6 +1008,7 @@ export default [
       "formula": "Comprehend 2 (Animals) • 4 points",
       "fixed": 4,
       "perRank": 0
-    }
+    },
+    "sourceFormula": "Comprehend 2 (Animals)"
   }
 ] satisfies PowerTemplate[];
