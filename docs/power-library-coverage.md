@@ -13,7 +13,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 4 | Earth Powers, Electrical Powers, Element Powers | 74 receitas/variantes auditadas. |
 | 5 | Fire Powers, Gravity Powers, Illusion Powers | 74 receitas/variantes auditadas. |
 | 6 | Kinetic Powers, Life Powers, Light Powers | 81 receitas/variantes auditadas; três Aflições Sustentadas são referências. |
-| 7 | Luck Powers, Magic Powers, Magnetic Powers | Pendente |
+| 7 | Luck Powers, Magic Powers, Magnetic Powers | 128 receitas/variantes auditadas; Fifth Wheel é referência de duração. |
 | 8 | Martial Powers, Mental Powers, Meta Powers | Pendente |
 | 9 | Morphing Powers, Plant Powers, Radiation Powers | Pendente |
 | 10 | Sensory Powers, Size Powers, Sonic Powers | Pendente |
@@ -64,3 +64,7 @@ Illusory Damage registra explicitamente Resistência Alternativa vantajosa (+1),
 ## Lote 6
 
 Friction Blindness, Friction Muzzle e Blinding Aura têm Aflição Sustentada que o modelo atual não representa; a prévia explica e impede aplicar versões incompletas. Friction Control coloca o efeito mais caro como base do array, mantendo a composição e o preço 4×graduação +2. Insensate exige Imunidade 5 e custa 5, não os 2 impressos. Total Healing soma 4×graduação +1, não 6×graduação +1. Persistente de Cura é +1 fixo no Handbook: adicionada uma compra correta separada, preservando registros antigos por graduação.
+
+## Lote 7
+
+As divergências de Magia/Sorte estão identificadas nas prévias e no inventário final de auditoria. Find Weakness compra graduações reais de Penetrante sobre um componente sem efeito-base novo; o controle de graduação modifica apenas essa compra. Invocações diferenciam Tipo Geral (+1) e Amplo (+2), e Múltiplos Lacaios por graduação.

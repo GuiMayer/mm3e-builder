@@ -9017,5 +9017,2578 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "concealment"
     ]
+  },
+  {
+    "id": "luck-catastrophe",
+    "profileId": "luck",
+    "name": {
+      "en": "Catastrophe",
+      "pt": "Catástrofe"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Indirect · Subtle · Variable Descriptor",
+      "pt": "Dano · Alcance Aumentado · Indireto · Sutil · Descritor Variável"
+    },
+    "page": 99,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "luck-find-weakness",
+    "profileId": "luck",
+    "name": {
+      "en": "Find Weakness",
+      "pt": "Encontrar Fraqueza"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Feature · Penetrating · Variable Descriptor · Quirk",
+      "pt": "Característica · Penetrante · Descritor Variável · Peculiaridade"
+    },
+    "page": 99,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "luck-lucky-shot",
+    "profileId": "luck",
+    "name": {
+      "en": "Lucky Shot",
+      "pt": "Disparo Sortudo"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Feature · Variable Descriptor · Quirk — Enhanced Extra: upgrade an existing ranged attack to Perception; limited to lower of attack and extra ranks.",
+      "pt": "Característica · Descritor Variável · Peculiaridade — Extra Aprimorado: aumenta um ataque à distância existente para Percepção; limitado à menor graduação do ataque/extra."
+    },
+    "page": 99,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "luck-jinx",
+    "profileId": "luck",
+    "name": {
+      "en": "Jinx",
+      "pt": "Azar"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Indirect · Insidious · Subtle · Limited Degree",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Indireto · Insidioso · Sutil · Graus Limitados"
+    },
+    "page": 99,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "luck-poltergeist",
+    "profileId": "luck",
+    "name": {
+      "en": "Poltergeist",
+      "pt": "Poltergeist"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Perception · Indirect · Precise · Subtle · Senses · Limited",
+      "pt": "Mover Objetos · Percepção · Indireto · Preciso · Sutil · Sentidos · Limitado"
+    },
+    "page": 100,
+    "effectIds": [
+      "move-object",
+      "senses"
+    ]
+  },
+  {
+    "id": "luck-breakfall",
+    "profileId": "luck",
+    "name": {
+      "en": "Breakfall",
+      "pt": "Amortecer Queda"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Movement · Reaction",
+      "pt": "Movimento · Reação"
+    },
+    "page": 100,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "luck-defensive-luck",
+    "profileId": "luck",
+    "name": {
+      "en": "Defensive Luck",
+      "pt": "Sorte Defensiva"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 100,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "luck-fortunate-failure",
+    "profileId": "luck",
+    "name": {
+      "en": "Fortunate Failure",
+      "pt": "Falha Afortunada"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Nullify · Reaction · Broad · Effortless · Simultaneous · Reduced Range",
+      "pt": "Anulação · Reação · Amplo · Sem Esforço · Simultâneo · Alcance Reduzido"
+    },
+    "page": 100,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "luck-lucky-dodge",
+    "profileId": "luck",
+    "name": {
+      "en": "Lucky Dodge",
+      "pt": "Esquiva Sortuda"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Enhanced Trait · Enhanced Trait — Each defense rank costs 1; the preview starts both defenses at 1.",
+      "pt": "Traço Aprimorado · Traço Aprimorado · Traço Aprimorado — Cada graduação de defesa custa 1; a prévia inicia ambas em 1."
+    },
+    "page": 100,
+    "effectIds": [
+      "enhanced-trait",
+      "enhanced-trait",
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "luck-lucky-escape-immortality",
+    "profileId": "luck",
+    "name": {
+      "en": "Lucky Escape — Immortality",
+      "pt": "Escape Sortudo — Imortalidade"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immortality · Limited",
+      "pt": "Imortalidade · Limitado"
+    },
+    "page": 100,
+    "effectIds": [
+      "immortality"
+    ]
+  },
+  {
+    "id": "luck-lucky-escape-healing",
+    "profileId": "luck",
+    "name": {
+      "en": "Lucky Escape — Healing",
+      "pt": "Escape Sortudo — Cura"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Healing · Limited · Subtle",
+      "pt": "Cura · Limitado · Sutil"
+    },
+    "page": 101,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "luck-ease-of-movement",
+    "profileId": "luck",
+    "name": {
+      "en": "Ease of Movement",
+      "pt": "Facilidade de Movimento"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 101,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "luck-perfect-timing",
+    "profileId": "luck",
+    "name": {
+      "en": "Perfect Timing",
+      "pt": "Momento Perfeito"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Feature",
+      "pt": "Característica"
+    },
+    "page": 101,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "luck-escape-notice",
+    "profileId": "luck",
+    "name": {
+      "en": "Escape Notice",
+      "pt": "Passar Despercebido"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Passive",
+      "pt": "Camuflagem · Passivo"
+    },
+    "page": 101,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "luck-lucky",
+    "profileId": "luck",
+    "name": {
+      "en": "Lucky",
+      "pt": "Sortudo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 101,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "luck-reality-control",
+    "profileId": "luck",
+    "name": {
+      "en": "Reality Control",
+      "pt": "Controle da Realidade"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable · Action",
+      "pt": "Variável · Ação"
+    },
+    "page": 101,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "luck-sense-of-luck",
+    "profileId": "luck",
+    "name": {
+      "en": "Sense of Luck",
+      "pt": "Sentido da Sorte"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 101,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "luck-visions-of-fortune",
+    "profileId": "luck",
+    "name": {
+      "en": "Visions of Fortune",
+      "pt": "Visões da Fortuna"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Limited",
+      "pt": "Sentidos · Limitado"
+    },
+    "page": 101,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "magic-mystic-bolt",
+    "profileId": "magic",
+    "name": {
+      "en": "Mystic Bolt",
+      "pt": "Raio Místico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 105,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "magic-mystic-passage",
+    "profileId": "magic",
+    "name": {
+      "en": "Mystic Passage",
+      "pt": "Passagem Mística"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Teleport",
+      "pt": "Teleporte"
+    },
+    "page": 105,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "magic-mystic-shield",
+    "profileId": "magic",
+    "name": {
+      "en": "Mystic Shield",
+      "pt": "Escudo Místico"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 105,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "magic-levitation",
+    "profileId": "magic",
+    "name": {
+      "en": "Levitation",
+      "pt": "Levitação"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Flight",
+      "pt": "Voo"
+    },
+    "page": 105,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "magic-aegis-of-abbridon",
+    "profileId": "magic",
+    "name": {
+      "en": "Aegis of Abbridon",
+      "pt": "Égide de Abbridon"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Sustained",
+      "pt": "Proteção · Impenetrável · Sustentado"
+    },
+    "page": 105,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "magic-scrying",
+    "profileId": "magic",
+    "name": {
+      "en": "Scrying",
+      "pt": "Vidência"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing",
+      "pt": "Sensoriamento Remoto"
+    },
+    "page": 105,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "magic-all-seening-eyes-of-abbridon",
+    "profileId": "magic",
+    "name": {
+      "en": "All-Seening Eyes of Abbridon",
+      "pt": "Olhos Reveladores de Abbridon"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing",
+      "pt": "Sensoriamento Remoto"
+    },
+    "page": 105,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "magic-abjurations-of-abbridon",
+    "profileId": "magic",
+    "name": {
+      "en": "Abjurations of Abbridon",
+      "pt": "Abjurações de Abbridon"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Simultaneous",
+      "pt": "Anulação · Simultâneo"
+    },
+    "page": 105,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "magic-all-revealing-light-of-abbridon",
+    "profileId": "magic",
+    "name": {
+      "en": "All-Revealing Light of Abbridon",
+      "pt": "Luz Reveladora de Abbridon"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Area · Simultaneous · Reduced Range",
+      "pt": "Anulação · Área · Simultâneo · Alcance Reduzido"
+    },
+    "page": 105,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "magic-illumination-of-abbridon",
+    "profileId": "magic",
+    "name": {
+      "en": "Illumination of Abbridon",
+      "pt": "Iluminação de Abbridon"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment · Feature",
+      "pt": "Controle Ambiental · Característica"
+    },
+    "page": 105,
+    "effectIds": [
+      "environment",
+      "feature"
+    ]
+  },
+  {
+    "id": "magic-ahgrazul-s-compass",
+    "profileId": "magic",
+    "name": {
+      "en": "Ahgrazul’s Compass",
+      "pt": "Bússola de Ahgrazul"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Simultaneous · Limited",
+      "pt": "Sensoriamento Remoto · Simultâneo · Limitado"
+    },
+    "page": 105,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "magic-airts-of-ahgrazul",
+    "profileId": "magic",
+    "name": {
+      "en": "Airts of Ahgrazul",
+      "pt": "Caminhos de Ahgrazul"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 105,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "magic-auspicious-augury-of-ahgrazul",
+    "profileId": "magic",
+    "name": {
+      "en": "Auspicious Augury of Ahgrazul",
+      "pt": "Augúrio Auspicioso de Ahgrazul"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Senses · Limited",
+      "pt": "Traço Aprimorado · Sentidos · Limitado"
+    },
+    "page": 106,
+    "effectIds": [
+      "enhanced-trait",
+      "senses"
+    ]
+  },
+  {
+    "id": "magic-baleful-bindings-of-bal-hemoth",
+    "profileId": "magic",
+    "name": {
+      "en": "Baleful Bindings of Bal’Hemoth",
+      "pt": "Amarras Maléficas de Bal’Hemoth"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance · Affects Insubstantial",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa · Afeta Insubstanciais"
+    },
+    "page": 106,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-grasp-of-ghorummaz",
+    "profileId": "magic",
+    "name": {
+      "en": "Grasp of Ghorummaz",
+      "pt": "Agarrão de Ghorummaz"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance · Affects Insubstantial · Indirect",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa · Afeta Insubstanciais · Indireto"
+    },
+    "page": 106,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-chains-of-kar-kradas",
+    "profileId": "magic",
+    "name": {
+      "en": "Chains of Kar’Kradas",
+      "pt": "Correntes de Kar’Kradas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance · Affects Insubstantial · Cumulative",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa · Afeta Insubstanciais · Cumulativo"
+    },
+    "page": 106,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-shining-shackles-of-sirrion",
+    "profileId": "magic",
+    "name": {
+      "en": "Shining Shackles of Sirrion",
+      "pt": "Grilhões Brilhantes de Sirrion"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa"
+    },
+    "page": 106,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-beast-of-bal-hemoth",
+    "profileId": "magic",
+    "name": {
+      "en": "Beast of Bal’Hemoth",
+      "pt": "Besta de Bal’Hemoth"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon",
+      "pt": "Invocar"
+    },
+    "page": 106,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-bidding-of-bal-hemoth",
+    "profileId": "magic",
+    "name": {
+      "en": "Bidding of Bal’Hemoth",
+      "pt": "Comando de Bal’Hemoth"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo"
+    },
+    "page": 106,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-bitter-lash",
+    "profileId": "magic",
+    "name": {
+      "en": "Bitter Lash",
+      "pt": "Chicote Amargo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative · Reach",
+      "pt": "Aflição · Cumulativo · Alcance de Luta"
+    },
+    "page": 106,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-ghorummaz-s-dictum",
+    "profileId": "magic",
+    "name": {
+      "en": "Ghorummaz’s Dictum",
+      "pt": "Decreto de Ghorummaz"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Progressive · Limited Degree · Limited",
+      "pt": "Aflição · Área · Progressivo · Graus Limitados · Limitado"
+    },
+    "page": 106,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-gale-of-ghorummaz",
+    "profileId": "magic",
+    "name": {
+      "en": "Gale of Ghorummaz",
+      "pt": "Vendaval de Ghorummaz"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment · Environment",
+      "pt": "Controle Ambiental · Controle Ambiental"
+    },
+    "page": 106,
+    "effectIds": [
+      "environment",
+      "environment"
+    ]
+  },
+  {
+    "id": "magic-storm-of-ghorummaz",
+    "profileId": "magic",
+    "name": {
+      "en": "Storm of Ghorummaz",
+      "pt": "Tempestade de Ghorummaz"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Indirect",
+      "pt": "Dano · Alcance Aumentado · Indireto"
+    },
+    "page": 107,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "magic-thunderous-tread",
+    "profileId": "magic",
+    "name": {
+      "en": "Thunderous Tread",
+      "pt": "Passo Trovejante"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Instant Recovery · Limited Degree · Limited",
+      "pt": "Aflição · Área · Recuperação Instantânea · Graus Limitados · Limitado"
+    },
+    "page": 107,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-hand-of-heshem",
+    "profileId": "magic",
+    "name": {
+      "en": "Hand of Heshem",
+      "pt": "Mão de Heshem"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object",
+      "pt": "Mover Objetos"
+    },
+    "page": 107,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "magic-holy-hearth",
+    "profileId": "magic",
+    "name": {
+      "en": "Holy Hearth",
+      "pt": "Lar Sagrado"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Progressive · Limited",
+      "pt": "Aflição · Área · Progressivo · Limitado"
+    },
+    "page": 107,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-heshem-s-way",
+    "profileId": "magic",
+    "name": {
+      "en": "Heshem’s Way",
+      "pt": "Caminho de Heshem"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Movement · Portal",
+      "pt": "Movimento · Portal"
+    },
+    "page": 107,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "magic-crying-road",
+    "profileId": "magic",
+    "name": {
+      "en": "Crying Road",
+      "pt": "Estrada do Choro"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Movement · Portal",
+      "pt": "Movimento · Portal"
+    },
+    "page": 107,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "magic-seventh-wheel-of-weyan",
+    "profileId": "magic",
+    "name": {
+      "en": "Seventh Wheel of Weyan",
+      "pt": "Sétima Roda de Weyan"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Movement · Portal",
+      "pt": "Movimento · Portal"
+    },
+    "page": 107,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "magic-holy-hosts",
+    "profileId": "magic",
+    "name": {
+      "en": "Holy Hosts",
+      "pt": "Hostes Sagradas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Broad",
+      "pt": "Anulação · Amplo"
+    },
+    "page": 107,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "magic-hood-of-heshem",
+    "profileId": "magic",
+    "name": {
+      "en": "Hood of Heshem",
+      "pt": "Capuz de Heshem"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Area · Attack",
+      "pt": "Camuflagem · Área · Ataque"
+    },
+    "page": 107,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "magic-mists-of-malador",
+    "profileId": "magic",
+    "name": {
+      "en": "Mists of Malador",
+      "pt": "Névoas de Malador"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Area · Increased Range · Attack",
+      "pt": "Camuflagem · Área · Alcance Aumentado · Ataque"
+    },
+    "page": 107,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "magic-scarlet-shades-of-sirrion",
+    "profileId": "magic",
+    "name": {
+      "en": "Scarlet Shades of Sirrion",
+      "pt": "Sombras Escarlates de Sirrion"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Area · Increased Range · Attack",
+      "pt": "Camuflagem · Área · Alcance Aumentado · Ataque"
+    },
+    "page": 107,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "magic-obsscuring-orb-of-obroros",
+    "profileId": "magic",
+    "name": {
+      "en": "Obsscuring Orb of Obroros",
+      "pt": "Orbe Obscurecedor de Obroros"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Area · Increased Range · Attack · Selective",
+      "pt": "Camuflagem · Área · Alcance Aumentado · Ataque · Seletivo"
+    },
+    "page": 107,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "magic-hook-of-heshem",
+    "profileId": "magic",
+    "name": {
+      "en": "Hook of Heshem",
+      "pt": "Gancho de Heshem"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Penetrating",
+      "pt": "Dano · Penetrante"
+    },
+    "page": 107,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "magic-scythe-of-shatachna",
+    "profileId": "magic",
+    "name": {
+      "en": "Scythe of Shatachna",
+      "pt": "Foice de Shatachna"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Penetrating · Reach",
+      "pt": "Dano · Penetrante · Alcance de Luta"
+    },
+    "page": 107,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "magic-curse-of-howling-madness",
+    "profileId": "magic",
+    "name": {
+      "en": "Curse of Howling Madness",
+      "pt": "Maldição da Loucura Uivante"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive · Limited",
+      "pt": "Aflição · Alcance Aumentado · Progressivo · Limitado"
+    },
+    "page": 107,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-dream-dementia",
+    "profileId": "magic",
+    "name": {
+      "en": "Dream Dementia",
+      "pt": "Demência Onírica"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Insidious · Variable Descriptor",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Insidioso · Descritor Variável"
+    },
+    "page": 107,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-dream-denizens",
+    "profileId": "magic",
+    "name": {
+      "en": "Dream Denizens",
+      "pt": "Habitantes dos Sonhos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Active · Variable Type (Broad) · Mental Link",
+      "pt": "Invocar · Ativo · Variable Type (Broad) · Mental Link"
+    },
+    "page": 107,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-cloak-of-idolon",
+    "profileId": "magic",
+    "name": {
+      "en": "Cloak of Idolon",
+      "pt": "Manto de Idolon"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment",
+      "pt": "Camuflagem"
+    },
+    "page": 108,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "magic-illusions-of-idolon",
+    "profileId": "magic",
+    "name": {
+      "en": "Illusions of Idolon",
+      "pt": "Ilusões de Idolon"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion · Resistible · Selective",
+      "pt": "Ilusão · Resistível · Seletivo"
+    },
+    "page": 108,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "magic-veil-of-idolon",
+    "profileId": "magic",
+    "name": {
+      "en": "Veil of Idolon",
+      "pt": "Véu de Idolon"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Area · Affects Others",
+      "pt": "Camuflagem · Área · Afeta Outros"
+    },
+    "page": 108,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "magic-eight-eyes-of-ios",
+    "profileId": "magic",
+    "name": {
+      "en": "Eight Eyes of Ios",
+      "pt": "Oito Olhos de Ios"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 108,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "magic-enchantment-of-ios",
+    "profileId": "magic",
+    "name": {
+      "en": "Enchantment of Ios",
+      "pt": "Encantamento de Ios"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait",
+      "pt": "Traço Aprimorado"
+    },
+    "page": 108,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "magic-everwatchful-eye-of-ios",
+    "profileId": "magic",
+    "name": {
+      "en": "Everwatchful Eye of Ios",
+      "pt": "Olho Vigilante de Ios"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Senses",
+      "pt": "Traço Aprimorado · Sentidos"
+    },
+    "page": 108,
+    "effectIds": [
+      "enhanced-trait",
+      "senses"
+    ]
+  },
+  {
+    "id": "magic-call-of-kar-kradas",
+    "profileId": "magic",
+    "name": {
+      "en": "Call of Kar’Kradas",
+      "pt": "Chamado de Kar’Kradas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Active · Variable Type (Broad) · Controlled",
+      "pt": "Invocar · Ativo · Variable Type (Broad) · Controlado"
+    },
+    "page": 108,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-crooked-path-of-kar-kradas",
+    "profileId": "magic",
+    "name": {
+      "en": "Crooked Path of Kar’Kradas",
+      "pt": "Caminho Tortuoso de Kar’Kradas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Teleport · Accurate · Medium",
+      "pt": "Teleporte · Preciso · Meio"
+    },
+    "page": 108,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "magic-hounds-of-kar-kradas",
+    "profileId": "magic",
+    "name": {
+      "en": "Hounds of Kar’Kradas",
+      "pt": "Cães de Kar’Kradas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled · Heroic · Mental Link",
+      "pt": "Invocar · Controlado · Heroico · Mental Link"
+    },
+    "page": 108,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-umbral-kraken-of-kar-kradas",
+    "profileId": "magic",
+    "name": {
+      "en": "Umbral Kraken of Kar’Kradas",
+      "pt": "Kraken Sombrio de Kar’Kradas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Active · Controlled · Heroic",
+      "pt": "Invocar · Ativo · Controlado · Heroico"
+    },
+    "page": 108,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-lamal-s-labyrinth",
+    "profileId": "magic",
+    "name": {
+      "en": "Lamal’s Labyrinth",
+      "pt": "Labirinto de Lamal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra"
+    },
+    "page": 109,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-lamal-s-mighty-hands",
+    "profileId": "magic",
+    "name": {
+      "en": "Lamal’s Mighty Hands",
+      "pt": "Mãos Poderosas de Lamal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Precise · Subtle",
+      "pt": "Mover Objetos · Preciso · Sutil"
+    },
+    "page": 109,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "magic-lamal-s-rebuke",
+    "profileId": "magic",
+    "name": {
+      "en": "Lamal’s Rebuke",
+      "pt": "Repreensão de Lamal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Extra Condition · Limited",
+      "pt": "Aflição · Área · Condição Extra · Limitado"
+    },
+    "page": 109,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-light-of-lamal",
+    "profileId": "magic",
+    "name": {
+      "en": "Light of Lamal",
+      "pt": "Luz de Lamal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Progressivo · Graus Limitados · Limitado"
+    },
+    "page": 109,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-minion-of-malador",
+    "profileId": "magic",
+    "name": {
+      "en": "Minion of Malador",
+      "pt": "Lacaio de Malador"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled · Horde · Multiple Minions (per effect rank)",
+      "pt": "Invocar · Controlado · Horda · Múltiplos Lacaios (por graduação do efeito)"
+    },
+    "page": 109,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-miasma-of-malador",
+    "profileId": "magic",
+    "name": {
+      "en": "Miasma of Malador",
+      "pt": "Miasma de Malador"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area · Linked · Affliction · Increased Range · Area · Cumulative · Limited",
+      "pt": "Dano · Alcance Aumentado · Área · Vinculado · Aflição · Alcance Aumentado · Área · Cumulativo · Limitado"
+    },
+    "page": 109,
+    "effectIds": [
+      "damage",
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-might-of-malador",
+    "profileId": "magic",
+    "name": {
+      "en": "Might of Malador",
+      "pt": "Poder de Malador"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 109,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "magic-mists-of-the-modrossus",
+    "profileId": "magic",
+    "name": {
+      "en": "Mists of the Modrossus",
+      "pt": "Névoas dos Modrossus"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Progressive · Selective · Limited",
+      "pt": "Aflição · Área · Progressivo · Seletivo · Limitado"
+    },
+    "page": 110,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-sign-of-the-modrossus",
+    "profileId": "magic",
+    "name": {
+      "en": "Sign of the Modrossus",
+      "pt": "Sinal dos Modrossus"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Extra Condition · Limited",
+      "pt": "Aflição · Área · Condição Extra · Limitado"
+    },
+    "page": 110,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-occult-exorcism",
+    "profileId": "magic",
+    "name": {
+      "en": "Occult Exorcism",
+      "pt": "Exorcismo Oculto"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Simultaneous",
+      "pt": "Anulação · Simultâneo"
+    },
+    "page": 110,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "magic-omens-of-obroros",
+    "profileId": "magic",
+    "name": {
+      "en": "Omens of Obroros",
+      "pt": "Presságios de Obroros"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Dimensional · No Conduit · Subtle",
+      "pt": "Sensoriamento Remoto · Dimensional · No Conduit · Sutil"
+    },
+    "page": 110,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "magic-phantasms-of-the-phoros",
+    "profileId": "magic",
+    "name": {
+      "en": "Phantasms of the Phoros",
+      "pt": "Fantasmas dos Phoros"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Illusion",
+      "pt": "Ilusão"
+    },
+    "page": 110,
+    "effectIds": [
+      "illusion"
+    ]
+  },
+  {
+    "id": "magic-scourge-of-shatachna",
+    "profileId": "magic",
+    "name": {
+      "en": "Scourge of Shatachna",
+      "pt": "Flagelo de Shatachna"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Cumulative · Extra Condition · Reach",
+      "pt": "Aflição · Cumulativo · Condição Extra · Alcance de Luta"
+    },
+    "page": 111,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-servants-of-shatachna",
+    "profileId": "magic",
+    "name": {
+      "en": "Servants of Shatachna",
+      "pt": "Servos de Shatachna"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Variable Type (Broad)",
+      "pt": "Invocar · Variable Type (Broad)"
+    },
+    "page": 111,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-shadows-of-shatachna",
+    "profileId": "magic",
+    "name": {
+      "en": "Shadows of Shatachna",
+      "pt": "Sombras de Shatachna"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Area · Progressive · Extra Condition",
+      "pt": "Aflição · Alcance Aumentado · Área · Progressivo · Condição Extra"
+    },
+    "page": 111,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-seal-of-silence",
+    "profileId": "magic",
+    "name": {
+      "en": "Seal of Silence",
+      "pt": "Selo do Silêncio"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Progressive · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Progressivo · Graus Limitados · Limitado"
+    },
+    "page": 111,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-shining-shield-of-sirrion",
+    "profileId": "magic",
+    "name": {
+      "en": "Shining Shield of Sirrion",
+      "pt": "Escudo Brilhante de Sirrion"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 111,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "magic-somnambulant-spell",
+    "profileId": "magic",
+    "name": {
+      "en": "Somnambulant Spell",
+      "pt": "Feitiço Sonâmbulo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative",
+      "pt": "Aflição · Área · Cumulativo"
+    },
+    "page": 111,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-star-demons-of-sirrion",
+    "profileId": "magic",
+    "name": {
+      "en": "Star Demons of Sirrion",
+      "pt": "Demônios Estelares de Sirrion"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled",
+      "pt": "Invocar · Controlado"
+    },
+    "page": 111,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-maw-of-vhoka",
+    "profileId": "magic",
+    "name": {
+      "en": "Maw of Vhoka",
+      "pt": "Mandíbula de Vhoka"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Homing",
+      "pt": "Dano · Alcance Aumentado · Teleguiado"
+    },
+    "page": 112,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "magic-vile-venom",
+    "profileId": "magic",
+    "name": {
+      "en": "Vile Venom",
+      "pt": "Veneno Vil"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Weaken · Progressive · Variable Descriptor",
+      "pt": "Enfraquecer · Progressivo · Descritor Variável"
+    },
+    "page": 112,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "magic-ward-of-weyan",
+    "profileId": "magic",
+    "name": {
+      "en": "Ward of Weyan",
+      "pt": "Proteção de Weyan"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Progressive · Limited",
+      "pt": "Aflição · Área · Progressivo · Limitado"
+    },
+    "page": 112,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-chant-of-chaos",
+    "profileId": "magic",
+    "name": {
+      "en": "Chant of Chaos",
+      "pt": "Canto do Caos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Cumulative",
+      "pt": "Aflição · Área · Cumulativo"
+    },
+    "page": 112,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-unspeakable-summoning",
+    "profileId": "magic",
+    "name": {
+      "en": "Unspeakable Summoning",
+      "pt": "Invocação Inominável"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Heroic",
+      "pt": "Invocar · Heroico"
+    },
+    "page": 112,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-the-yellow-sign",
+    "profileId": "magic",
+    "name": {
+      "en": "The Yellow Sign",
+      "pt": "O Sinal Amarelo"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Progressive",
+      "pt": "Aflição · Área · Progressivo"
+    },
+    "page": 112,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-dance-of-vhoka",
+    "profileId": "magic",
+    "name": {
+      "en": "Dance of Vhoka",
+      "pt": "Dança de Vhoka"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Active · Controlled · Variable Type (General) · Increased Range",
+      "pt": "Invocar · Ativo · Controlado · Variable Type (General) · Alcance Aumentado"
+    },
+    "page": 112,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-wondrous-working-of-weyan",
+    "profileId": "magic",
+    "name": {
+      "en": "Wondrous Working of Weyan",
+      "pt": "Obra Maravilhosa de Weyan"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Weaken · Area · Affects Objects · Broad · Concentration · Simultaneous · Side Effect",
+      "pt": "Enfraquecer · Área · Afeta Objetos · Amplo · Concentração · Simultâneo · Efeito Colateral"
+    },
+    "page": 113,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "magic-curse-of-yig",
+    "profileId": "magic",
+    "name": {
+      "en": "Curse of Yig",
+      "pt": "Maldição de Yig"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Multiple Minions (per effect rank)",
+      "pt": "Invocar · Múltiplos Lacaios (por graduação do efeito)"
+    },
+    "page": 113,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "magic-fangs-of-yig",
+    "profileId": "magic",
+    "name": {
+      "en": "Fangs of Yig",
+      "pt": "Presas de Yig"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Progressive",
+      "pt": "Aflição · Progressivo"
+    },
+    "page": 113,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-yig-s-inexorable-transformation",
+    "profileId": "magic",
+    "name": {
+      "en": "Yig’s Inexorable Transformation",
+      "pt": "Transformação Inexorável de Yig"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Progressive · Limited Degree · Limited",
+      "pt": "Aflição · Progressivo · Graus Limitados · Limitado"
+    },
+    "page": 113,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-second-wheel-of-weyan",
+    "profileId": "magic",
+    "name": {
+      "en": "Second Wheel of Weyan",
+      "pt": "Segunda Roda de Weyan"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing",
+      "pt": "Sensoriamento Remoto"
+    },
+    "page": 113,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "magic-third-wheel-of-weyan",
+    "profileId": "magic",
+    "name": {
+      "en": "Third Wheel of Weyan",
+      "pt": "Terceira Roda de Weyan"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Deflect · Reflect",
+      "pt": "Deflexão · Refletir"
+    },
+    "page": 113,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "magic-fourth-wheel-of-weyan",
+    "profileId": "magic",
+    "name": {
+      "en": "Fourth Wheel of Weyan",
+      "pt": "Quarta Roda de Weyan"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Perception · Limited Direction",
+      "pt": "Mover Objetos · Percepção · Direção Limitada"
+    },
+    "page": 113,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "magic-fifth-wheel-of-weyan",
+    "profileId": "magic",
+    "name": {
+      "en": "Fifth Wheel of Weyan",
+      "pt": "Quinta Roda de Weyan"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Affliction · Area · Affects Objects · Progressive · Increased Duration · Instant Recovery · Limited Degree",
+      "pt": "Aflição · Área · Afeta Objetos · Progressivo · Duração Aumentada · Recuperação Instantânea · Graus Limitados"
+    },
+    "page": 113,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magic-sixth-wheel-of-weyan",
+    "profileId": "magic",
+    "name": {
+      "en": "Sixth Wheel of Weyan",
+      "pt": "Sexta Roda de Weyan"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Communication",
+      "pt": "Comunicação"
+    },
+    "page": 113,
+    "effectIds": [
+      "communication"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-binding",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Binding",
+      "pt": "Aprisionamento Magnético"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Extra Condition · Limited Degree · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Condição Extra · Graus Limitados · Resistência Alternativa"
+    },
+    "page": 116,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-blast",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Blast",
+      "pt": "Rajada Magnética"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 116,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-repulsion",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Repulsion",
+      "pt": "Repulsão Magnética"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Move Object · Limited Direction",
+      "pt": "Mover Objetos · Direção Limitada"
+    },
+    "page": 116,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-seizure",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Seizure",
+      "pt": "Convulsão Magnética"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Subtle",
+      "pt": "Aflição · Alcance Aumentado · Sutil"
+    },
+    "page": 116,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "magnetic-railgun",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Railgun",
+      "pt": "Canhão Eletromagnético"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Quirk",
+      "pt": "Dano · Alcance Aumentado · Peculiaridade"
+    },
+    "page": 116,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-deflection",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Deflection",
+      "pt": "Deflexão Magnética"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect · Increased Range · Limited",
+      "pt": "Deflexão · Alcance Aumentado · Limitado"
+    },
+    "page": 116,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-immunity",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Immunity",
+      "pt": "Imunidade Magnética"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 116,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-shield",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Shield",
+      "pt": "Escudo Magnético"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Sustained",
+      "pt": "Proteção · Sustentado"
+    },
+    "page": 117,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-cling-1",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Cling — 1",
+      "pt": "Aderência Magnética — 1"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Quirk",
+      "pt": "Movimento · Peculiaridade"
+    },
+    "page": 117,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-cling-2",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Cling — 2",
+      "pt": "Aderência Magnética — 2"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Quirk",
+      "pt": "Movimento · Peculiaridade"
+    },
+    "page": 117,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-flight",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Flight",
+      "pt": "Voo Magnético"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Subtle",
+      "pt": "Voo · Sutil"
+    },
+    "page": 117,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-levitation",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Levitation",
+      "pt": "Levitação Magnética"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Speed",
+      "pt": "Movimento · Velocidade"
+    },
+    "page": 117,
+    "effectIds": [
+      "movement",
+      "speed"
+    ]
+  },
+  {
+    "id": "magnetic-magnoport",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnoport",
+      "pt": "Magnaporte"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport",
+      "pt": "Teleporte"
+    },
+    "page": 117,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "magnetic-degauss",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Degauss",
+      "pt": "Desmagnetizar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Simultaneous",
+      "pt": "Anulação · Simultâneo"
+    },
+    "page": 117,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "magnetic-degauss-burst-burst",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Degauss Burst — Burst",
+      "pt": "Explosão Desmagnetizante — Explosão"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Simultaneous · Area",
+      "pt": "Anulação · Simultâneo · Área"
+    },
+    "page": 117,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "magnetic-degauss-burst-cone",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Degauss Burst — Cone",
+      "pt": "Explosão Desmagnetizante — Cone"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Simultaneous · Area",
+      "pt": "Anulação · Simultâneo · Área"
+    },
+    "page": 117,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "magnetic-ferrokinesis",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Ferrokinesis",
+      "pt": "Ferrocinese"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Perception · Limited",
+      "pt": "Mover Objetos · Percepção · Limitado"
+    },
+    "page": 117,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "magnetic-magnetize",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetize",
+      "pt": "Magnetizar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Move Object · Area · Limited · Limited Direction",
+      "pt": "Mover Objetos · Área · Limitado · Direção Limitada"
+    },
+    "page": 118,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-encoding",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Encoding",
+      "pt": "Codificação Magnética"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Comprehend · Limited",
+      "pt": "Compreensão · Limitado"
+    },
+    "page": 118,
+    "effectIds": [
+      "comprehend"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-reading",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Reading",
+      "pt": "Leitura Magnética"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Comprehend · Limited",
+      "pt": "Compreensão · Limitado"
+    },
+    "page": 118,
+    "effectIds": [
+      "comprehend"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-form",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Form",
+      "pt": "Forma Magnética"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Flight · Immunity · Insubstantial · Move Object · Limited",
+      "pt": "Camuflagem · Voo · Imunidade · Insubstancial · Mover Objetos · Limitado"
+    },
+    "page": 118,
+    "effectIds": [
+      "concealment",
+      "flight",
+      "immunity",
+      "insubstantial",
+      "move-object"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-interference",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Interference",
+      "pt": "Interferência Magnética"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Area · Increased Range · Attack",
+      "pt": "Camuflagem · Área · Alcance Aumentado · Ataque"
+    },
+    "page": 118,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-radar",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Radar",
+      "pt": "Radar Magnético"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 118,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-sense",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Sense",
+      "pt": "Sentido Magnético"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 118,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "magnetic-magnetic-scan",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Magnetic Scan",
+      "pt": "Varredura Magnética"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 118,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "magnetic-shape-metal",
+    "profileId": "magnetic",
+    "name": {
+      "en": "Shape Metal",
+      "pt": "Moldar Metal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Transform · Continuous",
+      "pt": "Transformação · Contínuo"
+    },
+    "page": 118,
+    "effectIds": [
+      "transform"
+    ]
   }
 ] satisfies LibraryEntry[];

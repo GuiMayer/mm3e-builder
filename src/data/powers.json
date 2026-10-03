@@ -1082,6 +1082,10 @@
         {
           "name": "Negate Impeded Movement",
           "cost": 1
+        },
+        {
+          "name": "Bright Light",
+          "cost": 2
         }
       ]
     },

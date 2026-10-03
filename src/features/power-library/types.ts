@@ -6,6 +6,8 @@ export interface PowerTemplateComponent extends Omit<ICharacterPowerComponent, '
   scalable?: boolean;
   /** Flat purchases explicitly bought at the same rank as this effect. Catalog policy only. */
   scaledModifiers?: string[];
+  /** Purchase flat modifier ranks on an existing trait, without buying a new base effect. */
+  modifierRanksOnly?: boolean;
   chooseSenses?: boolean;
   choices?: Array<{ id: string; label: LibraryText; options: Array<{ value: string; label: LibraryText }> }>;
 }
