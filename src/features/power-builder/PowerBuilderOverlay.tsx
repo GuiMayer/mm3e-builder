@@ -70,7 +70,7 @@ interface Props {
 const PowerLibraryDialog = lazy(() => import('../power-library/PowerLibraryDialog').then(module => ({ default: module.PowerLibraryDialog })));
 
 export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dialog = useAppDialog();
   const isMobile = useIsMobile();
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -205,8 +205,9 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       modifierDefs,
       character,
       skillDefs: SKILL_DEFS,
+      language: i18n.language,
     }).filter((validationIssue) => validationIssue.severity === 'warning'),
-    [modifierDefs, power, powerDefs, validationRules, character]
+    [modifierDefs, power, powerDefs, validationRules, character, i18n.language]
   );
   const resourceWarnings = resourceContext ? getResourcePowerWarnings(resourceContext.resource, power, character, powerDefs, allModDefs) : [];
 
@@ -1062,7 +1063,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
             </div>
           )}
           {semanticWarnings.map((warning) => (
-            <div className="pl-violation-banner" key={`${warning.path}:${warning.message}`}>
+            <div className={`pl-violation-banner${warning.messageKey === 'builder.duplicateModifierWarning' ? ' duplicate-modifier-banner' : ''}`} key={`${warning.path}:${warning.message}`}>
               <AlertTriangle size={13} />
               <span>
                 {warning.messageKey
@@ -1423,6 +1424,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
         .pl-violation-banner { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--c-error); background: rgba(var(--c-error-rgb, 248, 113, 113), 0.08); border: 1px solid rgba(var(--c-error-rgb, 248, 113, 113), 0.3); border-radius: var(--r-sm); padding: 5px 10px; margin-top: 4px; width: 100%; }
         .pl-violation-banner span { min-width: 0; overflow-wrap: anywhere; }
         .pl-violation-banner svg { flex-shrink: 0; }
+        .duplicate-modifier-banner { color: var(--c-warning); background: rgba(var(--c-warning-rgb, 251, 191, 36), 0.08); border-color: rgba(var(--c-warning-rgb, 251, 191, 36), 0.3); }
         .resource-context-banner { background: transparent; border-color: var(--c-border); color: var(--c-text-secondary); }
 
         /* Drag ghost */

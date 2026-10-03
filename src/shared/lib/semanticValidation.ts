@@ -32,6 +32,7 @@ interface GameDataContext {
   skillDefs?: ISkillDef[];
   advantageDefs?: IAdvantageDef[];
   character?: ICharacter;
+  language?: string;
 }
 
 function issue(path: string, message: string, severity: SemanticSeverity = 'error'): SemanticValidationIssue {
@@ -94,6 +95,21 @@ function validatePowerComponentForSave(
   );
 
   for (const violation of modifierViolations) {
+    if (violation.type === 'duplicate_modifier') {
+      const applied = component.modifiers.find(modifier => modifier.modifierId === violation.modifierId)!;
+      const definition = resolveModifierDefinition(applied, effectDef, context.modifierDefs).definition;
+      const language = context.language ?? 'en';
+      issues.push({
+        ...issue(`${path}.modifiers.${violation.modifierId}`, violation.message, 'warning'),
+        messageKey: 'builder.duplicateModifierWarning',
+        params: {
+          modifier: definition?.i18n?.[language]?.name ?? definition?.name ?? violation.modifierId,
+          count: component.modifiers.filter(modifier => modifier.modifierId === violation.modifierId).length,
+          effect: effectDef.i18n?.[language]?.name ?? effectDef.name,
+        },
+      });
+      continue;
+    }
     issues.push(issue(`${path}.modifiers.${violation.modifierId}`, violation.message));
   }
 

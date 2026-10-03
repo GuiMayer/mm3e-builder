@@ -451,7 +451,7 @@ export interface IValidationRules {
   
   // Modifier restrictions
   enforceIncompatibleModifiers: boolean;      // Prevent incompatible modifier combinations
-  enforceDuplicateModifiers: boolean;         // Prevent duplicate modifier entries on the same component
+  enforceDuplicateModifiers: boolean;         // Show advisory warnings for repeated modifier applications
   enforceModifierMaxRanks: boolean;           // Enforce maxRanks limits on modifiers
   enforceAccuratePLCap: boolean;              // Accurate modifier capped at PL
   enforcePowerSpecificModifiers: boolean;     // Only allow modifiers valid for the power

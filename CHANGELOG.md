@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — Duplicate modifier notices
+- List every repeated modifier and its application count as an advisory Builder notice, localized in English and Portuguese, including linked and alternate effects.
+- Settings on desktop and mobile can hide only these notices. Reuse the existing browser preference; keep other warnings, saving, costs and character JSON unchanged.
+- Verified with 83 files / 1,904 passing tests, typecheck, lint, production build and static verification; browser checks confirmed independent visibility and persistence after reload.
+
 ### Changed — Independent modifier applications
 - Adding an extra/flaw again creates a separate application, with independent ranks, affected ranks, options, notes and removal on base, linked and alternate components.
 - Repeated applications are numbered in the Builder. Player/GM choices remain saveable with the existing diagnostic messages and power-specific scoping.

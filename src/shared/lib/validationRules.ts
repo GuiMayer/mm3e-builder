@@ -20,7 +20,7 @@ export const DEFAULT_VALIDATION_RULES: IValidationRules = {
   
   // Modifier restrictions
   enforceIncompatibleModifiers: true,      // Prevent incompatible combinations (e.g., Ranged + Close)
-  enforceDuplicateModifiers: true,         // Prevent duplicate modifier entries on the same component
+  enforceDuplicateModifiers: true,         // Show warnings for repeated modifier applications
   enforceModifierMaxRanks: true,           // Enforce maxRanks limits (e.g., Accurate max 5)
   enforceAccuratePLCap: true,              // Accurate capped at PL (attack+effect ≤ 2×PL)
   enforcePowerSpecificModifiers: false,    // Only allow modifiers valid for the power (optional - Phase 3)
@@ -195,11 +195,11 @@ export const VALIDATION_RULE_METADATA: ValidationRuleMetadata[] = [
   },
   {
     id: 'enforceDuplicateModifiers',
-    name: 'Duplicate Modifiers',
-    description: 'Prevents applying the same modifier more than once to a single power component; use ranks instead',
+    name: 'Duplicate Modifier Warnings',
+    description: 'Lists repeated modifier applications without blocking edits or saving',
     category: 'modifier',
     recommendedFor: 'all',
-    disableWhen: 'Importing or repairing legacy data with duplicate modifier entries',
+    disableWhen: 'You prefer to hide duplicate modifier notices; other warnings remain enabled',
   },
   {
     id: 'enforceModifierMaxRanks',

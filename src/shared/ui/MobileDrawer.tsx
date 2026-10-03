@@ -247,6 +247,15 @@ export function MobileDrawer({
             </button>
             <button
               className="mobile-drawer-item"
+              onClick={() => onValidationRulesChange({ enforceDuplicateModifiers: !(validationRules?.enforceDuplicateModifiers ?? true) })}
+            >
+              {(validationRules?.enforceDuplicateModifiers ?? true) ? <Shield size={20} /> : <ShieldOff size={20} />}
+              <span>
+                {t('menu.validationRules.enforceDuplicateModifiers')}: <strong>{(validationRules?.enforceDuplicateModifiers ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+              </span>
+            </button>
+            <button
+              className="mobile-drawer-item"
               onClick={() => {
                 const enabled = (validationRules?.enforceAbsentAbilityRestrictions ?? false)
                   || (validationRules?.enforceSkillAbilityRequirements ?? false);

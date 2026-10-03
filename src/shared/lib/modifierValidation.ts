@@ -82,8 +82,8 @@ export function validateModifierMaxRanks(
 }
 
 /**
- * Validate that a component does not contain the same modifier entry twice.
- * Ranked modifiers should be represented by one entry with ranks > 1.
+ * List repeated modifier applications within a component as advisory warnings.
+ * Separate applications remain valid and retain their independent parameters.
  */
 export function validateDuplicateModifiers(
   appliedModifiers: IAppliedModifier[],
@@ -102,9 +102,8 @@ export function validateDuplicateModifiers(
     violations.push({
       type: 'duplicate_modifier',
       modifierId,
-      message: `${def?.name || modifierId} appears ${count} times. Use ranks instead of duplicate entries.`,
-      severity: 'error',
-      reference: 'Hero\'s Handbook p.137',
+      message: `${def?.name || modifierId} appears ${count} times.`,
+      severity: 'warning',
     });
   }
 

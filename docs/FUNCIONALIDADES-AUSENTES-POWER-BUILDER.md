@@ -141,9 +141,9 @@ A ficha ja calcula o total de PP e o painel de equipamento ja calcula limite de 
 
 **Resultado:**
 
-- Salvamento detecta `modifierId` duplicado em componentes principais e AEs.
-- Mensagem indica modificador duplicado e sugere usar ranks.
-- Flag `enforceDuplicateModifiers` controla a validacao.
+- O Builder lista todos os `modifierId` duplicados por componente, incluindo efeitos vinculados e alternativos, com a quantidade de aplicações.
+- O aviso é informativo: aplicações independentes continuam permitidas, sem alteração de custo ou bloqueio de salvamento.
+- A opção "Aviso de modificadores duplicados" (`enforceDuplicateModifiers`) controla somente esse aviso nas configurações de desktop e mobile. A preferência permanece salva no navegador, fora do JSON da ficha.
 
 ### ✅ Fase 3 - Identidade de Alternate Effects (CONCLUIDA)
 

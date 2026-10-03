@@ -177,6 +177,8 @@ describe('Duplicate Modifier Entries', () => {
     expect(violations[0].type).toBe('duplicate_modifier');
     expect(violations[0].modifierId).toBe('accurate');
     expect(violations[0].message).toContain('appears 2 times');
+    expect(violations[0].severity).toBe('warning');
+    expect(violations[0].reference).toBeUndefined();
   });
 
   it('allows one ranked modifier entry', () => {
