@@ -15,7 +15,7 @@ linhas quebradas, variantes e falsos positivos que exigem revisão.
 | 6 | Kinetic Powers, Life Powers, Light Powers | 81 receitas/variantes auditadas; três Aflições Sustentadas são referências. |
 | 7 | Luck Powers, Magic Powers, Magnetic Powers | 128 receitas/variantes auditadas; Fifth Wheel é referência de duração. |
 | 8 | Martial Powers, Mental Powers, Meta Powers | 66 receitas/variantes auditadas. |
-| 9 | Morphing Powers, Plant Powers, Radiation Powers | Pendente |
+| 9 | Morphing Powers, Plant Powers, Radiation Powers | 72 receitas/variantes auditadas. |
 | 10 | Sensory Powers, Size Powers, Sonic Powers | Pendente |
 | 11 | Speed Powers, Strength Powers, Summoning Powers | Pendente |
 | 12 | Talent Powers, Tech Powers, Teleport Powers | Pendente |
@@ -72,3 +72,7 @@ As divergências de Magia/Sorte estão identificadas nas prévias e no inventár
 ## Lote 8
 
 Possessão usa Fundir-se ao Alvo (+1), e Contra-ataque usa Exige Teste de Ataque (-1), específicos dos respectivos efeitos. Breaking Blow compra Penetrante sobre dano de Força existente, com Ativação de movimento no poder inteiro. Defesas pareadas são compras independentes; a limitação fixa é distribuída entre elas. Grau Limitado em Mind Switch/Power Control e Energizar em Psychic Vampirism produzem divergências explicadas nas prévias.
+
+## Lote 9
+
+Formas preservam compras fixas, invocações usam Múltiplos Lacaios por graduação e Absorção de Radiação usa Fonte específica de Atributo Aprimorado. Woods Walk com Movimento 2 e Limitado custa 2, embora o texto imprima 1. O desconto Notável de Plant Form é aplicado à forma perceptível, evitando cobrar um mínimo separado sobre Proteção 1.

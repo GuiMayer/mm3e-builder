@@ -1048,6 +1048,21 @@
         "longDescription": "One or more of your traits is lowered while others are enhanced. This flaw is worth as many points as the reduction in the affected trait(s). So, for example, if you lose Intellect while you gain in Strength, treat the value of the lost Intellect ranks as the value of the flaw. As with all flaws, the effect must still cost at least 1 power point.",
         "incompatibleWith": [],
         "i18n": {}
+      },
+      {
+        "id": "source_enhanced_trait",
+        "name": "Source",
+        "category": "flaw",
+        "costType": "per_rank",
+        "costValue": -1,
+        "description": "Requires an external source to enhance the trait (Radiation Absorption, Power Profiles p. 150).",
+        "incompatibleWith": [],
+        "i18n": {
+          "pt-BR": {
+            "name": "Fonte",
+            "description": "Exige fonte externa para aprimorar o atributo (Absorção de Radiação, Power Profiles p. 150)."
+          }
+        }
       }
     ]
   },

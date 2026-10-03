@@ -12915,5 +12915,1448 @@ export const POWER_LIBRARY_INDEX = [
     "effectIds": [
       "variable"
     ]
+  },
+  {
+    "id": "morphing-baneful-transformation",
+    "profileId": "morphing",
+    "name": {
+      "en": "Baneful Transformation",
+      "pt": "Transformação Maléfica"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo"
+    },
+    "page": 138,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "morphing-natural-weapons",
+    "profileId": "morphing",
+    "name": {
+      "en": "Natural Weapons",
+      "pt": "Armas Naturais"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage",
+      "pt": "Dano"
+    },
+    "page": 138,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "morphing-pseudopods",
+    "profileId": "morphing",
+    "name": {
+      "en": "Pseudopods",
+      "pt": "Pseudópodes"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Extra Limbs · Sustained",
+      "pt": "Membros Extras · Sustentado"
+    },
+    "page": 138,
+    "effectIds": [
+      "extra-limbs"
+    ]
+  },
+  {
+    "id": "morphing-slingshot",
+    "profileId": "morphing",
+    "name": {
+      "en": "Slingshot",
+      "pt": "Estilingue"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Limited",
+      "pt": "Traço Aprimorado · Limitado"
+    },
+    "page": 139,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "morphing-bounceback-attack",
+    "profileId": "morphing",
+    "name": {
+      "en": "Bounceback Attack",
+      "pt": "Ataque de Ricochete"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect · Reflect · Reduced Range",
+      "pt": "Deflexão · Refletir · Alcance Reduzido"
+    },
+    "page": 139,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "morphing-metamorphic-healing",
+    "profileId": "morphing",
+    "name": {
+      "en": "Metamorphic Healing",
+      "pt": "Cura Metamórfica"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Healing · Limited",
+      "pt": "Cura · Limitado"
+    },
+    "page": 139,
+    "effectIds": [
+      "healing"
+    ]
+  },
+  {
+    "id": "morphing-metamorphic-regeneration",
+    "profileId": "morphing",
+    "name": {
+      "en": "Metamorphic Regeneration",
+      "pt": "Regeneração Metamórfica"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Regeneration",
+      "pt": "Regeneração"
+    },
+    "page": 139,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "morphing-flat-form",
+    "profileId": "morphing",
+    "name": {
+      "en": "Flat Form",
+      "pt": "Forma Plana"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Concealment · Limited · Partial · Insubstantial · Limited",
+      "pt": "Camuflagem · Limitado · Parcial · Insubstancial · Limitado"
+    },
+    "page": 139,
+    "effectIds": [
+      "concealment",
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "morphing-malleable-form",
+    "profileId": "morphing",
+    "name": {
+      "en": "Malleable Form",
+      "pt": "Forma Maleável"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Insubstantial",
+      "pt": "Insubstancial"
+    },
+    "page": 139,
+    "effectIds": [
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "morphing-transformed-toughness",
+    "profileId": "morphing",
+    "name": {
+      "en": "Transformed Toughness",
+      "pt": "Resistência Transformada"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection",
+      "pt": "Proteção"
+    },
+    "page": 139,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "morphing-bouncing-ball",
+    "profileId": "morphing",
+    "name": {
+      "en": "Bouncing Ball",
+      "pt": "Bola Saltitante"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Leaping",
+      "pt": "Salto"
+    },
+    "page": 139,
+    "effectIds": [
+      "leaping"
+    ]
+  },
+  {
+    "id": "morphing-living-glider",
+    "profileId": "morphing",
+    "name": {
+      "en": "Living Glider",
+      "pt": "Planador Vivo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Gliding",
+      "pt": "Voo · Planador"
+    },
+    "page": 139,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "morphing-stretching-stride",
+    "profileId": "morphing",
+    "name": {
+      "en": "Stretching Stride",
+      "pt": "Passada Elástica"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Speed",
+      "pt": "Velocidade"
+    },
+    "page": 139,
+    "effectIds": [
+      "speed"
+    ]
+  },
+  {
+    "id": "morphing-wings",
+    "profileId": "morphing",
+    "name": {
+      "en": "Wings",
+      "pt": "Asas"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Wings",
+      "pt": "Voo · Asas"
+    },
+    "page": 139,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "morphing-living-trampoline",
+    "profileId": "morphing",
+    "name": {
+      "en": "Living Trampoline",
+      "pt": "Trampolim Vivo"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Affects Others",
+      "pt": "Movimento · Afeta Outros"
+    },
+    "page": 139,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "morphing-swinging-arms",
+    "profileId": "morphing",
+    "name": {
+      "en": "Swinging Arms",
+      "pt": "Braços de Balanço"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 139,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "morphing-extended-eyes",
+    "profileId": "morphing",
+    "name": {
+      "en": "Extended Eyes",
+      "pt": "Olhos Estendidos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing",
+      "pt": "Sensoriamento Remoto"
+    },
+    "page": 140,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "morphing-fingertip-lockpick",
+    "profileId": "morphing",
+    "name": {
+      "en": "Fingertip Lockpick",
+      "pt": "Gazua nos Dedos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Feature",
+      "pt": "Característica"
+    },
+    "page": 140,
+    "effectIds": [
+      "feature"
+    ]
+  },
+  {
+    "id": "morphing-metamorphic-minions",
+    "profileId": "morphing",
+    "name": {
+      "en": "Metamorphic Minions",
+      "pt": "Lacaios Metamórficos"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled · Horde · Multiple Minions (per effect rank)",
+      "pt": "Invocar · Controlado · Horda · Múltiplos Lacaios (por graduação do efeito)"
+    },
+    "page": 140,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "morphing-shapeshift",
+    "profileId": "morphing",
+    "name": {
+      "en": "Shapeshift",
+      "pt": "Metamorfose"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Variable",
+      "pt": "Variável"
+    },
+    "page": 140,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "morphing-stretching",
+    "profileId": "morphing",
+    "name": {
+      "en": "Stretching",
+      "pt": "Alongamento"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Elongation",
+      "pt": "Alongamento"
+    },
+    "page": 141,
+    "effectIds": [
+      "elongation"
+    ]
+  },
+  {
+    "id": "plant-control-plants",
+    "profileId": "plant",
+    "name": {
+      "en": "Control Plants",
+      "pt": "Controlar Plantas"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited · Subtle",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado · Sutil"
+    },
+    "page": 144,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "plant-internal-flora",
+    "profileId": "plant",
+    "name": {
+      "en": "Internal Flora",
+      "pt": "Flora Interna"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Subtle",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Sutil"
+    },
+    "page": 144,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "plant-phytotoxin",
+    "profileId": "plant",
+    "name": {
+      "en": "Phytotoxin",
+      "pt": "Fitotoxina"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Secondary Effect",
+      "pt": "Aflição · Efeito Secundário"
+    },
+    "page": 144,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "plant-pollen-cloud",
+    "profileId": "plant",
+    "name": {
+      "en": "Pollen Cloud",
+      "pt": "Nuvem de Pólen"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Area",
+      "pt": "Aflição · Área"
+    },
+    "page": 144,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "plant-sap-snare",
+    "profileId": "plant",
+    "name": {
+      "en": "Sap Snare",
+      "pt": "Armadilha de Seiva"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance · Cumulative",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa · Cumulativo"
+    },
+    "page": 144,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "plant-tanglevines",
+    "profileId": "plant",
+    "name": {
+      "en": "Tanglevines",
+      "pt": "Vinhas Enredantes"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Extra Condition · Limited Degree · Alternate Resistance · Area · Indirect",
+      "pt": "Aflição · Alcance Aumentado · Condição Extra · Graus Limitados · Resistência Alternativa · Área · Indireto"
+    },
+    "page": 144,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "plant-thornskin",
+    "profileId": "plant",
+    "name": {
+      "en": "Thornskin",
+      "pt": "Pele de Espinhos"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Reaction",
+      "pt": "Dano · Reação"
+    },
+    "page": 144,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "plant-throwing-thorns",
+    "profileId": "plant",
+    "name": {
+      "en": "Throwing Thorns",
+      "pt": "Arremessar Espinhos"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Multiattack",
+      "pt": "Dano · Alcance Aumentado · Ataque Múltiplo"
+    },
+    "page": 144,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "plant-photosynthesis",
+    "profileId": "plant",
+    "name": {
+      "en": "Photosynthesis",
+      "pt": "Fotossíntese"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 145,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "plant-regrowth",
+    "profileId": "plant",
+    "name": {
+      "en": "Regrowth",
+      "pt": "Regenerar"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Regeneration",
+      "pt": "Regeneração"
+    },
+    "page": 145,
+    "effectIds": [
+      "regeneration"
+    ]
+  },
+  {
+    "id": "plant-woodskin",
+    "profileId": "plant",
+    "name": {
+      "en": "Woodskin",
+      "pt": "Pele de Madeira"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Noticeable",
+      "pt": "Proteção · Perceptível"
+    },
+    "page": 145,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "plant-brachiation",
+    "profileId": "plant",
+    "name": {
+      "en": "Brachiation",
+      "pt": "Braquiação"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement",
+      "pt": "Movimento"
+    },
+    "page": 145,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "plant-carrier-vine",
+    "profileId": "plant",
+    "name": {
+      "en": "Carrier Vine",
+      "pt": "Vinha Transportadora"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Flight · Platform",
+      "pt": "Voo · Platform"
+    },
+    "page": 145,
+    "effectIds": [
+      "flight"
+    ]
+  },
+  {
+    "id": "plant-pass-through-plants",
+    "profileId": "plant",
+    "name": {
+      "en": "Pass Through Plants",
+      "pt": "Passar pelas Plantas"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 145,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "plant-root-digging",
+    "profileId": "plant",
+    "name": {
+      "en": "Root Digging",
+      "pt": "Escavar Raízes"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing",
+      "pt": "Escavação"
+    },
+    "page": 145,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "plant-root-transport",
+    "profileId": "plant",
+    "name": {
+      "en": "Root Transport",
+      "pt": "Transporte por Raízes"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Medium",
+      "pt": "Teleporte · Meio"
+    },
+    "page": 145,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "plant-woods-walk",
+    "profileId": "plant",
+    "name": {
+      "en": "Woods Walk",
+      "pt": "Caminhar na Floresta"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Movement · Limited",
+      "pt": "Movimento · Limitado"
+    },
+    "page": 145,
+    "effectIds": [
+      "movement"
+    ]
+  },
+  {
+    "id": "plant-animate-plants",
+    "profileId": "plant",
+    "name": {
+      "en": "Animate Plants",
+      "pt": "Animar Plantas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Summon · Controlled · Variable Type (General)",
+      "pt": "Invocar · Controlado · Variable Type (General)"
+    },
+    "page": 145,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "plant-green-memory",
+    "profileId": "plant",
+    "name": {
+      "en": "Green Memory",
+      "pt": "Memória Verde"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Limited",
+      "pt": "Sentidos · Limitado"
+    },
+    "page": 146,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "plant-green-network",
+    "profileId": "plant",
+    "name": {
+      "en": "Green Network",
+      "pt": "Rede Verde"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Remote Sensing · Medium",
+      "pt": "Sensoriamento Remoto · Meio"
+    },
+    "page": 146,
+    "effectIds": [
+      "remote-sensing"
+    ]
+  },
+  {
+    "id": "plant-plant-form",
+    "profileId": "plant",
+    "name": {
+      "en": "Plant Form",
+      "pt": "Forma Vegetal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Noticeable · Protection — Sleep, starvation, suffocation; the entire form is noticeable.",
+      "pt": "Imunidade · Perceptível · Proteção — Sono, inanição, sufocamento; toda a forma é perceptível."
+    },
+    "page": 146,
+    "effectIds": [
+      "immunity",
+      "protection"
+    ]
+  },
+  {
+    "id": "plant-plant-growth",
+    "profileId": "plant",
+    "name": {
+      "en": "Plant Growth",
+      "pt": "Crescimento Vegetal"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Create · Permanent",
+      "pt": "Criação · Permanente"
+    },
+    "page": 146,
+    "effectIds": [
+      "create"
+    ]
+  },
+  {
+    "id": "plant-speak-with-plants",
+    "profileId": "plant",
+    "name": {
+      "en": "Speak With Plants",
+      "pt": "Falar com Plantas"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Comprehend",
+      "pt": "Compreensão"
+    },
+    "page": 146,
+    "effectIds": [
+      "comprehend"
+    ]
+  },
+  {
+    "id": "plant-warp-wood",
+    "profileId": "plant",
+    "name": {
+      "en": "Warp Wood",
+      "pt": "Moldar Madeira"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Transform",
+      "pt": "Transformação"
+    },
+    "page": 146,
+    "effectIds": [
+      "transform"
+    ]
+  },
+  {
+    "id": "radiation-blinding-radiance",
+    "profileId": "radiation",
+    "name": {
+      "en": "Blinding Radiance",
+      "pt": "Radiância Cegante"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Increased Range · Cumulative · Limited · Alternate Resistance",
+      "pt": "Aflição · Alcance Aumentado · Cumulativo · Limitado · Resistência Alternativa"
+    },
+    "page": 149,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "radiation-melting-heat",
+    "profileId": "radiation",
+    "name": {
+      "en": "Melting Heat",
+      "pt": "Calor Derretedor"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Weaken · Increased Range",
+      "pt": "Enfraquecer · Alcance Aumentado"
+    },
+    "page": 149,
+    "effectIds": [
+      "weaken"
+    ]
+  },
+  {
+    "id": "radiation-mutation",
+    "profileId": "radiation",
+    "name": {
+      "en": "Mutation",
+      "pt": "Mutação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Progressive · Increased Range",
+      "pt": "Aflição · Progressivo · Alcance Aumentado"
+    },
+    "page": 149,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "radiation-radiation-sickness",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Sickness",
+      "pt": "Envenenamento por Radiação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Affliction · Progressive · Increased Range",
+      "pt": "Aflição · Progressivo · Alcance Aumentado"
+    },
+    "page": 149,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "radiation-radiation-blast",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Blast",
+      "pt": "Rajada de Radiação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range",
+      "pt": "Dano · Alcance Aumentado"
+    },
+    "page": 149,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "radiation-radiation-burst",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Burst",
+      "pt": "Explosão de Radiação"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Increased Range · Area",
+      "pt": "Dano · Alcance Aumentado · Área"
+    },
+    "page": 149,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "radiation-radioactive-aura",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radioactive Aura",
+      "pt": "Aura Radioativa"
+    },
+    "section": {
+      "en": "Offensive powers",
+      "pt": "Poderes ofensivos"
+    },
+    "summary": {
+      "en": "Damage · Reaction",
+      "pt": "Dano · Reação"
+    },
+    "page": 150,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "radiation-deflection-field",
+    "profileId": "radiation",
+    "name": {
+      "en": "Deflection Field",
+      "pt": "Campo Defletor"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Protection · Impervious · Sustained",
+      "pt": "Proteção · Impenetrável · Sustentado"
+    },
+    "page": 150,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "radiation-kinetic-nullification",
+    "profileId": "radiation",
+    "name": {
+      "en": "Kinetic Nullification",
+      "pt": "Anulação Cinética"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Deflect · Limited",
+      "pt": "Deflexão · Limitado"
+    },
+    "page": 150,
+    "effectIds": [
+      "deflect"
+    ]
+  },
+  {
+    "id": "radiation-radiation-absorption",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Absorption",
+      "pt": "Absorção de Radiação"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Enhanced Trait · Fades · Source",
+      "pt": "Traço Aprimorado · Desgaste · Fonte"
+    },
+    "page": 150,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "radiation-radiation-immunity-1",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Immunity — 1",
+      "pt": "Imunidade à Radiação — 1"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 150,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "radiation-radiation-immunity-2",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Immunity — 2",
+      "pt": "Imunidade à Radiação — 2"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 150,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "radiation-radiation-immunity-5",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Immunity — 5",
+      "pt": "Imunidade à Radiação — 5"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 150,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "radiation-radiation-immunity-10",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Immunity — 10",
+      "pt": "Imunidade à Radiação — 10"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity",
+      "pt": "Imunidade"
+    },
+    "page": 150,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "radiation-radiation-shield",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Shield",
+      "pt": "Escudo de Radiação"
+    },
+    "section": {
+      "en": "Defensive powers",
+      "pt": "Poderes defensivos"
+    },
+    "summary": {
+      "en": "Immunity · Affects Others · Area · Sustained",
+      "pt": "Imunidade · Afeta Outros · Área · Sustentado"
+    },
+    "page": 150,
+    "effectIds": [
+      "immunity"
+    ]
+  },
+  {
+    "id": "radiation-air-wave",
+    "profileId": "radiation",
+    "name": {
+      "en": "Air Wave",
+      "pt": "Onda de Rádio"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Medium",
+      "pt": "Teleporte · Meio"
+    },
+    "page": 150,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "radiation-nuclear-shift",
+    "profileId": "radiation",
+    "name": {
+      "en": "Nuclear Shift",
+      "pt": "Deslocamento Nuclear"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Teleport · Medium",
+      "pt": "Teleporte · Meio"
+    },
+    "page": 150,
+    "effectIds": [
+      "teleport"
+    ]
+  },
+  {
+    "id": "radiation-melt-through",
+    "profileId": "radiation",
+    "name": {
+      "en": "Melt Through",
+      "pt": "Derreter Caminho"
+    },
+    "section": {
+      "en": "Movement powers",
+      "pt": "Poderes de movimento"
+    },
+    "summary": {
+      "en": "Burrowing",
+      "pt": "Escavação"
+    },
+    "page": 150,
+    "effectIds": [
+      "burrowing"
+    ]
+  },
+  {
+    "id": "radiation-carbon-dating",
+    "profileId": "radiation",
+    "name": {
+      "en": "Carbon Dating",
+      "pt": "Datação por Carbono"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses · Limited",
+      "pt": "Sentidos · Limitado"
+    },
+    "page": 151,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "radiation-irradiate",
+    "profileId": "radiation",
+    "name": {
+      "en": "Irradiate",
+      "pt": "Irradiar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Environment · Subtle",
+      "pt": "Controle Ambiental · Sutil"
+    },
+    "page": 151,
+    "effectIds": [
+      "environment"
+    ]
+  },
+  {
+    "id": "radiation-radar",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radar",
+      "pt": "Radar"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 151,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "radiation-radio-hearing",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radio Hearing",
+      "pt": "Audição de Rádio"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 151,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "radiation-radiation-form",
+    "profileId": "radiation",
+    "name": {
+      "en": "Radiation Form",
+      "pt": "Forma de Radiação"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Immunity · Insubstantial",
+      "pt": "Imunidade · Insubstancial"
+    },
+    "page": 151,
+    "effectIds": [
+      "immunity",
+      "insubstantial"
+    ]
+  },
+  {
+    "id": "radiation-scrub-radiation",
+    "profileId": "radiation",
+    "name": {
+      "en": "Scrub Radiation",
+      "pt": "Limpar Radiação"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Nullify · Area · Simultaneous",
+      "pt": "Anulação · Área · Simultâneo"
+    },
+    "page": 151,
+    "effectIds": [
+      "nullify"
+    ]
+  },
+  {
+    "id": "radiation-sense-radiation",
+    "profileId": "radiation",
+    "name": {
+      "en": "Sense Radiation",
+      "pt": "Sentir Radiação"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 151,
+    "effectIds": [
+      "senses"
+    ]
+  },
+  {
+    "id": "radiation-static-field",
+    "profileId": "radiation",
+    "name": {
+      "en": "Static Field",
+      "pt": "Campo de Estática"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Concealment · Increased Range · Area · Attack",
+      "pt": "Camuflagem · Alcance Aumentado · Área · Ataque"
+    },
+    "page": 151,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "radiation-x-ray-vision",
+    "profileId": "radiation",
+    "name": {
+      "en": "X-Ray Vision",
+      "pt": "Visão de Raios X"
+    },
+    "section": {
+      "en": "Utility powers",
+      "pt": "Poderes utilitários"
+    },
+    "summary": {
+      "en": "Senses",
+      "pt": "Sentidos"
+    },
+    "page": 151,
+    "effectIds": [
+      "senses"
+    ]
   }
 ] satisfies LibraryEntry[];
