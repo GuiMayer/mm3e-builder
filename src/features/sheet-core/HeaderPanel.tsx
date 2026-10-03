@@ -1,10 +1,11 @@
+import { CharacterPortrait } from '../portraits/CharacterPortrait';
 import { memo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useCalculatedPP } from '../../shared/hooks/useCalculatedPP';
-import { User, MapPin, Shield, Star, ChevronDown, ChevronRight } from 'lucide-react';
+import { MapPin, Shield, Star, ChevronDown, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { NumberInput } from '../../shared/ui/NumberInput';
 
@@ -24,9 +25,7 @@ function HeaderPanelComponent() {
     <section className="header-panel">
       {/* Hero Identity Section */}
       <div className="hero-identity">
-        <div className="hero-avatar">
-          <User size={32} />
-        </div>
+        <CharacterPortrait />
         <div className="hero-fields">
           <div className="hero-name-field">
             <input

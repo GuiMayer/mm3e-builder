@@ -1,0 +1,22 @@
+.portrait-avatar-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.portrait-avatar-wrap .hero-avatar{padding:0;overflow:hidden;cursor:pointer;}
+.hero-avatar img{width:100%;height:100%;object-fit:cover;}
+.portrait-local-label{font-size:.65rem;color:var(--c-text-muted);}
+.portrait-dialog .modal-content--compact{width:min(520px,calc(100vw - 24px));max-width:520px;max-height:90dvh;}
+.portrait-editor{display:flex;flex-direction:column;gap:var(--s-md);}
+.portrait-modes{display:flex;gap:var(--s-sm);}
+.portrait-modes button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px;border:1px solid var(--c-border);border-radius:var(--r-md);background:var(--c-surface-elevated);color:var(--c-text);cursor:pointer;}
+.portrait-modes button[aria-pressed=true]{border-color:var(--c-primary);background:var(--c-primary-muted);}
+.portrait-notice{margin:0;padding:12px;border:1px solid var(--c-border);border-left:3px solid var(--c-primary);border-radius:var(--r-sm);background:var(--c-surface-elevated);color:var(--c-text-secondary);font-size:.85rem;line-height:1.5;}
+.portrait-hint{margin:0;color:var(--c-text-secondary);font-size:.8rem;line-height:1.45;}
+.portrait-address,.portrait-file-label{display:flex;flex-direction:column;gap:8px;font-size:.85rem;color:var(--c-text);}
+.portrait-address input{width:100%;min-height:44px;padding:10px;background:var(--c-surface-elevated);border:1px solid var(--c-border);border-radius:var(--r-sm);color:var(--c-text);}
+.portrait-file-label input{max-width:100%;min-height:44px;}
+.portrait-preview{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;overflow:hidden;border:1px solid var(--c-border);border-radius:var(--r-md);background:var(--c-surface-elevated);color:var(--c-primary);cursor:zoom-in;}
+.portrait-preview img{height:100%;width:100%;object-fit:contain;}
+.portrait-preview--expanded{height:min(400px,55dvh);cursor:zoom-out;}
+.portrait-error{margin:0;color:var(--c-error);font-size:.85rem;line-height:1.45;}
+.portrait-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--s-sm);}
+.portrait-actions .btn{min-height:44px;}
+.portrait-editor button:focus-visible,.portrait-avatar-wrap button:focus-visible{outline:2px solid var(--c-primary);outline-offset:3px;}
+@media(max-width:480px){.portrait-modes{flex-direction:column;}.portrait-actions .btn{flex:1;}.portrait-dialog .modal-body{padding:var(--s-md);}}
