@@ -1,3 +1,4 @@
+import { formatComponentDetails } from './pdf/components/powerDetails';
 /**
  * Excel Generator — Exports character sheet as a styled .xlsx workbook.
  * Uses ExcelJS to create worksheets per section with themed formatting.
@@ -583,29 +584,8 @@ function buildPowersSheet(
 
     // Handle field values if present (from effect options)
     const fieldValuesText = power.components
-      .filter(c => c.fieldValues && Object.keys(c.fieldValues).length > 0)
-      .map(c => {
-        const def = gameData.powerDefs.find((d) => d.id === c.effectId);
-        if (!def || !(def as unknown as Record<string, unknown>).fields) return null;
-          
-          const vals = Object.entries(c.fieldValues!).map(([key, val]) => {
-            const fieldsArray = (def as unknown as Record<string, unknown>).fields as Array<Record<string, unknown>>;
-            const fieldDef = fieldsArray?.find(f => f.id === key);
-            let fieldName = key;
-            if (fieldDef && fieldDef.name) {
-              const nameObj = fieldDef.name as Record<string, string>;
-              fieldName = nameObj[lang as keyof typeof nameObj] || nameObj.en;
-            }
-          
-          if (Array.isArray(val)) {
-            return `${fieldName}: ${val.join(', ')}`;
-          }
-          return `${fieldName}: ${val}`;
-        });
-        
-        return vals.length > 0 ? vals.join(' | ') : null;
-      })
-      .filter(Boolean)
+      .filter(component => component.fieldValues && Object.keys(component.fieldValues).length)
+      .map(component => formatComponentDetails(component, localizePDFPowers(gameData.powerDefs, lang), localizePDFModifiers(gameData.modifierDefs, lang), createPDFLabels(lang)))
       .join('\n');
 
     // Format power name with removable tags
@@ -936,14 +916,14 @@ function formatAlternates(
         const effectNames = alt.components
           .map((comp) => {
             const eDef = gameData.powerDefs.find((d) => d.id === comp.effectId);
-            return eDef ? `${locName(eDef, lang)} R${comp.ranks}` : comp.effectId;
+            return eDef ? formatComponentDetails(comp, localizePDFPowers(gameData.powerDefs, lang), localizePDFModifiers(gameData.modifierDefs, lang), createPDFLabels(lang)) : comp.effectId;
           })
           .filter(Boolean)
           .join(' + ');
         const name = alt.name || effectNames || '—';
         const cost = calcAlternateEffectCost(alt, gameData.powerDefs, gameData.modifierDefs, strength);
         const dyn = alt.dynamic ? ` [${labels.dynamic}]` : '';
-        const notesStr = alt.notes ? `\n  📝 ${alt.notes}` : '';
+        const notesStr = alt.notes ? `\n  ${alt.notes}` : '';
         return `${name}: ${effectNames} [${cost}PP]${dyn}${notesStr}`;
       })
     .join('\n');

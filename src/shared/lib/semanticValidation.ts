@@ -1,3 +1,4 @@
+import { validateAfflictionComponent } from './afflictionConfiguration';
 import type { RuleDiagnostic } from './diagnostics';
 import type {
   IAdvantageDef,
@@ -114,6 +115,8 @@ function validatePowerComponentForSave(
     }
     issues.push({ ...issue(`${path}.modifiers.${violation.modifierId}`, violation.message), ...violation, names: violation.names && Object.fromEntries(Object.entries(violation.names).map(([key, name]) => [key, name.kind === 'modifier' ? { ...name, effectId: effectDef.id } : name])), severity: 'error' });
   }
+
+  if (rules.enforceAfflictionProgression) issues.push(...validateAfflictionComponent(component, effectDef, context.modifierDefs).map(diagnostic => ({ ...diagnostic, severity: 'warning' as const, path: `${path}.fieldValues.afflictionDegrees` })));
 
   issues.push(...validateCoreModifierApplicability(component, effectDef, path, context.modifierDefs));
 

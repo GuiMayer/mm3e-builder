@@ -408,6 +408,10 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
                   {(validationRules?.enforceTrainedOnlySkills ?? false) ? <Shield size={14} /> : <ShieldOff size={14} />}
                   {t('menu.validationRules.enforceTrainedOnlySkills')}: <strong>{(validationRules?.enforceTrainedOnlySkills ?? false) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
                 </button>
+                <button className="dropdown-item" onClick={() => setValidationRules({ enforceAfflictionProgression: !(validationRules?.enforceAfflictionProgression ?? false) })}>
+                  {(validationRules?.enforceAfflictionProgression ?? false) ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.validationRules.enforceAfflictionProgression')}: <strong>{(validationRules?.enforceAfflictionProgression ?? false) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+                </button>
                 <button
                   className="dropdown-item"
                   onClick={() => {

@@ -1,3 +1,4 @@
+import { afflictionSummary, afflictionFallbackLabel, isAfflictionField } from '../../../shared/lib/afflictionConfiguration';
 import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 import { SENSE_TRAITS } from '../../../data/senseTraits';
 import type { ICharacterPower, ICharacterPowerComponent, IPowerEffect, IModifierDef } from '../../../entities/types';
@@ -7,11 +8,12 @@ import { escapeHtml, nl2br } from './utils';
 /** Display-only formatter. Each modifier stays attached to its own Linked component. */
 export function formatComponentDetails(component: ICharacterPowerComponent, powerDefs: IPowerEffect[], modifierDefs: IModifierDef[], labels: PDFLabels = englishPDFLabels): string {
   const effect = powerDefs.find(definition => definition.id === component.effectId);
-  const fields = Object.entries(component.fieldValues ?? {}).map(([key, value]) => {
+  const fields = Object.entries(component.fieldValues ?? {}).filter(([key]) => !isAfflictionField(key)).map(([key, value]) => {
     const field = effect?.configurableFields?.find(item => item.id === key);
     const values = (Array.isArray(value) ? value : [value]).map(item => field?.options?.find(option => option.value === item)?.label ?? item);
     return `${field?.label ?? key}: ${values.join(', ')}`;
   });
+  fields.push(...afflictionSummary(component, key => labels(afflictionFallbackLabel(key)), effect, modifierDefs));
   const senses = component.senseTraits?.map(trait => [labels(SENSE_TRAITS.find(def => def.id === trait.id)?.label ?? trait.id), trait.ranks > 1 ? trait.ranks : '', trait.senseType ? labels(trait.senseType) : '', trait.scope ? labels(trait.scope) : '', trait.detail].filter(Boolean).join(' ')) ?? [];
   const modifiers = component.modifiers.map(modifier => {
     const definition = effect ? resolveModifierDefinition(modifier, effect, modifierDefs).definition : undefined;

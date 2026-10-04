@@ -228,7 +228,7 @@ export const VALIDATION_RULE_METADATA: ValidationRuleMetadata[] = [
   {
     id: 'enforceAfflictionProgression',
     name: 'Affliction Condition Progression',
-    description: 'Validates that Affliction conditions follow proper degree progression',
+    description: 'Advises on optional structured Affliction degrees, conditions, and recovery without blocking saves',
     category: 'power',
     recommendedFor: 'optional',
     disableWhen: 'Using custom Affliction conditions or narrative-focused play',

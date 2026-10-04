@@ -26,25 +26,6 @@ convenção explícita. Não usar um custo manual nem Sustentado genérico +0 pa
 forçar a fórmula impressa. A resolução geral de ação/duração está documentada
 no [guia de cálculo](REGRAS_CALCULO_MM3E.md).
 
-### P03 — Preferências de validação sem integração — prioridade média
-
-**Contexto:** `enforceTrainedOnlySkills` aparece em tipos, presets e descrição,
-mas não é consumido por uma validação de perícias/rolagens. `validateAffliction`
-possui testes próprios, mas não é chamado pelo fluxo de validação de poderes.
-Aflição declara apenas o campo estruturado de resistência no catálogo atual.
-O `ConfigurableFieldSelector` genérico já existe, mas condições por grau não
-estão ligadas a ele; receitas podem registrar condições nas notas.
-
-**Escopo:** integrar as preferências como diagnósticos informativos, preservando
-suas escolhas e defaults. Para Aflição, introduzir configuração opcional de
-condições por grau nos campos existentes e adaptar o validador a Grau Limitado,
-Condição Extra e Condições Variáveis. Não inferir condições a partir das notas
-nem transformar ausência de dados legados em impedimento de salvamento.
-
-**Critérios de aceite:** cada preferência anunciada tem efeito observável e cobertura de
-integração; não rejeita configurações válidas nem cria bloqueios para extras e
-flaws genéricos. Preservar dados e escolhas de validação existentes.
-
 ### P04 — Apresentação de definições de regras legadas — prioridade média
 
 **Contexto:** `src/data/powers.json` conserva `multiple_minions` com preço fixo
@@ -81,7 +62,7 @@ uso atual, entrada/saída documentadas e não repovoam `docs/` com snapshots.
 
 ## Plano de execução — prioridades alta e média
 
-Escopo restante: P02–P04. P06 e possibilidades opcionais continuam fora desta execução.
+Escopo restante: P04 e a decisão aberta de P02. P06 e possibilidades opcionais continuam fora desta execução.
 Este plano deve ser removido por etapa concluída, mantendo o comportamento
 resultante nos guias vigentes e apenas o trabalho aberto neste arquivo.
 
@@ -111,7 +92,6 @@ resultante nos guias vigentes e apenas o trabalho aberto neste arquivo.
 
 | Etapa | Pendência | Entrega | Commit proposto |
 | --- | --- | --- | --- |
-| 7 | P03 | Configuração opcional e validação contextual de Aflição | `feat(power-builder): integrate optional affliction condition diagnostics` |
 | 8 | P04 | Identificação de definições legadas e orientação de compra | `fix(catalog): distinguish legacy modifier definitions` |
 
 P05 precede os novos diagnósticos de P02/P03 para
@@ -121,39 +101,6 @@ composição inequívoca, manter as quatro receitas para consulta, documentar a
 decisão aberta em P02 e não criar um commit que habilite receitas incompletas.
 Cada commit inclui testes relevantes e atualização do guia correspondente.
 Não atribuir uma versão nova antes de consolidar o escopo implementado.
-
-### P03 — Integração das preferências
-
-**Aflição:**
-
-- Não conectar diretamente o helper atual, que exige uma condição em cada grau.
-  Adaptar a configuração a arrays opcionais por grau, graus ativos e modo variável,
-  usando `fieldValues` e opções de modificadores já aceitos pelo modelo.
-- Acrescentar uma seção recolhível de condições. Ela deve permitir compras com
-  Grau Limitado, seleção explícita dos graus usados em receitas do Power Profiles,
-  múltiplas condições por Condição Extra e condições escolhidas no uso quando
-  houver Condições Variáveis. Não esconder/apagar seleções ao remover um modifier.
-- Validar somente informação estruturada disponível. Configuração legada apenas
-  nas notas é não verificada, sem erro por condições vazias; não usar extração
-  automática de texto. Compras novas podem receber orientação de preenchimento,
-  sem novos campos obrigatórios no schema ou bloqueios de combinação.
-- Consultar as regras do Handbook p. 149–150 e Power Profiles p. 80. Condição Extra
-  acrescenta condições por grau; não é simplesmente uma alternativa escolhida
-  depois do acerto. Resistência inicial, recuperação e Resistência Alternativa
-  exigem avaliação conjunta; o helper simplificado não deve rejeitar variantes
-  só por esperar Fortitude/Vontade em um único campo.
-- Integrar avisos ao Builder para base/Linked/AE e recursos, com a preferência
-  `enforceAfflictionProgression`, independentemente de `enforcePLLimits`.
-  Preservar o default e presets atuais. As condições
-  estruturadas devem aparecer nas referências e exportações, sem substituir notas.
-- Testar configurações padrão; apenas um/dois graus; terceiro grau apenas;
-  aplicações repetidas de Grau Limitado; Condição Extra; Condições Variáveis em
-  todos/um grau; resistência alternativa; dados legados; aplicação de receita;
-  flag ligado/desligado; abrir/salvar sem editar e round-trip dos novos valores.
-
-**Aceite conjunto:** as duas preferências têm efeito observável e isolado, com
-avisos traduzidos e testes de integração. Nenhuma delas cria um impedimento novo
-para salvar extras/flaws genéricos ou reescreve a ficha ao carregar.
 
 ### P04 — Definições legadas no catálogo
 

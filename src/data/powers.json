@@ -67,14 +67,14 @@
         "costType": "per_rank",
         "costValue": 1,
         "repeatable": true,
-        "description": "Add an additional condition option at one degree of the Affliction.",
-        "longDescription": "Each rank adds one additional condition option at any one degree of the Affliction. The attacker chooses which condition applies when the effect succeeds.",
+        "description": "Adds one simultaneous condition at each active degree of Affliction per purchase.",
+        "longDescription": "Extra Condition adds another simultaneous condition at each active degree. One purchase allows two conditions per degree, two purchases allow three. Variable Conditions is a separate modifier for choosing conditions when using the effect.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Condição Extra",
-            "description": "Adiciona uma opção de condição extra em um grau da Aflição.",
-            "longDescription": "Cada rank adiciona uma opção de condição extra em qualquer grau da Aflição. O atacante escolhe qual condição aplicar."
+            "description": "Adiciona uma condição simultânea em cada grau ativo da Aflição por compra.",
+            "longDescription": "Condição Extra acrescenta outra condição simultânea em cada grau ativo. Uma compra permite duas condições por grau; duas compras permitem três. Condições Variáveis é um modificador separado para escolher condições ao usar o efeito."
           }
         }
       },

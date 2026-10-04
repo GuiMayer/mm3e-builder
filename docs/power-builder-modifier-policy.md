@@ -56,3 +56,27 @@ Validadores e cálculo de preço retornam fallback, chave estável, parâmetros 
 identidades de catálogo. A interface traduz no idioma ativo, inclusive o detalhe
 aninhado de erros de importação. Nomes e notas do usuário são literais. A tradução
 não altera severidade, caminhos, custo, condições de disparo ou política de salvar.
+
+## Condições opcionais de Aflição
+
+A seção recolhível permite registrar graus ativos, arrays de condições por
+grau, graus com condições variáveis e resistência de recuperação. Essas escolhas
+usam `fieldValues` (`afflictionDegrees`, `afflictionDegree1/2/3`,
+`afflictionVariableDegrees`, `afflictionRecovery`), sem mudar o schema 2.2.0.
+Apenas uma edição explícita grava valores. Remover um modificador não apaga
+seleções; dados inativos permanecem visíveis para revisão. Notas legadas não
+são interpretadas nem substituídas.
+
+Condição Extra acrescenta condições **simultâneas em cada grau ativo**. Grau
+Limitado reduz a quantidade de graus e aceita uma escolha explícita, inclusive
+terceiro grau apenas. Condições Variáveis permite escolher condições no uso
+em todos os graus ou em graus adquiridos individualmente (Power Profiles, p. 80).
+Resistência inicial por Resistência Alternativa e resistência de recuperação
+são informações separadas.
+
+`enforceAfflictionProgression` produz avisos sobre os dados estruturados
+disponíveis no Builder, incluindo Linked, AE e recursos. Não depende de
+`enforcePLLimits` e não cria bloqueios de salvamento. O default/presets são
+preservados; notas sem campos estruturados continuam não verificadas.
+Condições registradas são exibidas nas referências, PDF e Excel; JSON/JSONL
+preservam os arrays, notas e compras existentes sem migração em massa.

@@ -1,3 +1,4 @@
+import { afflictionSummary } from '../../shared/lib/afflictionConfiguration';
 import { resolveEffectiveAction, resolveEffectiveDuration, resolveEffectiveRange } from '../../shared/lib/effectParameters';
 import { useTranslation } from 'react-i18next';
 import type { IAlternateEffect, ICharacterPowerComponent, ICharacterPower, IModifierDef, IPowerEffect } from '../../entities/types';
@@ -56,6 +57,7 @@ function EffectDescription({ reference }: { reference: ComponentReference }) {
   return <section className="reference-section">
     <h3>{definition?.name ?? component.effectId} · {component.ranks} {t('common.ranks')}</h3>
     <RuleDescription definition={definition} component={component} />
+    {afflictionSummary(component, key => t(key), definition, MODIFIER_DEFS).map(line => <p key={line}>{line}</p>)}
     {modifiers.map((modifier, index) => <details key={index}>
       <summary>{modifier.definition?.name ?? modifier.applied.modifierId}</summary>
       <AppliedModifierDescription reference={modifier} />
