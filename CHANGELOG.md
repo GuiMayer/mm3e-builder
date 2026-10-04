@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Builder budgets and optional Affliction configuration
+- Show saved/draft costs, projected PP/EP and remaining budget using the canonical summary. Keep the character of origin fixed; shared-resource details cover linked sheets open in this browser.
+- Add optional degree/condition/recovery fields for Affliction, including Limited Degree, simultaneous Extra Conditions and Variable Conditions. Preserve legacy notes; references, PDF and Excel show stored selections.
+
+### Fixed — Rule diagnostics and catalog references
+- Translate semantic, required-field, pricing and nested import diagnostics at presentation time. Preserve severity, save policy and user-authored text.
+- Resolve usage action, maintenance and duration through generic/specific definitions and order-independent supported transitions. Ambiguous combinations remain advisory and provisional; prices are unchanged.
+- Connect trained-only skill warnings to skills and advantage roll shortcuts, with Jack-of-all-trades support and independent preferences. Manual rolls and history are unchanged.
+- Identify legacy/recommended Summon and Healing modifier definitions and correct their reference descriptions without converting IDs or historical costs.
+- Keep four Sustained Affliction recipes reference-only pending a supported general composition; no invented modifier or price override.
+
 ### Changed — Duplicate modifier notices
 - List every repeated modifier and its application count as an advisory Builder notice, localized in English and Portuguese, including linked and alternate effects.
 - Settings on desktop and mobile can hide only these notices. Reuse the existing browser preference; keep other warnings, saving, costs and character JSON unchanged.

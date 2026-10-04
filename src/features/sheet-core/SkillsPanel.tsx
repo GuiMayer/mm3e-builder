@@ -375,7 +375,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
           border-radius: var(--r-sm); padding: var(--s-xs) var(--s-md);
           transition: border-color var(--t-fast);
         }
-        .skill-training-warning { grid-column: 1 / -1; color: var(--c-status-warning); font-size: .75rem; line-height: 1.35; }
+        .skill-training-warning { grid-column: 1 / -1; color: var(--c-warning); font-size: .75rem; line-height: 1.35; }
         .skill-row:hover { border-color: var(--c-border-active); }
         .skill-check-inputs,.skill-ranks-group,.skill-other-group { display: flex; align-items: center; gap: var(--s-xs); }
         .skill-check-inputs { flex-wrap: wrap; }

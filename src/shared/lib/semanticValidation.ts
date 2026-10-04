@@ -104,7 +104,7 @@ function validatePowerComponentForSave(
       issues.push({
         ...issue(`${path}.modifiers.${violation.modifierId}`, violation.message, 'warning'),
         messageKey: 'builder.duplicateModifierWarning',
-        names: { modifier: { kind: 'modifier', id: violation.modifierId, effectId: effectDef.id }, effect: { kind: 'effect', id: effectDef.id } },
+        names: { modifier: { kind: 'modifier', id: violation.modifierId, effectId: effectDef.id, isPowerSpecific: applied.isPowerSpecific }, effect: { kind: 'effect', id: effectDef.id } },
         params: {
           modifier: definition?.i18n?.[language]?.name ?? definition?.name ?? violation.modifierId,
           count: component.modifiers.filter(modifier => modifier.modifierId === violation.modifierId).length,
@@ -113,7 +113,7 @@ function validatePowerComponentForSave(
       });
       continue;
     }
-    issues.push({ ...issue(`${path}.modifiers.${violation.modifierId}`, violation.message), ...violation, names: violation.names && Object.fromEntries(Object.entries(violation.names).map(([key, name]) => [key, name.kind === 'modifier' ? { ...name, effectId: effectDef.id } : name])), severity: 'error' });
+    issues.push({ ...issue(`${path}.modifiers.${violation.modifierId}`, violation.message), ...violation, names: violation.names && Object.fromEntries(Object.entries(violation.names).map(([key, name]) => [key, name.kind === 'modifier' ? { ...name, effectId: effectDef.id, isPowerSpecific: component.modifiers.find(modifier => modifier.modifierId === name.id)?.isPowerSpecific } : name])), severity: 'error' });
   }
 
   if (rules.enforceAfflictionProgression) issues.push(...validateAfflictionComponent(component, effectDef, context.modifierDefs).map(diagnostic => ({ ...diagnostic, severity: 'warning' as const, path: `${path}.fieldValues.afflictionDegrees` })));

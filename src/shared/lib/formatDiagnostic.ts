@@ -1,3 +1,4 @@
+import { resolveModifierDefinition } from './rulesCatalog';
 import type { TFunction } from 'i18next';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import type { RuleDiagnostic } from './diagnostics';
@@ -13,7 +14,9 @@ export function formatDiagnostic(diagnostic: RuleDiagnostic, t: TFunction, langu
       params[parameter] = field?.i18n?.[language]?.label ?? field?.label ?? name.id;
     } else {
       const definitions = name.kind === 'effect' ? POWER_DEFS : name.kind === 'skill' ? SKILL_DEFS : name.kind === 'advantage' ? ADVANTAGE_DEFS : [...(effect?.extras ?? []), ...(effect?.flaws ?? []), ...MODIFIER_DEFS];
-      const def = definitions.find(def => def.id === name.id);
+      const def = name.kind === 'modifier' && effect
+        ? resolveModifierDefinition({ modifierId: name.id, ranks: 1, isPowerSpecific: name.isPowerSpecific }, effect, MODIFIER_DEFS).definition
+        : definitions.find(def => def.id === name.id);
       const localized = def as { name?: string; i18n?: Record<string, { name?: string }> } | undefined;
       params[parameter] = localized?.i18n?.[language]?.name ?? localized?.name ?? name.id;
     }

@@ -3,6 +3,7 @@ export interface DiagnosticName {
   kind: 'effect' | 'modifier' | 'skill' | 'advantage' | 'field';
   id: string;
   effectId?: string;
+  isPowerSpecific?: boolean;
 }
 export interface RuleDiagnostic {
   message: string;

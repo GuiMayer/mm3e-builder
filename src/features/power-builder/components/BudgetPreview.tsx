@@ -1,3 +1,4 @@
+import { createDefaultCharacter } from '../../../entities/characterDefaults';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterPower, IValidationRules } from '../../../entities/types';
@@ -6,12 +7,14 @@ import { useResourcesStore } from '../../../store/resourcesStore';
 import { projectPowerBudget, powerBudgetSignature, type BudgetEditTarget } from '../budgetProjection';
 import './budgetPreview.css';
 
+const unlinkedContext = createDefaultCharacter();
+
 export function BudgetPreview({ characterId, target, power, rules }: { characterId: string | null; target: BudgetEditTarget; power: ICharacterPower; rules: IValidationRules }) {
   const { t } = useTranslation();
   const tabs = useCharactersStore(state => state.tabs);
   const resources = useResourcesStore(state => state.resources);
   const [expanded, setExpanded] = useState(false);
-  const character = tabs.find(tab => tab.id === characterId)?.character;
+  const character = tabs.find(tab => tab.id === characterId)?.character ?? (target.kind === 'resource' && characterId === null ? unlinkedContext : undefined);
   const signature = powerBudgetSignature(power);
   const draft = useMemo(() => JSON.parse(signature) as ICharacterPower, [signature]);
   const projection = useMemo(() => character ? projectPowerBudget(character, resources, target, draft) : null, [character, resources, target, draft]);

@@ -167,6 +167,7 @@ export function resolveEffectiveAction(baseAction: ActionType, component: IChara
     if (source === 'power-specific' && applied.modifierId === 'action_healing') replacements.push({ action: ACTION_STEPS[Math.max(1, 3 - Math.max(1, applied.ranks))], applied });
   }
   let value = baseAction;
+  if (replacements.length > 1 && new Set(replacements.map(replacement => replacement.action)).size === 1) diagnostics.push(ambiguous(replacements[0].applied.modifierId));
   if (new Set(replacements.map(replacement => replacement.action)).size > 1 || (replacements.length && increased > 0)) diagnostics.push(ambiguous(replacements[0].applied.modifierId));
   else if (replacements.length) value = replacements[0].action;
   if (!diagnostics.length && increased) {
@@ -178,7 +179,7 @@ export function resolveEffectiveAction(baseAction: ActionType, component: IChara
   const repeatedCheck = modifiers.some(({ applied, source }) => source === 'power-specific' && ['concentration_affliction', 'concentration_weaken'].includes(applied.modifierId));
   const maintenanceAction: ActionType | undefined = repeatedCheck || duration === 'concentration' ? 'standard' : duration === 'sustained' ? 'free' : duration === 'permanent' ? 'none' : undefined;
   // Permanent passive effects become conscious free-action effects when Sustained.
-  if (baseAction === 'none' && duration === 'sustained' && !replacements.length && !increased) value = 'free';
+  if (baseAction === 'none' && duration && ['sustained', 'continuous', 'concentration'].includes(duration) && !replacements.length && !increased) value = 'free';
   const trigger = modifiers.find(({ applied }) => ['reaction', 'triggered', 'reaction_insubstantial'].includes(applied.modifierId))?.applied.options?.trigger;
   return { value, diagnostics, maintenanceAction, ...(typeof trigger === 'string' && trigger.trim() ? { trigger: trigger.trim() } : {}), ...(diagnostics.length ? { provisional: true } : {}) };
 }

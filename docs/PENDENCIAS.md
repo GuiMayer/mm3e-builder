@@ -2,8 +2,8 @@
 
 Revisão: 04/10/2026 (v1.20.0).
 Este é o ponto central para trabalho ainda aberto. As constatações abaixo vieram
-da comparação entre documentação e código; não constituem uma nova certificação
-das regras nem uma rodada de testes de navegador.
+da comparação entre documentação, código e fontes de regras; não constituem
+uma certificação completa das regras.
 
 Manter apenas pendências, decisões abertas e limitações relevantes. Quando um
 item terminar, removê-lo daqui. Descrever o comportamento resultante no guia

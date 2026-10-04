@@ -74,6 +74,7 @@ describe('optional structured Affliction', () => {
     expect(calculatePowerPricing(loaded.powers[0], POWER_DEFS, MODIFIER_DEFS).total).toBe(5);
     expect(renderPowerDetails(power, POWER_DEFS, MODIFIER_DEFS)).toContain('Degree 1: Dazed');
     expect(renderPowerDetails(power, localizePDFPowers(POWER_DEFS, 'pt-BR'), MODIFIER_DEFS, createPDFLabels('pt-BR'))).toContain('1º grau: Atordoado');
+    expect(renderPowerDetails(power, localizePDFPowers(POWER_DEFS, 'pt-BR'), MODIFIER_DEFS, createPDFLabels('pt-BR'))).toContain('Tipo de Resistência: Vontade');
     expect(JSON.stringify(character)).toBe(before);
   });
   it('writes and reloads an actual Excel workbook containing base and alternate condition details', async () => {

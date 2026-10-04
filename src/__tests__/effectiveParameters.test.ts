@@ -34,6 +34,7 @@ describe('effective actions and duration compositions', () => {
     for (const ordered of [modifiers, [...modifiers].reverse()]) {
       const { effect, component, context } = model('protection', ordered);
       expect(resolveEffectiveDuration(effect.duration, component, context).value).toBe('continuous');
+      expect(resolveEffectiveAction(effect.action, component, context).value).toBe('free');
     }
     const { effect, component, context } = model('flight', [mod('permanent_flaw'), mod('increased_duration')]);
     expect(resolveEffectiveDuration(effect.duration, component, context).value).toBe('permanent');
@@ -67,6 +68,12 @@ describe('effective actions and duration compositions', () => {
     expect(resolveEffectiveAction(variable.effect.action, variable.component, variable.context).value).toBe('free');
     variable.component.modifiers[0].options = { subtypeId: 'move' };
     expect(resolveEffectiveAction(variable.effect.action, variable.component, variable.context).value).toBe('move');
+  });
+  it('keeps duplicate Reaction advisory without repeating action steps', () => {
+    const reaction = model('damage', [mod('reaction'), mod('reaction')]);
+    const result = resolveEffectiveAction(reaction.effect.action, reaction.component, reaction.context);
+    expect(result.value).toBe('reaction');
+    expect(result.provisional).toBe(true);
   });
   it('reports conscious maintenance for Sustained Immunity and keeps repeated Affliction checks distinct from duration', () => {
     const immunity = model('immunity', [mod('sustained_immunity', true)]);

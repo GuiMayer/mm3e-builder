@@ -19,12 +19,24 @@
           {
             "value": "fortitude",
             "label": "Fortitude",
-            "description": "Physical resistance - used for poisons, diseases, physical afflictions"
+            "description": "Physical resistance - used for poisons, diseases, physical afflictions",
+            "i18n": {
+              "pt-BR": {
+                "label": "Fortitude",
+                "description": "Resistência física — usada para venenos, doenças e aflições físicas"
+              }
+            }
           },
           {
             "value": "will",
             "label": "Will",
-            "description": "Mental resistance - used for mental effects, emotions, mind control"
+            "description": "Mental resistance - used for mental effects, emotions, mind control",
+            "i18n": {
+              "pt-BR": {
+                "label": "Vontade",
+                "description": "Resistência mental — usada para efeitos mentais, emoções e controle mental"
+              }
+            }
           }
         ],
         "i18n": {
