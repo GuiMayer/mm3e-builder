@@ -5,6 +5,8 @@ export function sanitizeCharacterForExport(
   character: ICharacter
 ): ICharacter {
   return {
+    ...(character.traitModifiers ? { traitModifiers: character.traitModifiers } : {}),
+    ...(character.powerUsage ? { powerUsage: character.powerUsage } : {}),
     characterId: character.characterId,
     header: {
       ...(character.header.portraitFit ? { portraitFit: character.header.portraitFit } : {}),

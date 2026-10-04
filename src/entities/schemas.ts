@@ -6,6 +6,11 @@ import { z } from 'zod';
    ================================================ */
 
 const AbilityKeySchema = z.enum(['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre']);
+export const TraitTargetSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('ability'), key: AbilityKeySchema }),
+  z.object({ kind: z.literal('defense'), key: z.enum(['dodge', 'parry', 'fortitude', 'will', 'toughness']) }),
+  z.object({ kind: z.literal('skill'), skillId: z.string(), subtype: z.string().nullable().optional() }),
+]);
 
 const AppliedModifierSchema = z.object({
   instanceId: z.string().optional(),
@@ -25,6 +30,7 @@ const SenseTraitPurchaseSchema = z.object({
 const FieldValueSchema = z.union([z.string(), z.array(z.string())]);
 
 const CharacterPowerComponentSchema = z.object({
+  enhancedTarget: TraitTargetSchema.optional(),
   id: z.string(),
   effectId: z.string(),
   ranks: z.number().int().min(0),
@@ -200,6 +206,8 @@ const EquipmentItemSchema = z.union([
 ]);
 
 export const CharacterSchema = z.object({
+  traitModifiers: z.array(z.object({ id: z.string(), target: TraitTargetSchema, value: z.number().int(), source: z.string(), scope: z.enum(['check', 'active-defense']), active: z.boolean() })).optional(),
+  powerUsage: z.record(z.string(), z.object({ enabled: z.boolean().optional(), branchId: z.string().optional(), allocations: z.record(z.string(), z.number().int().min(0)).optional(), recipient: z.enum(['character', 'resource']).optional() })).optional(),
   characterId: z.string().uuid().optional(),  // Unique immutable ID for cross-device sync
   header: CharacterHeaderSchema,
   abilities: AbilitiesSchema,

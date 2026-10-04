@@ -28,29 +28,31 @@ export function duplicateCharacterWithNewIds(
   const clone = JSON.parse(JSON.stringify(character)) as ICharacter;
   clone.header.name = name;
   clone.characterId = createId();
+  const powerIds = new Map<string, string>();
+  const newPowerId = (old: string) => { const id = createId(); powerIds.set(old, id); return id; };
 
   for (const power of clone.powers ?? []) {
-    power.id = createId();
+    power.id = newPowerId(power.id);
     for (const component of power.components ?? []) {
-      component.id = createId();
+      component.id = newPowerId(component.id);
     }
     for (const alternate of power.alternateEffects ?? []) {
-      alternate.id = createId();
+      alternate.id = newPowerId(alternate.id);
       for (const component of alternate.components ?? []) {
-        component.id = createId();
+        component.id = newPowerId(component.id);
       }
     }
   }
 
   for (const item of clone.equipment ?? []) {
-    item.id = createId();
+    item.id = newPowerId(item.id);
     for (const component of item.components ?? []) {
-      component.id = createId();
+      component.id = newPowerId(component.id);
     }
     for (const alternate of item.alternateEffects ?? []) {
-      alternate.id = createId();
+      alternate.id = newPowerId(alternate.id);
       for (const component of alternate.components ?? []) {
-        component.id = createId();
+        component.id = newPowerId(component.id);
       }
     }
   }
@@ -76,6 +78,13 @@ export function duplicateCharacterWithNewIds(
     entry.id = newLogIds[index];
     if (entry.reversesEntryId) entry.reversesEntryId = logIds.get(entry.reversesEntryId) ?? entry.reversesEntryId;
   }
+
+  if (clone.traitModifiers) clone.traitModifiers = clone.traitModifiers.map(modifier => ({ ...modifier, id: createId() }));
+  if (clone.powerUsage) clone.powerUsage = Object.fromEntries(Object.entries(clone.powerUsage).map(([key, usage]) => [
+    key.split(':').map(part => powerIds.get(part) ?? part).join(':'),
+    { ...usage, ...(usage.branchId ? { branchId: powerIds.get(usage.branchId) ?? usage.branchId } : {}),
+      ...(usage.allocations ? { allocations: Object.fromEntries(Object.entries(usage.allocations).map(([id, ranks]) => [powerIds.get(id) ?? id, ranks])) } : {}) },
+  ]));
 
   return clone;
 }

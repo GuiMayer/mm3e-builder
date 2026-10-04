@@ -213,6 +213,8 @@ export interface ISenseTraitPurchase {
 
 // ── Power Component (a single effect within a power) ──
 export interface ICharacterPowerComponent {
+  /** Absent on legacy powers; never inferred from notes or category alone. */
+  enhancedTarget?: ITraitTarget;
   id: string;                    // uuid for keying
   effectId: string;
   ranks: number;
@@ -410,7 +412,26 @@ export interface ICampaign {
   initialPowerLevel: number;
 }
 
+export type DefenseKey = keyof IDefenses | 'toughness';
+export type ITraitTarget =
+  | { kind: 'ability'; key: AbilityKey }
+  | { kind: 'defense'; key: DefenseKey }
+  | { kind: 'skill'; skillId: string; subtype?: string | null };
+export interface ITraitModifier {
+  id: string; target: ITraitTarget; value: number; source: string;
+  scope: 'check' | 'active-defense'; active: boolean;
+}
+/** Usage belongs to the character, including for a shared resource power. */
+export interface IPowerUsage {
+  enabled?: boolean;
+  branchId?: string;
+  allocations?: Record<string, number>;
+  recipient?: 'character' | 'resource';
+}
+
 export interface ICharacter {
+  traitModifiers?: ITraitModifier[];
+  powerUsage?: Record<string, IPowerUsage>;
   characterId?: string;          // Unique immutable ID for cross-device sync
   header: ICharacterHeader;
   abilities: Abilities;

@@ -17,6 +17,7 @@ import type {
 import { resolveModifierDefinition } from './rulesCatalog';
 import { isStrengthBasedDamage } from './abilityRanks';
 import { getAffectedRanks, getRankBoundaries } from './componentRanks';
+import { enhancedCostOption } from './traitTargets';
 
 export type PricingDiagnosticCode =
   | 'unknown-effect'
@@ -310,9 +311,10 @@ export function calculateComponentPricing(
 
   let baseCost = effectDef.baseCost;
   let fixedPackageCost: number | undefined;
-  if (effectDef.variableCost && component.variableCostOption) {
+  const variableCostOption = effectDef.id === 'enhanced-trait' && component.enhancedTarget ? enhancedCostOption(component.enhancedTarget) : component.variableCostOption;
+  if (effectDef.variableCost && variableCostOption) {
     const selectedOption = effectDef.variableCost.options.find(
-      (option) => option.name === component.variableCostOption
+      (option) => option.name === variableCostOption
     );
     if (selectedOption) {
       if (effectDef.variableCost.costType === 'flat') fixedPackageCost = selectedOption.cost;
@@ -382,7 +384,7 @@ export function calculateComponentPricing(
 
   return {
     base: fixedPackageCost ?? baseCost,
-    selectedVariableCost: component.variableCostOption || null,
+    selectedVariableCost: variableCostOption || null,
     perRankExtras,
     perRankFlaws,
     ...fullRankPricing,

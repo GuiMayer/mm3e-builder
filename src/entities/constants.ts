@@ -12,10 +12,10 @@
  * - 2.1.0: Optional fixed campaign budget and advancement metadata
  * - 2.2.0: Optional remote portrait URL; image bytes are never embedded
  */
-export const SCHEMA_VERSION = '2.2.0';
+export const SCHEMA_VERSION = '2.3.0';
 
 /**
  * All schema versions that the application can import.
  * Structurally compatible unknown versions are accepted with a warning.
  */
-export const SUPPORTED_SCHEMA_VERSIONS: readonly string[] = ['1.0.0', '2.0.0', '2.1.0', '2.2.0'];
+export const SUPPORTED_SCHEMA_VERSIONS: readonly string[] = ['1.0.0', '2.0.0', '2.1.0', '2.2.0', '2.3.0'];
