@@ -5,6 +5,8 @@ import { useResourcesStore } from '../../store/resourcesStore';
 import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
 import type { CharacterTab } from '../../entities/characterTab';
 import type { IResource } from '../../entities/types';
+import { useAppDialog } from '../ui/appDialogContext';
+import { captureDraftStorageSnapshot, serializeDraftStorageSnapshot } from '../../services/storage/draftUpdateBackup';
 
 const INSTANCE_KEY = 'mm3e-app-instance-active';
 
@@ -46,6 +48,7 @@ export function migrateDraftResources(
  * - Returns metadata for UI notification (tab count, last modified)
  */
 export function useAutoLoadDraftMulti(enabled = true) {
+  const dialog = useAppDialog();
   const hasRunRef = useRef(false);
   const loadTabs = useCharactersStore((s) => s.loadTabs);
   const setDraftHydrated = useCharactersStore((s) => s.setDraftHydrated);
@@ -77,16 +80,21 @@ export function useAutoLoadDraftMulti(enabled = true) {
     localStorage.setItem(INSTANCE_KEY, now.toString());
 
     // Try to load draft tabs
-    try {
+    void (async () => { try {
       const draft = loadDraftMulti();
       if (isRecoveredCharacterDraft(draft)) {
+        const snapshot = captureDraftStorageSnapshot('modifier-source-review');
+        const resources = useResourcesStore.getState().resources;
+        const reviewed = await dialog.reviewModifierSources({ tabs: draft.tabs, resources }, snapshot ? serializeDraftStorageSnapshot(snapshot) : JSON.stringify({ tabs: draft.tabs, resources }));
+        const resourceWriteFailed = !!reviewed && JSON.stringify(reviewed.resources) !== JSON.stringify(resources) && !useResourcesStore.getState().replaceResources(reviewed.resources);
+        const recovered = resourceWriteFailed ? { tabs: draft.tabs, resources } : reviewed ?? { tabs: draft.tabs, resources };
         const migration = migrateDraftResources(
-          draft.tabs,
+          recovered.tabs,
           (resources) => useResourcesStore.getState().upsertResources(resources)
         );
         loadTabs(migration.tabs, draft.activeId);
         setDraftHydrated(true);
-        setDraftLoadError(migration.resourcesPersisted ? null : 'draft.recovery.resourceWriteFailed');
+        setDraftLoadError(migration.resourcesPersisted && !resourceWriteFailed ? null : 'draft.recovery.resourceWriteFailed');
         console.log(`[useAutoLoadDraftMulti] Loaded ${draft.tabs.length} character(s)`);
       } else if (!hasStoredDraft()) {
         setDraftHydrated(true);
@@ -108,7 +116,7 @@ export function useAutoLoadDraftMulti(enabled = true) {
       setDraftLoadError('draft.recovery.unreadable');
       // Unexpected reads still leave the original key intact. New work can be
       // saved; normal write failures remain visible through the save dialog.
-    }
+    } })();
 
     // Set up heartbeat to keep instance marker fresh
     const heartbeatInterval = setInterval(() => {
@@ -132,7 +140,7 @@ export function useAutoLoadDraftMulti(enabled = true) {
       window.removeEventListener('beforeunload', cleanup);
       cleanup();
     };
-  }, [enabled, loadTabs, setDraftHydrated, setDraftLoadError]);
+  }, [enabled, loadTabs, setDraftHydrated, setDraftLoadError, dialog]);
 
   // This hook has no return value - it's a side-effect only
 }

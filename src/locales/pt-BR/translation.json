@@ -1304,5 +1304,14 @@
   "catalog.version.legacyHealing": "Definição legada: cura dano Incurável, preservando o preço histórico de +1 PP por graduação de Cura. Para a compra oficial de +1 PP fixo, use Persistente (compra fixa). Não há conversão automática.",
   "catalog.version.currentHealing": "Definição oficial: Cura remove dano Incurável por +1 PP fixo. Recomendada para novas compras.",
   "diagnostic.invalidModifierSource": "A origem salva de {{id}} não existe no efeito {{effectId}}. Revise a origem antes de alterar a compra.",
-  "builder.pricingAmbiguityWarning": "{{count}} referência legada tem origem ambígua; o preço genérico foi preservado. Revise a origem."
+  "builder.pricingAmbiguityWarning": "{{count}} referência legada tem origem ambígua; o preço genérico foi preservado. Revise a origem.",
+  "recovery.title": "Revisar origem dos modificadores",
+  "recovery.description": "Uma versão antiga podia marcar modificadores genéricos como específicos de outro efeito. Selecione as compras que devem usar a definição genérica. Confira o custo antes de aplicar; o original será preservado no navegador. Caminhos e instâncias identificam cada ocorrência.",
+  "recovery.componentCost": "Custo do componente ao corrigir esta entrada: {{before}} → {{after}} PP",
+  "recovery.backupError": "Não foi possível preservar o original. Nenhuma correção foi aplicada. Exporte uma cópia e libere espaço antes de tentar novamente.",
+  "recovery.export": "Exportar original",
+  "recovery.apply": "Aplicar selecionados",
+  "recovery.review": "Revisar origem",
+  "recovery.pending": "Há modificadores antigos com origem inválida aguardando revisão. Seus dados foram mantidos.",
+  "recovery.changed": "Os dados mudaram durante a revisão. Abra novamente para conferir os valores atuais."
 }

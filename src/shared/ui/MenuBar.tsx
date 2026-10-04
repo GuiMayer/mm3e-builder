@@ -187,7 +187,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         window.location.reload();
         return;
       }
-      const bundle = parseDraftBundle(text);
+      const bundle = await dialog.reviewModifierSources(parseDraftBundle(text), text);
+      if (!bundle) return;
       const characters = t('draft.characterCount', { count: bundle.tabs.length });
       const resourceCount = t('resources.count', { count: bundle.resources.length });
       if (!await dialog.confirm({ title: t('draft.restoreTitle'), message: t('draft.restoreMessage', { characters, resources: resourceCount }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
@@ -208,7 +209,10 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     const file = event.target.files?.[0]; event.target.value = '';
     if (!file) return;
     try {
-      const imported = parseResourceLibrary(await file.text());
+      const text = await file.text();
+      const reviewed = await dialog.reviewModifierSources({ resources: parseResourceLibrary(text) }, text);
+      if (!reviewed) return;
+      const imported = reviewed.resources;
       const importedIds = new Set(imported.map((resource) => resource.id));
       const missingLinks = tabs.flatMap((tab) => tab.character.resourceLinks ?? []).filter((link) => !importedIds.has(link.resourceId)).length;
       const warning = missingLinks ? t('resources.missingLinksWarning', { count: missingLinks }) : '';

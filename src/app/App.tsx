@@ -16,6 +16,7 @@ import { DiceRoller } from '../features/dice-roller/DiceRoller'
 import { ResourceStorageStatus } from '../shared/ui/ResourceStorageStatus'
 import { ResourceReviewController } from '../features/resources/ResourceReviewController'
 import type { ResourceEditTarget } from '../shared/lib/resourcePowers'
+import { ModifierRecoveryNotice } from '../shared/ui/ModifierRecoveryNotice'
 
 const PDFPreviewDialog = lazy(() => import('../features/sheet-core/PDFPreviewDialog').then((module) => ({ default: module.PDFPreviewDialog })));
 const PDFOverflowModal = lazy(() => import('../features/sheet-core/PDFOverflowModal').then((module) => ({ default: module.PDFOverflowModal })));
@@ -90,6 +91,7 @@ export function App() {
           resetKeys={[activeView]}
         >
           <main className="app-main">
+            <ModifierRecoveryNotice />
             {activeView === 'sheet' ? (
               <SheetView onEditResource={(target) => { setResourceEditTarget(target); setActiveView('resources'); }}/>
             ) : activeView === 'resources' ? (

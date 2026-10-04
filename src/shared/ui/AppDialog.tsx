@@ -4,11 +4,18 @@ import { useTranslation } from 'react-i18next';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { DialogContext, type DialogOptions } from './appDialogContext';
+import { ModifierRecoveryDialog } from './ModifierRecoveryDialog';
+import { inspectModifierSources } from '../lib/modifierSourceRecovery';
 
 export function AppDialogProvider({ children }: { children: ReactNode }) {
   const { t, i18n } = useTranslation();
   const [dialog, setDialog] = useState<(DialogOptions & { resolve: (value: boolean) => void; kind: 'confirm' | 'alert' }) | null>(null);
   const [acknowledged, setAcknowledged] = useState(false);
+  const [recovery, setRecovery] = useState<{ value: unknown; original: string; resolve: (value: unknown | null) => void } | null>(null);
+  const reviewModifierSources = useCallback(<T,>(value: T, original: string): Promise<T | null> => {
+    if (!inspectModifierSources(value).length) return Promise.resolve(value);
+    return new Promise(resolve => setRecovery({ value, original, resolve: repaired => resolve(repaired as T | null) }));
+  }, []);
   const close = useCallback((value: boolean) => {
     if (dialog) dialog.resolve(value);
     setDialog(null);
@@ -21,10 +28,11 @@ export function AppDialogProvider({ children }: { children: ReactNode }) {
   const alert = useCallback((options: Omit<DialogOptions, 'cancelLabel' | 'danger' | 'requireAcknowledgement'>) => new Promise<void>((resolve) => {
     setDialog({ ...options, resolve: () => resolve(), kind: 'alert' });
   }), []);
-  const api = useMemo(() => ({ confirm, alert }), [alert, confirm]);
+  const api = useMemo(() => ({ confirm, alert, reviewModifierSources }), [alert, confirm, reviewModifierSources]);
   return (
     <DialogContext.Provider value={api}>
       {children}
+      {recovery && <ModifierRecoveryDialog value={recovery.value} original={recovery.original} onResolve={value => { recovery.resolve(value); setRecovery(null); }} />}
       <Modal isOpen={Boolean(dialog)} onClose={() => close(false)} title={dialog?.title ?? t('dialog.confirmation')} compact>
         <div className="app-dialog">
           <p>{dialog?.messageDiagnostic ? formatDiagnostic({ ...dialog.messageDiagnostic, params: { ...dialog.messageDiagnostic.params, ...(dialog.messageDiagnostic.nested ? { message: formatDiagnostic(dialog.messageDiagnostic.nested, t, i18n.language) } : {}) } }, t, i18n.language) : dialog?.message}</p>

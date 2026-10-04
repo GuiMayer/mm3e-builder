@@ -1091,6 +1091,7 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
             <div className="pl-violation-banner" title={pricingDiagnostics.map((diagnostic) => formatDiagnostic(diagnostic, t, i18n.language)).join('\n')}>
               <AlertTriangle size={13} />
               <span>{t(pricingDiagnostics.every(diagnostic => diagnostic.code === 'ambiguous-modifier') ? 'builder.pricingAmbiguityWarning' : 'builder.pricingDataWarning', { count: pricingDiagnostics.length })}</span>
+              <Button variant="ghost" onClick={async () => { const original = JSON.stringify(power); const reviewed = await dialog.reviewModifierSources(power, original); if (reviewed) setPower(reviewed); }}>{t('recovery.review')}</Button>
             </div>
           )}
         </div>

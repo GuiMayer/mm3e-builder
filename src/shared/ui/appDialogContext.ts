@@ -13,6 +13,7 @@ export type DialogOptions = {
 };
 
 export type DialogApi = {
+  reviewModifierSources: <T>(value: T, original: string) => Promise<T | null>;
   confirm: (options: DialogOptions) => Promise<boolean>;
   alert: (options: Omit<DialogOptions, 'cancelLabel' | 'danger' | 'requireAcknowledgement'>) => Promise<void>;
 };

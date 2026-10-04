@@ -86,10 +86,15 @@ export function useFileOperations() {
   async function importCharacter(file: File) {
     setIsImporting(true);
     try {
-      const char = await importCharacterJSON(file);
+      const original = await file.text();
+      const char = await importCharacterJSON(file, { prepareSourceReview: true });
       const appendixResources = await importResourceAppendix(file);
-      const migrated = migrateLegacyEquipmentToResources(char);
-      const resourcesToPersist = [...appendixResources, ...migrated.resources];
+      const reviewed = await dialog.reviewModifierSources({ character: char, resources: appendixResources }, original);
+      if (!reviewed) return;
+      // Re-run all semantic checks after selection, before importing any data.
+      const validated = await importCharacterJSON(new File([JSON.stringify({ schemaVersion: '2.2.0', exportedAt: '', character: reviewed.character })], file.name));
+      const migrated = migrateLegacyEquipmentToResources(validated);
+      const resourcesToPersist = [...reviewed.resources, ...migrated.resources];
       const conflicts = findResourceImportConflicts(resourcesToPersist, useResourcesStore.getState().resources);
       let choice: ResourceImportChoice | null = 'keep';
       if (conflicts.length) {

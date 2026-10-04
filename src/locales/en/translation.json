@@ -1304,5 +1304,14 @@
   "catalog.version.legacyHealing": "Legacy definition: heals Incurable damage, with the historical +1 PP per Healing rank preserved. For the official flat +1 PP purchase use Persistent (flat purchase). No automatic conversion.",
   "catalog.version.currentHealing": "Official definition: Healing can remove Incurable damage for a flat +1 PP. Recommended for new purchases.",
   "diagnostic.invalidModifierSource": "The saved source for {{id}} does not exist on effect {{effectId}}. Review its source before changing the purchase.",
-  "builder.pricingAmbiguityWarning": "{{count}} legacy reference has an ambiguous source; generic pricing was preserved. Review its source."
+  "builder.pricingAmbiguityWarning": "{{count}} legacy reference has an ambiguous source; generic pricing was preserved. Review its source.",
+  "recovery.title": "Review modifier sources",
+  "recovery.description": "An older version could mark generic modifiers as specific to another effect. Select purchases that should use the generic definition. Review the cost before applying; the original will be preserved in this browser. Paths and instances identify each occurrence.",
+  "recovery.componentCost": "Component cost when repairing this entry: {{before}} → {{after}} PP",
+  "recovery.backupError": "The original could not be preserved. No repair was applied. Export a copy and free storage space before retrying.",
+  "recovery.export": "Export original",
+  "recovery.apply": "Apply selected",
+  "recovery.review": "Review source",
+  "recovery.pending": "Some legacy modifiers have invalid sources awaiting review. Their data was retained.",
+  "recovery.changed": "Data changed during this review. Open it again to check the current values."
 }

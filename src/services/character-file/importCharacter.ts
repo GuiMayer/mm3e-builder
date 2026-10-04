@@ -10,8 +10,9 @@ import type { ICharacter } from '../../entities/types';
 import { validateCharacterSemantics } from '../../shared/lib/semanticValidation';
 import { I18nError } from './errors';
 import { normalizeCharacter } from './normalizeCharacter';
+import { inspectModifierSources } from '../../shared/lib/modifierSourceRecovery';
 
-export async function importCharacterJSON(file: File): Promise<ICharacter> {
+export async function importCharacterJSON(file: File, options?: { prepareSourceReview: boolean }): Promise<ICharacter> {
   const text = await file.text();
   let parsed: unknown;
 
@@ -47,8 +48,10 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
     advantageDefs: ADVANTAGE_DEFS,
   }).filter((issue) => issue.severity === 'error');
 
-  if (semanticErrors.length > 0) {
-    const firstError = semanticErrors[0];
+  const reviewablePaths = options?.prepareSourceReview ? new Set(inspectModifierSources(character).map(item => [...item.path, 'modifierId'].join('.'))) : new Set<string>();
+  const blockingErrors = semanticErrors.filter(error => !reviewablePaths.has(error.path));
+  if (blockingErrors.length > 0) {
+    const firstError = blockingErrors[0];
     throw new I18nError('errors.validationError', {
       field: firstError.path,
       message: firstError.message,
