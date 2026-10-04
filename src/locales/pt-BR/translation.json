@@ -1302,5 +1302,7 @@
   "catalog.version.legacyMinions": "Definição legada: +2 PP por compra, independente da graduação de Invocar. Mantida para preservar custos existentes. Para novas compras, use Múltiplos Lacaios (por graduação do efeito).",
   "catalog.version.currentMinions": "Definição oficial: cada compra dobra os lacaios e custa +2 PP por graduação de Invocar. Recomendada para novas compras.",
   "catalog.version.legacyHealing": "Definição legada: cura dano Incurável, preservando o preço histórico de +1 PP por graduação de Cura. Para a compra oficial de +1 PP fixo, use Persistente (compra fixa). Não há conversão automática.",
-  "catalog.version.currentHealing": "Definição oficial: Cura remove dano Incurável por +1 PP fixo. Recomendada para novas compras."
+  "catalog.version.currentHealing": "Definição oficial: Cura remove dano Incurável por +1 PP fixo. Recomendada para novas compras.",
+  "diagnostic.invalidModifierSource": "A origem salva de {{id}} não existe no efeito {{effectId}}. Revise a origem antes de alterar a compra.",
+  "builder.pricingAmbiguityWarning": "{{count}} referência legada tem origem ambígua; o preço genérico foi preservado. Revise a origem."
 }

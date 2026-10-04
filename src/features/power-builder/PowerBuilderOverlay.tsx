@@ -1090,7 +1090,7 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
           {pricingDiagnostics.length > 0 && (
             <div className="pl-violation-banner" title={pricingDiagnostics.map((diagnostic) => formatDiagnostic(diagnostic, t, i18n.language)).join('\n')}>
               <AlertTriangle size={13} />
-              <span>{t('builder.pricingDataWarning', { count: pricingDiagnostics.length })}</span>
+              <span>{t(pricingDiagnostics.every(diagnostic => diagnostic.code === 'ambiguous-modifier') ? 'builder.pricingAmbiguityWarning' : 'builder.pricingDataWarning', { count: pricingDiagnostics.length })}</span>
             </div>
           )}
         </div>

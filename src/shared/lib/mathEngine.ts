@@ -21,6 +21,7 @@ import { getAffectedRanks, getRankBoundaries } from './componentRanks';
 export type PricingDiagnosticCode =
   | 'unknown-effect'
   | 'unknown-modifier'
+  | 'invalid-modifier-source'
   | 'ambiguous-modifier';
 
 export interface PricingDiagnostic extends RuleDiagnostic {
@@ -265,9 +266,11 @@ function resolveComponentModifiers(
   for (const applied of component.modifiers) {
     const resolution = resolveModifierDefinition(applied, effectDef, genericModifierDefs);
     if (!resolution.definition) {
+      const invalidSource = genericModifierDefs.some(def => def.id === applied.modifierId)
+        || [...effectDef.extras, ...effectDef.flaws].some(def => def.id === applied.modifierId);
       diagnostics.push({
-        code: 'unknown-modifier',
-        messageKey: 'diagnostic.priceModifier',
+        code: invalidSource ? 'invalid-modifier-source' : 'unknown-modifier',
+        messageKey: invalidSource ? 'diagnostic.invalidModifierSource' : 'diagnostic.priceModifier',
         params: { id: applied.modifierId, effectId: effectDef.id },
         id: applied.modifierId,
         message: `Unknown modifier "${applied.modifierId}" on effect "${effectDef.id}".`,
