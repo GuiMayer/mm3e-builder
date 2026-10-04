@@ -95,12 +95,12 @@ function getPowerPLViolation({ validationRules, character, power, powerDefs, mod
   if (!activeRules.enforcePLLimits) return null;
 
   const profiles = buildTargetedEffectProfiles(
-    { ...character, powers: [power], equipment: [] },
+    { ...character, powers: [...character.powers.filter(item => item.id !== power.id), power] },
     powerDefs,
     SKILL_DEFS,
     [],
     modifierDefs.length > 0 ? modifierDefs : MODIFIER_DEFS, undefined, [], false
-  ).filter((profile) => profile.sourceType === 'power' && profile.causesResistance && profile.effectRank !== null);
+  ).filter((profile) => profile.sourceType === 'power' && [...power.components, ...power.alternateEffects.flatMap(item => item.components)].some(component => component.id === profile.componentId) && profile.causesResistance && profile.effectRank !== null);
 
   for (const profile of profiles) {
     const rank = profile.effectRank;

@@ -1,3 +1,5 @@
+import { snapshotReviewPayload, applySnapshotReview } from '../lib/modifierSourceRecovery';
+import { validateImportedReferences } from '../../services/character-file/validateImportedReferences';
 import { clearPortraits } from '../../services/storage/portraitStorage';
 import { lazy, Suspense, useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -181,14 +183,19 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       const text = await file.text();
       const snapshot = parseDraftStorageSnapshot(text);
       if (snapshot) {
+        const payload = snapshotReviewPayload(snapshot);
+        const reviewed = await dialog.reviewModifierSources(payload, text);
+        if (!reviewed) return;
+        const restoredSnapshot = applySnapshotReview(snapshot, payload, reviewed);
         if (!await dialog.confirm({ title: t('draft.restoreTitle'), message: t('draft.restoreSnapshotMessage'), confirmLabel: t('draft.restoreAction'), danger: true })) return;
         localStorage.setItem(IMPORT_BACKUP_KEY, JSON.stringify({ exportedAt: new Date().toISOString(), draft: localStorage.getItem('mm3e-draft-characters'), resources: localStorage.getItem('mm3e-resource-library') }));
-        if (!restoreDraftStorageSnapshot(snapshot)) throw new I18nError('draft.error.storageWrite');
+        if (!restoreDraftStorageSnapshot(restoredSnapshot)) throw new I18nError('draft.error.storageWrite');
         window.location.reload();
         return;
       }
       const bundle = await dialog.reviewModifierSources(parseDraftBundle(text), text);
       if (!bundle) return;
+      validateImportedReferences(bundle.tabs.map(tab => tab.character), bundle.resources);
       const characters = t('draft.characterCount', { count: bundle.tabs.length });
       const resourceCount = t('resources.count', { count: bundle.resources.length });
       if (!await dialog.confirm({ title: t('draft.restoreTitle'), message: t('draft.restoreMessage', { characters, resources: resourceCount }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
@@ -213,6 +220,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       const reviewed = await dialog.reviewModifierSources({ resources: parseResourceLibrary(text) }, text);
       if (!reviewed) return;
       const imported = reviewed.resources;
+      validateImportedReferences([], imported);
       const importedIds = new Set(imported.map((resource) => resource.id));
       const missingLinks = tabs.flatMap((tab) => tab.character.resourceLinks ?? []).filter((link) => !importedIds.has(link.resourceId)).length;
       const warning = missingLinks ? t('resources.missingLinksWarning', { count: missingLinks }) : '';

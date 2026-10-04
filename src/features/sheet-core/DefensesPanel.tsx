@@ -84,7 +84,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
             </div>
             <span className="sheet-check-result">
               <span className="defense-total">{r.base + effective.defenses[r.key] + circumstanceBonus(character, { kind: 'defense', key: r.key }, 'active-defense')}</span>
-              <span className="sheet-roll-slot">{(r.key === 'fortitude' || r.key === 'will') && <RollButton bonus={r.base + effective.defenses[r.key] + circumstanceBonus(character, { kind: 'defense', key: r.key })} label={t(`defenses.${r.key}`)} section={t('defenses.title')} breakdown={[`${r.baseLabel} ${r.base}`, `${t('common.ranks')} ${defenses[r.key]}`]} />}</span>
+              <span className="sheet-roll-slot"><RollButton bonus={r.base + effective.defenses[r.key] + circumstanceBonus(character, { kind: 'defense', key: r.key })} label={t(`defenses.${r.key}`)} section={t('defenses.title')} breakdown={[`${r.baseLabel} ${r.base}`, `${t('common.ranks')} ${effective.defenses[r.key]}`, ...(circumstanceBonus(character, { kind: 'defense', key: r.key }) ? [`${t('traits.circumstance')} ${circumstanceBonus(character, { kind: 'defense', key: r.key })}`] : [])]} /></span>
             </span>
             <TraitModifiersControl key={`${characterId}:${r.key}`} target={{ kind: 'defense', key: r.key }} />
           </div>

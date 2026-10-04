@@ -80,3 +80,32 @@ disponíveis no Builder, incluindo Linked, AE e recursos. Não depende de
 preservados; notas sem campos estruturados continuam não verificadas.
 Condições registradas são exibidas nas referências, PDF e Excel; JSON/JSONL
 preservam os arrays, notas e compras existentes sem migração em massa.
+
+## Revisão de origens antigas
+
+A origem explícita inválida, a origem legada ambígua e um identificador
+inexistente recebem diagnósticos distintos. Uma origem ambígua mantém a
+precificação genérica histórica; uma origem explícita inválida continua sem
+fallback. Modificadores exclusivamente específicos de outro efeito não são
+convertidos em genéricos.
+
+O Builder e os fluxos de importação/restauração oferecem revisão para compras
+antigas marcadas como específicas quando existe uma definição genérica e não
+existe a definição específica no efeito atual. As entradas começam desmarcadas.
+A revisão identifica cada ocorrência, mostra custo do componente e totais
+projetados, incluindo recursos e fichas abertas vinculadas. Vínculos gratuitos
+e contribuições fixas conservam seu comportamento.
+
+**Exportar original** permite guardar o conteúdo antes da revisão. Aplicar
+exige backup local verificado em `mm3e-modifier-source-backup:<id>`; falha de
+armazenamento mantém o diálogo aberto. Somente `isPowerSpecific` das ocorrências
+selecionadas muda. Identidades, opções, graduações parciais, repetições e notas
+permanecem. Aflição 10 com Incurable/Limited/Area genéricos isolados passa,
+respectivamente, de 10 para 11/5/20 PP após confirmação da origem genérica.
+
+Cancelar uma importação não grava dados parciais. Referências são revalidadas
+antes da importação de fichas/recursos; erros restantes impedem a operação.
+Adiar uma revisão ao abrir rascunhos conserva as compras e o aviso. Edições em
+fichas abertas usam seu histórico; recursos usam o histórico da biblioteca.
+Snapshots preservam bytes de entradas não alteradas e não reescrevem backups
+históricos. Originais exportados podem ser reimportados para revisão posterior.

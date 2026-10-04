@@ -92,7 +92,7 @@ types are Gadget, Gear, Vehicle, Headquarters, and Custom. A character keeps
 only a link to a resource, not a second copy of it.
 
 - `resourceId` is the stable UUID. Resource versioning is independent of the
-  current character schema (2.2.0); resource links retain their existing format.
+  current character schema (2.3.0); resource links retain their existing format.
 - Resource library/appendix version 2 adds acquisition, movement and headquarters
   context, while accepting version 1 and preserving unknown Resource fields.
 - `costMode` selects Device PP or Equipment EP independently of the display type.
@@ -227,3 +227,18 @@ IndexedDB is scoped to portrait media and caches; character and Resource
 persistence remain in localStorage. Prefer focused modules and existing libraries.
 
 Active limitations and maintenance work belong in [PENDENCIAS.md](PENDENCIAS.md).
+
+## Optional trait state
+
+Character schema 2.3.0 adds optional `traitModifiers`, `powerUsage` and component
+`enhancedTarget` contracts. `traitValues` and `powerUsage` create read-only
+projections shared by sheet controls, rolls, PL checks and exports. Purchased
+ranks remain the pricing input; `pricingStrength` keeps Strength-based extras
+stable across activation changes. Targetless legacy powers retain their previous
+behavior and require explicit review. See [Trait modifiers](trait-modifiers.md).
+
+Modifier-source recovery inspects and projects selected source-flag changes in
+memory. Imports validate the complete staged data before persistence; startup
+reviews precede hydration/autosave. Applying requires an exact, verified original
+backup. Diagnostics distinguish missing definitions, invalid explicit origins and
+legacy ambiguity without changing the existing resolution policy.

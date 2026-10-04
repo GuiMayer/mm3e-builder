@@ -25,6 +25,7 @@ in package.json may require their matching Vitest packages; they are not CI gate
 | --- | --- |
 | Costs and contextual ranks | `mathEngine`, `auditedPricing`, `modifierRanks`, `altEffects`, `absentAbilities`, `pointSummary` |
 | Modifier applications and policy | `modifierInstances`, `modifierApplicationPolicy`, `duplicateModifierWarnings`, `effectSpecificExtras` |
+| Trait projections and recovery | `traitContracts`, `traitValues`, `traitCompatibility`, `powerUsage`, `modifierSourceRecovery` |
 | Imports and schemas | `characterFile.integration`, `characterImport`, `fileService`, `importTesterFiles`, `identity` |
 | Drafts and editing history | `characterDraftStorage`, `draftAutoLoad`, `draftUpdateBackup`, `characterHistory`, `charactersStore.integration` |
 | Campaign | `campaign`, `campaignActions`, `campaignMigration`, `campaignExports` |

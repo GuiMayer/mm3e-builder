@@ -23,6 +23,7 @@
 | [Campanha](campaign-mode.md) | Base fixa, histórico, migração e backups |
 | [Referências](references.md) | Fontes, busca, tabelas e preferências de medidas |
 | [Retratos](character-portraits.md) | URL, arquivos locais, enquadramento e exportação |
+| [Modificadores de traços](trait-modifiers.md) | Circunstâncias, aprimoramentos, destinos, uso e compatibilidade |
 | [Rolagens](dice-roller.md) | Bônus contextuais e histórico temporário |
 | [Temas](custom-themes.md) | Paleta personalizada, notações de cor e persistência |
 

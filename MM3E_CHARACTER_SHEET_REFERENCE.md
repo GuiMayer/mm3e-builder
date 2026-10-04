@@ -10,7 +10,7 @@ camelCase names. Display labels and derived totals are not a separate JSON schem
 
 `ICharacterFile` contains `schemaVersion`, `exportedAt`, optional `language`,
 `character` and an optional `appendix.resources`. Current character exports use
-schema 2.2.0; historical 1.0.0, 2.0.0 and 2.1.0 remain accepted. The Resource
+schema 2.3.0; historical 1.0.0, 2.0.0, 2.1.0 and 2.2.0 remain accepted. The Resource
 appendix uses its independent version 2. Whole-Draft JSONL has version 1.
 
 Import validation, normalization and migration are coordinated by
@@ -33,6 +33,7 @@ of the paper sheet. Compatibility requirements are documented in
 | Powers | `powers[]` with components and alternate effects | Prices and targeted attack profiles are derived |
 | Equipment | Legacy `equipmentNotes`; optional `equipment[]`, `resourceLinks[]` | Resource data lives in the independent library |
 | Complications | `complications[]`: `title`, `description`, optional `type` | Narrative hooks; no automatic PP credit |
+| Optional trait adjustments | `traitModifiers[]`, `components[].enhancedTarget`, `powerUsage` | Natural purchases remain separate from effective values; see [Trait modifiers](docs/trait-modifiers.md) |
 | Other text | Optional `notes`, `manualOffenseRows[]` | Manual attacks preserve user-authored bonus, effect text and notes |
 
 An absent ability is recorded in `absentAbilities`; its numeric value remains in

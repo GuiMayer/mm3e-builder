@@ -1,3 +1,5 @@
+import { useTraitValues } from '../../shared/hooks/useTraitValues';
+import { circumstanceBonus } from '../../shared/lib/traitValues';
 import { getSkillTrainingWarning } from '../../shared/lib/skillEligibility';
 import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
 import { useAppStore } from '../../store/appStore';
@@ -22,7 +24,7 @@ export function AdvantageRollActions({ advantage, name, character, skillDefs }: 
   const choices = checks.map(({ skill, definition, routine }) => {
     const check = calculateSkillCheck(character, skill, definition);
     const issue = getSkillTrainingWarning(skill, definition, character.advantages, trainingWarnings);
-    return { warning: issue ? formatDiagnostic(issue, t, i18n.language) : undefined, bonus: check.total, label: `${name} · ${skillDisplayName(skill, definition)}`, section: t('advantages.title'), routine, breakdown: [`${t(`abilities.${definition.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])] };
+    return { warning: issue ? formatDiagnostic(issue, t, i18n.language) : undefined, bonus: check.total, label: `${name} · ${skillDisplayName(skill, definition)}`, section: t('advantages.title'), routine, breakdown: [`${t(`abilities.${definition.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : []), ...(check.circumstance ? [`${t('traits.circumstance')} ${check.circumstance}`] : [])] };
   });
   if (advantage.advantageId === 'improved_initiative' || advantage.advantageId === 'defensive_roll') return <DefensiveAdvantageRoll id={advantage.advantageId} name={name} />;
   if (advantage.advantageId === 'close_attack' || advantage.advantageId === 'ranged_attack') return <AttackAdvantageRoll id={advantage.advantageId} name={name} />;
@@ -42,8 +44,10 @@ function RollChoices({ choices, name }: { choices: React.ComponentProps<typeof R
 function DefensiveAdvantageRoll({ id, name }: { id: string; name: string }) {
   const { t } = useTranslation();
   const defenses = useDerivedDefenses();
+  const { original } = useTraitValues();
+  const circumstance = circumstanceBonus(original, { kind: 'defense', key: 'toughness' });
   const initiative = id === 'improved_initiative';
-  return <RollButton bonus={initiative ? defenses.initiativeTotal : defenses.toughnessTotal} label={`${name} · ${t(initiative ? 'defenses.initiative' : 'defenses.toughness')}`} section={t('advantages.title')} breakdown={initiative ? defenses.initiativeBreakdown : defenses.toughnessBreakdown} />;
+  return <RollButton bonus={initiative ? defenses.initiativeTotal : defenses.toughnessTotal + circumstance} label={`${name} · ${t(initiative ? 'defenses.initiative' : 'defenses.toughness')}`} section={t('advantages.title')} breakdown={initiative ? defenses.initiativeBreakdown : [...defenses.toughnessBreakdown, ...(circumstance ? [`${t('traits.circumstance')} ${circumstance}`] : [])]} />;
 }
 
 function AttackAdvantageRoll({ id, name }: { id: string; name: string }) {

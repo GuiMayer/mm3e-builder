@@ -66,10 +66,11 @@ describe('effective trait projections', () => {
   });
   it('prices Strength-based extras at purchased capacity independent of usage', () => {
     const strength = enhanced({ kind: 'ability', key: 'str' }, 5);
-    const damage: ICharacterPower = { id: 'damage', name: 'Strike', notes: '', alternateEffects: [], components: [{ id: 'd', effectId: 'damage', ranks: 1, fieldValues: { damageBasis: 'strength-based' }, modifiers: [{ modifierId: 'penetrating', ranks: 1, isPowerSpecific: false }] }] };
+    const damage: ICharacterPower = { id: 'damage', name: 'Strike', notes: '', alternateEffects: [], components: [{ id: 'd', effectId: 'damage', ranks: 1, fieldValues: { damageBasis: 'strength-based' }, modifiers: [{ modifierId: 'multiattack', ranks: 1, isPowerSpecific: false }] }] };
     const character = createDefaultCharacter({ powers: [strength, damage] });
     const before = calculateCharacterPointSummary(character, [], POWER_DEFS, MODIFIER_DEFS);
     const after = calculateCharacterPointSummary({ ...character, powerUsage: { 'power:enhancement': { enabled: false } } }, [], POWER_DEFS, MODIFIER_DEFS);
+    expect(before.totalSpent).toBe(17);
     expect(after.totalSpent).toBe(before.totalSpent);
   });
 });

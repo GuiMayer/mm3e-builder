@@ -6,6 +6,8 @@ import { useActiveCharacter } from './useActiveCharacter';
 import { exportCharacterJSON, importCharacterJSON, importResourceAppendix, I18nError, saveDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
+import { validateImportedReferences } from '../../services/character-file/validateImportedReferences';
+import { SCHEMA_VERSION } from '../../entities/constants';
 import type { ICharacter, IResource } from '../../entities/types';
 import type { CharacterTab } from '../../entities/characterTab';
 import {
@@ -92,7 +94,8 @@ export function useFileOperations() {
       const reviewed = await dialog.reviewModifierSources({ character: char, resources: appendixResources }, original);
       if (!reviewed) return;
       // Re-run all semantic checks after selection, before importing any data.
-      const validated = await importCharacterJSON(new File([JSON.stringify({ schemaVersion: '2.2.0', exportedAt: '', character: reviewed.character })], file.name));
+      const validated = await importCharacterJSON(new File([JSON.stringify({ schemaVersion: SCHEMA_VERSION, exportedAt: '', character: reviewed.character })], file.name));
+      validateImportedReferences([validated], reviewed.resources);
       const migrated = migrateLegacyEquipmentToResources(validated);
       const resourcesToPersist = [...reviewed.resources, ...migrated.resources];
       const conflicts = findResourceImportConflicts(resourcesToPersist, useResourcesStore.getState().resources);

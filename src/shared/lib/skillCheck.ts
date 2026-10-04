@@ -15,5 +15,5 @@ export function calculateSkillCheck(
   const ranks = effective.skills?.find(entry => entry.skillId === skill.skillId && entry.subtype === skill.subtype)?.ranks ?? skill.ranks;
   const other = skill.otherBonus ?? 0;
   const circumstance = circumstanceBonus(character, { kind: 'skill', skillId: skill.skillId, subtype: skill.subtype });
-  return { ability, ranks, other, circumstance, total: ability + ranks + other + circumstance };
+  return { ability, ranks, other, ...(circumstance ? { circumstance } : {}), total: ability + ranks + other + circumstance };
 }

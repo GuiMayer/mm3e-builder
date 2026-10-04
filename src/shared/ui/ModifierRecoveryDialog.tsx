@@ -2,9 +2,11 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from './Modal';
 import { Button } from './Button';
-import { inspectModifierSources, recoverModifierSources, recoveryCostSummary } from '../lib/modifierSourceRecovery';
+import { inspectModifierSources, recoverModifierSources, recoveryCostSummary, recoveryPreviewContext } from '../lib/modifierSourceRecovery';
 import { preserveModifierRecoveryBackup } from '../../services/storage/modifierRecoveryBackup';
 import { downloadBlob } from '../../services/downloadHelper';
+import { useCharactersStore } from '../../store/charactersStore';
+import { useResourcesStore } from '../../store/resourcesStore';
 import { MODIFIER_DEFS, POWER_DEFS } from '../../entities/gameDataLoaders';
 
 export function ModifierRecoveryDialog({ value, original, onResolve }: { value: unknown; original: string; onResolve: (value: unknown | null) => void }) {
@@ -13,8 +15,18 @@ export function ModifierRecoveryDialog({ value, original, onResolve }: { value: 
   const [selected, setSelected] = useState<string[]>([]);
   const [error, setError] = useState('');
   const repaired = useMemo(() => recoverModifierSources(value, selected), [value, selected]);
-  const before = useMemo(() => recoveryCostSummary(value), [value]);
-  const after = useMemo(() => recoveryCostSummary(repaired), [repaired]);
+  const tabs = useCharactersStore(store => store.tabs);
+  const resources = useResourcesStore(store => store.resources);
+  const before = useMemo(() => recoveryCostSummary(recoveryPreviewContext(value, tabs.map(tab => tab.character), resources)), [value, tabs, resources]);
+  const after = useMemo(() => recoveryCostSummary(recoveryPreviewContext(repaired, tabs.map(tab => tab.character), resources)), [repaired, tabs, resources]);
+  const affectedKeys = useMemo(() => {
+    const context = recoveryPreviewContext(value, tabs.map(tab => tab.character), resources);
+    const potential = recoveryCostSummary(recoveryPreviewContext(recoverModifierSources(value, candidates.map(item => item.key)), tabs.map(tab => tab.character), resources));
+    const keys = new Set(before.filter(item => { const next = potential.find(row => row.key === item.key); return next && (next.pp !== item.pp || next.ep !== item.ep); }).map(item => item.key));
+    const affectedResources = new Set([...keys].filter(key => key.startsWith('resource:')).map(key => key.slice(9)));
+    context.characters.forEach((character, index) => { if (character.resourceLinks?.some(link => affectedResources.has(link.resourceId))) keys.add(JSON.stringify(['characters', index])); });
+    return keys;
+  }, [value, tabs, resources, candidates, before]);
   function apply() {
     if (!preserveModifierRecoveryBackup(original)) { setError(t('recovery.backupError')); return; }
     onResolve(repaired);
@@ -31,10 +43,10 @@ export function ModifierRecoveryDialog({ value, original, onResolve }: { value: 
         const modifier = MODIFIER_DEFS.find(def => def.id === item.modifierId)!;
         return <label key={item.key} className="modifier-recovery__entry">
           <input className="app-checkbox" type="checkbox" checked={selected.includes(item.key)} onChange={event => setSelected(keys => event.target.checked ? [...keys, item.key] : keys.filter(key => key !== item.key))} />
-          <span><strong>{effect.i18n?.[i18n.language]?.name ?? effect.name} · {modifier.i18n?.[i18n.language]?.name ?? modifier.name}</strong><small>{item.label}{item.instanceId ? ` · ${item.instanceId}` : ''}</small><small>{t('recovery.componentCost', { before: item.before, after: item.after })}</small></span>
+          <span><strong>{effect.i18n?.[i18n.language]?.name ?? effect.name} · {modifier.i18n?.[i18n.language]?.name ?? modifier.name}</strong><small>{item.label} · {t('recovery.component', { number: item.componentNumber })}</small><small>{t('recovery.componentCost', { before: item.before, after: item.after })}</small></span>
         </label>;
       })}
-      <div aria-live="polite">{before.map((item, index) => <p key={item.key}>{item.name}: {item.pp} → {after[index]?.pp} PP{item.ep !== undefined ? ` · ${item.ep} → ${after[index]?.ep} EP` : ''}</p>)}</div>
+      <div aria-live="polite">{before.filter(item => affectedKeys.has(item.key)).map(item => <p key={item.key}>{item.name}: {item.pp} → {after.find(row => row.key === item.key)?.pp} PP{item.ep !== undefined ? ` · ${item.ep} → ${after.find(row => row.key === item.key)?.ep} EP` : ''}</p>)}</div>
       {error && <p role="alert">{error}</p>}
       <div className="modifier-recovery__actions"><Button variant="ghost" onClick={() => void exportOriginal()}>{t('recovery.export')}</Button><Button variant="ghost" onClick={() => onResolve(null)}>{t('common.cancel')}</Button><Button disabled={!selected.length} onClick={apply}>{t('recovery.apply')}</Button></div>
     </div>

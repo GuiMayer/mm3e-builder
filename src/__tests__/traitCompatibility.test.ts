@@ -1,0 +1,108 @@
+import { describe, expect, it, vi } from 'vitest';
+import ExcelJS from 'exceljs';
+import { createInstance } from 'i18next';
+import { createDefaultCharacter } from '../entities/characterDefaults';
+import type { ICharacterPower, IResource } from '../entities/types';
+import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../entities/gameDataLoaders';
+import { importCharacterJSON } from '../services/character-file/importCharacter';
+import { sanitizeCharacterForExport } from '../services/character-file/sanitizeCharacter';
+import { serializeDraftBundle, parseDraftBundle } from '../services/draftTransfer';
+import { calculateCharacterPointSummary } from '../shared/lib/pointSummary';
+import { effectiveTraitCharacter } from '../shared/lib/traitValues';
+import { deriveCharacterDefenses } from '../shared/lib/derivedDefenses';
+import { validatePowerForSave } from '../shared/lib/semanticValidation';
+import { DEFAULT_VALIDATION_RULES } from '../shared/lib/validationRules';
+import { inspectModifierSources, recoverModifierSources, recoveryCostSummary, recoveryPreviewContext, snapshotReviewPayload, applySnapshotReview } from '../shared/lib/modifierSourceRecovery';
+import { validateImportedReferences } from '../services/character-file/validateImportedReferences';
+import type { DraftStorageSnapshot } from '../services/storage/draftUpdateBackup';
+import { generateExcel } from '../services/excelGenerator';
+import { buildExcelLabels } from '../services/excelExportConfig';
+import { downloadBlob } from '../services/downloadHelper';
+import en from '../locales/en/translation.json';
+vi.mock('../services/downloadHelper', () => ({ downloadBlob: vi.fn(), sanitizeFileName: (name: string) => name }));
+const enhanced: ICharacterPower = { id: 'enhanced', name: 'Old enhancement', notes: 'Already applied manually; keep this note', components: [{ id: 'c', effectId: 'enhanced-trait', ranks: 5, variableCostOption: 'Enhanced Ability', modifiers: [] }], alternateEffects: [] };
+const generic: ICharacterPower = { id: 'damage', name: 'Legacy damage', notes: 'Keep notes', components: [{ id: 'd', effectId: 'damage', ranks: 5, modifiers: [{ instanceId: 'first', modifierId: 'limited', ranks: 1, isPowerSpecific: false, options: { note: 'Condition A' } }, { instanceId: 'second', modifierId: 'limited', ranks: 1, isPowerSpecific: false, options: { note: 'Condition B' } }] }], alternateEffects: [] };
+const gameData = { powerDefs: POWER_DEFS, modifierDefs: MODIFIER_DEFS, skillDefs: SKILL_DEFS, advantageDefs: ADVANTAGE_DEFS };
+describe('legacy and optional trait compatibility', () => {
+  it.each(['1.0.0', '2.0.0', '2.1.0', '2.2.0'])('preserves mechanical values and costs through JSON/JSONL for %s', async schemaVersion => {
+    const character = createDefaultCharacter({ characterId: '3f09715c-1d42-4e53-9783-84ce8b5270e1', powers: [enhanced, generic], skills: [{ skillId: 'technology', ranks: 0, otherBonus: -2, subtype: null }], resourceLinks: [{ id: 'link', resourceId: '11111111-1111-4111-8111-111111111111', isFree: true }] });
+    character.abilities.str = 7;
+    const resource: IResource = { id: '11111111-1111-4111-8111-111111111111', type: 'gadget', name: 'Shared', notes: '', createdAt: '', updatedAt: '', costMode: 'device', power: generic };
+    const powers = schemaVersion === '1.0.0' ? character.powers.map(power => ({ ...power, ...power.components[0], id: power.id, components: undefined })) : character.powers;
+    const loaded = await importCharacterJSON(new File([JSON.stringify({ schemaVersion, exportedAt: '', character: { ...character, powers } })], 'legacy.json'));
+    const exported = sanitizeCharacterForExport(loaded);
+    expect(exported).not.toHaveProperty('traitModifiers');
+    expect(exported).not.toHaveProperty('powerUsage');
+    expect(exported.powers.map(power => power.components[0].modifiers)).toEqual(character.powers.map(power => power.components[0].modifiers));
+    expect(exported.powers[0].notes).toBe(enhanced.notes);
+    expect(effectiveTraitCharacter(loaded).abilities.str).toBe(7);
+    expect(calculateCharacterPointSummary(loaded, [resource], POWER_DEFS, MODIFIER_DEFS).totalSpent).toBe(calculateCharacterPointSummary(character, [resource], POWER_DEFS, MODIFIER_DEFS).totalSpent);
+    const restored = parseDraftBundle(serializeDraftBundle([{ id: 'tab', label: 'Legacy', lastModified: 1, isDirty: false, character: exported }], 'tab', [resource]));
+    expect(restored.tabs[0].character.skills[0].otherBonus).toBe(-2);
+    expect(restored.tabs[0].character.powers[0].components[0]).not.toHaveProperty('enhancedTarget');
+    expect(restored.resources[0]).toEqual(resource);
+  });
+  it('propagates Stamina and keeps negative defense circumstances separate', () => {
+    const character = createDefaultCharacter({ powers: [{ ...enhanced, components: [{ ...enhanced.components[0], ranks: 3, enhancedTarget: { kind: 'ability', key: 'sta' } }] }], traitModifiers: [{ id: 'penalty', target: { kind: 'defense', key: 'dodge' }, value: -2, source: 'Situation', active: true, scope: 'active-defense' }] });
+    expect(deriveCharacterDefenses(character, POWER_DEFS)).toMatchObject({ fortitudeTotal: 3, toughnessTotal: 3, dodgeTotal: 0, dodgeCircumstance: -2 });
+  });
+  it('creates a specialized effective skill without buying natural ranks', () => {
+    const character = createDefaultCharacter({ powers: [{ ...enhanced, components: [{ ...enhanced.components[0], ranks: 4, enhancedTarget: { kind: 'skill', skillId: 'expertise', subtype: 'Magic' } }] }] });
+    expect(effectiveTraitCharacter(character).skills).toEqual([{ skillId: 'expertise', subtype: 'Magic', ranks: 4 }]);
+    expect(character.skills).toEqual([]);
+    expect(calculateCharacterPointSummary(character, [], POWER_DEFS, MODIFIER_DEFS).totalSpent).toBe(2);
+  });
+  it('validates attack caps with other purchased enhancements present', () => {
+    const character = createDefaultCharacter({ powers: [{ ...enhanced, components: [{ ...enhanced.components[0], ranks: 10, enhancedTarget: { kind: 'ability', key: 'fgt' } }] }] });
+    const attack: ICharacterPower = { ...generic, components: [{ ...generic.components[0], ranks: 10, modifiers: [{ modifierId: 'accurate', ranks: 1, isPowerSpecific: false }] }] };
+    const issues = validatePowerForSave(attack, { ...DEFAULT_VALIDATION_RULES, enforceAccuratePLCap: true, enforcePLLimits: true }, { ...gameData, character });
+    expect(issues.some(issue => issue.messageKey === 'diagnostic.attackCap')).toBe(true);
+  });
+  it('projects shared recovery into open character budgets without altering free or fixed links', () => {
+    const broken = { ...generic, components: [{ ...generic.components[0], effectId: 'affliction', ranks: 10, modifiers: [{ modifierId: 'incurable', ranks: 1, isPowerSpecific: true }] }] };
+    const resource: IResource = { id: '11111111-1111-4111-8111-111111111111', type: 'gear', name: 'Shared', notes: '', createdAt: '', updatedAt: '', costMode: 'equipment', power: broken };
+    const paid = createDefaultCharacter({ characterId: 'paid', header: { name: 'Paid', player: '', identity: '', base: '', powerLevel: 10, heroPoints: 1 }, resourceLinks: [{ id: 'a', resourceId: resource.id, isFree: false }] });
+    const free = { ...paid, characterId: 'free', resourceLinks: [{ ...paid.resourceLinks![0], isFree: true }] };
+    const fixed = { ...paid, characterId: 'fixed', resourceLinks: [{ ...paid.resourceLinks![0], contributionEP: 3 }] };
+    const candidates = inspectModifierSources(broken);
+    const repaired = recoverModifierSources(broken, candidates.map(item => item.key));
+    const before = recoveryCostSummary(recoveryPreviewContext(broken, [paid, free, fixed], [resource]));
+    const after = recoveryCostSummary(recoveryPreviewContext(repaired, [paid, free, fixed], [resource]));
+    expect(before.slice(0, 3).map(item => item.ep)).toEqual([10, 0, 3]);
+    expect(after.slice(0, 3).map(item => item.ep)).toEqual([11, 0, 3]);
+    expect(resource.power.components[0].modifiers[0].isPowerSpecific).toBe(true);
+  });
+  it('reviews live snapshot entries without rewriting untouched bytes or historical backups', () => {
+    const original = JSON.stringify({ powers: [generic] }, null, 4);
+    const invalid = { ...generic, components: [{ ...generic.components[0], effectId: 'affliction', modifiers: [{ modifierId: 'incurable', ranks: 1, isPowerSpecific: true }] }] };
+    const live = JSON.stringify({ powers: [invalid] });
+    const snapshot: DraftStorageSnapshot = { version: 1, exportedAt: '', appVersion: '', entries: [{ key: 'mm3e-draft-characters', value: live }, { key: 'mm3e-draft-character', value: original }, { key: 'mm3e-draft-recovery-v1', value: live }] };
+    const payload = snapshotReviewPayload(snapshot);
+    expect(applySnapshotReview(snapshot, payload, payload)).toEqual(snapshot);
+    const repaired = recoverModifierSources(payload, inspectModifierSources(payload).map(item => item.key));
+    const result = applySnapshotReview(snapshot, payload, repaired);
+    expect(result.entries[0].value).toContain('"isPowerSpecific":false');
+    expect(result.entries[1].value).toBe(original);
+    expect(result.entries[2].value).toBe(live);
+    expect(snapshot.entries[0].value).toBe(live);
+  });
+  it('rejects unresolved imported resource references before any persistence', () => {
+    const resource: IResource = { id: '11111111-1111-4111-8111-111111111111', type: 'gadget', name: 'Invalid', notes: '', createdAt: '', updatedAt: '', costMode: 'device', power: { ...generic, components: [{ ...generic.components[0], modifiers: [{ modifierId: 'unknown', ranks: 1 }] }] } };
+    expect(() => validateImportedReferences([], [resource])).toThrow('errors.validationError');
+    expect(() => validateImportedReferences([], [{ ...resource, power: generic }])).not.toThrow();
+  });
+  it('exports effective values and readable modifier sources in Excel without double charging', async () => {
+    const i18n = createInstance();
+    await i18n.init({ lng: 'en', keySeparator: false, resources: { en: { translation: en } } });
+    const character = createDefaultCharacter({ powers: [{ ...enhanced, components: [{ ...enhanced.components[0], enhancedTarget: { kind: 'ability', key: 'str' } }] }], traitModifiers: [{ id: 'circ', target: { kind: 'ability', key: 'str' }, value: 2, source: 'Tools', scope: 'check', active: true }] });
+    character.abilities.str = 2;
+    const original = JSON.stringify(character);
+    await generateExcel(character, buildExcelLabels(i18n.t), gameData, 'en');
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(await vi.mocked(downloadBlob).mock.calls.at(-1)![0].arrayBuffer());
+    const rows = workbook.getWorksheet('Trait modifiers')!.getSheetValues();
+    expect(JSON.stringify(rows)).toContain('Strength');
+    expect(JSON.stringify(rows)).toContain('Tools');
+    expect(JSON.stringify(character)).toBe(original);
+  });
+});

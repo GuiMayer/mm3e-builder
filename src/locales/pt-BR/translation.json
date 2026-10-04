@@ -1306,7 +1306,7 @@
   "diagnostic.invalidModifierSource": "A origem salva de {{id}} não existe no efeito {{effectId}}. Revise a origem antes de alterar a compra.",
   "builder.pricingAmbiguityWarning": "{{count}} referência legada tem origem ambígua; o preço genérico foi preservado. Revise a origem.",
   "recovery.title": "Revisar origem dos modificadores",
-  "recovery.description": "Uma versão antiga podia marcar modificadores genéricos como específicos de outro efeito. Selecione as compras que devem usar a definição genérica. Confira o custo antes de aplicar; o original será preservado no navegador. Caminhos e instâncias identificam cada ocorrência.",
+  "recovery.description": "Uma versão antiga podia marcar modificadores genéricos como específicos de outro efeito. Selecione as compras que devem usar a definição genérica. Confira o custo antes de aplicar; o original será preservado no navegador. Nomes e entradas numeradas identificam cada ocorrência.",
   "recovery.componentCost": "Custo do componente ao corrigir esta entrada: {{before}} → {{after}} PP",
   "recovery.backupError": "Não foi possível preservar o original. Nenhuma correção foi aplicada. Exporte uma cópia e libere espaço antes de tentar novamente.",
   "recovery.export": "Exportar original",
@@ -1355,5 +1355,6 @@
   "traits.nonStackingHint": "Equipamento usa a fonte mais forte; essas contribuições não se acumulam todas.",
   "traits.newSubtype": "Nova especialização",
   "traits.skillSubtype": "Especialização da perícia",
-  "traits.useTarget": "Usar destino"
+  "traits.useTarget": "Usar destino",
+  "recovery.component": "Componente {{number}}"
 }

@@ -197,3 +197,17 @@ Ação de uso, manutenção e gatilho são apresentados separadamente. Ativaçã
 global não muda a ação do componente. Concentração específica de Aflição e
 Enfraquecer permite repetir testes mediante ação padrão; não é a falha genérica
 nem uma autorização automática para transformar Aflição em sustentada.
+
+## Traços aprimorados e circunstâncias
+
+[Modificadores de traços](trait-modifiers.md) descreve os destinos opcionais e o
+estado de uso. Traço Aprimorado usa a categoria do destino no catálogo; a projeção
+altera valores associados e treinamento sem recomprar graduações naturais. Arrays
+consideram a opção ativa ou alocação dinâmica, não a soma de todos os alternativos.
+Poderes antigos sem destino não são interpretados por notas.
+
+Circunstâncias novas aplicam-se somente ao âmbito registrado e não compram
+traços. `otherBonus` legado mantém sua interpretação histórica. O preço de extras
+de dano baseado em Força considera a capacidade comprada; ativação não altera
+PP. Consultas, referências e diagnóstico de origem não autorizam reprecificação
+automática de modificadores legados: a correção exige revisão e backup.

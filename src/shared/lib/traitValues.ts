@@ -9,7 +9,8 @@ export interface TraitContribution {
 }
 const emptyResources: IResource[] = [];
 const projected = new WeakSet<ICharacter>();
-const cache = new WeakMap<ICharacter, { resources: readonly IResource[]; result: ReturnType<typeof calculateTraitState> }>();
+const originals = new WeakMap<ICharacter, ICharacter>();
+const cache = new WeakMap<ICharacter, { signature: string; result: ReturnType<typeof calculateTraitState> }>();
 
 function calculateTraitState(character: ICharacter, resources: readonly IResource[]) {
   const contributions: TraitContribution[] = [];
@@ -50,15 +51,17 @@ function calculateTraitState(character: ICharacter, resources: readonly IResourc
     }
   }
   projected.add(result);
+  originals.set(result, character);
   return { character: result, values, contributions, warnings };
 }
 /** Read-only projection. Purchased ranks and serialized character data stay unchanged. */
 export function resolveTraitState(character: ICharacter, resources: readonly IResource[] = emptyResources) {
+  character = originals.get(character) ?? character;
+  const signature = JSON.stringify([character, resources]);
   const previous = cache.get(character);
-  if (previous?.resources === resources) return previous.result;
+  if (previous?.signature === signature) return previous.result;
   const result = calculateTraitState(character, resources);
-  cache.set(character, { resources, result });
-  cache.set(result.character, { resources, result });
+  cache.set(character, { signature, result });
   return result;
 }
 export function effectiveTraitCharacter(character: ICharacter, resources: readonly IResource[] = emptyResources): ICharacter {

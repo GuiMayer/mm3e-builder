@@ -13,7 +13,7 @@ export function TraitUsagePanel() {
   const { t } = useTranslation();
   const state = useTraitValues();
   const resources = useResourcesStore(store => store.resources);
-  const sources = getPowerSources(state.original, resources).filter(source => powerBranches(source.power).some(branch => branch.components.some(component => component.effectId === 'enhanced-trait')) || state.original.powerUsage?.[source.key]);
+  const sources = getPowerSources(state.original, resources).filter(source => powerBranches(source.power).some(branch => branch.components.some(component => component.effectId === 'enhanced-trait' || POWER_DEFS.find(def => def.id === component.effectId)?.enhancesDefense === 'toughness')) || state.original.powerUsage?.[source.key]);
   if (!sources.length) return null;
   return <section className="panel"><details><summary className="panel-title">{t('traits.usage')}</summary><p>{t('traits.usageHint')}</p><div className="trait-usage">{sources.map(source => <UsageRow key={`${state.characterId}:${source.key}`} source={source} />)}</div></details>{state.warnings.map((warning, index) => <p className="trait-warning" key={`${warning.key}:${index}`}>{t(warning.key, warning.params)}</p>)}</section>;
 }

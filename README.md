@@ -63,8 +63,8 @@ IndexedDB; a local image does not travel with character JSON or Draft backups.
 A remote portrait URL and optional fit can travel with the character. Export
 backups before clearing site data or moving to another browser.
 
-Current character JSON uses schema 2.2.0 and accepts historical 1.0.0, 2.0.0
-and 2.1.0. Resource library/appendix uses version 2; Draft JSONL uses version 1.
+Current character JSON uses schema 2.3.0 and accepts historical 1.0.0, 2.0.0,
+2.1.0 and 2.2.0. Resource library/appendix uses version 2; Draft JSONL uses version 1.
 Application versions and data-schema versions are independent. Migrations retain
 original-data backups and require review for ambiguous campaign/resource choices.
 See the [architecture](docs/ARCHITECTURE_REFINED.md) and feature guides for limits.
@@ -107,8 +107,8 @@ Consulte [CONTRIBUTING.md](CONTRIBUTING.md) para alterações de código, dados 
 traduções, e o [guia de testes](src/__tests__/README.md) para validação.
 
 Fichas e recursos usam localStorage; imagens usam IndexedDB. Um retrato local
-não acompanha JSON ou backup JSONL. O schema de ficha atual é 2.2.0, com leitura
-de 1.0.0/2.0.0/2.1.0; recursos usam versão 2 e rascunhos usam versão 1.
+não acompanha JSON ou backup JSONL. O schema de ficha atual é 2.3.0, com leitura
+de 1.0.0/2.0.0/2.1.0/2.2.0; recursos usam versão 2 e rascunhos usam versão 1.
 Exporte backups antes de limpar os dados do site. Migrações e revisões de dados
 antigos estão descritas nos guias de [campanha](docs/campaign-mode.md),
 [recursos](docs/resources.md) e [retratos](docs/character-portraits.md).

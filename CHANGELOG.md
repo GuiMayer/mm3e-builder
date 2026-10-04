@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Optional trait adjustments and explicit enhancement targets
+- Add per-trait controls for scoped circumstance bonuses and targeting or creating Enhanced Trait powers. Keep natural purchases separate from effective values and offer source editing shortcuts.
+- Resolve active, exclusive and dynamically allocated enhancements, including resource recipient choices and Permanent duration; use shared projections in rolls, PL checks, PDF and Excel without double charging.
+- Character schema 2.3.0 introduces optional targets, modifiers and usage state. Legacy targetless enhancements and manual skill bonuses remain unchanged until explicit editing.
+
+### Fixed — Legacy modifier source recovery and import compatibility
+- Distinguish invalid explicit origins, ambiguous legacy origins and unknown modifier identifiers. Review selected repairs before persistence, with canonical before/after costs and verified original backups.
+- Cover character/resource imports, JSONL, local drafts, storage snapshots and the Builder; preserve independent modifier instances and project shared-resource costs into open linked sheets.
+- Include zero-rank skills with manual bonuses in filled PDFs, preserve optional cost categories/configuration from flat legacy powers, and keep enhancement projections and exports consistent after edits.
+
 ### Added — Builder budgets and optional Affliction configuration
 - Show saved/draft costs, projected PP/EP and remaining budget using the canonical summary. Keep the character of origin fixed; shared-resource details cover linked sheets open in this browser.
 - Add optional degree/condition/recovery fields for Affliction, including Limited Degree, simultaneous Extra Conditions and Variable Conditions. Preserve legacy notes; references, PDF and Excel show stored selections.

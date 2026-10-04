@@ -8,7 +8,8 @@ import { formatComponentDetails } from './pdf/components/powerDetails';
 
 import ExcelJS from 'exceljs';
 import { deriveCharacterDefenses } from '../shared/lib/derivedDefenses';
-import { getCharacterStrength } from '../shared/lib/componentRanks';
+import { getPricingStrength } from '../shared/lib/pricingStrength';
+import { traitTargetName } from '../shared/lib/traitLabels';
 import type {
   ICharacter,
   IModifierDef,
@@ -203,7 +204,7 @@ export async function generateExcel(
   buildAdvantagesSheet(wb, character, labels, gameData, language);
 
   // ── 6. POWERS SHEET ──
-  buildPowersSheet(wb, character, labels, gameData, language, pointSummary);
+  buildPowersSheet(wb, character, labels, gameData, language, pointSummary, resources);
 
   // ── 7. COMPLICATIONS SHEET ──
   buildComplicationsSheet(wb, character, labels);
@@ -239,8 +240,8 @@ export async function generateExcel(
   if (traits.contributions.length || character.traitModifiers?.length) {
     const sheet = wb.addWorksheet(createPDFLabels(language)('Trait modifiers'));
     sheet.addRow([labels.colName, labels.colRanks, labels.colDescription]);
-    for (const item of traits.contributions) sheet.addRow([item.key, item.ranks, item.name]);
-    for (const item of character.traitModifiers ?? []) sheet.addRow([JSON.stringify(item.target), item.value, `${item.source} · ${item.scope} · ${item.active ? labels.yes : labels.no}`]);
+    for (const item of traits.contributions) sheet.addRow([traitTargetName(item.target, createPDFLabels(language)), item.ranks, item.name]);
+    for (const item of character.traitModifiers ?? []) sheet.addRow([traitTargetName(item.target, createPDFLabels(language)), item.value, `${item.source} · ${createPDFLabels(language)(item.scope === 'check' ? 'Check only' : 'Active defense')} · ${item.active ? labels.yes : labels.no}`]);
     autoWidth(sheet);
   }
 
@@ -553,7 +554,8 @@ function buildPowersSheet(
   labels: ExportLabels,
   gameData: GameDataRefs,
   lang: string,
-  pointSummary: CharacterPointSummary
+  pointSummary: CharacterPointSummary,
+  resources: IResource[] = []
 ) {
   const ws = wb.addWorksheet(labels.sheetPowers, { properties: { tabColor: { argb: 'FF2D6B' } } });
 
@@ -625,7 +627,7 @@ function buildPowersSheet(
     row.getCell(3).value = power.components.length > 1 ? `${power.components.length} effects` : (power.components[0]?.ranks ?? 0);
     row.getCell(4).value = formatPowerModifiers(power, gameData, lang);
     row.getCell(4).alignment = { wrapText: true };
-    row.getCell(5).value = formatAlternates(power, gameData, lang, labels, getCharacterStrength(char));
+    row.getCell(5).value = formatAlternates(power, gameData, lang, labels, getPricingStrength(char, resources));
     row.getCell(5).alignment = { wrapText: true };
     row.getCell(6).value = notes;
     row.getCell(6).alignment = { wrapText: true };
@@ -795,7 +797,7 @@ export function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labe
 
     char.equipment.forEach((eq) => {
       const row = ws.getRow(currentRow);
-      row.values = [eq.name, calcEquipmentEPCost(eq, gameData.powerDefs, gameData.modifierDefs, getCharacterStrength(char)), eq.notes];
+      row.values = [eq.name, calcEquipmentEPCost(eq, gameData.powerDefs, gameData.modifierDefs, getPricingStrength(char, resources)), eq.notes];
       row.getCell(2).numFmt = '0 "EP"';
       row.getCell(1).font = { bold: true };
       row.getCell(2).alignment = { horizontal: 'center' };

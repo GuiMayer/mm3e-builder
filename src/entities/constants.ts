@@ -11,6 +11,7 @@
  * - 2.0.0: Multi-component format (components[] replaces flat effectId)
  * - 2.1.0: Optional fixed campaign budget and advancement metadata
  * - 2.2.0: Optional remote portrait URL; image bytes are never embedded
+ * - 2.3.0: Optional trait targets, circumstance modifiers and per-character power usage
  */
 export const SCHEMA_VERSION = '2.3.0';
 

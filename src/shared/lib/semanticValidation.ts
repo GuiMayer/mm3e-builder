@@ -73,7 +73,7 @@ function validatePowerComponentForSave(
   }
   for (const modifier of component.modifiers) {
     if (!isValidModifierForEffect(modifier, component.effectId, context)) {
-      issues.push(issue(`${path}.modifiers.${modifier.modifierId}`, `Unknown modifier source for "${modifier.modifierId}".`, 'error', 'diagnostic.unknownSource', { id: modifier.modifierId }));
+      issues.push(issue(`${path}.modifiers.${modifier.modifierId}`, `Unknown modifier source for "${modifier.modifierId}".`, 'error', context.modifierDefs.some(def => def.id === modifier.modifierId) ? 'diagnostic.invalidModifierSource' : 'diagnostic.unknownSource', { id: modifier.modifierId, effectId: component.effectId }));
     }
   }
 
@@ -246,7 +246,7 @@ export function validatePowerForSave(
       ...power.alternateEffects.flatMap((alternate) => alternate.components),
     ].filter((component) => component.modifiers.some((modifier) => modifier.modifierId === 'accurate')).map((component) => component.id));
     const profiles = buildTargetedEffectProfiles(
-      { ...character, powers: [power], equipment: [], resourceLinks: [], manualOffenseRows: [] },
+      { ...character, powers: [...character.powers.filter(item => item.id !== power.id), power], manualOffenseRows: [] },
       context.powerDefs, context.skillDefs ?? [], context.advantageDefs ?? [], context.modifierDefs, undefined, [], false,
     ).filter((profile) => profile.sourceType === 'power' && profile.requiresAttackCheck
       && profile.effectRank !== null && accurateComponents.has(profile.componentId ?? ''));
@@ -326,7 +326,7 @@ function validatePowerReferences(
       if (!isValidModifierForEffect(modifier, component.effectId, context)) {
         issues.push(issue(
           `${componentPath}.modifiers.${modifierIndex}.modifierId`,
-          `Unknown modifier "${modifier.modifierId}".`, 'error', 'diagnostic.unknownModifier', { id: modifier.modifierId },
+          `Unknown modifier "${modifier.modifierId}".`, 'error', context.modifierDefs.some(def => def.id === modifier.modifierId) ? 'diagnostic.invalidModifierSource' : 'diagnostic.unknownModifier', { id: modifier.modifierId, effectId: component.effectId },
         ));
       }
     }
