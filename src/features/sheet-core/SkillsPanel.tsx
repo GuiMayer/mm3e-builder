@@ -4,9 +4,10 @@ import { useAppStore } from '../../store/appStore';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { memo, useState, useMemo, useRef, useEffect } from 'react';
-import { useShallow } from 'zustand/react/shallow';
 
-import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
+import { useTraitValues } from '../../shared/hooks/useTraitValues';
+import { TraitModifiersControl } from '../trait-modifiers/TraitModifiersControl';
+import { traitTargetKey } from '../../shared/lib/traitTargets';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { ICharacterSkill, AbilityKey, ISkillDef } from '../../entities/types';
 import { SKILL_DEFS } from '../../entities/gameDataLoaders';
@@ -33,9 +34,10 @@ const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: st
 function SkillsPanelComponent({ cost }: { cost: number }) {
   const { t, i18n } = useTranslation();
   const skillDefs = useLocalizedData(SKILL_DEFS);
-  const character = useCharacterSelector(useShallow((value) => ({ skills: value.skills, abilities: value.abilities, absentAbilities: value.absentAbilities, advantages: value.advantages })));
+  const { original: character, character: effective, characterId } = useTraitValues();
+  const [addedBonuses, setAddedBonuses] = useState<Set<string>>(new Set());
   const { setSkills } = useCharacterActions();
-  const skills = character.skills;
+  const skills = effective.skills;
   const trainingWarnings = useAppStore(state => state.validationRules?.enforceTrainedOnlySkills ?? false);
 
   const [showSelector, setShowSelector]     = useState(false);
@@ -55,23 +57,30 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
 
   function addSkillDirect(skillId: string, subtype: string | null) {
     const entry: ICharacterSkill = { skillId, ranks: 1, subtype };
-    setSkills([...skills, entry]);
+    setSkills([...character.skills, entry]);
   }
 
   function updateRanks(index: number, ranks: number) {
-    const next = [...skills];
-    next[index] = { ...next[index], ranks: Math.max(0, ranks) };
+    const next = [...character.skills];
+    const skill = skills[index];
+    const position = next.findIndex(entry => entry.skillId === skill.skillId && entry.subtype === skill.subtype);
+    if (position < 0) next.push({ skillId: skill.skillId, subtype: skill.subtype, ranks: Math.max(0, ranks) });
+    else next[position] = { ...next[position], ranks: Math.max(0, ranks) };
     setSkills(next);
   }
 
   function updateOtherBonus(index: number, val: number) {
-    const next = [...skills];
-    next[index] = { ...next[index], otherBonus: val === 0 ? undefined : val };
+    const next = [...character.skills];
+    const skill = skills[index];
+    const position = next.findIndex(entry => entry.skillId === skill.skillId && entry.subtype === skill.subtype);
+    if (position < 0 && val !== 0) next.push({ skillId: skill.skillId, subtype: skill.subtype, ranks: 0, otherBonus: val });
+    else if (position >= 0) next[position] = { ...next[position], otherBonus: val === 0 ? undefined : val };
     setSkills(next);
   }
 
   function removeSkill(index: number) {
-    setSkills(skills.filter((_, i) => i !== index));
+    const skill = skills[index];
+    setSkills(character.skills.filter(entry => entry.skillId !== skill.skillId || entry.subtype !== skill.subtype));
   }
 
   function handleSelectSkill(def: ISkillDef) {
@@ -109,7 +118,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
     );
   }, [availableToAdd, searchTerm]);
 
-  const totalRanks = skills.reduce((sum, s) => sum + s.ranks, 0);
+  const totalRanks = character.skills.reduce((sum, s) => sum + s.ranks, 0);
 
   function getSubtypeCount(defId: string) {
     return skills.filter(s => s.skillId === defId).length;
@@ -142,8 +151,10 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
         {skills.map((skill, i) => {
           const def = skillDefs.find((d) => d.id === skill.skillId);
           if (!def) return null;
-          const check = calculateSkillCheck(character, skill, def);
-          const trainingIssue = getSkillTrainingWarning(skill, def, character.advantages, trainingWarnings);
+          const check = calculateSkillCheck(effective, skill, def);
+          const natural = character.skills.find(entry => entry.skillId === skill.skillId && entry.subtype === skill.subtype);
+          const bonusKey = `${characterId}:${traitTargetKey({ kind: 'skill', skillId: skill.skillId, subtype: skill.subtype })}`;
+          const trainingIssue = getSkillTrainingWarning({ ...skill, ranks: check.ranks }, def, character.advantages, trainingWarnings);
           const warning = trainingIssue ? formatDiagnostic(trainingIssue, t, i18n.language) : undefined;
           const abilityVal = check.ability;
           const displayName = def.subtyped && skill.subtype
@@ -168,13 +179,13 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
               <NumberInput
                 variant="medium"
                 className="skill-input"
-                value={skill.ranks}
+                value={natural?.ranks ?? 0}
                 onChange={(value) => updateRanks(i, value)}
                 min={0}
               />
               </span>
               {/* Other bonus — optional situational modifier (F-11) */}
-              <span className="skill-other-group">
+              {((skill.otherBonus ?? 0) !== 0 || addedBonuses.has(bonusKey)) && <span className="skill-other-group">
               <span className="skill-other-label">±</span>
               <NumberInput
                 variant="small"
@@ -183,17 +194,19 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
                 onChange={(value) => updateOtherBonus(i, value)}
                 title={t('skills.otherBonus')}
               />
-              </span>
+              <button type="button" className="skill-remove" aria-label={t('common.remove')} onClick={() => { updateOtherBonus(i, 0); setAddedBonuses(keys => { const next = new Set(keys); next.delete(bonusKey); return next; }); }}><X size={13} /></button>
+              </span>}
               </div>
               <div className="skill-row-actions sheet-item-actions">
-              <button className="skill-remove" onClick={() => removeSkill(i)} title={t('common.remove')}>
+              <button className="skill-remove" disabled={!natural} onClick={() => removeSkill(i)} title={t('common.remove')}>
                 <Trash2 size={14} />
               </button>
               <span className="sheet-check-result">
                 <span className="skill-total">= {check.total}</span>
-                <span className="sheet-roll-slot"><RollButton warning={warning} bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])]} /></span>
+                <span className="sheet-roll-slot"><RollButton warning={warning} bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : []), ...(check.circumstance ? [`${t('traits.circumstance')} ${check.circumstance}`] : [])]} /></span>
               </span>
               </div>
+              <TraitModifiersControl key={bonusKey} target={{ kind: 'skill', skillId: skill.skillId, subtype: skill.subtype }} onAddLegacy={() => setAddedBonuses(keys => new Set([...keys, bonusKey]))} />
               {warning && <small className="skill-training-warning">{warning}</small>}
             </div>
           );

@@ -1,6 +1,7 @@
 import { memo } from 'react';
-import { useShallow } from 'zustand/react/shallow';
-import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
+import { useTraitValues } from '../../shared/hooks/useTraitValues';
+import { circumstanceBonus } from '../../shared/lib/traitValues';
+import { TraitModifiersControl } from '../trait-modifiers/TraitModifiersControl';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useAppStore } from '../../store/appStore';
 import type { AbilityKey } from '../../entities/types';
@@ -13,7 +14,7 @@ const ABILITY_KEYS: AbilityKey[] = ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'a
 
 function AbilitiesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const character = useCharacterSelector(useShallow((value) => ({ abilities: value.abilities, absentAbilities: value.absentAbilities })));
+  const { original: character, character: effective, characterId } = useTraitValues();
   const { setAbility, toggleAbsentAbility } = useCharacterActions();
   const abilities = character.abilities;
   const absentAbilities = character.absentAbilities;
@@ -51,7 +52,9 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
                   min={minAbilityScore !== -Infinity ? minAbilityScore : undefined}
                 />
               )}
-              <div className="ability-actions sheet-item-actions"><span className="sheet-roll-slot">{!isAbsent && <RollButton bonus={abilities[key]} label={t(`abilities.${key}`)} section={t('abilities.title')} />}</span></div>
+              <div className="ability-actions sheet-item-actions"><span className="sheet-roll-slot">{!isAbsent && <RollButton bonus={effective.abilities[key] + circumstanceBonus(character, { kind: 'ability', key })} label={t(`abilities.${key}`)} section={t('abilities.title')} />}</span></div>
+              {!isAbsent && effective.abilities[key] !== abilities[key] && <small className="trait-effective">{t('traits.effective')}: {effective.abilities[key]}</small>}
+              {!isAbsent && <TraitModifiersControl key={`${characterId}:${key}`} target={{ kind: 'ability', key }} />}
               <button
                 className="ability-toggle"
                 onClick={() => toggleAbsentAbility(key)}

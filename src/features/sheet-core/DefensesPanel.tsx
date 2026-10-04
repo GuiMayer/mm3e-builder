@@ -1,8 +1,9 @@
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { memo, useState } from 'react';
-import { useShallow } from 'zustand/react/shallow';
-import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
+import { useTraitValues } from '../../shared/hooks/useTraitValues';
+import { circumstanceBonus } from '../../shared/lib/traitValues';
+import { TraitModifiersControl } from '../trait-modifiers/TraitModifiersControl';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import { useTranslation } from 'react-i18next';
 import { useDerivedDefenses } from '../../shared/hooks/useDerivedDefenses';
@@ -13,9 +14,9 @@ import { RollButton } from '../dice-roller/RollButton';
 
 function DefensesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
-  const character = useCharacterSelector(useShallow((value) => ({ abilities: value.abilities, absentAbilities: value.absentAbilities, defenses: value.defenses })));
+  const { original: character, character: effective, characterId } = useTraitValues();
   const { setDefense } = useCharacterActions();
-  const abilities = character.abilities;
+  const abilities = effective.abilities;
   const absentAbilities = character.absentAbilities;
   const defenses = character.defenses;
 
@@ -82,9 +83,10 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
             />
             </div>
             <span className="sheet-check-result">
-              <span className="defense-total">{r.base + defenses[r.key]}</span>
-              <span className="sheet-roll-slot">{(r.key === 'fortitude' || r.key === 'will') && <RollButton bonus={r.base + defenses[r.key]} label={t(`defenses.${r.key}`)} section={t('defenses.title')} breakdown={[`${r.baseLabel} ${r.base}`, `${t('common.ranks')} ${defenses[r.key]}`]} />}</span>
+              <span className="defense-total">{r.base + effective.defenses[r.key] + circumstanceBonus(character, { kind: 'defense', key: r.key }, 'active-defense')}</span>
+              <span className="sheet-roll-slot">{(r.key === 'fortitude' || r.key === 'will') && <RollButton bonus={r.base + effective.defenses[r.key] + circumstanceBonus(character, { kind: 'defense', key: r.key })} label={t(`defenses.${r.key}`)} section={t('defenses.title')} breakdown={[`${r.baseLabel} ${r.base}`, `${t('common.ranks')} ${defenses[r.key]}`]} />}</span>
             </span>
+            <TraitModifiersControl key={`${characterId}:${r.key}`} target={{ kind: 'defense', key: r.key }} />
           </div>
         ))}
 
@@ -103,8 +105,9 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           </div>
           <span className="sheet-check-result">
             <span className="defense-total">{toughnessTotal}</span>
-            <span className="sheet-roll-slot"><RollButton bonus={toughnessTotal} label={t('defenses.toughness')} section={t('defenses.title')} breakdown={[`STA ${stamina}`, ...toughnessBreakdown]} /></span>
+            <span className="sheet-roll-slot"><RollButton bonus={toughnessTotal + circumstanceBonus(character, { kind: 'defense', key: 'toughness' })} label={t('defenses.toughness')} section={t('defenses.title')} breakdown={[`STA ${stamina}`, ...toughnessBreakdown]} /></span>
           </span>
+          <TraitModifiersControl key={`${characterId}:toughness`} target={{ kind: 'defense', key: 'toughness' }} />
         </div>
 
       </div>

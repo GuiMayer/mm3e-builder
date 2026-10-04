@@ -1,5 +1,6 @@
 import { ModifierDefinitionNotice } from '../../shared/ui/ModifierDefinitionNotice';
 import { AfflictionConditionsEditor } from './components/AfflictionConditionsEditor';
+import { EnhancedTargetEditor } from './components/EnhancedTargetEditor';
 import React from 'react';
 import { getComponentEffectRanks } from '../../shared/lib/componentRanks';
 import { X, Plus, AlertTriangle } from 'lucide-react';
@@ -9,6 +10,7 @@ import { Button } from '../../shared/ui/Button';
 import type { TFunction } from 'i18next';
 import type {
   IAlternateEffect,
+  ICharacter,
   IPowerEffect,
   IModifierDef,
   ICharacterPowerComponent,
@@ -27,6 +29,7 @@ import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 import { modifierInstanceKey } from './modifierInstances';
 
 interface AltEffectCardProps {
+  character: ICharacter;
   strength?: number;
   costUnit?: 'PP' | 'EP';
   ae: IAlternateEffect;
@@ -59,6 +62,7 @@ interface AltEffectCardProps {
 }
 
 export function AltEffectCard({
+  character,
   strength = 0, costUnit = 'PP', ae, aeIdx, cost, cap, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
   allEffects, allModDefs, genericModifierDefs, modifierIncompatibilities,
@@ -166,6 +170,7 @@ export function AltEffectCard({
                               effectId,
                               ranks: 1,
                               variableCostOption: undefined,
+                              enhancedTarget: undefined,
                               fieldValues: {},
                               senseTraits: effectId === 'senses' ? [] : undefined,
                             })}
@@ -190,7 +195,8 @@ export function AltEffectCard({
                         </div>
                       </div>
 
-                      {effectDef?.variableCost && (
+                      {comp.effectId === 'enhanced-trait' && <EnhancedTargetEditor component={comp} character={character} onChange={update => onUpdateComponent(comp.id, update)} />}
+                      {effectDef?.variableCost && !comp.enhancedTarget && (
                         <div onClick={(e) => e.stopPropagation()}>
                           <VariableCostSelector
                             options={effectDef.variableCost.options}

@@ -1,8 +1,7 @@
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { memo, useState, useMemo, useRef, useEffect } from 'react';
-import { useShallow } from 'zustand/react/shallow';
 
-import { useCharacterSelector } from '../../shared/hooks/useActiveCharacter';
+import { useTraitValues } from '../../shared/hooks/useTraitValues';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
 import type { AdvantageType, ICharacterAdvantage } from '../../entities/types';
 import { ADVANTAGE_DEFS, SKILL_DEFS } from '../../entities/gameDataLoaders';
@@ -22,7 +21,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const advantageDefs = useLocalizedData(ADVANTAGE_DEFS);
   const skillDefs = useLocalizedData(SKILL_DEFS);
-  const character = useCharacterSelector(useShallow((value) => ({ advantages: value.advantages, skills: value.skills, abilities: value.abilities, absentAbilities: value.absentAbilities })));
+  const { character } = useTraitValues();
   const { setAdvantages } = useCharacterActions();
   const advantages = character.advantages;
   const dialog = useAppDialog();

@@ -14,6 +14,7 @@ import { ConditionsPanel } from './ConditionsPanel';
 import { NotesPanel } from './NotesPanel';
 import { useTranslation } from 'react-i18next';
 import type { ResourceEditTarget } from '../../shared/lib/resourcePowers';
+import { TraitUsagePanel } from '../trait-modifiers/TraitUsagePanel';
 
 export function SheetView({ onEditResource }: { onEditResource: (target: ResourceEditTarget) => void }) {
   const { t } = useTranslation();
@@ -46,6 +47,7 @@ export function SheetView({ onEditResource }: { onEditResource: (target: Resourc
       <AbilitiesPanel cost={pp.abilitiesCost} />
       <DefensesPanel cost={pp.defensesCost} />
       <SkillsPanel cost={pp.skillsCost} />
+      <TraitUsagePanel />
       <AdvantagesPanel cost={pp.advantagesCost} />
       <PowersList />
       <ComplicationsPanel />

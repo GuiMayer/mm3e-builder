@@ -1,5 +1,6 @@
 import { ModifierDefinitionNotice } from '../../shared/ui/ModifierDefinitionNotice';
 import { AfflictionConditionsEditor } from './components/AfflictionConditionsEditor';
+import { EnhancedTargetEditor } from './components/EnhancedTargetEditor';
 import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { getResourceCharacter, getResourceAttackBonus, type ResourceBuilderContext } from '../../shared/lib/resourceContext';
@@ -64,6 +65,8 @@ import {
 } from './powerBuilderModel';
 
 interface Props {
+  initialComponentId?: string;
+  isNewPower?: boolean;
   existingPower?: ICharacterPower;
   sourceCharacterId?: string | null;
   onSave: (power: ICharacterPower) => void;
@@ -76,7 +79,7 @@ interface Props {
 
 const PowerLibraryDialog = lazy(() => import('../power-library/PowerLibraryDialog').then(module => ({ default: module.PowerLibraryDialog })));
 
-export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
+export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPower, sourceCharacterId, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
   const { t, i18n } = useTranslation();
   const dialog = useAppDialog();
   const isMobile = useIsMobile();
@@ -93,7 +96,7 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
   const activeCharacter = origin ?? initialCharacter;
   const budgetTarget = useMemo<BudgetEditTarget>(() => resourceContext
     ? { kind: 'resource', target: { resourceId: resourceContext.resource.id, kind: resourceContext.kind, powerId: resourceContext.effectId } }
-    : { kind: equipmentMode ? 'equipment' : 'power', powerId: existingPower?.id }, [resourceContext, equipmentMode, existingPower?.id]);
+    : { kind: equipmentMode ? 'equipment' : 'power', powerId: isNewPower ? undefined : existingPower?.id }, [resourceContext, equipmentMode, existingPower?.id, isNewPower]);
   const character = useMemo(() => resourceContext ? getResourceCharacter(activeCharacter, resourceContext.resource) : activeCharacter, [activeCharacter, resourceContext]);
   const powerLevel = character.header.powerLevel;
   const isHQEffect = resourceContext?.kind === 'headquarters-effect';
@@ -111,14 +114,17 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
   const [paletteFilter, setPaletteFilter] = useState('');
   const [paletteCollapsed, setPaletteCollapsed] = useState(false);
   const [activeComponentId, setActiveComponentId] = useState<string>(
-    power.components[0]?.id ?? ''
+    power.components.find(component => component.id === initialComponentId)?.id ?? power.components[0]?.id ?? ''
   );
 
   const [effectModalPower, setEffectModalPower] = useState<IPowerEffect | null>(null);
   const [libraryTarget, setLibraryTarget] = useState<PowerLibraryTarget | null>(null);
   // AE state: which AE card is expanded + which component within each AE is active
-  const [expandedAEId, setExpandedAEId] = useState<string | null>(null);
-  const [activeAEComponentId, setActiveAEComponentId] = useState<Record<string, string>>({});
+  const [expandedAEId, setExpandedAEId] = useState<string | null>(() => power.alternateEffects.find(alternate => alternate.components.some(component => component.id === initialComponentId))?.id ?? null);
+  const [activeAEComponentId, setActiveAEComponentId] = useState<Record<string, string>>(() => {
+    const alternate = power.alternateEffects.find(item => item.components.some(component => component.id === initialComponentId));
+    return alternate && initialComponentId ? { [alternate.id]: initialComponentId } : {};
+  });
 
   const descriptors = power.descriptors ?? [];
   const normalizedDescriptorInput = normalizeDescriptor(descriptorInput);
@@ -683,6 +689,7 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
                                 effectId,
                                 ranks: 1,
                                 variableCostOption: undefined,
+                                enhancedTarget: undefined,
                                 fieldValues: {},
                                 senseTraits: effectId === 'senses' ? [] : undefined,
                               })}
@@ -709,7 +716,8 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
                           </div>
                         </div>
 
-                        {effectDef?.variableCost && (
+                        {comp.effectId === 'enhanced-trait' && <EnhancedTargetEditor component={comp} character={character} onChange={update => updateComponent(comp.id, update)} />}
+                        {effectDef?.variableCost && !comp.enhancedTarget && (
                           <div onClick={(e) => e.stopPropagation()}>
                             <VariableCostSelector
                               options={effectDef.variableCost.options}
@@ -975,6 +983,7 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
               )}
               {power.alternateEffects.map((ae, aeIdx) => (
                 <AltEffectCard
+                  character={character}
                   strength={getCharacterStrength(character)}
                   costUnit={costUnit}
                   key={ae.id}
