@@ -1,0 +1,9 @@
+.budget-preview { padding: 6px 10px; margin-top: 6px; background: var(--c-surface-elevated); border: 1px solid var(--c-border); border-radius: var(--r-sm); font-size: .75rem; line-height: 1.5; color: var(--c-text-muted); }
+.budget-preview__purchase { font-weight: 600; }
+.budget-preview__row { display: flex; flex-wrap: wrap; column-gap: 14px; row-gap: 2px; }
+.budget-preview__row strong { color: var(--c-text); }
+.budget-preview__excess { color: var(--c-warning); }
+.budget-preview details { margin-top: 2px; }
+.budget-preview summary { cursor: pointer; }
+.budget-preview p { margin: 3px 0; }
+@media (max-width: 768px) { .budget-preview__row strong { flex-basis: 100%; } }

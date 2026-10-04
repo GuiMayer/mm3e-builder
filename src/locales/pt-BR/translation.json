@@ -1229,5 +1229,15 @@
   "powerLibrary.sense.ultra_hearing": "Ultra-Audição",
   "powerLibrary.sense.ultravision": "Ultravisão",
   "powerLibrary.referenceOnly": "Apenas referência",
-  "powerLibrary.sourceFormula": "Composição original do livro (inglês)"
+  "powerLibrary.sourceFormula": "Composição original do livro (inglês)",
+  "builder.budget.title": "Orçamento projetado",
+  "builder.budget.purchaseCost": "Compra: {{previous}} → {{next}} {{unit}} ({{delta}} {{unit}})",
+  "builder.budget.resourceCost": "Total do recurso: {{previous}} → {{next}} {{unit}} ({{delta}} {{unit}})",
+  "builder.budget.pp": "{{spent}} / {{available}} PP · restante {{remaining}}",
+  "builder.budget.ep": "{{spent}} / {{available}} EP · restante {{remaining}}",
+  "builder.budget.unlinked": "Sem vínculo com este personagem. Nenhum orçamento da ficha é cobrado.",
+  "builder.budget.shared": "Outros personagens vinculados",
+  "builder.budget.localScope": "Inclui somente personagens abertos neste navegador. Contribuições fixas e vínculos gratuitos mantêm sua alocação.",
+  "builder.budget.noOthers": "Nenhum outro personagem aberto está vinculado a este recurso.",
+  "builder.budget.unavailable": "O alvo original da edição não está mais disponível. Reabra o editor."
 }

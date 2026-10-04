@@ -1,3 +1,5 @@
+import { useCharactersStore } from '../../store/charactersStore';
+import { replaceCharacterPower } from '../../shared/lib/powerEditing';
 import { lazy, Suspense, useState } from 'react';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
@@ -21,26 +23,25 @@ export function PowersList() {
   const powerDefs = useLocalizedData(POWER_DEFS);
   const modifierDefs = useLocalizedData(MODIFIER_DEFS);
   
-  const { character } = useActiveCharacter();
+  const { character, characterId } = useActiveCharacter();
   const { setPowers } = useCharacterActions();
   const powers = character.powers;
   const [builderOpen, setBuilderOpen] = useState(false);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [builderCharacterId, setBuilderCharacterId] = useState<string | null>(null);
+  const [builderPower, setBuilderPower] = useState<ICharacterPower | undefined>();
+
   const dialog = useAppDialog();
   const [referenceTarget, setReferenceTarget] = useState<PowerReferenceTarget | null>(null);
 
 
 
   function handleSavePower(power: ICharacterPower) {
-    if (editIndex !== null) {
-      const next = [...powers];
-      next[editIndex] = power;
-      setPowers(next);
-    } else {
-      setPowers([...powers, power]);
-    }
+    const store = useCharactersStore.getState();
+    const original = builderCharacterId && store.getCharacterById(builderCharacterId);
+    const next = original && replaceCharacterPower(original.character, { kind: 'power', powerId: builderPower?.id }, power);
+    if (!next || !builderCharacterId) return;
+    store.updateCharacter(builderCharacterId, { powers: next.powers });
     setBuilderOpen(false);
-    setEditIndex(null);
   }
 
   async function handleDeletePower(index: number) {
@@ -56,12 +57,14 @@ export function PowersList() {
   }
 
   function openNew() {
-    setEditIndex(null);
+    setBuilderCharacterId(characterId);
+    setBuilderPower(undefined);
     setBuilderOpen(true);
   }
 
   function openEdit(index: number) {
-    setEditIndex(index);
+    setBuilderCharacterId(characterId);
+    setBuilderPower(powers[index]);
     setBuilderOpen(true);
   }
 
@@ -172,9 +175,10 @@ export function PowersList() {
       {builderOpen && (
         <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
           <PowerBuilderOverlay
-            existingPower={editIndex !== null ? powers[editIndex] : undefined}
+            existingPower={builderPower}
+            sourceCharacterId={builderCharacterId}
             onSave={handleSavePower}
-            onClose={() => { setBuilderOpen(false); setEditIndex(null); }}
+            onClose={() => { setBuilderOpen(false); }}
           />
         </Suspense>
       )}

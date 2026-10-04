@@ -35,3 +35,17 @@ It does not impose a duplicate limit or hide other diagnostics.
 This policy changes no character schema, migration, or cost formula. Existing saved powers keep their modifier entries. New generic choices are stored as generic; choices from an effect-specific tab are stored as effect-specific.
 
 The behavior is implemented by `src/features/power-builder/modifierApplication.ts` and `src/features/power-builder/powerSavePolicy.ts`, with regression coverage in `src/__tests__/modifierApplicationPolicy.test.ts`.
+
+## Projected budgets
+
+The editor shows the saved purchase/resource cost, draft cost and difference,
+plus projected PP/EP spent, available and remaining. Preview uses temporary
+replacements and the canonical point summary; it never mutates characters,
+Resources, storage or history. Budget preferences control excess highlighting,
+not visibility of the totals or permission to save.
+
+The editor retains its original character context. Resource preview accounts
+for free links, fixed contributions, alternate allocation, vehicle movement
+and headquarters features. Unlinked Resources do not acquire an owner implicitly.
+Expandable details cover other linked characters currently open in this browser.
+Underlying headquarters effect PP and charged Resource EP remain distinct.

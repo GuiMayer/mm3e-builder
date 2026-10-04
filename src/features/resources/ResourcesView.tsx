@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { replaceResourcePower } from '../../shared/lib/powerEditing';
 import { Archive, Copy, Edit3, Plus, Trash2, Wand2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterPower, IResource, IResourceFeature, IVehicleResource, IHeadquartersResource, ResourceType } from '../../entities/types';
@@ -78,11 +79,8 @@ export function ResourcesView({ initialEditTarget }: { initialEditTarget?: Resou
     if (!powerTarget) return;
     const state = useResourcesStore.getState(), current = state.getResource(powerTarget.resourceId);
     if (!current) return;
-    let next: IResource;
-    const updatePowers = (powers: ICharacterPower[]) => powerTarget.powerId ? powers.map((item) => item.id === powerTarget.powerId ? power : item) : [...powers, power];
-    if (current.type === 'vehicle') next = powerTarget.kind === 'movement' ? { ...current, movement: power, movementReviewRequired: false } : { ...current, systems: updatePowers(current.systems) };
-    else if (current.type === 'headquarters') next = { ...current, effects: updatePowers(current.effects) };
-    else next = { ...current, power };
+    const next = replaceResourcePower(current, powerTarget, power);
+    if (!next) return;
     if (state.updateResource({ ...next, updatedAt: new Date().toISOString() })) setPowerTarget(null);
   }
   async function removePower(resource: IResource, id: string) {

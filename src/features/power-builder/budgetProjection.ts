@@ -42,9 +42,6 @@ export function projectPowerBudget(character: ICharacter, resources: IResource[]
 
 /** Exclude presentation text and editing identities from expensive projection inputs. */
 export function powerBudgetSignature(power: ICharacterPower): string {
-  const component = (value: ICharacterPower['components'][number]) => ({ ...value, modifiers: value.modifiers.map(({ instanceId: _identity, options, ...modifier }) => {
-    const { note: _note, ...mechanicalOptions } = options ?? {};
-    return { ...modifier, options: mechanicalOptions };
-  }) });
-  return JSON.stringify({ components: power.components.map(component), alternateEffects: power.alternateEffects.map(alternate => ({ dynamic: alternate.dynamic, components: alternate.components.map(component) })), activation: power.activation, removable: power.removable, baseDynamic: power.baseDynamic });
+  const component = (value: ICharacterPower['components'][number]) => ({ ...value, modifiers: value.modifiers.map(modifier => ({ ...modifier, instanceId: undefined, options: { ...modifier.options, note: undefined } })) });
+  return JSON.stringify({ ...power, name: '', notes: '', descriptors: [], components: power.components.map(component), alternateEffects: power.alternateEffects.map(alternate => ({ ...alternate, name: '', notes: '', components: alternate.components.map(component) })) });
 }

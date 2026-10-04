@@ -1,3 +1,5 @@
+import { useCharactersStore } from '../../store/charactersStore';
+import { replaceCharacterPower } from '../../shared/lib/powerEditing';
 import { lazy, Suspense, useState } from 'react';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharacterActions } from '../../shared/hooks/useCharacterActions';
@@ -31,14 +33,16 @@ export function EquipmentNotesPanel() {
   const powerDefs = useLocalizedData(POWER_DEFS);
   const modifierDefs = useLocalizedData(MODIFIER_DEFS);
   
-  const { character } = useActiveCharacter();
+  const { character, characterId } = useActiveCharacter();
   const { setEquipment } = useCharacterActions();
   const equipmentRaw = character.equipment;
   const equipment = equipmentRaw ?? [];
   const dialog = useAppDialog();
   
   const [builderOpen, setBuilderOpen] = useState(false);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [builderCharacterId, setBuilderCharacterId] = useState<string | null>(null);
+  const [builderPower, setBuilderPower] = useState<ICharacterPower | undefined>();
+
 
   // F-15: Get equipment validation data
   const { equipmentRanks, totalEPUsed, equipmentEPLimit, isOverEquipmentLimit } = useCalculatedPP();
@@ -47,23 +51,12 @@ export function EquipmentNotesPanel() {
   if (equipmentRanks === 0) return null;
 
   function handleSaveEquipment(power: ICharacterPower) {
-    // Equipment items should NOT have removable set — EP cost is calculated
-    // without removable discount (it's inherent in the Equipment advantage).
-    // Strip removable if user set it accidentally in Power Builder.
-    const equipmentItem: ICharacterPower = {
-      ...power,
-      removable: 'none',
-    };
-
-    if (editIndex !== null) {
-      const next = [...equipment];
-      next[editIndex] = equipmentItem;
-      setEquipment(next);
-    } else {
-      setEquipment([...equipment, equipmentItem]);
-    }
+    const store = useCharactersStore.getState();
+    const original = builderCharacterId && store.getCharacterById(builderCharacterId);
+    const next = original && replaceCharacterPower(original.character, { kind: 'equipment', powerId: builderPower?.id }, power);
+    if (!next || !builderCharacterId) return;
+    store.updateCharacter(builderCharacterId, { equipment: next.equipment });
     setBuilderOpen(false);
-    setEditIndex(null);
   }
 
   async function handleDeleteEquipment(index: number) {
@@ -76,20 +69,15 @@ export function EquipmentNotesPanel() {
   }
 
   function openNew() {
-    setEditIndex(null);
+    setBuilderCharacterId(characterId);
+    setBuilderPower(undefined);
     setBuilderOpen(true);
   }
 
   function openEdit(index: number) {
-    setEditIndex(index);
+    setBuilderCharacterId(characterId);
+    setBuilderPower(equipment[index]);
     setBuilderOpen(true);
-  }
-
-  // Prepare the power for editing — equipment does not use removable
-  function getEditPower(): ICharacterPower | undefined {
-    if (editIndex === null) return undefined;
-    const item = equipment[editIndex];
-    return { ...item, removable: 'none' };
   }
 
   return (
@@ -217,12 +205,12 @@ export function EquipmentNotesPanel() {
       {builderOpen && (
         <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
           <PowerBuilderOverlay
-            existingPower={getEditPower()}
+            existingPower={builderPower}
+            sourceCharacterId={builderCharacterId}
             onSave={handleSaveEquipment}
             onClose={() => {
               setBuilderOpen(false);
-              setEditIndex(null);
-            }}
+                      }}
             equipmentMode={true}
           />
         </Suspense>

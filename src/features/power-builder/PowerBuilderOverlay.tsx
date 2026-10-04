@@ -30,6 +30,9 @@ import { NumberInput } from '../../shared/ui/NumberInput';
 import { Button } from '../../shared/ui/Button';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
+import { useCharactersStore } from '../../store/charactersStore';
+import { BudgetPreview } from './components/BudgetPreview';
+import type { BudgetEditTarget } from './budgetProjection';
 import { useAppStore } from '../../store/appStore';
 import { DEFAULT_VALIDATION_RULES } from '../../shared/lib/validationRules';
 import { EffectCombobox } from '../../shared/ui/EffectCombobox';
@@ -59,6 +62,7 @@ import {
 
 interface Props {
   existingPower?: ICharacterPower;
+  sourceCharacterId?: string | null;
   onSave: (power: ICharacterPower) => void;
   onClose: () => void;
   /** When true, hides the Removable modifier from the palette and badge UI. */
@@ -69,7 +73,7 @@ interface Props {
 
 const PowerLibraryDialog = lazy(() => import('../power-library/PowerLibraryDialog').then(module => ({ default: module.PowerLibraryDialog })));
 
-export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
+export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
   const { t, i18n } = useTranslation();
   const dialog = useAppDialog();
   const isMobile = useIsMobile();
@@ -79,7 +83,14 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
   const modifierDefs = useLocalizedData(MODIFIER_DEFS) as IModifierDef[];
 
   // Read character and validation rules from stores
-  const { character: activeCharacter } = useActiveCharacter();
+  const active = useActiveCharacter();
+  const [originId] = useState(() => sourceCharacterId ?? active.characterId);
+  const origin = useCharactersStore(state => state.tabs.find(tab => tab.id === originId)?.character);
+  const [initialCharacter] = useState(() => active.character);
+  const activeCharacter = origin ?? initialCharacter;
+  const budgetTarget = useMemo<BudgetEditTarget>(() => resourceContext
+    ? { kind: 'resource', target: { resourceId: resourceContext.resource.id, kind: resourceContext.kind, powerId: resourceContext.effectId } }
+    : { kind: equipmentMode ? 'equipment' : 'power', powerId: existingPower?.id }, [resourceContext, equipmentMode, existingPower?.id]);
   const character = useMemo(() => resourceContext ? getResourceCharacter(activeCharacter, resourceContext.resource) : activeCharacter, [activeCharacter, resourceContext]);
   const powerLevel = character.header.powerLevel;
   const isHQEffect = resourceContext?.kind === 'headquarters-effect';
@@ -457,6 +468,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
       if (!confirmed) return;
     }
 
+    if (!resourceContext && !origin) return;
     onSave(cleanPower);
   }
 
@@ -1051,6 +1063,7 @@ export function PowerBuilderOverlay({ existingPower, onSave, onClose, equipmentM
               contextLabel={fabContextLabel}
             />
           </div>
+          <BudgetPreview characterId={originId} target={budgetTarget} power={power} rules={validationRules} />
           {saveError && <div role="alert" className="pl-violation-banner">{t(saveError)}</div>}
           {resourceContext && <div className="pl-violation-banner resource-context-banner">
             <Info size={13} /><span>{t('resources.builder.context', { name: resourceContext.resource.name || t('resources.unnamed'), strength: getCharacterStrength(character), level: powerLevel })}{resourceContext.resource.type === 'headquarters' ? ` · ${t('resources.hq.effectCost', { cost: equipmentEPCost, limit: powerLevel * 2 })}` : ''}</span>

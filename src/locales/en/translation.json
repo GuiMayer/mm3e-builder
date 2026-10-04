@@ -1229,5 +1229,15 @@
   "powerLibrary.sense.ultra_hearing": "Ultra Hearing",
   "powerLibrary.sense.ultravision": "Ultravision",
   "powerLibrary.referenceOnly": "Reference only",
-  "powerLibrary.sourceFormula": "Original book configuration (English)"
+  "powerLibrary.sourceFormula": "Original book configuration (English)",
+  "builder.budget.title": "Projected budget",
+  "builder.budget.purchaseCost": "Purchase: {{previous}} → {{next}} {{unit}} ({{delta}} {{unit}})",
+  "builder.budget.resourceCost": "Resource total: {{previous}} → {{next}} {{unit}} ({{delta}} {{unit}})",
+  "builder.budget.pp": "{{spent}} / {{available}} PP · remaining {{remaining}}",
+  "builder.budget.ep": "{{spent}} / {{available}} EP · remaining {{remaining}}",
+  "builder.budget.unlinked": "Not linked to this character. No character budget is charged.",
+  "builder.budget.shared": "Other linked characters",
+  "builder.budget.localScope": "Only characters currently open in this browser are included. Fixed contributions and free links keep their allocation.",
+  "builder.budget.noOthers": "No other open character links this resource.",
+  "builder.budget.unavailable": "The original editing target is no longer available. Reopen the editor."
 }
