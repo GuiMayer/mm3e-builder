@@ -1,8 +1,10 @@
+import type { RuleDiagnostic } from '../lib/diagnostics';
 import { createContext, useContext } from 'react';
 
 export type DialogOptions = {
   title?: string;
   message: string;
+  messageDiagnostic?: RuleDiagnostic & { nested?: RuleDiagnostic };
   confirmLabel?: string;
   cancelLabel?: string;
   danger?: boolean;

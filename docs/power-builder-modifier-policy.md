@@ -49,3 +49,10 @@ for free links, fixed contributions, alternate allocation, vehicle movement
 and headquarters features. Unlinked Resources do not acquire an owner implicitly.
 Expandable details cover other linked characters currently open in this browser.
 Underlying headquarters effect PP and charged Resource EP remain distinct.
+
+## Diagnósticos e idioma
+
+Validadores e cálculo de preço retornam fallback, chave estável, parâmetros e
+identidades de catálogo. A interface traduz no idioma ativo, inclusive o detalhe
+aninhado de erros de importação. Nomes e notas do usuário são literais. A tradução
+não altera severidade, caminhos, custo, condições de disparo ou política de salvar.

@@ -1,3 +1,4 @@
+import { formatDiagnostic } from '../lib/formatDiagnostic';
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from './Modal';
@@ -5,7 +6,7 @@ import { Button } from './Button';
 import { DialogContext, type DialogOptions } from './appDialogContext';
 
 export function AppDialogProvider({ children }: { children: ReactNode }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [dialog, setDialog] = useState<(DialogOptions & { resolve: (value: boolean) => void; kind: 'confirm' | 'alert' }) | null>(null);
   const [acknowledged, setAcknowledged] = useState(false);
   const close = useCallback((value: boolean) => {
@@ -26,7 +27,7 @@ export function AppDialogProvider({ children }: { children: ReactNode }) {
       {children}
       <Modal isOpen={Boolean(dialog)} onClose={() => close(false)} title={dialog?.title ?? t('dialog.confirmation')} compact>
         <div className="app-dialog">
-          <p>{dialog?.message}</p>
+          <p>{dialog?.messageDiagnostic ? formatDiagnostic({ ...dialog.messageDiagnostic, params: { ...dialog.messageDiagnostic.params, ...(dialog.messageDiagnostic.nested ? { message: formatDiagnostic(dialog.messageDiagnostic.nested, t, i18n.language) } : {}) } }, t, i18n.language) : dialog?.message}</p>
           {dialog?.requireAcknowledgement && (
             <label className="app-dialog__check">
               <input className="app-checkbox" type="checkbox" checked={acknowledged} onChange={(event) => setAcknowledged(event.target.checked)} />

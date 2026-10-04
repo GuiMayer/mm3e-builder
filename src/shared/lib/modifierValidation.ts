@@ -1,3 +1,4 @@
+import type { RuleDiagnostic } from './diagnostics';
 /* ================================================
    Modifier Validation — M&M 3e Rules Enforcement
    Validates modifier combinations, ranks, and PL limits.
@@ -13,7 +14,7 @@ import type {
 import type { IValidationRules } from '../../entities/types';
 import { resolveModifierDefinition } from './rulesCatalog';
 
-export interface ModifierViolation {
+export interface ModifierViolation extends RuleDiagnostic {
   type: 'incompatible' | 'duplicate_modifier' | 'max_ranks' | 'accurate_pl_cap' | 'power_specific';
   modifierId: string;
   message: string;
@@ -41,6 +42,8 @@ export function validateIncompatibleModifiers(
         const incompatibleDef = modifierDefs.find((d) => d.id === incompatibleId);
         violations.push({
           type: 'incompatible',
+          messageKey: 'diagnostic.incompatible',
+          names: { modifier: { kind: 'modifier', id: def.id }, other: { kind: 'modifier', id: incompatibleId } },
           modifierId: applied.modifierId,
           message: `${def.name} is incompatible with ${incompatibleDef?.name || incompatibleId}`,
           severity: 'error',
@@ -70,6 +73,9 @@ export function validateModifierMaxRanks(
     if (applied.ranks > def.maxRanks) {
       violations.push({
         type: 'max_ranks',
+        messageKey: 'diagnostic.maxRanks',
+        params: { ranks: applied.ranks, max: def.maxRanks },
+        names: { modifier: { kind: 'modifier', id: def.id } },
         modifierId: applied.modifierId,
         message: `${def.name} exceeds maximum ranks (${applied.ranks} > ${def.maxRanks})`,
         severity: 'error',
@@ -101,6 +107,9 @@ export function validateDuplicateModifiers(
     const def = modifierDefs.find((d) => d.id === modifierId);
     violations.push({
       type: 'duplicate_modifier',
+      messageKey: 'diagnostic.duplicateModifier',
+      params: { count },
+      names: { modifier: { kind: 'modifier', id: modifierId } },
       modifierId,
       message: `${def?.name || modifierId} appears ${count} times.`,
       severity: 'warning',
@@ -144,6 +153,8 @@ export function validateAccuratePLCap(
   if (total > limit) {
     violations.push({
       type: 'accurate_pl_cap',
+      messageKey: 'diagnostic.accurateCap',
+      params: { attack: totalAttackBonus, rank: effectRank, total, limit, pl: powerLevel },
       modifierId: 'accurate',
       message: `Accurate causes PL violation: attack ${totalAttackBonus} + effect ${effectRank} = ${total} > ${limit} (PL ${powerLevel})`,
       severity: 'error',
@@ -190,6 +201,8 @@ export function validatePowerSpecificModifiers(
 
       violations.push({
         type: 'power_specific',
+        messageKey: 'diagnostic.powerSpecific',
+        names: { modifier: { kind: 'modifier', id: applied.modifierId }, effect: { kind: 'effect', id: effectDef.id } },
         modifierId: applied.modifierId,
         message: `${modName} is not valid for ${effectDef.name}. This modifier is not in the power's extras/flaws list.`,
         severity: 'warning',

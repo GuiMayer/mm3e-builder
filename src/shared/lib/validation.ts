@@ -1,3 +1,4 @@
+import type { RuleDiagnostic } from './diagnostics';
 /* ================================================
    Validation Functions
    - Power Field Validation (configurable fields)
@@ -10,7 +11,7 @@ import type { ICharacterPowerComponent, IPowerEffect } from '../../entities/type
 // POWER FIELD VALIDATION
 // ══════════════════════════════════════════════════════════════════════════════
 
-export interface IPowerFieldViolation {
+export interface IPowerFieldViolation extends RuleDiagnostic {
   field: string;
   label: string;
   message: string;
@@ -37,6 +38,8 @@ export function validateRequiredPowerFields(
         field: field.id,
         label: field.label,
         message: `Required field "${field.label}" is not set`,
+        messageKey: 'diagnostic.requiredField',
+        names: { field: { kind: 'field', id: field.id, effectId: effectDef.id } },
       };
     }
 
@@ -46,6 +49,8 @@ export function validateRequiredPowerFields(
         field: field.id,
         label: field.label,
         message: `Required field "${field.label}" must have at least one selection`,
+        messageKey: 'diagnostic.requiredSelection',
+        names: { field: { kind: 'field', id: field.id, effectId: effectDef.id } },
       };
     }
 
@@ -55,6 +60,8 @@ export function validateRequiredPowerFields(
         field: field.id,
         label: field.label,
         message: `Required field "${field.label}" cannot be empty`,
+        messageKey: 'diagnostic.emptyField',
+        names: { field: { kind: 'field', id: field.id, effectId: effectDef.id } },
       };
     }
   }

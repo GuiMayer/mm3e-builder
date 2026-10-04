@@ -112,7 +112,7 @@ export function useFileOperations() {
       }
     } catch (err) {
       if (err instanceof I18nError) {
-        await dialog.alert({ title: t('errors.importError'), message: t(err.i18nKey, err.i18nParams) });
+        await dialog.alert({ title: t('errors.importError'), message: t(err.i18nKey, err.i18nParams), messageDiagnostic: { message: err.message, messageKey: err.i18nKey, params: err.i18nParams, nested: err.diagnostic } });
       } else {
         await dialog.alert({ title: t('errors.importError'), message: t('errors.importError') });
       }

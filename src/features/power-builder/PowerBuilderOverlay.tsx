@@ -1,3 +1,4 @@
+import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { getResourceCharacter, getResourceAttackBonus, type ResourceBuilderContext } from '../../shared/lib/resourceContext';
 import { getResourcePowerWarnings } from '../../shared/lib/resourceWarnings';
@@ -449,7 +450,7 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
 
     if (saveIssues.length > 0) {
       const firstIssue = saveIssues[0];
-      await dialog.alert({ title: t('builder.title'), message: `${firstIssue.path}: ${firstIssue.message}` });
+      await dialog.alert({ title: t('builder.title'), message: `${firstIssue.path}: ${firstIssue.message}`, messageDiagnostic: { ...firstIssue, messageKey: 'errors.validationError', params: { field: firstIssue.path }, nested: firstIssue } });
       return;
     }
 
@@ -1079,14 +1080,12 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
             <div className={`pl-violation-banner${warning.messageKey === 'builder.duplicateModifierWarning' ? ' duplicate-modifier-banner' : ''}`} key={`${warning.path}:${warning.message}`}>
               <AlertTriangle size={13} />
               <span>
-                {warning.messageKey
-                  ? t(warning.messageKey, warning.params)
-                  : warning.message}
+                {formatDiagnostic(warning, t, i18n.language)}
               </span>
             </div>
           ))}
           {pricingDiagnostics.length > 0 && (
-            <div className="pl-violation-banner" title={pricingDiagnostics.map((diagnostic) => diagnostic.message).join('\n')}>
+            <div className="pl-violation-banner" title={pricingDiagnostics.map((diagnostic) => formatDiagnostic(diagnostic, t, i18n.language)).join('\n')}>
               <AlertTriangle size={13} />
               <span>{t('builder.pricingDataWarning', { count: pricingDiagnostics.length })}</span>
             </div>

@@ -1,3 +1,4 @@
+import type { RuleDiagnostic } from './diagnostics';
 import type {
   IAdvantageDef,
   IAppliedModifier,
@@ -18,7 +19,7 @@ import { validateAttackEffect } from './validation';
 
 export type SemanticSeverity = 'error' | 'warning' | 'info';
 
-export interface SemanticValidationIssue {
+export interface SemanticValidationIssue extends RuleDiagnostic {
   severity: SemanticSeverity;
   path: string;
   message: string;
@@ -35,8 +36,8 @@ interface GameDataContext {
   language?: string;
 }
 
-function issue(path: string, message: string, severity: SemanticSeverity = 'error'): SemanticValidationIssue {
-  return { path, message, severity };
+function issue(path: string, message: string, severity: SemanticSeverity = 'error', messageKey?: string, params?: RuleDiagnostic['params'], names?: RuleDiagnostic['names']): SemanticValidationIssue {
+  return { path, message, severity, messageKey, params, names };
 }
 
 /**
@@ -66,23 +67,23 @@ function validatePowerComponentForSave(
   const effectDef = context.powerDefs.find((def) => def.id === component.effectId);
 
   if (!effectDef) {
-    issues.push(issue(`${path}.effectId`, `Unknown power effect "${component.effectId}".`));
+    issues.push(issue(`${path}.effectId`, `Unknown power effect "${component.effectId}".`, 'error', 'diagnostic.unknownEffect', { id: component.effectId }));
     return issues;
   }
   for (const modifier of component.modifiers) {
     if (!isValidModifierForEffect(modifier, component.effectId, context)) {
-      issues.push(issue(`${path}.modifiers.${modifier.modifierId}`, `Unknown modifier source for "${modifier.modifierId}".`));
+      issues.push(issue(`${path}.modifiers.${modifier.modifierId}`, `Unknown modifier source for "${modifier.modifierId}".`, 'error', 'diagnostic.unknownSource', { id: modifier.modifierId }));
     }
   }
 
   if (effectDef.variableCost?.options?.length && !component.variableCostOption) {
-    issues.push(issue(`${path}.variableCostOption`, `${effectDef.name} requires a variable cost option.`));
+    issues.push(issue(`${path}.variableCostOption`, `${effectDef.name} requires a variable cost option.`, 'error', 'diagnostic.variableCost', {}, { effect: { kind: 'effect', id: effectDef.id } }));
   }
 
   if (rules.enforceRequiredPowerFields) {
     const fieldViolation = validateRequiredPowerFields(component, effectDef);
     if (fieldViolation) {
-      issues.push(issue(`${path}.fieldValues.${fieldViolation.field}`, fieldViolation.message));
+      issues.push({ ...issue(`${path}.fieldValues.${fieldViolation.field}`, fieldViolation.message), ...fieldViolation });
     }
   }
 
@@ -102,6 +103,7 @@ function validatePowerComponentForSave(
       issues.push({
         ...issue(`${path}.modifiers.${violation.modifierId}`, violation.message, 'warning'),
         messageKey: 'builder.duplicateModifierWarning',
+        names: { modifier: { kind: 'modifier', id: violation.modifierId, effectId: effectDef.id }, effect: { kind: 'effect', id: effectDef.id } },
         params: {
           modifier: definition?.i18n?.[language]?.name ?? definition?.name ?? violation.modifierId,
           count: component.modifiers.filter(modifier => modifier.modifierId === violation.modifierId).length,
@@ -110,7 +112,7 @@ function validatePowerComponentForSave(
       });
       continue;
     }
-    issues.push(issue(`${path}.modifiers.${violation.modifierId}`, violation.message));
+    issues.push({ ...issue(`${path}.modifiers.${violation.modifierId}`, violation.message), ...violation, names: violation.names && Object.fromEntries(Object.entries(violation.names).map(([key, name]) => [key, name.kind === 'modifier' ? { ...name, effectId: effectDef.id } : name])), severity: 'error' });
   }
 
   issues.push(...validateCoreModifierApplicability(component, effectDef, path));
@@ -137,7 +139,7 @@ function validateCoreModifierApplicability(
       : '';
 
     if (modifier.modifierId === 'affects_others' && effectDef.range !== 'personal') {
-      issues.push(issue(modifierPath, 'Affects Others can only modify a Personal effect.'));
+      issues.push(issue(modifierPath, 'Affects Others can only modify a Personal effect.', 'error', 'diagnostic.affectsOthers'));
     }
 
     if (
@@ -145,18 +147,18 @@ function validateCoreModifierApplicability(
       && effectDef.action !== 'standard'
       && effectDef.action !== 'free'
     ) {
-      issues.push(issue(modifierPath, 'Reaction can only modify an effect with a standard or free default action.'));
+      issues.push(issue(modifierPath, 'Reaction can only modify an effect with a standard or free default action.', 'error', 'diagnostic.reaction'));
     }
 
     if (
       (modifier.modifierId === 'reaction' || modifier.modifierId === 'triggered')
       && !trigger
     ) {
-      issues.push(issue(modifierPath, `${modifier.modifierId === 'reaction' ? 'Reaction' : 'Triggered'} requires a triggering circumstance.`));
+      issues.push(issue(modifierPath, `${modifier.modifierId === 'reaction' ? 'Reaction' : 'Triggered'} requires a triggering circumstance.`, 'error', 'diagnostic.trigger', {}, { modifier: { kind: 'modifier', id: modifier.modifierId } }));
     }
 
     if (modifier.modifierId === 'triggered' && effectDef.duration !== 'instant') {
-      issues.push(issue(modifierPath, 'Triggered can only modify an Instant effect.'));
+      issues.push(issue(modifierPath, 'Triggered can only modify an Instant effect.', 'error', 'diagnostic.triggered'));
     }
 
   }
@@ -190,7 +192,7 @@ function validateArrayRules(power: ICharacterPower): SemanticValidationIssue[] {
   if (power.baseDynamic && !hasDynamicAlternate) {
     issues.push(issue(
       'baseDynamic',
-      'The base effect can only be Dynamic when the array has a Dynamic Alternate Effect.',
+      'The base effect can only be Dynamic when the array has a Dynamic Alternate Effect.', 'error', 'diagnostic.dynamic',
     ));
   }
 
@@ -201,13 +203,13 @@ function validateArrayRules(power: ICharacterPower): SemanticValidationIssue[] {
     if (hasModifier(component, 'alternate_effect')) {
       issues.push(issue(
         `${componentPath}.modifiers.alternate_effect`,
-        'Use the Alternate Effects section to create an array; do not apply Alternate Effect directly to a component.',
+        'Use the Alternate Effects section to create an array; do not apply Alternate Effect directly to a component.', 'error', 'diagnostic.directAlternate',
       ));
     }
     if (hasArray && hasModifier(component, 'permanent_flaw')) {
       issues.push(issue(
         `${componentPath}.modifiers.permanent_flaw`,
-        'Permanent effects cannot be part of an Alternate Effect array.',
+        'Permanent effects cannot be part of an Alternate Effect array.', 'error', 'diagnostic.permanentArray',
       ));
     }
   };
@@ -249,14 +251,14 @@ export function validatePowerForSave(
       if (violation) issues.push(issue(
         'components',
         `${profile.name}: attack ${profile.bonusValue ?? 0} + effect ${rank} exceeds ${pl * 2} (PL ${pl}).`,
-        rules.plTradeOffsAsErrors ? 'error' : 'warning',
+        rules.plTradeOffsAsErrors ? 'error' : 'warning', 'diagnostic.attackCap', { name: profile.name, attack: profile.bonusValue ?? 0, rank, limit: pl * 2, pl },
       ));
     }
   }
   const components = power.components.filter((component) => component.effectId !== '');
 
   if (components.length === 0) {
-    issues.push(issue('components', 'Power must have at least one selected effect.'));
+    issues.push(issue('components', 'Power must have at least one selected effect.', 'error', 'diagnostic.emptyPower'));
   }
 
   components.forEach((component, index) => {
@@ -272,12 +274,12 @@ export function validatePowerForSave(
       issues.push(issue(
         `alternateEffects.${aeIndex}.name`,
         `Alternate Effect ${aeIndex + 1} has no name.`,
-        'warning',
+        'warning', 'diagnostic.unnamedAlternate', { index: aeIndex + 1 },
       ));
     } else if (alternateEffectNames.has(normalizedName)) {
       issues.push(issue(
         `alternateEffects.${aeIndex}.name`,
-        `Duplicate Alternate Effect name "${ae.name}". Each Alternate Effect must have a unique name.`,
+        `Duplicate Alternate Effect name "${ae.name}". Each Alternate Effect must have a unique name.`, 'error', 'diagnostic.duplicateAlternate', { name: ae.name },
       ));
     }
 
@@ -310,7 +312,7 @@ function validatePowerReferences(
   const issues: SemanticValidationIssue[] = [];
   const validateComponentRefs = (component: ICharacterPowerComponent, componentPath: string) => {
     if (!context.powerDefs.some((def) => def.id === component.effectId)) {
-      issues.push(issue(`${componentPath}.effectId`, `Unknown power effect "${component.effectId}".`));
+      issues.push(issue(`${componentPath}.effectId`, `Unknown power effect "${component.effectId}".`, 'error', 'diagnostic.unknownEffect', { id: component.effectId }));
       return; // Stop validating modifiers if effect is unknown
     }
 
@@ -319,7 +321,7 @@ function validatePowerReferences(
       if (!isValidModifierForEffect(modifier, component.effectId, context)) {
         issues.push(issue(
           `${componentPath}.modifiers.${modifierIndex}.modifierId`,
-          `Unknown modifier "${modifier.modifierId}".`,
+          `Unknown modifier "${modifier.modifierId}".`, 'error', 'diagnostic.unknownModifier', { id: modifier.modifierId },
         ));
       }
     }
@@ -345,13 +347,13 @@ export function validateCharacterSemantics(
 
   character.skills.forEach((skill, index) => {
     if (skillIds.size > 0 && !skillIds.has(skill.skillId)) {
-      issues.push(issue(`skills.${index}.skillId`, `Unknown skill "${skill.skillId}".`));
+      issues.push(issue(`skills.${index}.skillId`, `Unknown skill "${skill.skillId}".`, 'error', 'diagnostic.unknownSkill', { id: skill.skillId }));
     }
   });
 
   character.advantages.forEach((advantage, index) => {
     if (advantageIds.size > 0 && !advantageIds.has(advantage.advantageId)) {
-      issues.push(issue(`advantages.${index}.advantageId`, `Unknown advantage "${advantage.advantageId}".`));
+      issues.push(issue(`advantages.${index}.advantageId`, `Unknown advantage "${advantage.advantageId}".`, 'error', 'diagnostic.unknownAdvantage', { id: advantage.advantageId }));
       return;
     }
 
@@ -362,7 +364,7 @@ export function validateCharacterSemantics(
       if (advantageDef.subtypeRequired && (!advantage.subtype || advantage.subtype.trim() === '')) {
         issues.push(issue(
           `advantages.${index}.subtype`,
-          `Advantage "${advantageDef.name}" requires a subtype.`,
+          `Advantage "${advantageDef.name}" requires a subtype.`, 'error', 'diagnostic.advantageSubtype', {}, { advantage: { kind: 'advantage', id: advantageDef.id } },
         ));
       }
 
@@ -381,7 +383,7 @@ export function validateCharacterSemantics(
           issues.push(issue(
             `advantages.${index}.subtype`,
             `Subtype "${advantage.subtype}" for advantage "${advantageDef.name}" must be a valid skill name.`,
-            'warning',
+            'warning', 'diagnostic.skillSubtype', { subtype: advantage.subtype }, { advantage: { kind: 'advantage', id: advantageDef.id } },
           ));
         }
       }

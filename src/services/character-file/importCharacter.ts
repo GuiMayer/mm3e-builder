@@ -27,7 +27,7 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
     throw new I18nError('errors.validationError', {
       field: firstError.path.join('.'),
       message: firstError.message,
-    });
+    }, { message: firstError.message, messageKey: 'diagnostic.structure', params: { code: firstError.code } });
   }
 
   const fileVersion = result.data.schemaVersion;
@@ -52,7 +52,7 @@ export async function importCharacterJSON(file: File): Promise<ICharacter> {
     throw new I18nError('errors.validationError', {
       field: firstError.path,
       message: firstError.message,
-    });
+    }, firstError);
   }
 
   return character;

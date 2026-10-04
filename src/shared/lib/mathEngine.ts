@@ -1,3 +1,4 @@
+import type { RuleDiagnostic } from './diagnostics';
 /* ================================================
    Math Engine — Pure calculation functions
    Receives data via interfaces, returns numbers.
@@ -22,7 +23,7 @@ export type PricingDiagnosticCode =
   | 'unknown-modifier'
   | 'ambiguous-modifier';
 
-export interface PricingDiagnostic {
+export interface PricingDiagnostic extends RuleDiagnostic {
   code: PricingDiagnosticCode;
   id: string;
   message: string;
@@ -266,6 +267,8 @@ function resolveComponentModifiers(
     if (!resolution.definition) {
       diagnostics.push({
         code: 'unknown-modifier',
+        messageKey: 'diagnostic.priceModifier',
+        params: { id: applied.modifierId, effectId: effectDef.id },
         id: applied.modifierId,
         message: `Unknown modifier "${applied.modifierId}" on effect "${effectDef.id}".`,
       });
@@ -274,6 +277,8 @@ function resolveComponentModifiers(
     if (resolution.ambiguous) {
       diagnostics.push({
         code: 'ambiguous-modifier',
+        messageKey: 'diagnostic.priceAmbiguous',
+        params: { id: applied.modifierId },
         id: applied.modifierId,
         message: `Legacy modifier "${applied.modifierId}" matches generic and power-specific rules; generic pricing was preserved.`,
       });
@@ -477,6 +482,8 @@ function calculateComponentListPricing(
       if (component.effectId) {
         diagnostics.push({
           code: 'unknown-effect',
+          messageKey: 'diagnostic.unknownEffect',
+          params: { id: component.effectId },
           id: component.effectId,
           message: `Unknown effect "${component.effectId}".`,
         });

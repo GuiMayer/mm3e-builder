@@ -67,19 +67,6 @@ salvar sem conversão preserva o preço antigo. Divergências editoriais das
 receitas continuam explicadas nos dados/na prévia e não viram correções
 artificiais no motor.
 
-### P05 — Tradução dos diagnósticos restantes — prioridade média
-
-**Contexto:** `semanticValidation.ts` ainda cria mensagens diretamente em
-inglês. O Builder usa `messageKey` quando disponível e mostra `message` nos
-outros casos, inclusive em avisos sobre nomes vazios de alternativos.
-
-**Escopo:** inventariar somente os diagnósticos que chegam ao usuário e
-acrescentar chaves/parametrização nos dois idiomas. Tratar essa alteração em
-um trabalho próprio: a limpeza documental não deve alterar mensagens.
-
-**Critérios de aceite:** trocar idioma traduz avisos do aplicativo, preservando nomes e
-notas do usuário, condições de disparo, severidade e política de salvamento.
-
 ### P06 — Manutenção do Builder e do menu — prioridade baixa
 
 **Contexto:** o Builder tem aproximadamente 1.551 linhas e o MenuBar 781,
@@ -98,7 +85,7 @@ uso atual, entrada/saída documentadas e não repovoam `docs/` com snapshots.
 
 ## Plano de execução — prioridades alta e média
 
-Escopo restante: P02–P05. P06 e possibilidades opcionais continuam fora desta execução.
+Escopo restante: P02–P04. P06 e possibilidades opcionais continuam fora desta execução.
 Este plano deve ser removido por etapa concluída, mantendo o comportamento
 resultante nos guias vigentes e apenas o trabalho aberto neste arquivo.
 
@@ -128,7 +115,6 @@ resultante nos guias vigentes e apenas o trabalho aberto neste arquivo.
 
 | Etapa | Pendência | Entrega | Commit proposto |
 | --- | --- | --- | --- |
-| 3 | P05 | Diagnósticos parametrizados e tradução nas interfaces consumidoras | `fix(i18n): localize validation and pricing diagnostics` |
 | 4 | P02 | Resolução compartilhada de ação/duração e integração dos consumidores | `fix(rules): resolve effective action and duration consistently` |
 | 5 | P02 | Receitas sustentadas, somente após resolver sua composição normativa | `feat(power-library): support verified sustained affliction recipes` |
 | 6 | P03 | Avisos de treinamento em perícias e atalhos de rolagem | `fix(validation): integrate trained-only skill diagnostics` |
@@ -142,30 +128,6 @@ composição inequívoca, manter as quatro receitas para consulta, documentar a
 decisão aberta em P02 e não criar um commit que habilite receitas incompletas.
 Cada commit inclui testes relevantes e atualização do guia correspondente.
 Não atribuir uma versão nova antes de consolidar o escopo implementado.
-
-### P05 — Contrato de diagnósticos localizados
-
-**Implementação:**
-
-1. Levantar mensagens realmente apresentadas pelo Builder, referências de custo,
-   formulário/importação e avisos da ficha. Incluir mensagens de
-   `semanticValidation`, `modifierValidation`, campos obrigatórios e
-   `PricingDiagnostic`; não ampliar o trabalho para logs internos.
-2. Manter diagnósticos puros com código/chave estável, parâmetros e texto de
-   fallback. Traduzir na apresentação, sem importar React, stores ou i18next no
-   motor. Catalogar efeito/modificador/campo por ID e resolver o nome no idioma
-   ativo; texto do usuário permanece literal.
-3. Atualizar os consumidores, incluindo o detalhe aninhado dos `I18nError` de
-   importação e os títulos de diagnósticos de preço. Não inserir uma tradução
-   pronta em um erro que precisa acompanhar mudanças posteriores de idioma.
-4. Acrescentar chaves em inglês/português e reutilizar a apresentação estruturada
-   dos avisos existentes. Não mudar condições de disparo, severidade, caminhos,
-   limite de AE, tratamento de fontes desconhecidas ou política de salvamento.
-
-**Regressões e aceite:** alternativo sem nome/duplicado; efeito ou fonte desconhecida;
-campo obrigatório; gatilho; limite de modificador; preço não resolvido; importação
-com erro semântico. Trocar idioma com o editor/diálogo aberto deve traduzir textos
-do aplicativo, mantendo nomes, notas, números e o mesmo conjunto de diagnósticos.
 
 ### P02 — Ação e duração efetivas
 

@@ -197,7 +197,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) { replaceResources(previousResources); replaceDraftMulti(previousTabs, previousActiveId); throw new I18nError('draft.error.storageWrite'); }
       loadTabs(bundle.tabs, bundle.activeId);
       setDraftHydrated(true);
-    } catch (error) { await dialog.alert({ title: t('draft.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('draft.importFailed') }); }
+    } catch (error) { await dialog.alert({ title: t('draft.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('draft.importFailed'), messageDiagnostic: error instanceof I18nError ? { message: error.message, messageKey: error.i18nKey, params: error.i18nParams, nested: error.diagnostic } : undefined }); }
   }
 
   async function handleExportResources() {
@@ -215,7 +215,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       if (!await dialog.confirm({ title: t('resources.restoreTitle'), message: t('resources.restoreMessage', { count: imported.length, warning }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
       if (!preserveResourceImportBackup()) throw new I18nError('resources.error.storageWrite');
       if (!replaceResources(imported)) throw new I18nError('resources.error.storageWrite');
-    } catch (error) { await dialog.alert({ title: t('resources.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('resources.importFailed') }); }
+    } catch (error) { await dialog.alert({ title: t('resources.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('resources.importFailed'), messageDiagnostic: error instanceof I18nError ? { message: error.message, messageKey: error.i18nKey, params: error.i18nParams, nested: error.diagnostic } : undefined }); }
   }
 
   async function handleClearCharacter() {
