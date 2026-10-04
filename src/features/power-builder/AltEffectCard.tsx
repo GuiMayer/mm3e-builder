@@ -1,3 +1,4 @@
+import { ModifierDefinitionNotice } from '../../shared/ui/ModifierDefinitionNotice';
 import { AfflictionConditionsEditor } from './components/AfflictionConditionsEditor';
 import React from 'react';
 import { getComponentEffectRanks } from '../../shared/lib/componentRanks';
@@ -265,7 +266,7 @@ export function AltEffectCard({
                                 key={modifierInstanceKey(applied, modifierIndex)}
                                 className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                               >
-                                <span className="applied-mod-name">{def.name}{applicationNumber && <small className="applied-mod-instance-number"> #{applicationNumber}</small>}</span>
+                                <span className="applied-mod-name">{def.name}<ModifierDefinitionNotice effectId={comp.effectId} modifierId={def.id} />{applicationNumber && <small className="applied-mod-instance-number"> #{applicationNumber}</small>}</span>
                                 <ModifierParameterControls
                                   applied={applied}
                                   definition={def}

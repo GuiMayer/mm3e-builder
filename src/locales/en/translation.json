@@ -1296,5 +1296,11 @@
   "builder.affliction.warning.variableModifier": "Variable degrees are stored, but no Variable Conditions modifier is applied.",
   "builder.affliction.warning.resistance": "A nonstandard initial resistance normally uses Alternate Resistance.",
   "builder.affliction.warning.recovery": "Specify recovery resistance separately when using Alternate Resistance.",
-  "menu.validationRules.enforceAfflictionProgression": "Affliction configuration warnings"
+  "menu.validationRules.enforceAfflictionProgression": "Affliction configuration warnings",
+  "catalog.version.legacy": "Legacy",
+  "catalog.version.current": "Recommended",
+  "catalog.version.legacyMinions": "Legacy definition: +2 PP per purchase, regardless of Summon rank. Kept to preserve existing costs. For new purchases use Multiple Minions (per effect rank).",
+  "catalog.version.currentMinions": "Official definition: each purchase doubles the minions and costs +2 PP per Summon rank. Recommended for new purchases.",
+  "catalog.version.legacyHealing": "Legacy definition: heals Incurable damage, with the historical +1 PP per Healing rank preserved. For the official flat +1 PP purchase use Persistent (flat purchase). No automatic conversion.",
+  "catalog.version.currentHealing": "Official definition: Healing can remove Incurable damage for a flat +1 PP. Recommended for new purchases."
 }

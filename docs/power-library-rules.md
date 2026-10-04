@@ -65,10 +65,23 @@ número impresso; divergência editorial não implica defeito do motor.
 Receitas que exigem atributos ausentes do personagem ou Aflição Sustentada não
 representada pelo modelo ficam apenas para consulta. O [guia da biblioteca](power-library.md)
 identifica essas entradas. Não aplicar versões incompletas nem introduzir
-mudanças de atributos disfarçadas de flaws. Trabalho aberto sobre duração e
-apresentação de definições legadas consta em [Pendências](PENDENCIAS.md).
+mudanças de atributos disfarçadas de flaws. A definição de Aflição Sustentada ainda aberta consta em
+[Pendências](PENDENCIAS.md).
 
 Aplicar uma receita não grava preço editorial, política de graduação ou
 identificador vivo do catálogo na ficha. Importar e salvar preserva aplicações,
 opções e identificadores legados; qualquer conversão futura exige revisão
 explícita e backup.
+
+## Identificação de definições legadas
+
+A paleta, modificadores aplicados e referências rápidas identificam as opções
+Legado/Recomendado em Invocar e Cura. Tooltips/descrições explicam a modalidade
+de preço real e a opção atual correspondente. A lista permanece alfabética no
+idioma selecionado; a recomendação não oculta as definições antigas.
+
+Persistente de Cura remove dano Incurável; não concede bônus temporário de
+resistência a alvos saudáveis. `persistent` preserva +1 por graduação do efeito;
+`persistent_flat` segue a compra fixa +1 do Handbook. Persistente de Regeneração
+é outra definição e não recebe o rótulo legado de Cura. IDs, opções e preços
+existentes permanecem intactos ao importar, editar sem trocar a compra e exportar.

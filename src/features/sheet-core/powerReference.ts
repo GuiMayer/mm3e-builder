@@ -3,6 +3,7 @@ import { resolveModifierDefinition, type ModifierResolutionSource } from '../../
 
 export interface ModifierReference {
   applied: IAppliedModifier;
+  effectId?: string;
   definition?: IModifierDef;
   source: ModifierResolutionSource;
 }
@@ -26,7 +27,7 @@ export function buildPowerReferences(components: readonly ICharacterPowerCompone
       component, definition: effect && localizeReference(effect, language),
       modifiers: component.modifiers.map(applied => {
         const resolved = effect ? resolveModifierDefinition(applied, effect, modifiers) : undefined;
-        return { applied, definition: resolved?.definition && localizeReference(resolved.definition, language), source: resolved?.source ?? 'missing' };
+        return { applied, effectId: component.effectId, definition: resolved?.definition && localizeReference(resolved.definition, language), source: resolved?.source ?? 'missing' };
       }),
     };
   });

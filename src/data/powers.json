@@ -1477,14 +1477,14 @@
         "category": "extra",
         "costType": "per_rank",
         "costValue": 1,
-        "description": "Healing works even on healthy subjects, granting temporary resistance bonuses.",
-        "longDescription": "A Persistent Healing effect can be used on subjects who are not incapacitated. It grants a temporary bonus to Toughness or other resistance equal to rank for the scene.",
+        "description": "Healing removes Incurable damage. Legacy +1 PP per effect rank, preserved for existing characters; use Persistent (flat purchase) for the official flat +1 PP cost.",
+        "longDescription": "Healing removes Incurable damage. Legacy +1 PP per effect rank, preserved for existing characters; use Persistent (flat purchase) for the official flat +1 PP cost.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Persistente",
-            "description": "A Cura funciona em personagens saudáveis, concedendo bônus de resistência temporários.",
-            "longDescription": "Um efeito de Cura Persistente pode ser usado em alvos não-incapacitados, concedendo bônus temporário de Resistência igual ao rank pela cena."
+            "description": "Cura remove dano Incurável. Preço legado de +1 PP por graduação do efeito preservado para personagens existentes; use Persistente (compra fixa) para o custo oficial de +1 PP fixo.",
+            "longDescription": "Cura remove dano Incurável. Preço legado de +1 PP por graduação do efeito preservado para personagens existentes; use Persistente (compra fixa) para o custo oficial de +1 PP fixo."
           }
         }
       },
@@ -3699,12 +3699,12 @@
         "category": "extra",
         "costType": "flat_ranked",
         "costValue": 2,
-        "description": "Each rank doubles the number of minions summoned.",
+        "description": "Each purchase doubles the number of minions. Legacy flat +2 PP per purchase, preserved for existing characters. Use Multiple Minions (per effect rank) for the official +2 PP per Summon rank.",
         "incompatibleWith": [],
         "i18n": {
           "pt-BR": {
             "name": "Múltiplos Servos",
-            "description": "Cada rank dobra o número de servos invocados."
+            "description": "Cada compra dobra a quantidade de lacaios. Preço legado de +2 PP fixos por compra preservado para personagens existentes. Use Múltiplos Lacaios (por graduação do efeito) para o custo oficial de +2 PP por graduação de Invocar."
           }
         }
       },

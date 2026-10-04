@@ -1,3 +1,5 @@
+import { ModifierDefinitionNotice } from '../../shared/ui/ModifierDefinitionNotice';
+import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 import { afflictionSummary } from '../../shared/lib/afflictionConfiguration';
 import { resolveEffectiveAction, resolveEffectiveDuration, resolveEffectiveRange } from '../../shared/lib/effectParameters';
 import { useTranslation } from 'react-i18next';
@@ -47,6 +49,7 @@ function AppliedModifierDescription({ reference, effectName }: { reference: Modi
       {applied.affectedRanks !== undefined && <span>{t('rulesInfo.affectedRanks', { count: applied.affectedRanks })}</span>}
       {optionLabel && <span>{optionLabel}</span>}
     </div>
+    <ModifierDefinitionNotice effectId={reference.effectId} modifierId={applied.modifierId} detailed />
     <RuleDescription definition={definition && subtype ? { ...definition, costValue: subtype.costValue } : definition} />
   </>;
 }
@@ -67,11 +70,15 @@ function EffectDescription({ reference }: { reference: ComponentReference }) {
 
 export function PowerReferenceDialog({ target, onClose }: { target: PowerReferenceTarget; onClose: () => void }) {
   const { t, i18n } = useTranslation();
-  if (target.kind === 'modifier') return <InfoDialog isOpen title={target.reference.definition?.name ?? target.reference.applied.modifierId} onClose={onClose}>
-    <AppliedModifierDescription reference={target.reference} effectName={target.effectName} />
+  const effectTarget = target.kind === 'effect' ? buildPowerReferences([target.reference.component], POWER_DEFS, MODIFIER_DEFS, i18n.language)[0] : undefined;
+  const modifierEffect = target.kind === 'modifier' ? POWER_DEFS.find(effect => effect.id === target.reference.effectId) : undefined;
+  const modifierDefinition = target.kind === 'modifier' ? modifierEffect ? resolveModifierDefinition(target.reference.applied, modifierEffect, MODIFIER_DEFS).definition : target.reference.definition : undefined;
+  const modifierTarget = target.kind === 'modifier' ? { ...target.reference, definition: modifierDefinition && localizeReference(modifierDefinition, i18n.language) } : undefined;
+  if (target.kind === 'modifier') return <InfoDialog isOpen title={modifierTarget?.definition?.name ?? target.reference.applied.modifierId} onClose={onClose}>
+    <AppliedModifierDescription reference={modifierTarget!} effectName={target.effectName} />
   </InfoDialog>;
-  if (target.kind === 'effect') return <InfoDialog isOpen title={target.reference.definition?.name ?? target.reference.component.effectId} onClose={onClose}>
-    <EffectDescription reference={target.reference} />
+  if (target.kind === 'effect') return <InfoDialog isOpen title={effectTarget?.definition?.name ?? target.reference.component.effectId} onClose={onClose}>
+    <EffectDescription reference={effectTarget!} />
   </InfoDialog>;
   const power = target.power;
   const references = buildPowerReferences(power.components, POWER_DEFS, MODIFIER_DEFS, i18n.language);

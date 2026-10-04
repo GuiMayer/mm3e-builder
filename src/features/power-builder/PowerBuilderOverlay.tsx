@@ -1,3 +1,4 @@
+import { ModifierDefinitionNotice } from '../../shared/ui/ModifierDefinitionNotice';
 import { AfflictionConditionsEditor } from './components/AfflictionConditionsEditor';
 import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
 import { InfoDialog } from '../../shared/ui/InfoDialog';
@@ -766,7 +767,7 @@ export function PowerBuilderOverlay({ existingPower, sourceCharacterId, onSave, 
                                   key={modifierInstanceKey(applied, modifierIndex)}
                                   className={`applied-mod ${def.category === 'flaw' ? 'applied-mod--flaw' : ''} ${applied.isPowerSpecific ? 'applied-mod--specific' : ''} ${hasIncompatibility ? 'applied-mod--incompatible' : ''}`}
                                 >
-                                  <span className="applied-mod-name">{def.name}{applicationNumber && <small className="applied-mod-instance-number"> #{applicationNumber}</small>}</span>
+                                  <span className="applied-mod-name">{def.name}<ModifierDefinitionNotice effectId={comp.effectId} modifierId={def.id} />{applicationNumber && <small className="applied-mod-instance-number"> #{applicationNumber}</small>}</span>
                                   <ModifierParameterControls
                                     applied={applied}
                                     definition={def}

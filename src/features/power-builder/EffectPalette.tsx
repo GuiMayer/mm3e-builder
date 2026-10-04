@@ -1,3 +1,5 @@
+import { ModifierDefinitionNotice } from '../../shared/ui/ModifierDefinitionNotice';
+import { modifierDefinitionVersion } from '../../shared/lib/modifierPresentation';
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { memo, useId, useMemo, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
@@ -232,6 +234,7 @@ function EffectPaletteComponent({
                 <span className="mod-badge mod-badge--max">max {modalMod.maxRanks}</span>
               )}
             </div>
+            <ModifierDefinitionNotice effectId={selectedEffect?.id} modifierId={modalMod.id} detailed />
             <p className="mod-modal-desc">{modalMod.longDescription || modalMod.description}</p>
             {modalMod.options && modalMod.options.length > 0 && (
               <div className="mod-modal-options">
@@ -506,7 +509,8 @@ function DraggableModifierComponent({
     : 'palette-item palette-item--flaw';
 
   // Phase 4: Show tooltip when power-specific version exists
-  const tooltipText = hasPowerSpecificVersion && selectedEffectName
+  const version = isPowerSpecific ? modifierDefinitionVersion(selectedEffectId, mod.id) : undefined;
+  const tooltipText = version ? `${mod.name}: ${t(`catalog.version.${version}`)}` : hasPowerSpecificVersion && selectedEffectName
     ? `${mod.name} - Power-specific version available for ${selectedEffectName} in "Specific" tab`
     : `${mod.category === 'extra' ? 'Extra' : 'Flaw'}: ${mod.name}, cost ${costLabel}`;
 
@@ -515,14 +519,14 @@ function DraggableModifierComponent({
       ref={setNodeRef}
       className={`${itemClass} ${isDragging ? 'palette-item--dragging' : ''} ${hasPowerSpecificVersion ? 'palette-item--has-specific' : ''}`}
       aria-label={tooltipText}
-      title={hasPowerSpecificVersion ? tooltipText : undefined}
+      title={version || hasPowerSpecificVersion ? tooltipText : undefined}
     >
       <button ref={setActivatorNodeRef} {...listeners} {...attributes} className="palette-item-drag"
         disabled={!selectedEffectId} aria-label={t('builder.dragModifier', { name: mod.name })} title={t('builder.dragHelp')}>
         <GripVertical size={16} />
       </button>
       <span className="palette-item-name">
-        {mod.name}
+        {mod.name}<ModifierDefinitionNotice effectId={selectedEffectId} modifierId={mod.id} />
         {hasPowerSpecificVersion && <span className="palette-item-specific-indicator" title="Power-specific version available">⚡</span>}
         <span className="palette-item-cost">{costLabel}</span>
       </span>
