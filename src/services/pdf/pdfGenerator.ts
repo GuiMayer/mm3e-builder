@@ -28,6 +28,8 @@ import { createPDFLabels, localizePDFDefinition, localizePDFPowers, localizePDFM
 import { escapeHtml } from './components/utils';
 import { DEFAULT_CUSTOMIZATION } from './types';
 import { hasSkillContribution } from '../../shared/lib/skillVisibility';
+import { effectiveTraitCharacter } from '../../shared/lib/traitValues';
+import { renderTraitModifiersSection } from './components/TraitModifiersSection';
 
 export interface PDFGeneratorOptions {
   character: ICharacter;
@@ -97,6 +99,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     );
 
     const labels = createPDFLabels(language);
+    const effective = effectiveTraitCharacter(character, resources);
     const displayPowerDefs = localizePDFPowers(powerDefs, language);
     const displayModifierDefs = localizePDFModifiers(modifierDefs, language);
     const displaySkillDefs = Object.fromEntries(Object.entries(skillDefs).map(([id, def]) => [id, localizePDFDefinition(def, language)]));
@@ -133,13 +136,13 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
 
     // Abilities
     sections.push(renderAbilitiesSection({
-      character, labels,
+      character: effective, labels,
       abilitiesCost,
     }));
 
     // Defenses
     sections.push(renderDefensesSection({
-      character, labels,
+      character: effective, labels,
       defensesCost,
       toughnessTotal,
       initiativeTotal,
@@ -151,8 +154,8 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     }));
 
     // Parallel lists share the page width without changing their source data.
-    const skillsSection = hideEmpty && !character.skills.some(hasSkillContribution) ? '' : renderSkillsSection({
-      character, labels, worksheet,
+    const skillsSection = hideEmpty && !effective.skills.some(skill => hasSkillContribution(skill, effective)) ? '' : renderSkillsSection({
+      character: effective, labels, worksheet,
       skillDefs: displaySkillDefs,
       skillsCost,
     });
@@ -205,6 +208,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     }
 
     // Combine sections
+    sections.push(renderTraitModifiersSection(character, resources, labels));
     if (customization.includeCampaignHistory) {
       sections.push(renderCampaignSection(character, { totalAvailable, remaining }, labels));
     }

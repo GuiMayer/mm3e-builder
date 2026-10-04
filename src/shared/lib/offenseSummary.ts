@@ -13,6 +13,7 @@ import type {
   IResource,
 } from '../../entities/types';
 import { getEffectiveAbilityRank, isStrengthBasedDamage } from './abilityRanks';
+import { effectiveTraitCharacter, circumstanceBonus } from './traitValues';
 import { resolveEffectiveRange } from './effectParameters';
 import { getAffectedRanks, getCharacterStrength, getComponentEffectRanks, getRankBoundaries } from './componentRanks';
 import { getResourceCharacter, getResourceAttackBonus } from './resourceContext';
@@ -173,7 +174,7 @@ export function calcAttackBonus(
       const def = skillDefs.find((d) => d.id === s.skillId);
       return def?.id === 'close_combat' && s.subtype?.toLowerCase() === powerName.toLowerCase();
     });
-    const skillRanks = (skillEntry?.ranks ?? 0) + (skillEntry?.otherBonus ?? 0);
+    const skillRanks = (skillEntry?.ranks ?? 0) + (skillEntry?.otherBonus ?? 0) + (skillEntry ? circumstanceBonus(character, { kind: 'skill', skillId: skillEntry.skillId, subtype: skillEntry.subtype }) : 0);
     if (skillRanks !== 0) parts.push(`Close Combat: ${powerName} ${skillRanks}`);
 
     if (accurateBonus > 0) parts.push(`Accurate ${accurateBonus}`);
@@ -195,7 +196,7 @@ export function calcAttackBonus(
     const def = skillDefs.find((d) => d.id === s.skillId);
     return def?.id === 'ranged_combat' && s.subtype?.toLowerCase() === powerName.toLowerCase();
   });
-  const skillRanks = (skillEntry?.ranks ?? 0) + (skillEntry?.otherBonus ?? 0);
+  const skillRanks = (skillEntry?.ranks ?? 0) + (skillEntry?.otherBonus ?? 0) + (skillEntry ? circumstanceBonus(character, { kind: 'skill', skillId: skillEntry.skillId, subtype: skillEntry.subtype }) : 0);
   if (skillRanks !== 0) parts.push(`Ranged Combat: ${powerName} ${skillRanks}`);
 
   if (accurateBonus > 0) parts.push(`Accurate ${accurateBonus}`);
@@ -378,8 +379,11 @@ export function buildTargetedEffectProfiles(
   _advantageDefs: IAdvantageDef[],
   modifierDefs: IModifierDef[] = [],
   translations?: { unarmed: string; damage: string },
-  resources: IResource[] = []
+  resources: IResource[] = [],
+  includeCircumstances = true,
 ): IOffenseEntry[] {
+  character = effectiveTraitCharacter(character, resources);
+  if (!includeCircumstances) character = { ...character, traitModifiers: undefined };
   const entries: IOffenseEntry[] = [];
   const { abilities, absentAbilities, skills } = character;
 
@@ -394,7 +398,7 @@ export function buildTargetedEffectProfiles(
       const def = skillDefs.find((d) => d.id === s.skillId);
       return def?.id === 'close_combat' && s.subtype?.toLowerCase() === 'unarmed';
     });
-    const unarmedSkillRanks = (unarmedSkill?.ranks ?? 0) + (unarmedSkill?.otherBonus ?? 0);
+    const unarmedSkillRanks = (unarmedSkill?.ranks ?? 0) + (unarmedSkill?.otherBonus ?? 0) + (unarmedSkill ? circumstanceBonus(character, { kind: 'skill', skillId: unarmedSkill.skillId, subtype: unarmedSkill.subtype }) : 0);
 
     const total = base + closeAdvRanks + unarmedSkillRanks;
     const parts = [`FGT ${base}`];

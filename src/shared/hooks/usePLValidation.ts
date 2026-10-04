@@ -19,6 +19,7 @@ import { useResourcesStore } from '../../store/resourcesStore';
 import { getEffectiveAbilityRank } from '../lib/abilityRanks';
 import { collectAbsentAbilityWarnings } from '../lib/abilityValidation';
 import { useLocalizedData } from './useLocalizedData';
+import { effectiveTraitCharacter } from '../lib/traitValues';
 
 /**
  * Hook that returns current character validation notices in real time.
@@ -32,9 +33,10 @@ import { useLocalizedData } from './useLocalizedData';
  * - Luck advantage: ranks <= PL÷2 (rounded down)
  */
 export function usePLValidation(): CharacterValidationNotice[] {
-  const { character } = useActiveCharacter();
+  const { character: original } = useActiveCharacter();
   const validationRules = useAppStore((s) => s.validationRules);
   const resources = useResourcesStore((state) => state.resources);
+  const character = useMemo(() => effectiveTraitCharacter(original, resources), [original, resources]);
   const skillDefs = useLocalizedData(SKILL_DEFS);
 
   return useMemo(() => {
@@ -72,7 +74,7 @@ export function usePLValidation(): CharacterValidationNotice[] {
 
     // ── Targeted effects (powers, equipment, AEs, manual and unarmed) ───────
     // The sheet, PDF and validation consume this same mechanical derivation.
-    const profiles = buildTargetedEffectProfiles(character, POWER_DEFS, skillDefs, [], MODIFIER_DEFS, undefined, resources);
+    const profiles = buildTargetedEffectProfiles(character, POWER_DEFS, skillDefs, [], MODIFIER_DEFS, undefined, resources, false);
     for (const profile of profiles) {
       if (!profile.causesResistance || profile.effectRank === null) continue;
       const label = profile.name || profile.componentName || 'Targeted effect';

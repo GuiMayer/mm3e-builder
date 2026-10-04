@@ -9,6 +9,7 @@ import type { ISkillDef } from '../../../entities/types';
 import { escapeHtml, formatBonus } from './utils';
 import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
 import { hasSkillContribution } from '../../../shared/lib/skillVisibility';
+import { circumstanceBonus } from '../../../shared/lib/traitValues';
 
 export interface SkillsSectionData {
   labels?: PDFLabels;
@@ -29,7 +30,7 @@ export function renderSkillsSection(data: SkillsSectionData): string {
   // Filter skills with ranks > 0
   const activeSkills = data.worksheet ? [...skills, ...Object.values(skillDefs)
     .filter(def => !skills.some(skill => skill.skillId === def.id))
-    .map(def => ({ skillId: def.id, ranks: 0, subtype: null }))] : skills.filter(hasSkillContribution);
+    .map(def => ({ skillId: def.id, ranks: 0, subtype: null, otherBonus: undefined }))] : skills.filter(skill => hasSkillContribution(skill, character));
 
   if (activeSkills.length === 0) {
     return `
@@ -48,7 +49,7 @@ export function renderSkillsSection(data: SkillsSectionData): string {
   });
 
   const skillsHtml = sortedSkills
-    .map(skill => renderSkillEntry(skill, skillDefs, abilities, absentAbilities, labels, !!data.worksheet, !skills.includes(skill)))
+    .map(skill => renderSkillEntry({ ...skill, otherBonus: (skill.otherBonus ?? 0) + circumstanceBonus(character, { kind: 'skill', skillId: skill.skillId, subtype: skill.subtype }) }, skillDefs, abilities, absentAbilities, labels, !!data.worksheet, !skills.includes(skill)))
     .join('');
   
   const totalRanks = skills.reduce((sum, s) => sum + s.ranks, 0);

@@ -2,6 +2,13 @@ import type { IPowerEffect, IModifierDef } from '../../entities/types';
 export type PDFLabels = (label: string) => string;
 export const englishPDFLabels: PDFLabels = label => label;
 const portuguese: Record<string, string> = {
+  'Trait modifiers': 'Modificadores de traços',
+  'Circumstance': 'Circunstância',
+  'Check only': 'Somente teste',
+  'Active defense': 'Defesa ativa',
+  'Active': 'Ativo',
+  'Inactive': 'Inativo',
+  'Purchased ranks retain their original cost. Circumstance modifiers apply only in the stated situation.': 'Graduações compradas conservam seu custo de origem. Modificadores de circunstância aplicam-se somente na situação indicada.',
   "Degree 1": "1º grau",
   "Degree 2": "2º grau",
   "Degree 3": "3º grau",

@@ -17,6 +17,7 @@ import type { ICharacter } from '../../../entities/types';
 import type { ISkillDef } from '../../../entities/types';
 import { setField } from '../helpers';
 import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
+import { circumstanceBonus } from '../../../shared/lib/traitValues';
 
 // ── Static skill-id → PDF prefix map ──────────────────────────
 const FIXED_SKILL_PREFIX: Record<string, string> = {
@@ -47,6 +48,7 @@ export function fillSkills(
   character: ICharacter,
   skillDefs: ISkillDef[]
 ): void {
+  character = { ...character, skills: character.skills.map(skill => ({ ...skill, otherBonus: (skill.otherBonus ?? 0) + circumstanceBonus(character, { kind: 'skill', skillId: skill.skillId, subtype: skill.subtype }) })) };
   const { abilities, absentAbilities, skills } = character;
 
   // Build a quick lookup: skillId → ISkillDef

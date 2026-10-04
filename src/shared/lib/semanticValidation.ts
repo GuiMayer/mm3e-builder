@@ -247,7 +247,7 @@ export function validatePowerForSave(
     ].filter((component) => component.modifiers.some((modifier) => modifier.modifierId === 'accurate')).map((component) => component.id));
     const profiles = buildTargetedEffectProfiles(
       { ...character, powers: [power], equipment: [], resourceLinks: [], manualOffenseRows: [] },
-      context.powerDefs, context.skillDefs ?? [], context.advantageDefs ?? [], context.modifierDefs,
+      context.powerDefs, context.skillDefs ?? [], context.advantageDefs ?? [], context.modifierDefs, undefined, [], false,
     ).filter((profile) => profile.sourceType === 'power' && profile.requiresAttackCheck
       && profile.effectRank !== null && accurateComponents.has(profile.componentId ?? ''));
     for (const profile of profiles) {

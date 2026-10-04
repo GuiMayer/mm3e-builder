@@ -8,7 +8,7 @@ import type {
   IPowerEffect,
   ICharacterResourceLink,
 } from '../../entities/types';
-import { getCharacterStrength } from './componentRanks';
+import { getPricingStrength } from './pricingStrength';
 import { calcEquipmentEPCost, calculatePowerPricing } from './mathEngine';
 import { MODIFIER_DEFS, POWER_DEFS } from '../../entities/gameDataLoaders';
 
@@ -112,7 +112,7 @@ export function getLinkedResourceCharges(character: ICharacter, resources: IReso
   const charges = (character.resourceLinks ?? []).flatMap((link): LinkedResourceCharge[] => {
     const resource = library.get(link.resourceId);
     if (!resource) return [];
-    const cost = getResourceCost(resource, powerDefs, modifierDefs, getCharacterStrength(character));
+    const cost = getResourceCost(resource, powerDefs, modifierDefs, getPricingStrength(character, resources));
     return [{ link, resource, ...cost, charged: link.isFree ? 0 : cost.unit === 'EP' ? link.contributionEP ?? cost.total : cost.total, alternate: false }];
   });
   const groups = new Map<string, LinkedResourceCharge[]>();

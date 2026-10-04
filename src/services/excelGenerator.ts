@@ -1,3 +1,4 @@
+import { circumstanceBonus, effectiveTraitCharacter, resolveTraitState } from '../shared/lib/traitValues';
 import { formatComponentDetails } from './pdf/components/powerDetails';
 /**
  * Excel Generator — Exports character sheet as a styled .xlsx workbook.
@@ -184,17 +185,19 @@ export async function generateExcel(
     gameData.modifierDefs
   );
 
+  const effective = effectiveTraitCharacter(character, resources);
+
   // ── 1. SUMMARY SHEET ──
   buildSummarySheet(wb, character, labels, pointSummary);
 
   // ── 2. ABILITIES SHEET ──
-  buildAbilitiesSheet(wb, character, labels);
+  buildAbilitiesSheet(wb, character, labels, effective);
 
   // ── 3. DEFENSES SHEET ──
   buildDefensesSheet(wb, character, labels, gameData, resources);
 
   // ── 4. SKILLS SHEET ──
-  buildSkillsSheet(wb, character, labels, gameData, language);
+  buildSkillsSheet(wb, character, labels, gameData, language, effective);
 
   // ── 5. ADVANTAGES SHEET ──
   buildAdvantagesSheet(wb, character, labels, gameData, language);
@@ -230,6 +233,15 @@ export async function generateExcel(
   // ── 9. PP LOG SHEET (Campaign Mode only) ──
   if (character.campaignMode || character.campaign || character.ppLog?.length) {
     buildCampaignSheet(wb, character, labels, pointSummary);
+  }
+
+  const traits = resolveTraitState(character, resources);
+  if (traits.contributions.length || character.traitModifiers?.length) {
+    const sheet = wb.addWorksheet(createPDFLabels(language)('Trait modifiers'));
+    sheet.addRow([labels.colName, labels.colRanks, labels.colDescription]);
+    for (const item of traits.contributions) sheet.addRow([item.key, item.ranks, item.name]);
+    for (const item of character.traitModifiers ?? []) sheet.addRow([JSON.stringify(item.target), item.value, `${item.source} · ${item.scope} · ${item.active ? labels.yes : labels.no}`]);
+    autoWidth(sheet);
   }
 
   // ── Download ──
@@ -346,7 +358,7 @@ function buildSummarySheet(
   autoWidth(ws);
 }
 
-function buildAbilitiesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels) {
+function buildAbilitiesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, effective: ICharacter) {
   const ws = wb.addWorksheet(labels.sheetAbilities);
 
   const header = ws.getRow(1);
@@ -360,7 +372,7 @@ function buildAbilitiesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
     row.getCell(1).value = key.toUpperCase();
     row.getCell(1).font = { bold: true, size: 10 };
     row.getCell(2).value = labels.abilityNames[key] || key;
-    row.getCell(3).value = isAbsent ? labels.absent : char.abilities[key];
+    row.getCell(3).value = isAbsent ? labels.absent : effective.abilities[key];
     row.getCell(4).value = isAbsent ? -10 : char.abilities[key] * 2;
     row.getCell(4).numFmt = '0 "PP"';
     if (i % 2 === 1) {
@@ -382,6 +394,8 @@ function buildAbilitiesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Exp
 }
 
 function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: ExportLabels, gameData: GameDataRefs, resources: IResource[]) {
+  const effective = effectiveTraitCharacter(char, resources);
+  const values = deriveCharacterDefenses(char, gameData.powerDefs, resources);
   const ws = wb.addWorksheet(labels.sheetDefenses);
 
   const header = ws.getRow(1);
@@ -389,10 +403,10 @@ function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expo
   styleHeaderRow(header, 5);
 
   const defs = [
-    { key: 'dodge', ability: 'agl', abilityVal: getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'agl'), bought: char.defenses.dodge },
-    { key: 'parry', ability: 'fgt', abilityVal: getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'fgt'), bought: char.defenses.parry },
-    { key: 'fortitude', ability: 'sta', abilityVal: getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'sta'), bought: char.defenses.fortitude },
-    { key: 'will', ability: 'awe', abilityVal: getEffectiveAbilityRank(char.abilities, char.absentAbilities, 'awe'), bought: char.defenses.will },
+    { key: 'dodge', ability: 'agl', abilityVal: getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, 'agl'), bought: char.defenses.dodge },
+    { key: 'parry', ability: 'fgt', abilityVal: getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, 'fgt'), bought: char.defenses.parry },
+    { key: 'fortitude', ability: 'sta', abilityVal: getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, 'sta'), bought: char.defenses.fortitude },
+    { key: 'will', ability: 'awe', abilityVal: getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, 'awe'), bought: char.defenses.will },
   ];
 
   defs.forEach((d, i) => {
@@ -401,7 +415,7 @@ function buildDefensesSheet(wb: ExcelJS.Workbook, char: ICharacter, labels: Expo
     row.getCell(1).font = { bold: true };
     row.getCell(2).value = `${d.ability.toUpperCase()} ${d.abilityVal}`;
     row.getCell(3).value = d.bought;
-    row.getCell(4).value = d.abilityVal + d.bought;
+    row.getCell(4).value = values[`${d.key}Total` as 'dodgeTotal' | 'parryTotal' | 'fortitudeTotal' | 'willTotal'];
     row.getCell(4).font = { bold: true };
     row.getCell(5).value = d.bought;
     row.getCell(5).numFmt = '0 "PP"';
@@ -452,7 +466,8 @@ function buildSkillsSheet(
   char: ICharacter,
   labels: ExportLabels,
   gameData: GameDataRefs,
-  lang: string
+  lang: string,
+  effective: ICharacter,
 ) {
   const ws = wb.addWorksheet(labels.sheetSkills);
 
@@ -460,15 +475,15 @@ function buildSkillsSheet(
   skillHeader.values = [labels.colName, labels.colAbility, labels.colRanks, 'Other', labels.colTotal];
   styleHeaderRow(skillHeader, 5);
 
-  char.skills.forEach((sk, i) => {
+  effective.skills.forEach((sk, i) => {
     const def = gameData.skillDefs.find((d) => d.id === sk.skillId);
     const row = ws.getRow(i + 2);
     let name = def ? locName(def, lang) : sk.skillId;
     if (sk.subtype) name += `: ${sk.subtype}`;
     const abilityVal = def
-      ? getEffectiveAbilityRank(char.abilities, char.absentAbilities, def.baseAbility)
+      ? getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, def.baseAbility)
       : 0;
-    const other = sk.otherBonus ?? 0;
+    const other = (sk.otherBonus ?? 0) + circumstanceBonus(char, { kind: 'skill', skillId: sk.skillId, subtype: sk.subtype });
 
     row.getCell(1).value = name;
     row.getCell(2).value = def ? def.baseAbility.toUpperCase() : '';
@@ -484,7 +499,7 @@ function buildSkillsSheet(
   });
 
   const totalRanks = char.skills.reduce((s, sk) => s + sk.ranks, 0);
-  const totalRow = ws.getRow(char.skills.length + 2);
+  const totalRow = ws.getRow(effective.skills.length + 2);
   totalRow.getCell(1).value = 'Total';
   totalRow.getCell(1).font = { bold: true };
   totalRow.getCell(3).value = `${totalRanks} ranks`;

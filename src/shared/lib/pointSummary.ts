@@ -13,7 +13,7 @@ import {
   type PowerPricing,
   type PricingDiagnostic,
 } from './mathEngine';
-import { getCharacterStrength } from './componentRanks';
+import { getPricingStrength } from './pricingStrength';
 import { getCharacterResourceEPUsed, getCharacterResourcePPUsed, isDeviceResource } from './resourceCalculations';
 import { campaignInitialPP } from './campaign';
 
@@ -74,7 +74,7 @@ export function calculateCharacterPointSummary(
   const skillsCost = calculateSkillsCost(totalSkillRanks);
   const advantagesCost = calculateAdvantagesCost(character.advantages);
   const powerPricing = character.powers.map((power) =>
-    calculatePowerPricing(power, powerDefs, modifierDefs, getCharacterStrength(character))
+    calculatePowerPricing(power, powerDefs, modifierDefs, getPricingStrength(character, resources))
   );
   const resourcePPUsed = getCharacterResourcePPUsed(character, resources, powerDefs, modifierDefs);
   const powersCost = powerPricing.reduce((sum, pricing) => sum + pricing.total, 0) + resourcePPUsed;
@@ -89,7 +89,7 @@ export function calculateCharacterPointSummary(
   const totalAvailable = (character.campaignMode ? campaignInitialPP(character) : character.header.powerLevel * 15) + ppEarned;
 
   const equipmentPricing = (character.equipment ?? []).map((item) =>
-    calculatePowerPricing(item, powerDefs, modifierDefs, getCharacterStrength(character))
+    calculatePowerPricing(item, powerDefs, modifierDefs, getPricingStrength(character, resources))
   );
   const legacyEPUsed = equipmentPricing.reduce(
     (sum, pricing) => sum + pricing.equipmentTotal,
@@ -127,7 +127,7 @@ export function calculateCharacterPointSummary(
       ...powerPricing.flatMap((pricing) => pricing.diagnostics),
       ...equipmentPricing.flatMap((pricing) => pricing.diagnostics),
       ...resources.filter((resource) => isDeviceResource(resource) && (character.resourceLinks ?? []).some((link) => !link.isFree && link.resourceId === resource.id)).flatMap((resource) =>
-        isDeviceResource(resource) ? calculatePowerPricing(resource.power, powerDefs, modifierDefs, getCharacterStrength(character)).diagnostics : []),
+        isDeviceResource(resource) ? calculatePowerPricing(resource.power, powerDefs, modifierDefs, getPricingStrength(character, resources)).diagnostics : []),
     ],
   };
 }

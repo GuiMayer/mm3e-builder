@@ -726,9 +726,9 @@ export function calcToughnessBonus(
   for (const power of powers) {
     for (const comp of power.components) {
       const def = powerDefs.find((d) => d.id === comp.effectId);
-      if (def?.enhancesDefense === 'toughness') {
+      if (def?.enhancesDefense === 'toughness' || (comp.effectId === 'enhanced-trait' && comp.enhancedTarget?.kind === 'defense' && comp.enhancedTarget.key === 'toughness')) {
         bonus += comp.ranks;
-        breakdown.push(`${power.name || def.name} ${comp.ranks}`);
+        breakdown.push(`${power.name || def?.name || 'Toughness'} ${comp.ranks}`);
       }
     }
   }

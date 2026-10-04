@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { getCharacterStrength } from '../../../shared/lib/componentRanks';
+import { getPricingStrength } from '../../../shared/lib/pricingStrength';
+import { useResourcesStore } from '../../../store/resourcesStore';
 import type {
   ICharacterPower,
   ICharacter,
@@ -46,7 +47,8 @@ export function usePowerCostCalculation({
   character,
   attackBonusOverride,
 }: UsePowerCostCalculationProps) {
-  const strength = getCharacterStrength(character);
+  const resources = useResourcesStore(state => state.resources);
+  const strength = getPricingStrength({ ...character, powers: [...character.powers.filter(item => item.id !== power.id), power] }, resources);
   const selectPricing = useMemo(() => createPowerPricingSelector(powerDefs, modifierDefs, strength), [powerDefs, modifierDefs, strength]);
   const pricing = selectPricing(power);
   const componentCosts = pricing.components as ComponentCostResult[];
@@ -97,7 +99,7 @@ function getPowerPLViolation({ validationRules, character, power, powerDefs, mod
     powerDefs,
     SKILL_DEFS,
     [],
-    modifierDefs.length > 0 ? modifierDefs : MODIFIER_DEFS
+    modifierDefs.length > 0 ? modifierDefs : MODIFIER_DEFS, undefined, [], false
   ).filter((profile) => profile.sourceType === 'power' && profile.causesResistance && profile.effectRank !== null);
 
   for (const profile of profiles) {

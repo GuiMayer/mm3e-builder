@@ -10,6 +10,7 @@ import type { IOffenseEntry } from '../../shared/lib/offenseSummary';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import { deriveCharacterDefenses } from '../../shared/lib/derivedDefenses';
 import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
+import { effectiveTraitCharacter } from '../../shared/lib/traitValues';
 
 import { loadPDFTemplate } from './pdfTemplateLoader';
 import { sliceWithOverflow } from './helpers';
@@ -39,6 +40,7 @@ export type { PDFOverflowReport } from './overflowCollector';
  * @param character - Full character data from charStore
  */
 export async function fillAndDownloadPDF(character: ICharacter, resources: IResource[] = []): Promise<void> {
+  const effective = effectiveTraitCharacter(character, resources);
   // ── 1. Derive offense entries (pure function, no React) ───────
   const offenseEntries: IOffenseEntry[] = buildOffenseSummary(
     character,
@@ -80,13 +82,13 @@ export async function fillAndDownloadPDF(character: ICharacter, resources: IReso
   // ── 6. Fill each section ──────────────────────────────────────
   fillHeader(form, character.header, { totalAvailable, totalSpent, remaining });
 
-  fillAbilities(form, character.abilities, character.absentAbilities, { abilitiesCost });
+  fillAbilities(form, effective.abilities, character.absentAbilities, { abilitiesCost });
 
   fillDefenses(
     form,
-    character.abilities,
+    effective.abilities,
     character.absentAbilities,
-    character.defenses,
+    effective.defenses,
     toughnessTotal,
     initiativeTotal,
     { defensesCost }
@@ -95,7 +97,7 @@ export async function fillAndDownloadPDF(character: ICharacter, resources: IReso
   fillOffense(form, { offenseEntries, character, attackOverflow });
 
   // ── Phase 2: Page 2 sections ──────────────────────────────
-  fillSkills(form, character, SKILL_DEFS);
+  fillSkills(form, effective, SKILL_DEFS);
 
   const { overflowLines: advantageOverflow } = fillAdvantages(form, character, ADVANTAGE_DEFS);
 
