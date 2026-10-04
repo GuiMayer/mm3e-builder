@@ -1273,5 +1273,8 @@
   "builder.validation.parameterAmbiguous": "Composição ambígua: o parâmetro exibido é provisório. Revise com o narrador.",
   "builder.validation.specificDurationInvalid": "Este modificador específico de duração não pode ser composto com a duração selecionada.",
   "builder.validation.provisional": "Parâmetros provisórios; revise os modificadores selecionados.",
-  "builder.validation.maintenance": "Manutenção"
+  "builder.validation.maintenance": "Manutenção",
+  "skills.trainingWarning": "{{skill}} exige treinamento; este teste está sem treinamento. Revise com o narrador.",
+  "menu.validationRules.enforceTrainedOnlySkills": "Avisos de perícias sem treinamento",
+  "menu.validationRules.trainingHint": "Apenas aviso; graduações ou Faz-Tudo permitem treinamento. Botões de rolagem continuam disponíveis."
 }

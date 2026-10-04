@@ -1273,5 +1273,8 @@
   "builder.validation.parameterAmbiguous": "Ambiguous composition: the displayed parameter is provisional. Ask the GM to review it.",
   "builder.validation.specificDurationInvalid": "This specific duration modifier cannot be composed with the selected duration.",
   "builder.validation.provisional": "Provisional parameters; review the selected modifiers.",
-  "builder.validation.maintenance": "Maintenance"
+  "builder.validation.maintenance": "Maintenance",
+  "skills.trainingWarning": "{{skill}} requires training; this check is untrained. Review with the GM.",
+  "menu.validationRules.enforceTrainedOnlySkills": "Untrained skill warnings",
+  "menu.validationRules.trainingHint": "Advisory only; ranks or Jack-of-all-trades grant training. Roll buttons stay available."
 }

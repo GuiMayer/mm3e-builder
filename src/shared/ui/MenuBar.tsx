@@ -404,6 +404,10 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
                   {(validationRules?.enforceDuplicateModifiers ?? true) ? <Shield size={14} /> : <ShieldOff size={14} />}
                   {t('menu.validationRules.enforceDuplicateModifiers')}: <strong>{(validationRules?.enforceDuplicateModifiers ?? true) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
                 </button>
+                <button className="dropdown-item" title={t('menu.validationRules.trainingHint')} onClick={() => setValidationRules({ enforceTrainedOnlySkills: !(validationRules?.enforceTrainedOnlySkills ?? false) })}>
+                  {(validationRules?.enforceTrainedOnlySkills ?? false) ? <Shield size={14} /> : <ShieldOff size={14} />}
+                  {t('menu.validationRules.enforceTrainedOnlySkills')}: <strong>{(validationRules?.enforceTrainedOnlySkills ?? false) ? t('menu.strictMode.active') : t('menu.strictMode.disabled')}</strong>
+                </button>
                 <button
                   className="dropdown-item"
                   onClick={() => {

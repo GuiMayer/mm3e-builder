@@ -1,3 +1,6 @@
+import { getSkillTrainingWarning } from '../../shared/lib/skillEligibility';
+import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
+import { useAppStore } from '../../store/appStore';
 import { useId, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacter, ICharacterAdvantage, ISkillDef } from '../../entities/types';
@@ -10,14 +13,16 @@ import { D20Icon } from './D20Icon';
 
 export function AdvantageRollActions({ advantage, name, character, skillDefs }: {
   advantage: ICharacterAdvantage; name: string;
-  character: Pick<ICharacter, 'skills' | 'abilities' | 'absentAbilities'>;
+  character: Pick<ICharacter, 'skills' | 'abilities' | 'absentAbilities' | 'advantages'>;
   skillDefs: ISkillDef[];
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const trainingWarnings = useAppStore(state => state.validationRules?.enforceTrainedOnlySkills ?? false);
   const checks = advantageSkillChecks(advantage, character.skills, skillDefs);
   const choices = checks.map(({ skill, definition, routine }) => {
     const check = calculateSkillCheck(character, skill, definition);
-    return { bonus: check.total, label: `${name} · ${skillDisplayName(skill, definition)}`, section: t('advantages.title'), routine, breakdown: [`${t(`abilities.${definition.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])] };
+    const issue = getSkillTrainingWarning(skill, definition, character.advantages, trainingWarnings);
+    return { warning: issue ? formatDiagnostic(issue, t, i18n.language) : undefined, bonus: check.total, label: `${name} · ${skillDisplayName(skill, definition)}`, section: t('advantages.title'), routine, breakdown: [`${t(`abilities.${definition.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])] };
   });
   if (advantage.advantageId === 'improved_initiative' || advantage.advantageId === 'defensive_roll') return <DefensiveAdvantageRoll id={advantage.advantageId} name={name} />;
   if (advantage.advantageId === 'close_attack' || advantage.advantageId === 'ranged_attack') return <AttackAdvantageRoll id={advantage.advantageId} name={name} />;

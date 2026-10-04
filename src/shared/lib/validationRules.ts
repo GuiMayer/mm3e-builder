@@ -33,7 +33,7 @@ export const DEFAULT_VALIDATION_RULES: IValidationRules = {
   plTradeOffsAsErrors: true,               // In strict mode: true = errors, false = warnings
   
   // Skill validations
-  enforceTrainedOnlySkills: false,         // Prevent untrained use (optional - some GMs allow)
+  enforceTrainedOnlySkills: false,         // Warn about untrained use (optional - some GMs allow)
   enforceSkillAbilityRequirements: false,  // Warn about skills with absent base abilities (optional)
   
   // Power field validations
@@ -252,7 +252,7 @@ export const VALIDATION_RULE_METADATA: ValidationRuleMetadata[] = [
   {
     id: 'enforceTrainedOnlySkills',
     name: 'Trained-Only Skills',
-    description: 'Prevents using trained-only skills without ranks',
+    description: 'Warns about trained-only skill checks without ranks; Jack-of-all-trades is an exception',
     category: 'skill',
     recommendedFor: 'optional',
     disableWhen: 'Using house rules that allow untrained attempts at penalty',

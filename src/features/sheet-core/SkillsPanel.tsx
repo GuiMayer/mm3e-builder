@@ -1,3 +1,6 @@
+import { getSkillTrainingWarning } from '../../shared/lib/skillEligibility';
+import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
+import { useAppStore } from '../../store/appStore';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { memo, useState, useMemo, useRef, useEffect } from 'react';
@@ -28,11 +31,12 @@ const ABILITY_COLORS: Record<AbilityKey, { bg: string; color: string; border: st
 };
 
 function SkillsPanelComponent({ cost }: { cost: number }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const skillDefs = useLocalizedData(SKILL_DEFS);
-  const character = useCharacterSelector(useShallow((value) => ({ skills: value.skills, abilities: value.abilities, absentAbilities: value.absentAbilities })));
+  const character = useCharacterSelector(useShallow((value) => ({ skills: value.skills, abilities: value.abilities, absentAbilities: value.absentAbilities, advantages: value.advantages })));
   const { setSkills } = useCharacterActions();
   const skills = character.skills;
+  const trainingWarnings = useAppStore(state => state.validationRules?.enforceTrainedOnlySkills ?? false);
 
   const [showSelector, setShowSelector]     = useState(false);
   const [searchTerm, setSearchTerm]         = useState('');
@@ -139,6 +143,8 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
           const def = skillDefs.find((d) => d.id === skill.skillId);
           if (!def) return null;
           const check = calculateSkillCheck(character, skill, def);
+          const trainingIssue = getSkillTrainingWarning(skill, def, character.advantages, trainingWarnings);
+          const warning = trainingIssue ? formatDiagnostic(trainingIssue, t, i18n.language) : undefined;
           const abilityVal = check.ability;
           const displayName = def.subtyped && skill.subtype
             ? `${def.name}: ${skill.subtype}`
@@ -185,9 +191,10 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
               </button>
               <span className="sheet-check-result">
                 <span className="skill-total">= {check.total}</span>
-                <span className="sheet-roll-slot"><RollButton bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])]} /></span>
+                <span className="sheet-roll-slot"><RollButton warning={warning} bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : [])]} /></span>
               </span>
               </div>
+              {warning && <small className="skill-training-warning">{warning}</small>}
             </div>
           );
         })}
@@ -368,6 +375,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
           border-radius: var(--r-sm); padding: var(--s-xs) var(--s-md);
           transition: border-color var(--t-fast);
         }
+        .skill-training-warning { grid-column: 1 / -1; color: var(--c-status-warning); font-size: .75rem; line-height: 1.35; }
         .skill-row:hover { border-color: var(--c-border-active); }
         .skill-check-inputs,.skill-ranks-group,.skill-other-group { display: flex; align-items: center; gap: var(--s-xs); }
         .skill-check-inputs { flex-wrap: wrap; }

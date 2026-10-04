@@ -111,7 +111,6 @@ resultante nos guias vigentes e apenas o trabalho aberto neste arquivo.
 
 | Etapa | Pendência | Entrega | Commit proposto |
 | --- | --- | --- | --- |
-| 6 | P03 | Avisos de treinamento em perícias e atalhos de rolagem | `fix(validation): integrate trained-only skill diagnostics` |
 | 7 | P03 | Configuração opcional e validação contextual de Aflição | `feat(power-builder): integrate optional affliction condition diagnostics` |
 | 8 | P04 | Identificação de definições legadas e orientação de compra | `fix(catalog): distinguish legacy modifier definitions` |
 
@@ -124,20 +123,6 @@ Cada commit inclui testes relevantes e atualização do guia correspondente.
 Não atribuir uma versão nova antes de consolidar o escopo implementado.
 
 ### P03 — Integração das preferências
-
-**Perícias que exigem treinamento:**
-
-- Criar um avaliador puro separado de `calculateSkillCheck`: treinamento é
-  elegibilidade orientativa, não outro cálculo de bônus. Usar graduações compradas,
-  definição `trainedOnly` e exceções fundamentadas, incluindo Jack-of-all-trades.
-  Bônus de habilidade ou `otherBonus` não substituem treinamento.
-- Exibir o mesmo aviso na linha de perícia e nos atalhos de vantagem que usam essa
-  perícia. A preferência funciona independentemente da validação de limites de NP;
-  ajustar seu rótulo/descrição para anunciar aviso, não bloqueio. Manter o botão disponível, sem modal por rolagem. Rolagem manual não
-  possui fonte e não recebe essa validação. Desligar a preferência remove apenas
-  o aviso correspondente, sem esconder a perícia ou modificar seu bônus.
-- Testar 0/1 graduação, perícia sem exigência, vantagem de exceção, subtipos,
-  atalhos com escolha, mudança de preferência e preservação do histórico de dados.
 
 **Aflição:**
 

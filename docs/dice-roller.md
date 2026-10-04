@@ -70,3 +70,11 @@ unchanged.
 - Rolls never update character fields, dirty revisions, character undo history,
   JSON/JSONL, PDF, or Excel. No schema or migration was added.
 - `randomD20` uses Web Crypto with rejection sampling to avoid modulo bias.
+
+## Perícias sem treinamento
+
+A preferência de avisos de treinamento considera graduações compradas e a
+exceção Faz-Tudo (Jack-of-all-trades). Bônus de atributo/situação não substituem
+treinamento. O mesmo avaliador atende perícias e atalhos de vantagens; funciona
+com limites de NP desligados. O aviso não desabilita rolagens nem muda bônus,
+fontes ou histórico. Rolagens manuais não recebem esse diagnóstico.

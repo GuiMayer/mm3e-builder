@@ -5,6 +5,7 @@ import { D20Icon } from './D20Icon';
 
 interface Props {
   bonus: number;
+  warning?: string;
   label: string;
   section: string;
   detail?: string;
@@ -14,11 +15,11 @@ interface Props {
   onRoll?: () => void;
 }
 
-export function RollButton({ bonus, label, section, detail, breakdown, routine = false, showLabel = false, onRoll }: Props) {
+export function RollButton({ warning, bonus, label, section, detail, breakdown, routine = false, showLabel = false, onRoll }: Props) {
   const { t } = useTranslation();
   const hasCharacter = useCharactersStore(state => state.tabs.some(tab => tab.id === state.activeCharacterId));
   const signedBonus = bonus < 0 ? `− ${Math.abs(bonus)}` : `+ ${bonus}`;
-  const description = t(routine ? 'dice.routineNamed' : 'dice.rollNamed', { name: label, bonus: signedBonus });
+  const description = [t(routine ? 'dice.routineNamed' : 'dice.rollNamed', { name: label, bonus: signedBonus }), warning].filter(Boolean).join(' · ');
   return <button type="button" className={`roll-button${showLabel ? ' roll-button--label' : ''}`} disabled={!hasCharacter || !Number.isSafeInteger(bonus) || !Number.isSafeInteger(bonus + 20)} title={description} aria-label={description}
     onClick={event => {
       event.stopPropagation();
@@ -31,6 +32,6 @@ export function RollButton({ bonus, label, section, detail, breakdown, routine =
       onRoll?.();
     }}>
     {routine ? <span className="roll-routine-icon">10</span> : <D20Icon size={20} />}
-    {showLabel && <span>{label}</span>}
+    {showLabel && <span>{label}{warning && <small className="roll-training-warning"> · {warning}</small>}</span>}
   </button>;
 }
