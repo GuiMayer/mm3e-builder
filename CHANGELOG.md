@@ -136,7 +136,7 @@ completion commit, not a verified deployment date.
 ### Quality
 - 69 test files / 825 passing tests, type checking, lint, production build and static-asset verification. Added recovery, reviewed migration, official cost/context examples, import conflicts, quota/backup/stale-window checks and real PDF/Excel reopening.
 - Isolated browser checks with synthetic sheets covered 10 EP → 8 PP acquisition, Flight 7 review, 18 EP vehicle systems, generic Limited on movement with undo, nonblocking headquarters effect budgets, feature notes, import cancellation/copies, English/Portuguese and 390px layouts. Real user browser drafts were not accessed; native Save dialogs were not automated.
-- [Resources guide](docs/resources.md), [migration preflight](docs/resources-migration-preflight.md) and [commit packages](docs/version-history.md) document compatibility. Calculation revision is 6; no push/deploy is implied by this local release.
+- [Resources guide](docs/resources.md) and [commit packages](docs/version-history.md) document compatibility. Calculation revision is 6; no push/deploy is implied by this local release.
 
 ---
 
@@ -382,10 +382,6 @@ completion commit, not a verified deployment date.
   - Resolved TypeScript errors in Phase 3.5 of multi-character implementation
   - Fixed configurable fields and validation test errors
 
-### Documentation
-- Complete audit reports for advantages corrections in docs/audit/
-- Commits analysis document: docs/analysis/commits-v1.9.0-to-v1.10.0.txt
-
 ---
 
 ## [1.9.0] - 2026-05-14
@@ -537,7 +533,6 @@ completion commit, not a verified deployment date.
 ### Added
 - **Complete Powers Modifiers Audit**: Verified all 40 powers against official M&M 3e Hero's Handbook
   - 209 modifiers verified across all powers
-  - 92.5% accuracy rate (37/40 powers perfectly aligned)
   - Only 3 minor discrepancies found (structural differences, not errors)
 - **Power-Specific Modifiers System**: 45+ power-specific modifiers added
   - High-priority modifiers (25): Accurate, Affects Corporeal, Affects Objects, etc.
@@ -556,11 +551,6 @@ completion commit, not a verified deployment date.
 - ILLUSION invalid modifiers removed
 - Enhanced Trait duplicate Limited modifier removed
 - Multiple power-specific modifiers corrections across 10+ powers
-
-### Documentation
-- Complete audit reports for all 4 phases
-- Corrected powers-modifiers-status report
-- Detailed analysis documents in docs/analysis/
 
 ---
 
@@ -595,7 +585,7 @@ completion commit, not a verified deployment date.
 - **Alternate Effects v2**: Full multi-component support in arrays
   - Multi-component AEs (e.g., "Taser Blade: Damage 5 + Affliction 5")
   - Collapsible AE cards with cost badges
-  - Cost validation per AE with ✅/⚠️ indicators
+  - Cost validation per AE with status indicators
   - Dynamic array checkbox with tooltip
   - Contextual palette with orange "Editing: [AE name]" badge
 - **Migration Layer**: Automatic v1.0 → v2.0 migration

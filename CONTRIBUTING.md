@@ -1,305 +1,115 @@
-# Contribuindo / Contributing
+# Contributing / Contribuindo
 
-*Read this in other languages: [🇺🇸 English](#english) | [🇧🇷 Português](#português)*
-
----
+[English](#english) | [Português](#português)
 
 <a id="english"></a>
-## 🇺🇸 English
+## English
 
-Thank you for your interest in contributing to the M&M 3e Builder! This project is community-focused, and your help to expand it is highly appreciated.
+Use Node.js 24 and install dependencies with `npm ci`. Read the
+[architecture](docs/ARCHITECTURE_REFINED.md) before changing module boundaries.
+Active limitations and proposals belong in [Pending work](docs/PENDENCIAS.md).
 
-This guide focuses primarily on **Internationalization (i18n)** — how to translate the app into your language or add new translated game data (Powers, Advantages, Modifiers, Skills).
+### Code and data
 
----
+- Keep character operations and calculations pure. Coordinate persistence in
+  `services/storage`, application state in `store`, and workflows in `features`.
+- Reuse canonical pricing and point-summary functions. A UI or export should not
+  introduce a second implementation of costs or derived bonuses.
+- Preserve character/Resource IDs, original text, modifier applications and
+  supported extensions. A schema change requires backward-compatible defaults,
+  migration where needed and round-trip coverage.
+- Distinguish structural errors from advisory rule diagnostics. Generic Extras
+  and Flaws remain player/GM choices; effect-specific sources remain restricted.
+- Changes to persisted data must handle failed writes, original-data backups,
+  ambiguous legacy values and stale browser windows where applicable.
+- Prefer focused fixes and logical commits. State the trigger, resulting behavior,
+  validation and relevant compatibility impact in the pull request.
 
-### Understanding the i18n Architecture
+Game definitions live in `src/data/`; loaders and entities own their contracts.
+Check the supplied rule source before changing definitions. A legacy identifier
+may intentionally retain its previous price; do not replace it silently.
 
-The system uses a **dual-layer i18n architecture** that keeps UI text completely separate from game data text. This makes each type of contribution independent — you don't need to touch game data files to fix a button label, and vice versa.
+Power-library chapters contain authored recipes separate from persisted powers.
+Fixed purchases retain required ranks; scalable effects start at 1. Expected
+book prices are test evidence, not engine inputs. Document editorial differences
+in the recipe preview without artificial modifiers or manual price overrides.
+See [Recipe rules](docs/power-library-rules.md).
 
-The system's fallback language is always **English**. If a translation key or game data entry is missing for the active language, English is displayed automatically.
+### Localization
 
-**Language detection order:**
-1. A previously saved preference stored in `localStorage` (key: `mm3e-language`)
-2. The browser's own language setting (`navigator.language`)
-3. Fallback: `en`
+UI strings reside in `src/locales/en/translation.json` and
+`src/locales/pt-BR/translation.json`. Register languages in `src/locales/index.ts`.
+Use stable translation keys and interpolation instead of concatenated sentences.
+English is the fallback. Preserve user-authored names and notes when switching
+language; they are not catalog translations.
 
----
+Game definitions can expose per-language `i18n` fields. Keep canonical IDs,
+numeric costs, configuration values and source flags stable while translating
+names, descriptions and labels. Check each data type and the current localized
+loader; not every catalog uses an identical translation structure. Power-library
+recipes have their own chapter-localized metadata.
 
-### Layer 1 — UI Strings (`react-i18next`)
+To add a language, provide its UI resources, register them and add a display
+label to `LANGUAGE_LABELS` in `src/shared/ui/MenuBar.tsx`. The selector's language
+list is derived from registered resources. Review supported game-data translations
+and run localization coverage tests.
 
-All text that is part of the app's shell — button labels, panel headers, form placeholders, menus, error messages — is managed by `react-i18next`.
+`appStore` persists language in `mm3e-app-preferences`; the menu synchronizes
+i18next with that preference. The i18next detector also uses the historical
+`mm3e-language` key and navigator fallback. Test first use, explicit selection
+and reload rather than assuming the detector alone controls app language.
 
-**File location:**
-```
-src/locales/
-├── en/
-│   └── translation.json     ← source of truth (English)
-├── pt-BR/
-│   └── translation.json     ← Brazilian Portuguese
-└── index.ts                 ← registers languages + detection config
-```
+### Validation and documentation
 
-**How to improve an existing translation:**
-Edit the `translation.json` file for the target language. Keys are dot-separated namespaces like `builder.addAlternate` or `palette.extras`.
-
-**How to add a new language (e.g. Spanish):**
-
-1. Create `src/locales/es/translation.json` — copy all keys from `en/translation.json` and translate the values.
-2. Open `src/locales/index.ts` and register the new language:
-   ```ts
-   import es from './es/translation.json';
-
-   // inside the resources object:
-   es: { translation: es },
-   ```
-3. Open `src/shared/ui/MenuBar.tsx` and add an entry to the `LANGUAGES` array so the button appears in the menu:
-   ```ts
-   const LANGUAGES = [
-     { id: 'en', label: 'English' },
-     { id: 'pt-BR', label: 'Português (BR)' },
-     { id: 'es', label: 'Español' }, // ← add this
-   ];
-   ```
-
-> **Note:** The language switcher is **not automatic** — the display name in the menu must be added manually to `LANGUAGES`. The rest of the system (detection, fallback, game data resolution) handles itself.
-
-> **Tip:** Keep keys in English even in non-English `translation.json` files — only values are translated.
-
----
-
-### Layer 2 — Game Data (`src/data/`)
-
-Structural game data is stored in JSON files loaded dynamically at runtime. Each entry contains its own embedded translations under an `i18n` key, keeping all data for a given entry in one place.
-
-**Files:**
-```
-src/data/
-├── powers.json       ← power effects (Flight, Damage, Affliction…)
-├── modifiers.json    ← extras and flaws (Area, Burst, Limited…)
-├── advantages.json   ← advantages (Accurate Attack, Improvised Tools…)
-└── skills.json       ← skill definitions (Athletics, Perception…)
+```sh
+npm run lint
+npm run typecheck
+npm test -- --run
+npm run build
+npm run build:verify
 ```
 
-**The structure:** The root object of every entry **must always be in English** and serves as the fallback. Translations are nested under the `i18n` key, indexed by language code.
+Use the [test guide](src/__tests__/README.md) to select meaningful regressions.
+For UI changes, check keyboard/focus, narrow layouts, active themes and both
+languages. Export changes need verification of generated content, pagination
+and text selection where applicable. Use synthetic characters for browser checks.
 
-**Full example (`powers.json` entry):**
-```json
-{
-  "id": "flight",
-  "name": "Flight",
-  "type": "movement",
-  "baseCost": 2,
-  "action": "free",
-  "range": "personal",
-  "duration": "sustained",
-  "description": "Allows flying at a speed proportional to the rank.",
-  "i18n": {
-    "pt-BR": {
-      "name": "Voo",
-      "description": "Permite voar a uma velocidade proporcional ao rank."
-    },
-    "es": {
-      "name": "Vuelo",
-      "description": "Permite volar a una velocidad proporcional al rango."
-    }
-  }
-}
-```
-
-**Modifier example (`modifiers.json` entry):**
-```json
-{
-  "id": "area_burst",
-  "name": "Burst Area",
-  "category": "extra",
-  "costValue": 1,
-  "costType": "per_rank",
-  "description": "Effect fills a volume around the target.",
-  "i18n": {
-    "pt-BR": {
-      "name": "Área em Rajada",
-      "description": "O efeito preenche um volume ao redor do alvo."
-    }
-  }
-}
-```
-
-**What to fill in per entry:**
-| Field | Required | Notes |
-|---|---|---|
-| `name` | ✅ Yes | Always translate this |
-| `description` | ✅ Recommended | Shown in info modals and tooltips |
-| `longDescription` | ⬜ Optional | Fuller rules text, shown in detail modals |
-| Other fields | ❌ No | `baseCost`, `action`, `range` etc. are always from the English root |
-
----
-
-### Submitting your Changes
-
-1. **Fork** the repository on GitHub.
-2. **Create a branch** for your contribution:
-   ```bash
-   git checkout -b add-spanish-translation
-   ```
-3. **Make your changes** to the relevant files.
-4. **Commit** with a clear message:
-   ```bash
-   git commit -m "i18n: add Spanish translation for powers and UI strings"
-   ```
-5. **Push** and open a **Pull Request** describing what language/data you added.
-
-If you have any questions, open a project **Issue**. We appreciate your help!
-
----
-
-<br><br>
-
----
+Update the current feature guide when behavior changes. Record unresolved work
+only in Pending work, with evidence, scope and acceptance criteria; remove it
+when completed. Do not add completed plans, audit snapshots or duplicate roadmaps.
+Release notes belong in CHANGELOG.md and commit/version grouping in
+`docs/version-history.md`. Use conventional technical language without emojis.
 
 <a id="português"></a>
-## 🇧🇷 Português
+## Português
 
-Obrigado por se interessar em contribuir para o M&M 3e Builder! Este projeto é desenvolvido com foco na comunidade, e sua ajuda para expandi-lo é muito bem-vinda.
+Use Node.js 24, instale com `npm ci` e consulte a
+[arquitetura](docs/ARCHITECTURE_REFINED.md). Separe operações puras, coordenação de
+armazenamento, estado e interface. Reutilize os cálculos canônicos na ficha,
+Builder e exportações. Mudanças no modelo exigem compatibilidade, cobertura de
+importação/exportação e tratamento das falhas de persistência.
 
-Este guia foca principalmente na **Internacionalização (i18n)** — como traduzir o aplicativo para o seu idioma ou adicionar novos dados de jogo traduzidos (Poderes, Vantagens, Modificadores, Perícias).
+Consulte a fonte de regras antes de alterar definições. Preserve IDs, texto do
+usuário, aplicações de modificadores e extensões suportadas. Definições legadas
+podem manter preços anteriores deliberadamente. Extras e flaws genéricos ficam
+sob decisão do jogador/narrador; origem específica continua restrita ao efeito.
+Receitas da biblioteca não podem carregar preços finais manuais ou modificadores
+artificiais para alcançar um valor impresso.
 
----
+Para traduções, edite os recursos de UI em `src/locales/` e as propriedades
+localizadas suportadas pelos catálogos. Não traduza IDs, custos ou valores de
+configuração. Idiomas novos devem ser registrados em `src/locales/index.ts`, com
+rótulo em `LANGUAGE_LABELS` no MenuBar. A lista do seletor deriva desse registro.
+A preferência ativa usa `mm3e-app-preferences`; confira também o detector legado,
+a primeira abertura e a restauração após recarregar.
 
-### Entendendo a Arquitetura i18n
+Execute os cinco checks da seção Validation and documentation. Acrescente testes
+quando verificarem comportamento relevante; alterações de interface precisam de
+verificação de foco/teclado, larguras pequenas, temas e idiomas. Confira os
+arquivos efetivamente gerados ao alterar exportadores.
 
-O sistema usa uma **arquitetura i18n de duas camadas** que mantém o texto da UI completamente separado dos textos dos dados de jogo. Isso torna cada tipo de contribuição independente — não é preciso mexer nos arquivos de dados do jogo para corrigir um rótulo de botão, e vice-versa.
-
-O idioma de fallback do sistema é sempre o **Inglês**. Se uma chave de tradução ou entrada de dado de jogo estiver ausente para o idioma ativo, o inglês é exibido automaticamente.
-
-**Ordem de detecção de idioma:**
-1. Preferência salva anteriormente no `localStorage` (chave: `mm3e-language`)
-2. Configuração de idioma do próprio navegador (`navigator.language`)
-3. Fallback: `en`
-
----
-
-### Camada 1 — Strings de UI (`react-i18next`)
-
-Todo texto que faz parte do esqueleto do aplicativo — rótulos de botões, cabeçalhos de painéis, placeholders de formulários, menus, mensagens de erro — é gerenciado pelo `react-i18next`.
-
-**Localização dos arquivos:**
-```
-src/locales/
-├── en/
-│   └── translation.json     ← fonte da verdade (Inglês)
-├── pt-BR/
-│   └── translation.json     ← Português Brasileiro
-└── index.ts                 ← registra idiomas + configuração de detecção
-```
-
-**Como melhorar uma tradução existente:**
-Edite o arquivo `translation.json` do idioma desejado. As chaves são namespaces separados por ponto, como `builder.addAlternate` ou `palette.extras`.
-
-**Como adicionar um novo idioma (ex: Espanhol):**
-
-1. Crie `src/locales/es/translation.json` — copie todas as chaves do `en/translation.json` e traduza os valores.
-2. Abra `src/locales/index.ts` e registre o novo idioma:
-   ```ts
-   import es from './es/translation.json';
-
-   // dentro do objeto resources:
-   es: { translation: es },
-   ```
-3. Abra `src/shared/ui/MenuBar.tsx` e adicione uma entrada ao array `LANGUAGES` para que o botão apareça no menu:
-   ```ts
-   const LANGUAGES = [
-     { id: 'en', label: 'English' },
-     { id: 'pt-BR', label: 'Português (BR)' },
-     { id: 'es', label: 'Español' }, // ← adicione aqui
-   ];
-   ```
-
-> **Observação:** O seletor de idioma **não é automático** — o nome de exibição no menu precisa ser adicionado manualmente ao array `LANGUAGES`. O restante do sistema (detecção, fallback, resolução de dados de jogo) funciona automaticamente.
-
-> **Dica:** Mantenha as chaves em inglês mesmo nos arquivos `translation.json` de outros idiomas — apenas os valores são traduzidos.
-
----
-
-### Camada 2 — Dados de Jogo (`src/data/`)
-
-Os dados estruturais do jogo são armazenados em arquivos JSON carregados dinamicamente em tempo de execução. Cada entrada contém suas próprias traduções embutidas sob a chave `i18n`, mantendo todos os dados de uma entrada em um só lugar.
-
-**Arquivos:**
-```
-src/data/
-├── powers.json       ← efeitos de poder (Voo, Dano, Aflição…)
-├── modifiers.json    ← extras e falhas (Área, Rajada, Limitado…)
-├── advantages.json   ← vantagens (Ataque Preciso, Ferramentas Improvisadas…)
-└── skills.json       ← definições de perícias (Atletismo, Percepção…)
-```
-
-**A estrutura:** O objeto raiz de cada entrada **deve sempre estar em Inglês** e serve como fallback. As traduções são aninhadas sob a chave `i18n`, indexadas pelo código do idioma.
-
-**Exemplo completo (entrada em `powers.json`):**
-```json
-{
-  "id": "flight",
-  "name": "Flight",
-  "type": "movement",
-  "baseCost": 2,
-  "action": "free",
-  "range": "personal",
-  "duration": "sustained",
-  "description": "Allows flying at a speed proportional to the rank.",
-  "i18n": {
-    "pt-BR": {
-      "name": "Voo",
-      "description": "Permite voar a uma velocidade proporcional ao rank."
-    },
-    "es": {
-      "name": "Vuelo",
-      "description": "Permite volar a una velocidad proporcional al rango."
-    }
-  }
-}
-```
-
-**Exemplo de modificador (`modifiers.json`):**
-```json
-{
-  "id": "area_burst",
-  "name": "Burst Area",
-  "category": "extra",
-  "costValue": 1,
-  "costType": "per_rank",
-  "description": "Effect fills a volume around the target.",
-  "i18n": {
-    "pt-BR": {
-      "name": "Área em Rajada",
-      "description": "O efeito preenche um volume ao redor do alvo."
-    }
-  }
-}
-```
-
-**O que preencher por entrada:**
-| Campo | Obrigatório | Observações |
-|---|---|---|
-| `name` | ✅ Sim | Sempre traduzir |
-| `description` | ✅ Recomendado | Exibido em modais de info e tooltips |
-| `longDescription` | ⬜ Opcional | Texto de regras mais completo, exibido em modais de detalhe |
-| Outros campos | ❌ Não | `baseCost`, `action`, `range` etc. sempre vêm do objeto raiz em inglês |
-
----
-
-### Submetendo suas Alterações
-
-1. Faça um **fork** do repositório no GitHub.
-2. **Crie uma branch** para sua contribuição:
-   ```bash
-   git checkout -b adicionar-traducao-espanhol
-   ```
-3. **Faça as alterações** nos arquivos relevantes.
-4. **Commit** com uma mensagem clara:
-   ```bash
-   git commit -m "i18n: adiciona tradução em Espanhol para poderes e strings de UI"
-   ```
-5. **Push** e abra um **Pull Request** descrevendo qual idioma/dados você adicionou.
-
-Qualquer dúvida, abra uma **Issue** no projeto. Agradecemos sua ajuda!
+Use commits lógicos e descreva problema, resultado, validação e impacto de
+compatibilidade. Atualize o guia vigente e centralize trabalho aberto em
+[Pendências](docs/PENDENCIAS.md), removendo os itens concluídos. Não mantenha
+roadmaps duplicados ou relatórios de conclusão. Use linguagem técnica comum em
+repositórios, sem emojis.

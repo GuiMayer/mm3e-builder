@@ -1,6 +1,6 @@
 # Regras e compatibilidade da biblioteca
 
-As receitas do [Power Profiles](<sources/Mutants & Masterminds 3 - Power Profiles.md>)
+As receitas do Power Profiles (fonte local em `docs/sources/`)
 usam efeitos e modificadores normais, com preços calculados pelas
 [regras compartilhadas](REGRAS_CALCULO_MM3E.md). A composição mecânica é a entrada;
 o preço impresso é referência editorial, nunca um override do cálculo.

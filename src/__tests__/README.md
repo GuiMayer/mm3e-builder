@@ -1,254 +1,93 @@
-# MM3e Builder - Test Suite
+# Test suite
 
-Este diretório contém a suíte de testes completa para o MM3e Builder, validando a implementação das regras oficiais do Mutants & Masterminds 3e.
+Vitest covers pure calculations, data contracts, storage coordination, editor
+models and export generation. Test counts and coverage percentages are properties
+of a particular run; obtain current results from the suite rather than treating
+historical reports as a compliance guarantee.
 
-**Estado verificado em 2026-10-02 (v1.18.0):** 69 arquivos de teste, 825 testes aprovados e nenhum teste pendente. Execute `npm test -- --run` para obter o estado real.
+## Commands
 
-## Estrutura de Testes
+Run from the repository root:
 
-### Testes de Lógica de Negócio
-
-| Grupo | Exemplos | Foco |
-|-------|----------|------|
-| Regras e cálculos | `mathEngine`, `validation`, `altEffects`, `affliction`, `modifierRestrictions` | Custos, limites de PL, arrays e restrições |
-| Dados e importação | `dataIntegrity`, `archetypes`, `semanticValidation`, `characterFile` | Dados JSON, migrações e validação de arquivos |
-| Estado e persistência | `charactersStore.integration`, `characterHistory`, `characterOperations`, `characterDraftStorage`, `draftAutoLoad` | Abas, undo/redo temporário, operações puras, auto-save e recuperação |
-| Exportação e interface lógica | `exportCorrections`, `pdfHtmlSafety`, `powerBuilderModel`, `powerReference` | PDF, Excel, segurança de HTML, modelo do editor, descrições localizadas e resolução contextual de modificadores sem mutação da ficha |
-| Rolagens da sessão | `diceRoller`, `diceCheckSources`, `diceWindowPosition` | d20, histórico temporário, origens, bônus compartilhados, limites da janela e preservação das fichas |
-| Tradução dos efeitos | `offenseLocalization`, `offenseDisplay` | Troca de idioma em Efeitos Direcionados e rótulos de resistência/CD, preservando nomes personalizados, textos manuais, mecânica e dados da ficha |
-| Temas da interface | `customTheme`, `customThemeStorage`, `colorInput` | Paletas, contraste, transparência, conversão HEX/RGB/HSL, persistência isolada, recuperação e preservação dos temas padrão |
-| Recursos | `resourceStorageSafety`, `resourceRules118`, `resourceReview`, `resourceImport`, `resourceExports` | PP/EP, Força/NP, migração idempotente, backups, falta de espaço, janelas desatualizadas, recuperação por item, conflitos e exportações reais |
-| Campanha | `campaign`, `campaignMigration`, `campaignActions`, `campaignExports` | Base fixa, migração revisada com backup/rollback, dados legados, isolamento de abas, edição/estorno/undo e exportações reais Excel/HTML/JSONL |
-
-### Testes de Integração
-
-| Arquivo | Foco |
-|---------|------|
-| `fileService.test.ts` e `characterFile.integration.test.ts` | Compatibilidade do ponto de entrada e processamento de arquivos |
-| `charactersStore.integration.test.ts` | Fluxos de abas de personagens |
-| `characterDraftStorage.test.ts` | Persistência e recuperação local |
-
-## Executando os Testes
-
-```bash
-# Todos os testes
-npm test
-
-# Testes específicos
+```sh
+npm test -- --run
 npm test -- mathEngine.test.ts
-npm test -- validation.test.ts
-
-# Com UI interativa
-npm run test:ui
-
-# Com cobertura
-npm run test:coverage
-
-# Watch mode
-npm test -- --watch
+npm test -- --run characterFile.integration.test.ts campaignMigration.test.ts
 ```
 
-## Adicionando Novos Testes de Regras
+`npm test` starts watch mode. CI additionally runs lint, strict type checking,
+a production build and static-asset verification. Optional UI/coverage commands
+in package.json may require their matching Vitest packages; they are not CI gates.
 
-### 1. Identificar a Regra
+## Coverage by contract
 
-Consulte as referências oficiais em `docs/sources/`:
-- `Mutants & Masterminds 3 - Heros Handbook Deluxe.md`
-- `Mutants & Masterminds 3 - Powers.md`
-- `Mutants & Masterminds 3 - Modifiers.md`
+| Area | Representative suites |
+| --- | --- |
+| Costs and contextual ranks | `mathEngine`, `auditedPricing`, `modifierRanks`, `altEffects`, `absentAbilities`, `pointSummary` |
+| Modifier applications and policy | `modifierInstances`, `modifierApplicationPolicy`, `duplicateModifierWarnings`, `effectSpecificExtras` |
+| Imports and schemas | `characterFile.integration`, `characterImport`, `fileService`, `importTesterFiles`, `identity` |
+| Drafts and editing history | `characterDraftStorage`, `draftAutoLoad`, `draftUpdateBackup`, `characterHistory`, `charactersStore.integration` |
+| Campaign | `campaign`, `campaignActions`, `campaignMigration`, `campaignExports` |
+| Resources | `resourceRules118`, `resourceStorageSafety`, `resourceReview`, `resourceImport`, `resourceActions`, `resourceExports` |
+| Library | `powerLibrary`, `powerLibraryCatalog`, `powerLibraryRules` |
+| Portraits | `portraitStorage`, `portraitCompatibility`, `portraitJsonExport`, `portraitPdf` |
+| References and localization | `references119`, `referenceLocalization119`, `measurementPreferences`, `localizationCoverage`, `offenseLocalization` |
+| Themes and dice | `customTheme`, `customThemeStorage`, `colorInput`, `diceRoller`, `diceCheckSources`, `diceWindowPosition` |
+| Export content and safety | `exportCorrections`, `pdfHtmlSafety`, `campaignExports`, `resourceExports` |
 
-### 2. Verificar Implementação
+Names in the table identify `.test.ts` files in this directory. A unit test for
+an isolated helper does not demonstrate integration in the user workflow. Known
+validation flags without integration are tracked in
+[Pending work](../../docs/PENDENCIAS.md).
 
-Verifique se a regra já está implementada:
-- `src/shared/lib/mathEngine.ts` - Cálculos de custos
-- `src/shared/lib/validation.ts` - Validações de PL
-- `src/shared/lib/modifierValidation.ts` - Validações de modificadores
-- `src/shared/lib/afflictionValidation.ts` - Validações de Affliction
+## Calculation regressions
 
-### 3. Criar Teste
+Use the official source and a concrete mechanical composition to derive expected
+results independently of the implementation. Cover relevant fractional boundaries,
+partial ranks, repeated applications, dynamic arrays, global discounts and
+Strength/Resource context. A test that simply copies an implementation formula
+does not independently verify the rule.
 
-```typescript
-import { describe, it, expect } from 'vitest';
-import { functionToTest } from '../shared/lib/module';
+Library expectations belong to test/recipe metadata. The runtime engine must
+calculate from effects and modifiers without recognizing recipe names or using
+printed prices as input. Preserve documented editorial differences.
 
-/**
- * [Nome da Regra] Tests
- * 
- * [Descrição da regra]
- * 
- * References:
- * - Hero's Handbook p.XX
- * - Modifiers p.YY
- */
+## Compatibility and storage regressions
 
-describe('[Nome da Regra]', () => {
-  it('should [comportamento esperado]', () => {
-    // Arrange
-    const input = ...;
-    
-    // Act
-    const result = functionToTest(input);
-    
-    // Assert
-    expect(result).toBe(expected);
-  });
-});
-```
+Use historical and current fixtures to check import, normalization, round-trip
+and idempotence. Verify identifiers, order, original text, modifier options,
+legacy pricing and supported extensions. Review migrations against actual saved
+shapes before changing schemas; a new default must not silently erase old data.
 
-### 4. Documentar Referências
+Storage tests should exercise rejected/quota writes, verified backups, stale
+windows, malformed records and recovery preservation where applicable. Mutations
+must not report successful persistence after a failed write. Browser storage mocks
+and fake IndexedDB are test tools, not substitutes for manual browser validation.
 
-Sempre inclua:
-- Comentário no topo com referências de página do livro oficial
-- Descrição clara do que a regra valida
-- Exemplos reais quando possível
+Dice, themes, consultation preferences and portrait bytes have separate data
+boundaries. Check that they do not enter character JSON or editing history when
+their contract excludes them.
 
-### 5. Testar Edge Cases
+## Export and UI verification
 
-Para cada regra, considere:
-- Valores mínimos (0, 1)
-- Valores máximos (PL limits)
-- Valores negativos (se aplicável)
-- Combinações inválidas
-- Casos de fronteira (exatamente no limite)
+Inspect generated files, not only generator return values. Reopen Excel workbooks;
+check HTML escaping, localized labels, point totals and linked Resource charges.
+PDF changes also need visual inspection of pagination, repeated headers, clipping
+and selectable text. `scripts/fixtures/pdf-layout-check.html` is an available
+layout fixture.
 
-## Padrões de Teste
+Use synthetic data and an isolated browser origin for manual UI checks. Check
+narrow/wide layouts, keyboard access, focus restoration, dialogs, touch targets,
+source snapshots and both languages as relevant. There is no dedicated E2E suite
+in the current CI workflow; manual checks and model tests cover different risks.
 
-### Nomenclatura
+## References
 
-```typescript
-// ✅ Bom - descreve o comportamento
-it('Damage 10 + Ranged = 20 PP', () => { ... });
+- [Calculation contracts](../../docs/REGRAS_CALCULO_MM3E.md)
+- [Architecture and persisted pipeline](../../docs/ARCHITECTURE_REFINED.md)
+- [Contribution guide](../../CONTRIBUTING.md)
+- Official rules in `docs/sources/`
 
-// ❌ Ruim - muito genérico
-it('should calculate cost', () => { ... });
-```
-
-### Estrutura AAA (Arrange-Act-Assert)
-
-```typescript
-it('calculates fractional cost correctly', () => {
-  // Arrange - preparar dados
-  const mods = [{ modifierId: 'tiring', ranks: 1 }];
-  
-  // Act - executar função
-  const cost = calculatePowerCost(1, 10, mods, MODS);
-  
-  // Assert - verificar resultado
-  expect(cost).toBe(5);
-});
-```
-
-### Testes Parametrizados
-
-```typescript
-describe.each([
-  { pl: 1, limit: 2 },
-  { pl: 10, limit: 20 },
-  { pl: 20, limit: 40 },
-])('PL $pl limits', ({ pl, limit }) => {
-  it(`attack + effect ≤ ${limit}`, () => {
-    expect(validateAttackEffect(10, 11, pl)).not.toBeNull();
-  });
-});
-```
-
-## Sistema de Validação Modular
-
-Os testes respeitam o sistema de configuração de regras:
-
-```typescript
-import { DEFAULT_VALIDATION_RULES } from '../shared/lib/validationRules';
-
-it('respects validation rules configuration', () => {
-  const rules = { ...DEFAULT_VALIDATION_RULES, enforceIncompatibleModifiers: false };
-  
-  // Teste deve passar quando regra está desligada
-  const result = validateComponentModifiers(component, rules, ...);
-  expect(result.errors).toHaveLength(0);
-});
-```
-
-### Regras Configuráveis
-
-- `enforceIncompatibleModifiers` - Combinações incompatíveis
-- `enforceModifierMaxRanks` - Limites de ranks
-- `enforceAccuratePLCap` - Accurate vs PL (sempre ativo)
-- `enforceAfflictionProgression` - Progressão de condições
-- `enforceAbsentAbilityRestrictions` - Avisos para defesas e poderes dependentes de habilidades ausentes
-- `enforceSkillAbilityRequirements` - Avisos para perícias baseadas em habilidades ausentes
-- `enforceAbsentAbilityRestrictions` - Avisos de habilidades ausentes
-- `plTradeOffsAsErrors` - Erros vs warnings
-- `enforceTrainedOnlySkills` - Skills trained-only
-- `enforceSkillAbilityRequirements` - Skills com habilidades ausentes
-
-## Cobertura de Regras
-
-Consulte `docs/testing/rules-coverage-report.md` para:
-- Estatísticas de cobertura por categoria
-- Gaps identificados
-- Prioridades de implementação
-- Roadmap de testes futuros
-
-## Referências Cruzadas
-
-### Livro → Código
-
-| Regra do Livro | Página | Implementação | Teste |
-|----------------|--------|---------------|-------|
-| Power Level Limits | p.24 | `validation.ts` | `validation.test.ts` |
-| Fractional Costs | p.59-86 | `mathEngine.ts:64-84` | `edgeCases.test.ts:11-35` |
-| Accurate Extra | p.137 | `modifierValidation.ts` | `modifierRestrictions.test.ts:67-106` |
-| Alternate Effects | p.136 | `mathEngine.ts:113-117` | `altEffects.test.ts` |
-| Affliction | p.15-23 | `afflictionValidation.ts` | `affliction.test.ts` |
-
-## Contribuindo
-
-Ao adicionar novos testes:
-
-1. **Verifique duplicação** - Busque testes similares existentes
-2. **Siga os padrões** - Use estrutura AAA, nomenclatura clara
-3. **Documente referências** - Sempre cite página do livro oficial
-4. **Teste edge cases** - Não apenas o happy path
-5. **Atualize cobertura** - Adicione à `rules-coverage-report.md`
-
-## Troubleshooting
-
-### Testes Falhando
-
-```bash
-# Executar teste específico com output detalhado
-npm test -- mathEngine.test.ts --reporter=verbose
-
-# Executar apenas testes que falharam
-npm test -- --run --reporter=verbose
-```
-
-### Mock Data
-
-Mocks de definições estão em cada arquivo de teste:
-- `MODS` - Definições de modificadores
-- `EFFECT_DEFS` - Definições de efeitos
-- `POWER_DEFS` - Definições de poderes
-
-### Debugging
-
-```typescript
-import { describe, it, expect } from 'vitest';
-
-it('debugs calculation', () => {
-  const result = calculatePowerCost(1, 10, mods, MODS);
-  console.log('Result:', result); // Aparece no output do teste
-  expect(result).toBe(20);
-});
-```
-
-## Recursos
-
-- [Vitest Documentation](https://vitest.dev/)
-- [M&M 3e SRD](https://www.d20herosrd.com/)
-- [Hero's Handbook](../../docs/sources/Mutants%20%26%20Masterminds%203%20-%20Heros%20Handbook%20Deluxe.md)
-- [Rules Coverage Report](../../docs/testing/rules-coverage-report.md)
-
----
-
-**Última atualização:** 2026-08-15
+One-off scripts that rewrite catalogs or generate old reports are not validation
+gates. Do not execute them to reproduce obsolete documentation; review their
+current purpose and output before using them.

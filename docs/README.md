@@ -1,39 +1,38 @@
-# Documentation guide
+# Documentação
 
-## Current release
+## Desenvolvimento
 
-The current application release is **v1.20.0** (2026-10-03). The Power Profiles library adds 39 chapters, 982 recipes/variants, editable previews and normal rules-engine pricing. See the [Power library guide](./power-library.md), [catalog audit](./testing/power-library-audit.md) and [changelog](../CHANGELOG.md).
+| Documento | Escopo |
+| --- | --- |
+| [README](../README.md) | Produto, desenvolvimento local e persistência |
+| [Arquitetura](ARCHITECTURE_REFINED.md) | Limites de módulos, fluxos de dados e compatibilidade |
+| [Referência de campos](../MM3E_CHARACTER_SHEET_REFERENCE.md) | Mapeamento da ficha para o modelo atual |
+| [Regras de cálculo](REGRAS_CALCULO_MM3E.md) | Preços, arredondamentos, contextos e resumo canônico |
+| [Contribuição](../CONTRIBUTING.md) | Código, dados, traduções e revisão |
+| [Testes](../src/__tests__/README.md) | Execução, regressões e verificações de exportação |
+| [Pendências](PENDENCIAS.md) | Backlog ativo, limitações e decisões abertas |
 
-## Current references
+## Funcionalidades
 
-- [Refined architecture](./ARCHITECTURE_REFINED.md) is the authoritative guide for product scope, module boundaries, persistence, import/export compatibility, and verification gates.
-- [Character portraits](./character-portraits.md) explains link caching, browser-local files, compatibility and opt-in PDF inclusion.
-- [Project README](../README.md) describes the user-facing capabilities and local setup.
-- [Power Builder modifier policy](./power-builder-modifier-policy.md) documents generic and effect-specific modifier selection, save diagnostics, and stored-source behavior.
-- [Session dice roller](./dice-roller.md) describes manual and contextual checks, advantage shortcuts, responsive controls, and the temporary history boundary.
-- [Campaign mode](./campaign-mode.md) describes the implemented progression panel, reviewed migration, backups and export compatibility.
-- [Campaign overhaul audit and plan](./campaign-overhaul-plan.md) records the original defects, revised migration decision and implementation stages.
-- [Resources guide](./resources.md) documents current costs, editing, reviewed migration, backups and import/export behavior.
-- [Resources audit for 1.18.0](./resources-audit-1.18.md) records the pre-implementation comparison of the library and adapted Power Builder with the supplied official handbook, records reproduced defects and proposes compatible corrections.
-- [Contributing guide](../CONTRIBUTING.md) explains translation and data contributions.
-- [Changelog](../CHANGELOG.md) records released changes and work awaiting release.
-- [Future expansions](../FUTURE_EXPANSIONS.md) records deferred product work and
-  distinguishes it from functionality delivered in v1.11.0.
-- [Test suite guide](../src/__tests__/README.md) explains how to run and extend tests.
+| Guia | Escopo |
+| --- | --- |
+| [Política de modificadores](power-builder-modifier-policy.md) | Origem, aplicações repetidas, diagnósticos e salvamento |
+| [Biblioteca de poderes](power-library.md) | Seleção, prévia, aplicação e entradas apenas para consulta |
+| [Regras da biblioteca](power-library-rules.md) | Autoria de receitas, divergências editoriais e definições legadas |
+| [Recursos](resources.md) | PP/EP, vínculos, contexto do Builder, revisão e recuperação |
+| [Campanha](campaign-mode.md) | Base fixa, histórico, migração e backups |
+| [Referências](references.md) | Fontes, busca, tabelas e preferências de medidas |
+| [Retratos](character-portraits.md) | URL, arquivos locais, enquadramento e exportação |
+| [Rolagens](dice-roller.md) | Bônus contextuais e histórico temporário |
+| [Temas](custom-themes.md) | Paleta personalizada, notações de cor e persistência |
 
-## Historical records
+## Versões e fontes
 
-The following files preserve prior plans, audits, sprint notes, and implementation conversations. They are useful for context, but do not describe the current codebase or feature status:
+[CHANGELOG.md](../CHANGELOG.md) mantém as notas de versão;
+[Histórico de versões](version-history.md) agrupa os commits e distingue tags
+de publicação. Trabalho ainda aberto pertence somente a Pendências; remova os
+itens concluídos e atualize o guia do comportamento atual.
 
-- `ARCHITECTURE.md` and `ARCHITECTURE_PT.md`
-- `sprints.md`
-- `Refactoring Power Builder Architecture.md` and `MiMoChat.md`
-- `INDICE_AUDITORIA.md`, `AUDITORIA_COMPLETA_MM3E.md`, `RESUMO_EXECUTIVO.md`, and `audit/`
-- `FUNCIONALIDADES-AUSENTES-POWER-BUILDER.md`
-- `architecture-refactor-baseline.md` (the pre-refactor verification snapshot)
-- `validation-summary.md` and `testing/rules-coverage-report.md`
-
-## Rule references
-
-- `sources/` contains source material for M&M 3e rules.
-- `REGRAS_CALCULO_MM3E.md` and `modifiers-checklist.md` are rule-oriented references. Verify proposed code changes against the JSON data and tests as well as these documents.
+Os documentos em `sources/` são fontes de consulta para regras, sujeitos aos
+direitos dos titulares. Não são planos de implementação nem especificações do
+formato JSON do aplicativo.
