@@ -12,6 +12,24 @@ The Builder continues to calculate costs using the selected modifiers and show i
 
 Saving still requires a selected effect, a resolvable modifier source, and required configuration for effects that need it. Alternate Effects also use their dedicated array controls and retain their structural requirements.
 
+## Independent applications
+
+Generic and effect-specific modifiers may have multiple independent applications
+on base, linked and alternate components, including Resource powers. Each entry
+retains its own ranks, affected ranks, options and optional condition note.
+Removing one application preserves the others. The catalog's `repeatable` flag
+controls rank-based pricing within an application; it does not prohibit adding
+another independent application.
+
+`instanceId` is optional editing identity. Legacy entries remain valid without it;
+the Builder creates identities in its draft and persists them only on save.
+Activation and Removable retain their separate power-level controls.
+
+The duplicate diagnostic lists every repeated modifier with its count.
+`enforceDuplicateModifiers` controls only this warning's visibility. It is
+available in desktop/mobile validation settings and persists with app preferences.
+It does not impose a duplicate limit or hide other diagnostics.
+
 ## Character data
 
 This policy changes no character schema, migration, or cost formula. Existing saved powers keep their modifier entries. New generic choices are stored as generic; choices from an effect-specific tab are stored as effect-specific.

@@ -1,14 +1,13 @@
-# Resources — versão 1.18.0
+# Recursos
 
 A biblioteca guarda recursos reutilizáveis; cada ficha mantém seus vínculos, sem
 copiar poderes para o personagem. A forma de aquisição define a cobrança:
 dispositivos usam PP; equipamento comum, veículos e bases usam EP. O mestre decide
 qual classificação é adequada à série.
 
-A referência desta atualização é o [Hero's Handbook Deluxe fornecido](<./sources/Mutants & Masterminds 3 - Heros Handbook Deluxe.md>),
-pp. 135, 209–214, 221–223 e 226–230. A [auditoria](./resources-audit-1.18.md)
-registra as regras e as divergências entre alguns exemplos editoriais e a tabela
-normativa de veículos. As correções usam as fórmulas normativas.
+A referência normativa é o [Hero's Handbook Deluxe fornecido](<./sources/Mutants & Masterminds 3 - Heros Handbook Deluxe.md>),
+pp. 135, 209–214, 221–223 e 226–230. Quando exemplos editoriais de veículos
+divergem das tabelas normativas, o cálculo usa as tabelas e fórmulas normativas.
 
 ## Usar a biblioteca e vincular à ficha
 
@@ -67,7 +66,7 @@ Extras/Flaws, Linked e modos alternativos. O movimento configurado substitui o
 custo da antiga Velocidade; não é somado a ele. Movimento já presente em sistemas
 pode ser indicado durante a revisão para evitar cobrança dupla.
 
-Exemplos verificados:
+Exemplos de cálculo:
 
 - Efeito de 10 PP com Removível: **8 PP** como dispositivo; **10 EP** como equipamento.
 - Veículo Enorme com Voo 7, sem outros aumentos: **2 + 14 = 16 EP**.
@@ -84,11 +83,10 @@ As mensagens existentes de diagnóstico de modificadores foram preservadas.
 
 ## Compatibilidade e revisão de dados antigos
 
-A [verificação anterior à implementação](./resources-migration-preflight.md)
-concluiu que o schema da ficha e seus vínculos não precisavam mudar:
-**ficha 2.1.0 e rascunho 1 permanecem iguais**. A biblioteca e o apêndice de
-Resources passam à versão 2; versões 1 continuam sendo lidas, inclusive poderes
-antigos no formato plano. A compatibilidade é de leitura de dados antigos pela
+O schema atual da ficha é **2.2.0**; seus vínculos de recursos mantêm o formato
+existente. O envelope de rascunho usa versão 1. A biblioteca e o apêndice de
+recursos usam versão 2 e aceitam versão 1, inclusive poderes antigos no formato
+plano. A compatibilidade é de leitura de dados antigos pela
 aplicação nova; exportações da biblioteca v2 exigem uma aplicação que entenda v2.
 
 A mudança acrescenta `costMode`/`costReviewRequired`, `movement`/
@@ -151,22 +149,3 @@ campos novos. PDF HTML e Excel usam os mesmos custos efetivamente cobrados,
 unidades, grupos e contribuições da ficha, além de movimento, características,
 notas e contexto da base. O PDF legado conserva seus dez campos de equipamento
 com os mesmos custos; continua sujeito aos limites fixos do formulário oficial.
-
-## Verificação da entrega
-
-A suíte completa contém **69 arquivos e 825 testes aprovados**. As regressões
-cobrem custos normativos, contexto de Força/NP, migração idempotente, IDs e notas,
-extensões desconhecidas, recuperação por item, falta de espaço, backup verificado,
-escrita desatualizada, conflitos de UUID e concordância entre resumo, HTML, PDF
-legado e planilhas Excel reabertas. TypeScript, lint, build e verificação de
-arquivos estáticos passaram.
-
-A interface foi verificada em origem local isolada com fichas sintéticas:
-revisão dos três tipos de recurso, aquisição 10 EP → 8 PP, movimento,
-salvamento de sistema a 18 EP, Limitado aplicado/salvo no movimento com
-desfazer restaurando 36 EP, aviso de Cura 30 sem bloqueio, edição de
-características preservando notas, cancelamento/cópia de importação, idiomas e
-tela de 390px sem rolagem horizontal no editor ou Builder. Nenhuma ficha real
-foi acessada. A exportação pelo diálogo nativo do navegador não foi automatizada;
-os conteúdos exportados foram verificados pelos geradores e arquivos reabertos.
-Essas verificações não afirmam conformidade de todas as combinações de poderes.

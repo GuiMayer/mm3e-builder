@@ -71,7 +71,8 @@ There is no schema or calculation revision change. See [References](references.m
 
 ## Character portraits
 
-Character schema 2.2.0 adds only the optional `header.portraitUrl`; older files
+Character schema 2.2.0 supports optional `header.portraitUrl` and
+`header.portraitFit` (`contain`, `cover`, or `fill`); older files
 remain accepted without a portrait field. Image bytes are stored in the separate
 `mm3e-portraits` IndexedDB database, with media, local identity associations and
 URL caches. UI/file coordinators copy local associations after pure character
@@ -90,7 +91,8 @@ Resources are reusable items stored outside individual characters. Supported
 types are Gadget, Gear, Vehicle, Headquarters, and Custom. A character keeps
 only a link to a resource, not a second copy of it.
 
-- `resourceId` is the stable UUID; character schema remains 2.1.0.
+- `resourceId` is the stable UUID. Resource versioning is independent of the
+  current character schema (2.2.0); resource links retain their existing format.
 - Resource library/appendix version 2 adds acquisition, movement and headquarters
   context, while accepting version 1 and preserving unknown Resource fields.
 - `costMode` selects Device PP or Equipment EP independently of the display type.
@@ -116,6 +118,18 @@ only a link to a resource, not a second copy of it.
 See [Resources](./resources.md) for rules, migration keys, examples, persistence
 limits and export coverage. Calculation revision 6 announces corrected Resource
 pricing; existing modifier warning texts and generic selection policy remain.
+
+## Power library
+
+`features/power-library` keeps authored recipes separate from persisted powers.
+Chapter modules load on demand. Applying a recipe copies ordinary components,
+modifiers and configuration into the Builder draft; saving uses the existing
+character-power pipeline. No live catalog reference or editorial price is stored
+in the character. Preview and saved costs use the same math engine.
+
+Fixed purchases retain their functional ranks, while scalable purchases start
+at rank 1. Unsupported character-level changes and durations are reference-only.
+See [Power library](power-library.md) and [recipe rules](power-library-rules.md).
 
 ## Persisted character pipeline
 
@@ -208,5 +222,8 @@ production build. Pull requests run all gates but cannot deploy. Only a push to
 ## Deliberate non-goals
 
 Do not introduce Redux, dependency-injection containers, repositories for every
-function, a backend, IndexedDB, or a monorepo without a demonstrated product
-need. Prefer functions, focused modules, and the existing libraries.
+function, a backend, or a monorepo without a demonstrated product need.
+IndexedDB is scoped to portrait media and caches; character and Resource
+persistence remain in localStorage. Prefer focused modules and existing libraries.
+
+Active limitations and maintenance work belong in [PENDENCIAS.md](PENDENCIAS.md).

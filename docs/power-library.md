@@ -1,4 +1,4 @@
-# Biblioteca Power Profiles — v1.20.0
+# Biblioteca Power Profiles
 
 No Power Builder, clique no ícone de quatro quadrados no cabeçalho do efeito
 base, componente vinculado ou efeito alternativo. Escolha um dos 39 capítulos,
@@ -13,7 +13,7 @@ graduação escolhida; Compras fixas como Homing 2 continuam em 2.
 O custo da prévia e do resultado usa o motor normal do aplicativo, incluindo
 PP/EP e o contexto do Builder. Não existe preço de receita que substitua o
 cálculo. Divergências entre a composição do livro e o total impresso aparecem
-na prévia e na [auditoria](testing/power-library-audit.md).
+na prévia, com a composição e a justificativa da diferença.
 
 **Aplicar poder** modifica apenas o rascunho do Builder. **Salvar** continua
 sendo necessário para guardar o poder. Cancelar ou fechar a biblioteca mantém
@@ -54,6 +54,10 @@ abrir o editor e só é persistido ao salvar. Importação/exportação preserva
 todas as aplicações, graduações e opções. Ativação e Removível continuam sendo
 configurações globais do poder, com seus controles e cálculos próprios.
 
-Implementação e cobertura: [plano](power-library-plan.md),
-[13 lotes de três capítulos](power-library-coverage.md) e
-[definições de regras](power-library-rules.md).
+O aviso de modificadores duplicados lista todas as repetições do componente.
+A preferência `enforceDuplicateModifiers` permite ocultar apenas esse diagnóstico;
+não impede repetir compras nem oculta os outros avisos.
+
+Os contratos de autoria e compatibilidade estão em
+[Regras da biblioteca](power-library-rules.md). Limitações com trabalho aberto
+estão em [Pendências](PENDENCIAS.md).

@@ -95,22 +95,3 @@ ambos opcionais. Schemas
 não recebe campos de retrato automaticamente. Nenhum atributo, poder, recurso, regra ou cálculo é alterado.
 Versões anteriores do app podem descartar o URL ao reexportar, preservando os
 dados de jogo suportados por elas.
-
-O plano de implementação está em [Plano de retratos](character-portraits-plan.md).
-Exportação ZIP de ficha + imagem permanece uma evolução posterior.
-
-## Validação desta entrega
-
-- 78 arquivos de teste e 900 testes aprovados, além de lint, typecheck, build
-  e verificação de 16 referências a arquivos estáticos.
-- Testes dirigidos cobrem fichas antigas, round-trip do link, payload real do
-  JSON sem imagem local, cópias independentes, falha de escrita/quota, remoção,
-  cache por URL e inclusão opcional no HTML/PDF.
-- Verificação no navegador com personagens de teste: escolher arquivo,
-  salvar/recarregar, duplicar, cancelar, carregar link com cache, fallback de
-  exibição sem CORS, PDF com retrato e texto disponível na camada selecionável.
-- Testes de encaixe cobrem os três modos no JSON e no HTML/PDF; verificação no
-  navegador cobre prévia, cancelamento, mudança sem recarregar o arquivo e
-  persistência para imagem local e por link.
-- Diálogo conferido em desktop e celular de 390 pixels, com aviso local antes
-  da seleção, controles acessíveis e ausência de transbordamento horizontal.

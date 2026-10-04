@@ -1,4 +1,4 @@
-# Modo campanha / Campaign mode — v1.17.0
+# Modo campanha / Campaign mode
 
 ## Português
 
@@ -64,12 +64,13 @@ A migração adiciona apenas `{version:1, initialPowerLevel, initialPP}` ao
 personagem. Conserva NP atual, IDs, ordem, datas, notas e valores dos lançamentos,
 inclusive frações, datas antigas inválidas e IDs duplicados. Frações antigas podem
 ser lidas e estornadas ou ter notas editadas sem arredondamento; novos prêmios e
-ajustes precisam respeitar a validação atual. Poderes, modificadores, custos de
-características e avisos do motor não foram alterados por este overhaul.
+ajustes precisam respeitar a validação atual. A migração de campanha não modifica poderes, modificadores ou preços de
+características; altera somente a base utilizada para o orçamento.
 
 ### Arquivos e exportações
 
-- JSON usa schema **2.1.0**; importação continua aceitando 1.0.0/2.0.0.
+- JSON usa schema **2.2.0**; importação aceita 1.0.0/2.0.0/2.1.0.
+  Os metadados de campanha foram introduzidos no schema 2.1.0.
   JSON e JSONL preservam configuração e histórico mesmo com campanha desligada,
   inclusive NP acima de 15. O envelope dos rascunhos continua na versão 1.
 - Arquivos antigos importados diretamente usam uma base fixa conservadora de
@@ -105,13 +106,9 @@ migration. A verified full raw backup is saved first and can be downloaded from
 the popup or campaign budget options. Original ledger IDs, order, notes, dates
 and finite fractions are preserved. Repeated loads do not migrate again.
 
-JSON 2.1.0 and JSONL preserve inactive campaigns; historical JSON 1.0/2.0 remains
-readable. Direct imports of older files conservatively freeze current PL × 15;
+JSON 2.2.0 and JSONL preserve inactive campaigns; historical JSON 1.0/2.0/2.1
+remains readable. Campaign metadata was introduced in schema 2.1.0. Direct imports of older files conservatively freeze current PL × 15;
 users can review the starting budget in the panel. Excel includes a localized
 campaign sheet, including inactive history. HTML-based PDF offers opt-in campaign
 history, disabled by default. Older app versions do not support the new fixed
 budget. Characteristic pricing, modifier policy and rule warnings are unchanged.
-
-Validation: 64 test files / 792 tests, type checking, lint, production build and
-static assets; isolated browser checks at 320/390/768/960px and desktop, reviewed
-legacy migration, tab isolation and seven-page PDF history with an oversized note.

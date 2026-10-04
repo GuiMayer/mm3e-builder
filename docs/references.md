@@ -1,4 +1,4 @@
-# Referências — v1.19.0
+# Referências
 
 A aba reúne 16 painéis de consulta sem editar o personagem. A entrada
 “Durante o jogo” mostra medidas, turno, dano e graus de teste. As outras
@@ -68,7 +68,7 @@ No celular, resumos viram blocos com rótulos. Tabelas de medidas/matriz mantêm
 rolagem própria e cabeçalhos fixos, com acesso por teclado. A matriz só é
 montada ao expandi-la. A interface usa as cores semânticas do tema atual.
 
-## Auditoria e pesquisa de interface
+## Fontes e critérios de consulta
 
 A fonte normativa foi o arquivo fornecido
 [`Mutants & Masterminds 3 - Heros Handbook Deluxe.md`](sources/Mutants%20%26%20Masterminds%203%20-%20Heros%20Handbook%20Deluxe.md).
@@ -76,9 +76,7 @@ Os novos resumos são paráfrases de consulta, não uma reprodução integral do
 livro. Os dados de condições existentes são reutilizados; nomes em inglês junto
 à tradução distinguem termos que compartilham rótulos no catálogo português.
 
-Os resumos anteriores de Aid, Aim, Defend, Disarm, Escape, Grab, Recover, Trip,
-Slam e Team Attack foram corrigidos ou substituídos conforme as páginas acima.
-Exemplos: Aid concede +5 com **três** graus; Defend soma 10 ao dado quando ele
+Os resumos seguem as regras das páginas indicadas. Exemplos: Aid concede +5 com **três** graus; Defend soma 10 ao dado quando ele
 mostra 10 ou menos; Team Attack soma graus dos **outros** acertos. Teste em
 equipe e ataque em equipe têm procedimentos diferentes. Recover conserva a
 classificação de ação padrão do livro, mas exige o turno inteiro no resumo.
@@ -101,6 +99,7 @@ O catálogo, as tabelas e os campos de consulta pertencem a
 `features/references`. Não dependem dos stores de fichas/recursos e não alteram exportações,
 histórico, custos ou avisos. Apenas a preferência de unidades é gravada
 numa chave própria do localStorage, fora dos dados do personagem.
-Schema de personagem 2.1.0, biblioteca/apêndice de recursos 2, rascunho 1 e
-revisão de cálculo 6 permanecem iguais. Não há migração nesta atualização.
+O schema atual de personagem é 2.2.0, biblioteca/apêndice de recursos usam
+versão 2 e rascunho usa versão 1. A consulta não exige migração ou alteração
+da revisão de cálculo.
 A rotina preventiva de backup já existente continua seguindo a versão do app.

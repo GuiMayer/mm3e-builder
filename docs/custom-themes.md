@@ -8,7 +8,7 @@ ou, no primeiro uso, com as cores do tema selecionado.
 
 Edite as cores nos grupos Destaques, Fundos, Textos, Bordas, Estados, Efeitos,
 Cores das habilidades e Categorias dos efeitos. São 36 papéis de cor. Cada um
-tem seletor visual, campo hexadecimal e botão para restaurar o valor da base;
+tem seletor visual, campo com notação HEX, RGB ou HSL e botão para restaurar o valor da base;
 papéis transparentes também oferecem opacidade de 0 a 100%.
 
 A prévia acompanha as alterações. **Salvar e aplicar** grava a paleta no
@@ -23,7 +23,7 @@ Selecionar uma base atualiza imediatamente o rascunho, os campos e a prévia.
 **Restaurar cores da base** desfaz as edições do rascunho a partir dessa base.
 É necessário salvar para aplicar essas mudanças à página.
 
-Formato hexadecimal inválido mantém a última cor válida da prévia e desabilita
+Uma entrada de cor inválida mantém a última cor válida da prévia e desabilita
 o salvamento até ser corrigido. Avisos de contraste são informativos e não
 impedem salvar. A janela do editor acompanha o tema ativo do aplicativo;
 somente a prévia usa as cores do rascunho até o salvamento.
@@ -67,16 +67,6 @@ O editor é carregado sob demanda e reutiliza o gerenciamento de foco do Modal.
 O menu móvel fecha antes de abri-lo. Ao fechar, o foco retorna ao botão de
 Configurações ou ao acionador do menu móvel.
 
-## Verificação
-
-- Testes de hexadecimal, cópia independente dos temas padrão, preenchimento
-  de papéis ausentes, formatos inválidos, RGB, transparência e contraste.
-- Testes de escrita exclusiva na chave do tema, recuperação da paleta, falhas
-  de armazenamento, fallback e remoção de variáveis ao voltar a um tema pronto.
-- Prévia local isolada: ausência da opção antes de salvar, cancelar sem criar
-  tema, validação de campos, salvar, recarregar, alternar os quatro temas padrão,
-  editar paletas clara/escura, transparência, Escape e retorno do foco.
-- Layout observado em 320, 390, 768, 960 e 1280 px, além de 667 × 375 em
-  orientação horizontal, com rodapé acessível e sem extravasar o diálogo.
-
-O [plano original](./custom-theme-plan.md) registra as decisões e fontes de design.
+O seletor reutiliza `react-colorful`; `colord` interpreta HEX/RGB/HSL.
+A notação da entrada não altera o formato persistido. Alfa explícito é aceito
+apenas nos papéis que permitem transparência.
