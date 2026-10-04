@@ -169,3 +169,31 @@ Testes devem comparar entradas mecânicas com resultados fundamentados na fonte,
 incluindo graduações parciais, frações, contexto de Força e exportações.
 Expectativas da biblioteca são dados de teste, nunca parâmetros do motor.
 Ver [Guia de testes](../src/__tests__/README.md).
+
+## Parâmetros efetivos de ação e duração
+
+`effectParameters` deriva parâmetros sem gravar valores na ficha nem alterar
+o preço. A resolução usa a definição específica/genérica correspondente à
+origem do modificador. Referências do Builder, ficha, recursos e biblioteca
+usam a mesma resolução; combinações ambíguas exibem parâmetros provisórios.
+
+| Modificação | Transição / comportamento | Fonte |
+| --- | --- | --- |
+| Reação | Padrão ou livre → reação; custo usa a ação impressa original | Handbook, p. 196 |
+| Ação Aumentada | Reação → livre → movimento → padrão | Handbook, p. 200 |
+| Ação de Variável | Movimento, livre ou reação; respeita subtipo e tier legado | Handbook, Variável |
+| Duração Aumentada | Instantâneo → concentração **ou** sustentado → contínuo | Handbook, p. 192 |
+| Concentração (falha) | Sustentado → concentração | Handbook, Modificadores |
+| Permanente (falha genérica) | Contínuo → permanente | Handbook, Modificadores |
+| Sustentado (genérico/Proteção/Imunidade/Membros Extras) | Permanente → sustentado | Handbook, p. 198 e efeitos específicos |
+| Anular: Concentração + Sustentado | Instantâneo → concentração → sustentado | Handbook, Anular |
+| Permanente específico de Criar/Crescimento/Insubstancial/Atributo Aprimorado | Sustentado → permanente, pelo preço específico preservado | Handbook, efeitos específicos |
+
+Transições válidas são compostas independentemente da ordem dos modificadores.
+Duplicações não criam uma escada ilimitada; ciclos e destinos concorrentes
+exigem revisão do narrador. A aplicação genérica continua permitida.
+
+Ação de uso, manutenção e gatilho são apresentados separadamente. Ativação
+global não muda a ação do componente. Concentração específica de Aflição e
+Enfraquecer permite repetir testes mediante ação padrão; não é a falha genérica
+nem uma autorização automática para transformar Aflição em sustentada.

@@ -1269,5 +1269,9 @@
   "diagnostic.powerSpecific": "{{modifier}} is not valid for {{effect}}. This modifier is not in the effect's extras/flaws list.",
   "diagnostic.priceModifier": "Unknown modifier \"{{id}}\" on effect \"{{effectId}}\".",
   "diagnostic.priceAmbiguous": "Legacy modifier \"{{id}}\" matches generic and power-specific rules; generic pricing was preserved.",
-  "diagnostic.structure": "Invalid value ({{code}})."
+  "diagnostic.structure": "Invalid value ({{code}}).",
+  "builder.validation.parameterAmbiguous": "Ambiguous composition: the displayed parameter is provisional. Ask the GM to review it.",
+  "builder.validation.specificDurationInvalid": "This specific duration modifier cannot be composed with the selected duration.",
+  "builder.validation.provisional": "Provisional parameters; review the selected modifiers.",
+  "builder.validation.maintenance": "Maintenance"
 }

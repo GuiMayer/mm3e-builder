@@ -372,7 +372,7 @@ export function AltEffectCard({
                         </ModifierDropzone>
                       </div>
                     </div>
-                    {effectDef && <EffectReference effect={effectDef} t={t} />}
+                    {effectDef && <EffectReference effect={effectDef} component={comp} t={t} />}
                   </div>
                 </div>
               </React.Fragment>

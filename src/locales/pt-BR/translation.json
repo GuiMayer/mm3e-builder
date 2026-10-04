@@ -1269,5 +1269,9 @@
   "diagnostic.powerSpecific": "{{modifier}} não é válido para {{effect}}. Esse modificador não consta nos extras/falhas específicos do efeito.",
   "diagnostic.priceModifier": "Modificador desconhecido \"{{id}}\" no efeito \"{{effectId}}\".",
   "diagnostic.priceAmbiguous": "O modificador legado \"{{id}}\" corresponde a regras genéricas e específicas; o preço genérico foi preservado.",
-  "diagnostic.structure": "Valor inválido ({{code}})."
+  "diagnostic.structure": "Valor inválido ({{code}}).",
+  "builder.validation.parameterAmbiguous": "Composição ambígua: o parâmetro exibido é provisório. Revise com o narrador.",
+  "builder.validation.specificDurationInvalid": "Este modificador específico de duração não pode ser composto com a duração selecionada.",
+  "builder.validation.provisional": "Parâmetros provisórios; revise os modificadores selecionados.",
+  "builder.validation.maintenance": "Manutenção"
 }

@@ -12,7 +12,7 @@ import type {
 } from '../../entities/types';
 import { validateComponentModifiers } from './modifierValidation';
 import { validateRequiredPowerFields } from './validation';
-import { resolveEffectiveDuration, resolveEffectiveRange } from './effectParameters';
+import { resolveEffectiveAction, resolveEffectiveDuration, resolveEffectiveRange } from './effectParameters';
 import { resolveModifierDefinition } from './rulesCatalog';
 import { buildTargetedEffectProfiles } from './offenseSummary';
 import { validateAttackEffect } from './validation';
@@ -115,7 +115,7 @@ function validatePowerComponentForSave(
     issues.push({ ...issue(`${path}.modifiers.${violation.modifierId}`, violation.message), ...violation, names: violation.names && Object.fromEntries(Object.entries(violation.names).map(([key, name]) => [key, name.kind === 'modifier' ? { ...name, effectId: effectDef.id } : name])), severity: 'error' });
   }
 
-  issues.push(...validateCoreModifierApplicability(component, effectDef, path));
+  issues.push(...validateCoreModifierApplicability(component, effectDef, path, context.modifierDefs));
 
   return issues;
 }
@@ -129,6 +129,7 @@ function validateCoreModifierApplicability(
   component: ICharacterPowerComponent,
   effectDef: IPowerEffect,
   path: string,
+  modifierDefs: IModifierDef[],
 ): SemanticValidationIssue[] {
   const issues: SemanticValidationIssue[] = [];
 
@@ -165,7 +166,8 @@ function validateCoreModifierApplicability(
 
   const parameterDiagnostics = [
     ...resolveEffectiveRange(effectDef.range, component).diagnostics,
-    ...resolveEffectiveDuration(effectDef.duration, component).diagnostics,
+    ...resolveEffectiveDuration(effectDef.duration, component, { effect: effectDef, modifierDefs }).diagnostics,
+    ...resolveEffectiveAction(effectDef.action, component, { effect: effectDef, modifierDefs }).diagnostics,
   ];
   for (const diagnostic of parameterDiagnostics) {
     issues.push({

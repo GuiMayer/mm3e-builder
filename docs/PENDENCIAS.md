@@ -12,23 +12,19 @@ ou lista histórica de documentos removidos.
 
 ## Pendências confirmadas no código
 
-### P02 — Ação efetiva e composições de duração — prioridade média
+### P02 — Aflição Sustentada na biblioteca — prioridade média
 
-**Contexto:** `src/shared/lib/effectParameters.ts` resolve alcance e duração,
-mas não ação. `semanticValidation.ts` tem verificações pontuais para Reaction
-e Triggered. Na duração, somente o primeiro modificador é aplicado, com aviso
-quando existem vários. Quatro receitas da biblioteca dependem de Aflição
-Sustentada e permanecem apenas para consulta.
+Friction Blindness, Friction Muzzle, Blinding Aura e Fifth Wheel of Weyan
+continuam apenas para consulta. O Handbook define Duração Aumentada como
+Instantâneo→Concentração ou Sustentado→Contínuo, e Sustentado genérico como
+Permanente→Sustentado. A exceção de Anular não autoriza a mesma transição para
+Aflição. O Power Profiles usa Aflição Sustentada nessas quatro receitas, mas
+as fontes consultadas não definem uma composição geral com custo inequívoco.
 
-**Escopo:** consultar a fonte oficial antes de ampliar o modelo; separar
-modificações na ação do efeito de Ativação global. Determinar quais composições
-de duração são representáveis e quais exigem interpretação. Só então decidir
-se as quatro receitas podem ser habilitadas.
-
-**Critérios de aceite:** resolução e avisos consistentes para base, vinculados e alternativos,
-incluindo modificadores repetidos. Manter escolhas do jogador/narrador e o
-escopo dos modificadores específicos. Não corrigir preços de fichas antigas
-silenciosamente nem habilitar receitas incompletas.
+Habilitar essas receitas depende de fundamentar essa definição ou aprovar uma
+convenção explícita. Não usar um custo manual nem Sustentado genérico +0 para
+forçar a fórmula impressa. A resolução geral de ação/duração está documentada
+no [guia de cálculo](REGRAS_CALCULO_MM3E.md).
 
 ### P03 — Preferências de validação sem integração — prioridade média
 
@@ -115,8 +111,6 @@ resultante nos guias vigentes e apenas o trabalho aberto neste arquivo.
 
 | Etapa | Pendência | Entrega | Commit proposto |
 | --- | --- | --- | --- |
-| 4 | P02 | Resolução compartilhada de ação/duração e integração dos consumidores | `fix(rules): resolve effective action and duration consistently` |
-| 5 | P02 | Receitas sustentadas, somente após resolver sua composição normativa | `feat(power-library): support verified sustained affliction recipes` |
 | 6 | P03 | Avisos de treinamento em perícias e atalhos de rolagem | `fix(validation): integrate trained-only skill diagnostics` |
 | 7 | P03 | Configuração opcional e validação contextual de Aflição | `feat(power-builder): integrate optional affliction condition diagnostics` |
 | 8 | P04 | Identificação de definições legadas e orientação de compra | `fix(catalog): distinguish legacy modifier definitions` |
@@ -128,45 +122,6 @@ composição inequívoca, manter as quatro receitas para consulta, documentar a
 decisão aberta em P02 e não criar um commit que habilite receitas incompletas.
 Cada commit inclui testes relevantes e atualização do guia correspondente.
 Não atribuir uma versão nova antes de consolidar o escopo implementado.
-
-### P02 — Ação e duração efetivas
-
-**Implementação:**
-
-1. Transcrever uma matriz curta de transições previstas na fonte oficial antes
-   de alterar o resolver: Reação, Ação Aumentada, opções de Ação de Variável,
-   Duração Aumentada, Concentração, Permanente e Sustentado. Considerar também
-   modificadores específicos, como Sustentado de Proteção/Imunidade/Anular, e
-   diferenciar ação de uso, manutenção, gatilho e Ativação global.
-2. Resolver modificadores com `resolveModifierDefinition`, considerando efeito,
-   origem específica, subtipo e opções; não deduzir comportamento apenas pelo ID
-   compartilhado com um modificador genérico.
-3. Introduzir `resolveEffectiveAction` e revisar `resolveEffectiveDuration` como
-   funções puras com valor e diagnósticos. Composições suportadas devem ter
-   resultado independente da ordem das entradas; duplicações não podem criar
-   degraus ilimitados. Combinações ambíguas retornam resultado conservador
-   identificado como provisório, preservam dados e pedem revisão do narrador.
-4. Reutilizar a resolução no Builder, referências da ficha/recursos e documentos
-   que mostram ação/duração. Validadores devem consumir os mesmos parâmetros,
-   distinguindo regras sobre ação padrão de regras sobre ação efetiva. O motor de
-   preço mantém suas bases atuais; ação exibida não redefine o custo de Reação.
-5. Comparar os quatro casos do Power Profiles — Friction Blindness, Friction
-   Muzzle, Blinding Aura e Fifth Wheel of Weyan — com o Handbook. Não tratar
-   Instant→Concentration→Sustained como progressão automática de Duração Aumentada,
-   nem reutilizar o Sustentado genérico +0 fora de sua transição oficial.
-6. Se a composição sustentada puder ser fundamentada, acrescentar definição
-   específica/configuração aditiva sem alterar IDs ou custos anteriores. Atualizar
-   as receitas, prévia, catálogo de busca e referências de condições; verificar
-   seus custos por composição normal e então permitir aplicação. Se depender de
-   uma convenção do narrador, manter apenas consulta nesta execução.
-
-**Regressões e aceite:** base, Linked, AE e recursos; Reação em efeitos padrão/livres;
-Ação Aumentada; opções de Ação de Variável; Dano com Concentração; Proteção
-Sustentada; Sustentado específico de Anular; Permanência; modificadores repetidos
-e em ordens diferentes; ambiguidades; cancelamento e round-trip. Os preços de
-poderes existentes devem permanecer iguais. Receitas eventualmente habilitadas
-precisam aplicar todos os efeitos/modificadores e mostrar resultado coerente com
-a regra, inclusive quando o valor impresso tiver divergência editorial.
 
 ### P03 — Integração das preferências
 

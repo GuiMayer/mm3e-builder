@@ -122,7 +122,7 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
                 {definition.configurableFields?.some(field => field.required && !originalComponent.fieldValues?.[field.id]) && <ConfigurableFieldSelector fields={definition.configurableFields} values={component.fieldValues ?? {}} onChange={(id, value) => update(component.id, { fieldValues: { ...component.fieldValues, [id]: value } })} t={t}/>}
                 {originalComponent.choices?.map(choice => <label className="power-library-choice" key={choice.id}>{libraryText(choice.label, language)}<select className="app-select" value={component.fieldValues?.[choice.id] as string ?? ''} onChange={event => update(component.id, { fieldValues: { ...component.fieldValues, [choice.id]: event.target.value } })}><option value="">{t('builder.selectOption')}</option>{choice.options.map(option => <option key={option.value} value={option.value}>{libraryText(option.label, language)}</option>)}</select></label>)}
                 {originalComponent.chooseSenses && <SenseTraitsEditor traits={component.senseTraits ?? []} onChange={senseTraits => update(component.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })}/>}
-                <details><summary>{t('powerLibrary.effectInfo')}</summary><EffectReference effect={definition} t={t}/></details>
+                <details><summary>{t('powerLibrary.effectInfo')}</summary><EffectReference effect={definition} component={component} t={t}/></details>
               </article>;
             })}
             {draft.alternateEffects.length > 0 && <p>{t('powerLibrary.includesAlternates', { count: draft.alternateEffects.length })}</p>}

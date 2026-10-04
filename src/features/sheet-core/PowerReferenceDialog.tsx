@@ -1,5 +1,6 @@
+import { resolveEffectiveAction, resolveEffectiveDuration, resolveEffectiveRange } from '../../shared/lib/effectParameters';
 import { useTranslation } from 'react-i18next';
-import type { IAlternateEffect, ICharacterPower, IModifierDef, IPowerEffect } from '../../entities/types';
+import type { IAlternateEffect, ICharacterPowerComponent, ICharacterPower, IModifierDef, IPowerEffect } from '../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { buildPowerReferences, localizeReference, type ComponentReference, type ModifierReference } from './powerReference';
@@ -7,19 +8,26 @@ import { buildPowerReferences, localizeReference, type ComponentReference, type 
 export type PowerReferenceTarget = { kind: 'power'; power: ICharacterPower | IAlternateEffect } |
   { kind: 'effect'; reference: ComponentReference } | { kind: 'modifier'; reference: ModifierReference; effectName?: string };
 
-function RuleDescription({ definition }: { definition?: IPowerEffect | IModifierDef }) {
+function RuleDescription({ definition, component }: { definition?: IPowerEffect | IModifierDef; component?: ICharacterPowerComponent }) {
   const { t } = useTranslation();
   if (!definition) return <p>{t('rulesInfo.missing')}</p>;
+  const effect = 'baseCost' in definition ? definition : undefined;
+  const context = effect ? { effect, modifierDefs: MODIFIER_DEFS } : undefined;
+  const action = effect && component ? resolveEffectiveAction(effect.action, component, context) : undefined;
+  const duration = effect && component ? resolveEffectiveDuration(effect.duration, component, context) : undefined;
+  const range = effect && component ? resolveEffectiveRange(effect.range, component) : undefined;
   return <>
     <div className="reference-meta">
       {'baseCost' in definition ? <>
-        <span>{t(`rulesInfo.action.${definition.action}`)}</span><span>{t(`rulesInfo.range.${definition.range}`)}</span><span>{t(`rulesInfo.duration.${definition.duration}`)}</span>
+        <span>{t(`rulesInfo.action.${action?.value ?? definition.action}`)}</span><span>{t(`rulesInfo.range.${range?.value ?? definition.range}`)}</span><span>{t(`rulesInfo.duration.${duration?.value ?? definition.duration}`)}</span>
         <span>{definition.variableCost ? t('rulesInfo.variableCost') : definition.baseCost + ' ' + t('common.pp') + '/' + t('common.rank')}</span>
       </> : <>
         <span>{t(`rulesInfo.${definition.category}`)}</span>
         {definition.appliesToPower || ['activation', 'removable'].includes(definition.id) ? <span>{t('rulesInfo.powerLevel')}</span> : <span>{definition.costValue > 0 ? '+' : ''}{definition.costValue} {t(`rulesInfo.cost.${definition.costType}`)}</span>}
       </>}
     </div>
+    {(action?.provisional || duration?.provisional) && <p>{t('builder.validation.provisional')}</p>}
+    {action?.maintenanceAction && <p>{t('builder.validation.maintenance')}: {t(`rulesInfo.action.${action.maintenanceAction}`)}</p>}
     {(definition.longDescription || definition.description).split(/\n\s*\n/).map((paragraph, index) => <p key={index}>{paragraph}</p>)}
     {'options' in definition && !!definition.options?.length && <ul>{definition.options.map(option => <li key={option.label}><strong>{option.label}</strong>{option.notes && `: ${option.notes}`}</li>)}</ul>}
   </>;
@@ -47,7 +55,7 @@ function EffectDescription({ reference }: { reference: ComponentReference }) {
   const { component, definition, modifiers } = reference;
   return <section className="reference-section">
     <h3>{definition?.name ?? component.effectId} · {component.ranks} {t('common.ranks')}</h3>
-    <RuleDescription definition={definition} />
+    <RuleDescription definition={definition} component={component} />
     {modifiers.map((modifier, index) => <details key={index}>
       <summary>{modifier.definition?.name ?? modifier.applied.modifierId}</summary>
       <AppliedModifierDescription reference={modifier} />
