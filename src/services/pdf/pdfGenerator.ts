@@ -27,6 +27,7 @@ import { resolvePDFFont } from './pdfFonts';
 import { createPDFLabels, localizePDFDefinition, localizePDFPowers, localizePDFModifiers, pdfLanguage } from './pdfMessages';
 import { escapeHtml } from './components/utils';
 import { DEFAULT_CUSTOMIZATION } from './types';
+import { hasSkillContribution } from '../../shared/lib/skillVisibility';
 
 export interface PDFGeneratorOptions {
   character: ICharacter;
@@ -150,7 +151,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     }));
 
     // Parallel lists share the page width without changing their source data.
-    const skillsSection = hideEmpty && !character.skills.some(skill => skill.ranks > 0) ? '' : renderSkillsSection({
+    const skillsSection = hideEmpty && !character.skills.some(hasSkillContribution) ? '' : renderSkillsSection({
       character, labels, worksheet,
       skillDefs: displaySkillDefs,
       skillsCost,

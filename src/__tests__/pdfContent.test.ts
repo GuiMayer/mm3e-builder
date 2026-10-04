@@ -16,6 +16,19 @@ const power: ICharacterPower = {
 };
 
 describe('PDF content preservation', () => {
+  it.each([3, -2])('includes zero-rank skills with a manual bonus of %s', async bonus => {
+    const character = createDefaultCharacter({ skills: [{ skillId: 'acrobatics', ranks: 0, subtype: null, otherBonus: bonus }] });
+    const before = JSON.stringify(character);
+    for (const language of ['en', 'pt-BR']) {
+      const result = await generateCharacterPDF({ character, powerDefs: POWER_DEFS, modifierDefs: MODIFIER_DEFS, language,
+        skillDefs: Object.fromEntries(SKILL_DEFS.map(def => [def.id, def])), advantageDefs: {} });
+      expect(result.success).toBe(true);
+      expect(result.html).toContain(language === 'en' ? 'Acrobatics' : 'Acrobacia');
+      expect(result.html).toContain(bonus > 0 ? '+3' : '-2');
+      expect(result.html).not.toContain('No skills trained.');
+    }
+    expect(JSON.stringify(character)).toBe(before);
+  });
   it('exports the full alternate effect, keeping modifiers attached to Linked components', () => {
     const html = renderPowerDetails(power, POWER_DEFS, MODIFIER_DEFS);
     expect(html).toContain('Damage 6 — Area (Burst)');

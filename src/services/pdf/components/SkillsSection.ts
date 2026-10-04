@@ -8,6 +8,7 @@ import type { AbilityKey, ICharacter } from '../../../entities/types';
 import type { ISkillDef } from '../../../entities/types';
 import { escapeHtml, formatBonus } from './utils';
 import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
+import { hasSkillContribution } from '../../../shared/lib/skillVisibility';
 
 export interface SkillsSectionData {
   labels?: PDFLabels;
@@ -28,7 +29,7 @@ export function renderSkillsSection(data: SkillsSectionData): string {
   // Filter skills with ranks > 0
   const activeSkills = data.worksheet ? [...skills, ...Object.values(skillDefs)
     .filter(def => !skills.some(skill => skill.skillId === def.id))
-    .map(def => ({ skillId: def.id, ranks: 0, subtype: null }))] : skills.filter(skill => skill.ranks > 0);
+    .map(def => ({ skillId: def.id, ranks: 0, subtype: null }))] : skills.filter(hasSkillContribution);
 
   if (activeSkills.length === 0) {
     return `
