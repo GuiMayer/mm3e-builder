@@ -10,6 +10,12 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+## [1.21.3] - 2026-10-05
+
+### Changed — Duration progression and sustained library powers
+- Adopt the DC Adventures Increased Duration progression (Instant → Concentration → Sustained → Continuous), at +1 PP per effect rank per step. Add explicit step choices while preserving the price of existing records without a choice.
+- Enable Friction Blindness, Friction Muzzle, Blinding Aura and Fifth Wheel of Weyan with two duration steps. Explain the interpretation in the library preview and copied power notes; disclose printed-cost differences without overriding engine prices. Character schema remains 2.3.0 and existing sheets are not migrated.
+
 ## [1.21.2] - 2026-10-05
 
 Interface fixes and small convenience improvements. Character schema 2.3.0,

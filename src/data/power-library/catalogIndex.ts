@@ -7422,14 +7422,13 @@ export const POWER_LIBRARY_INDEX: LibraryEntry[] = [
       "pt": "Poderes ofensivos"
     },
     "summary": {
-      "en": "Affliction · Increased Range · Instant Recovery · Limited Degree · Limited",
-      "pt": "Aflição · Alcance Aumentado · Recuperação Instantânea · Graus Limitados · Limitado"
+      "en": "Affliction · Increased Range · Increased Duration · Instant Recovery · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Duração Aumentada · Recuperação Instantânea · Graus Limitados · Limitado"
     },
     "page": 85,
     "effectIds": [
       "affliction"
-    ],
-    "referenceOnly": true
+    ]
   },
   {
     "id": "kinetic-friction-muzzle",
@@ -7443,14 +7442,13 @@ export const POWER_LIBRARY_INDEX: LibraryEntry[] = [
       "pt": "Poderes ofensivos"
     },
     "summary": {
-      "en": "Affliction · Increased Range · Instant Recovery · Limited Degree · Limited",
-      "pt": "Aflição · Alcance Aumentado · Recuperação Instantânea · Graus Limitados · Limitado"
+      "en": "Affliction · Increased Range · Increased Duration · Instant Recovery · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Duração Aumentada · Recuperação Instantânea · Graus Limitados · Limitado"
     },
     "page": 85,
     "effectIds": [
       "affliction"
-    ],
-    "referenceOnly": true
+    ]
   },
   {
     "id": "kinetic-friction-heat",
@@ -8467,14 +8465,13 @@ export const POWER_LIBRARY_INDEX: LibraryEntry[] = [
       "pt": "Poderes ofensivos"
     },
     "summary": {
-      "en": "Affliction · Area · Cumulative · Limited · Increased Duration — Concentration version; sustained extension requires adjudication.",
-      "pt": "Aflição · Área · Cumulativo · Limitado · Duração Aumentada — Versão por Concentração; extensão Sustentada requer adjudicação."
+      "en": "Affliction · Area · Cumulative · Limited · Increased Duration",
+      "pt": "Aflição · Área · Cumulativo · Limitado · Duração Aumentada"
     },
     "page": 94,
     "effectIds": [
       "affliction"
-    ],
-    "referenceOnly": true
+    ]
   },
   {
     "id": "light-blinding-field",
@@ -11040,8 +11037,7 @@ export const POWER_LIBRARY_INDEX: LibraryEntry[] = [
     "page": 113,
     "effectIds": [
       "affliction"
-    ],
-    "referenceOnly": true
+    ]
   },
   {
     "id": "magic-sixth-wheel-of-weyan",

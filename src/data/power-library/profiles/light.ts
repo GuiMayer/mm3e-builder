@@ -227,8 +227,8 @@ export default [
       "pt": "Poderes ofensivos"
     },
     "summary": {
-      "en": "Affliction · Area · Cumulative · Limited · Increased Duration — Concentration version; sustained extension requires adjudication.",
-      "pt": "Aflição · Área · Cumulativo · Limitado · Duração Aumentada — Versão por Concentração; extensão Sustentada requer adjudicação."
+      "en": "Affliction · Area · Cumulative · Limited · Increased Duration",
+      "pt": "Aflição · Área · Cumulativo · Limitado · Duração Aumentada"
     },
     "page": 94,
     "components": [
@@ -240,7 +240,10 @@ export default [
             "modifierId": "area",
             "ranks": 1,
             "option": "Perception",
-            "isPowerSpecific": false
+            "isPowerSpecific": false,
+            "options": {
+              "includesSenseDependent": true
+            }
           },
           {
             "modifierId": "cumulative",
@@ -255,7 +258,10 @@ export default [
           {
             "modifierId": "increased_duration",
             "ranks": 1,
-            "isPowerSpecific": false
+            "isPowerSpecific": false,
+            "options": {
+              "subtypeId": "two_steps"
+            }
           }
         ],
         "scalable": true,
@@ -272,11 +278,11 @@ export default [
       "fixed": 0,
       "perRank": 4
     },
-    "requiresCharacterChanges": {
-      "en": "Reference only: the book requires Sustained Affliction; this builder only models its Concentration step.",
-      "pt": "Apenas referência: o livro exige Aflição Sustentada; este Builder representa apenas sua etapa de Concentração."
-    },
-    "sourceFormula": "Perception Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to Vision, Sustained Duration"
+    "sourceFormula": "Perception Area Cumulative Affliction (Resisted by Dodge, Overcome by Fortitude; Visually Impaired, Visually Disabled, Visually Unaware), Limited to Vision, Sustained Duration",
+    "ruleNote": {
+      "en": "Rule interpretation: this power uses the DC Adventures duration progression adopted by the app. Increased Duration buys two steps (Instant → Concentration → Sustained), at +2 PP per effect rank. Maintain it with a free action each turn; normal resistance and recovery rules still apply. The generic Deluxe Hero's Handbook modifier omits the Concentration → Sustained step.",
+      "pt": "Interpretação de regra: este poder usa a progressão de duração do DC Adventures adotada pelo app. Duração Aumentada compra duas etapas (Instantâneo → Concentração → Sustentado), por +2 PP por graduação do efeito. Mantenha-o com uma ação livre por turno; as regras normais de resistência e recuperação continuam válidas. O modificador genérico do Deluxe Hero's Handbook omite a etapa Concentração → Sustentado."
+    }
   },
   {
     "id": "light-blinding-field",

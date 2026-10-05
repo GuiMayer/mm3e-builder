@@ -376,16 +376,21 @@
         "category":  "extra",
         "costType":  "per_rank",
         "costValue":  1,
-        "description":  "Changes Instant duration to Concentration, or Sustained duration to Continuous.",
-        "longDescription":  "Increased Duration is applied once: an Instant effect becomes Concentration, while a Sustained effect becomes Continuous. Other duration categories are not changed by this extra.",
+        "description":  "Increases duration by one, two, or three steps, at +1 per effect rank per step.",
+        "longDescription":  "This app adopts the DC Adventures interpretation: Instant → Concentration → Sustained → Continuous, at +1 point per effect rank for each step. An Instant effect made Sustained costs +2 per rank and requires a free action each turn to maintain; normal resistance and recovery rules still apply. This progression extends the generic modifier in the Deluxe Hero's Handbook, which omits Concentration → Sustained. Choose the number of steps below. Existing records without a step option retain one step and their original cost; legacy modifier ranks do not buy additional steps.",
+        "subtypes": [
+            { "id": "one_step", "label": "1 duration step", "costValue": 1, "i18n": { "pt-BR": { "label": "1 etapa de duração" } } },
+            { "id": "two_steps", "label": "2 duration steps", "costValue": 2, "i18n": { "pt-BR": { "label": "2 etapas de duração" } } },
+            { "id": "three_steps", "label": "3 duration steps", "costValue": 3, "i18n": { "pt-BR": { "label": "3 etapas de duração" } } }
+        ],
         "incompatibleWith":  [
 
                              ],
         "i18n":  {
                      "pt-BR":  {
                                    "name":  "Duração Aumentada",
-                                   "description":  "Muda Instantâneo para Concentração ou Sustentado para Contínuo.",
-                                   "longDescription":  "Duração Aumentada é aplicada uma vez: um efeito Instantâneo torna-se Concentração, enquanto um efeito Sustentado torna-se Contínuo. Outras categorias de duração não são alteradas por este extra."
+                                   "description":  "Aumenta a duração em uma, duas ou três etapas, por +1 por graduação do efeito por etapa.",
+                                   "longDescription":  "O app adota a interpretação do DC Adventures: Instantâneo → Concentração → Sustentado → Contínuo, por +1 ponto por graduação do efeito por etapa. Tornar um efeito Instantâneo Sustentado custa +2 por graduação e exige uma ação livre por turno para mantê-lo; as regras normais de resistência e recuperação continuam válidas. Essa progressão estende o modificador genérico do Deluxe Hero's Handbook, que omite Concentração → Sustentado. Escolha abaixo o número de etapas. Registros existentes sem essa opção mantêm uma etapa e o custo original; graduações legadas do modificador não compram etapas adicionais."
                                }
                  }
     },

@@ -32,6 +32,7 @@ export function ModifierParameterControls({
   const ranked = isRankedModifier(definition);
   const applicationLabel = `${definition.name}${applicationNumber ? ` (#${applicationNumber})` : ''}`;
   const subtypeId = getSelectedModifierSubtypeId(applied, definition);
+  const durationSteps = definition.id === 'increased_duration';
   const overLimit = definition.maxRanks !== undefined && applied.ranks > definition.maxRanks;
   const cost = definition.costType === 'per_rank'
     ? getPerRankModifierCost(applied, definition, effectAction)
@@ -74,17 +75,18 @@ export function ModifierParameterControls({
 
         {definition.subtypes && definition.subtypes.length > 0 && (
           <div className="applied-mod-field">
-            <span className="applied-mod-field-label">{t('builder.subtypeLabel')}</span>
+            <span className="applied-mod-field-label">{t(durationSteps ? 'builder.durationSteps' : 'builder.subtypeLabel')}</span>
             <select
               className="applied-mod-subtype"
-              value={subtypeId}
+              value={subtypeId || (durationSteps ? 'one_step' : '')}
               onChange={(event) => onOptionsChange({
                 ...applied.options,
                 subtypeId: event.target.value,
               })}
-              title={t('builder.subtypeLabel')}
+              title={t(durationSteps ? 'builder.durationSteps' : 'builder.subtypeLabel')}
+              aria-label={`${t(durationSteps ? 'builder.durationSteps' : 'builder.subtypeLabel')}: ${applicationLabel}`}
             >
-              <option value="">{t('builder.subtypeNone')}</option>
+              {!durationSteps && <option value="">{t('builder.subtypeNone')}</option>}
               {definition.subtypes.map((subtype) => (
                 <option key={subtype.id} value={subtype.id}>
                   {subtype.i18n?.[i18n.language]?.label ?? subtype.label}

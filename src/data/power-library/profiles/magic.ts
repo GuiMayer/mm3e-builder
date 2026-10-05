@@ -4076,7 +4076,10 @@ export default [
           {
             "modifierId": "increased_duration",
             "ranks": 1,
-            "isPowerSpecific": false
+            "isPowerSpecific": false,
+            "options": {
+              "subtypeId": "two_steps"
+            }
           },
           {
             "modifierId": "instant_recovery",
@@ -4101,13 +4104,21 @@ export default [
     "audit": {
       "formula": "Burst Area Affliction (Incapacitated), Affects Objects, Progressive, Sustained, Instant Recovery, Limited Degree • 3 points per rank",
       "fixed": 0,
-      "perRank": 3
+      "perRank": 3,
+      "discrepancy": {
+        "reason": {
+          "en": "With the adopted +2/rank Sustained duration progression, the listed effect and modifiers calculate 4 PP per rank, rather than the printed 3 PP per rank. The engine keeps the composition without a manual discount.",
+          "pt": "Com a progressão Sustentada adotada (+2 por graduação), o efeito e os modificadores listados calculam 4 PP por graduação, em vez dos 3 PP por graduação impressos. O motor mantém a composição sem desconto manual."
+        },
+        "fixed": 0,
+        "perRank": 4
+      }
     },
-    "requiresCharacterChanges": {
-      "en": "Reference only: Sustained Affliction is not represented; the preview is only its Concentration step.",
-      "pt": "Apenas referência: Aflição Sustentada não é representada; a prévia mostra apenas a etapa de Concentração."
-    },
-    "sourceFormula": "Burst Area Affliction (Incapacitated), Affects Objects, Progressive, Sustained, Instant Recovery, Limited Degree"
+    "sourceFormula": "Burst Area Affliction (Incapacitated), Affects Objects, Progressive, Sustained, Instant Recovery, Limited Degree",
+    "ruleNote": {
+      "en": "Rule interpretation: this power uses the DC Adventures duration progression adopted by the app. Increased Duration buys two steps (Instant → Concentration → Sustained), at +2 PP per effect rank. Maintain it with a free action each turn; normal resistance and recovery rules still apply. The generic Deluxe Hero's Handbook modifier omits the Concentration → Sustained step.",
+      "pt": "Interpretação de regra: este poder usa a progressão de duração do DC Adventures adotada pelo app. Duração Aumentada compra duas etapas (Instantâneo → Concentração → Sustentado), por +2 PP por graduação do efeito. Mantenha-o com uma ação livre por turno; as regras normais de resistência e recuperação continuam válidas. O modificador genérico do Deluxe Hero's Handbook omite a etapa Concentração → Sustentado."
+    }
   },
   {
     "id": "magic-sixth-wheel-of-weyan",

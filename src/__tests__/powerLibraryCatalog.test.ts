@@ -8,10 +8,40 @@ import { CharacterPowerSchema } from '../entities/schemas';
 import { POWER_LIBRARY_INDEX } from '../data/power-library/catalogIndex';
 import { POWER_PROFILES } from '../data/power-library/profiles';
 import { SENSE_TRAITS } from '../data/senseTraits';
+import { resolveEffectiveAction, resolveEffectiveDuration } from '../shared/lib/effectParameters';
+import { applyPowerTemplate } from '../features/power-library/powerTemplateApplication';
 
 const modules = import.meta.glob<PowerTemplate[]>('../data/power-library/profiles/*.ts', { eager: true, import: 'default' });
 const templates = Object.values(modules).flat();
 describe('Power Profiles catalog audit', () => {
+  it('applies the four Sustained Afflictions with normal pricing and a localized rule note', () => {
+    for (const [id, perRank] of [
+      ['kinetic-friction-blindness', 0.5], ['kinetic-friction-muzzle', 0.5],
+      ['light-blinding-aura', 4], ['magic-fifth-wheel-of-weyan', 4],
+    ] as const) {
+      const template = templates.find(item => item.id === id)!;
+      expect(template.requiresCharacterChanges).toBeUndefined();
+      expect(POWER_LIBRARY_INDEX.find(item => item.id === id)?.referenceOnly).toBeUndefined();
+      for (const language of ['en', 'pt-BR']) {
+        const recipe = instantiatePowerTemplate(template, 5, language);
+        const component = recipe.components[0];
+        const effect = POWER_DEFS.find(item => item.id === component.effectId)!;
+        const context = { effect, modifierDefs: MODIFIER_DEFS };
+        expect(resolveEffectiveDuration(effect.duration, component, context)).toEqual({ value: 'sustained', diagnostics: [] });
+        expect(resolveEffectiveAction(effect.action, component, context).maintenanceAction).toBe('free');
+        expect(calculatePowerPricing(recipe, POWER_DEFS, MODIFIER_DEFS).total).toBe(Math.ceil(perRank * 5));
+        expect(recipe.notes).toContain('DC Adventures');
+        expect(recipe.notes).toContain(language === 'en' ? '+2 PP per effect rank' : '+2 PP por graduação');
+        expect(recipe).not.toHaveProperty('ruleNote');
+        const target = { id: 'target', name: '', notes: '', components: [{ ...component, id: 'base' }], alternateEffects: [] };
+        const result = applyPowerTemplate(target, recipe, { kind: 'component', componentId: 'base' });
+        expect(result.notes).toContain('DC Adventures');
+        expect(CharacterPowerSchema.parse(JSON.parse(JSON.stringify(result)))).toEqual(result);
+        const changedEditorialPrice = instantiatePowerTemplate({ ...template, audit: { formula: 'Ignored editorial price', fixed: 999, perRank: 999 } }, 5, language);
+        expect(calculatePowerPricing(changedEditorialPrice, POWER_DEFS, MODIFIER_DEFS).total).toBe(Math.ceil(perRank * 5));
+      }
+    }
+  });
   it('indexes every published recipe exactly once and uses known chapters', () => {
     const ids = templates.map(template => template.id);
     expect(new Set(ids).size).toBe(ids.length);

@@ -139,7 +139,9 @@ character-power pipeline. No live catalog reference or editorial price is stored
 in the character. Preview and saved costs use the same math engine.
 
 Fixed purchases retain their functional ranks, while scalable purchases start
-at rank 1. Unsupported character-level changes and durations are reference-only.
+at rank 1. Unsupported character-level changes are reference-only. Increased Duration
+uses the adopted DC Adventures step progression; sustained recipes include the
+interpretation in their preview and copied notes, with normal engine pricing.
 
 The standalone library view indexes current character tabs by tab/power identity.
 Edits compare the original power snapshot at save time, preserving unrelated

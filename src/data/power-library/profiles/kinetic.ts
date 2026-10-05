@@ -53,8 +53,8 @@ export default [
       "pt": "Poderes ofensivos"
     },
     "summary": {
-      "en": "Affliction · Increased Range · Instant Recovery · Limited Degree · Limited",
-      "pt": "Aflição · Alcance Aumentado · Recuperação Instantânea · Graus Limitados · Limitado"
+      "en": "Affliction · Increased Range · Increased Duration · Instant Recovery · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Duração Aumentada · Recuperação Instantânea · Graus Limitados · Limitado"
     },
     "page": 85,
     "components": [
@@ -81,6 +81,14 @@ export default [
             "modifierId": "limited",
             "ranks": 2,
             "isPowerSpecific": false
+          },
+          {
+            "modifierId": "increased_duration",
+            "ranks": 1,
+            "isPowerSpecific": false,
+            "options": {
+              "subtypeId": "two_steps"
+            }
           }
         ],
         "scalable": true,
@@ -98,18 +106,18 @@ export default [
       "perRank": 1,
       "discrepancy": {
         "reason": {
-          "en": "Reference only: the current model has no Sustained Affliction definition. The displayed instant version is not the complete book recipe.",
-          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 0.25 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
+          "en": "With the adopted +2/rank Sustained duration progression and all printed flaws, the normal engine calculates 0.5 PP per rank (rounded up per component), rather than the printed 1 PP per rank. No manual price adjustment is applied.",
+          "pt": "Com a progressão Sustentada adotada (+2 por graduação) e todas as falhas impressas, o motor normal calcula 0,5 PP por graduação (arredondado para cima por componente), em vez de 1 PP por graduação impresso. Não há ajuste manual de preço."
         },
         "fixed": 0,
-        "perRank": 0.25
+        "perRank": 0.5
       }
     },
-    "requiresCharacterChanges": {
-      "en": "Reference only: Sustained Affliction requires a duration rule not represented in this builder; this incomplete version cannot be applied.",
-      "pt": "Apenas referência: Aflição Sustentada exige uma regra de duração não representada neste Builder; esta versão incompleta não pode ser aplicada."
-    },
-    "sourceFormula": "Perception Ranged Affliction (Resisted by Dodge; Unaware), Sustained, Instant Recovery, Limited Degree (Third Only), Limited to Targets with Eyelids, Limited to Vision"
+    "sourceFormula": "Perception Ranged Affliction (Resisted by Dodge; Unaware), Sustained, Instant Recovery, Limited Degree (Third Only), Limited to Targets with Eyelids, Limited to Vision",
+    "ruleNote": {
+      "en": "Rule interpretation: this power uses the DC Adventures duration progression adopted by the app. Increased Duration buys two steps (Instant → Concentration → Sustained), at +2 PP per effect rank. Maintain it with a free action each turn; normal resistance and recovery rules still apply. The generic Deluxe Hero's Handbook modifier omits the Concentration → Sustained step.",
+      "pt": "Interpretação de regra: este poder usa a progressão de duração do DC Adventures adotada pelo app. Duração Aumentada compra duas etapas (Instantâneo → Concentração → Sustentado), por +2 PP por graduação do efeito. Mantenha-o com uma ação livre por turno; as regras normais de resistência e recuperação continuam válidas. O modificador genérico do Deluxe Hero's Handbook omite a etapa Concentração → Sustentado."
+    }
   },
   {
     "id": "kinetic-friction-muzzle",
@@ -123,8 +131,8 @@ export default [
       "pt": "Poderes ofensivos"
     },
     "summary": {
-      "en": "Affliction · Increased Range · Instant Recovery · Limited Degree · Limited",
-      "pt": "Aflição · Alcance Aumentado · Recuperação Instantânea · Graus Limitados · Limitado"
+      "en": "Affliction · Increased Range · Increased Duration · Instant Recovery · Limited Degree · Limited",
+      "pt": "Aflição · Alcance Aumentado · Duração Aumentada · Recuperação Instantânea · Graus Limitados · Limitado"
     },
     "page": 85,
     "components": [
@@ -151,6 +159,14 @@ export default [
             "modifierId": "limited",
             "ranks": 2,
             "isPowerSpecific": false
+          },
+          {
+            "modifierId": "increased_duration",
+            "ranks": 1,
+            "isPowerSpecific": false,
+            "options": {
+              "subtypeId": "two_steps"
+            }
           }
         ],
         "scalable": true,
@@ -168,18 +184,18 @@ export default [
       "perRank": 1,
       "discrepancy": {
         "reason": {
-          "en": "Reference only: the current model has no Sustained Affliction definition. The displayed instant version is not the complete book recipe.",
-          "pt": "O preço impresso e a composição indicada no livro divergem. A receita mantém os efeitos e modificadores indicados; seu cálculo corresponde a 0 PP fixos + 0.25 PP por graduação, com o arredondamento normal. Não há ajuste artificial no total. Consulte a composição original abaixo e a auditoria do catálogo para os detalhes."
+          "en": "With the adopted +2/rank Sustained duration progression and all printed flaws, the normal engine calculates 0.5 PP per rank (rounded up per component), rather than the printed 1 PP per rank. No manual price adjustment is applied.",
+          "pt": "Com a progressão Sustentada adotada (+2 por graduação) e todas as falhas impressas, o motor normal calcula 0,5 PP por graduação (arredondado para cima por componente), em vez de 1 PP por graduação impresso. Não há ajuste manual de preço."
         },
         "fixed": 0,
-        "perRank": 0.25
+        "perRank": 0.5
       }
     },
-    "requiresCharacterChanges": {
-      "en": "Reference only: Sustained Affliction requires a duration rule not represented in this builder; this incomplete version cannot be applied.",
-      "pt": "Apenas referência: Aflição Sustentada exige uma regra de duração não representada neste Builder; esta versão incompleta não pode ser aplicada."
-    },
-    "sourceFormula": "Perception Ranged Affliction (Resisted by Dodge; Transformed), Sustained, Instant Recovery, Limited Degree (Third Only), Limited to Keeping Target’s Mouth Closed (–2)"
+    "sourceFormula": "Perception Ranged Affliction (Resisted by Dodge; Transformed), Sustained, Instant Recovery, Limited Degree (Third Only), Limited to Keeping Target’s Mouth Closed (–2)",
+    "ruleNote": {
+      "en": "Rule interpretation: this power uses the DC Adventures duration progression adopted by the app. Increased Duration buys two steps (Instant → Concentration → Sustained), at +2 PP per effect rank. Maintain it with a free action each turn; normal resistance and recovery rules still apply. The generic Deluxe Hero's Handbook modifier omits the Concentration → Sustained step.",
+      "pt": "Interpretação de regra: este poder usa a progressão de duração do DC Adventures adotada pelo app. Duração Aumentada compra duas etapas (Instantâneo → Concentração → Sustentado), por +2 PP por graduação do efeito. Mantenha-o com uma ação livre por turno; as regras normais de resistência e recuperação continuam válidas. O modificador genérico do Deluxe Hero's Handbook omite a etapa Concentração → Sustentado."
+    }
   },
   {
     "id": "kinetic-friction-heat",

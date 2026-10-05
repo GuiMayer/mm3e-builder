@@ -182,7 +182,7 @@ usam a mesma resolução; combinações ambíguas exibem parâmetros provisório
 | Reação | Padrão ou livre → reação; custo usa a ação impressa original | Handbook, p. 196 |
 | Ação Aumentada | Reação → livre → movimento → padrão | Handbook, p. 200 |
 | Ação de Variável | Movimento, livre ou reação; respeita subtipo e tier legado | Handbook, Variável |
-| Duração Aumentada | Instantâneo → concentração **ou** sustentado → contínuo | Handbook, p. 192 |
+| Duração Aumentada | Instantâneo → concentração → sustentado → contínuo; +1 PP/graduação por etapa | Interpretação do DC Adventures adotada pelo app; estende Handbook, p. 192 |
 | Concentração (falha) | Sustentado → concentração | Handbook, Modificadores |
 | Permanente (falha genérica) | Contínuo → permanente | Handbook, Modificadores |
 | Sustentado (genérico/Proteção/Imunidade/Membros Extras) | Permanente → sustentado | Handbook, p. 198 e efeitos específicos |
@@ -190,8 +190,14 @@ usam a mesma resolução; combinações ambíguas exibem parâmetros provisório
 | Permanente específico de Criar/Crescimento/Insubstancial/Atributo Aprimorado | Sustentado → permanente, pelo preço específico preservado | Handbook, efeitos específicos |
 
 Transições válidas são compostas independentemente da ordem dos modificadores.
-Duplicações não criam uma escada ilimitada; ciclos e destinos concorrentes
-exigem revisão do narrador. A aplicação genérica continua permitida.
+Duração Aumentada permite selecionar uma, duas ou três etapas; aplicações
+independentes somam etapas. O percurso termina em Contínuo; compras excedentes,
+ciclos e destinos concorrentes exigem revisão do narrador. Sustentado genérico
++0 continua exclusivo da transição Permanente → Sustentado. A aplicação
+genérica continua permitida. Registros sem `options.subtypeId` preservam uma
+etapa e +1 por graduação, independentemente de `ranks` legado; não há migração
+nem recálculo de preços antigos. O contexto e as receitas sustentadas estão nas
+[regras da biblioteca](power-library-rules.md#aflição-sustentada).
 
 Ação de uso, manutenção e gatilho são apresentados separadamente. Ativação
 global não muda a ação do componente. Concentração específica de Aflição e

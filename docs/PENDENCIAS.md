@@ -1,6 +1,6 @@
 # Pendências e manutenção
 
-Revisão: 05/10/2026 (versão declarada: v1.21.2).
+Revisão: 05/10/2026 (versão declarada: v1.21.3).
 Este é o ponto central para trabalho ainda aberto. As constatações abaixo vieram
 da comparação entre documentação, código e fontes de regras; não constituem
 uma certificação completa das regras.
@@ -11,20 +11,6 @@ correspondente, sem criar relatório de conclusão, arquivo de auditoria encerra
 ou lista histórica de documentos removidos.
 
 ## Pendências confirmadas no código
-
-### P02 — Aflição Sustentada na biblioteca — prioridade média
-
-Friction Blindness, Friction Muzzle, Blinding Aura e Fifth Wheel of Weyan
-continuam apenas para consulta. O Handbook define Duração Aumentada como
-Instantâneo→Concentração ou Sustentado→Contínuo, e Sustentado genérico como
-Permanente→Sustentado. A exceção de Anular não autoriza a mesma transição para
-Aflição. O Power Profiles usa Aflição Sustentada nessas quatro receitas, mas
-as fontes consultadas não definem uma composição geral com custo inequívoco.
-
-Habilitar essas receitas depende de fundamentar essa definição ou aprovar uma
-convenção explícita. Não usar um custo manual nem Sustentado genérico +0 para
-forçar a fórmula impressa. A resolução geral de ação/duração está documentada
-no [guia de cálculo](REGRAS_CALCULO_MM3E.md).
 
 ### P06 — Manutenção do Builder e do menu — prioridade baixa
 

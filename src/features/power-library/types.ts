@@ -22,6 +22,8 @@ export interface PowerTemplate {
   summary: LibraryText;
   /** Original mechanical configuration for conditions/triggers without structured Builder fields. */
   sourceFormula?: string;
+  /** Adopted rule interpretation, displayed in the preview and copied into power notes. */
+  ruleNote?: LibraryText;
   page: number;
   components: PowerTemplateComponent[];
   descriptors?: string[];

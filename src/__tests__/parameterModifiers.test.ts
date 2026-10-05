@@ -128,7 +128,7 @@ describe('official range parameter progression', () => {
   });
 });
 
-describe('official duration parameter changes', () => {
+describe('duration parameter changes with the adopted DC Adventures progression', () => {
   it('changes Instant to Concentration with Increased Duration', () => {
     expect(resolveEffectiveDuration('instant', component('increased_duration')))
       .toEqual({ value: 'concentration', diagnostics: [] });
@@ -145,6 +145,26 @@ describe('official duration parameter changes', () => {
 
     expect(definition && isRankedModifier(definition)).toBe(false);
     expect(calculatePowerCost(1, 10, applied.modifiers, MODIFIER_DEFS)).toBe(20);
+    expect(resolveEffectiveDuration('instant', applied)).toEqual({ value: 'concentration', diagnostics: [] });
+  });
+
+  it('prices and resolves explicitly chosen two- and three-step purchases', () => {
+    for (const [subtypeId, duration, total] of [['two_steps', 'sustained', 30], ['three_steps', 'continuous', 40]] as const) {
+      const applied = component('increased_duration');
+      applied.modifiers[0].options = { subtypeId };
+      expect(resolveEffectiveDuration('instant', applied)).toEqual({ value: duration, diagnostics: [] });
+      expect(calculatePowerCost(1, 10, applied.modifiers, MODIFIER_DEFS)).toBe(total);
+    }
+    expect(resolveEffectiveDuration('concentration', component('increased_duration'))).toEqual({ value: 'sustained', diagnostics: [] });
+  });
+
+  it('keeps excessive steps advisory and does not invent a duration past Continuous', () => {
+    const applied = component('increased_duration');
+    applied.modifiers[0].options = { subtypeId: 'two_steps' };
+    const result = resolveEffectiveDuration('sustained', applied);
+    expect(result.value).toBe('continuous');
+    expect(result.provisional).toBe(true);
+    expect(result.diagnostics[0]?.messageKey).toBe('builder.validation.increasedDurationInvalid');
   });
 
   it('warns when Increased Duration is applied to another duration', () => {

@@ -62,11 +62,34 @@ o resultado e a justificativa com a regra base. As anotações ficam junto da
 receita no catálogo. Não inventar modificadores ou descontos para alcançar o
 número impresso; divergência editorial não implica defeito do motor.
 
-Receitas que exigem atributos ausentes do personagem ou Aflição Sustentada não
-representada pelo modelo ficam apenas para consulta. O [guia da biblioteca](power-library.md)
-identifica essas entradas. Não aplicar versões incompletas nem introduzir
-mudanças de atributos disfarçadas de flaws. A definição de Aflição Sustentada ainda aberta consta em
-[Pendências](PENDENCIAS.md).
+Receitas que exigem atributos ausentes do personagem ficam apenas para consulta.
+O [guia da biblioteca](power-library.md) identifica essas entradas. Não aplicar
+versões incompletas nem introduzir mudanças de atributos disfarçadas de flaws.
+
+### Aflição Sustentada
+
+O app adota a progressão do DC Adventures em Duração Aumentada:
+Instantâneo → Concentração → Sustentado → Contínuo, por +1 PP por graduação
+do efeito por etapa. É uma interpretação explicitamente adotada; a definição
+genérica do Deluxe Hero's Handbook omite Concentração → Sustentado.
+A [comparação dos textos](https://rpg.stackexchange.com/questions/56926/can-i-make-an-instant-duration-effect-sustained)
+e o [relato da consulta à Green Ronin pelo desenvolvedor do Hero Lab](https://forums.wolflair.com/threads/increased-duration.12650/)
+documentam o contexto, sem constituir uma errata oficial do Handbook.
+
+Friction Blindness, Friction Muzzle, Blinding Aura e Fifth Wheel of Weyan usam
+duas etapas (+2 PP/graduação), com manutenção por ação livre. A interpretação
+aparece na prévia e acompanha as notas ao aplicar o poder. Resistência e
+recuperação seguem as regras normais; Sustentado não elimina testes.
+
+Os custos vêm da composição normal: os dois poderes de atrito custam
+0,5 PP/graduação, arredondado por componente; Blinding Aura custa 4 PP/graduação
+e inclui a dependência sensorial de Área de Percepção; Fifth Wheel of Weyan
+custa 4 PP/graduação. As divergências dos valores impressos (1, 1 e 3,
+respectivamente) aparecem na prévia, sem compensações artificiais.
+
+As etapas usam `options.subtypeId` de Duração Aumentada. Sem essa opção,
+uma aplicação continua comprando uma etapa por +1 PP/graduação, mesmo com
+`ranks` legado maior que 1. Fichas existentes não são reescritas nem migradas.
 
 Aplicar uma receita não grava preço editorial, política de graduação ou
 identificador vivo do catálogo na ficha. Importar e salvar preserva aplicações,

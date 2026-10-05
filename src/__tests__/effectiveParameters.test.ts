@@ -29,6 +29,15 @@ describe('effective actions and duration compositions', () => {
     const generic = { ...component, modifiers: [mod('permanent', false)] };
     expect(resolveEffectiveDuration(effect.duration, generic, context).value).toBe('sustained');
   });
+  it('applies purchased generic steps after a specific duration transition regardless of input order', () => {
+    const modifiers = [mod('concentration_nullify', true), mod('increased_duration')];
+    for (const ordered of [modifiers, [...modifiers].reverse()]) {
+      const { effect, component, context } = model('nullify', ordered);
+      expect(resolveEffectiveDuration(effect.duration, component, context)).toEqual({ value: 'sustained', diagnostics: [] });
+      expect(resolveEffectiveAction(effect.action, component, context).maintenanceAction).toBe('free');
+      expect(calculatePowerPricing({ id: 'p', name: '', notes: '', components: [component], alternateEffects: [] }, POWER_DEFS, MODIFIER_DEFS).total).toBe(12);
+    }
+  });
   it('composes Sustained Protection with Increased Duration and Permanent with no input-order dependence', () => {
     const modifiers = [mod('sustained_protection', true), mod('increased_duration')];
     for (const ordered of [modifiers, [...modifiers].reverse()]) {
@@ -39,7 +48,7 @@ describe('effective actions and duration compositions', () => {
     const { effect, component, context } = model('flight', [mod('permanent_flaw'), mod('increased_duration')]);
     expect(resolveEffectiveDuration(effect.duration, component, context).value).toBe('permanent');
   });
-  it('labels branches, cycles and duplicates as provisional instead of taking the first modifier', () => {
+  it('labels branches and cycles as provisional instead of taking the first modifier', () => {
     for (const modifiers of [[mod('concentration'), mod('increased_duration')], [mod('increased_duration'), mod('permanent_flaw'), mod('sustained')]]) {
       for (const ordered of [modifiers, [...modifiers].reverse()]) {
         const { effect, component, context } = model('flight', ordered);
@@ -48,16 +57,26 @@ describe('effective actions and duration compositions', () => {
         expect(resolved.provisional).toBe(true);
       }
     }
-    const { effect, component, context } = model('damage', [mod('increased_duration'), mod('increased_duration')]);
-    const result = resolveEffectiveDuration(effect.duration, component, context);
-    expect(result.value).toBe('concentration');
-    expect(result.provisional).toBe(true);
   });
-  it('does not invent Sustained Affliction from an Instant effect', () => {
+  it('does not use the zero-cost Sustained modifier to buy an extra duration step', () => {
     const { effect, component, context } = model('affliction', [mod('sustained'), mod('increased_duration')]);
     const result = resolveEffectiveDuration(effect.duration, component, context);
     expect(result.value).toBe('concentration');
     expect(result.provisional).toBe(true);
+  });
+  it('adds independently purchased duration steps and prices them without mutating existing records', () => {
+    for (const modifiers of [
+      [mod('increased_duration'), mod('increased_duration')],
+      [{ ...mod('increased_duration'), options: { subtypeId: 'two_steps' } }],
+    ]) {
+      const { effect, component, context } = model('affliction', modifiers);
+      const snapshot = JSON.stringify(component);
+      expect(resolveEffectiveDuration(effect.duration, component, context)).toEqual({ value: 'sustained', diagnostics: [] });
+      expect(resolveEffectiveAction(effect.action, component, context).value).toBe('standard');
+      expect(resolveEffectiveAction(effect.action, component, context).maintenanceAction).toBe('free');
+      expect(calculatePowerPricing({ id: 'p', name: '', notes: '', components: [component], alternateEffects: [] }, POWER_DEFS, MODIFIER_DEFS).total).toBe(12);
+      expect(JSON.stringify(component)).toBe(snapshot);
+    }
   });
   it('resolves Reaction, Increased Action, and legacy/current Variable Action without Activation', () => {
     const reaction = model('damage', [mod('reaction')]);

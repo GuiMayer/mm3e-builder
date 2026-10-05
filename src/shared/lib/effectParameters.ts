@@ -109,14 +109,28 @@ const SPECIFIC_DURATION_CHANGES: Record<string, { from: DurationType; to: Durati
 };
 const ambiguous = (modifierId: string): EffectParameterDiagnostic => ({ modifierId, message: 'Ambiguous parameter composition: the displayed value is provisional; ask the GM to review it.', messageKey: 'builder.validation.parameterAmbiguous' });
 
-/** Apply official transitions independent of input order; never infer a full duration ladder. */
+const INCREASED_DURATION_EDGES = [
+  { from: 'instant' as DurationType, to: 'concentration' as DurationType },
+  { from: 'concentration' as DurationType, to: 'sustained' as DurationType },
+  { from: 'sustained' as DurationType, to: 'continuous' as DurationType },
+];
+
+/** DC Adventures progression; legacy records without a step option still buy one step. */
+function increasedDurationSteps(applied: IAppliedModifier): number {
+  return applied.options?.subtypeId === 'two_steps' ? 2 : applied.options?.subtypeId === 'three_steps' ? 3 : 1;
+}
+
+/** Compose duration changes independently of input order, using the adopted DC Adventures progression. */
 export function resolveEffectiveDuration(baseDuration: DurationType, component: ICharacterPowerComponent, context?: EffectParameterContext): EffectParameterResolution<DurationType> {
   const diagnostics: EffectParameterDiagnostic[] = [];
-  const changes = resolved(component, context).flatMap(({ applied, source }) => {
-    if (source === 'generic' && applied.modifierId === 'increased_duration') return [{ id: applied.modifierId, edges: [{ from: 'instant' as DurationType, to: 'concentration' as DurationType }, { from: 'sustained' as DurationType, to: 'continuous' as DurationType }] }];
+  const modifiers = resolved(component, context);
+  const durationSteps = modifiers.filter(({ applied, source }) => source === 'generic' && applied.modifierId === 'increased_duration')
+    .reduce((sum, { applied }) => sum + increasedDurationSteps(applied), 0);
+  const changes: Array<{ id: string; edges: Array<{ from: DurationType; to: DurationType }>; steps?: number }> = modifiers.flatMap(({ applied, source }) => {
     const change = (source === 'power-specific' ? SPECIFIC_DURATION_CHANGES : DURATION_CHANGES)[applied.modifierId];
     return change ? [{ id: applied.modifierId, edges: [change] }] : [];
   }).sort((a, b) => a.id.localeCompare(b.id));
+  if (durationSteps) changes.push({ id: 'increased_duration', edges: INCREASED_DURATION_EDGES, steps: durationSteps });
   const unique = changes.filter((change, index) => changes.findIndex(other => other.id === change.id) === index);
   if (unique.length !== changes.length) diagnostics.push(ambiguous(changes.find((change, index) => changes.findIndex(other => other.id === change.id) !== index)!.id));
   let value = baseDuration;
@@ -132,7 +146,13 @@ export function resolveEffectiveDuration(baseDuration: DurationType, component: 
     }
     value = applicable[0].edge.to;
     visited.add(value);
-    for (const candidate of applicable) remaining.splice(remaining.indexOf(candidate.change), 1);
+    // A specific transition establishes its duration before purchased generic steps.
+    // Otherwise Concentration Nullify + one generic step would incorrectly stop at Concentration.
+    const specific = applicable.filter(candidate => candidate.change.steps === undefined);
+    for (const candidate of specific.length ? specific : applicable) {
+      if (candidate.change.steps && candidate.change.steps > 1) candidate.change.steps--;
+      else remaining.splice(remaining.indexOf(candidate.change), 1);
+    }
   }
   for (const change of remaining) diagnostics.push({ modifierId: change.id,
     message: 'This duration modifier cannot be composed with the selected duration.',

@@ -113,11 +113,12 @@ Receitas de array e configurações globais, como Removível/Ativação, exigem 
 destino principal; não podem ser inseridas parcialmente dentro de outro AE.
 Substituir um componente preserva seus irmãos e os demais alternativos.
 
-Sete entradas são **Apenas referência**: Ghost Form, Undead Form e Construct
-Body exigem atributos ausentes do personagem; Friction Blindness, Friction
-Muzzle, Blinding Aura e Fifth Wheel of Weyan exigem Aflição Sustentada não
-representada pelo modelo atual. A aplicação é bloqueada para impedir carregar
-uma receita incompleta. Invocações carregam o efeito, mas a criatura é criada
+Três entradas são **Apenas referência**: Ghost Form, Undead Form e Construct
+Body exigem atributos ausentes do personagem. A aplicação é bloqueada para impedir
+carregar uma receita incompleta. As quatro receitas de Aflição Sustentada usam a
+progressão do DC Adventures, explicada na prévia e nas notas do poder; consulte
+as [regras da biblioteca](power-library-rules.md#aflição-sustentada) para custos e
+compatibilidade. Invocações carregam o efeito, mas a criatura é criada
 separadamente. Extras Aprimorados indicam a melhoria comprada sobre um atributo
 existente; não modificam automaticamente outro poder da ficha.
 
