@@ -10,6 +10,11 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+## [1.21.2] - 2026-10-05
+
+Interface fixes and small convenience improvements. Character schema 2.3.0,
+existing calculations and export formats are unchanged.
+
 ### Changed — Mobile targeted effect cards
 - Use the full card width for names and details: range and effect share two columns, while resistance and manual notes span both. Place the attack bonus and die in the bottom-right corner, with tags or manual edit/remove actions on the left. Wrap long content and omit empty mobile placeholders; keep desktop layout, roll sources and character data unchanged.
 

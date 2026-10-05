@@ -66,6 +66,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.20.1 | 2026-10-05 | `v1.20.0..v1.20.1` | 43 | Favoritos, ajustes de traits, diagnósticos, compatibilidade e retratos portáveis |
 | v1.21.0 | 2026-10-05 | `v1.20.1..v1.21.0` | 12 | Biblioteca pessoal, seleção de destino, retrato 3:4 e consolidação das versões |
 | v1.21.1 | 2026-10-05 | `v1.21.0..v1.21.1` | 4 | Preferências de rolagens e cards compactos de perícias/vantagens no mobile |
+| v1.21.2 | 2026-10-05 | `v1.21.1..v1.21.2` | 9 | Ajustes de interface mobile, padronização da biblioteca e criação/edição de recursos |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -110,6 +111,10 @@ alteram a versão declarada nos snapshots antigos.
 - v1.21.1 mantém o schema 2.3.0 e os formatos de exportação. Limite de rolagens
   e persistência opcional do histórico usam preferências locais separadas;
   os ajustes de perícias e vantagens afetam somente o layout mobile.
+- v1.21.2 mantém o schema 2.3.0, os cálculos e os formatos de exportação.
+  Os cards e a biblioteca recebem ajustes de apresentação. O atalho de recursos
+  usa os tipos, padrões e fluxo de salvamento existentes; selecionar um tipo
+  abre o editor sem salvar ou associar automaticamente um recurso à ficha.
 
 Os contratos atuais de migração e persistência estão nos guias de
 [campanha](campaign-mode.md), [recursos](resources.md),
@@ -118,10 +123,10 @@ Versão do aplicativo e versão do schema são independentes.
 
 ## Publicação
 
-As tags até v1.21.0 foram publicadas no remoto. O deploy da v1.21.0 no commit
-`92e47a9` foi concluído com sucesso na
-[execução 37353537905](https://github.com/GuiMayer/mm3e-builder/actions/runs/37353537905),
-incluindo favoritos, biblioteca pessoal e retrato 3:4 com os metadados alinhados.
+O deploy da v1.21.1 no commit `51a652c` foi concluído com sucesso na
+[execução 37359143528](https://github.com/GuiMayer/mm3e-builder/actions/runs/37359143528).
+A v1.21.2 agrupa os oito commits de interface e conveniência seguintes, mais
+o commit que consolida changelog, histórico e metadados de versão.
 
 Pushes para `main` disparam o workflow de publicação. O estado de cada deploy
 deve ser conferido nas [execuções do GitHub Actions](https://github.com/GuiMayer/mm3e-builder/actions/workflows/deploy.yml).
