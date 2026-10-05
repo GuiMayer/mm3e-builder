@@ -27,8 +27,12 @@
 .reference-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);overflow:hidden;min-width:0}
 .reference-card--wide{grid-column:1/-1}
 .reference-card:has(.reference-table thead th:nth-child(3)){grid-column:1/-1}
-.reference-card h2{margin:0;font-size:.94rem}
-.reference-card .reference-card__toggle{width:100%;border:0;border-radius:0;padding:var(--s-md);display:flex;align-items:center;gap:var(--s-xs);text-align:left;background:var(--c-surface-elevated)}
+.reference-card__header{display:flex;align-items:stretch;background:var(--c-surface-elevated)}
+.reference-card h2{margin:0;font-size:.94rem;flex:1;min-width:0;display:flex}
+.reference-card .reference-card__toggle{width:100%;border:0;border-radius:0;padding:var(--s-md);display:flex;align-items:center;gap:var(--s-xs);text-align:left;background:transparent}
+.reference-card .reference-card__favorite{border:0;border-radius:0;flex:0 0 44px;display:flex;align-items:center;justify-content:center;align-self:center;min-height:44px;margin-right:4px}
+.reference-card__favorite[aria-pressed=true]{color:var(--c-primary)}
+.reference-card :is(.reference-card__toggle,.reference-card__favorite):focus-visible{outline-offset:-3px}
 .reference-card__toggle svg{flex-shrink:0}
 .reference-card__toggle span{flex:1;font-weight:600;min-width:0;overflow-wrap:anywhere}
 .reference-card__toggle small{font-size:.68rem;color:var(--c-text-muted);white-space:nowrap}

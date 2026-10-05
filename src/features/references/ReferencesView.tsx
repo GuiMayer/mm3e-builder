@@ -1,16 +1,14 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BookOpen, ChevronDown, ChevronUp, ChevronRight, Search, X } from 'lucide-react';
+import { BookOpen, ChevronDown, ChevronUp, ChevronRight, Search, Star, X } from 'lucide-react';
 import { BASIC_CONDITIONS, COMBINED_CONDITIONS, CONDITIONS } from '../../data/conditions';
 import { NumberInput } from '../../shared/ui/NumberInput';
-import { BENCHMARK_SECTION, REFERENCE_SECTIONS, getSizeSection, filterReferenceSection, referenceText, type ReferenceCategory, type ReferenceSection } from './referenceCatalog';
+import { BENCHMARK_SECTION, REFERENCE_SECTIONS, getSizeSection, referenceText, type ReferenceSection } from './referenceCatalog';
 import { MEASUREMENTS, getMeasurement, checkDegree, damageDegree, formatMeasure, type Measure, type MeasurementSystem } from './measurements';
 import { loadMeasurementSystem, saveMeasurementSystem } from './measurementPreferences';
+import { loadReferenceFavorites, saveReferenceFavorites } from './favoritePreferences';
+import { QUICK, referenceCategories, selectReferenceSections, type Category } from './referenceNavigation';
 import './references.css';
-
-type Category = 'quick' | 'all' | ReferenceCategory;
-const CATEGORIES: Category[] = ['quick', 'measurements', 'combat', 'conditions', 'checks', 'hero', 'all'];
-const QUICK = new Set(['measurements', 'damage', 'turn', 'checks']);
 
 function ReferenceGrid({ children }: { children: ReactNode }) {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -41,12 +39,15 @@ function ReferenceGrid({ children }: { children: ReactNode }) {
   return <div className="reference-grid" ref={gridRef}>{children}</div>;
 }
 
-function ReferenceCard({ section, open, onToggle, children }: { section: ReferenceSection; open: boolean; onToggle: () => void; children: ReactNode }) {
+function ReferenceCard({ section, open, onToggle, favorite, onFavoriteToggle, children }: { section: ReferenceSection; open: boolean; onToggle: () => void; favorite: boolean; onFavoriteToggle: () => void; children: ReactNode }) {
   const { t, i18n } = useTranslation();
+  const favoriteLabel = t(favorite ? 'ref119.removeFavorite' : 'ref119.addFavorite', { section: referenceText(section.title, i18n.language) });
   return <section className={`reference-card ${['measurements','size','actions','maneuvers'].includes(section.id) ? 'reference-card--wide' : ''}`}>
-    <h2><button type="button" className="reference-card__toggle" aria-expanded={open} aria-controls={`reference-${section.id}`} onClick={onToggle}>
+    <header className="reference-card__header"><h2><button type="button" className="reference-card__toggle" aria-expanded={open} aria-controls={`reference-${section.id}`} onClick={onToggle}>
       {open ? <ChevronDown size={17}/> : <ChevronRight size={17}/>}<span>{referenceText(section.title, i18n.language)}</span><small>{t('ref119.pages', { pages: section.pages })}</small>
-    </button></h2>
+    </button></h2><button type="button" className="reference-card__favorite" aria-pressed={favorite} aria-label={favoriteLabel} title={favoriteLabel} onClick={onFavoriteToggle}>
+      <Star size={18} fill={favorite ? 'currentColor' : 'none'} aria-hidden="true"/>
+    </button></header>
     {open && <div className="reference-card__body" id={`reference-${section.id}`}>{children}{section.note && <p className="reference-card__note">{referenceText(section.note, i18n.language)}</p>}</div>}
   </section>;
 }
@@ -139,6 +140,9 @@ export function ReferencesView() {
   const [expanded, setExpanded] = useState(new Set(QUICK));
   const [searchCollapsed, setSearchCollapsed] = useState(new Set<string>());
   const headerRef = useRef<HTMLElement>(null);
+  const quickCategoryRef = useRef<HTMLButtonElement>(null);
+  const favoriteCategoryRef = useRef<HTMLButtonElement>(null);
+  const pendingFocusRef = useRef(false);
   const [system, setSystem] = useState<MeasurementSystem>(() => loadMeasurementSystem(i18n.language));
   // Persist the initial language default too, even before the first toggle click.
   useEffect(() => { saveMeasurementSystem(system); }, [system]);
@@ -154,22 +158,44 @@ export function ReferencesView() {
     const measurements: ReferenceSection = { id: 'measurements', category: 'measurements', title: ['Measurements table','Tabela de medidas'], pages: '10–11, 347', columns: [['Rank','Graduação'],['Mass','Massa'],['Time','Tempo'],['Distance','Distância'],['Volume','Volume']], rows: MEASUREMENTS.map(row => ({ id: String(row.rank), cells: [[String(row.rank),String(row.rank)], ...(['mass','time','distance','volume'] as const).map((key): [string,string] => [formatMeasure(key === 'time' ? row.time : row.imperial[key], 'en', (unit, count) => t(`ref119.unit.${unit}`, { lng: 'en', count })), formatMeasure(key === 'time' ? row.time : row.metric[key], 'pt-BR', (unit, count) => t(`ref119.unit.${unit}`, { lng: 'pt-BR', count }))])] })) };
     return [measurements, ...REFERENCE_SECTIONS, ...conditionSections, getSizeSection(system), BENCHMARK_SECTION];
   }, [t, system]);
+  const [favorites, setFavorites] = useState(() => loadReferenceFavorites(new Set(catalog.map(section => section.id))));
+  useEffect(() => { saveReferenceFavorites(favorites); }, [favorites]);
+  useEffect(() => {
+    if (pendingFocusRef.current) {
+      pendingFocusRef.current = false;
+      quickCategoryRef.current?.focus({ preventScroll: true });
+    }
+  }, [category]);
   const searching = query.trim().length > 0;
-  const sections = catalog.filter(section => searching || category === 'all' || (category === 'quick' ? QUICK.has(section.id) : section.category === category)).map(section => filterReferenceSection(section, query)).filter((section): section is ReferenceSection => !!section);
+  const sections = selectReferenceSections(catalog, category, query, favorites);
   function chooseCategory(next: Category) {
     setCategory(next); setQuery('');
-    setExpanded(new Set(next === 'all' ? [] : catalog.filter(section => next === 'quick' ? QUICK.has(section.id) : section.category === next).map(section => section.id)));
+    setExpanded(new Set(next === 'all' ? [] : selectReferenceSections(catalog, next, '', favorites).map(section => section.id)));
     headerRef.current?.scrollIntoView({ block: 'start' });
+  }
+  function toggleFavorite(id: string) {
+    const next = new Set(favorites);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setFavorites(next);
+    if (category === 'favorites') {
+      if (!next.size) {
+        pendingFocusRef.current = true;
+        chooseCategory('quick');
+      } else {
+        // The removed panel takes its focused star with it; retain a keyboard destination.
+        favoriteCategoryRef.current?.focus({ preventScroll: true });
+      }
+    }
   }
   function toggle(id: string) { const update = (previous: Set<string>) => { const next = new Set(previous); if (next.has(id)) next.delete(id); else next.add(id); return next; }; if (searching) setSearchCollapsed(update); else setExpanded(update); }
   return <div className="references-view">
     <header className="reference-header" ref={headerRef}><div><h1><BookOpen size={24}/> {t('ref.title')}</h1><p>{t('ref119.subtitle')}</p></div>
-      <label className="reference-search"><span className="sr-only">{t('ref119.search')}</span><Search size={18}/><input type="search" aria-label={t('ref119.search')} placeholder={t('ref119.searchPlaceholder')} value={query} onChange={event => { setQuery(event.target.value); setSearchCollapsed(new Set()); }}/>{query && <button type="button" aria-label={t('ref119.clearSearch')} onClick={() => setQuery('')}><X size={17}/></button>}</label>
+      <label className="reference-search"><span className="sr-only">{t(category === 'favorites' ? 'ref119.favoriteSearch' : 'ref119.search')}</span><Search size={18}/><input type="search" aria-label={t(category === 'favorites' ? 'ref119.favoriteSearch' : 'ref119.search')} placeholder={t(category === 'favorites' ? 'ref119.favoriteSearchPlaceholder' : 'ref119.searchPlaceholder')} value={query} onChange={event => { setQuery(event.target.value); setSearchCollapsed(new Set()); }}/>{query && <button type="button" aria-label={t('ref119.clearSearch')} onClick={() => setQuery('')}><X size={17}/></button>}</label>
     </header>
-    <div className="reference-layout"><nav className="reference-nav" aria-label={t('ref119.topics')}>{CATEGORIES.map(item => <button type="button" key={item} aria-pressed={!searching && item === category} onClick={() => chooseCategory(item)}>{t(`ref119.category.${item}`)}</button>)}</nav>
-      <div className="reference-content"><div className="reference-toolbar"><p role="status">{searching ? t('ref119.searchResults', { count: sections.length }) : t(`ref119.category.${category}`)}</p><div><button type="button" onClick={() => searching ? setSearchCollapsed(new Set()) : setExpanded(new Set(sections.map(section => section.id)))}>{t('ref119.expandAll')}</button><button type="button" onClick={() => searching ? setSearchCollapsed(new Set(sections.map(section => section.id))) : setExpanded(new Set())}>{t('ref119.collapseAll')}</button></div></div>
-        {!sections.length && <p className="reference-empty">{t('ref119.noResults')}</p>}
-        <ReferenceGrid>{sections.map(section => <ReferenceCard key={section.id} section={section} open={searching ? !searchCollapsed.has(section.id) : expanded.has(section.id)} onToggle={() => toggle(section.id)}>
+    <div className="reference-layout"><nav className="reference-nav" aria-label={t('ref119.topics')}>{referenceCategories(favorites).map(item => <button type="button" key={item} ref={item === 'quick' ? quickCategoryRef : item === 'favorites' ? favoriteCategoryRef : undefined} aria-pressed={item === category && (!searching || category === 'favorites')} onClick={() => chooseCategory(item)}>{t(`ref119.category.${item}`)}</button>)}</nav>
+      <div className="reference-content"><div className="reference-toolbar"><p role="status">{searching ? t(category === 'favorites' ? 'ref119.favoriteSearchResults' : 'ref119.searchResults', { count: sections.length }) : t(`ref119.category.${category}`)}</p><div><button type="button" onClick={() => searching ? setSearchCollapsed(new Set()) : setExpanded(new Set(sections.map(section => section.id)))}>{t('ref119.expandAll')}</button><button type="button" onClick={() => searching ? setSearchCollapsed(new Set(sections.map(section => section.id))) : setExpanded(new Set())}>{t('ref119.collapseAll')}</button></div></div>
+        {!sections.length && <p className="reference-empty">{t(category === 'favorites' ? 'ref119.noFavoriteResults' : 'ref119.noResults')}</p>}
+        <ReferenceGrid>{sections.map(section => <ReferenceCard key={section.id} section={section} open={searching ? !searchCollapsed.has(section.id) : expanded.has(section.id)} onToggle={() => toggle(section.id)} favorite={favorites.has(section.id)} onFavoriteToggle={() => toggleFavorite(section.id)}>
           {section.id === 'measurements' ? <Measurements section={section} system={system} onSystemChange={changeSystem}/> : <>{section.id === 'size' && <div className="reference-tools"><UnitToggle system={system} onChange={changeSystem}/></div>}{section.id === 'damage' && <CheckTools damage/>}{section.id === 'checks' && <CheckTools/>}<ReferenceTable section={section}/></>}
         </ReferenceCard>)}</ReferenceGrid>
       </div>
