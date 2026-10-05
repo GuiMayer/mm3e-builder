@@ -10,6 +10,9 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+### Changed — Mobile targeted effect cards
+- Group range, effect and resistance in compact details beside the attack bonus and die. Place manual edit/remove actions in the header, wrap long names and notes, and omit empty mobile dice and note placeholders. Keep desktop layout, roll sources and character data unchanged.
+
 ### Added — Resource creation shortcut
 - Add Create resource to the sheet's Resources section. Choose a type in an inline selector, following existing sheet selectors, to open the creation editor in Resources with the same defaults and save/cancel behavior.
 

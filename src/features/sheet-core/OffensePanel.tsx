@@ -195,6 +195,7 @@ export function OffensePanel() {
         .targeted-profile:last-child { border-bottom: none; }
         .targeted-profile--alternate { background: rgba(var(--c-primary-rgb), .025); }
         .targeted-profile-main { min-width: 0; }
+        .targeted-profile-details { display: contents; }
         .targeted-profile-name { color: var(--c-text); font-size: .86rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .targeted-profile-component { color: var(--c-text-secondary); font-size: .74rem; margin-top: 2px; }
         .targeted-profile--alternate .targeted-profile-name::before { color: var(--c-text-muted); content: '↳ '; }
@@ -229,11 +230,32 @@ export function OffensePanel() {
         .targeted-icon-btn--confirm:hover { color: var(--c-success); }
         .targeted-icon-btn--remove:hover { color: var(--c-error); }
         @media (max-width: 768px) {
-          .targeted-profile { align-items: start; grid-template-columns: 1fr 1fr; padding: var(--s-md); }
-          .targeted-profile-main { grid-column: 1 / -1; }
+          .targeted-source-header { padding: var(--s-sm) 8px; }
+          .targeted-source-header h3 { min-width: 0; overflow-wrap: anywhere; }
+          .targeted-source-type, .targeted-source-count { flex-shrink: 0; }
+          .targeted-profile { align-items: center; grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--s-xs); padding: var(--s-xs) 8px; }
+          .targeted-profile-main { grid-column: 1 / -1; grid-row: 1; }
           .targeted-profile-name { white-space: normal; overflow-wrap: anywhere; }
-          .targeted-profile-actions { grid-column: 1 / -1; grid-row: auto; justify-self: end; }
-          .targeted-profile-tags { grid-column: 1 / -1; }
+          .targeted-profile-component { overflow-wrap: anywhere; }
+          .targeted-profile-details { display: flex; flex-direction: column; gap: 3px; grid-column: 1; grid-row: 2; min-width: 0; }
+          .targeted-profile-fact { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 6px; overflow-wrap: anywhere; line-height: 1.4; }
+          .targeted-profile-fact-label { display: inline; margin: 0; }
+          .targeted-profile-fact--roll { align-items: center; flex-direction: column; grid-column: 2; grid-row: 2; justify-self: end; }
+          .targeted-profile-fact--roll strong { font-size: 1rem; }
+          .targeted-profile-actions { display: contents; }
+          .targeted-profile-actions > .sheet-roll-slot { grid-column: 3; grid-row: 2; }
+          .targeted-profile-actions > .sheet-roll-slot:empty { display: none; }
+          .targeted-profile-tags { grid-column: 1 / -1; grid-row: 3; }
+          .targeted-tag { white-space: normal; overflow-wrap: anywhere; max-width: 100%; }
+          .targeted-profile--manual .targeted-profile-main { grid-column: 1; }
+          .targeted-profile-actions > .targeted-icon-btn { grid-column: 2; grid-row: 1; }
+          .targeted-profile-actions > .targeted-icon-btn--remove { grid-column: 3; }
+          .targeted-profile-fact--notes { grid-column: 1 / -1; grid-row: 3; }
+          .targeted-profile-fact--empty-notes { display: none; }
+          .targeted-profile--no-roll .targeted-profile-details { grid-column: 1 / -1; }
+          .targeted-profile--no-roll .targeted-profile-fact--roll { align-items: baseline; flex-direction: row; grid-column: 1 / -1; grid-row: 3; justify-self: start; }
+          .targeted-profile--no-roll .targeted-profile-fact--roll strong { font-size: .77rem; color: var(--c-text-secondary); font-family: var(--f-body); font-weight: 400; }
+          .targeted-profile--no-roll .targeted-profile-tags, .targeted-profile--no-roll .targeted-profile-fact--notes { grid-row: 4; }
           .targeted-manual-editor { --manual-control-height: var(--touch-target-min); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: var(--s-md); }
           .targeted-manual-editor > :nth-child(1), .targeted-manual-editor > :nth-child(4), .targeted-manual-editor > :nth-child(5), .targeted-editor-actions { grid-column: 1 / -1; }
           .targeted-input, .targeted-select, .targeted-bonus-input { min-height: var(--touch-target-min); }
@@ -246,26 +268,28 @@ export function OffensePanel() {
 
 function EffectProfile({ profile, t }: { profile: IOffenseEntry; t: (key: string) => string }) {
   return (
-    <article className={`targeted-profile ${profile.relationship !== 'base' && profile.relationship !== 'unarmed' ? 'targeted-profile--alternate' : ''}`}>
+    <article className={`targeted-profile ${!profile.requiresAttackCheck ? 'targeted-profile--no-roll' : ''} ${profile.relationship !== 'base' && profile.relationship !== 'unarmed' ? 'targeted-profile--alternate' : ''}`}>
       <div className="targeted-profile-main">
         <div className="targeted-profile-name" title={profile.bonusBreakdown}>{profile.name}</div>
         {profile.componentName && <div className="targeted-profile-component">{profile.componentName}</div>}
       </div>
-      <div className="targeted-profile-fact">
+      <div className="targeted-profile-fact targeted-profile-fact--roll">
         <span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span>
         <strong>{profile.requiresAttackCheck ? profile.bonus : t('targeted.noAttackRoll')}</strong>
       </div>
-      <div className="targeted-profile-fact">
-        <span className="targeted-profile-fact-label">{t('offense.range')}</span>
-        {t(`offense.range_${profile.range.toLowerCase()}`)}
-      </div>
-      <div className="targeted-profile-fact">
-        <span className="targeted-profile-fact-label">{t('offense.effect')}</span>
-        {profile.effect}
-      </div>
-      <div className="targeted-profile-fact">
-        <span className="targeted-profile-fact-label">{t('targeted.fact.resistance')}</span>
-        {formatResistanceLabel(profile.resistance, t)}
+      <div className="targeted-profile-details">
+        <div className="targeted-profile-fact">
+          <span className="targeted-profile-fact-label">{t('offense.range')}</span>
+          {t(`offense.range_${profile.range.toLowerCase()}`)}
+        </div>
+        <div className="targeted-profile-fact">
+          <span className="targeted-profile-fact-label">{t('offense.effect')}</span>
+          {profile.effect}
+        </div>
+        <div className="targeted-profile-fact">
+          <span className="targeted-profile-fact-label">{t('targeted.fact.resistance')}</span>
+          {formatResistanceLabel(profile.resistance, t)}
+        </div>
       </div>
       <div className="targeted-profile-tags">
         {profile.tags.map((tag) => <span key={tag} className={`targeted-tag targeted-tag--${tag}`}>{t(`targeted.tag.${tag}`)}</span>)}
@@ -290,12 +314,14 @@ function ManualProfile({ profile, row, editing, draft, onDraftChange, onEdit, on
 }) {
   if (editing) return <ManualEditor draft={draft} onDraftChange={onDraftChange} onSave={onSave} onCancel={onCancel} t={t} />;
   return (
-    <article className="targeted-profile">
+    <article className={`targeted-profile targeted-profile--manual ${!profile.requiresAttackCheck ? 'targeted-profile--no-roll' : ''}`}>
       <div className="targeted-profile-main"><div className="targeted-profile-name">{profile.name}</div><div className="targeted-profile-component">{t('targeted.source.manual')}</div></div>
-      <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span><strong>{profile.requiresAttackCheck ? profile.bonus : t('targeted.noAttackRoll')}</strong></div>
-      <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.range')}</span>{t(`offense.range_${profile.range}`)}</div>
-      <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.effect')}</span>{profile.effect}</div>
-      <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.notes')}</span>{row.notes || '—'}</div>
+      <div className="targeted-profile-fact targeted-profile-fact--roll"><span className="targeted-profile-fact-label">{t('targeted.fact.roll')}</span><strong>{profile.requiresAttackCheck ? profile.bonus : t('targeted.noAttackRoll')}</strong></div>
+      <div className="targeted-profile-details">
+        <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.range')}</span>{t(`offense.range_${profile.range}`)}</div>
+        <div className="targeted-profile-fact"><span className="targeted-profile-fact-label">{t('offense.effect')}</span>{profile.effect}</div>
+      </div>
+      <div className={`targeted-profile-fact targeted-profile-fact--notes ${!row.notes ? 'targeted-profile-fact--empty-notes' : ''}`}><span className="targeted-profile-fact-label">{t('offense.notes')}</span>{row.notes || '—'}</div>
       <div className="targeted-profile-actions sheet-item-actions">
         <button className="targeted-icon-btn" onClick={onEdit} title={t('offense.custom.edit')}><Pencil size={13} /></button>
         <button className="targeted-icon-btn targeted-icon-btn--remove" onClick={onRemove} title={t('offense.custom.remove')}><Trash2 size={13} /></button>
