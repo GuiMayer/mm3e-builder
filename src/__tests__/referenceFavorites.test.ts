@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { loadReferenceFavorites, saveReferenceFavorites, REFERENCE_FAVORITES_KEY } from '../features/references/favoritePreferences';
 import { referenceCategories, selectReferenceSections } from '../features/references/referenceNavigation';
 import { REFERENCE_SECTIONS, SIZE_SECTION, BENCHMARK_SECTION } from '../features/references/referenceCatalog';
@@ -34,6 +34,25 @@ describe('Reference favorites preference', () => {
     const selected = new Set(['turn']);
     expect(() => saveReferenceFavorites(selected, { setItem: () => { throw new Error('quota'); } })).not.toThrow();
     expect(selected).toEqual(new Set(['turn']));
+  });
+
+  it('keeps session favorites after leaving the view when browser storage is blocked', () => {
+    vi.stubGlobal('localStorage', {
+      getItem: () => { throw new Error('blocked'); },
+      setItem: () => { throw new Error('blocked'); },
+    });
+    try {
+      saveReferenceFavorites(new Set(['turn', 'removed']));
+      const restored = loadReferenceFavorites(validIds);
+      expect(restored).toEqual(new Set(['turn']));
+      restored.clear();
+      expect(loadReferenceFavorites(validIds)).toEqual(new Set(['turn']));
+      saveReferenceFavorites(new Set());
+      expect(loadReferenceFavorites(validIds).size).toBe(0);
+    } finally {
+      saveReferenceFavorites(new Set());
+      vi.unstubAllGlobals();
+    }
   });
 });
 

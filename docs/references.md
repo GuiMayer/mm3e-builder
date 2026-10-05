@@ -5,10 +5,37 @@ A aba reúne 16 painéis de consulta sem editar o personagem. A entrada
 categorias separam medidas/tamanho, combate, condições, testes/características
 e recursos heroicos. “Todos os assuntos” começa com os painéis recolhidos.
 
-A busca consulta todos os assuntos, independentemente da categoria. Aceita
+A busca consulta todos os assuntos nas categorias regulares; em Favoritos,
+consulta apenas as seções marcadas. Aceita
 nomes e descrições em português ou inglês, ignora acentos e exige todas as
 palavras digitadas. Expandir/recolher resultados conserva a busca. Cada painel
 indica as páginas **impressas** do livro, não as linhas do Markdown.
+
+## Favoritos
+
+Cada seção tem uma estrela no cabeçalho, à direita das páginas do livro.
+A estrela contornada adiciona a seção aos favoritos; a preenchida a remove.
+Esse botão é independente de expandir/recolher o painel e oferece rótulo
+traduzido, estado pressionado, foco visível e área de toque de 44 px.
+
+A categoria “Favoritos” aparece como primeira opção somente quando existe
+pelo menos uma seção marcada. Reutiliza as tabelas e calculadoras das outras
+categorias, na ordem do catálogo; ao selecioná-la, os painéis começam abertos.
+Adicionar um favorito não muda a categoria atual. A abertura inicial da tela
+continua em “Durante o jogo”, mesmo quando existem favoritos.
+
+Na categoria Favoritos, o campo e a contagem identificam a busca restrita;
+uma busca sem correspondências não esconde a categoria. Remover uma seção
+retira seu painel imediatamente e mantém o foco na navegação. Ao remover o
+último favorito nessa categoria, a tela retorna a “Durante o jogo”, limpa a
+busca e posiciona o foco nessa opção; a categoria Favoritos desaparece.
+
+A preferência é global para o navegador, independente do personagem e do
+idioma. A chave `mm3e-reference-favorites` contém
+`{"version":1,"sectionIds":["turn","damage"]}`. A leitura valida o formato,
+elimina duplicatas e ignora IDs desconhecidos. Se o armazenamento estiver
+bloqueado, os favoritos continuam disponíveis em memória ao navegar pelo
+aplicativo durante a sessão, mas não são garantidos após recarregar a página.
 
 ## Tabelas e consultas
 
@@ -97,9 +124,9 @@ editora, sem acesso ao interior do PDF comercial do escudo.
 
 O catálogo, as tabelas e os campos de consulta pertencem a
 `features/references`. Não dependem dos stores de fichas/recursos e não alteram exportações,
-histórico, custos ou avisos. Apenas a preferência de unidades é gravada
-numa chave própria do localStorage, fora dos dados do personagem.
-O schema atual de personagem é 2.2.0, biblioteca/apêndice de recursos usam
+histórico, custos ou avisos. As preferências de unidades e favoritos são gravadas
+em chaves próprias do localStorage, fora dos dados do personagem.
+O schema atual de personagem é 2.3.0, biblioteca/apêndice de recursos usam
 versão 2 e rascunho usa versão 1. A consulta não exige migração ou alteração
 da revisão de cálculo.
 A rotina preventiva de backup já existente continua seguindo a versão do app.

@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Favorite references
+- Add independent favorite stars to every reference section header and show Favorites as the first category only while at least one section is starred.
+- Persist stable section IDs in a dedicated browser preference, preserving selections across characters, languages and reloads; fall back to session memory when storage is blocked.
+- Scope search to starred sections within Favorites, reuse existing tables and calculators, and return to At the table with keyboard focus when the last favorite is removed.
+- Keep character data, export formats, rule calculations and migrations unchanged.
+
 ### Fixed — Imports containing unconfigured resources
 - Accept the untouched initial resource power slot in character appendices, Drafts and resource libraries, matching the resource editor's supported state without removing or rewriting data.
 - Keep invalid character powers and partially configured resource effects rejected; report resource validation failures under their own resource path rather than character powers.
