@@ -29,6 +29,7 @@ import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 import { modifierInstanceKey } from './modifierInstances';
 
 interface AltEffectCardProps {
+  associationReviewIds?: ReadonlySet<string>;
   character: ICharacter;
   strength?: number;
   costUnit?: 'PP' | 'EP';
@@ -62,6 +63,7 @@ interface AltEffectCardProps {
 }
 
 export function AltEffectCard({
+  associationReviewIds,
   character,
   strength = 0, costUnit = 'PP', ae, aeIdx, cost, cap, validation, isExpanded, onToggleExpand,
   activeCompId, onSetActiveComp,
@@ -195,7 +197,7 @@ export function AltEffectCard({
                         </div>
                       </div>
 
-                      {comp.effectId === 'enhanced-trait' && <EnhancedTargetEditor component={comp} character={character} onChange={update => onUpdateComponent(comp.id, update)} />}
+                      {comp.effectId === 'enhanced-trait' && <EnhancedTargetEditor reviewAssociation={associationReviewIds?.has(comp.id)} component={comp} character={character} onChange={update => onUpdateComponent(comp.id, update)} />}
                       {effectDef?.variableCost && comp.effectId !== 'enhanced-trait' && (
                         <div onClick={(e) => e.stopPropagation()}>
                           <VariableCostSelector

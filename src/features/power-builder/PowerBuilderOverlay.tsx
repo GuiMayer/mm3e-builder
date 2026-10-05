@@ -80,6 +80,14 @@ interface Props {
 const PowerLibraryDialog = lazy(() => import('../power-library/PowerLibraryDialog').then(module => ({ default: module.PowerLibraryDialog })));
 
 export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPower, sourceCharacterId, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
+  const associationReviewIds = useMemo(() => {
+    const components = !isNewPower && existingPower
+      ? [...existingPower.components, ...existingPower.alternateEffects.flatMap(alternate => alternate.components)]
+      : [];
+    return new Set(components
+      .filter(component => component.effectId === 'enhanced-trait' && !component.enhancedTarget)
+      .map(component => component.id));
+  }, [existingPower, isNewPower]);
   const { t, i18n } = useTranslation();
   const dialog = useAppDialog();
   const isMobile = useIsMobile();
@@ -716,7 +724,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
                           </div>
                         </div>
 
-                        {comp.effectId === 'enhanced-trait' && <EnhancedTargetEditor component={comp} character={character} onChange={update => updateComponent(comp.id, update)} />}
+                        {comp.effectId === 'enhanced-trait' && <EnhancedTargetEditor reviewAssociation={associationReviewIds.has(comp.id)} component={comp} character={character} onChange={update => updateComponent(comp.id, update)} />}
                         {effectDef?.variableCost && comp.effectId !== 'enhanced-trait' && (
                           <div onClick={(e) => e.stopPropagation()}>
                             <VariableCostSelector
@@ -983,6 +991,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
               )}
               {power.alternateEffects.map((ae, aeIdx) => (
                 <AltEffectCard
+                  associationReviewIds={associationReviewIds}
                   character={character}
                   strength={getCharacterStrength(character)}
                   costUnit={costUnit}

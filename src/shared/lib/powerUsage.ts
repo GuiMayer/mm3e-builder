@@ -55,3 +55,15 @@ export function resolvePowerUsage(source: PowerSource, usage: IPowerUsage = {}) 
   if (usage.enabled === false) components = components.filter(isPermanentComponent);
   return { components, personal, warnings, branchId: branch?.id ?? 'base' };
 }
+
+/** Allocation preview uses the same component prices and base pool as the rules resolver. */
+export function powerAllocationSummary(source: PowerSource, usage: IPowerUsage = {}) {
+  const allocation = resolvePowerUsage(source, { ...usage, enabled: true });
+  return {
+    cost: allocation.components.reduce((sum, component) => {
+      const effect = POWER_DEFS.find(def => def.id === component.effectId);
+      return sum + (effect ? calculateComponentPricing(component, effect, MODIFIER_DEFS).total : 0);
+    }, 0),
+    budget: calculatePowerPricing(source.power, POWER_DEFS, MODIFIER_DEFS).mainCost,
+  };
+}

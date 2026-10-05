@@ -6,16 +6,15 @@ import { setEnhancedTarget, traitTargetKey, enhancedCostOption } from '../../../
 import { calculateComponentPricing } from '../../../shared/lib/mathEngine';
 import { useAppDialog } from '../../../shared/ui/appDialogContext';
 import { TraitTargetSelect } from '../../trait-modifiers/TraitTargetSelect';
-import '../../../features/trait-modifiers/traitModifiers.css';
+import '../../trait-modifiers/traitModifiers.css';
 
 const categories = { ability: 'Enhanced Ability', defense: 'Enhanced Defense', skill: 'Enhanced Skill' } as const;
 
-export function EnhancedTargetEditor({ component, character, onChange }: { component: ICharacterPowerComponent; character: ICharacter; onChange: (update: Partial<ICharacterPowerComponent>) => void }) {
+export function EnhancedTargetEditor({ component, character, onChange, reviewAssociation = false }: { reviewAssociation?: boolean; component: ICharacterPowerComponent; character: ICharacter; onChange: (update: Partial<ICharacterPowerComponent>) => void }) {
   const { t } = useTranslation();
   const dialog = useAppDialog();
   const categoryId = useId();
   const [busy, setBusy] = useState(false);
-  const [legacyUnbound] = useState(!component.enhancedTarget && !!component.variableCostOption);
   const [reviewed, setReviewed] = useState(false);
   const effect = POWER_DEFS.find(def => def.id === 'enhanced-trait')!;
   const option = component.enhancedTarget ? enhancedCostOption(component.enhancedTarget) : component.variableCostOption ?? '';
@@ -24,7 +23,7 @@ export function EnhancedTargetEditor({ component, character, onChange }: { compo
   async function choose(target?: ITraitTarget) {
     if (target && component.enhancedTarget && traitTargetKey(target) === traitTargetKey(component.enhancedTarget)) return;
     const proposed = setEnhancedTarget(component, target);
-    if (target && legacyUnbound && !reviewed) {
+    if (target && reviewAssociation && !reviewed) {
       const before = price.total;
       const after = calculateComponentPricing(proposed, effect, MODIFIER_DEFS).total;
       const current = target.kind === 'ability' ? character.abilities[target.key] : target.kind === 'defense' ? target.key === 'toughness' ? character.abilities.sta : character.defenses[target.key] : character.skills.find(skill => skill.skillId === target.skillId && (skill.subtype ?? null) === (target.subtype ?? null))?.ranks ?? 0;
@@ -44,6 +43,6 @@ export function EnhancedTargetEditor({ component, character, onChange }: { compo
     </select>
     {category && <TraitTargetSelect key={category} category={category} target={component.enhancedTarget} onChange={target => void choose(target)} disabled={busy} skills={character.skills} />}
     <div className="enhanced-target-editor__preview"><span>{component.enhancedTarget ? t('traits.appliedRanks', { ranks: component.ranks }) : t('traits.noTarget')}</span><strong>{price.total} {t('common.pp')}</strong></div>
-    <small>{t(component.enhancedTarget ? 'traits.targetCost' : category ? 'traits.targetMissingHint' : 'traits.manualCategoryHint')}</small>
+    <small>{t(component.enhancedTarget ? 'traits.targetCost' : !option ? 'traits.chooseCategory' : category ? 'traits.targetMissingHint' : 'traits.manualCategoryHint')}</small>
   </div>;
 }

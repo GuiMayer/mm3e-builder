@@ -1339,8 +1339,6 @@
   "traits.targetMissingHint": "Poderes sem destino preservam o comportamento anterior. Escolha explicitamente o traço para aplicar as graduações.",
   "traits.targetReview": "Custo do componente: {{before}} → {{after}} PP. Valor atual informado no destino: {{current}}; com esta contribuição: {{proposed}}. A prévia de orçamento do Builder mostrará o custo da compra completa. Se o valor natural já inclui este aprimoramento manualmente, revise-o para evitar duplicidade. A associação só será salva ao salvar o poder.",
   "traits.effective": "Efetivo",
-  "traits.usage": "Uso dos aprimoramentos",
-  "traits.usageHint": "Escolha a opção em uso. Alternativos comuns são exclusivos; dinâmicos dividem o orçamento do efeito base. Ligar/desligar não altera o custo comprado. Recursos de veículos e bases exigem escolha explícita para beneficiar o personagem.",
   "traits.active": "Ativo",
   "traits.permanent": "Permanente",
   "traits.recipient": "Aplicar ao personagem",
@@ -1389,5 +1387,8 @@
   "traits.category.Enhanced Advantage": "Vantagem · aplicação manual",
   "traits.category.Enhanced Extra": "Extra · categoria de 1 PP",
   "traits.category.Enhanced Extra (2 PP)": "Extra · categoria de 2 PP",
-  "traits.category.Enhanced Extra (3 PP)": "Extra · categoria de 3 PP"
+  "traits.category.Enhanced Extra (3 PP)": "Extra · categoria de 3 PP",
+  "traits.status.manual": "Aplicação manual",
+  "traits.allocationPool": "Alocação: {{cost}} / {{budget}} PP",
+  "traits.reviewSource": "Revisar esta fonte de aprimoramento"
 }

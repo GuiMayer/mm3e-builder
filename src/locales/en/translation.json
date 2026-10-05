@@ -1339,8 +1339,6 @@
   "traits.targetMissingHint": "Targetless powers preserve previous behavior. Explicitly choose a trait to apply the ranks.",
   "traits.targetReview": "Component cost: {{before}} → {{after}} PP. Current entered target value: {{current}}; with this contribution: {{proposed}}. The Builder budget preview shows the complete purchase cost. If natural ranks already include this enhancement manually, review them to avoid duplication. The association is only persisted when saving the power.",
   "traits.effective": "Effective",
-  "traits.usage": "Enhancement usage",
-  "traits.usageHint": "Choose the option in use. Standard alternates are exclusive; dynamic effects share the base pool. Activation does not change purchase costs. Vehicle and headquarters resources require an explicit choice to benefit the character.",
   "traits.active": "Active",
   "traits.permanent": "Permanent",
   "traits.recipient": "Apply to character",
@@ -1389,5 +1387,8 @@
   "traits.category.Enhanced Advantage": "Advantage · manual application",
   "traits.category.Enhanced Extra": "Extra · 1 PP category",
   "traits.category.Enhanced Extra (2 PP)": "Extra · 2 PP category",
-  "traits.category.Enhanced Extra (3 PP)": "Extra · 3 PP category"
+  "traits.category.Enhanced Extra (3 PP)": "Extra · 3 PP category",
+  "traits.status.manual": "Manual application",
+  "traits.allocationPool": "Allocation: {{cost}} / {{budget}} PP",
+  "traits.reviewSource": "Review this enhancement source"
 }

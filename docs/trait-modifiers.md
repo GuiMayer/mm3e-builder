@@ -2,8 +2,12 @@
 
 ## Controles da ficha
 
-Atributos, defesas e perícias oferecem **Adicionar modificador**. Os campos
-opcionais aparecem após essa ação. Um ajuste de circunstância registra valor,
+Atributos, defesas e perícias oferecem um botão **+** que abre o modal
+**Ajustes**. O contador indica as fontes e circunstâncias associadas, inclusive
+as fontes desligadas e os alternativos fora de uso. Os cartões de atributos
+mostram os valores natural, efetivo (quando diferente) e de teste, sem listas
+permanentes de ajustes. No modal, **Adicionar modificador** abre os campos
+opcionais. Um ajuste de circunstância registra valor,
 origem/condição, âmbito e estado ativo; pode ser editado, removido ou desligado.
 ±2 e ±5 são orientações do Handbook para situações menores e maiores, sem
 limite artificial no editor. Um ajuste em teste não compra graduações, concede
@@ -23,8 +27,11 @@ manual e zero graduações também aparecem no PDF preenchido.
 ## Aprimoramento por poder
 
 A opção de aprimoramento cria um poder no Builder ou direciona um componente
-existente. A graduação é editada na compra original; a ficha mostra o valor
-efetivo e a fonte com atalho para editar. Atributos/defesas/perícias mantêm
+existente. Poderes com `enhancedTarget` aparecem automaticamente no modal do
+traço após salvar, sem copiar suas graduações para campos naturais. Cada fonte
+oferece referência rápida e edição do poder de origem. A graduação é editada
+na compra original; a ficha mostra o valor efetivo e a fonte com atalho para
+editar. Atributos/defesas/perícias mantêm
 campos de compra natural separados. O destino também pode ser uma perícia com
 especialização ainda não comprada naturalmente.
 
@@ -40,21 +47,35 @@ Resistência não oferece compra natural direta. Criar um aprimoramento nessa
 linha abre Proteção; poderes e Rolamento Defensivo continuam fontes de
 Resistência. Ajustes de testes não equivalem a aumentar a defesa.
 
-Definir um destino em poder antigo apresenta custo atual/proposto e aviso
-sobre possível inclusão manual prévia do bônus. O sistema não deduz graduações
+O editor de Traço Aprimorado reúne categoria e destino. A seleção do destino
+define a categoria canônica de custo; a prévia usa o motor de preços existente.
+Perícias oferecem busca, especializações existentes e criação de uma nova
+especialização. A mesma interface atende efeitos básicos, Linked e alternativos.
+A categoria também permite conservar uma compra sem associação automática.
+
+Definir pela primeira vez um destino em poder antigo sem associação apresenta
+custo atual/proposto e aviso sobre possível inclusão manual prévia do bônus. O sistema não deduz graduações
 naturais nem interpreta notas. Cancelar o diálogo ou o Builder não grava dados.
 Vantagens e extras de Traço Aprimorado conservam o preço, mas não recebem
 aplicação automática como atributos, defesas ou perícias.
 
 ## Estado de uso
 
-O painel recolhível **Uso dos aprimoramentos** aparece quando necessário,
-incluindo fontes de Resistência como Proteção.
+O estado de uso é gerenciado no modal **Ajustes** de cada traço, incluindo
+fontes de Resistência como Proteção. Poderes, equipamentos legados e recursos
+associados também oferecem **Aprimoramentos**, permitindo gerenciar fontes
+sem destino e a transferência explícita de aprimoramentos de veículos/bases.
+A ficha não possui uma seção separada de uso.
+
+As fontes permanecem visíveis quando desligadas, sem alocação, em outra opção
+do array, destinadas ao recurso, com destino ausente/inválido ou substituídas
+por uma fonte mais forte. A aplicação manual de vantagens/extras é identificada
+separadamente. Os avisos de regras são exibidos junto da fonte.
 Poderes próprios começam ativos no efeito base. Alternativos comuns selecionam
 uma opção; componentes Linked dessa opção são simultâneos. Em arrays dinâmicos,
 a alocação permite distribuir graduações entre opções dinâmicas e compara seu
-custo canônico ao orçamento base. Excesso gera aviso. Aprimoramentos Permanentes
-continuam ativos quando se desliga uma opção que também contém outros efeitos.
+custo canônico ao orçamento base. A prévia exibe PP alocados e orçamento;
+excesso gera aviso. Aprimoramentos Permanentes continuam ativos quando se desliga uma opção que também contém outros efeitos.
 
 As escolhas pertencem ao personagem e à origem do poder. Veículos e bases não
 transferem aprimoramentos ao personagem sem escolha explícita. Equipamentos
@@ -93,3 +114,8 @@ por botão é uma decisão de interface, mantendo a distinção entre compra e u
 `traitValues`, `powerUsage`, `traitTargets` e `pricingStrength` concentram as
 projeções. `traitContracts`, `traitValues`, `powerUsage` e `traitCompatibility`
 cobrem contratos, preços, propagação, arrays e importação/exportação histórica.
+
+`traitSources` fornece um inventário somente de leitura das fontes e estados
+para os modais, incluindo fontes inativas. Seu cache acompanha a projeção
+compartilhada. `traitSources.test.ts` cobre a consulta sem alterações na ficha,
+arrays, permanentes, aplicação manual, recursos e política de armaduras.
