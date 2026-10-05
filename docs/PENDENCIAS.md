@@ -60,6 +60,59 @@ Não são compromissos de implementação nem impedimentos para usar a versão a
   versão desktop. Contas, backend e sincronização obrigatória continuam fora
   do escopo atual.
 
+### Modo offline — proposta opcional
+
+**Objetivo:** permitir abrir e usar o aplicativo sem conexão durante uma sessão,
+após um primeiro acesso conectado. Manter a hospedagem estática no GitHub Pages,
+o motor de regras e os formatos atuais das fichas. A proposta está documentada
+para avaliação; o suporte offline completo ainda não foi implementado.
+
+**Estado atual:** fichas, recursos, modelos e retratos locais já são armazenados
+no navegador, mas isso não garante reabrir o aplicativo sem internet. Partes da
+interface, capítulos do Power Profiles e ferramentas de PDF/Excel são carregados
+sob demanda. As fontes da interface usam Google Fonts.
+
+**Custos e limitações:**
+
+- Atualizações exigem gestão de versões do service worker e dos arquivos em
+  cache. Evitar manter versões antigas indefinidamente ou misturar arquivos de
+  builds diferentes; uma atualização não pode interromper a edição do usuário.
+- Disponibilizar todas as funções offline aumenta o download inicial e o uso
+  de armazenamento. Definir quais arquivos entram no cache antecipadamente e
+  informar quando o conteúdo necessário estiver disponível.
+- Ampliar a manutenção e os testes para instalação inicial, download
+  interrompido, cache incompleto, múltiplas abas e atualização de versão.
+- Fontes precisam ser distribuídas localmente. Retratos por link dependem de
+  uma cópia armazenada e das permissões do servidor de origem; imagens ainda
+  não disponíveis localmente não podem ser garantidas offline. Uma eventual
+  integração com o Drive continua exigindo conexão para enviar e restaurar.
+- O navegador pode remover armazenamento sob determinadas condições, e o
+  usuário pode limpar os dados do site. O modo offline depende da preparação
+  conectada e não substitui exportação ou backup de fichas, retratos e modelos.
+
+**Decisões abertas e critérios de aceite:**
+
+- Definir cobertura: ficha, Builder, recursos, referências, biblioteca completa
+  e exportações. Para qualquer função excluída do pacote offline, comunicar a
+  necessidade de conexão antes de permitir uma ação que dependa dela.
+- Versionar o cache de arquivos do aplicativo e manter uma versão utilizável
+  quando um novo download falhar. Restringir o service worker e a limpeza de
+  seus caches ao projeto `/mm3e-builder/`.
+- Avisar quando houver nova versão e permitir ao usuário escolher quando
+  recarregar, preservando as fichas salvas. Testar coexistência de abas com
+  versões diferentes e evitar troca forçada durante a edição.
+- Separar caches descartáveis do aplicativo dos dados do usuário. Atualizar ou
+  limpar o cache não pode excluir localStorage, retratos em IndexedDB ou modelos
+  pessoais; não introduzir migração de fichas apenas para habilitar o offline.
+- Verificar abertura sem rede após fechar o navegador e uso de funções ainda
+  não visitadas, incluindo capítulos, PDF e Excel quando fizerem parte da
+  cobertura. Testar recuperação de cache removido e falta de espaço em desktop
+  e mobile, preservando os dados locais diante de falhas.
+
+**Referências técnicas:** [cache de PWAs](https://web.dev/learn/pwa/caching),
+[atualizações de PWAs](https://web.dev/learn/pwa/update) e
+[cotas e remoção de armazenamento](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria).
+
 ### Backup manual no Google Drive — proposta opcional
 
 **Objetivo:** oferecer conexão opcional com o Drive para salvar e restaurar o
