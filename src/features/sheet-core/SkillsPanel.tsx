@@ -173,7 +173,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
               <div className="skill-check-inputs">
               <span className="skill-ranks-group">
               <span className="skill-base" style={abilityBadgeStyle(def.baseAbility)}>
-                {t(`abilities.${def.baseAbility}`).toUpperCase()} {abilityVal}
+                <span className="skill-base-full">{t(`abilities.${def.baseAbility}`).toUpperCase()}</span><span className="skill-base-short" title={t(`abilities.${def.baseAbility}`)}>{def.baseAbility.toUpperCase()}</span> {abilityVal}
               </span>
               <span className="skill-plus">+</span>
               <NumberInput
@@ -413,6 +413,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
           font-size: 0.7rem; font-weight: 700; min-width: 60px;
           padding: 2px 7px; border-radius: var(--r-full);
         }
+        .skill-base-short { display: none; }
         .skill-plus { color: var(--c-text-muted); font-size: 0.85rem; }
         .skill-input {
           width: 50px; text-align: center;
@@ -581,17 +582,33 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
         /* Mobile responsive adjustments for NumberInput */
         @media (max-width: 768px) {
           .skill-input {
-            width: 60px;
+            width: 44px;
           }
           .skill-input--other {
             width: 48px;
           }
           .skill-row {
-            grid-template-columns: minmax(0,1fr); gap: var(--s-sm);
+            grid-template-columns: minmax(0,1fr) auto auto;
+            gap: 4px;
+            padding: var(--s-xs) 8px;
           }
-          .skill-row-actions { justify-self: end; }
+          .skill-name { grid-column: 1; grid-row: 1; }
+          .skill-row-actions { display: contents; }
+          .skill-row-actions>.trait-control { grid-column: 2; grid-row: 1; justify-self: end; }
+          .skill-row-actions>.skill-remove { grid-column: 3; grid-row: 1; justify-self: end; margin-left: 0; }
+          .skill-check-inputs { grid-column: 1 / 3; grid-row: 2; min-width: 0; }
+          .skill-row-actions>.sheet-check-result { grid-column: 3; grid-row: 2; justify-self: end; }
+          .skill-ranks-group { flex-wrap: nowrap; }
+          .skill-ranks-group,.skill-other-group { gap: 4px; }
+          .skill-base { min-width: 0; padding-inline: 5px; white-space: nowrap; flex-shrink: 0; }
+          .skill-base-full { display: none; }
+          .skill-base-short { display: inline; }
           .skill-row-actions>.skill-remove { min-width: 44px; min-height: 44px; }
           .skill-remove { opacity: 1; }
+        }
+        @media (max-width: 380px) {
+          .skill-check-inputs { grid-column: 1 / -1; }
+          .skill-row-actions>.sheet-check-result { grid-column: 1 / -1; grid-row: 3; }
         }
       `}</style>
     </section>
