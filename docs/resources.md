@@ -13,6 +13,9 @@ divergem das tabelas normativas, o cálculo usa as tabelas e fórmulas normativa
 
 Crie ou edite o recurso na aba **Recursos**, depois use **Adicionar recurso** na
 ficha. A seleção e os cartões acompanham a ordem alfabética do idioma ativo.
+O atalho **Criar recurso** na seção de recursos da ficha abre um seletor de tipo
+e direciona para **Recursos** com o editor de criação correspondente aberto.
+O recurso só é salvo ao confirmar; depois, use **Adicionar recurso** para vinculá-lo.
 A biblioteca é compartilhada por todas as fichas deste navegador: editar um
 recurso vinculado altera sua apresentação e seus valores nas fichas associadas.
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Edit3, Package, Plus, Search, Trash2, X } from 'lucide-react';
+import { Edit3, Package, PackagePlus, Plus, Search, Trash2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterResourceLink, ResourceType } from '../../entities/types';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
@@ -10,6 +10,7 @@ import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { getLinkedResourceCharges, isDeviceResource } from '../../shared/lib/resourceCalculations';
 import { createId } from '../../shared/lib/identity';
 import { Button } from '../../shared/ui/Button';
+import { Modal } from '../../shared/ui/Modal';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { useCharactersStore } from '../../store/charactersStore';
 import { getResourcePowers, type ResourceEditTarget } from '../../shared/lib/resourcePowers';
@@ -19,7 +20,10 @@ import { Tooltip } from '../../shared/ui/Tooltip';
 const RESOURCE_TYPES: ResourceType[] = ['gadget', 'gear', 'vehicle', 'headquarters', 'custom'];
 const EMPTY_RESOURCE_LINKS: ICharacterResourceLink[] = [];
 
-export function ResourcesPanel({ onEditResource }: { onEditResource: (target: ResourceEditTarget) => void }) {
+export function ResourcesPanel({ onEditResource, onCreateResource }: {
+  onEditResource: (target: ResourceEditTarget) => void;
+  onCreateResource: (type: ResourceType) => void;
+}) {
   const { t, i18n } = useTranslation();
   const { character, characterId } = useActiveCharacter();
   const { setResourceLinks } = useCharacterActions();
@@ -27,6 +31,7 @@ export function ResourcesPanel({ onEditResource }: { onEditResource: (target: Re
   const { equipmentEPLimit, totalEPUsed, isOverEquipmentLimit, resourcePPUsed } = useCalculatedPP();
   const tabs = useCharactersStore((state) => state.tabs);
   const [showSelector, setShowSelector] = useState(false);
+  const [showCreateSelector, setShowCreateSelector] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilters, setActiveFilters] = useState<Set<ResourceType>>(new Set());
   const searchRef = useRef<HTMLInputElement>(null);
@@ -116,11 +121,16 @@ export function ResourcesPanel({ onEditResource }: { onEditResource: (target: Re
         {links.length === 0 && <p className="resources-panel__empty">{t('resources.empty')}</p>}
       </div>
 
-      {!showSelector ? (
-        <Button variant="ghost" size="md" onClick={() => setShowSelector(true)}>
-          <Plus size={16} /> {t('resources.add')}
+      <div className="resources-panel__toolbar">
+        {!showSelector && <Button variant="ghost" size="md" onClick={() => setShowSelector(true)}>
+          <Plus size={16}/> {t('resources.add')}
+        </Button>}
+        <Button variant="ghost" size="md" onClick={() => setShowCreateSelector(true)}>
+          <PackagePlus size={16}/> {t('resources.createTitle')}
         </Button>
-      ) : (
+      </div>
+
+      {showSelector && (
         <div className="resources-panel__selector">
           <div className="resources-panel__search">
             <Search size={14} className="resources-panel__search-icon" />
@@ -173,8 +183,26 @@ export function ResourcesPanel({ onEditResource }: { onEditResource: (target: Re
         </div>
       )}
 
+      <Modal isOpen={showCreateSelector} onClose={() => setShowCreateSelector(false)} title={t('resources.createTitle')} compact>
+        <div className="resources-panel__create-picker">
+          <p>{t('resources.chooseType')}</p>
+          {RESOURCE_TYPES.map((type) => (
+            <Button key={type} variant="secondary" onClick={() => {
+              setShowCreateSelector(false);
+              onCreateResource(type);
+            }}>{t(`resources.type.${type}`)}</Button>
+          ))}
+          <Button variant="ghost" onClick={() => setShowCreateSelector(false)}>{t('common.cancel')}</Button>
+        </div>
+      </Modal>
+
       <style>{`
         .resources-panel .panel-header { align-items:center; justify-content:space-between; }
+        .resources-panel__toolbar { display:flex; flex-wrap:wrap; gap:var(--s-xs); }
+        .resources-panel .modal-content--compact { max-width:min(480px,calc(100vw - 24px)); }
+        .resources-panel__create-picker { display:flex; flex-direction:column; gap:var(--s-sm); width:280px; max-width:100%; }
+        .resources-panel__create-picker p { color:var(--c-text-secondary); font-size:.85rem; margin:0 0 var(--s-xs); }
+        .resources-panel__create-picker .btn { min-height:44px; }
         .resources-panel__hint,.resources-panel__empty { color:var(--c-text-muted); font-size:.82rem; margin:0 0 var(--s-md); }
         .resources-panel__warning { background:rgba(var(--c-error-rgb, 248, 113, 113), .12); border:1px solid var(--c-error); border-radius:var(--r-sm); color:var(--c-error); font-size:.8rem; margin-bottom:var(--s-md); padding:var(--s-sm); }
         .resources-panel__list { display:flex; flex-direction:column; gap:var(--s-xs); }

@@ -33,16 +33,21 @@ function makeResource(type: ResourceType, level: number): IResource {
   if (type === 'headquarters') return { ...base, type, size: 'small', toughness: 6, powerLevel: level, features: [], effects: [] };
   return { ...base, type, costMode: type === 'gadget' ? 'device' : 'equipment', power: { ...blankPower(), ...(type === 'gadget' ? { removable: 'removable' as const } : {}) } };
 }
-export function ResourcesView({ initialEditTarget }: { initialEditTarget?: ResourceEditTarget }) {
+export function ResourcesView({ initialEditTarget, initialCreateType }: {
+  initialEditTarget?: ResourceEditTarget;
+  initialCreateType?: ResourceType;
+}) {
   const { t, i18n } = useTranslation();
   const { character } = useActiveCharacter();
   const resources = useResourcesStore((state) => state.resources);
   const saveError = useResourcesStore((state) => state.storageError);
   const [editing, setEditing] = useState<{ resource: IResource; isNew: boolean } | null>(() => {
+    if (initialCreateType) return { resource: makeResource(initialCreateType, character.header.powerLevel), isNew: true };
     const resolved = resolveResourceEditTarget(resources, initialEditTarget);
     return resolved?.target.kind === 'traits' ? { resource: resolved.resource, isNew: false } : null;
   });
   const [powerTarget, setPowerTarget] = useState<ResourcePowerTarget | null>(() => {
+    if (initialCreateType) return null;
     const resolved = resolveResourceEditTarget(resources, initialEditTarget);
     return resolved && resolved.target.kind !== 'traits' ? resolved.target : null;
   });

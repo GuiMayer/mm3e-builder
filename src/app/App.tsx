@@ -16,6 +16,7 @@ import { DiceRoller } from '../features/dice-roller/DiceRoller'
 import { ResourceStorageStatus } from '../shared/ui/ResourceStorageStatus'
 import { ResourceReviewController } from '../features/resources/ResourceReviewController'
 import type { ResourceEditTarget } from '../shared/lib/resourcePowers'
+import type { ResourceType } from '../entities/types'
 import { ModifierRecoveryNotice } from '../shared/ui/ModifierRecoveryNotice'
 import { useCharactersStore } from '../store/charactersStore'
 import { resolveLibraryPowerSave, type LibraryPowerEdit } from '../features/power-library/libraryCharacterEditing'
@@ -38,6 +39,7 @@ export function App() {
   const { t, i18n } = useTranslation()
   const [activeView, setActiveView] = useState<AppView>('sheet');
   const [resourceEditTarget, setResourceEditTarget] = useState<ResourceEditTarget>();
+  const [resourceCreateType, setResourceCreateType] = useState<ResourceType>();
   const [powerEdit, setPowerEdit] = useState<LibraryPowerEdit | null>(null);
   const [powerEditError, setPowerEditError] = useState<string | null>(null);
   
@@ -87,7 +89,7 @@ export function App() {
       <div className="app-root">
         <MenuBar 
           activeView={activeView} 
-          onViewChange={(view) => { setResourceEditTarget(undefined); setActiveView(view); }}
+          onViewChange={(view) => { setResourceEditTarget(undefined); setResourceCreateType(undefined); setActiveView(view); }}
           onExportPDF={exportPDF}
           isGeneratingPreview={isGeneratingPreview}
         />
@@ -99,10 +101,13 @@ export function App() {
           <main className="app-main">
             <ModifierRecoveryNotice />
             {activeView === 'sheet' ? (
-              <SheetView onEditResource={(target) => { setResourceEditTarget(target); setActiveView('resources'); }}/>
+              <SheetView
+                onEditResource={(target) => { setResourceCreateType(undefined); setResourceEditTarget(target); setActiveView('resources'); }}
+                onCreateResource={(type) => { setResourceEditTarget(undefined); setResourceCreateType(type); setActiveView('resources'); }}
+              />
             ) : activeView === 'resources' ? (
               <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
-                <ResourcesView initialEditTarget={resourceEditTarget}/>
+                <ResourcesView initialEditTarget={resourceEditTarget} initialCreateType={resourceCreateType}/>
               </Suspense>
             ) : activeView === 'power-library' ? (
               <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
