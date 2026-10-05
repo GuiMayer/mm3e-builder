@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createRoll, randomD20, rollFormula } from '../features/dice-roller/rollModel';
 import { useRollSession } from '../features/dice-roller/rollSessionStore';
 
-beforeEach(() => useRollSession.setState({ isOpen: false, history: [], limit: 15, sequence: 0, notice: null }));
+beforeEach(() => useRollSession.setState({ isOpen: false, history: [], limit: 15, keepHistory: false, sequence: 0, notice: null }));
 afterEach(() => vi.unstubAllGlobals());
 
 describe('Session dice roller', () => {

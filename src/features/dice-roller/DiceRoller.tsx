@@ -25,6 +25,7 @@ export function DiceRoller() {
   const isOpen = useRollSession(state => state.isOpen);
   const history = useRollSession(state => state.history);
   const limit = useRollSession(state => state.limit);
+  const keepHistory = useRollSession(state => state.keepHistory);
   const notice = useRollSession(state => state.notice);
   const setOpen = useRollSession(state => state.setOpen);
   const roll = useRollSession(state => state.roll);
@@ -75,8 +76,10 @@ export function DiceRoller() {
       <div className="dice-history" role="log" aria-live="off" aria-label={t('dice.history')}>
         {history.length ? history.map(result => <RollCard key={result.id} result={result} />) : <p className="dice-empty">{t('dice.empty')}</p>}
       </div>
-      <footer className="dice-panel-footer"><label htmlFor={`${panelId}-limit`}>{t('dice.limit')}<input id={`${panelId}-limit`} type="number" min="1" step="1" value={limitText} aria-invalid={limitInvalid} aria-describedby={limitHelpId} onChange={event => { setLimitText(event.target.value); setLimitInvalid(false); }} onBlur={applyLimit} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); applyLimit(); } }} /></label>
-        <p id={limitHelpId}>{limitInvalid ? t('dice.invalidLimit') : t('dice.sessionOnly')}</p>
+      <footer className="dice-panel-footer"><label htmlFor={`${panelId}-limit`}>{t('dice.limit')}<input id={`${panelId}-limit`} type="number" min="1" step="1" value={limitText} aria-invalid={limitInvalid} aria-describedby={limitInvalid ? limitHelpId : undefined} onChange={event => { setLimitText(event.target.value); setLimitInvalid(false); }} onBlur={applyLimit} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); applyLimit(); } }} /></label>
+        {limitInvalid && <p id={limitHelpId}>{t('dice.invalidLimit')}</p>}
+        <div className="dice-history-preference"><span>{t('dice.keepHistory')}</span><button type="button" className="dice-history-switch" role="switch" aria-label={t('dice.keepHistory')} aria-checked={keepHistory} aria-describedby={`${panelId}-history-help`} onClick={() => useRollSession.getState().setKeepHistory(!keepHistory)}><span /></button></div>
+        <p id={`${panelId}-history-help`}>{t(keepHistory ? 'dice.historyLocal' : 'dice.sessionOnly')}</p>
       </footer>
     </DiceWindow>
     {notice && !isOpen && <div className="dice-notice"><div>{notice.source && <strong>{notice.source.label}</strong>}<span>{rollFormula(notice)}</span></div><button type="button" aria-label={t('dice.dismiss')} onClick={() => useRollSession.getState().dismissNotice(notice.id)}><X size={16} /></button></div>}

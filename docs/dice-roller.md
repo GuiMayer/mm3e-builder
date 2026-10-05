@@ -1,4 +1,4 @@
-# Session dice roller
+# Dice roller
 
 ## User workflow
 
@@ -57,16 +57,23 @@ unchanged.
 
 ## History and data boundaries
 
-- History starts with capacity **15**, newest first, and spans character tabs.
+- History initially has capacity **15**, newest first, and spans character tabs.
+  The capacity is saved locally and restored when reopening the app.
 - The field at the bottom accepts a positive safe integer, such as 30. Enter
   or leaving the field applies it. Empty, fractional, zero, and negative values
   do not change the current capacity.
 - Reducing capacity discards the oldest entries. Increasing it does not restore
   discarded entries. Clear removes results without changing capacity.
-- Closing the panel and switching app views retain history. **Reloading or
-  closing the application clears history and restores capacity 15.**
-- `useRollSession` stores these values only in memory. It has no persistence
-  middleware and writes neither localStorage nor sessionStorage.
+- Closing the panel and switching app views retain history. By default,
+  reloading or closing the application clears results, keeping the chosen capacity.
+- The footer's **Keep history between sessions** switch is off by default.
+  Enabling it saves the current results and subsequent rolls in this browser.
+  Disabling it removes saved results while preserving the current session's history.
+  Clear also removes persisted results without changing the switch or capacity.
+- `mm3e-dice-preferences` stores versioned capacity/retention preferences and,
+  only when enabled, result snapshots. Reopening restores original dice, totals
+  and sources without rerolling, reopening the panel or showing an old notice.
+  Invalid entries are ignored; blocked or full storage falls back to in-memory use.
 - Rolls never update character fields, dirty revisions, character undo history,
   JSON/JSONL, PDF, or Excel. No schema or migration was added.
 - `randomD20` uses Web Crypto with rejection sampling to avoid modulo bias.

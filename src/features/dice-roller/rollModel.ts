@@ -1,4 +1,4 @@
-/** Session-only values: never part of character persistence or exports. */
+/** Roll snapshots: never part of character persistence or exports. */
 export interface RollSource {
   characterId: string;
   characterName: string;

@@ -36,6 +36,12 @@
 .dice-panel-footer{padding:12px 16px;border-top:1px solid var(--c-border);flex-shrink:0;}
 .dice-panel-footer label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.78rem;}
 .dice-panel-footer p{font-size:.7rem;color:var(--c-text-muted);margin:8px 0 0;}
+.dice-history-preference{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;font-size:.78rem;}
+.dice-panel .dice-history-switch{display:grid;place-items:center;min-width:44px;padding:0;flex-shrink:0;}
+.dice-history-switch>span{display:block;position:relative;width:38px;height:22px;border-radius:12px;background:var(--c-border);transition:background 150ms;}
+.dice-history-switch>span::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--c-text);transition:transform 150ms;}
+.dice-history-switch[aria-checked=true]>span{background:var(--c-primary);}
+.dice-history-switch[aria-checked=true]>span::after{transform:translateX(16px);background:var(--c-action-text,var(--c-bg));}
 .dice-panel input[aria-invalid=true]{border-color:var(--c-error);}
 .dice-notice{position:fixed;bottom:20px;right:64px;z-index:140;max-width:min(380px,calc(100vw - 88px));display:flex;align-items:center;gap:12px;background:var(--c-surface-elevated);border:1px solid var(--c-border);border-radius:var(--r-md);padding:12px;box-shadow:var(--shadow-xl);}
 .dice-notice>div{display:flex;flex-direction:column;gap:4px;overflow-wrap:anywhere;}
@@ -68,6 +74,7 @@
 @media(max-height:500px) and (min-width:769px){.dice-panel{top:16px;}}
 @media(max-height:500px) and (max-width:768px){.dice-panel{height:calc(100dvh - 12px);max-height:100dvh;}.dice-panel-header,.dice-manual,.dice-panel-footer{padding:8px 12px;}}
 @media(prefers-reduced-motion:reduce){.dice-panel{transition:none;}}
+@media(prefers-reduced-motion:reduce){.dice-history-switch>span,.dice-history-switch>span::after{transition:none;}}
 @media(min-width:769px){
  .dice-panel-header{cursor:grab;touch-action:none;user-select:none;}
  .dice-panel[data-dragging=true] .dice-panel-header{cursor:grabbing;}

@@ -10,6 +10,10 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+### Added — Dice history preferences
+- Add an opt-in footer switch to retain roll history between sessions in this browser. Turning it off removes saved results while keeping the current session; clearing also clears persisted results.
+- Remember history capacity independently of retention. Restore validated result snapshots without rerolling or showing stale notices; keep dice preferences outside character data and exports.
+
 ## [1.21.0] - 2026-10-05
 
 ### Added — Personal power library
