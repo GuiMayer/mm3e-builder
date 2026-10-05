@@ -689,7 +689,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
                     <div className={`build-effect-layout ${effectDef ? 'build-effect-layout--with-reference' : ''}`}>
                       <div className="build-effect-controls">
                         {/* Effect selector with search */}
-                        <div className="build-row" style={{ alignItems: 'flex-end' }}>
+                        <div className="build-row build-effect-selector-row" style={{ alignItems: 'flex-end' }}>
                           <div className="build-section build-section--flex">
                             <EffectCombobox
                               value={comp.effectId}
@@ -1294,6 +1294,13 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
         .build-effect-layout { display: grid; gap: var(--s-md); min-width: 0; align-items: start; }
         .build-effect-controls { display: flex; flex-direction: column; gap: var(--s-sm); min-width: 0; }
         .build-effect-controls .build-section--flex { min-width: 0; }
+        .build-effect-selector-row { --effect-control-height: var(--touch-target-min); }
+        .build-effect-selector-row .ecb-input,
+        .build-effect-selector-row .ecb-info-btn,
+        .build-effect-selector-row .number-input-wrapper,
+        .build-effect-selector-row .build-input { height: var(--effect-control-height); }
+        .build-effect-selector-row .ecb-input { min-width: 0; }
+        .build-effect-selector-row .ecb-info-btn { width: var(--effect-control-height); justify-content: center; }
         .build-effect-controls .applied-mod { flex-wrap: wrap; min-width: 0; max-width: 100%; }
         .build-effect-controls .applied-mod-name { min-width: 0; overflow-wrap: anywhere; }
         .build-effect-layout > .build-effect-info { min-width: 0; align-content: start; }

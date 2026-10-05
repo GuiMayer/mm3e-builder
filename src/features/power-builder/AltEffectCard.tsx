@@ -161,7 +161,7 @@ export function AltEffectCard({
                     <div className="build-effect-controls">
                       {/* Effect selection + Ranks */}
                       <div
-                        className="build-row"
+                        className="build-row build-effect-selector-row"
                         style={{ alignItems: 'flex-end' }}
                         onClick={(e) => e.stopPropagation()}
                       >

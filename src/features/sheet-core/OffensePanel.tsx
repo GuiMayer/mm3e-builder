@@ -210,10 +210,18 @@ export function OffensePanel() {
         .targeted-effects-empty { color: var(--c-text-muted); font-size: .84rem; font-style: italic; margin: 0; padding: var(--s-md); text-align: center; }
         .targeted-add-btn { align-items: center; background: transparent; border: 0; color: var(--c-text-muted); cursor: pointer; display: flex; font: inherit; font-size: .78rem; gap: var(--s-xs); justify-content: center; padding: var(--s-sm); width: 100%; }
         .targeted-add-btn:hover { background: var(--c-primary-muted); color: var(--c-primary); }
-        .targeted-manual-editor { align-items: end; display: grid; gap: var(--s-xs); grid-template-columns: minmax(110px, 1fr) 114px 105px minmax(120px, 1fr) minmax(100px, 1fr) auto; padding: var(--s-sm); }
+        .targeted-manual-editor { --manual-control-height: 36px; align-items: end; display: grid; gap: var(--s-xs); grid-template-columns: minmax(110px, 1fr) 114px 105px minmax(120px, 1fr) minmax(100px, 1fr) auto; padding: var(--s-sm); }
         .targeted-input, .targeted-select, .targeted-bonus-input { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-sm); color: var(--c-text); font: inherit; font-size: .78rem; min-width: 0; padding: 4px 6px; }
         .targeted-input, .targeted-select { width: 100%; }
         .targeted-bonus-input { text-align: center; width: 48px; }
+        .targeted-manual-editor .targeted-input,
+        .targeted-manual-editor .targeted-select,
+        .targeted-manual-editor .targeted-bonus-input,
+        .targeted-manual-editor .number-input-wrapper,
+        .targeted-editor-actions .targeted-icon-btn { height: var(--manual-control-height); }
+        .targeted-manual-editor .number-input-wrapper { min-width: 0; width: 100%; }
+        .targeted-manual-editor .targeted-bonus-input { flex: 1; width: 100%; }
+        .targeted-editor-actions .targeted-icon-btn { justify-content: center; width: 32px; }
         .targeted-input:focus, .targeted-select:focus, .targeted-bonus-input:focus { border-color: var(--c-primary); outline: none; }
         .targeted-editor-actions { display: flex; gap: 2px; }
         .targeted-icon-btn { align-items: center; background: transparent; border: 0; border-radius: var(--r-sm); color: var(--c-text-muted); cursor: pointer; display: flex; padding: 5px; }
@@ -226,7 +234,7 @@ export function OffensePanel() {
           .targeted-profile-name { white-space: normal; overflow-wrap: anywhere; }
           .targeted-profile-actions { grid-column: 1 / -1; grid-row: auto; justify-self: end; }
           .targeted-profile-tags { grid-column: 1 / -1; }
-          .targeted-manual-editor { grid-template-columns: 1fr 1fr; padding: var(--s-md); }
+          .targeted-manual-editor { --manual-control-height: var(--touch-target-min); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: var(--s-md); }
           .targeted-manual-editor > :nth-child(1), .targeted-manual-editor > :nth-child(4), .targeted-manual-editor > :nth-child(5), .targeted-editor-actions { grid-column: 1 / -1; }
           .targeted-input, .targeted-select, .targeted-bonus-input { min-height: var(--touch-target-min); }
           .targeted-icon-btn { min-height: var(--touch-target-min); min-width: var(--touch-target-min); justify-content: center; }
