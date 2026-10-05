@@ -137,6 +137,7 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
     // Abilities
     sections.push(renderAbilitiesSection({
       character: effective, labels,
+      baseAbilities: character.abilities,
       abilitiesCost,
     }));
 

@@ -10,6 +10,7 @@ import { escapeHtml, classNames } from './utils';
 export interface AbilitiesSectionData {
   labels?: PDFLabels;
   character: ICharacter;
+  baseAbilities: ICharacter['abilities'];
   abilitiesCost: number;
 }
 
@@ -18,7 +19,7 @@ export interface AbilitiesSectionData {
  */
 export function renderAbilitiesSection(data: AbilitiesSectionData): string {
   const labels = data.labels ?? englishPDFLabels;
-  const { character, abilitiesCost } = data;
+  const { character, baseAbilities, abilitiesCost } = data;
   const { abilities, absentAbilities } = character;
 
   const abilityList = [
@@ -30,13 +31,15 @@ export function renderAbilitiesSection(data: AbilitiesSectionData): string {
     { key: 'int', name: 'Intellect', value: abilities.int },
     { key: 'awe', name: 'Awareness', value: abilities.awe },
     { key: 'pre', name: 'Presence', value: abilities.pre },
-  ];
+  ] as const;
 
   const abilitiesHtml = abilityList
     .map(ability => renderAbilityBox(
       labels(ability.name),
       ability.value,
-      absentAbilities.includes(ability.key as keyof typeof abilities)
+      baseAbilities[ability.key],
+      absentAbilities.includes(ability.key),
+      labels
     ))
     .join('');
 
@@ -56,7 +59,7 @@ export function renderAbilitiesSection(data: AbilitiesSectionData): string {
 /**
  * Render a single ability box
  */
-function renderAbilityBox(name: string, value: number, isAbsent: boolean): string {
+function renderAbilityBox(name: string, value: number, base: number, isAbsent: boolean, labels: PDFLabels): string {
   const className = classNames('ability-box', isAbsent && 'absent');
   const displayValue = isAbsent ? '—' : value;
 
@@ -64,6 +67,9 @@ function renderAbilityBox(name: string, value: number, isAbsent: boolean): strin
     <div class="${className}">
       <div class="ability-name">${escapeHtml(name)}</div>
       <div class="ability-value">${displayValue}</div>
+      <div class="ability-breakdown">
+        <span>${labels('Base')}: ${isAbsent ? '—' : base}</span> + <span>${labels('Bonus')}: ${isAbsent ? '—' : value - base}</span>
+      </div>
     </div>
   `;
 }

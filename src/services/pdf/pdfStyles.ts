@@ -31,7 +31,8 @@ export function getPDFStyles(options: PDFCustomizationOptions): string {
 .ability-box,.defense-box{flex:1;min-width:0;text-align:center;border:1px solid #ccd2dc;padding:${gap}px 2px;background:#f8f9fb;}
 .ability-name,.defense-name{font-size:${Math.max(8, size - 1)}pt;line-height:1.15;color:#475569;}
 .ability-value,.defense-value{font-size:${size + 5}pt;line-height:1.3;font-weight:700;color:${color};}
-.defense-breakdown{font-size:8pt;color:#536070;}
+.ability-breakdown,.defense-breakdown{font-size:8pt;color:#536070;}
+.ability-breakdown>span{display:inline-block;white-space:nowrap;}
 .pdf-columns{display:flex;gap:14px;margin-bottom:${gap + 3}px;}
 .pdf-columns>.pdf-section{width:calc(50% - 7px);margin:0;}
 .pdf-columns>.pdf-section:only-child{width:100%;}

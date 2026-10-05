@@ -34,7 +34,7 @@
 .ability-check-adjustments { color: var(--c-primary); font-size: .75rem; line-height: 16px; white-space: nowrap; }
 .ability-check-value { font: 700 1.1rem var(--f-heading); color: var(--c-text); white-space: nowrap; }
 .ability-card .roll-button { flex-shrink: 0; }
-.ability-value { color: var(--c-text-muted); font-size: 1.1rem; min-height: 44px; display: flex; align-items: center; }
+.ability-card .ability-value { color: var(--c-text-muted); font-size: 1.1rem; min-height: 44px; display: flex; align-items: center; }
 .ability-card.absent .ability-heading-title,.ability-card.absent .ability-score-row { opacity: .5; }
 .ability-toggle { display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--c-text-muted); font-size: .75rem; cursor: pointer; }
 .ability-toggle:hover,.ability-toggle:focus-visible { background: var(--c-bg); color: var(--c-text); }

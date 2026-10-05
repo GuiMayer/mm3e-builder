@@ -16,6 +16,35 @@ const power: ICharacterPower = {
 };
 
 describe('PDF content preservation', () => {
+  it('shows natural ability ranks and active enhancements below the total, without counting circumstances as ranks', async () => {
+    const character = createDefaultCharacter({
+      powers: [{ id: 'strength', name: 'Enhanced Strength', notes: '', alternateEffects: [], components: [
+        { id: 'strength-effect', effectId: 'enhanced-trait', ranks: 5, modifiers: [], enhancedTarget: { kind: 'ability', key: 'str' } },
+      ] }],
+      traitModifiers: [{ id: 'tools', target: { kind: 'ability', key: 'str' }, scope: 'check', value: 2, source: 'Tools', active: true }],
+      absentAbilities: ['sta'],
+    });
+    character.abilities.str = 2;
+    const before = JSON.stringify(character);
+    for (const language of ['en', 'pt-BR']) {
+      for (const enabled of [true, false]) {
+        const result = await generateCharacterPDF({
+          character: { ...character, powerUsage: { 'power:strength': { enabled } } },
+          powerDefs: POWER_DEFS, modifierDefs: MODIFIER_DEFS, skillDefs: {}, advantageDefs: {}, language,
+        });
+        expect(result.success).toBe(true);
+        const abilities = result.html.split('<div class="abilities-grid">')[1].split('<div class="defenses-grid">')[0];
+        const strength = abilities.split('<div class="ability-box">')[1].split('<div class="ability-box absent">')[0];
+        expect(strength).toContain(`<div class="ability-value">${enabled ? 7 : 2}</div>`);
+        expect(strength).toContain('<span>Base: 2</span>');
+        expect(strength).toContain(`<span>${language === 'en' ? 'Bonus' : 'Bônus'}: ${enabled ? 5 : 0}</span>`);
+        const absent = abilities.split('<div class="ability-box absent">')[1].split('<div class="ability-box">')[0];
+        expect(absent).toContain('<div class="ability-value">—</div>');
+        expect(absent).toContain('<span>Base: —</span>');
+      }
+    }
+    expect(JSON.stringify(character)).toBe(before);
+  });
   it.each([3, -2])('includes zero-rank skills with a manual bonus of %s', async bonus => {
     const character = createDefaultCharacter({ skills: [{ skillId: 'acrobatics', ranks: 0, subtype: null, otherBonus: bonus }] });
     const before = JSON.stringify(character);
