@@ -52,8 +52,22 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
           return (
             <div key={key} className={`ability-card ${isAbsent ? 'absent' : ''}`}>
               <div className="ability-heading">
-                <span className="ability-abbr">{key.toUpperCase()}</span>
-                <span className="ability-name">{t(`abilities.${key}`)}</span>
+                <div className="ability-heading-title">
+                  <span className="ability-abbr">{key.toUpperCase()}</span>
+                  <span className="ability-name">{t(`abilities.${key}`)}</span>
+                </div>
+                <div className="ability-heading-actions">
+                  <TraitModifiersControl key={`${characterId}:${key}`} target={{ kind: 'ability', key }} />
+                  <button
+                    className="ability-toggle"
+                    onClick={() => toggleAbsentAbility(key)}
+                    type="button"
+                    aria-label={`${isAbsent ? t('abilities.restore') : t('abilities.absent')} · ${t(`abilities.${key}`)}`}
+                    title={isAbsent ? t('abilities.restore') : t('abilities.absent')}
+                  >
+                    {isAbsent ? '✚' : '✕'}
+                  </button>
+                </div>
               </div>
               <div className="ability-score-row">
                 <div className="ability-score-field">
@@ -81,18 +95,6 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
                   </div>
                 </div>}
               </div>
-              <div className="ability-adjustments-row">
-                <TraitModifiersControl key={`${characterId}:${key}`} target={{ kind: 'ability', key }} />
-              </div>
-              <button
-                className="ability-toggle"
-                onClick={() => toggleAbsentAbility(key)}
-                type="button"
-                aria-label={`${isAbsent ? t('abilities.restore') : t('abilities.absent')} · ${t(`abilities.${key}`)}`}
-                title={isAbsent ? t('abilities.restore') : t('abilities.absent')}
-              >
-                {isAbsent ? '✚' : '✕'}
-              </button>
             </div>
           );
         })}
