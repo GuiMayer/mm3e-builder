@@ -30,7 +30,7 @@ in package.json may require their matching Vitest packages; they are not CI gate
 | Drafts and editing history | `characterDraftStorage`, `draftAutoLoad`, `draftUpdateBackup`, `characterHistory`, `charactersStore.integration` |
 | Campaign | `campaign`, `campaignActions`, `campaignMigration`, `campaignExports` |
 | Resources | `resourceRules118`, `resourceStorageSafety`, `resourceReview`, `resourceImport`, `resourceActions`, `resourceExports` |
-| Library | `powerLibrary`, `powerLibraryCatalog`, `powerLibraryRules` |
+| Library | `powerLibrary`, `powerLibraryCatalog`, `powerLibraryRules`, `personalPowerModel` |
 | Portraits | `portraitStorage`, `portraitCompatibility`, `portraitJsonExport`, `portraitPdf`, `portraitBundle`, `portraitBundleExport`, `portraitImages` |
 | References and localization | `references119`, `referenceLocalization119`, `measurementPreferences`, `localizationCoverage`, `offenseLocalization` |
 | Themes and dice | `customTheme`, `customThemeStorage`, `colorInput`, `diceRoller`, `diceCheckSources`, `diceWindowPosition` |

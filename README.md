@@ -19,7 +19,7 @@ in [Version history](docs/version-history.md).
 | --- | --- |
 | Character sheet | Abilities, defenses, skills, advantages, complications, targeted attacks and multiple character tabs |
 | Power Builder | Linked and alternate effects, partial modifiers, independent repeated applications and [configurable diagnostics](docs/power-builder-modifier-policy.md) |
-| Power library | [Power Profiles recipes](docs/power-library.md), organized by chapter, with editable ranks and normal engine pricing |
+| Power library | [Power Profiles, local character powers and personal models](docs/power-library.md), with rank policies, normal pricing and model import/export |
 | Resources | Reusable devices, equipment, vehicles and headquarters with [shared links and PP/EP allocation](docs/resources.md) |
 | Campaign | [Fixed starting budget and advancement ledger](docs/campaign-mode.md), with reviewed migration and original-data backups |
 | References | [Searchable rule panels and measurement tables](docs/references.md), metric/imperial preference and rank extrapolation |
@@ -64,6 +64,8 @@ Choose to include images in ZIP when exporting a character or Draft to transport
 local portraits, then use the corresponding import action to restore them.
 A remote portrait URL and optional fit can travel with the character. Export
 backups before clearing site data or moving to another browser.
+Personal power models have separate browser storage and JSON import/export;
+character and Draft exports do not include the model library.
 
 Current character JSON uses schema 2.3.0 and accepts historical 1.0.0, 2.0.0,
 2.1.0 and 2.2.0. Resource library/appendix uses version 2; Draft JSONL uses version 1.
@@ -111,6 +113,8 @@ traduções, e o [guia de testes](src/__tests__/README.md) para validação.
 Fichas e recursos usam localStorage; imagens usam IndexedDB. Um retrato local
 não acompanha JSON ou backup JSONL isolado. A exportação oferece ZIP com imagens
 locais, restaurado pelas ações de importar ficha ou rascunho.
+Modelos pessoais de poderes têm armazenamento e exportação JSON próprios;
+backups de fichas e rascunhos não incluem essa biblioteca.
 O schema de ficha atual é 2.3.0, com leitura
 de 1.0.0/2.0.0/2.1.0/2.2.0; recursos usam versão 2 e rascunhos usam versão 1.
 Exporte backups antes de limpar os dados do site. Migrações e revisões de dados

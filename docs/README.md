@@ -17,7 +17,7 @@
 | Guia | Escopo |
 | --- | --- |
 | [Política de modificadores](power-builder-modifier-policy.md) | Origem, aplicações repetidas, diagnósticos e salvamento |
-| [Biblioteca de poderes](power-library.md) | Seleção, prévia, aplicação e entradas apenas para consulta |
+| [Biblioteca de poderes](power-library.md) | Catálogo, poderes locais, modelos pessoais, políticas de graduação e backup |
 | [Regras da biblioteca](power-library-rules.md) | Autoria de receitas, divergências editoriais e definições legadas |
 | [Recursos](resources.md) | PP/EP, vínculos, contexto do Builder, revisão e recuperação |
 | [Campanha](campaign-mode.md) | Base fixa, histórico, migração e backups |

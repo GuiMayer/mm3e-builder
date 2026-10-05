@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Personal power library
+- Add a Power library view between Resources and References with a read-only Power Profiles catalog, live local character powers and editable personal models.
+- Create models through the existing Builder; configure fixed/scalable component ranks and independent modifier, partial-rank and sense purchase scaling. Copy compositions with fresh identities and calculate their costs through the canonical engine using the destination's Strength.
+- Edit character powers through identity and source snapshot guards; preserve unrelated sheet changes and never link applied copies back to their models.
+- Store models under a separate versioned browser key with protected writes and cross-window refresh. Import/export model JSON with keep, replace or independent-copy conflict handling. Character schema and existing JSON/JSONL/ZIP formats remain unchanged.
+- Reuse personal models in the Builder library picker, retain full-array/global-configuration target restrictions and support mobile list/detail navigation.
+
 ### Added — Favorite references
 - Add independent favorite stars to every reference section header and show Favorites as the first category only while at least one section is starred.
 - Persist stable section IDs in a dedicated browser preference, preserving selections across characters, languages and reloads; fall back to session memory when storage is blocked.

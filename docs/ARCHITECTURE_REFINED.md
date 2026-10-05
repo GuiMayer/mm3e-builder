@@ -140,6 +140,22 @@ in the character. Preview and saved costs use the same math engine.
 
 Fixed purchases retain their functional ranks, while scalable purchases start
 at rank 1. Unsupported character-level changes and durations are reference-only.
+
+The standalone library view indexes current character tabs by tab/power identity.
+Edits compare the original power snapshot at save time, preserving unrelated
+character changes and rejecting stale targets. Personal models use a separate
+`mm3e-personal-power-library` version-1 document with component policies keyed by
+component identity and modifier policies keyed by application identity. Senses
+policies refer to purchase positions and are cleared when purchases change.
+Instantiation generates new identities and removes authoring policies before
+the ordinary Builder/character pipeline. Template authoring uses an empty
+character context and never writes to character stores.
+
+Model storage validates the complete document and compares its previous source
+before writing; memory is updated only after storage succeeds. Storage events
+refresh readers while editor snapshots protect pending edits. Import/export
+uses model JSON independently of character/Draft formats and validates the
+entire import before merging. No character migration is required.
 See [Power library](power-library.md) and [recipe rules](power-library-rules.md).
 
 ## Persisted character pipeline
