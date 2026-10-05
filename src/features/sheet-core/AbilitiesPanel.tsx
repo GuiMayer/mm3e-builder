@@ -38,7 +38,16 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
       <div className="abilities-grid">
         {ABILITY_KEYS.map((key) => {
           const isAbsent = absentAbilities.includes(key);
-          const checkBonus = effective.abilities[key] + circumstanceBonus(character, { kind: 'ability', key });
+          const enhancementBonus = effective.abilities[key] - abilities[key];
+          const circumstances = circumstanceBonus(character, { kind: 'ability', key });
+          const checkBonus = effective.abilities[key] + circumstances;
+          const signed = (value: number) => `${value >= 0 ? '+' : '−'}${Math.abs(value)}`;
+          const adjustments = [enhancementBonus, circumstances].filter(value => value !== 0);
+          const breakdown = [
+            `${t('traits.natural')}: ${abilities[key]}`,
+            `${t('traits.enhancements')}: ${signed(enhancementBonus)}`,
+            `${t('traits.circumstances')}: ${signed(circumstances)}`,
+          ];
           return (
             <div key={key} className={`ability-card ${isAbsent ? 'absent' : ''}`}>
               <div className="ability-heading">
@@ -60,13 +69,15 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
                 {!isAbsent && <div className="ability-check-field">
                   <span className="ability-field-label">{t('traits.check')}</span>
                   <div className="ability-check-actions">
-                    <strong className="ability-check-value">{checkBonus >= 0 ? '+' : ''}{checkBonus}</strong>
-                    <RollButton bonus={checkBonus} label={t(`abilities.${key}`)} section={t('abilities.title')} />
+                    <div className="ability-check-expression" title={breakdown.join(' · ')} aria-label={`${breakdown.join(' · ')} = ${signed(checkBonus)}`}>
+                      {adjustments.length > 0 && <span className="ability-check-adjustments" aria-hidden="true">{adjustments.map(signed).join(' ')} =</span>}
+                      <strong className="ability-check-value" aria-hidden="true">{signed(checkBonus)}</strong>
+                    </div>
+                    <RollButton bonus={checkBonus} label={t(`abilities.${key}`)} section={t('abilities.title')} breakdown={breakdown} />
                   </div>
                 </div>}
               </div>
               <div className="ability-adjustments-row">
-                {!isAbsent && effective.abilities[key] !== abilities[key] && <div className="ability-effective"><span>{t('traits.effective')}</span><strong>{effective.abilities[key]}</strong></div>}
                 <TraitModifiersControl key={`${characterId}:${key}`} target={{ kind: 'ability', key }} />
               </div>
               <button

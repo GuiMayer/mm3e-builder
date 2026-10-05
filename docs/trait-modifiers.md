@@ -5,8 +5,11 @@
 Atributos, defesas e perícias oferecem um botão **+** que abre o modal
 **Ajustes**. O contador indica as fontes e circunstâncias associadas, inclusive
 as fontes desligadas e os alternativos fora de uso. Os cartões de atributos
-mostram os valores natural, efetivo (quando diferente) e de teste, sem listas
-permanentes de ajustes. No modal, **Adicionar modificador** abre os campos
+mostram o valor natural e a composição do teste: com natural 2 e aprimoramento
+5, o teste exibe `+5 = +7`; com circunstância +2, exibe `+5 +2 = +9`. A descrição
+do teste identifica cada parcela e acompanha a rolagem. Não há indicador
+efetivo separado nem listas permanentes de ajustes; a altura do cartão é
+independente dos aprimoramentos ativos. No modal, **Adicionar modificador** abre os campos
 opcionais. Um ajuste de circunstância registra valor,
 origem/condição, âmbito e estado ativo; pode ser editado, removido ou desligado.
 ±2 e ±5 são orientações do Handbook para situações menores e maiores, sem
