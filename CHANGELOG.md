@@ -10,9 +10,16 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+## [1.21.1] - 2026-10-05
+
 ### Added — Dice history preferences
 - Add an opt-in footer switch to retain roll history between sessions in this browser. Turning it off removes saved results while keeping the current session; clearing also clears persisted results.
 - Remember history capacity independently of retention. Restore validated result snapshots without rerolling or showing stale notices; keep dice preferences outside character data and exports.
+
+### Changed — Mobile skill and advantage cards
+- Arrange skill names, adjustment and removal actions in the header; align the calculation, total and die below, following the defense layout. Use compact ability abbreviations and allow narrow-screen reflow without cutting controls.
+- Group advantage names and removal actions, with ranks, rank limits and roll shortcuts aligned below when ranked. Keep unranked advantages in one row where possible, omit empty dice slots and open descriptions from the name instead of a duplicate mobile info button.
+- Preserve desktop layouts, touch targets, existing calculations and character data. Verify short and long names, ranked and passive advantages, and mobile/tablet/desktop widths.
 
 ## [1.21.0] - 2026-10-05
 

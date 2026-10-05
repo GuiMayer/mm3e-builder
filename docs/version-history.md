@@ -65,6 +65,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.20.0 | 2026-10-03 | `v1.19.0..v1.20.0` | 47 | Refinamentos de referências, retratos, Power Builder e biblioteca Power Profiles |
 | v1.20.1 | 2026-10-05 | `v1.20.0..v1.20.1` | 43 | Favoritos, ajustes de traits, diagnósticos, compatibilidade e retratos portáveis |
 | v1.21.0 | 2026-10-05 | `v1.20.1..v1.21.0` | 12 | Biblioteca pessoal, seleção de destino, retrato 3:4 e consolidação das versões |
+| v1.21.1 | 2026-10-05 | `v1.21.0..v1.21.1` | 4 | Preferências de rolagens e cards compactos de perícias/vantagens no mobile |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -106,6 +107,9 @@ alteram a versão declarada nos snapshots antigos.
 - v1.21.0 mantém o schema 2.3.0 e os formatos de ficha, rascunho e ZIP. Modelos
   pessoais usam armazenamento e documento próprios, na versão 1; poderes
   aplicados são cópias independentes. O retrato 3:4 altera apenas a apresentação.
+- v1.21.1 mantém o schema 2.3.0 e os formatos de exportação. Limite de rolagens
+  e persistência opcional do histórico usam preferências locais separadas;
+  os ajustes de perícias e vantagens afetam somente o layout mobile.
 
 Os contratos atuais de migração e persistência estão nos guias de
 [campanha](campaign-mode.md), [recursos](resources.md),
@@ -114,15 +118,16 @@ Versão do aplicativo e versão do schema são independentes.
 
 ## Publicação
 
-As tags até v1.19.0 estão publicadas no remoto. As tags anotadas v1.20.0,
-v1.20.1 e v1.21.0 foram organizadas localmente; sua publicação e a atualização
-dos metadados para v1.21.0 aguardam push.
+As tags até v1.21.0 foram publicadas no remoto. O deploy da v1.21.0 no commit
+`92e47a9` foi concluído com sucesso na
+[execução 37353537905](https://github.com/GuiMayer/mm3e-builder/actions/runs/37353537905),
+incluindo favoritos, biblioteca pessoal e retrato 3:4 com os metadados alinhados.
 
-O deploy de GitHub Pages no commit `af6dc6b` foi concluído com sucesso na
-[execução 37352277818](https://github.com/GuiMayer/mm3e-builder/actions/runs/37352277818),
-incluindo favoritos, biblioteca pessoal e retrato 3:4. Esse build ainda declara
-1.20.0, pois precede a consolidação dos metadados de versão. Criar tags não altera
-fichas, schemas, migrações ou commits existentes, nem cria uma GitHub Release.
+Pushes para `main` disparam o workflow de publicação. O estado de cada deploy
+deve ser conferido nas [execuções do GitHub Actions](https://github.com/GuiMayer/mm3e-builder/actions/workflows/deploy.yml).
+Uma tag identifica um pacote de commits; sua existência não comprova deploy
+e não cria uma GitHub Release. Criar tags não altera fichas, schemas, migrações
+ou commits existentes.
 
 Para conferir um pacote:
 
