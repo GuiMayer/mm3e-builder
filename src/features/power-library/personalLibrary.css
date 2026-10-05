@@ -1,17 +1,12 @@
 .personal-library { max-width: 1800px; margin: 0 auto; }
 .personal-library > h1 { margin: 0 0 16px; font-size: 1.3rem; }
-.personal-library-tabs, .personal-toolbar, .personal-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.personal-library-tabs, .personal-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .personal-library-tabs { padding: 10px 16px; border-bottom: 1px solid var(--c-border); }
-.personal-library-tabs button, .personal-toolbar button, .personal-actions button { border: 1px solid var(--c-border); background: var(--c-surface-elevated); color: var(--c-text); border-radius: var(--r-md); padding: 10px 14px; cursor: pointer; }
+.personal-library-tabs button, .personal-actions button { border: 1px solid var(--c-border); background: var(--c-surface-elevated); color: var(--c-text); border-radius: var(--r-md); padding: 10px 14px; cursor: pointer; }
 .personal-library-tabs button[aria-pressed="true"] { color: var(--c-primary); border-color: var(--c-primary); background: var(--c-primary-muted); }
 .personal-library button:disabled { opacity: .5; cursor: default; }
-.personal-toolbar { margin: 16px 0; }
-.personal-toolbar select { max-width: 280px; }
 .personal-picker { display: flex; flex-direction: column; flex: 1; min-height: 0; padding: 16px; gap: 12px; }
-.personal-library .personal-picker { padding: 0; }
 .personal-picker-workspace { display: grid; grid-template-columns: minmax(240px, .8fr) minmax(0, 1.2fr); min-height: 0; flex: 1; }
-.personal-library .personal-picker-workspace { height: min(780px, 78dvh); border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface); }
-.personal-library .personal-picker-workspace > * { min-height: 0; }
 .personal-rank-inputs { display: grid; gap: 8px; margin: 16px 0; }
 .personal-rank-inputs label { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: .85rem; }
 .personal-rank-inputs .number-input { max-width: 160px; }
@@ -23,6 +18,16 @@
 .personal-alternate > summary { cursor: pointer; padding: 8px 0; color: var(--c-primary); }
 .personal-actions { margin: 16px 0; }
 .power-library-embedded .power-library-dialog { width: 100%; height: min(850px, 82dvh); }
+.power-library-embedded .power-library-dialog > header { flex-wrap:wrap; }
+.power-library-embedded .power-library-dialog > header > div:first-child { flex:1 1 280px; min-width:0; }
+.power-library-embedded .power-library-dialog > header,.power-library-embedded .power-library-filters { flex-shrink:0; }
+.personal-browser-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.power-library-dialog > header .personal-browser-actions button { border:1px solid var(--c-border); background:var(--c-surface-elevated); color:var(--c-text); border-radius:var(--r-md); padding:10px 14px; cursor:pointer; }
+.personal-browser-actions button:hover:not(:disabled) { border-color:var(--c-primary); }
+.power-library-profiles button { overflow-wrap:anywhere; }
+.personal-library .power-library-results .power-library-result > span { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.personal-library .power-library-component-header .personal-reference-link,.personal-library .personal-modifier-link { color:var(--c-text); }
+.personal-library .personal-reference-link:hover,.personal-library .personal-modifier-link:hover { color:var(--c-primary); }
 .personal-editor { width: min(920px, 100%); max-height: 92dvh; overflow: auto; padding: 20px; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-lg); }
 .personal-editor > header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .personal-editor h2 { font-size: 1.15rem; }
@@ -49,10 +54,7 @@
   .personal-picker-workspace .power-library-preview { display: none; }
   .personal-picker--detail .personal-picker-workspace .power-library-results { display: none; }
   .personal-picker--detail .personal-picker-workspace .power-library-preview { display: block; }
-  .personal-library .personal-picker-workspace { height: 72dvh; }
-  .personal-toolbar select { max-width: none; width: 100%; }
-  .personal-toolbar .power-library-search { flex-basis: 100%; }
-  .personal-library--detail .personal-toolbar--search, .personal-library--detail .personal-library-backup { display: none; }
+  .personal-browser-actions button { min-height:44px; }
   .personal-editor { max-height: 100dvh; border-radius: 0; padding: 14px; }
   .power-library-embedded .power-library-dialog { height: 76dvh; border-radius: var(--r-md); }
 }

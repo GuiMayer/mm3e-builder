@@ -16,10 +16,11 @@ import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
 import { searchPersonalModels } from './personalPowerModel';
 import { usePersonalLibrarySync } from './usePersonalLibrarySync';
 
-export function PersonalModelDetail({ model, strength, costUnit = 'PP', strengthForPower, onUse, disabled, compatible, resultCost }: {
+export function PersonalModelDetail({ model, strength, costUnit = 'PP', strengthForPower, onUse, disabled, compatible, resultCost, footer = false }: {
   model: PersonalPowerModel; strength: number; costUnit?: 'PP' | 'EP'; strengthForPower?: (power: ICharacterPower) => number;
   onUse: (power: ICharacterPower) => void; disabled?: boolean; compatible?: (power: ICharacterPower) => boolean;
   resultCost?: (power: ICharacterPower) => number;
+  footer?: boolean;
 }) {
   const { t, i18n } = useTranslation();
   const [ranks, setRanks] = useState<Record<string, number>>({});
@@ -30,15 +31,17 @@ export function PersonalModelDetail({ model, strength, costUnit = 'PP', strength
   const power = preview.power;
   const issues = power ? getBlockingPowerSaveIssues(power, DEFAULT_VALIDATION_RULES, { powerDefs: POWER_DEFS, modifierDefs: MODIFIER_DEFS }) : [];
   const allowed = power && (!compatible || compatible(power));
+  const pricing = power && footer ? calculatePowerPricing(power, POWER_DEFS, MODIFIER_DEFS, strengthForPower?.(power) ?? strength) : null;
+  const useButton = <button type="button" className="power-library-apply" disabled={disabled || !allowed} onClick={() => { if (power) onUse(power); }}>{t(footer ? 'personalLibrary.useCharacter' : 'personalLibrary.use')}</button>;
   return <>
     <h3>{model.name}</h3>{model.description && <p className="personal-notes">{model.description}</p>}
     <ModelRankInputs model={model} ranks={ranks} onChange={setRanks}/>
     {preview.error && <p role="alert">{t(preview.error)}</p>}
-    {power && <PowerCompositionPreview power={power} strength={strengthForPower?.(power) ?? strength} costUnit={costUnit}/>}
+    {power && <PowerCompositionPreview power={power} strength={strengthForPower?.(power) ?? strength} costUnit={costUnit} showCost={!footer}/>}
     {!allowed && power && <p role="status">{t('powerLibrary.incompatible')}</p>}
     {!!issues.length && <p role="status">{t('personalLibrary.completeInBuilder')} {formatDiagnostic(issues[0], t, i18n.language)}</p>}
     {allowed && power && resultCost && <p className="power-library-impact">{t('powerLibrary.resultTotal', { cost: resultCost(power), unit: costUnit })}</p>}
-    <button type="button" className="power-library-apply" disabled={disabled || !allowed} onClick={() => { if (power) onUse(power); }}>{t('personalLibrary.use')}</button>
+    {footer ? <footer><strong>{pricing ? `${costUnit === 'PP' ? pricing.total : pricing.equipmentTotal} ${costUnit}` : '—'}</strong>{useButton}</footer> : useButton}
   </>;
 }
 

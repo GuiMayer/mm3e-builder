@@ -26,11 +26,11 @@ export function ModelRankInputs({ model, ranks, onChange }: { model: PersonalPow
   })}</div>;
 }
 
-export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP' }: { power: ICharacterPower; strength?: number; costUnit?: 'PP' | 'EP' }) {
+export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP', showCost = true }: { power: ICharacterPower; strength?: number; costUnit?: 'PP' | 'EP'; showCost?: boolean }) {
   const { t, i18n } = useTranslation();
   const skills = useLocalizedData(SKILL_DEFS);
   const [reference, setReference] = useState<PowerReferenceTarget | null>(null);
-  const pricing = calculatePowerPricing(power, POWER_DEFS, MODIFIER_DEFS, strength);
+  const pricing = showCost ? calculatePowerPricing(power, POWER_DEFS, MODIFIER_DEFS, strength) : null;
   const traitLabel = (target: ITraitTarget) => {
     if (target.kind === 'ability') return t(`abilities.${target.key}`);
     if (target.kind === 'defense') return t(`defenses.${target.key}`);
@@ -39,7 +39,7 @@ export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP' }
   };
   const group = (components: ICharacterPower['components']) => buildPowerReferences(components, POWER_DEFS, MODIFIER_DEFS, i18n.language).map(item =>
     <article key={item.component.id} className="power-library-component">
-      <button className="personal-reference-link" onClick={() => setReference({ kind: 'effect', reference: item })}>{item.definition?.name ?? item.component.effectId} · {item.component.ranks} {t('common.ranks')}</button>
+      <div className="power-library-component-header"><button className="personal-reference-link" onClick={() => setReference({ kind: 'effect', reference: item })}><strong>{item.definition?.name ?? item.component.effectId}</strong></button><span>{item.component.ranks} {t('common.ranks')}</span></div>
       <div className="power-library-modifiers">{item.modifiers.map((modifier, index) => {
         const affected = getAffectedRanks(modifier.applied);
         const subtype = modifier.definition?.subtypes?.find(option => option.id === modifier.applied.options?.subtypeId);
@@ -61,7 +61,7 @@ export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP' }
       {!!item.component.senseTraits?.length && <ul className="power-library-purchases">{item.component.senseTraits.map((trait, index) => <li key={index}>{t(`powerLibrary.sense.${trait.id}`, { defaultValue: SENSE_TRAITS.find(sense => sense.id === trait.id)?.label ?? trait.id })} · {trait.ranks}{trait.senseType ? ` · ${trait.senseType}` : ''}{trait.detail ? ` · ${trait.detail}` : ''}</li>)}</ul>}
     </article>);
   return <div className="personal-composition">
-    <div className="personal-cost"><strong>{costUnit === 'PP' ? pricing.total : pricing.equipmentTotal} {costUnit}</strong><button className="personal-reference-link" onClick={() => setReference({ kind: 'power', power })}>{t('personalLibrary.fullReference')}</button></div>
+    <div className="personal-cost">{pricing && <strong>{costUnit === 'PP' ? pricing.total : pricing.equipmentTotal} {costUnit}</strong>}<button className="personal-reference-link" onClick={() => setReference({ kind: 'power', power })}>{t('personalLibrary.fullReference')}</button></div>
     {!!power.descriptors?.length && <p>{power.descriptors.join(' · ')}</p>}
     {power.notes && <p className="personal-notes">{power.notes}</p>}
     {power.activation && <p>{t('builder.activation')}: {t(`rulesInfo.action.${power.activation}`)}</p>}

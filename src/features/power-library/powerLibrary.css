@@ -12,6 +12,7 @@
 .power-library-search:focus-within { border-color: var(--c-primary); }
 .power-library-filters > select { display: none; }
 .power-library-workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 170px minmax(260px, .9fr) minmax(0, 1.3fr); }
+.power-library-workspace--no-sidebar { grid-template-columns: minmax(260px, .9fr) minmax(0, 1.3fr); }
 .power-library-profiles, .power-library-results, .power-library-preview { overflow-y: auto; min-width: 0; padding: 16px; overscroll-behavior: contain; }
 .power-library-profiles, .power-library-results { border-right: 1px solid var(--c-border); }
 .power-library-profiles { display: flex; flex-direction: column; gap: 4px; }

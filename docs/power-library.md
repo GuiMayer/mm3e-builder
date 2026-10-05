@@ -5,6 +5,10 @@ seções: Power Profiles, Poderes das fichas e Modelos. A navegação usa lista 
 detalhes lado a lado no desktop; no mobile, selecionar uma entrada abre seus
 detalhes e **Voltar aos resultados** recupera a lista. Busca e nomes são ordenados
 conforme o idioma; a busca ignora acentos.
+As três seções compartilham cabeçalho, busca, cartões, prévia e rodapé de ação.
+No desktop, Power Profiles e Poderes das fichas têm filtros na lateral; em telas
+menores, esses filtros ficam em um seletor acima da lista. Modelos utiliza duas
+colunas, sem reservar espaço para filtros que não possui.
 
 ## Power Profiles
 

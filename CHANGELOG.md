@@ -16,6 +16,9 @@ while fixes and small convenience improvements use patch versions.
 ### Fixed — Resource editor sizing
 - Keep resource creation and trait editing in a centered, content-sized dialog with responsive margins and internal scrolling, instead of filling the entire page.
 
+### Changed — Consistent power library views
+- Use the Power Profiles frame, search bar, result cards, preview and action footer across all three library tabs. Character filters use the same sidebar on desktop and dropdown on smaller screens; models keep their creation/import/export actions and use the available space without an empty sidebar.
+
 ### Changed — Mobile advantage rank placement
 - Place rank controls beside advantage names, aligning ranked cards with ordinary cards when space permits. Keep touch controls accessible and wrap actions on narrower phones; desktop layout and costs are unchanged.
 
