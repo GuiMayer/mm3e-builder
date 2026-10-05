@@ -204,6 +204,7 @@ export function OffensePanel() {
         .targeted-profile-fact-label { color: var(--c-text-muted); display: block; font-size: .62rem; font-weight: 700; letter-spacing: .05em; margin-bottom: 1px; text-transform: uppercase; }
         .targeted-profile-tags { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; }
         .targeted-profile-actions { grid-column: -2 / -1; grid-row: 1; }
+        .targeted-profile-edit-actions { display: contents; }
         .targeted-tag { border-radius: var(--r-full); color: var(--c-text-secondary); background: var(--c-surface-elevated); border: 1px solid var(--c-border); font-size: .65rem; padding: 1px 6px; white-space: nowrap; }
         .targeted-tag--attack { color: var(--c-primary); border-color: var(--c-primary-muted); }
         .targeted-tag--resistance { color: var(--c-warning); }
@@ -230,32 +231,35 @@ export function OffensePanel() {
         .targeted-icon-btn--confirm:hover { color: var(--c-success); }
         .targeted-icon-btn--remove:hover { color: var(--c-error); }
         @media (max-width: 768px) {
-          .targeted-source-header { padding: var(--s-sm) 8px; }
+          .targeted-source-header { padding: var(--s-sm) 12px; }
           .targeted-source-header h3 { min-width: 0; overflow-wrap: anywhere; }
           .targeted-source-type, .targeted-source-count { flex-shrink: 0; }
-          .targeted-profile { align-items: center; grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--s-xs); padding: var(--s-xs) 8px; }
+          .targeted-profile { align-items: start; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px 8px; padding: 12px; }
           .targeted-profile-main { grid-column: 1 / -1; grid-row: 1; }
           .targeted-profile-name { white-space: normal; overflow-wrap: anywhere; }
           .targeted-profile-component { overflow-wrap: anywhere; }
-          .targeted-profile-details { display: flex; flex-direction: column; gap: 3px; grid-column: 1; grid-row: 2; min-width: 0; }
-          .targeted-profile-fact { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 6px; overflow-wrap: anywhere; line-height: 1.4; }
-          .targeted-profile-fact-label { display: inline; margin: 0; }
-          .targeted-profile-fact--roll { align-items: center; flex-direction: column; grid-column: 2; grid-row: 2; justify-self: end; }
-          .targeted-profile-fact--roll strong { font-size: 1rem; }
+          .targeted-profile-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; grid-column: 1 / -1; grid-row: 2; min-width: 0; }
+          .targeted-profile-details > :nth-child(3) { grid-column: 1 / -1; }
+          .targeted-profile-fact { overflow-wrap: anywhere; line-height: 1.45; font-size: .84rem; }
+          .targeted-profile-fact-label { margin-bottom: 3px; font-size: .64rem; }
+          .targeted-profile-fact--roll { display: flex; align-items: center; align-self: end; height: 44px; grid-column: 2; grid-row: 3; justify-self: end; }
+          .targeted-profile-fact--roll > .targeted-profile-fact-label { display: none; }
+          .targeted-profile-fact--roll strong { font-size: 1.05rem; }
           .targeted-profile-actions { display: contents; }
-          .targeted-profile-actions > .sheet-roll-slot { grid-column: 3; grid-row: 2; }
+          .targeted-profile-actions > .sheet-roll-slot { grid-column: 3; grid-row: 3; align-self: end; justify-self: end; }
           .targeted-profile-actions > .sheet-roll-slot:empty { display: none; }
-          .targeted-profile-tags { grid-column: 1 / -1; grid-row: 3; }
+          .targeted-profile-tags { grid-column: 1; grid-row: 3; align-self: end; padding-bottom: 3px; }
           .targeted-tag { white-space: normal; overflow-wrap: anywhere; max-width: 100%; }
-          .targeted-profile--manual .targeted-profile-main { grid-column: 1; }
-          .targeted-profile-actions > .targeted-icon-btn { grid-column: 2; grid-row: 1; }
-          .targeted-profile-actions > .targeted-icon-btn--remove { grid-column: 3; }
+          .targeted-profile-edit-actions { display: flex; gap: 4px; grid-column: 1; grid-row: 4; align-self: end; }
+          .targeted-profile--manual .targeted-profile-fact--roll, .targeted-profile--manual .sheet-roll-slot { grid-row: 4; }
           .targeted-profile-fact--notes { grid-column: 1 / -1; grid-row: 3; }
           .targeted-profile-fact--empty-notes { display: none; }
-          .targeted-profile--no-roll .targeted-profile-details { grid-column: 1 / -1; }
-          .targeted-profile--no-roll .targeted-profile-fact--roll { align-items: baseline; flex-direction: row; grid-column: 1 / -1; grid-row: 3; justify-self: start; }
-          .targeted-profile--no-roll .targeted-profile-fact--roll strong { font-size: .77rem; color: var(--c-text-secondary); font-family: var(--f-body); font-weight: 400; }
-          .targeted-profile--no-roll .targeted-profile-tags, .targeted-profile--no-roll .targeted-profile-fact--notes { grid-row: 4; }
+          .targeted-profile--no-roll .targeted-profile-fact--roll { align-items: baseline; gap: 6px; height: auto; grid-column: 1 / -1; grid-row: 3; justify-self: start; }
+          .targeted-profile--no-roll .targeted-profile-fact--roll > .targeted-profile-fact-label { display: inline; margin: 0; }
+          .targeted-profile--no-roll .targeted-profile-fact--roll strong { font-size: .84rem; color: var(--c-text-secondary); font-family: var(--f-body); font-weight: 400; }
+          .targeted-profile--no-roll .targeted-profile-tags { grid-column: 1 / -1; grid-row: 4; }
+          .targeted-profile--manual.targeted-profile--no-roll .targeted-profile-fact--roll { grid-row: 4; }
+          .targeted-profile--no-roll .targeted-profile-edit-actions { grid-row: 5; }
           .targeted-manual-editor { --manual-control-height: var(--touch-target-min); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: var(--s-md); }
           .targeted-manual-editor > :nth-child(1), .targeted-manual-editor > :nth-child(4), .targeted-manual-editor > :nth-child(5), .targeted-editor-actions { grid-column: 1 / -1; }
           .targeted-input, .targeted-select, .targeted-bonus-input { min-height: var(--touch-target-min); }
@@ -323,8 +327,10 @@ function ManualProfile({ profile, row, editing, draft, onDraftChange, onEdit, on
       </div>
       <div className={`targeted-profile-fact targeted-profile-fact--notes ${!row.notes ? 'targeted-profile-fact--empty-notes' : ''}`}><span className="targeted-profile-fact-label">{t('offense.notes')}</span>{row.notes || '—'}</div>
       <div className="targeted-profile-actions sheet-item-actions">
-        <button className="targeted-icon-btn" onClick={onEdit} title={t('offense.custom.edit')}><Pencil size={13} /></button>
-        <button className="targeted-icon-btn targeted-icon-btn--remove" onClick={onRemove} title={t('offense.custom.remove')}><Trash2 size={13} /></button>
+        <div className="targeted-profile-edit-actions">
+          <button className="targeted-icon-btn" onClick={onEdit} title={t('offense.custom.edit')}><Pencil size={13} /></button>
+          <button className="targeted-icon-btn targeted-icon-btn--remove" onClick={onRemove} title={t('offense.custom.remove')}><Trash2 size={13} /></button>
+        </div>
         <span className="sheet-roll-slot">{profile.requiresAttackCheck && profile.bonusValue !== null && <RollButton bonus={profile.bonusValue} label={profile.name} section={t('targeted.title')} detail={t('targeted.source.manual')} />}</span>
       </div>
     </article>
