@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added — Personal power library
+- Choose a destination through a popup when using a recipe/model, listing current characters and offering a new character; keep destination selection out of the main library view and show contextual costs in the popup.
 - Add a Power library view between Resources and References with a read-only Power Profiles catalog, live local character powers and editable personal models.
 - Create models through the existing Builder; configure fixed/scalable component ranks and independent modifier, partial-rank and sense purchase scaling. Copy compositions with fresh identities and calculate their costs through the canonical engine using the destination's Strength.
 - Edit character powers through identity and source snapshot guards; preserve unrelated sheet changes and never link applied copies back to their models.

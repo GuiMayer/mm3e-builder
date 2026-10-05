@@ -9,9 +9,11 @@ conforme o idioma; a busca ignora acentos.
 ## Power Profiles
 
 O catálogo do livro é somente para consulta. Graduações e escolhas necessárias
-alteram uma prévia, sem editar receitas. **Usar na ficha** abre uma cópia no Power
-Builder para o personagem de destino; é necessário salvar no Builder para
-adicioná-la. Entradas apenas para referência continuam bloqueadas.
+alteram uma prévia, sem editar receitas. **Usar na ficha** abre um popup com as
+fichas atuais e a opção **Novo Personagem**. Escolher uma ficha abre uma cópia
+no Power Builder; criar uma nova abre o Builder para essa ficha. É necessário
+salvar no Builder para adicionar o poder. Cancelar o popup preserva as fichas e
+a prévia. Entradas apenas para referência continuam bloqueadas.
 
 ## Poderes das fichas
 
@@ -46,12 +48,16 @@ Cada componente tem uma política independente:
 - Sentidos estruturados somam suas compras. Alterar essas compras no editor
   limpa seu escalonamento anterior; trocar um efeito reinicia sua política.
 
-**Usar modelo** cria novas identidades para o poder, componentes, alternativos e
+**Usar modelo** abre o mesmo popup de destino, sem exigir uma ficha aberta antes.
+Não há seletor de personagem na tela principal da biblioteca. A aplicação cria
+novas identidades para o poder, componentes, alternativos e
 aplicações de modificadores. A ficha recebe apenas a composição, sem políticas
 de autoria ou vínculo com o modelo. Editar, duplicar ou excluir um modelo não
 altera poderes já usados. PP/EP usam o motor normal; poderes baseados em Força
 consideram o personagem de destino e seus aprimoramentos comprados. Nenhum preço
-manual é armazenado. Campos obrigatórios são revisados no Builder antes de salvar.
+manual é armazenado. A prévia principal usa um contexto neutro; o popup mostra
+o custo para cada personagem, incluindo sua Força, e o Builder recalcula o
+destino escolhido. Campos obrigatórios são revisados no Builder antes de salvar.
 
 Os modelos também aparecem no ícone de biblioteca do Power Builder. Arrays e
 configurações globais exigem o destino principal, seguindo a mesma regra do

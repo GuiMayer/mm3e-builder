@@ -36,6 +36,12 @@
 .personal-policy-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0; }
 .personal-policy-row label { flex: 1; display: flex; align-items: center; gap: 8px; font-size: .85rem; }
 .personal-editor footer { display: flex; justify-content: flex-end; gap: 8px; padding-top: 16px; }
+.power-destination { width: min(360px, calc(100vw - 64px)); }
+.power-destination-power { margin-top: 0; overflow-wrap: anywhere; }
+.power-destination-list { max-height: 40dvh; overflow-y: auto; margin: 16px 0; }
+.power-destination-list strong { display: flex; align-items: center; gap: 8px; }
+.power-destination-list svg { flex-shrink: 0; }
+.power-destination-create { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
 @media (max-width: 700px) {
   .personal-library-tabs { padding: 8px 0; gap: 5px; }
   .personal-library-tabs button { padding: 10px 8px; flex: 1; font-size: .8rem; }

@@ -1,7 +1,13 @@
 import type { ICharacter, ICharacterPower, IResource } from '../../entities/types';
+import { createDefaultCharacter } from '../../entities/characterDefaults';
 import { getPricingStrength } from '../../shared/lib/pricingStrength';
 import { applyPowerTemplate, canApplyPowerTemplate } from './powerTemplateApplication';
 import type { PowerLibraryTarget } from './types';
+
+/** Standalone recipes are neutral until a destination is chosen. */
+export function getLibraryDestinationStrength(power: ICharacterPower, character: ICharacter = createDefaultCharacter(), resources: readonly IResource[] = []): number {
+  return getPricingStrength({ ...character, powers: [...character.powers, power] }, resources);
+}
 
 /** Price against the same candidate composition that the Builder will save. */
 export function getLibraryRecipeStrength(character: ICharacter, power: ICharacterPower, recipe: ICharacterPower, target: PowerLibraryTarget, resources: readonly IResource[] = []): number {

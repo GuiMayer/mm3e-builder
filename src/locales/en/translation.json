@@ -1,4 +1,8 @@
 {
+  "personalLibrary.destinationHelp": "Choose a current character or create a new one. The power opens in Power Builder for review before saving.",
+  "personalLibrary.currentCharacters": "Current characters",
+  "personalLibrary.noCurrentCharacters": "No characters are open. Create one to use this power.",
+  "personalLibrary.destinationMissing": "This character is no longer open. Choose another one or create a new character.",
   "personalLibrary.title": "Power library",
   "personalLibrary.profiles": "Power Profiles",
   "personalLibrary.characters": "Character powers",

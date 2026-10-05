@@ -16,7 +16,9 @@ import { PersonalModelEditor } from './PersonalModelEditor';
 import { usePersonalLibraryStore } from './personalLibraryStore';
 import { createPersonalModel, duplicatePersonalModel, prepareModelImport, parsePersonalLibrary, serializePersonalLibrary, searchPersonalModels, updateModelComposition, PERSONAL_LIBRARY_MAX_BYTES, type PersonalPowerModel } from './personalPowerModel';
 import { usePersonalLibrarySync } from './usePersonalLibrarySync';
-import type { LibraryPowerEdit } from './libraryCharacterEditing';
+import { resolveLibraryPowerDestination, type LibraryPowerEdit } from './libraryCharacterEditing';
+import { getLibraryDestinationStrength } from './libraryPricing';
+import { PowerDestinationDialog } from './PowerDestinationDialog';
 import './powerLibrary.css';
 import './personalLibrary.css';
 
@@ -25,11 +27,11 @@ const PowerBuilderOverlay = lazy(() => import('../power-builder/PowerBuilderOver
 export function PowerLibraryView({ onOpenPower }: { onOpenPower: (edit: LibraryPowerEdit) => void }) {
   const { t, i18n } = useTranslation(); const dialog = useAppDialog();
   const tabs = useCharactersStore(state => state.tabs);
-  const activeId = useCharactersStore(state => state.activeCharacterId);
   const resources = useResourcesStore(state => state.resources);
   const library = usePersonalLibraryStore();
   const [section, setSection] = useState<'profiles' | 'characters' | 'models'>('profiles');
-  const [targetId, setTargetId] = useState(activeId ?? '');
+  const [pendingPower, setPendingPower] = useState<ICharacterPower | null>(null);
+  const [destinationError, setDestinationError] = useState<string | null>(null);
   const [query, setQuery] = useState(''); const search = useDeferredValue(query);
   const [characterFilter, setCharacterFilter] = useState('');
   const [selectedPower, setSelectedPower] = useState('');
@@ -40,11 +42,15 @@ export function PowerLibraryView({ onOpenPower }: { onOpenPower: (edit: LibraryP
   const [error, setError] = useState<string | null>(null);
   const importRef = useRef<HTMLInputElement>(null);
   usePersonalLibrarySync();
-  const target = tabs.find(tab => tab.id === targetId);
-  const strengthForPower = (power: ICharacterPower) => target ? getPricingStrength({ ...target.character, powers: [...target.character.powers, power] }, resources) : 0;
+  const strengthForPower = (power: ICharacterPower) => getLibraryDestinationStrength(power);
   const usePower = (draft: ICharacterPower) => {
-    if (!target) { setError('personalLibrary.noCharacter'); return; }
-    onOpenPower({ tabId: target.id, draft: structuredClone(draft) });
+    setDestinationError(null); setPendingPower(structuredClone(draft));
+  };
+  const selectDestination = (tabId: string) => {
+    if (!pendingPower) return;
+    const edit = resolveLibraryPowerDestination(useCharactersStore.getState().tabs, tabId, pendingPower);
+    if (!edit) { setDestinationError('personalLibrary.destinationMissing'); return; }
+    setPendingPower(null); onOpenPower(edit);
   };
   const normalize = (value: string) => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase();
   const words = normalize(search).trim().split(/\s+/).filter(Boolean);
@@ -89,10 +95,9 @@ export function PowerLibraryView({ onOpenPower }: { onOpenPower: (edit: LibraryP
   return <div className={`personal-library ${section === 'models' ? currentModel ? 'personal-library--detail' : '' : section === 'characters' && currentPower ? 'personal-library--detail' : ''}`}>
     <h1>{t('personalLibrary.title')}</h1>
     <nav className="personal-library-tabs" aria-label={t('personalLibrary.sources')}>{(['profiles', 'characters', 'models'] as const).map(value => <button key={value} type="button" aria-pressed={section === value} onClick={() => { setSection(value); setQuery(''); setMessage(null); setError(null); }}>{t(`personalLibrary.${value}`)}</button>)}</nav>
-    {section !== 'characters' && <div className="personal-toolbar"><label htmlFor="library-destination">{t('personalLibrary.targetCharacter')}</label><select id="library-destination" className="app-select" value={targetId} onChange={event => setTargetId(event.target.value)}><option value="">{t('builder.selectOption')}</option>{tabs.map(tab => <option key={tab.id} value={tab.id}>{tab.character.header.name || t('tabs.unnamed')}</option>)}</select>{!target && <small>{t('personalLibrary.noCharacter')}</small>}</div>}
     {(error || library.error) && <div role="alert"><p>{t(error ?? library.error!)}</p>{library.error && <div className="personal-actions"><button onClick={() => { library.reload(); setError(null); }}>{t('personalLibrary.reload')}</button>{library.source !== null && <button onClick={() => void exportModels(true)}>{t('personalLibrary.exportOriginal')}</button>}</div>}</div>}
     {message && <p role="status">{t(message)}</p>}
-    {section === 'profiles' ? <PowerLibraryDialog embedded strength={target ? getPricingStrength(target.character, resources) : 0} strengthForPower={strengthForPower} costUnit="PP" onUse={usePower} useDisabled={!target}/> : <>
+    {section === 'profiles' ? <PowerLibraryDialog embedded strength={0} strengthForPower={strengthForPower} costUnit="PP" onUse={usePower}/> : <>
       <div className="personal-toolbar personal-toolbar--search"><label className="power-library-search"><input value={query} onChange={event => setQuery(event.target.value)} aria-label={t(section === 'models' ? 'personalLibrary.searchModels' : 'personalLibrary.searchPowers')} placeholder={t(section === 'models' ? 'personalLibrary.searchModels' : 'personalLibrary.searchPowers')}/></label>
         {section === 'characters' ? <select className="app-select" value={characterFilter} aria-label={t('personalLibrary.characters')} onChange={event => setCharacterFilter(event.target.value)}><option value="">{t('personalLibrary.allCharacters')}</option>{tabs.map(tab => <option key={tab.id} value={tab.id}>{tab.character.header.name || t('tabs.unnamed')}</option>)}</select> : <>
           <button disabled={library.error === 'personalLibrary.readError'} onClick={() => { setEditor(null); setCompositionOpen(true); }}>{t('personalLibrary.create')}</button>
@@ -108,11 +113,12 @@ export function PowerLibraryView({ onOpenPower }: { onOpenPower: (edit: LibraryP
           <button className="power-library-back" onClick={() => { setSelectedPower(''); setSelectedModel(''); }}><ArrowLeft size={16}/>{t('powerLibrary.back')}</button>
           {section === 'characters' ? currentPower ? <><h3>{currentPower.power.name || t('powers.unnamed')}</h3><p>{currentPower.tab.character.header.name || t('tabs.unnamed')}</p><div className="personal-actions"><button onClick={() => onOpenPower({ tabId: currentPower.tab.id, draft: structuredClone(currentPower.power), original: structuredClone(currentPower.power) })}>{t('personalLibrary.editPower')}</button><button disabled={library.error === 'personalLibrary.readError'} onClick={() => beginModel(currentPower.power)}>{t('personalLibrary.saveModel')}</button></div><PowerCompositionPreview power={currentPower.power} strength={getPricingStrength(currentPower.tab.character, resources)}/></> : <p>{t('powerLibrary.choose')}</p> : currentModel ? <>
             <div className="personal-actions"><button onClick={() => { setError(null); setEditor({ draft: structuredClone(currentModel), original: structuredClone(currentModel) }); }}>{t('personalLibrary.edit')}</button><button onClick={() => { const copy = duplicatePersonalModel(currentModel); copy.name = t('personalLibrary.copyName', { name: copy.name.slice(0, 190) }); copy.power.name = copy.name; if (library.put(copy)) setSelectedModel(copy.id); }}>{t('personalLibrary.duplicate')}</button><button onClick={async () => { if (await dialog.confirm({ title: t('personalLibrary.delete'), message: t('personalLibrary.deleteConfirm', { name: currentModel.name }), danger: true }) && library.remove(currentModel)) setSelectedModel(''); }}>{t('personalLibrary.delete')}</button></div>
-            <PersonalModelDetail key={`${currentModel.id}:${currentModel.updatedAt}`} model={currentModel} strength={0} strengthForPower={strengthForPower} disabled={!target} onUse={usePower}/>
+            <PersonalModelDetail key={`${currentModel.id}:${currentModel.updatedAt}`} model={currentModel} strength={0} strengthForPower={strengthForPower} onUse={usePower}/>
           </> : <p>{t('powerLibrary.choose')}</p>}
         </section>
       </div></div>
     </>}
+    {pendingPower && <PowerDestinationDialog power={pendingPower} error={destinationError} onClose={() => { setPendingPower(null); setDestinationError(null); }} onSelect={selectDestination} onCreate={() => selectDestination(useCharactersStore.getState().addCharacter())}/>}
     {editor && !compositionOpen && <PersonalModelEditor model={editor.draft} onChange={draft => setEditor({ ...editor, draft })} onComposition={() => setCompositionOpen(true)} onSave={saveModel} onClose={() => setEditor(null)} error={library.error}/>}
     {compositionOpen && <Suspense fallback={<p role="status">{t('common.loading')}</p>}><PowerBuilderOverlay templateMode existingPower={editor?.draft.power} isNewPower={!editor} onClose={() => setCompositionOpen(false)} onSave={power => { setEditor(editor ? { ...editor, draft: updateModelComposition(editor.draft, power) } : { draft: createPersonalModel(power) }); setCompositionOpen(false); }}/></Suspense>}
   </div>;

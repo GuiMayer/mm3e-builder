@@ -3,11 +3,11 @@ import type { ICharacterPower } from '../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../entities/gameDataLoaders';
 import { calculatePowerPricing } from '../shared/lib/mathEngine';
 import { getPricingStrength } from '../shared/lib/pricingStrength';
-import { getLibraryRecipeStrength } from '../features/power-library/libraryPricing';
+import { getLibraryDestinationStrength, getLibraryRecipeStrength } from '../features/power-library/libraryPricing';
 import { createPersonalModel, duplicatePersonalModel, instantiatePersonalModel, parsePersonalLibrary, powerComponents, reconcileRankPolicies, updateModelComposition, prepareModelImport, searchPersonalModels, serializePersonalLibrary, PERSONAL_LIBRARY_KEY } from '../features/power-library/personalPowerModel';
 import { createDefaultCharacter } from '../entities/characterDefaults';
 import type { CharacterTab } from '../entities/characterTab';
-import { resolveLibraryPowerSave } from '../features/power-library/libraryCharacterEditing';
+import { resolveLibraryPowerDestination, resolveLibraryPowerSave } from '../features/power-library/libraryCharacterEditing';
 import { canApplyPowerTemplate, applyPowerTemplate } from '../features/power-library/powerTemplateApplication';
 
 const power = (): ICharacterPower => ({ id: 'power', name: 'Custom power', notes: 'Keep notes', descriptors: ['Magic'],
@@ -213,6 +213,24 @@ describe('Personal library files and storage', () => {
 
 describe('Library shortcuts preserve the source and protect stale edits', () => {
   const tab = (): CharacterTab => ({ id: 'tab', label: 'Hero', lastModified: 0, isDirty: false, character: createDefaultCharacter({ powers: [power()] }) });
+  it('opens an isolated draft for the chosen tab and refuses destinations that closed', () => {
+    const first = tab(), second = { ...tab(), id: 'second' }; const draft = instantiatePersonalModel(createPersonalModel(power()));
+    const before = structuredClone([first, second]);
+    const edit = resolveLibraryPowerDestination([first, second], second.id, draft)!;
+    expect(edit.tabId).toBe(second.id); expect(edit.original).toBeUndefined();
+    edit.draft.components[0].ranks = 99;
+    expect(draft.components[0].ranks).toBe(6); expect([first, second]).toEqual(before);
+    expect(resolveLibraryPowerDestination([first], second.id, draft)).toBeNull();
+  });
+  it('shows neutral costs before choosing and prices each destination without changing its data', () => {
+    const recipe: ICharacterPower = { id: 'p', name: 'Strike', notes: '', alternateEffects: [], components: [{ id: 'd', effectId: 'damage', ranks: 2, fieldValues: { damageBasis: 'strength-based' }, modifiers: [{ modifierId: 'multiattack', ranks: 1 }] }] };
+    const first = createDefaultCharacter(), second = createDefaultCharacter(); second.abilities.str = 5;
+    const before = structuredClone([first, second]);
+    expect(price(recipe, getLibraryDestinationStrength(recipe))).toBe(4);
+    expect(price(recipe, getLibraryDestinationStrength(recipe, first))).toBe(4);
+    expect(price(recipe, getLibraryDestinationStrength(recipe, second))).toBe(9);
+    expect([first, second]).toEqual(before);
+  });
   it('updates the original power while preserving unrelated character changes', () => {
     const source = tab(); const original = structuredClone(source.character.powers[0]);
     source.character.header.name = 'Updated hero';

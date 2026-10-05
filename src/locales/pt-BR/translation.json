@@ -1,4 +1,8 @@
 {
+  "personalLibrary.destinationHelp": "Escolha uma ficha atual ou crie um personagem novo. O poder abre no Power Builder para revisão antes de salvar.",
+  "personalLibrary.currentCharacters": "Personagens atuais",
+  "personalLibrary.noCurrentCharacters": "Nenhuma ficha está aberta. Crie um personagem para usar este poder.",
+  "personalLibrary.destinationMissing": "Esta ficha não está mais aberta. Escolha outra ou crie um personagem novo.",
   "personalLibrary.title": "Biblioteca de poderes",
   "personalLibrary.profiles": "Power Profiles",
   "personalLibrary.characters": "Poderes das fichas",

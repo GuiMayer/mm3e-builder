@@ -8,6 +8,11 @@ export interface LibraryPowerEdit {
   original?: ICharacterPower;
 }
 
+/** The chosen tab, rather than the active tab, owns this independent draft. */
+export function resolveLibraryPowerDestination(tabs: readonly CharacterTab[], tabId: string, draft: ICharacterPower): LibraryPowerEdit | null {
+  return tabs.some(tab => tab.id === tabId) ? { tabId, draft: structuredClone(draft) } : null;
+}
+
 /** Snapshot guard prevents a stale library shortcut from overwriting a newer power. */
 export function resolveLibraryPowerSave(tabs: readonly CharacterTab[], edit: LibraryPowerEdit, power: ICharacterPower) {
   const tab = tabs.find(item => item.id === edit.tabId);
