@@ -1,14 +1,16 @@
 # Histórico de versões e pacotes de commits
 
 Agrupamento reconstruído a partir dos commits e tags do repositório.
-Estado de publicação conferido em 2026-10-04.
+Estado de publicação conferido em 2026-10-05.
 As versões retroativas identificam o fim de uma atualização completa: não há
 uma versão para cada etapa de implementação. O [changelog](../CHANGELOG.md)
 descreve o comportamento entregue por cada pacote.
 
 ## Critério de agrupamento
 
-- Uma funcionalidade nova recebe uma versão minor; correções recebem patch.
+- Funcionalidades substanciais recebem uma versão minor; correções e melhorias
+  pontuais de conveniência recebem patch. Favoritos integra v1.20.1; a biblioteca
+  pessoal de poderes inaugura v1.21.0.
 - Implementação, refinamentos, testes e documentação da mesma funcionalidade
   ficam no mesmo pacote, mesmo quando distribuídos em vários commits.
 - O intervalo `anterior..final` exclui o commit anterior e inclui o final.
@@ -60,7 +62,9 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.17.0 | 2026-10-02 | `v1.16.0..v1.17.0` | 8 | Overhaul de campanha, migração revisada e traduções |
 | v1.18.0 | 2026-10-02 | `v1.17.0..v1.18.0` | 10 | Resources, custos PP/EP, Builder contextual e migração revisada |
 | v1.19.0 | 2026-10-03 | `v1.18.0..v1.19.0` | 6 | Referências oficiais, consulta responsiva e atalhos/cópias de recursos |
-| 1.20.0 (sem tag) | 2026-10-03 | `v1.19.0..9fbd77c` | 47 | Refinamentos de referências, retratos, Power Builder e biblioteca Power Profiles |
+| v1.20.0 | 2026-10-03 | `v1.19.0..v1.20.0` | 47 | Refinamentos de referências, retratos, Power Builder e biblioteca Power Profiles |
+| v1.20.1 | 2026-10-05 | `v1.20.0..v1.20.1` | 43 | Favoritos, ajustes de traits, diagnósticos, compatibilidade e retratos portáveis |
+| v1.21.0 | 2026-10-05 | `v1.20.1..v1.21.0` | 12 | Biblioteca pessoal, seleção de destino, retrato 3:4 e consolidação das versões |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -68,6 +72,12 @@ A v1.15.0 inclui os oito commits de temas/interface até `a5d051e` e um commit
 final que organiza esta documentação e alinha a versão em `package.json` e no
 lockfile. Os snapshots anteriores continuam com os metadados de versão que
 tinham quando foram criados; o histórico não foi reescrito.
+
+A v1.20.0 aponta para `9fbd77c`, seu commit original de documentação da versão.
+A v1.20.1 termina em `121fa6c`, que conclui favoritos antes da implementação da
+biblioteca pessoal. A v1.21.0 inclui essa biblioteca e seus refinamentos, com um
+commit final que atualiza os metadados do aplicativo. As tags retroativas não
+alteram a versão declarada nos snapshots antigos.
 
 ## Compatibilidade por pacote
 
@@ -85,10 +95,17 @@ tinham quando foram criados; o histórico não foi reescrito.
   movimento e NP ambíguos exigem revisão antes de alterar a cobrança.
 - v1.19.0 adiciona consultas de referências sem alterar o schema 2.1.0 vigente
   nesse pacote. A preferência de unidades é separada da ficha.
-- 1.20.0 inclui retratos, refinamentos da ficha/Builder e biblioteca Power Profiles.
+- v1.20.0 inclui retratos, refinamentos da ficha/Builder e biblioteca Power Profiles.
   Retratos introduzem schema 2.2.0, com URL e encaixe opcionais; bytes locais
   ficam em IndexedDB. Receitas aplicadas usam o modelo normal de poderes e não
   persistem preço editorial ou vínculo vivo ao catálogo.
+- v1.20.1 inclui schema 2.3.0, com alvos, ajustes e estado de uso opcionais para
+  traits. A revisão de modificadores legados preserva backups; o ZIP transporta
+  retratos locais sem alterar esse schema. Favoritos ficam em preferências
+  separadas dos personagens.
+- v1.21.0 mantém o schema 2.3.0 e os formatos de ficha, rascunho e ZIP. Modelos
+  pessoais usam armazenamento e documento próprios, na versão 1; poderes
+  aplicados são cópias independentes. O retrato 3:4 altera apenas a apresentação.
 
 Os contratos atuais de migração e persistência estão nos guias de
 [campanha](campaign-mode.md), [recursos](resources.md),
@@ -97,17 +114,15 @@ Versão do aplicativo e versão do schema são independentes.
 
 ## Publicação
 
-As tags até v1.19.0 estão publicadas no remoto; v1.20.0 ainda não possui tag.
-O commit `9fbd77c` delimita o pacote 1.20.0 de 47 commits. Depois dele,
-`b59cbe0` e `19faac5` acrescentam aplicações independentes de modificadores e
-avisos opcionais de duplicação, registrados em Unreleased no changelog. Esses
-commits ainda usam o mesmo número de versão em package.json.
+As tags até v1.19.0 estão publicadas no remoto. As tags anotadas v1.20.0,
+v1.20.1 e v1.21.0 foram organizadas localmente; sua publicação e a atualização
+dos metadados para v1.21.0 aguardam push.
 
-O deploy de GitHub Pages no commit `19faac5` foi concluído com sucesso na
-[execução 37162077089](https://github.com/GuiMayer/mm3e-builder/actions/runs/37162077089),
-incluindo o pacote 1.20.0 e os dois complementos. Esse estado de publicação não
-implica uma tag v1.20.0 ou uma GitHub Release. Criar tags não altera fichas,
-schemas, migrações ou commits existentes.
+O deploy de GitHub Pages no commit `af6dc6b` foi concluído com sucesso na
+[execução 37352277818](https://github.com/GuiMayer/mm3e-builder/actions/runs/37352277818),
+incluindo favoritos, biblioteca pessoal e retrato 3:4. Esse build ainda declara
+1.20.0, pois precede a consolidação dos metadados de versão. Criar tags não altera
+fichas, schemas, migrações ou commits existentes, nem cria uma GitHub Release.
 
 Para conferir um pacote:
 

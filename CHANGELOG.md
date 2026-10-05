@@ -2,12 +2,15 @@
 
 All notable changes to the MM3E Character Builder project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+Version numbers identify update packages: substantial features use minor versions,
+while fixes and small convenience improvements use patch versions.
 
 ---
 
 ## [Unreleased]
+
+## [1.21.0] - 2026-10-05
 
 ### Added — Personal power library
 - Choose a destination through a popup when using a recipe/model, listing current characters and offering a new character; keep destination selection out of the main library view and show contextual costs in the popup.
@@ -16,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Edit character powers through identity and source snapshot guards; preserve unrelated sheet changes and never link applied copies back to their models.
 - Store models under a separate versioned browser key with protected writes and cross-window refresh. Import/export model JSON with keep, replace or independent-copy conflict handling. Character schema and existing JSON/JSONL/ZIP formats remain unchanged.
 - Reuse personal models in the Builder library picker, retain full-array/global-configuration target restrictions and support mobile list/detail navigation.
+
+### Changed — Portrait framing
+- Use a stable 3:4 portrait frame on the character sheet and in the editor preview, with responsive widths for desktop and mobile. Keep image fitting, original bytes and character data unchanged.
+
+## [1.20.1] - 2026-10-05
 
 ### Added — Favorite references
 - Add independent favorite stars to every reference section header and show Favorites as the first category only while at least one section is starred.

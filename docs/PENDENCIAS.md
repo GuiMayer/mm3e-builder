@@ -1,6 +1,6 @@
 # Pendências e manutenção
 
-Revisão: 05/10/2026 (versão declarada: v1.20.0; inclui alterações locais).
+Revisão: 05/10/2026 (versão declarada: v1.21.0).
 Este é o ponto central para trabalho ainda aberto. As constatações abaixo vieram
 da comparação entre documentação, código e fontes de regras; não constituem
 uma certificação completa das regras.
