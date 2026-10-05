@@ -28,6 +28,7 @@ import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { parseDraftBundle, parseResourceLibrary, serializeDraftBundle, serializeResourceLibrary } from '../../services/draftTransfer';
 import { downloadBlob } from '../../services/downloadHelper';
+import { exportWithPortraits } from '../../services/portraitBundleExport';
 import { useAppDialog } from './appDialogContext';
 import { parseDraftStorageSnapshot, restoreDraftStorageSnapshot } from '../../services/storage/draftUpdateBackup';
 
@@ -126,8 +127,10 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
   // Pre-fetch the legacy template only when that renderer is enabled.
   const handleExportDraft = useCallback(async () => {
     saveDraftMulti(tabs, activeCharacterId);
-    await downloadBlob(new Blob([serializeDraftBundle(tabs, activeCharacterId, resources)], { type: 'application/x-ndjson' }), `mm3e-draft-${new Date().toISOString().slice(0, 10)}.jsonl`);
-  }, [activeCharacterId, resources, tabs]);
+    try {
+      await exportWithPortraits(new Blob([serializeDraftBundle(tabs, activeCharacterId, resources)], { type: 'application/x-ndjson' }), `mm3e-draft-${new Date().toISOString().slice(0, 10)}.jsonl`, 'draft', tabs.map(tab => tab.character), dialog, t);
+    } catch { await dialog.alert({ title: t('bundle.exportTitle'), message: t('bundle.exportError') }); }
+  }, [activeCharacterId, resources, tabs, dialog, t]);
 
   useEffect(() => {
     if (!useLegacyPdfExporter) return;

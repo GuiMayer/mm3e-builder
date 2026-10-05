@@ -11,6 +11,9 @@ export function AppDialogProvider({ children }: { children: ReactNode }) {
   const { t, i18n } = useTranslation();
   const [dialog, setDialog] = useState<(DialogOptions & { resolve: (value: boolean) => void; kind: 'confirm' | 'alert' }) | null>(null);
   const [acknowledged, setAcknowledged] = useState(false);
+  const [choice, setChoice] = useState<{ title: string; message: string; choices: { value: string; label: string }[]; resolve: (value: string | null) => void } | null>(null);
+  const choose = useCallback((options: { title: string; message: string; choices: { value: string; label: string }[] }) => new Promise<string | null>(resolve => setChoice({ ...options, resolve })), []);
+  function closeChoice(value: string | null) { choice?.resolve(value); setChoice(null); }
   const [recovery, setRecovery] = useState<{ value: unknown; original: string; resolve: (value: unknown | null) => void } | null>(null);
   const reviewModifierSources = useCallback(<T,>(value: T, original: string): Promise<T | null> => {
     if (!inspectModifierSources(value).length) return Promise.resolve(value);
@@ -28,10 +31,19 @@ export function AppDialogProvider({ children }: { children: ReactNode }) {
   const alert = useCallback((options: Omit<DialogOptions, 'cancelLabel' | 'danger' | 'requireAcknowledgement'>) => new Promise<void>((resolve) => {
     setDialog({ ...options, resolve: () => resolve(), kind: 'alert' });
   }), []);
-  const api = useMemo(() => ({ confirm, alert, reviewModifierSources }), [alert, confirm, reviewModifierSources]);
+  const api = useMemo(() => ({ choose, confirm, alert, reviewModifierSources }), [choose, alert, confirm, reviewModifierSources]);
   return (
     <DialogContext.Provider value={api}>
       {children}
+      <Modal isOpen={Boolean(choice)} onClose={() => closeChoice(null)} title={choice?.title ?? ''} compact>
+        <div className="app-dialog">
+          <p>{choice?.message}</p>
+          <div className="app-dialog__actions">
+            <Button variant="ghost" onClick={() => closeChoice(null)}>{t('common.cancel')}</Button>
+            {choice?.choices.map((item, index) => <Button key={item.value} variant={index === choice.choices.length - 1 ? 'primary' : 'secondary'} onClick={() => closeChoice(item.value)}>{item.label}</Button>)}
+          </div>
+        </div>
+      </Modal>
       {recovery && <ModifierRecoveryDialog value={recovery.value} original={recovery.original} onResolve={value => { recovery.resolve(value); setRecovery(null); }} />}
       <Modal isOpen={Boolean(dialog)} onClose={() => close(false)} title={dialog?.title ?? t('dialog.confirmation')} compact>
         <div className="app-dialog">
@@ -49,14 +61,14 @@ export function AppDialogProvider({ children }: { children: ReactNode }) {
             </Button>
           </div>
         </div>
+      </Modal>
         <style>{`
           .app-dialog { display:flex; flex-direction:column; gap:var(--s-md); min-width:min(400px,75vw); }
           .app-dialog p { color:var(--c-text-secondary); line-height:1.45; margin:0; white-space:pre-wrap; }
-          .app-dialog__actions { display:flex; gap:var(--s-sm); justify-content:flex-end; }
+          .app-dialog__actions { display:flex; flex-wrap:wrap; gap:var(--s-sm); justify-content:flex-end; }
           .app-dialog__check { align-items:center; border:1px solid var(--c-border); border-radius:var(--r-sm); color:var(--c-text); cursor:pointer; display:flex; gap:var(--s-sm); padding:var(--s-sm); }
           .app-dialog__check:hover { border-color:var(--c-primary); }
         `}</style>
-      </Modal>
     </DialogContext.Provider>
   );
 }

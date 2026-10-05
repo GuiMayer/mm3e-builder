@@ -1,9 +1,12 @@
-import { copyCharacterPortrait, hasLocalPortrait } from '../../services/portraits/portraitLifecycle';
+import { copyCharacterPortrait } from '../../services/portraits/portraitLifecycle';
+import { serializeCharacterJSON } from '../../services/character-file/exportCharacter';
+import { sanitizeFileName } from '../../services/downloadHelper';
+import { exportWithPortraits } from '../../services/portraitBundleExport';
 import { useToast } from './useToast';
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveCharacter } from './useActiveCharacter';
-import { exportCharacterJSON, importCharacterJSON, importResourceAppendix, I18nError, saveDraftMulti } from '../../services/fileService';
+import { importCharacterJSON, importResourceAppendix, I18nError, saveDraftMulti } from '../../services/fileService';
 import { useCharactersStore } from '../../store/charactersStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { validateImportedReferences } from '../../services/character-file/validateImportedReferences';
@@ -78,8 +81,9 @@ export function useFileOperations() {
     const linkedResources = resources.filter((resource) =>
       (character.resourceLinks ?? []).some((link) => link.resourceId === resource.id)
     );
-    await exportCharacterJSON(character, i18n.language, undefined, linkedResources);
-    if (await hasLocalPortrait(character)) showToast(t('portrait.exportNotice'), 'info', 7000);
+    try {
+      await exportWithPortraits(serializeCharacterJSON(character, i18n.language, linkedResources), `${sanitizeFileName(character.header.name)}.json`, 'character', [character], dialog, t);
+    } catch { await dialog.alert({ title: t('bundle.exportTitle'), message: t('bundle.exportError') }); }
   }
 
   /**
