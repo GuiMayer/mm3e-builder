@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Portable local portraits
+- Offer optional ZIP export when characters or full Drafts contain manually uploaded portraits; keep standalone JSON/JSONL and URL-based portraits unchanged.
+- Import ZIP through existing character/Draft actions, preserving tabs, resources, fit and identity conflict choices. Restore imported portraits to IndexedDB, with new associations for copied characters.
+- Validate archive paths, expansion limits, image signatures and identity references before persistence; compensate image and data writes on failure. Preserve already-sized image bytes without recompression.
+- Keep character schema 2.3.0 and Draft version 1 unchanged. Update portrait guidance and remove the completed portability backlog item.
+
 ### Added — Optional trait adjustments and explicit enhancement targets
 - Add per-trait controls for scoped circumstance bonuses and targeting or creating Enhanced Trait powers. Keep natural purchases separate from effective values and offer source editing shortcuts.
 - Resolve active, exclusive and dynamically allocated enhancements, including resource recipient choices and Permanent duration; use shared projections in rolls, PL checks, PDF and Excel without double charging.

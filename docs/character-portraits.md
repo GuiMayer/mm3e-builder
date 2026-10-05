@@ -25,18 +25,50 @@ ser aplicados pelo editor. Arquivos locais são uma alternativa.
 
 O aviso aparece antes da seleção:
 
-> Esta imagem será salva apenas neste navegador. Ela não será incluída no JSON
-> da ficha e não aparecerá ao importá-lo em outro navegador ou dispositivo.
-> Se você limpar os dados do site, precisará carregar a imagem novamente.
+> Esta imagem será salva apenas neste navegador. Para levá-la a outro navegador
+> ou dispositivo, escolha incluir as imagens ao exportar a ficha ou o rascunho
+> em ZIP. O JSON e o JSONL isolados não incluem imagens. Se você limpar os dados
+> do site, poderá restaurá-la pelo ZIP ou carregá-la novamente.
 
 O arquivo é carregado localmente, sem upload para um servidor. A imagem é
 associada ao identificador persistido do personagem no IndexedDB. O cabeçalho
-identifica o modo **Local**, e a exportação JSON apresenta um aviso de que a
-imagem não foi incluída. O arquivo também não acompanha backups JSON de
-rascunhos: reimportá-los em outro navegador não transporta o retrato.
+identifica o modo **Local**. Ao exportar, você escolhe entre os dados isolados
+e um pacote ZIP que também transporta a imagem.
 
 Trocar um link por arquivo remove o endereço anterior da ficha. Uma imagem
 local não recebe caminho, base64 ou referência de mídia dentro do JSON.
+
+## Exportação e importação ZIP
+
+**Exportar** pergunta se deseja incluir o retrato quando a ficha tem uma imagem
+local associada. **Exportar Rascunho** faz uma única pergunta para todas as imagens
+locais das abas exportadas. Você pode cancelar, exportar apenas JSON/JSONL ou
+incluir as imagens em ZIP. A escolha vale somente para aquela exportação.
+Sem retrato local, o download mantém o formato habitual e não apresenta a pergunta.
+Retratos por URL continuam representados pelo link, sem incluir seu cache no ZIP.
+
+Use **Importar** para ZIP de personagem e **Importar Rascunho** para ZIP de
+rascunho. A importação aplica as mesmas validações, revisões e escolhas dos
+formatos originais. Ao atualizar uma ficha, o retrato do pacote substitui o
+retrato local dessa identidade; ao abrir como cópia, é associado à nova identidade,
+preservando o original. Imagens ausentes no pacote não apagam retratos locais.
+O rascunho mantém suas abas, seleção ativa e biblioteca de recursos.
+
+O ZIP contém `manifest.json`, `character.json` ou `draft.jsonl`, e os arquivos
+em `portraits/`. O manifesto usa formato `mm3e-portrait-bundle`, versão `1`,
+tipo `character` ou `draft`, `dataFile` e associações `{ characterId, path, mime }`.
+O JSON/JSONL interno é o mesmo usado na exportação isolada; pode ser extraído
+e importado por versões anteriores do app, sem transportar as imagens.
+Backups automáticos de recuperação e pré-atualização continuam em JSONL.
+
+Antes de gravar, o importador valida estrutura, nomes, associações, formato real
+e decodificação de todas as imagens. Limites: 100 MiB para o ZIP, 200 MiB após
+descompactar, 20 MiB de JSON/JSONL, 1.000 arquivos e os limites de imagem abaixo.
+Pacotes incompletos ou com arquivos adicionais não são aceitos. Os dados e as
+associações anteriores são restaurados se uma etapa de persistência falhar;
+IndexedDB e localStorage não constituem uma transação única.
+Imagens já limitadas a 1024 pixels são preservadas sem nova recompressão;
+miniaturas são regeneradas no navegador de destino.
 
 ## Encaixe da imagem
 
@@ -89,9 +121,10 @@ Se a imagem estiver indisponível para renderização, o app avisa e gera a fich
 sem retrato. O texto do PDF continua selecionável. O exportador PDF legado
 com formulário fixo não inclui retratos.
 
-Schema de ficha **2.2.0** adiciona `header.portraitUrl` e `header.portraitFit`,
+Schema de ficha **2.2.0** adicionou `header.portraitUrl` e `header.portraitFit`,
 ambos opcionais. Schemas
 1.0.0, 2.0.0 e 2.1.0 continuam aceitos, sem migração em massa. Uma ficha sem link
 não recebe campos de retrato automaticamente. Nenhum atributo, poder, recurso, regra ou cálculo é alterado.
 Versões anteriores do app podem descartar o URL ao reexportar, preservando os
 dados de jogo suportados por elas.
+O ZIP não adiciona campos nem altera a versão atual do schema de ficha (2.3.0).

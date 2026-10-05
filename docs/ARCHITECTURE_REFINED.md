@@ -85,6 +85,17 @@ blocks download. PDF inclusion is opt-in and resolves image bytes before
 pagination; exported HTML/PDF can embed them while character JSON cannot.
 See [Character portraits](character-portraits.md).
 
+`portraitBundle` wraps the existing JSON/JSONL serializer output in a versioned
+ZIP manifest plus manual portrait bytes. `fflate` is loaded on demand; bounded
+stream decompression rejects unexpected paths and oversized contents before
+retaining them. Imports reuse existing data validation and conflict workflows,
+decode all portraits before writing, and remap copied imports to their new ID.
+One IndexedDB transaction updates the images; failed data persistence restores
+previous associations, localStorage draft/resource values and in-memory state.
+This uses compensation across stores rather than a shared transaction. The
+character/resource schemas and JSONL version are unchanged. Recovery snapshots
+remain text-only; user exports can opt into portable portraits.
+
 ## Resource library
 
 Resources are reusable items stored outside individual characters. Supported

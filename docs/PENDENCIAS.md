@@ -1,6 +1,6 @@
 # Pendências e manutenção
 
-Revisão: 04/10/2026 (v1.20.0).
+Revisão: 05/10/2026 (v1.20.0).
 Este é o ponto central para trabalho ainda aberto. As constatações abaixo vieram
 da comparação entre documentação, código e fontes de regras; não constituem
 uma certificação completa das regras.
@@ -49,8 +49,6 @@ Não são compromissos de implementação nem impedimentos para usar a versão a
 - **QA acessível e toque real:** completar verificação em aparelho com toque,
   leitor de tela e foco/diálogos empilhados. Avaliar automatizar poucos fluxos
   essenciais de navegador; os gates atuais não possuem uma suíte E2E dedicada.
-- **Retrato portável:** estudar exportação/importação ZIP com ficha e imagem
-  local, preservando JSON leve e o aviso sobre armazenamento no navegador.
 - **Templates de recursos e personagens auxiliares:** avaliar demanda por
   itens comuns de equipamento/veículos/bases e fichas vinculadas de invocações,
   minions ou sidekicks. As três receitas que alteram atributos ausentes não

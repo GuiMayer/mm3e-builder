@@ -31,7 +31,7 @@ in package.json may require their matching Vitest packages; they are not CI gate
 | Campaign | `campaign`, `campaignActions`, `campaignMigration`, `campaignExports` |
 | Resources | `resourceRules118`, `resourceStorageSafety`, `resourceReview`, `resourceImport`, `resourceActions`, `resourceExports` |
 | Library | `powerLibrary`, `powerLibraryCatalog`, `powerLibraryRules` |
-| Portraits | `portraitStorage`, `portraitCompatibility`, `portraitJsonExport`, `portraitPdf` |
+| Portraits | `portraitStorage`, `portraitCompatibility`, `portraitJsonExport`, `portraitPdf`, `portraitBundle`, `portraitBundleExport`, `portraitImages` |
 | References and localization | `references119`, `referenceLocalization119`, `measurementPreferences`, `localizationCoverage`, `offenseLocalization` |
 | Themes and dice | `customTheme`, `customThemeStorage`, `colorInput`, `diceRoller`, `diceCheckSources`, `diceWindowPosition` |
 | Export content and safety | `exportCorrections`, `pdfHtmlSafety`, `campaignExports`, `resourceExports` |

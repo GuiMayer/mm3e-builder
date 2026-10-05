@@ -26,7 +26,7 @@ in [Version history](docs/version-history.md).
 | Portraits | [Remote URL or local image](docs/character-portraits.md), display fit and optional PDF inclusion |
 | Dice | [Manual and contextual d20 checks](docs/dice-roller.md), with runtime-only history |
 | Themes | Built-in themes and a [locally saved custom palette](docs/custom-themes.md) |
-| Files and exports | Character JSON, full-Draft JSONL, Excel, compact selectable-text HTML/PDF and an optional legacy PDF form |
+| Files and exports | Character JSON, full-Draft JSONL, optional ZIP with local portraits, Excel, compact selectable-text HTML/PDF and an optional legacy PDF form |
 
 Calculations share canonical modules across sheet and exports. Generic modifier
 choices remain with the player/GM; effect-specific modifiers retain their source
@@ -59,7 +59,9 @@ publishing. Production deployment uses GitHub Pages from `main`.
 ### Data and compatibility
 
 Characters and Resources persist in localStorage. Portrait bytes reside in
-IndexedDB; a local image does not travel with character JSON or Draft backups.
+IndexedDB; a local image does not travel with standalone character JSON or Draft JSONL.
+Choose to include images in ZIP when exporting a character or Draft to transport
+local portraits, then use the corresponding import action to restore them.
 A remote portrait URL and optional fit can travel with the character. Export
 backups before clearing site data or moving to another browser.
 
@@ -107,7 +109,9 @@ Consulte [CONTRIBUTING.md](CONTRIBUTING.md) para alterações de código, dados 
 traduções, e o [guia de testes](src/__tests__/README.md) para validação.
 
 Fichas e recursos usam localStorage; imagens usam IndexedDB. Um retrato local
-não acompanha JSON ou backup JSONL. O schema de ficha atual é 2.3.0, com leitura
+não acompanha JSON ou backup JSONL isolado. A exportação oferece ZIP com imagens
+locais, restaurado pelas ações de importar ficha ou rascunho.
+O schema de ficha atual é 2.3.0, com leitura
 de 1.0.0/2.0.0/2.1.0/2.2.0; recursos usam versão 2 e rascunhos usam versão 1.
 Exporte backups antes de limpar os dados do site. Migrações e revisões de dados
 antigos estão descritas nos guias de [campanha](docs/campaign-mode.md),

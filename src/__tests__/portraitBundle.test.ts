@@ -6,6 +6,9 @@ import { serializeCharacterJSON } from '../services/character-file/exportCharact
 import { collectLocalPortraits, createPortraitBundle, readPortraitBundle, prepareBundlePortraits, withImportedPortraits, BUNDLE_LIMITS } from '../services/portraitBundle';
 import { clearPortraits, getPortrait, savePortrait, type PortraitMedia } from '../services/storage/portraitStorage';
 import { serializeDraftBundle, parseDraftBundle } from '../services/draftTransfer';
+import { duplicateImportedCharacter } from '../entities/characterImport';
+import { importResourceAppendix } from '../services/character-file/importResourceAppendix';
+import type { IResource } from '../entities/types';
 
 vi.mock('../services/portraits/portraitImages', async original => ({ ...await original<typeof import('../services/portraits/portraitImages')>(), preparePortrait: vi.fn(async (blob: Blob) => ({ image: blob, thumbnail: blob, width: 1, height: 1 })) }));
 const image = new Blob([new Uint8Array([137,80,78,71,13,10,26,10,1])], { type: 'image/png' });
@@ -14,14 +17,17 @@ beforeEach(async () => { await clearPortraits(); });
 const asFile = (blob: Blob) => new File([blob], 'bundle.zip', { type: 'application/zip' });
 
 describe('portable portrait bundles', () => {
-  it('round-trips character JSON unchanged, with resource appendix and portrait fit', async () => {
+  it('round-trips character JSON unchanged, including resource appendix and portrait fit', async () => {
     const character = createDefaultCharacter({ characterId: 'hero' });
     character.header.portraitFit = 'cover';
+    const resource: IResource = { id: crypto.randomUUID(), type: 'headquarters', name: 'Base', notes: 'Preserved', createdAt: '', updatedAt: '', size: 'small', toughness: 5, features: [], effects: [] };
+    character.resourceLinks = [{ id: 'link', resourceId: resource.id, isFree: false }];
     const before = JSON.stringify(character);
-    const data = serializeCharacterJSON(character, 'pt-BR');
+    const data = serializeCharacterJSON(character, 'pt-BR', [resource]);
     const bundle = await readPortraitBundle(asFile(await createPortraitBundle(data, 'character', [{ characterId: 'hero', media }])), 'character');
     expect(await bundle.data.text()).toBe(await data.text());
     expect(JSON.stringify(character)).toBe(before);
+    expect(await importResourceAppendix(bundle.data)).toEqual([resource]);
     expect(bundle.manifest.portraits[0]).toMatchObject({ characterId: 'hero', mime: 'image/png' });
     const portraits = await prepareBundlePortraits(bundle, [character]);
     await withImportedPortraits(portraits, () => {});
@@ -60,6 +66,24 @@ describe('portable portrait bundles', () => {
     await expect(withImportedPortraits([{ characterId: 'hero', media }, { characterId: 'new', media }], () => { throw new Error('quota'); })).rejects.toThrow('quota');
     expect(await (await getPortrait('hero'))?.image.text()).toBe('old');
     expect(await getPortrait('new')).toBeUndefined();
+  });
+  it('associates a copied import with the new identity and preserves the original portrait', async () => {
+    const original = createDefaultCharacter({ characterId: crypto.randomUUID() });
+    const old = { ...media, image: new Blob(['old'], { type: 'image/png' }) };
+    await savePortrait(old, { characterId: original.characterId! });
+    const copy = duplicateImportedCharacter(original, []);
+    await withImportedPortraits([{ characterId: copy.characterId!, media }], () => {});
+    expect(copy.characterId).not.toBe(original.characterId);
+    expect(await (await getPortrait(copy.characterId))?.image.arrayBuffer()).toEqual(await image.arrayBuffer());
+    expect(await (await getPortrait(original.characterId))?.image.text()).toBe('old');
+    await withImportedPortraits([], () => {});
+    expect(await getPortrait(copy.characterId)).toBeDefined();
+  });
+  it('rejects spoofed image bytes before persistence', async () => {
+    const spoof = { ...media, image: new Blob(['not a PNG'], { type: 'image/png' }) };
+    const bundle = await readPortraitBundle(asFile(await createPortraitBundle(new Blob(['{}']), 'character', [{ characterId: 'hero', media: spoof }])), 'character');
+    await expect(prepareBundlePortraits(bundle, [createDefaultCharacter({ characterId: 'hero' })])).rejects.toThrow('bundle.invalid');
+    expect(await getPortrait('hero')).toBeUndefined();
   });
   it('aborts every image write if an IDB request fails before committing data', async () => {
     const commit = vi.fn();
