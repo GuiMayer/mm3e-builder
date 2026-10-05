@@ -21,6 +21,7 @@ while fixes and small convenience improvements use patch versions.
 
 ### Changed — Consistent power library views
 - Use the Power Profiles frame, search bar, result cards, preview and action footer across all three library tabs. Character filters use the same sidebar on desktop and dropdown on smaller screens; models keep their creation/import/export actions and use the available space without an empty sidebar.
+- Remove the redundant tab divider above the rounded browser frame. Use a common 96px header baseline with space for two description lines, and 44px search/filter controls across all three views; let longer text and wrapped actions expand naturally on smaller screens.
 
 ### Changed — Mobile advantage rank placement
 - Place rank controls beside advantage names, aligning ranked cards with ordinary cards when space permits. Keep touch controls accessible and wrap actions on narrower phones; desktop layout and costs are unchanged.

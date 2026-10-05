@@ -2,6 +2,7 @@
 .personal-library > h1 { margin: 0 0 16px; font-size: 1.3rem; }
 .personal-library-tabs, .personal-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .personal-library-tabs { padding: 10px 16px; border-bottom: 1px solid var(--c-border); }
+.personal-library > .personal-library-tabs { border-bottom: 0; }
 .personal-library-tabs button, .personal-actions button { border: 1px solid var(--c-border); background: var(--c-surface-elevated); color: var(--c-text); border-radius: var(--r-md); padding: 10px 14px; cursor: pointer; }
 .personal-library-tabs button[aria-pressed="true"] { color: var(--c-primary); border-color: var(--c-primary); background: var(--c-primary-muted); }
 .personal-library button:disabled { opacity: .5; cursor: default; }
@@ -18,9 +19,15 @@
 .personal-alternate > summary { cursor: pointer; padding: 8px 0; color: var(--c-primary); }
 .personal-actions { margin: 16px 0; }
 .power-library-embedded .power-library-dialog { width: 100%; height: min(850px, 82dvh); }
-.power-library-embedded .power-library-dialog > header { flex-wrap:wrap; }
+.power-library-embedded .power-library-dialog > header { flex-wrap:wrap; min-height:96px; }
 .power-library-embedded .power-library-dialog > header > div:first-child { flex:1 1 280px; min-width:0; }
+.power-library-embedded .power-library-dialog > header h2 { line-height:1.3; }
+.power-library-embedded .power-library-dialog > header p { min-height:2.4rem; line-height:1.5; }
 .power-library-embedded .power-library-dialog > header,.power-library-embedded .power-library-filters { flex-shrink:0; }
+.power-library-embedded .power-library-search { min-height:44px; }
+.power-library-embedded .power-library-search input { height:42px; padding-block:0; font:inherit; font-size:.85rem; }
+.power-library-embedded .power-library-search svg { flex-shrink:0; color:var(--c-text-secondary); }
+.power-library-embedded .power-library-filters > select { min-height:44px; }
 .personal-browser-actions { display:flex; flex-wrap:wrap; gap:8px; }
 .power-library-dialog > header .personal-browser-actions button { border:1px solid var(--c-border); background:var(--c-surface-elevated); color:var(--c-text); border-radius:var(--r-md); padding:10px 14px; cursor:pointer; }
 .personal-browser-actions button:hover:not(:disabled) { border-color:var(--c-primary); }
