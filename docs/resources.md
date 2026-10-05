@@ -119,6 +119,15 @@ as escolhas da ficha.
 
 ## Recuperação e importação
 
+Recursos salvos antes de configurar seu poder podem manter o componente inicial
+do Builder (efeito vazio, graduação 1, sem modificadores ou configurações).
+Esse estado é aceito na importação de ficha, rascunho e biblioteca, preservando
+o recurso e seus vínculos sem reescrever dados. A exceção vale apenas para esse
+componente inicial intacto; poderes de personagem, efeitos desconhecidos e
+recursos parcialmente configurados continuam sujeitos à validação normal.
+Erros nos poderes de recursos identificam o caminho `resources.<índice>`,
+incluindo o poder, movimento, sistema ou efeito correspondente.
+
 Um recurso inválido não esconde os válidos. Itens inválidos e UUIDs duplicados
 ficam preservados na área `quarantined` da biblioteca, com aviso e exportação do
 conteúdo original. Corrija os originais em uma cópia de arquivo antes de importar

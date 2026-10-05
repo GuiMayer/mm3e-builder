@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — Imports containing unconfigured resources
+- Accept the untouched initial resource power slot in character appendices, Drafts and resource libraries, matching the resource editor's supported state without removing or rewriting data.
+- Keep invalid character powers and partially configured resource effects rejected; report resource validation failures under their own resource path rather than character powers.
+
 ### Added — Portable local portraits
 - Offer optional ZIP export when characters or full Drafts contain manually uploaded portraits; keep standalone JSON/JSONL and URL-based portraits unchanged.
 - Import ZIP through existing character/Draft actions, preserving tabs, resources, fit and identity conflict choices. Restore imported portraits to IndexedDB, with new associations for copied characters.
