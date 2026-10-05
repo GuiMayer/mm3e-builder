@@ -65,8 +65,10 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
                   </div>
                 </div>}
               </div>
-              {!isAbsent && effective.abilities[key] !== abilities[key] && <div className="ability-effective"><span>{t('traits.effective')}</span><strong>{effective.abilities[key]}</strong></div>}
-              <TraitModifiersControl key={`${characterId}:${key}`} target={{ kind: 'ability', key }} />
+              <div className="ability-adjustments-row">
+                {!isAbsent && effective.abilities[key] !== abilities[key] && <div className="ability-effective"><span>{t('traits.effective')}</span><strong>{effective.abilities[key]}</strong></div>}
+                <TraitModifiersControl key={`${characterId}:${key}`} target={{ kind: 'ability', key }} />
+              </div>
               <button
                 className="ability-toggle"
                 onClick={() => toggleAbsentAbility(key)}
