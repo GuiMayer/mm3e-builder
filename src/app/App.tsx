@@ -17,6 +17,8 @@ import { ResourceStorageStatus } from '../shared/ui/ResourceStorageStatus'
 import { ResourceReviewController } from '../features/resources/ResourceReviewController'
 import type { ResourceEditTarget } from '../shared/lib/resourcePowers'
 import { ModifierRecoveryNotice } from '../shared/ui/ModifierRecoveryNotice'
+import { useCharactersStore } from '../store/charactersStore'
+import { resolveLibraryPowerSave, type LibraryPowerEdit } from '../features/power-library/libraryCharacterEditing'
 
 const PDFPreviewDialog = lazy(() => import('../features/sheet-core/PDFPreviewDialog').then((module) => ({ default: module.PDFPreviewDialog })));
 const PDFOverflowModal = lazy(() => import('../features/sheet-core/PDFOverflowModal').then((module) => ({ default: module.PDFOverflowModal })));
@@ -27,13 +29,17 @@ const ReferencesView = lazy(() =>
 const ResourcesView = lazy(() =>
   import('../features/resources/ResourcesView').then((module) => ({ default: module.ResourcesView }))
 );
+const PowerLibraryView = lazy(() => import('../features/power-library/PowerLibraryView').then(module => ({ default: module.PowerLibraryView })));
+const PowerBuilderOverlay = lazy(() => import('../features/power-builder/PowerBuilderOverlay').then(module => ({ default: module.PowerBuilderOverlay })));
 
-export type AppView = 'sheet' | 'resources' | 'references';
+export type AppView = 'sheet' | 'resources' | 'power-library' | 'references';
 
 export function App() {
   const { t, i18n } = useTranslation()
   const [activeView, setActiveView] = useState<AppView>('sheet');
   const [resourceEditTarget, setResourceEditTarget] = useState<ResourceEditTarget>();
+  const [powerEdit, setPowerEdit] = useState<LibraryPowerEdit | null>(null);
+  const [powerEditError, setPowerEditError] = useState<string | null>(null);
   
   // PDF export with preview dialog
   const {
@@ -98,6 +104,14 @@ export function App() {
               <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
                 <ResourcesView initialEditTarget={resourceEditTarget}/>
               </Suspense>
+            ) : activeView === 'power-library' ? (
+              <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
+                <PowerLibraryView onOpenPower={edit => {
+                  const store = useCharactersStore.getState();
+                  if (!store.tabs.some(tab => tab.id === edit.tabId)) return;
+                  store.setActiveCharacter(edit.tabId); setPowerEditError(null); setPowerEdit(edit); setActiveView('sheet');
+                }}/>
+              </Suspense>
             ) : (
               <Suspense fallback={<div className="panel">{t('common.loading')}</div>}>
                 <ReferencesView />
@@ -107,6 +121,14 @@ export function App() {
         </ErrorBoundary>
 
         <DiceRoller />
+        {powerEdit && <Suspense fallback={<div role="status">{t('common.loading')}</div>}>
+          <PowerBuilderOverlay existingPower={powerEdit.draft} isNewPower={!powerEdit.original} sourceCharacterId={powerEdit.tabId} saveError={powerEditError} onClose={() => setPowerEdit(null)} onSave={power => {
+            const store = useCharactersStore.getState();
+            const next = resolveLibraryPowerSave(store.tabs, powerEdit, power);
+            if (!next) { setPowerEditError('personalLibrary.stalePower'); return; }
+            store.updateCharacter(powerEdit.tabId, { powers: next.powers }); setPowerEdit(null);
+          }}/>
+        </Suspense>}
 
         {isPreviewOpen && (
           <Suspense fallback={<div role="status">{t('common.loading')}</div>}>

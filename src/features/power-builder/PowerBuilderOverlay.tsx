@@ -35,6 +35,7 @@ import { Button } from '../../shared/ui/Button';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharactersStore } from '../../store/charactersStore';
+import { createDefaultCharacter } from '../../entities/characterDefaults';
 import { BudgetPreview } from './components/BudgetPreview';
 import type { BudgetEditTarget } from './budgetProjection';
 import { useAppStore } from '../../store/appStore';
@@ -75,11 +76,13 @@ interface Props {
   equipmentMode?: boolean;
   resourceContext?: ResourceBuilderContext;
   saveError?: string | null;
+  /** Authoring a reusable composition without writing to a character. */
+  templateMode?: boolean;
 }
 
 const PowerLibraryDialog = lazy(() => import('../power-library/PowerLibraryDialog').then(module => ({ default: module.PowerLibraryDialog })));
 
-export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPower, sourceCharacterId, onSave, onClose, equipmentMode, resourceContext, saveError }: Props) {
+export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPower, sourceCharacterId, onSave, onClose, equipmentMode, resourceContext, saveError, templateMode }: Props) {
   const associationReviewIds = useMemo(() => {
     const components = !isNewPower && existingPower
       ? [...existingPower.components, ...existingPower.alternateEffects.flatMap(alternate => alternate.components)]
@@ -100,8 +103,8 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
   const active = useActiveCharacter();
   const [originId] = useState(() => sourceCharacterId ?? active.characterId);
   const origin = useCharactersStore(state => state.tabs.find(tab => tab.id === originId)?.character);
-  const [initialCharacter] = useState(() => active.character);
-  const activeCharacter = origin ?? initialCharacter;
+  const [initialCharacter] = useState(() => templateMode ? createDefaultCharacter() : active.character);
+  const activeCharacter = templateMode ? initialCharacter : origin ?? initialCharacter;
   const budgetTarget = useMemo<BudgetEditTarget>(() => resourceContext
     ? { kind: 'resource', target: { resourceId: resourceContext.resource.id, kind: resourceContext.kind, powerId: resourceContext.effectId } }
     : { kind: equipmentMode ? 'equipment' : 'power', powerId: isNewPower ? undefined : existingPower?.id }, [resourceContext, equipmentMode, existingPower?.id, isNewPower]);
@@ -485,7 +488,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
       if (!confirmed) return;
     }
 
-    if (!resourceContext && !origin) return;
+    if (!templateMode && !resourceContext && !origin) return;
     onSave(cleanPower);
   }
 
@@ -1085,7 +1088,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
               contextLabel={fabContextLabel}
             />
           </div>
-          <BudgetPreview characterId={originId} target={budgetTarget} power={power} rules={validationRules} />
+          {!templateMode && <BudgetPreview characterId={originId} target={budgetTarget} power={power} rules={validationRules} />}
           {saveError && <div role="alert" className="pl-violation-banner">{t(saveError)}</div>}
           {resourceContext && <div className="pl-violation-banner resource-context-banner">
             <Info size={13} /><span>{t('resources.builder.context', { name: resourceContext.resource.name || t('resources.unnamed'), strength: getCharacterStrength(character), level: powerLevel })}{resourceContext.resource.type === 'headquarters' ? ` · ${t('resources.hq.effectCost', { cost: equipmentEPCost, limit: powerLevel * 2 })}` : ''}</span>

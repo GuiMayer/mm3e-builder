@@ -290,7 +290,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         onClearDraft={handleClearDraft}
         onExportDraft={handleExportDraft}
         onImportDraft={() => draftInputRef.current?.click()}
-        actionsDisabled={activeView === 'references'}
+        actionsDisabled={activeView !== 'sheet' && activeView !== 'resources'}
         canClear={activeView === 'sheet'}
         canExportDocuments={activeView === 'sheet'}
       />
@@ -347,7 +347,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         <button className="menubar-btn" onClick={handleClearCharacter} disabled={activeView !== 'sheet'} title={t('menu.clear')} aria-label={t('menu.clear')}>
           <Eraser size={18} /> <span>{t('menu.clear')}</span>
         </button>
-        <button className="menubar-btn" onClick={activeView === 'resources' ? handleExportResources : exportCharacter} disabled={activeView === 'references'} title={t('menu.export')} aria-label={t('menu.export')}>
+        <button className="menubar-btn" onClick={activeView === 'resources' ? handleExportResources : exportCharacter} disabled={activeView !== 'sheet' && activeView !== 'resources'} title={t('menu.export')} aria-label={t('menu.export')}>
           <Download size={18} /> <span>{t('menu.export')}</span>
         </button>
         <button className="menubar-btn menubar-btn--excel" onClick={exportExcel} disabled={activeView !== 'sheet'} title={t('menu.exportExcel')} aria-label={t('menu.exportExcel')}>
@@ -366,7 +366,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
             : <FileText size={18} />}
           <span>{isGeneratingPreview ? t('pdf.generating') : t('menu.exportPdf')}</span>
         </button>
-        <button className="menubar-btn" onClick={() => activeView === 'resources' ? resourceInputRef.current?.click() : fileInputRef.current?.click()} disabled={activeView === 'references'} title={t('menu.import')} aria-label={t('menu.import')}>
+        <button className="menubar-btn" onClick={() => activeView === 'resources' ? resourceInputRef.current?.click() : fileInputRef.current?.click()} disabled={activeView !== 'sheet' && activeView !== 'resources'} title={t('menu.import')} aria-label={t('menu.import')}>
           <Upload size={18} /> <span>{t('menu.import')}</span>
         </button>
         <input

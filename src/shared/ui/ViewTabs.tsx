@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Archive, Library } from 'lucide-react';
+import { Archive, Library, Grid2X2 } from 'lucide-react';
 import type { AppView } from '../../app/App';
 
 interface ViewTabsProps {
@@ -30,6 +30,15 @@ export function ViewTabs({ activeView, onViewChange }: ViewTabsProps) {
       >
         <Archive size={13} />
         {t('nav.resources')}
+      </button>
+      <button
+        className={`menubar-tab ${activeView === 'power-library' ? 'menubar-tab--active' : ''}`}
+        onClick={() => onViewChange('power-library')}
+        aria-label={t('nav.powerLibrary')}
+      >
+        <Grid2X2 size={13} />
+        <span className="menubar-tab-label--full">{t('nav.powerLibrary')}</span>
+        <span className="menubar-tab-label--compact">{t('nav.powerLibraryCompact')}</span>
       </button>
       <button
         className={`menubar-tab ${activeView === 'references' ? 'menubar-tab--active' : ''}`}

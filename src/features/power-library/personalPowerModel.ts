@@ -33,7 +33,7 @@ export function searchPersonalModels(models: PersonalPowerModel[], query: string
 }
 
 const coefficient = z.number().int().min(1).max(Number.MAX_SAFE_INTEGER);
-const policySchema = z.object({ mode: z.enum(['fixed', 'scalable']), multiplier: coefficient,
+const policySchema = z.object({ mode: z.enum(['fixed', 'scalable']), multiplier: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER),
   modifierRanks: z.record(z.string(), coefficient), affectedRanks: z.record(z.string(), coefficient), senseRanks: z.record(z.string(), coefficient) });
 const modelSchema = z.object({ id: z.string().min(1), name: z.string().trim().min(1).max(200), description: z.string().max(50000),
   createdAt: z.iso.datetime(), updatedAt: z.iso.datetime(), power: CharacterPowerSchema, policies: z.record(z.string(), policySchema) });
@@ -96,6 +96,19 @@ export function createPersonalModel(power: ICharacterPower): PersonalPowerModel 
   const now = new Date().toISOString();
   return { id: createId(), name: power.name, description: '', power: copy, policies: reconcileRankPolicies(copy), createdAt: now, updatedAt: now };
 }
+
+/** Composition edits invalidate policies whose purchase/effect identity has changed. */
+export function updateModelComposition(model: PersonalPowerModel, power: ICharacterPower): PersonalPowerModel {
+  const policies = reconcileRankPolicies(power, model.policies);
+  for (const component of powerComponents(power)) {
+    const old = powerComponents(model.power).find(item => item.id === component.id);
+    if (old && old.effectId !== component.effectId) policies[component.id] = reconcileRankPolicies({ ...power, components: [component], alternateEffects: [] })[component.id];
+    else if (JSON.stringify(old?.senseTraits) !== JSON.stringify(component.senseTraits)) policies[component.id].senseRanks = {};
+    const partialIds = new Set(component.modifiers.filter(item => item.affectedRanks !== undefined || typeof item.options?.affectedRanks === 'number').map(item => item.instanceId!));
+    policies[component.id].affectedRanks = Object.fromEntries(Object.entries(policies[component.id].affectedRanks).filter(([id]) => partialIds.has(id)));
+  }
+  return { ...model, power, policies };
+}
 export function duplicatePersonalModel(model: PersonalPowerModel): PersonalPowerModel {
   const copy = createPersonalModel(model.power);
   const originals = powerComponents(model.power);
@@ -107,6 +120,14 @@ export function duplicatePersonalModel(model: PersonalPowerModel): PersonalPower
     copy.policies[component.id] = { ...structuredClone(policy), modifierRanks: remap(policy.modifierRanks), affectedRanks: remap(policy.affectedRanks) };
   });
   return copy;
+}
+
+export function prepareModelImport(existing: readonly PersonalPowerModel[], incoming: readonly PersonalPowerModel[], conflicts: 'copy' | 'keep' | 'replace'): PersonalPowerModel[] {
+  return incoming.flatMap(model => {
+    const collision = existing.some(item => item.id === model.id);
+    if (collision && conflicts === 'keep') return [];
+    return [collision && conflicts === 'copy' ? duplicatePersonalModel(model) : structuredClone(model)];
+  });
 }
 
 /** Rank choices and authoring policies never enter the instantiated character power. */
