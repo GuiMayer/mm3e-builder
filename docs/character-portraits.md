@@ -100,10 +100,12 @@ Sem esse campo, o retrato mostra a imagem inteira com bordas.
   navegador pode ser negada, e a limpeza manual do site remove as imagens.
 - JPEG, PNG e WebP: limite de 10 MiB de arquivo e 20 megapixels. Imagens são
   reduzidas a no máximo 1024 pixels no maior lado; miniaturas usam até 256 pixels.
-- O retrato acompanha toda a altura do cabeçalho no desktop, incluindo os
-  indicadores de NP, pontos heroicos, Power Points e a linha de detalhes, mostrando
-  a imagem conforme o encaixe escolhido. No celular, usa espaço vertical
-  de 120 × 160 pixels acima dos campos. A prévia também pode ser ampliada.
+- O retrato acompanha a altura do cabeçalho no desktop até o limite de proporção
+  largura:altura de 3:4. Se os campos ou detalhes aumentarem a seção, a moldura
+  permanece alinhada ao topo e sua altura não ultrapassa 4/3 da largura, evitando
+  alongamento excessivo em tablets. No celular, usa espaço de 120 × 160 pixels
+  acima dos campos. A prévia do editor acompanha a moldura limitada e pode ser
+  ampliada mantendo sua proporção; os três modos de encaixe continuam disponíveis.
 - O histórico de desfazer/refazer da ficha continua cobrindo o link como campo
   do cabeçalho; arquivos locais são operações independentes no banco de imagens.
 
