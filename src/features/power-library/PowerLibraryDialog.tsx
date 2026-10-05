@@ -1,4 +1,4 @@
-import { useDeferredValue, useId, useRef, useState } from 'react';
+import { lazy, Suspense, useDeferredValue, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Search, X } from 'lucide-react';
 import { POWER_LIBRARY_INDEX, POWER_PROFILES, loadPowerProfile, searchLibrary, type LibraryEntry } from '../../data/power-library';
@@ -20,19 +20,25 @@ import { applyPowerTemplate, canApplyPowerTemplate } from './powerTemplateApplic
 import { instantiatePowerTemplate } from './powerTemplateInstantiation';
 import { libraryText, type PowerLibraryTarget, type PowerTemplate } from './types';
 import './powerLibrary.css';
+import './personalLibrary.css';
+import { PowerCompositionPreview } from './PowerCompositionPreview';
 
 interface Props {
-  power: ICharacterPower; target: PowerLibraryTarget; strength: number; costUnit: 'PP' | 'EP';
-  onApply: (recipe: ICharacterPower, useName: boolean) => void; onClose: () => void;
+  power?: ICharacterPower; target?: PowerLibraryTarget; strength: number; costUnit: 'PP' | 'EP';
+  onApply?: (recipe: ICharacterPower, useName: boolean) => void; onClose?: () => void;
+  embedded?: boolean; onUse?: (recipe: ICharacterPower) => void; useDisabled?: boolean;
+  strengthForPower?: (recipe: ICharacterPower) => number;
 }
-export function PowerLibraryDialog({ power, target, strength, costUnit, onApply, onClose }: Props) {
+const PersonalModelPicker = lazy(() => import('./PersonalModelPicker').then(module => ({ default: module.PersonalModelPicker })));
+export function PowerLibraryDialog({ power, target, strength, costUnit, onApply, onClose, embedded, onUse, useDisabled, strengthForPower }: Props) {
   const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage ?? i18n.language;
   const effects = useLocalizedData(POWER_DEFS) as IPowerEffect[];
   const contentRef = useRef<HTMLDivElement>(null);
   const request = useRef(0);
   const titleId = useId();
-  useDialogFocus(contentRef, true, onClose);
+  useDialogFocus(contentRef, !embedded, () => onClose?.());
+  const [source, setSource] = useState<'profiles' | 'models'>('profiles');
   const [query, setQuery] = useState('');
   const [profile, setProfile] = useState('');
   const [selected, setSelected] = useState<PowerTemplate | null>(null);
@@ -53,8 +59,8 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
       setUseName(false); setStatus('idle');
     } catch { if (request.current === serial) setStatus('error'); }
   };
-  const compatible = draft && canApplyPowerTemplate(power, draft, target);
-  const pricing = draft ? calculatePowerPricing(draft, POWER_DEFS, MODIFIER_DEFS, strength) : null;
+  const compatible = draft && (power && target ? canApplyPowerTemplate(power, draft, target) : true);
+  const pricing = draft ? calculatePowerPricing(draft, POWER_DEFS, MODIFIER_DEFS, strengthForPower?.(draft) ?? strength) : null;
   const allComponents = draft ? [...draft.components, ...draft.alternateEffects.flatMap(ae => ae.components)] : [];
   const originalComponents = selected ? [...selected.components, ...(selected.alternateEffects ?? []).flatMap(ae => ae.components)] : [];
   const missingFields = allComponents.some((component, index) => {
@@ -66,14 +72,14 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
         return !definition || (definition.requiresSense && !trait.senseType) || (definition.requiresDetail && !trait.detail?.trim());
       })));
   });
-  const applied = compatible && draft ? applyPowerTemplate(power, draft, target, useName) : null;
+  const applied = compatible && draft && power && target ? applyPowerTemplate(power, draft, target, useName) : null;
   const finalPricing = applied ? calculatePowerPricing(applied, POWER_DEFS, MODIFIER_DEFS, strength) : null;
   const cost = (value: NonNullable<typeof pricing>) => costUnit === 'EP' ? value.equipmentTotal : value.total;
   const update = (id: string, values: Partial<ICharacterPowerComponent>) => setDraft(previous => previous && ({ ...previous,
     components: previous.components.map(component => component.id === id ? { ...component, ...values } : component),
     alternateEffects: previous.alternateEffects.map(ae => ({ ...ae, components: ae.components.map(component => component.id === id ? { ...component, ...values } : component) })),
   }));
-  const targetName = target.kind === 'alternate'
+  const targetName = !target || !power ? t('personalLibrary.profilesHelp') : target.kind === 'alternate'
     ? power.alternateEffects.find(ae => ae.id === target.alternateId)?.name || t('builder.addAlternate')
     : target.alternateId ? t('builder.addLinkedEffect') : power.components[0]?.id === target.componentId ? t('builder.baseEffect') : t('builder.addLinkedEffect');
   const apply = () => {
@@ -83,12 +89,15 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
       const option = choice.options.find(item => item.value === value);
       return option ? `${libraryText(choice.label, language)}: ${libraryText(option.label, language)}` : '';
     })).filter(Boolean);
-    onApply({ ...draft, notes: [draft.notes, ...choices].join('\n') }, useName);
+    const recipe = { ...draft, notes: [draft.notes, ...choices].join('\n') };
+    if (embedded) onUse?.(recipe); else onApply?.(recipe, useName);
   };
 
-  return <div className="power-library-overlay" onClick={onClose}>
-    <div ref={contentRef} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1} className={`power-library-dialog ${draft || status !== 'idle' ? 'power-library-dialog--detail' : ''}`} onClick={event => event.stopPropagation()}>
-      <header><div><h2 id={titleId}>{t('powerLibrary.title')}</h2><p>{t('powerLibrary.target', { name: targetName })}</p></div><button type="button" aria-label={t('builder.close')} onClick={onClose}><X size={20}/></button></header>
+  return <div className={embedded ? 'power-library-embedded' : 'power-library-overlay'} onClick={embedded ? undefined : onClose}>
+    <div ref={contentRef} role={embedded ? undefined : 'dialog'} aria-modal={embedded ? undefined : true} aria-labelledby={titleId} tabIndex={-1} className={`power-library-dialog ${draft || status !== 'idle' ? 'power-library-dialog--detail' : ''}`} onClick={event => event.stopPropagation()}>
+      <header><div><h2 id={titleId}>{t(embedded ? 'personalLibrary.profiles' : 'powerLibrary.title')}</h2><p>{embedded ? targetName : t('powerLibrary.target', { name: targetName })}</p></div>{!embedded && <button type="button" aria-label={t('builder.close')} onClick={onClose}><X size={20}/></button>}</header>
+      {!embedded && <nav className="personal-library-tabs" aria-label={t('personalLibrary.sources')}><button type="button" aria-pressed={source === 'profiles'} onClick={() => setSource('profiles')}>{t('personalLibrary.profiles')}</button><button type="button" aria-pressed={source === 'models'} onClick={() => setSource('models')}>{t('personalLibrary.models')}</button></nav>}
+      {source === 'models' && power && target ? <Suspense fallback={<p>{t('common.loading')}</p>}><PersonalModelPicker power={power} target={target} strength={strength} costUnit={costUnit} onApply={(recipe, name) => onApply?.(recipe, name)}/></Suspense> : <>
       <div className="power-library-filters"><label className="power-library-search"><Search size={17}/><input autoFocus value={query} placeholder={t('powerLibrary.search')} aria-label={t('powerLibrary.search')} onChange={event => setQuery(event.target.value)}/></label>
         <select className="app-select" aria-label={t('powerLibrary.profile')} value={profile} onChange={event => setProfile(event.target.value)}><option value="">{t('powerLibrary.allProfiles')}</option>{POWER_PROFILES.filter(item => POWER_LIBRARY_INDEX.some(entry => entry.profileId === item.id)).map(item => <option value={item.id} key={item.id}>{libraryText(item.name, language)}</option>)}</select></div>
       <div className="power-library-workspace">
@@ -125,15 +134,17 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
                 <details><summary>{t('powerLibrary.effectInfo')}</summary><EffectReference effect={definition} component={component} t={t}/></details>
               </article>;
             })}
+            {embedded && <details className="personal-alternate"><summary>{t('personalLibrary.fullReference')}</summary><PowerCompositionPreview power={draft} strength={strengthForPower?.(draft) ?? strength} costUnit={costUnit}/></details>}
             {draft.alternateEffects.length > 0 && <p>{t('powerLibrary.includesAlternates', { count: draft.alternateEffects.length })}</p>}
-            <label className="power-library-name-option"><input className="app-checkbox" type="checkbox" checked={useName} onChange={event => setUseName(event.target.checked)}/>{t('powerLibrary.useName')}</label>
-            <p className="power-library-impact">{t(draft.alternateEffects.length ? 'powerLibrary.replaceArray' : target.kind === 'alternate' ? 'powerLibrary.replaceAlternate' : 'powerLibrary.replaceComponent')}</p>
+            {!embedded && <><label className="power-library-name-option"><input className="app-checkbox" type="checkbox" checked={useName} onChange={event => setUseName(event.target.checked)}/>{t('powerLibrary.useName')}</label>
+            <p className="power-library-impact">{t(draft.alternateEffects.length ? 'powerLibrary.replaceArray' : target?.kind === 'alternate' ? 'powerLibrary.replaceAlternate' : 'powerLibrary.replaceComponent')}</p></>}
             {!compatible && <p role="alert">{t('powerLibrary.incompatible')}</p>}
             {missingFields && <p role="status">{t('powerLibrary.requiredChoices')}</p>}
-            <footer><div><strong>{cost(pricing)} {costUnit}</strong>{finalPricing && <small>{t('powerLibrary.resultTotal', { cost: cost(finalPricing), unit: costUnit })}</small>}</div><button type="button" className="power-library-apply" disabled={!compatible || missingFields || pricing.diagnostics.length > 0 || !!selected.requiresCharacterChanges} onClick={apply}>{t(draft.alternateEffects.length ? 'powerLibrary.applyArray' : 'powerLibrary.apply')}</button></footer>
+            <footer><div><strong>{cost(pricing)} {costUnit}</strong>{finalPricing && <small>{t('powerLibrary.resultTotal', { cost: cost(finalPricing), unit: costUnit })}</small>}</div><button type="button" className="power-library-apply" disabled={useDisabled || !compatible || missingFields || pricing.diagnostics.length > 0 || !!selected.requiresCharacterChanges} onClick={apply}>{t(embedded ? 'personalLibrary.useCharacter' : draft.alternateEffects.length ? 'powerLibrary.applyArray' : 'powerLibrary.apply')}</button></footer>
           </> : status === 'idle' && <p>{t('powerLibrary.choose')}</p>}
         </section>
       </div>
+      </>}
     </div>
   </div>;
 }

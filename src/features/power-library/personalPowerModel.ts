@@ -25,6 +25,13 @@ export const PERSONAL_LIBRARY_MAX_BYTES = 10 * 1024 * 1024;
 export const powerComponents = (power: ICharacterPower): ICharacterPowerComponent[] =>
   [...power.components, ...power.alternateEffects.flatMap(alternate => alternate.components)];
 
+export function searchPersonalModels(models: PersonalPowerModel[], query: string, language: string): PersonalPowerModel[] {
+  const normalize = (value: string) => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase();
+  const words = normalize(query).trim().split(/\s+/).filter(Boolean);
+  return models.filter(model => words.every(word => normalize([model.name, model.description, model.power.notes, ...(model.power.descriptors ?? [])].join(' ')).includes(word)))
+    .sort((a, b) => a.name.localeCompare(b.name, language));
+}
+
 const coefficient = z.number().int().min(1).max(Number.MAX_SAFE_INTEGER);
 const policySchema = z.object({ mode: z.enum(['fixed', 'scalable']), multiplier: coefficient,
   modifierRanks: z.record(z.string(), coefficient), affectedRanks: z.record(z.string(), coefficient), senseRanks: z.record(z.string(), coefficient) });

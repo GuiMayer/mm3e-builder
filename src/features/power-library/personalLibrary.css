@@ -1,0 +1,49 @@
+.personal-library { max-width: 1800px; margin: 0 auto; }
+.personal-library > h1 { margin: 0 0 16px; font-size: 1.3rem; }
+.personal-library-tabs, .personal-toolbar, .personal-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.personal-library-tabs { padding: 10px 16px; border-bottom: 1px solid var(--c-border); }
+.personal-library-tabs button, .personal-toolbar button, .personal-actions button { border: 1px solid var(--c-border); background: var(--c-surface-elevated); color: var(--c-text); border-radius: var(--r-md); padding: 10px 14px; cursor: pointer; }
+.personal-library-tabs button[aria-pressed="true"] { color: var(--c-primary); border-color: var(--c-primary); background: var(--c-primary-muted); }
+.personal-library button:disabled { opacity: .5; cursor: default; }
+.personal-toolbar { margin: 16px 0; }
+.personal-toolbar select { max-width: 280px; }
+.personal-picker { display: flex; flex-direction: column; flex: 1; min-height: 0; padding: 16px; gap: 12px; }
+.personal-picker-workspace { display: grid; grid-template-columns: minmax(240px, .8fr) minmax(0, 1.2fr); min-height: 0; flex: 1; }
+.personal-library .personal-picker-workspace { height: min(780px, 78dvh); border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface); }
+.personal-library .personal-picker-workspace > * { min-height: 0; }
+.personal-rank-inputs { display: grid; gap: 8px; margin: 16px 0; }
+.personal-rank-inputs label { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: .85rem; }
+.personal-rank-inputs .number-input { max-width: 160px; }
+.personal-cost { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.personal-reference-link, .personal-modifier-link { border: 0; background: transparent; color: var(--c-primary); text-align: left; cursor: pointer; padding: 4px 0; font: inherit; }
+.personal-modifier-link { font-size: .8rem; padding: 6px 8px; background: var(--c-surface); border-radius: var(--r-sm); }
+.personal-notes { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; font-size: .85rem; }
+.personal-alternate { margin: 12px 0; }
+.personal-alternate > summary { cursor: pointer; padding: 8px 0; color: var(--c-primary); }
+.personal-actions { margin: 16px 0; }
+.power-library-embedded .power-library-dialog { width: 100%; height: min(850px, 82dvh); }
+.personal-editor { width: min(920px, 100%); max-height: 92dvh; overflow: auto; padding: 20px; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-lg); }
+.personal-editor > header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.personal-editor h2 { font-size: 1.15rem; }
+.personal-editor > label { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+.personal-editor input[type="text"], .personal-editor textarea { width: 100%; padding: 10px; border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface-elevated); color: var(--c-text); font: inherit; }
+.personal-editor textarea { min-height: 80px; resize: vertical; }
+.personal-policy { padding: 12px; border: 1px solid var(--c-border); border-radius: var(--r-md); margin: 12px 0; }
+.personal-policy > label { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.personal-policy .number-input { width: 130px; }
+.personal-policy details > summary { padding: 8px 0; cursor: pointer; }
+.personal-policy-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0; }
+.personal-policy-row label { flex: 1; display: flex; align-items: center; gap: 8px; font-size: .85rem; }
+.personal-editor footer { display: flex; justify-content: flex-end; gap: 8px; padding-top: 16px; }
+@media (max-width: 700px) {
+  .personal-library-tabs { padding: 8px 0; gap: 5px; }
+  .personal-library-tabs button { padding: 10px 8px; flex: 1; font-size: .8rem; }
+  .personal-picker-workspace { display: flex; }
+  .personal-picker-workspace .power-library-preview { display: none; }
+  .personal-picker--detail .personal-picker-workspace .power-library-results { display: none; }
+  .personal-picker--detail .personal-picker-workspace .power-library-preview { display: block; }
+  .personal-library .personal-picker-workspace { height: 72dvh; }
+  .personal-toolbar select { max-width: none; width: 100%; }
+  .personal-editor { max-height: 100dvh; border-radius: 0; padding: 14px; }
+  .power-library-embedded .power-library-dialog { height: 76dvh; border-radius: var(--r-md); }
+}
