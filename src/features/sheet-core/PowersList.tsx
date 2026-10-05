@@ -1,3 +1,4 @@
+import { PowerEnhancementsButton } from '../trait-modifiers/PowerEnhancementsButton';
 import { useCharactersStore } from '../../store/charactersStore';
 import { replaceCharacterPower } from '../../shared/lib/powerEditing';
 import { lazy, Suspense, useState } from 'react';
@@ -152,6 +153,7 @@ export function PowersList() {
               )}
 
               <div className="power-card-actions">
+                <PowerEnhancementsButton key={`${characterId}:${power.id}`} sourceKey={`power:${power.id}`} onEdit={() => openEdit(i)} />
                 <Tooltip content={t('powers.editTooltip')}>
                   <button onClick={() => openEdit(i)} className="power-action-btn">
                     <Edit3 size={14} /> {t('common.edit')}

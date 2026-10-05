@@ -21,7 +21,7 @@ const EMPTY_RESOURCE_LINKS: ICharacterResourceLink[] = [];
 
 export function ResourcesPanel({ onEditResource }: { onEditResource: (target: ResourceEditTarget) => void }) {
   const { t, i18n } = useTranslation();
-  const { character } = useActiveCharacter();
+  const { character, characterId } = useActiveCharacter();
   const { setResourceLinks } = useCharacterActions();
   const resources = useResourcesStore((state) => state.resources);
   const { equipmentEPLimit, totalEPUsed, isOverEquipmentLimit, resourcePPUsed } = useCalculatedPP();
@@ -100,7 +100,7 @@ export function ResourcesPanel({ onEditResource }: { onEditResource: (target: Re
                 <Tooltip content={t('resources.editInLibrary')}><button className="resources-panel__edit" onClick={() => onEditResource({ resourceId: resource.id, kind: 'traits' })} aria-label={t('resources.editResourceNamed', { name: resource.name || t('resources.unnamed') })}><Edit3 size={14}/></button></Tooltip>
                 <button className="resources-panel__remove" onClick={() => removeLink(link.id)} title={t('common.remove')} aria-label={t('common.remove')}><Trash2 size={14} /></button>
               </div>
-              <div className="resources-panel__powers">{getResourcePowers(resource).map(({ power, target }) => <ResourcePowerSummary key={power.id} power={power} label={target.kind === 'movement' ? t('resources.movement') : undefined} onEdit={() => onEditResource(target)}/>)}</div>
+              <div className="resources-panel__powers">{getResourcePowers(resource).map(({ power, target }) => <ResourcePowerSummary key={`${characterId}:${power.id}`} usageSourceKey={`resource:${resource.id}:${power.id}`} power={power} label={target.kind === 'movement' ? t('resources.movement') : undefined} onEdit={() => onEditResource(target)}/>)}</div>
               <details className="resources-panel__ownership"><summary>{t('resources.ownership')}</summary>
                 <p>{t('resources.fullCost', { cost: charge.total, unit: charge.unit })}{charge.alternate ? ` · ${t('resources.alternatePrice')}` : ''}</p>
                 {!isDeviceResource(resource) && <>

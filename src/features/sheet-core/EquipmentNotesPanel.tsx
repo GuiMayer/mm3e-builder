@@ -1,3 +1,4 @@
+import { PowerEnhancementsButton } from '../trait-modifiers/PowerEnhancementsButton';
 import { useCharactersStore } from '../../store/charactersStore';
 import { replaceCharacterPower } from '../../shared/lib/powerEditing';
 import { lazy, Suspense, useState } from 'react';
@@ -176,6 +177,7 @@ export function EquipmentNotesPanel() {
                 )}
 
                 <div className="equipment-card-actions">
+                  <PowerEnhancementsButton key={`${characterId}:${item.id}`} sourceKey={`equipment:${item.id}`} onEdit={() => openEdit(i)} />
                   <button onClick={() => openEdit(i)} className="equipment-action-btn">
                     <Edit3 size={14} /> {t('common.edit')}
                   </button>

@@ -1,3 +1,4 @@
+import { PowerEnhancementsButton } from '../trait-modifiers/PowerEnhancementsButton';
 import { useState } from 'react';
 import { Edit3, Info, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +9,7 @@ import { PowerReferenceDialog, type PowerReferenceTarget } from '../sheet-core/P
 import { buildPowerReferences, localizeReference } from '../sheet-core/powerReference';
 import './resourcePowerSummary.css';
 
-export function ResourcePowerSummary({ power, onEdit, onRemove, label }: { power: ICharacterPower; onEdit: () => void; onRemove?: () => void; label?: string }) {
+export function ResourcePowerSummary({ power, onEdit, onRemove, label, usageSourceKey }: { usageSourceKey?: string; power: ICharacterPower; onEdit: () => void; onRemove?: () => void; label?: string }) {
   const { t, i18n } = useTranslation();
   const [target, setTarget] = useState<PowerReferenceTarget | null>(null);
   const hint = (description?: string) => `${description || t('rulesInfo.missing')}\n\n${t('rulesInfo.clickForDetails')}`;
@@ -23,6 +24,7 @@ export function ResourcePowerSummary({ power, onEdit, onRemove, label }: { power
     <div className="resource-power__header">
       <Tooltip content={hint(summary(power))}><button type="button" className="resource-power__name" aria-haspopup="dialog" onClick={() => setTarget({ kind: 'power', power })}>{label && power.name && <span>{label}: </span>}{power.name || label || t('resources.unnamedEffect')} <Info size={13}/></button></Tooltip>
       <div className="resource-power__actions">
+        {usageSourceKey && <PowerEnhancementsButton sourceKey={usageSourceKey} onEdit={onEdit} />}
         <Tooltip content={t('resources.editPower')}><button type="button" className="resource-power__edit" aria-label={t('resources.editPowerNamed', { name: power.name || label || t('resources.unnamedEffect') })} onClick={onEdit}><Edit3 size={15}/></button></Tooltip>
         {onRemove && <Tooltip content={t('common.remove')}><button type="button" className="resource-power__edit" aria-label={t('resources.removePowerNamed', { name: power.name || t('resources.unnamedEffect') })} onClick={onRemove}><Trash2 size={15}/></button></Tooltip>}
       </div>

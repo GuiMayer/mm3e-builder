@@ -1,6 +1,6 @@
 import { lazy, Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Pencil, Trash2, Zap } from 'lucide-react';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
 import type { ICharacterPower, ITraitModifier, ITraitTarget } from '../../entities/types';
 import { useTraitValues } from '../../shared/hooks/useTraitValues';
 import { useCharactersStore } from '../../store/charactersStore';
@@ -18,6 +18,10 @@ import { Button } from '../../shared/ui/Button';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { calculateComponentPricing } from '../../shared/lib/mathEngine';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
+import { getTraitSourceEntries } from '../../shared/lib/traitSources';
+import { circumstanceBonus } from '../../shared/lib/traitValues';
+import { TraitSourceList } from './TraitSourceList';
+import { PowerReferenceDialog, type PowerReferenceTarget } from '../sheet-core/PowerReferenceDialog';
 import './traitModifiers.css';
 
 const PowerBuilderOverlay = lazy(() => import('../power-builder/PowerBuilderOverlay').then(module => ({ default: module.PowerBuilderOverlay })));
@@ -29,9 +33,11 @@ export function TraitModifiersControl({ target, onAddLegacy }: { target: ITraitT
   const dialog = useAppDialog();
   const key = traitTargetKey(target);
   const modifiers = state.original.traitModifiers?.filter(item => traitTargetKey(item.target) === key) ?? [];
-  const contributions = state.contributions.filter(item => item.key === key);
+  const entries = getTraitSourceEntries(state.original, resources, target);
   const sources = getPowerSources(state.original, resources);
   const existing = sources.flatMap(source => powerBranches(source.power).flatMap(branch => branch.components.filter(component => component.effectId === 'enhanced-trait').map(component => ({ id: `${source.key}:${component.id}`, source, component }))));
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [reference, setReference] = useState<PowerReferenceTarget | null>(null);
   const [form, setForm] = useState<ITraitModifier | null>(null);
   const [kind, setKind] = useState<'circumstance' | 'power' | 'legacy'>('circumstance');
   const [existingId, setExistingId] = useState('');
@@ -91,31 +97,25 @@ export function TraitModifiersControl({ target, onAddLegacy }: { target: ITraitT
     }
     setEditor(null);
   }
-  const isAbility = target.kind === 'ability';
-  const addButton = <button type="button" className="trait-control__add" title={t('traits.add')} aria-label={`${t('traits.add')} · ${label}`} onClick={add}><Plus size={14} /></button>;
+  const count = entries.length + modifiers.length;
+  const enhancement = state.values.get(key) ?? 0;
   return <div className="trait-control">
-    {isAbility && <div className="trait-control__toolbar"><span>{t('traits.modifiers')}</span>{addButton}</div>}
-    {contributions.map(item => {
-      const editButton = <button type="button" aria-label={t('traits.editPower')} title={t('traits.editPower')} onClick={() => void openBuilder(sources.find(source => source.key === item.sourceKey), item.componentId)}><Pencil size={13} /></button>;
-      return <div className="trait-control__row" key={`${item.sourceKey}:${item.componentId}`}>
-        <Zap size={12} />
-        {isAbility ? <span className="trait-control__content"><strong className="trait-control__value">+{item.ranks}</strong><span className="trait-control__source">{item.name}</span><small className="trait-control__scope">{t('traits.enhancement')}</small></span> : <span title={`+${item.ranks} · ${item.name}`}>+{item.ranks} · {item.name}</span>}
-        {isAbility ? <div className="trait-control__actions">{editButton}</div> : editButton}
-      </div>;
-    })}
-    {contributions.some(item => item.equipment) && contributions.length > 1 && <small className="trait-warning">{t('traits.nonStackingHint')}</small>}
-    {modifiers.map(item => {
-      const value = `${item.value >= 0 ? '+' : ''}${item.value}`;
-      const source = item.source || t('traits.circumstance');
-      const scope = t(item.scope === 'check' ? 'traits.checkOnly' : 'traits.activeDefense');
-      const actions = <><button type="button" aria-label={t('common.edit')} title={t('common.edit')} onClick={() => { setKind('circumstance'); setForm({ ...item }); }}><Pencil size={13} /></button><button type="button" aria-label={t('common.remove')} title={t('common.remove')} onClick={() => modify(state.original.traitModifiers?.filter(modifier => modifier.id !== item.id))}><Trash2 size={13} /></button></>;
-      return <div className={`trait-control__row ${item.active ? '' : 'trait-control__row--inactive'}`} key={item.id}>
-        <input className="app-checkbox" type="checkbox" aria-label={t('traits.active')} checked={item.active} onChange={event => modify(state.original.traitModifiers?.map(modifier => modifier.id === item.id ? { ...modifier, active: event.target.checked } : modifier))} />
-        {isAbility ? <span className="trait-control__content"><strong className="trait-control__value">{value}</strong><span className="trait-control__source">{source}</span><small className="trait-control__scope">{scope}</small></span> : <span title={`${value} · ${source} · ${scope}`}>{value} · {source} · {scope}</span>}
-        {isAbility ? <div className="trait-control__actions">{actions}</div> : actions}
-      </div>;
-    })}
-    {!isAbility && addButton}
+    <button type="button" className="trait-control__add" title={`${t('traits.adjustments')} · ${label}`} aria-label={`${t('traits.adjustments')} · ${label}`} aria-haspopup="dialog" onClick={() => setDetailsOpen(true)}><Plus size={14} />{count > 0 && <span>{count}</span>}</button>
+    <Modal isOpen={detailsOpen && !form && !editor && !reference} onClose={() => setDetailsOpen(false)} title={`${t('traits.adjustments')} · ${label}`} compact>
+      <div className="trait-adjustments">
+        {target.kind === 'ability' && <div className="trait-adjustments__summary"><span>{t('traits.natural')}<strong>{state.original.abilities[target.key]}</strong></span><span>{t('traits.enhancements')}<strong>+{enhancement}</strong></span><span>{t('traits.effective')}<strong>{state.character.abilities[target.key]}</strong></span></div>}
+        <section><h3>{t('traits.enhancements')}</h3>{entries.length ? <TraitSourceList entries={entries} onEdit={(source, componentId) => void openBuilder(source, componentId)} onReference={source => setReference({ kind: 'power', power: source.power })} /> : <p className="trait-adjustments__empty">{t('traits.noEnhancements')}</p>}</section>
+        <section><h3>{t('traits.circumstances')} <span className="trait-adjustments__check">{t('traits.check')}: {circumstanceBonus(state.original, target) >= 0 ? '+' : ''}{circumstanceBonus(state.original, target)}</span></h3>
+          {modifiers.map(item => <div className={`trait-adjustments__circumstance ${item.active ? '' : 'trait-control__row--inactive'}`} key={item.id}>
+            <label><input className="app-checkbox" type="checkbox" aria-label={`${t('traits.active')} · ${item.source || t('traits.circumstance')}`} checked={item.active} onChange={event => modify(state.original.traitModifiers?.map(modifier => modifier.id === item.id ? { ...modifier, active: event.target.checked } : modifier))} /><strong>{item.value >= 0 ? '+' : ''}{item.value}</strong><span>{item.source || t('traits.circumstance')}<small>{t(item.scope === 'check' ? 'traits.checkOnly' : 'traits.activeDefense')}</small></span></label>
+            <div className="trait-adjustments__actions"><button type="button" aria-label={`${t('common.edit')} · ${item.source || t('traits.circumstance')}`} title={t('common.edit')} onClick={() => { setKind('circumstance'); setForm({ ...item }); }}><Pencil size={15} /></button><button type="button" aria-label={`${t('common.remove')} · ${item.source || t('traits.circumstance')}`} title={t('common.remove')} onClick={() => modify(state.original.traitModifiers?.filter(modifier => modifier.id !== item.id))}><Trash2 size={15} /></button></div>
+          </div>)}
+          {!modifiers.length && <p className="trait-adjustments__empty">{t('traits.noCircumstances')}</p>}
+        </section>
+        <Button variant="ghost" onClick={add}><Plus size={14} /> {t('traits.add')}</Button>
+      </div>
+    </Modal>
+    {reference && <PowerReferenceDialog target={reference} onClose={() => setReference(null)} />}
     <Modal isOpen={!!form} onClose={() => setForm(null)} title={`${t('traits.add')} · ${label}`} compact>{form && <div className="trait-editor">
       <label>{t('traits.kind')}<select disabled={modifiers.some(item => item.id === form.id)} value={kind} onChange={event => setKind(event.target.value as typeof kind)}><option value="circumstance">{t('traits.circumstance')}</option><option value="power">{t('traits.enhancement')}</option>{onAddLegacy && <option value="legacy">{t('traits.legacyBonus')}</option>}</select></label>
       {kind === 'circumstance' && <><label>{t('traits.value')}<NumberInput value={form.value} onChange={value => setForm({ ...form, value })} /></label><label>{t('traits.source')}<input value={form.source} onChange={event => setForm({ ...form, source: event.target.value })} /></label>{target.kind === 'defense' && (target.key === 'dodge' || target.key === 'parry') && <label>{t('traits.scope')}<select value={form.scope} onChange={event => setForm({ ...form, scope: event.target.value as ITraitModifier['scope'] })}><option value="check">{t('traits.checkOnly')}</option><option value="active-defense">{t('traits.activeDefense')}</option></select></label>}<small>{t('traits.circumstanceHint')}</small></>}
