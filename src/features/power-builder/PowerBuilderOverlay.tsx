@@ -35,6 +35,8 @@ import { Button } from '../../shared/ui/Button';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useCharactersStore } from '../../store/charactersStore';
+import { useResourcesStore } from '../../store/resourcesStore';
+import { getLibraryRecipeStrength } from '../power-library/libraryPricing';
 import { createDefaultCharacter } from '../../entities/characterDefaults';
 import { BudgetPreview } from './components/BudgetPreview';
 import type { BudgetEditTarget } from './budgetProjection';
@@ -101,6 +103,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
 
   // Read character and validation rules from stores
   const active = useActiveCharacter();
+  const resources = useResourcesStore(state => state.resources);
   const [originId] = useState(() => sourceCharacterId ?? active.characterId);
   const origin = useCharactersStore(state => state.tabs.find(tab => tab.id === originId)?.character);
   const [initialCharacter] = useState(() => templateMode ? createDefaultCharacter() : active.character);
@@ -1152,6 +1155,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
 
       {libraryTarget && <Suspense fallback={null}><PowerLibraryDialog
         power={power} target={libraryTarget} strength={getCharacterStrength(character)} costUnit={costUnit}
+        strengthForPower={recipe => getLibraryRecipeStrength(character, power, recipe, libraryTarget, resources)}
         onClose={() => setLibraryTarget(null)}
         onApply={(recipe, useName) => {
           const next = applyPowerTemplate(power, recipe, libraryTarget, useName);

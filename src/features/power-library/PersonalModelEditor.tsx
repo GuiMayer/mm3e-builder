@@ -17,8 +17,9 @@ export function PersonalModelEditor({ model, onChange, onComposition, onSave, on
   const { t, i18n } = useTranslation();
   const ref = useRef<HTMLDivElement>(null); const titleId = useId();
   const [nameError, setNameError] = useState(false);
+  const [rankError, setRankError] = useState(false);
   useDialogFocus(ref, true, onClose);
-  const update = (id: string, values: Partial<ComponentRankPolicy>) => onChange({ ...model, policies: { ...model.policies, [id]: { ...model.policies[id], ...values } } });
+  const update = (id: string, values: Partial<ComponentRankPolicy>) => { setRankError(false); onChange({ ...model, policies: { ...model.policies, [id]: { ...model.policies[id], ...values } } }); };
   const coefficientRow = (componentId: string, kind: 'modifierRanks' | 'affectedRanks' | 'senseRanks', id: string, label: string) => {
     const values = model.policies[componentId][kind]; const coefficient = values[id];
     return <div className="personal-policy-row" key={`${kind}:${id}`}><label><input type="checkbox" className="app-checkbox" checked={coefficient !== undefined} onChange={event => {
@@ -52,7 +53,11 @@ export function PersonalModelEditor({ model, onChange, onComposition, onSave, on
       </section>;
     })}
     <details><summary>{t('powerLibrary.preview')}</summary><PowerCompositionPreview power={model.power}/></details>
-    {(error || nameError) && <p role="alert">{t(nameError ? 'personalLibrary.invalidName' : error!)}</p>}
-    <footer><Button variant="ghost" onClick={onClose}>{t('common.cancel')}</Button><Button onClick={() => { if (!model.name.trim() || model.name.trim().length > 200) setNameError(true); else onSave(); }}>{t('common.save')}</Button></footer>
+    {(error || nameError || rankError) && <p role="alert">{t(nameError ? 'personalLibrary.invalidName' : rankError ? 'personalLibrary.invalidRank' : error!)}</p>}
+    <footer><Button variant="ghost" onClick={onClose}>{t('common.cancel')}</Button><Button onClick={() => {
+      if (!model.name.trim() || model.name.trim().length > 200) { setNameError(true); return; }
+      if (Object.values(model.policies).some(policy => !Number.isSafeInteger(policy.multiplier) || policy.multiplier < 0 || [...Object.values(policy.modifierRanks), ...Object.values(policy.affectedRanks), ...Object.values(policy.senseRanks)].some(value => !Number.isSafeInteger(value) || value < 1))) { setRankError(true); return; }
+      onSave();
+    }}>{t('common.save')}</Button></footer>
   </div></div>;
 }

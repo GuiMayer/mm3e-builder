@@ -10,7 +10,7 @@ interface LibraryState {
 }
 function read() {
   let source: string | null = null;
-  try { source = localStorage.getItem(PERSONAL_LIBRARY_KEY); return { models: source ? parsePersonalLibrary(source) : [], source, error: null }; }
+  try { source = localStorage.getItem(PERSONAL_LIBRARY_KEY); return { models: source !== null ? parsePersonalLibrary(source) : [], source, error: null }; }
   catch { return { models: [], source, error: 'personalLibrary.readError' }; }
 }
 export const usePersonalLibraryStore = create<LibraryState>()((set, get) => {

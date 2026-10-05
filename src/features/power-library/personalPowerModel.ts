@@ -122,11 +122,14 @@ export function duplicatePersonalModel(model: PersonalPowerModel): PersonalPower
   return copy;
 }
 
-export function prepareModelImport(existing: readonly PersonalPowerModel[], incoming: readonly PersonalPowerModel[], conflicts: 'copy' | 'keep' | 'replace'): PersonalPowerModel[] {
+export function prepareModelImport(existing: readonly PersonalPowerModel[], incoming: readonly PersonalPowerModel[], conflicts: 'copy' | 'keep' | 'replace', copyName: (name: string) => string = name => name): PersonalPowerModel[] {
   return incoming.flatMap(model => {
     const collision = existing.some(item => item.id === model.id);
     if (collision && conflicts === 'keep') return [];
-    return [collision && conflicts === 'copy' ? duplicatePersonalModel(model) : structuredClone(model)];
+    if (collision && conflicts === 'copy') {
+      const copy = duplicatePersonalModel(model); copy.name = copyName(model.name); copy.power.name = copy.name; return [copy];
+    }
+    return [structuredClone(model)];
   });
 }
 

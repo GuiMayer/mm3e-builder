@@ -1,12 +1,14 @@
 import { lazy, Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { ICharacterPower } from '../../entities/types';
+import type { ICharacterPower, ITraitTarget } from '../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { SENSE_TRAITS } from '../../data/senseTraits';
 import { calculatePowerPricing } from '../../shared/lib/mathEngine';
+import { getAffectedRanks } from '../../shared/lib/componentRanks';
 import { buildPowerReferences } from '../sheet-core/powerReference';
 import type { PowerReferenceTarget } from '../sheet-core/PowerReferenceDialog';
 import { NumberInput } from '../../shared/ui/NumberInput';
+import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
 import { powerComponents, type PersonalPowerModel } from './personalPowerModel';
 
 const PowerReferenceDialog = lazy(() => import('../sheet-core/PowerReferenceDialog').then(module => ({ default: module.PowerReferenceDialog })));
@@ -26,16 +28,36 @@ export function ModelRankInputs({ model, ranks, onChange }: { model: PersonalPow
 
 export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP' }: { power: ICharacterPower; strength?: number; costUnit?: 'PP' | 'EP' }) {
   const { t, i18n } = useTranslation();
+  const skills = useLocalizedData(SKILL_DEFS);
   const [reference, setReference] = useState<PowerReferenceTarget | null>(null);
   const pricing = calculatePowerPricing(power, POWER_DEFS, MODIFIER_DEFS, strength);
+  const traitLabel = (target: ITraitTarget) => {
+    if (target.kind === 'ability') return t(`abilities.${target.key}`);
+    if (target.kind === 'defense') return t(`defenses.${target.key}`);
+    const skill = skills.find(item => item.id === target.skillId);
+    return `${skill?.name ?? target.skillId}${target.subtype ? ` · ${target.subtype}` : ''}`;
+  };
   const group = (components: ICharacterPower['components']) => buildPowerReferences(components, POWER_DEFS, MODIFIER_DEFS, i18n.language).map(item =>
     <article key={item.component.id} className="power-library-component">
-      <button className="personal-reference-link" onClick={() => setReference({ kind: 'effect', reference: item })}>{item.definition?.name ?? item.component.effectId} · {item.component.ranks} {t('builder.ranks')}</button>
-      <div className="power-library-modifiers">{item.modifiers.map((modifier, index) => <button type="button" className="personal-modifier-link" key={modifier.applied.instanceId ?? index} onClick={() => setReference({ kind: 'modifier', reference: modifier, effectName: item.definition?.name })}>
-        {modifier.definition?.name ?? modifier.applied.modifierId} · {modifier.applied.ranks}{modifier.applied.affectedRanks !== undefined ? ` · ${t('rulesInfo.affectedRanks', { count: modifier.applied.affectedRanks })}` : ''}
-      </button>)}</div>
-      {Object.entries(item.component.fieldValues ?? {}).map(([id, value]) => <p className="power-library-field-value" key={id}>{item.definition?.configurableFields?.find(field => field.id === id)?.label ?? id}: {Array.isArray(value) ? value.join(', ') : value}</p>)}
-      {item.component.enhancedTarget && <p className="power-library-field-value">{t('personalLibrary.traitTarget')}: {item.component.enhancedTarget.kind === 'ability' ? t(`abilities.${item.component.enhancedTarget.key}`) : item.component.enhancedTarget.kind === 'defense' ? t(`defenses.${item.component.enhancedTarget.key}`) : `${t(`skills.${item.component.enhancedTarget.skillId}`, { defaultValue: SKILL_DEFS.find(skill => skill.id === (item.component.enhancedTarget?.kind === 'skill' ? item.component.enhancedTarget.skillId : ''))?.name ?? item.component.enhancedTarget.skillId })}${item.component.enhancedTarget.subtype ? ` · ${item.component.enhancedTarget.subtype}` : ''}`}</p>}
+      <button className="personal-reference-link" onClick={() => setReference({ kind: 'effect', reference: item })}>{item.definition?.name ?? item.component.effectId} · {item.component.ranks} {t('common.ranks')}</button>
+      <div className="power-library-modifiers">{item.modifiers.map((modifier, index) => {
+        const affected = getAffectedRanks(modifier.applied);
+        const subtype = modifier.definition?.subtypes?.find(option => option.id === modifier.applied.options?.subtypeId);
+        const option = modifier.applied.option || subtype?.i18n?.[i18n.language]?.label || subtype?.label;
+        return <button type="button" className="personal-modifier-link" key={modifier.applied.instanceId ?? index} onClick={() => setReference({ kind: 'modifier', reference: modifier, effectName: item.definition?.name })}>
+          {modifier.definition?.name ?? modifier.applied.modifierId} · {modifier.applied.ranks}{option ? ` · ${option}` : ''}{affected !== undefined ? ` · ${t('rulesInfo.affectedRanks', { count: affected })}` : ''}{modifier.applied.options?.note ? ` · ${modifier.applied.options.note}` : ''}
+        </button>;
+      })}</div>
+      {item.component.variableCostOption && <p className="power-library-field-value">{t('builder.costOption')}: {item.component.variableCostOption}</p>}
+      {Object.entries(item.component.fieldValues ?? {}).map(([id, value]) => {
+        const field = item.definition?.configurableFields?.find(field => field.id === id);
+        const values = (Array.isArray(value) ? value : [value]).map(selection => {
+          const option = field?.options?.find(option => option.value === selection);
+          return option?.i18n?.[i18n.language]?.label ?? option?.label ?? selection;
+        });
+        return <p className="power-library-field-value" key={id}>{field?.i18n?.[i18n.language]?.label ?? field?.label ?? id}: {values.join(', ')}</p>;
+      })}
+      {item.component.enhancedTarget && <p className="power-library-field-value">{t('personalLibrary.traitTarget')}: {traitLabel(item.component.enhancedTarget)}</p>}
       {!!item.component.senseTraits?.length && <ul className="power-library-purchases">{item.component.senseTraits.map((trait, index) => <li key={index}>{t(`powerLibrary.sense.${trait.id}`, { defaultValue: SENSE_TRAITS.find(sense => sense.id === trait.id)?.label ?? trait.id })} · {trait.ranks}{trait.senseType ? ` · ${trait.senseType}` : ''}{trait.detail ? ` · ${trait.detail}` : ''}</li>)}</ul>}
     </article>);
   return <div className="personal-composition">

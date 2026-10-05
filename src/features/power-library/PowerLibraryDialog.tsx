@@ -73,7 +73,7 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
       })));
   });
   const applied = compatible && draft && power && target ? applyPowerTemplate(power, draft, target, useName) : null;
-  const finalPricing = applied ? calculatePowerPricing(applied, POWER_DEFS, MODIFIER_DEFS, strength) : null;
+  const finalPricing = applied ? calculatePowerPricing(applied, POWER_DEFS, MODIFIER_DEFS, draft ? strengthForPower?.(draft) ?? strength : strength) : null;
   const cost = (value: NonNullable<typeof pricing>) => costUnit === 'EP' ? value.equipmentTotal : value.total;
   const update = (id: string, values: Partial<ICharacterPowerComponent>) => setDraft(previous => previous && ({ ...previous,
     components: previous.components.map(component => component.id === id ? { ...component, ...values } : component),
@@ -97,7 +97,7 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
     <div ref={contentRef} role={embedded ? undefined : 'dialog'} aria-modal={embedded ? undefined : true} aria-labelledby={titleId} tabIndex={-1} className={`power-library-dialog ${draft || status !== 'idle' ? 'power-library-dialog--detail' : ''}`} onClick={event => event.stopPropagation()}>
       <header><div><h2 id={titleId}>{t(embedded ? 'personalLibrary.profiles' : 'powerLibrary.title')}</h2><p>{embedded ? targetName : t('powerLibrary.target', { name: targetName })}</p></div>{!embedded && <button type="button" aria-label={t('builder.close')} onClick={onClose}><X size={20}/></button>}</header>
       {!embedded && <nav className="personal-library-tabs" aria-label={t('personalLibrary.sources')}><button type="button" aria-pressed={source === 'profiles'} onClick={() => setSource('profiles')}>{t('personalLibrary.profiles')}</button><button type="button" aria-pressed={source === 'models'} onClick={() => setSource('models')}>{t('personalLibrary.models')}</button></nav>}
-      {source === 'models' && power && target ? <Suspense fallback={<p>{t('common.loading')}</p>}><PersonalModelPicker power={power} target={target} strength={strength} costUnit={costUnit} onApply={(recipe, name) => onApply?.(recipe, name)}/></Suspense> : <>
+      {source === 'models' && power && target ? <Suspense fallback={<p>{t('common.loading')}</p>}><PersonalModelPicker power={power} target={target} strength={strength} strengthForPower={strengthForPower} costUnit={costUnit} onApply={(recipe, name) => onApply?.(recipe, name)}/></Suspense> : <>
       <div className="power-library-filters"><label className="power-library-search"><Search size={17}/><input autoFocus value={query} placeholder={t('powerLibrary.search')} aria-label={t('powerLibrary.search')} onChange={event => setQuery(event.target.value)}/></label>
         <select className="app-select" aria-label={t('powerLibrary.profile')} value={profile} onChange={event => setProfile(event.target.value)}><option value="">{t('powerLibrary.allProfiles')}</option>{POWER_PROFILES.filter(item => POWER_LIBRARY_INDEX.some(entry => entry.profileId === item.id)).map(item => <option value={item.id} key={item.id}>{libraryText(item.name, language)}</option>)}</select></div>
       <div className="power-library-workspace">

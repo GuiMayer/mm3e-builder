@@ -6,17 +6,20 @@ import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { usePersonalLibraryStore } from './personalLibraryStore';
 import { instantiatePersonalModel, type PersonalPowerModel } from './personalPowerModel';
 import { PowerCompositionPreview, ModelRankInputs } from './PowerCompositionPreview';
-import { canApplyPowerTemplate } from './powerTemplateApplication';
+import { applyPowerTemplate, canApplyPowerTemplate } from './powerTemplateApplication';
+import { calculatePowerPricing } from '../../shared/lib/mathEngine';
 import type { PowerLibraryTarget } from './types';
 import { DEFAULT_VALIDATION_RULES } from '../../shared/lib/validationRules';
 import { getBlockingPowerSaveIssues } from '../power-builder/powerSavePolicy';
 import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
 
 import { searchPersonalModels } from './personalPowerModel';
+import { usePersonalLibrarySync } from './usePersonalLibrarySync';
 
-export function PersonalModelDetail({ model, strength, costUnit = 'PP', strengthForPower, onUse, disabled, compatible }: {
+export function PersonalModelDetail({ model, strength, costUnit = 'PP', strengthForPower, onUse, disabled, compatible, resultCost }: {
   model: PersonalPowerModel; strength: number; costUnit?: 'PP' | 'EP'; strengthForPower?: (power: ICharacterPower) => number;
   onUse: (power: ICharacterPower) => void; disabled?: boolean; compatible?: (power: ICharacterPower) => boolean;
+  resultCost?: (power: ICharacterPower) => number;
 }) {
   const { t, i18n } = useTranslation();
   const [ranks, setRanks] = useState<Record<string, number>>({});
@@ -34,12 +37,14 @@ export function PersonalModelDetail({ model, strength, costUnit = 'PP', strength
     {power && <PowerCompositionPreview power={power} strength={strengthForPower?.(power) ?? strength} costUnit={costUnit}/>}
     {!allowed && power && <p role="status">{t('powerLibrary.incompatible')}</p>}
     {!!issues.length && <p role="status">{t('personalLibrary.completeInBuilder')} {formatDiagnostic(issues[0], t, i18n.language)}</p>}
+    {allowed && power && resultCost && <p className="power-library-impact">{t('powerLibrary.resultTotal', { cost: resultCost(power), unit: costUnit })}</p>}
     <button type="button" className="power-library-apply" disabled={disabled || !allowed} onClick={() => { if (power) onUse(power); }}>{t('personalLibrary.use')}</button>
   </>;
 }
 
-export function PersonalModelPicker({ power, target, strength, costUnit, onApply }: { power: ICharacterPower; target: PowerLibraryTarget; strength: number; costUnit: 'PP' | 'EP'; onApply: (recipe: ICharacterPower, useName: boolean) => void }) {
+export function PersonalModelPicker({ power, target, strength, strengthForPower, costUnit, onApply }: { power: ICharacterPower; target: PowerLibraryTarget; strength: number; strengthForPower?: (recipe: ICharacterPower) => number; costUnit: 'PP' | 'EP'; onApply: (recipe: ICharacterPower, useName: boolean) => void }) {
   const { t, i18n } = useTranslation();
+  usePersonalLibrarySync();
   const models = usePersonalLibraryStore(state => state.models);
   const error = usePersonalLibraryStore(state => state.error);
   const [query, setQuery] = useState('');
@@ -56,7 +61,11 @@ export function PersonalModelPicker({ power, target, strength, costUnit, onApply
     </div><section className="power-library-preview" aria-label={t('powerLibrary.preview')}>
       {selected ? <><button type="button" className="power-library-back" onClick={() => setSelectedId(null)}><ArrowLeft size={16}/>{t('powerLibrary.back')}</button>
         <label className="power-library-name-option"><input type="checkbox" className="app-checkbox" checked={useName} onChange={event => setUseName(event.target.checked)}/>{t('powerLibrary.useName')}</label>
-        <PersonalModelDetail key={selected.id} model={selected} strength={strength} costUnit={costUnit} compatible={recipe => canApplyPowerTemplate(power, recipe, target)} onUse={recipe => onApply(recipe, useName)}/>
+        <p className="power-library-impact">{t(selected.power.alternateEffects.length ? 'powerLibrary.replaceArray' : target.kind === 'alternate' ? 'powerLibrary.replaceAlternate' : 'powerLibrary.replaceComponent')}</p>
+        <PersonalModelDetail key={`${selected.id}:${selected.updatedAt}`} model={selected} strength={strength} strengthForPower={strengthForPower} costUnit={costUnit} compatible={recipe => canApplyPowerTemplate(power, recipe, target)} resultCost={recipe => {
+          const pricing = calculatePowerPricing(applyPowerTemplate(power, recipe, target), POWER_DEFS, MODIFIER_DEFS, strengthForPower?.(recipe) ?? strength);
+          return costUnit === 'EP' ? pricing.equipmentTotal : pricing.total;
+        }} onUse={recipe => onApply(recipe, useName)}/>
       </> : <p>{t('powerLibrary.choose')}</p>}
     </section></div>
   </div>;
