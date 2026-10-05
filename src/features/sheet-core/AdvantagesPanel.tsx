@@ -233,7 +233,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
           const def = advantageDefs.find((d) => d.id === adv.advantageId);
           if (!def) return null;
           return (
-            <div key={`${adv.advantageId}-${i}`} className="adv-chip">
+            <div key={`${adv.advantageId}-${i}`} className={`adv-chip${def.ranked ? ' adv-chip--ranked' : ''}`}>
               <div className="adv-details">
               <Tooltip content={def.description!}>
                 <button type="button" className="adv-name adv-name--info" aria-haspopup="dialog" onClick={() => setDescTarget(def)}>
@@ -242,7 +242,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
                 </button>
               </Tooltip>
               {def.ranked && (
-                <>
+                <div className="adv-ranks">
                   <NumberInput
                     variant="small"
                     className="adv-rank-input"
@@ -254,7 +254,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
                   {def.maxRank && (
                     <span className="adv-rank-max">/ {def.maxRank}</span>
                   )}
-                </>
+                </div>
               )}
               </div>
               <div className="sheet-item-actions">
@@ -542,6 +542,7 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
         }
         .adv-chip:hover { border-color: var(--c-border-active); }
         .adv-details { min-width: 0; display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-xs); }
+        .adv-ranks { display: contents; }
         .adv-details>.tooltip-wrapper { min-width: 0; max-width: 100%; }
         .adv-name { font-size: 0.82rem; font-weight: 500; cursor: help; overflow-wrap: anywhere; }
         .adv-rank-input {
@@ -737,10 +738,19 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
 
         /* Mobile responsive adjustments for NumberInput */
         @media (max-width: 768px) {
-          .adv-chip { max-width: 100%; grid-template-columns: minmax(0,1fr); }
-          .adv-chip>.sheet-item-actions { justify-self: end; }
-          .adv-info-btn,.adv-remove { opacity: 1; min-width: 28px; min-height: 44px; align-items: center; justify-content: center; }
-          .adv-name { white-space: normal; overflow-wrap: anywhere; }
+          .adv-chip { max-width: 100%; grid-template-columns: minmax(0,1fr) auto auto; gap: 4px; padding: var(--s-xs) 8px; }
+          .adv-details,.adv-chip>.sheet-item-actions { display: contents; }
+          .adv-name { grid-column: 1; grid-row: 1; white-space: normal; overflow-wrap: anywhere; }
+          .adv-chip .adv-info-btn { display: none; }
+          .adv-remove { grid-column: 2; grid-row: 1; }
+          .adv-chip .sheet-roll-slot { grid-column: 3; grid-row: 1; justify-self: end; }
+          .adv-chip .sheet-roll-slot:empty { display: none; }
+          .adv-info-btn,.adv-remove { opacity: 1; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+          .adv-chip--ranked { grid-template-columns: minmax(0,1fr) auto auto; }
+          .adv-chip--ranked .adv-name { grid-column: 1 / 3; }
+          .adv-chip--ranked .adv-remove { grid-column: 3; }
+          .adv-chip--ranked .adv-ranks { display: flex; align-items: center; gap: 6px; grid-column: 1 / 3; grid-row: 2; min-width: 0; }
+          .adv-chip--ranked .sheet-roll-slot { grid-column: 3; grid-row: 2; }
           .adv-rank-input {
             width: 44px;
           }
