@@ -10,7 +10,6 @@ import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { getLinkedResourceCharges, isDeviceResource } from '../../shared/lib/resourceCalculations';
 import { createId } from '../../shared/lib/identity';
 import { Button } from '../../shared/ui/Button';
-import { Modal } from '../../shared/ui/Modal';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { useCharactersStore } from '../../store/charactersStore';
 import { getResourcePowers, type ResourceEditTarget } from '../../shared/lib/resourcePowers';
@@ -35,12 +34,23 @@ export function ResourcesPanel({ onEditResource, onCreateResource }: {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilters, setActiveFilters] = useState<Set<ResourceType>>(new Set());
   const searchRef = useRef<HTMLInputElement>(null);
+  const createPickerRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
   const links = character.resourceLinks ?? EMPTY_RESOURCE_LINKS;
   const charges = useMemo(() => getLinkedResourceCharges(character, resources, POWER_DEFS, MODIFIER_DEFS), [character, resources]);
 
   useEffect(() => {
     if (showSelector) searchRef.current?.focus();
   }, [showSelector]);
+
+  useEffect(() => {
+    if (showCreateSelector) createPickerRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+  }, [showCreateSelector]);
+
+  function closeCreateSelector() {
+    setShowCreateSelector(false);
+    toolbarRef.current?.querySelector<HTMLButtonElement>('.resources-panel__create-trigger')?.focus();
+  }
 
   function addLink(resourceId: string) {
     if (links.some((link) => link.resourceId === resourceId)) return;
@@ -121,11 +131,11 @@ export function ResourcesPanel({ onEditResource, onCreateResource }: {
         {links.length === 0 && <p className="resources-panel__empty">{t('resources.empty')}</p>}
       </div>
 
-      <div className="resources-panel__toolbar">
-        {!showSelector && <Button variant="ghost" size="md" onClick={() => setShowSelector(true)}>
+      <div className="resources-panel__toolbar" ref={toolbarRef}>
+        {!showSelector && <Button variant="ghost" size="md" onClick={() => { setShowCreateSelector(false); setShowSelector(true); }}>
           <Plus size={16}/> {t('resources.add')}
         </Button>}
-        <Button variant="ghost" size="md" onClick={() => setShowCreateSelector(true)}>
+        <Button variant="ghost" size="md" className="resources-panel__create-trigger" onClick={() => { closeSelector(); setShowCreateSelector((previous) => !previous); }}>
           <PackagePlus size={16}/> {t('resources.createTitle')}
         </Button>
       </div>
@@ -183,26 +193,35 @@ export function ResourcesPanel({ onEditResource, onCreateResource }: {
         </div>
       )}
 
-      <Modal isOpen={showCreateSelector} onClose={() => setShowCreateSelector(false)} title={t('resources.createTitle')} compact>
-        <div className="resources-panel__create-picker">
-          <p>{t('resources.chooseType')}</p>
-          {RESOURCE_TYPES.map((type) => (
-            <Button key={type} variant="secondary" onClick={() => {
-              setShowCreateSelector(false);
-              onCreateResource(type);
-            }}>{t(`resources.type.${type}`)}</Button>
-          ))}
-          <Button variant="ghost" onClick={() => setShowCreateSelector(false)}>{t('common.cancel')}</Button>
+      {showCreateSelector && (
+        <div className="resources-panel__selector resources-panel__create-picker" ref={createPickerRef}
+          onKeyDown={(event) => { if (event.key === 'Escape') { event.stopPropagation(); closeCreateSelector(); } }}>
+          <p className="resources-panel__create-label">{t('resources.chooseType')}</p>
+          <div className="resources-panel__results" role="group" aria-label={t('resources.chooseType')}>
+            {RESOURCE_TYPES.map((type) => (
+              <button type="button" key={type} className="resources-panel__result" onClick={() => onCreateResource(type)}>
+                <span className="resources-panel__result-name">{t(`resources.type.${type}`)}</span>
+                <Plus size={14} aria-hidden="true"/>
+              </button>
+            ))}
+          </div>
+          <div className="resources-panel__selector-footer">
+            <button type="button" className="resources-panel__close-selector" onClick={closeCreateSelector}>
+              <X size={14}/> {t('resources.closeSelector')}
+            </button>
+          </div>
         </div>
-      </Modal>
+      )}
 
       <style>{`
         .resources-panel .panel-header { align-items:center; justify-content:space-between; }
         .resources-panel__toolbar { display:flex; flex-wrap:wrap; gap:var(--s-xs); }
-        .resources-panel .modal-content--compact { max-width:min(480px,calc(100vw - 24px)); }
-        .resources-panel__create-picker { display:flex; flex-direction:column; gap:var(--s-sm); width:280px; max-width:100%; }
-        .resources-panel__create-picker p { color:var(--c-text-secondary); font-size:.85rem; margin:0 0 var(--s-xs); }
-        .resources-panel__create-picker .btn { min-height:44px; }
+        .resources-panel__create-label { color:var(--c-text-muted); font-size:.78rem; font-weight:600; margin:0 0 var(--s-sm); }
+        .resources-panel__create-picker .resources-panel__results { max-height:none; }
+        .resources-panel__create-picker .resources-panel__result { min-height:36px; }
+        .resources-panel__create-picker .resources-panel__result svg { color:var(--c-text-muted); flex-shrink:0; }
+        .resources-panel__create-picker .resources-panel__result:focus-visible { outline:2px solid var(--c-primary); outline-offset:-2px; background:var(--c-primary-muted); }
+        @media (max-width:768px) { .resources-panel__toolbar .btn { min-height:44px; padding-inline:var(--s-sm); font-size:.8rem; } .resources-panel__create-picker .resources-panel__result,.resources-panel__create-picker .resources-panel__close-selector { min-height:44px; } }
         .resources-panel__hint,.resources-panel__empty { color:var(--c-text-muted); font-size:.82rem; margin:0 0 var(--s-md); }
         .resources-panel__warning { background:rgba(var(--c-error-rgb, 248, 113, 113), .12); border:1px solid var(--c-error); border-radius:var(--r-sm); color:var(--c-error); font-size:.8rem; margin-bottom:var(--s-md); padding:var(--s-sm); }
         .resources-panel__list { display:flex; flex-direction:column; gap:var(--s-xs); }

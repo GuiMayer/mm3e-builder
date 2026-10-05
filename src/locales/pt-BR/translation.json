@@ -1055,7 +1055,7 @@
   "resources.systems": "Sistemas",
   "resources.effects": "Efeitos",
   "resources.createTitle": "Criar recurso",
-  "resources.chooseType": "Escolha um tipo de recurso para abrir seu editor na aba Recursos.",
+  "resources.chooseType": "Tipo de recurso",
   "resources.editTitle": "Editar recurso",
   "resources.name": "Nome",
   "resources.notes": "Notas",

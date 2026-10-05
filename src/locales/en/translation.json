@@ -1055,7 +1055,7 @@
   "resources.systems": "Systems",
   "resources.effects": "Effects",
   "resources.createTitle": "Create resource",
-  "resources.chooseType": "Choose a resource type to open its editor in Resources.",
+  "resources.chooseType": "Resource type",
   "resources.editTitle": "Edit resource",
   "resources.name": "Name",
   "resources.notes": "Notes",

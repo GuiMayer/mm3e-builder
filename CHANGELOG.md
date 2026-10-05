@@ -11,7 +11,7 @@ while fixes and small convenience improvements use patch versions.
 ## [Unreleased]
 
 ### Added — Resource creation shortcut
-- Add Create resource to the sheet's Resources section. Choose a type in a dialog to open the existing creation editor in Resources, with the same defaults and save/cancel behavior.
+- Add Create resource to the sheet's Resources section. Choose a type in an inline selector, following existing sheet selectors, to open the creation editor in Resources with the same defaults and save/cancel behavior.
 
 ### Changed — Mobile advantage rank placement
 - Place rank controls beside advantage names, aligning ranked cards with ordinary cards when space permits. Keep touch controls accessible and wrap actions on narrower phones; desktop layout and costs are unchanged.
