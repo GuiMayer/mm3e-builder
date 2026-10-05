@@ -198,15 +198,15 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
               </span>}
               </div>
               <div className="skill-row-actions sheet-item-actions">
-              <button className="skill-remove" disabled={!natural} onClick={() => removeSkill(i)} title={t('common.remove')}>
-                <Trash2 size={14} />
-              </button>
               <span className="sheet-check-result">
                 <span className="skill-total">= {check.total}</span>
                 <span className="sheet-roll-slot"><RollButton warning={warning} bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : []), ...(check.circumstance ? [`${t('traits.circumstance')} ${check.circumstance}`] : [])]} /></span>
               </span>
-              </div>
               <TraitModifiersControl key={bonusKey} target={{ kind: 'skill', skillId: skill.skillId, subtype: skill.subtype }} onAddLegacy={() => setAddedBonuses(keys => new Set([...keys, bonusKey]))} />
+              <button className="skill-remove" disabled={!natural} onClick={() => removeSkill(i)} title={t('common.remove')}>
+                <Trash2 size={14} />
+              </button>
+              </div>
               {warning && <small className="skill-training-warning">{warning}</small>}
             </div>
           );
@@ -437,6 +437,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
         .skill-row:hover .skill-remove { opacity: 1; }
         .skill-row:focus-within .skill-remove { opacity: 1; }
         .skill-remove:hover { color: var(--c-error); }
+        .skill-row-actions>.skill-remove { align-items: center; justify-content: center; min-width: 32px; min-height: 32px; margin-left: var(--s-xs); }
 
         .sk-sel-close-btn {
           display: flex; align-items: center; gap: 4px;
@@ -589,6 +590,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
             grid-template-columns: minmax(0,1fr); gap: var(--s-sm);
           }
           .skill-row-actions { justify-self: end; }
+          .skill-row-actions>.skill-remove { min-width: 44px; min-height: 44px; }
           .skill-remove { opacity: 1; }
         }
       `}</style>

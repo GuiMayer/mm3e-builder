@@ -50,9 +50,11 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         <div
           className="defense-row defense-row--initiative"
         >
-          <div className="defense-label">
-            <span className="defense-name">{t('defenses.initiative')}</span>
-            <Tooltip content={initiativeBreakdown.join('\n')}><button type="button" className="defense-detail-btn" aria-label={t('defenses.initiative')} aria-haspopup="dialog" onClick={() => setDetail('initiative')}><Info size={14} /></button></Tooltip>
+          <div className="defense-heading">
+            <div className="defense-label">
+              <span className="defense-name">{t('defenses.initiative')}</span>
+              <Tooltip content={initiativeBreakdown.join('\n')}><button type="button" className="defense-detail-btn" aria-label={t('defenses.initiative')} aria-haspopup="dialog" onClick={() => setDetail('initiative')}><Info size={14} /></button></Tooltip>
+            </div>
           </div>
           <div className="defense-calculation">
           <span className="defense-base">AGL {agility}</span>
@@ -70,7 +72,10 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         {/* Purchased defense rows */}
         {purchasedRows.map((r) => (
           <div key={r.key} className="defense-row">
-            <span className="defense-name">{t(`defenses.${r.key}`)}</span>
+            <div className="defense-heading">
+              <span className="defense-name">{t(`defenses.${r.key}`)}</span>
+              <TraitModifiersControl key={`${characterId}:${r.key}`} target={{ kind: 'defense', key: r.key }} />
+            </div>
             <div className="defense-calculation">
             <span className="defense-base">{r.baseLabel} {r.base}</span>
             <span className="defense-plus">+</span>
@@ -86,7 +91,6 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
               <span className="defense-total">{r.base + effective.defenses[r.key] + circumstanceBonus(character, { kind: 'defense', key: r.key }, 'active-defense')}</span>
               <span className="sheet-roll-slot"><RollButton bonus={r.base + effective.defenses[r.key] + circumstanceBonus(character, { kind: 'defense', key: r.key })} label={t(`defenses.${r.key}`)} section={t('defenses.title')} breakdown={[`${r.baseLabel} ${r.base}`, `${t('common.ranks')} ${effective.defenses[r.key]}`, ...(circumstanceBonus(character, { kind: 'defense', key: r.key }) ? [`${t('traits.circumstance')} ${circumstanceBonus(character, { kind: 'defense', key: r.key })}`] : [])]} /></span>
             </span>
-            <TraitModifiersControl key={`${characterId}:${r.key}`} target={{ kind: 'defense', key: r.key }} />
           </div>
         ))}
 
@@ -94,9 +98,12 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
         <div
           className="defense-row defense-row--readonly defense-row--toughness"
         >
-          <div className="defense-label">
-            <span className="defense-name">{t('defenses.toughness')}</span>
-            <Tooltip content={['STA ' + stamina, ...toughnessBreakdown, '= ' + toughnessTotal].join('\n')}><button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-haspopup="dialog" onClick={() => setDetail('toughness')}><Info size={14} /></button></Tooltip>
+          <div className="defense-heading">
+            <div className="defense-label">
+              <span className="defense-name">{t('defenses.toughness')}</span>
+              <Tooltip content={['STA ' + stamina, ...toughnessBreakdown, '= ' + toughnessTotal].join('\n')}><button type="button" className="defense-detail-btn" aria-label={t('defenses.toughnessBreakdown')} aria-haspopup="dialog" onClick={() => setDetail('toughness')}><Info size={14} /></button></Tooltip>
+            </div>
+            <TraitModifiersControl key={`${characterId}:toughness`} target={{ kind: 'defense', key: 'toughness' }} />
           </div>
           <div className="defense-calculation">
           <span className="defense-base">STA {stamina}</span>
@@ -107,7 +114,6 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
             <span className="defense-total">{toughnessTotal}</span>
             <span className="sheet-roll-slot"><RollButton bonus={toughnessTotal + circumstanceBonus(character, { kind: 'defense', key: 'toughness' })} label={t('defenses.toughness')} section={t('defenses.title')} breakdown={[`STA ${stamina}`, ...toughnessBreakdown]} /></span>
           </span>
-          <TraitModifiersControl key={`${characterId}:toughness`} target={{ kind: 'defense', key: 'toughness' }} />
         </div>
 
       </div>
@@ -127,6 +133,9 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           border-radius: var(--r-sm); padding: var(--s-sm) var(--s-md);
         }
         .defense-label,.defense-calculation { display: flex; align-items: center; gap: var(--s-xs); }
+        .defense-heading { display: flex; align-items: center; gap: var(--s-sm); min-width: 0; }
+        .defense-label { min-width: 0; }
+        .defense-detail-btn { flex-shrink: 0; }
         .defense-calculation { flex-wrap: wrap; min-width: 0; }
         .defense-calculation>.number-input-wrapper { flex-shrink: 0; }
         .defense-row--readonly { cursor: default; }
@@ -145,7 +154,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
           opacity: 0.4;
         }
 
-        .defense-name { font-weight: 600; font-size: 0.85rem; min-width: 0; }
+        .defense-name { font-weight: 600; font-size: 0.85rem; min-width: 0; overflow-wrap: anywhere; }
         .defense-base { font-size: 0.78rem; color: var(--c-text-secondary); min-width: 60px; }
         .defense-plus { color: var(--c-text-muted); }
 
@@ -179,7 +188,7 @@ function DefensesPanelComponent({ cost }: { cost: number }) {
             grid-template-columns: minmax(0,1fr) auto;
             gap: var(--s-xs);
           }
-          .defense-row>.defense-name,.defense-label { grid-column: 1 / -1; }
+          .defense-heading { grid-column: 1 / -1; justify-content: space-between; }
           .defense-name {
             min-width: 80px;
           }
