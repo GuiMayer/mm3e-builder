@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useId } from 'react';
 import { useTraitValues } from '../../shared/hooks/useTraitValues';
 import { circumstanceBonus } from '../../shared/lib/traitValues';
 import { TraitModifiersControl } from '../trait-modifiers/TraitModifiersControl';
@@ -14,6 +14,7 @@ import './abilities.css';
 const ABILITY_KEYS: AbilityKey[] = ['str', 'sta', 'agl', 'dex', 'fgt', 'int', 'awe', 'pre'];
 
 function AbilitiesPanelComponent({ cost }: { cost: number }) {
+  const abilityInputId = useId();
   const { t } = useTranslation();
   const { original: character, character: effective, characterId } = useTraitValues();
   const { setAbility, toggleAbsentAbility } = useCharacterActions();
@@ -55,17 +56,20 @@ function AbilitiesPanelComponent({ cost }: { cost: number }) {
                 <span className="ability-name">{t(`abilities.${key}`)}</span>
               </div>
               <div className="ability-score-row">
-                <label className="ability-score-field">
-                  <span className="ability-field-label">{t('traits.natural')}</span>
+                <div className="ability-score-field">
+                  {isAbsent
+                    ? <span className="ability-field-label">{t('traits.natural')}</span>
+                    : <label className="ability-field-label" htmlFor={`${abilityInputId}-${key}`}>{t('traits.natural')}</label>}
                   {isAbsent ? <span className="ability-value">—</span> : <NumberInput
                     variant="large"
                     className="ability-input"
+                    id={`${abilityInputId}-${key}`}
                     aria-label={`${t(`abilities.${key}`)} · ${t('traits.natural')}`}
                     value={abilities[key]}
                     onChange={(value) => handleAbilityChange(key, value)}
                     min={minAbilityScore !== -Infinity ? minAbilityScore : undefined}
                   />}
-                </label>
+                </div>
                 {!isAbsent && <div className="ability-check-field">
                   <span className="ability-field-label">{t('traits.check')}</span>
                   <div className="ability-check-actions">
