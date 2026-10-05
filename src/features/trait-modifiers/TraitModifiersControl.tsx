@@ -91,11 +91,31 @@ export function TraitModifiersControl({ target, onAddLegacy }: { target: ITraitT
     }
     setEditor(null);
   }
+  const isAbility = target.kind === 'ability';
+  const addButton = <button type="button" className="trait-control__add" title={t('traits.add')} aria-label={`${t('traits.add')} · ${label}`} onClick={add}><Plus size={14} /></button>;
   return <div className="trait-control">
-    {contributions.map(item => <div className="trait-control__row" key={`${item.sourceKey}:${item.componentId}`}><Zap size={12} /><span title={`+${item.ranks} · ${item.name}`}>+{item.ranks} · {item.name}</span><button type="button" aria-label={t('traits.editPower')} title={t('traits.editPower')} onClick={() => void openBuilder(sources.find(source => source.key === item.sourceKey), item.componentId)}><Pencil size={13} /></button></div>)}
+    {isAbility && <div className="trait-control__toolbar"><span>{t('traits.modifiers')}</span>{addButton}</div>}
+    {contributions.map(item => {
+      const editButton = <button type="button" aria-label={t('traits.editPower')} title={t('traits.editPower')} onClick={() => void openBuilder(sources.find(source => source.key === item.sourceKey), item.componentId)}><Pencil size={13} /></button>;
+      return <div className="trait-control__row" key={`${item.sourceKey}:${item.componentId}`}>
+        <Zap size={12} />
+        {isAbility ? <span className="trait-control__content"><strong className="trait-control__value">+{item.ranks}</strong><span className="trait-control__source">{item.name}</span><small className="trait-control__scope">{t('traits.enhancement')}</small></span> : <span title={`+${item.ranks} · ${item.name}`}>+{item.ranks} · {item.name}</span>}
+        {isAbility ? <div className="trait-control__actions">{editButton}</div> : editButton}
+      </div>;
+    })}
     {contributions.some(item => item.equipment) && contributions.length > 1 && <small className="trait-warning">{t('traits.nonStackingHint')}</small>}
-    {modifiers.map(item => <div className={`trait-control__row ${item.active ? '' : 'trait-control__row--inactive'}`} key={item.id}><input className="app-checkbox" type="checkbox" aria-label={t('traits.active')} checked={item.active} onChange={event => modify(state.original.traitModifiers?.map(modifier => modifier.id === item.id ? { ...modifier, active: event.target.checked } : modifier))} /><span title={`${item.value >= 0 ? '+' : ''}${item.value} · ${item.source || t('traits.circumstance')} · ${t(item.scope === 'check' ? 'traits.checkOnly' : 'traits.activeDefense')}`}>{item.value >= 0 ? '+' : ''}{item.value} · {item.source || t('traits.circumstance')} · {t(item.scope === 'check' ? 'traits.checkOnly' : 'traits.activeDefense')}</span><button type="button" aria-label={t('common.edit')} onClick={() => { setKind('circumstance'); setForm({ ...item }); }}><Pencil size={13} /></button><button type="button" aria-label={t('common.remove')} onClick={() => modify(state.original.traitModifiers?.filter(modifier => modifier.id !== item.id))}><Trash2 size={13} /></button></div>)}
-    <button type="button" className="trait-control__add" title={t('traits.add')} aria-label={`${t('traits.add')} · ${label}`} onClick={add}><Plus size={14} /></button>
+    {modifiers.map(item => {
+      const value = `${item.value >= 0 ? '+' : ''}${item.value}`;
+      const source = item.source || t('traits.circumstance');
+      const scope = t(item.scope === 'check' ? 'traits.checkOnly' : 'traits.activeDefense');
+      const actions = <><button type="button" aria-label={t('common.edit')} title={t('common.edit')} onClick={() => { setKind('circumstance'); setForm({ ...item }); }}><Pencil size={13} /></button><button type="button" aria-label={t('common.remove')} title={t('common.remove')} onClick={() => modify(state.original.traitModifiers?.filter(modifier => modifier.id !== item.id))}><Trash2 size={13} /></button></>;
+      return <div className={`trait-control__row ${item.active ? '' : 'trait-control__row--inactive'}`} key={item.id}>
+        <input className="app-checkbox" type="checkbox" aria-label={t('traits.active')} checked={item.active} onChange={event => modify(state.original.traitModifiers?.map(modifier => modifier.id === item.id ? { ...modifier, active: event.target.checked } : modifier))} />
+        {isAbility ? <span className="trait-control__content"><strong className="trait-control__value">{value}</strong><span className="trait-control__source">{source}</span><small className="trait-control__scope">{scope}</small></span> : <span title={`${value} · ${source} · ${scope}`}>{value} · {source} · {scope}</span>}
+        {isAbility ? <div className="trait-control__actions">{actions}</div> : actions}
+      </div>;
+    })}
+    {!isAbility && addButton}
     <Modal isOpen={!!form} onClose={() => setForm(null)} title={`${t('traits.add')} · ${label}`} compact>{form && <div className="trait-editor">
       <label>{t('traits.kind')}<select disabled={modifiers.some(item => item.id === form.id)} value={kind} onChange={event => setKind(event.target.value as typeof kind)}><option value="circumstance">{t('traits.circumstance')}</option><option value="power">{t('traits.enhancement')}</option>{onAddLegacy && <option value="legacy">{t('traits.legacyBonus')}</option>}</select></label>
       {kind === 'circumstance' && <><label>{t('traits.value')}<NumberInput value={form.value} onChange={value => setForm({ ...form, value })} /></label><label>{t('traits.source')}<input value={form.source} onChange={event => setForm({ ...form, source: event.target.value })} /></label>{target.kind === 'defense' && (target.key === 'dodge' || target.key === 'parry') && <label>{t('traits.scope')}<select value={form.scope} onChange={event => setForm({ ...form, scope: event.target.value as ITraitModifier['scope'] })}><option value="check">{t('traits.checkOnly')}</option><option value="active-defense">{t('traits.activeDefense')}</option></select></label>}<small>{t('traits.circumstanceHint')}</small></>}

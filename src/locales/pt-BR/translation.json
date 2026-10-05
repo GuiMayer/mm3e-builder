@@ -1356,5 +1356,8 @@
   "traits.newSubtype": "Nova especialização",
   "traits.skillSubtype": "Especialização da perícia",
   "traits.useTarget": "Usar destino",
-  "recovery.component": "Componente {{number}}"
+  "recovery.component": "Componente {{number}}",
+  "traits.natural": "Natural",
+  "traits.check": "Teste",
+  "traits.modifiers": "Modificadores"
 }

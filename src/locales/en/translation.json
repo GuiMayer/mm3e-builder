@@ -1356,5 +1356,8 @@
   "traits.newSubtype": "New specialization",
   "traits.skillSubtype": "Skill specialization",
   "traits.useTarget": "Use target",
-  "recovery.component": "Component {{number}}"
+  "recovery.component": "Component {{number}}",
+  "traits.natural": "Natural",
+  "traits.check": "Check",
+  "traits.modifiers": "Modifiers"
 }

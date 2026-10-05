@@ -1,0 +1,62 @@
+.abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 12px;
+}
+.ability-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+  background: var(--c-surface-elevated);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  transition: border-color var(--t-fast);
+}
+.ability-card:hover { border-color: var(--c-border-active); }
+.ability-heading { display: flex; align-items: baseline; gap: 8px; padding-right: 24px; min-width: 0; }
+.ability-abbr { color: var(--c-primary); font: 800 .75rem var(--f-heading); letter-spacing: .08em; }
+.ability-name { color: var(--c-text); font-size: .85rem; font-weight: 600; overflow-wrap: anywhere; }
+.ability-score-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.ability-score-field,.ability-check-field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.ability-score-field { flex: 1; }
+.ability-field-label { color: var(--c-text-secondary); font-size: .7rem; }
+.ability-score-field>.number-input-wrapper { width: 100%; max-width: 132px; }
+.ability-card .ability-input { min-width: 0; width: 100%; font: 700 1.1rem var(--f-heading); text-align: center; }
+.ability-check-field { align-items: flex-end; }
+.ability-check-actions { display: flex; align-items: center; gap: 8px; min-height: 36px; }
+.ability-check-value { font: 700 1.1rem var(--f-heading); color: var(--c-text); white-space: nowrap; }
+.ability-card .roll-button { flex-shrink: 0; }
+.ability-effective { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--r-sm); background: var(--c-primary-muted); color: var(--c-primary); font-size: .75rem; }
+.ability-effective strong { font-size: .9rem; }
+.ability-value { color: var(--c-text-muted); font-size: 1.1rem; min-height: 36px; display: flex; align-items: center; }
+.ability-card.absent .ability-heading,.ability-card.absent .ability-score-row { opacity: .5; }
+.ability-toggle { position: absolute; right: 6px; top: 6px; display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--c-text-muted); font-size: .75rem; cursor: pointer; }
+.ability-toggle:hover,.ability-toggle:focus-visible { background: var(--c-bg); color: var(--c-text); }
+.ability-card .trait-control { gap: 8px; padding-top: 8px; border-top: 1px solid var(--c-border); }
+.ability-card .trait-control__toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--c-text-secondary); font-size: .7rem; }
+.ability-card .trait-control__row { display: grid; grid-template-columns: 18px minmax(0,1fr); gap: 6px; align-items: start; padding: 8px; background: var(--c-bg); border-radius: var(--r-sm); }
+.ability-card .trait-control__row>input,.ability-card .trait-control__row>svg { margin: 3px 0 0; }
+.ability-card .trait-control__row>.trait-control__content { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 3px 6px; align-items: baseline; min-width: 0; line-height: 1.45; }
+.ability-card .trait-control__value { color: var(--c-primary); font-size: .78rem; white-space: nowrap; }
+.ability-card .trait-control__source { font-size: .76rem; overflow-wrap: anywhere; }
+.ability-card .trait-control__scope { grid-column: 2; color: var(--c-text-muted); font-size: .65rem; }
+.ability-card .trait-control__actions { display: flex; grid-column: 2/-1; justify-content: flex-end; gap: 2px; }
+.ability-card .trait-control__actions button { min-width: 26px; min-height: 28px; display: grid; place-items: center; border-radius: var(--r-sm); padding: 4px; }
+.ability-card .trait-control__actions button:hover { color: var(--c-primary); background: var(--c-surface-elevated); }
+@media (max-width: 1100px) {
+  .abilities-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 768px) {
+  .ability-toggle { width: 32px; height: 32px; }
+  .ability-card .trait-control__row { grid-template-columns: 20px minmax(0,1fr); }
+  .ability-card .trait-control__actions button { min-width: 40px; min-height: 40px; }
+}
+@media (max-width: 520px) {
+  .abilities-grid { grid-template-columns: minmax(0,1fr); gap: 8px; }
+  .ability-card { padding: 12px; }
+  .ability-score-field>.number-input-wrapper { max-width: 160px; }
+}
