@@ -10,6 +10,12 @@ export async function exportCharacterJSON(
   filename?: string,
   resources: IResource[] = []
 ): Promise<void> {
+  const blob = serializeCharacterJSON(character, language, resources);
+  const name = filename || `${sanitizeFileName(character.header.name)}.json`;
+  await downloadBlob(blob, name);
+}
+
+export function serializeCharacterJSON(character: ICharacter, language = 'en', resources: IResource[] = []): Blob {
   if (!character.characterId) {
     console.warn(
       '[fileService] Exporting character without characterId. This should not happen after migration.'
@@ -23,9 +29,7 @@ export async function exportCharacterJSON(
     character: sanitizeCharacterForExport(character),
     ...(resources.length > 0 ? { appendix: { resources: { version: RESOURCE_LIBRARY_VERSION, items: resources } } } : {}),
   };
-  const blob = new Blob([JSON.stringify(file, null, 2)], {
+  return new Blob([JSON.stringify(file, null, 2)], {
     type: 'application/json',
   });
-  const name = filename || `${sanitizeFileName(character.header.name)}.json`;
-  await downloadBlob(blob, name);
 }

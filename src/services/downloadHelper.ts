@@ -39,6 +39,7 @@ interface FileTypeConfig {
 }
 
 const FILE_TYPES: Record<string, FileTypeConfig> = {
+  zip: { description: 'ZIP Archive', accept: { 'application/zip': ['.zip'] } },
   json: {
     description: 'JSON File',
     accept: { 'application/json': ['.json'] },

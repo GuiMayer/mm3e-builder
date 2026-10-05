@@ -127,3 +127,39 @@ export async function clearPortraits(): Promise<void> {
   await done;
   notify();
 }
+
+/** One IDB transaction for all imported associations; old media stays available for rollback. */
+export async function applyLocalPortraitBatch(items: readonly { characterId: string; media: PortraitMedia }[]): Promise<() => Promise<void>> {
+  if (!items.length) return async () => {};
+  if (items.some(item => !item.characterId || !validMedia(item.media)) || new Set(items.map(item => item.characterId)).size !== items.length) throw new Error('portrait.invalidImage');
+  const db = await openDatabase();
+  const tx = db.transaction(['media', 'local'], 'readwrite');
+  const done = complete(tx);
+  const previous: { id: string; key: unknown; newKey: string }[] = [];
+  try {
+    for (const item of items) {
+      const key: unknown = await read(tx.objectStore('local').get(item.characterId));
+      const newKey = crypto.randomUUID();
+      previous.push({ id: item.characterId, key, newKey });
+      tx.objectStore('media').put(item.media, newKey);
+      tx.objectStore('local').put(newKey, item.characterId);
+    }
+    await done;
+  } catch (error) {
+    try { tx.abort(); } catch { /* Already aborted by the failed request. */ }
+    await done.catch(() => {});
+    throw error;
+  }
+  notify();
+  return async () => {
+    const undo = db.transaction(['media', 'local'], 'readwrite');
+    const finished = complete(undo);
+    for (const item of previous) {
+      if (typeof item.key === 'string') undo.objectStore('local').put(item.key, item.id);
+      else undo.objectStore('local').delete(item.id);
+      undo.objectStore('media').delete(item.newKey);
+    }
+    await finished;
+    notify();
+  };
+}
