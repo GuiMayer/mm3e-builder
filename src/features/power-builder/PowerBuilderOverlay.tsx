@@ -717,7 +717,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
                         </div>
 
                         {comp.effectId === 'enhanced-trait' && <EnhancedTargetEditor component={comp} character={character} onChange={update => updateComponent(comp.id, update)} />}
-                        {effectDef?.variableCost && !comp.enhancedTarget && (
+                        {effectDef?.variableCost && comp.effectId !== 'enhanced-trait' && (
                           <div onClick={(e) => e.stopPropagation()}>
                             <VariableCostSelector
                               options={effectDef.variableCost.options}

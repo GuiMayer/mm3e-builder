@@ -1377,5 +1377,17 @@
   "traits.status.absent": "Absent ability",
   "traits.status.invalid": "Invalid target or option",
   "traits.status.superseded": "Stronger source in use",
-  "traits.status.unbound": "No associated trait"
+  "traits.status.unbound": "No associated trait",
+  "traits.category": "Trait category",
+  "traits.chooseCategory": "Choose a trait category",
+  "traits.searchTarget": "Search traits",
+  "traits.appliedRanks": "+{{ranks}} ranks associated with this trait",
+  "traits.manualCategoryHint": "Advantages and extras retain their cost without automatic application to the sheet.",
+  "traits.category.Enhanced Ability": "Ability",
+  "traits.category.Enhanced Defense": "Defense",
+  "traits.category.Enhanced Skill": "Skill",
+  "traits.category.Enhanced Advantage": "Advantage · manual application",
+  "traits.category.Enhanced Extra": "Extra · 1 PP category",
+  "traits.category.Enhanced Extra (2 PP)": "Extra · 2 PP category",
+  "traits.category.Enhanced Extra (3 PP)": "Extra · 3 PP category"
 }

@@ -33,3 +33,10 @@
   .trait-source__effect { grid-template-columns: auto minmax(0,1fr); }
   .trait-source__status { grid-column: 2; text-align: left; }
 }
+.enhanced-target-editor>label { display: grid; gap: 5px; font-size: .8rem; }
+.enhanced-target-editor select,.enhanced-target-editor input { background: var(--c-bg); color: var(--c-text); border: 1px solid var(--c-border); border-radius: var(--r-sm); padding: 8px; min-width: 0; width: 100%; }
+.trait-target-select label { display: grid; gap: 5px; font-size: .8rem; }
+.trait-target-select__subtype { display: grid; gap: 8px; }
+.trait-target-select__subtype>div { display: flex; flex-wrap: wrap; gap: 6px; }
+.enhanced-target-editor__preview { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 8px; background: var(--c-primary-muted); border-radius: var(--r-sm); font-size: .8rem; }
+.enhanced-target-editor__preview strong { color: var(--c-primary); white-space: nowrap; }

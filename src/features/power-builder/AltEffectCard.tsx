@@ -196,7 +196,7 @@ export function AltEffectCard({
                       </div>
 
                       {comp.effectId === 'enhanced-trait' && <EnhancedTargetEditor component={comp} character={character} onChange={update => onUpdateComponent(comp.id, update)} />}
-                      {effectDef?.variableCost && !comp.enhancedTarget && (
+                      {effectDef?.variableCost && comp.effectId !== 'enhanced-trait' && (
                         <div onClick={(e) => e.stopPropagation()}>
                           <VariableCostSelector
                             options={effectDef.variableCost.options}

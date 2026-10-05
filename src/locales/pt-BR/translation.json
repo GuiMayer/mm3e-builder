@@ -1377,5 +1377,17 @@
   "traits.status.absent": "Atributo ausente",
   "traits.status.invalid": "Destino ou opção inválidos",
   "traits.status.superseded": "Fonte mais forte em uso",
-  "traits.status.unbound": "Sem traço associado"
+  "traits.status.unbound": "Sem traço associado",
+  "traits.category": "Categoria do traço",
+  "traits.chooseCategory": "Escolha a categoria do traço",
+  "traits.searchTarget": "Pesquisar traços",
+  "traits.appliedRanks": "+{{ranks}} graduações associadas a este traço",
+  "traits.manualCategoryHint": "Vantagens e extras mantêm seu custo sem aplicação automática na ficha.",
+  "traits.category.Enhanced Ability": "Atributo",
+  "traits.category.Enhanced Defense": "Defesa",
+  "traits.category.Enhanced Skill": "Perícia",
+  "traits.category.Enhanced Advantage": "Vantagem · aplicação manual",
+  "traits.category.Enhanced Extra": "Extra · categoria de 1 PP",
+  "traits.category.Enhanced Extra (2 PP)": "Extra · categoria de 2 PP",
+  "traits.category.Enhanced Extra (3 PP)": "Extra · categoria de 3 PP"
 }
