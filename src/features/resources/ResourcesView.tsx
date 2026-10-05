@@ -130,7 +130,7 @@ function ResourceEditor({ resource, isNew, strength, onClose, onSave }: { resour
   const saveError = useResourcesStore((state) => state.storageError);
   const cost = getResourceCost(draft, undefined, undefined, strength);
   const base = draft.type === 'vehicle' ? getVehicleBaseTraits(draft.size) : null;
-  return <Modal isOpen onClose={onClose} title={t(isNew ? 'resources.createTitle' : 'resources.editTitle')}><div className="resource-editor">
+  return <div className="resource-editor-dialog"><Modal isOpen compact onClose={onClose} title={t(isNew ? 'resources.createTitle' : 'resources.editTitle')}><div className="resource-editor">
     <label>{t('resources.name')}<input autoFocus value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })}/></label>
     <label>{t('resources.notes')}<textarea rows={3} value={draft.notes} onChange={(event) => setDraft({ ...draft, notes: event.target.value })}/></label>
     {draft.type === 'vehicle' && base && <fieldset><legend>{t('resources.vehicleTraits')}</legend><label>{t('resources.size')}<select value={draft.size} onChange={(event) => setDraft(changeVehicleSize(draft, event.target.value as IVehicleResource['size']))}>{VEHICLE_SIZES.map((size) => <option value={size} key={size}>{t(`resources.size.${size}`)}</option>)}</select></label><p>{t('resources.sizeChangeHint')}</p><div className="resource-fields__numbers">{(['strength', 'defense', 'toughness'] as const).map((key) => <label key={key}>{t(key === 'strength' ? 'resources.strengthShort' : `resources.${key}`)}<NumberInput value={draft[key]} min={base[key]} variant="compact" onChange={(value) => setDraft({ ...draft, [key]: value })}/></label>)}</div><p>{t('resources.movement.builderHint')}</p><FeatureEditor features={draft.features} onChange={(features) => setDraft({ ...draft, features })}/></fieldset>}
@@ -139,7 +139,7 @@ function ResourceEditor({ resource, isNew, strength, onClose, onSave }: { resour
     <p className="resource-editor__cost">{t('resources.totalCost')}: <strong>{cost.total} {cost.unit}</strong></p>
     {saveError && <p role="alert" className="resource-warning">{t(saveError)}</p>}
     <div className="resource-editor__actions"><Button variant="ghost" onClick={onClose}>{t('common.cancel')}</Button><Button onClick={() => onSave(draft.type !== 'vehicle' && draft.type !== 'headquarters' ? { ...draft, costReviewRequired: false } : draft)}>{t('common.save')}</Button></div>
-  </div></Modal>;
+  </div></Modal></div>;
 }
 function FeatureEditor({ features, onChange }: { features: IResourceFeature[]; onChange: (features: IResourceFeature[]) => void }) {
   const { t } = useTranslation();
