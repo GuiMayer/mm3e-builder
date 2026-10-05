@@ -102,7 +102,7 @@ export function NumberInput({
   const iconSize = variant === 'small' ? 12 : variant === 'large' ? 16 : 14;
 
   return (
-    <div className={`number-input-wrapper number-input-wrapper--${variant}`}>
+    <div className={`number-input-wrapper number-input-wrapper--${variant}${disabled ? ' number-input-wrapper--disabled' : ''}`}>
       <button
         type="button"
         className="number-input-btn number-input-btn--decrement"
@@ -158,6 +158,19 @@ export function NumberInput({
           display: inline-flex;
           align-items: stretch;
           position: relative;
+          border-radius: var(--r-sm);
+          outline: 1px solid transparent;
+          outline-offset: -1px;
+          transition: outline-color var(--t-fast), box-shadow var(--t-fast);
+        }
+
+        .number-input-wrapper:hover:not(.number-input-wrapper--disabled),
+        .number-input-wrapper:focus-within {
+          outline-color: var(--c-primary);
+        }
+
+        .number-input-wrapper:focus-within {
+          box-shadow: 0 0 0 2px var(--c-primary-muted);
         }
 
         .number-input-wrapper input[type="number"] {
@@ -176,9 +189,9 @@ export function NumberInput({
           text-align: center;
         }
 
-        .number-input-field:focus {
-          border-color: var(--c-primary);
-          box-shadow: 0 0 0 2px var(--c-primary-muted);
+        .number-input-wrapper .number-input-field:focus {
+          border-color: var(--c-border);
+          box-shadow: none;
           outline: none;
         }
 
@@ -207,8 +220,11 @@ export function NumberInput({
 
         .number-input-btn:hover:not(:disabled) {
           background: var(--c-primary-muted);
-          border-color: var(--c-primary);
           color: var(--c-primary);
+        }
+
+        .number-input-wrapper .number-input-btn:focus-visible {
+          outline: none;
         }
 
         .number-input-btn:active:not(:disabled) {
