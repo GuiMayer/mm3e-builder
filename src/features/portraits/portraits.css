@@ -4,8 +4,8 @@
 .portrait-avatar-wrap{--portrait-width:160px;position:relative;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .portrait-frame img{display:block;width:100%;height:100%;object-fit:contain;}
 .portrait-local-label{font-size:.65rem;color:var(--c-text-muted);}
-/* Match the PDF's 112px square baseline without stretching with header content. */
-.portrait-avatar-wrap--filled,.portrait-size-probe{width:var(--portrait-width);height:var(--portrait-width);}
+/* Keep both the sheet and editor probe at 3:4, independent of header content. */
+.portrait-avatar-wrap--filled,.portrait-size-probe{width:var(--portrait-width);height:calc(var(--portrait-width) * 4 / 3);}
 .portrait-size-probe{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;}
 .portrait-avatar-wrap--filled{align-self:start;}
 .portrait-avatar-wrap--filled > .portrait-frame{position:absolute;inset:0;width:100%;height:100%;}

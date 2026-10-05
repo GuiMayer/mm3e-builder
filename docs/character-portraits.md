@@ -100,9 +100,9 @@ Sem esse campo, o retrato mostra a imagem inteira com bordas.
   navegador pode ser negada, e a limpeza manual do site remove as imagens.
 - JPEG, PNG e WebP: limite de 10 MiB de arquivo e 20 megapixels. Imagens são
   reduzidas a no máximo 1024 pixels no maior lado; miniaturas usam até 256 pixels.
-- O retrato da ficha usa moldura quadrada (1:1), seguindo o tamanho de base do
-  PDF (112 × 112 pixels). Na interface, mede 160 × 160 pixels em desktop/tablet
-  e 120 × 120 pixels até 768 pixels de largura. A moldura permanece alinhada ao
+- O retrato da ficha usa proporção fixa de 3:4 (largura:altura). Na interface,
+  mede 160 × aproximadamente 213 pixels em desktop/tablet e 120 × 160 pixels
+  até 768 pixels de largura. A moldura permanece alinhada ao
   topo e não muda quando campos quebram linhas ou os detalhes são abertos.
   A prévia do editor usa a mesma proporção e pode ser ampliada; os três modos
   de encaixe continuam disponíveis.
