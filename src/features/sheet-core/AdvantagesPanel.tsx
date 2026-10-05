@@ -740,20 +740,26 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
         @media (max-width: 768px) {
           .adv-chip { max-width: 100%; grid-template-columns: minmax(0,1fr) auto auto; gap: 4px; padding: var(--s-xs) 8px; }
           .adv-details,.adv-chip>.sheet-item-actions { display: contents; }
-          .adv-name { grid-column: 1; grid-row: 1; white-space: normal; overflow-wrap: anywhere; }
+          .adv-name { grid-column: 1; grid-row: 1; white-space: normal; overflow-wrap: anywhere; line-height: 1.4; }
           .adv-chip .adv-info-btn { display: none; }
           .adv-remove { grid-column: 2; grid-row: 1; }
           .adv-chip .sheet-roll-slot { grid-column: 3; grid-row: 1; justify-self: end; }
           .adv-chip .sheet-roll-slot:empty { display: none; }
           .adv-info-btn,.adv-remove { opacity: 1; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
-          .adv-chip--ranked { grid-template-columns: minmax(0,1fr) auto auto; }
-          .adv-chip--ranked .adv-name { grid-column: 1 / 3; }
+          .adv-chip--ranked { grid-template-columns: minmax(0,1fr) auto auto auto; }
+          .adv-chip--ranked .adv-name { grid-column: 1; }
           .adv-chip--ranked .adv-remove { grid-column: 3; }
-          .adv-chip--ranked .adv-ranks { display: flex; align-items: center; gap: 6px; grid-column: 1 / 3; grid-row: 2; min-width: 0; }
-          .adv-chip--ranked .sheet-roll-slot { grid-column: 3; grid-row: 2; }
+          .adv-chip--ranked .adv-ranks { display: flex; align-items: center; gap: 4px; grid-column: 2; grid-row: 1; min-width: 0; white-space: nowrap; }
+          .adv-chip--ranked .sheet-roll-slot { grid-column: 4; grid-row: 1; }
           .adv-rank-input {
-            width: 44px;
+            width: 32px;
           }
+        }
+        @media (max-width: 380px) {
+          .adv-chip--ranked { grid-template-columns: minmax(0,1fr) auto auto; }
+          .adv-chip--ranked .adv-ranks { grid-column: 2 / 4; }
+          .adv-chip--ranked .adv-remove { grid-column: 2; grid-row: 2; justify-self: end; }
+          .adv-chip--ranked .sheet-roll-slot { grid-column: 3; grid-row: 2; }
         }
       `}</style>
     </section>

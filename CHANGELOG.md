@@ -10,6 +10,9 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+### Changed — Mobile advantage rank placement
+- Place rank controls beside advantage names, aligning ranked cards with ordinary cards when space permits. Keep touch controls accessible and wrap actions on narrower phones; desktop layout and costs are unchanged.
+
 ## [1.21.1] - 2026-10-05
 
 ### Added — Dice history preferences
