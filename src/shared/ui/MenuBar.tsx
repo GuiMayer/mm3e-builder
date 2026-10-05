@@ -29,6 +29,8 @@ import { useResourcesStore } from '../../store/resourcesStore';
 import { parseDraftBundle, parseResourceLibrary, serializeDraftBundle, serializeResourceLibrary } from '../../services/draftTransfer';
 import { downloadBlob } from '../../services/downloadHelper';
 import { exportWithPortraits } from '../../services/portraitBundleExport';
+import { readPortraitBundle, prepareBundlePortraits, withImportedPortraits } from '../../services/portraitBundle';
+import { captureDraftRollback } from '../../services/storage/characterDraftStorage';
 import { useAppDialog } from './appDialogContext';
 import { parseDraftStorageSnapshot, restoreDraftStorageSnapshot } from '../../services/storage/draftUpdateBackup';
 
@@ -90,6 +92,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     handleFileInput,
     fileInputRef,
     pendingImport,
+    isImporting,
     resourceConflicts,
     resolveResourceConflict,
     updateCharacterFromPendingImport,
@@ -183,9 +186,11 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
     event.target.value = '';
     if (!file) return;
     try {
-      const text = await file.text();
+      const archive = /\.zip$/i.test(file.name) ? await readPortraitBundle(file, 'draft') : undefined;
+      const text = await (archive?.data ?? file).text();
       const snapshot = parseDraftStorageSnapshot(text);
       if (snapshot) {
+        if (archive) throw new I18nError('bundle.invalid');
         const payload = snapshotReviewPayload(snapshot);
         const reviewed = await dialog.reviewModifierSources(payload, text);
         if (!reviewed) return;
@@ -199,15 +204,30 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       const bundle = await dialog.reviewModifierSources(parseDraftBundle(text), text);
       if (!bundle) return;
       validateImportedReferences(bundle.tabs.map(tab => tab.character), bundle.resources);
+      const portraits = archive ? await prepareBundlePortraits(archive, bundle.tabs.map(tab => tab.character)) : [];
       const characters = t('draft.characterCount', { count: bundle.tabs.length });
       const resourceCount = t('resources.count', { count: bundle.resources.length });
       if (!await dialog.confirm({ title: t('draft.restoreTitle'), message: t('draft.restoreMessage', { characters, resources: resourceCount }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
       localStorage.setItem(IMPORT_BACKUP_KEY, JSON.stringify({ exportedAt: new Date().toISOString(), draft: localStorage.getItem('mm3e-draft-characters'), resources: localStorage.getItem('mm3e-resource-library') }));
-      const previousTabs = tabs, previousActiveId = activeCharacterId, previousResources = resources;
-      if (!replaceResources(bundle.resources)) throw new I18nError('draft.error.storageWrite');
-      if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) { replaceResources(previousResources); replaceDraftMulti(previousTabs, previousActiveId); throw new I18nError('draft.error.storageWrite'); }
-      loadTabs(bundle.tabs, bundle.activeId);
-      setDraftHydrated(true);
+      const previous = useCharactersStore.getState(), previousResources = useResourcesStore.getState();
+      const previousLibrary = localStorage.getItem('mm3e-resource-library');
+      const rollbackDraft = captureDraftRollback();
+      await withImportedPortraits(portraits, () => {
+        try {
+          if (!replaceResources(bundle.resources)) throw new I18nError('draft.error.storageWrite');
+          if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) throw new I18nError('draft.error.storageWrite');
+          loadTabs(bundle.tabs, bundle.activeId);
+          setDraftHydrated(true);
+        } catch (error) {
+          useCharactersStore.setState(previous);
+          useResourcesStore.setState(previousResources);
+          try {
+            if (previousLibrary === null) localStorage.removeItem('mm3e-resource-library');
+            else localStorage.setItem('mm3e-resource-library', previousLibrary);
+          } finally { rollbackDraft(); }
+          throw error;
+        }
+      });
     } catch (error) { await dialog.alert({ title: t('draft.importTitle'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('draft.importFailed'), messageDiagnostic: error instanceof I18nError ? { message: error.message, messageKey: error.i18nKey, params: error.i18nParams, nested: error.diagnostic } : undefined }); }
   }
 
@@ -277,6 +297,7 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
 
       <CharacterImportConflictDialog
         pendingImport={pendingImport}
+        busy={isImporting}
         onUpdate={updateCharacterFromPendingImport}
         onOpenAsCopy={openPendingImportAsCopy}
         onCancel={cancelPendingImport}
@@ -351,11 +372,11 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
         <input
           ref={fileInputRef}
           type="file"
-          accept=".json"
+          accept=".json,.zip,application/zip"
           onChange={handleFileInput}
           style={{ display: 'none' }}
         />
-        <input ref={draftInputRef} type="file" accept=".jsonl,application/x-ndjson" onChange={handleDraftImport} style={{ display: 'none' }} />
+        <input ref={draftInputRef} type="file" accept=".jsonl,.zip,application/x-ndjson,application/zip" onChange={handleDraftImport} style={{ display: 'none' }} />
         <input ref={resourceInputRef} type="file" accept=".jsonl,application/x-ndjson" onChange={handleResourceImport} style={{ display: 'none' }} />
 
         {/* Settings Dropdown */}

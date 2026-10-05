@@ -15,7 +15,7 @@ export function validatePortraitFile(blob: Blob) {
   if (!blob.size || blob.size > MAX_PORTRAIT_BYTES) throw new Error('portrait.tooLarge');
 }
 
-export async function preparePortrait(blob: Blob): Promise<PortraitMedia> {
+export async function preparePortrait(blob: Blob, preserveSmallSource = false): Promise<PortraitMedia> {
   validatePortraitFile(blob);
   const bitmap = await createImageBitmap(blob).catch(() => { throw new Error('portrait.invalidImage'); });
   try {
@@ -30,7 +30,8 @@ export async function preparePortrait(blob: Blob): Promise<PortraitMedia> {
       context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
       return new Promise((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('portrait.invalidImage')), 'image/webp', .88));
     }
-    return { image: await resize(1024), thumbnail: await resize(256), width: bitmap.width, height: bitmap.height };
+    const image = preserveSmallSource && Math.max(bitmap.width, bitmap.height) <= 1024 ? blob : await resize(1024);
+    return { image, thumbnail: await resize(256), width: bitmap.width, height: bitmap.height };
   } finally { bitmap.close(); }
 }
 

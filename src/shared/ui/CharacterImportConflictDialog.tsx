@@ -8,6 +8,7 @@ interface CharacterImportConflictDialogProps {
   onUpdate: (tabId: string) => void;
   onOpenAsCopy: () => void;
   onCancel: () => void;
+  busy?: boolean;
 }
 
 /** Lets the user resolve an imported file that matches an open character. */
@@ -16,6 +17,7 @@ export function CharacterImportConflictDialog({
   onUpdate,
   onOpenAsCopy,
   onCancel,
+  busy = false,
 }: CharacterImportConflictDialogProps) {
   const { t } = useTranslation();
   const matches = pendingImport?.matchingTabs ?? [];
@@ -26,21 +28,23 @@ export function CharacterImportConflictDialog({
       onClose={onCancel}
       title={t('characterImport.conflict.title')}
       compact
+      dismissible={!busy}
     >
       <div className="character-import-conflict">
         <p>{t('characterImport.conflict.description', { count: matches.length })}</p>
+        {pendingImport?.portrait && <p>{t('bundle.importPortraitNotice')}</p>}
         <div className="character-import-conflict__matches">
           {matches.map((tab) => (
-            <Button key={tab.id} variant="secondary" onClick={() => onUpdate(tab.id)}>
+            <Button key={tab.id} variant="secondary" disabled={busy} onClick={() => onUpdate(tab.id)}>
               {t('characterImport.conflict.update', { name: tab.label })}
             </Button>
           ))}
         </div>
         <div className="character-import-conflict__actions">
-          <Button variant="primary" onClick={onOpenAsCopy}>
+          <Button variant="primary" disabled={busy} onClick={onOpenAsCopy}>
             {t('characterImport.conflict.openCopy')}
           </Button>
-          <Button variant="ghost" onClick={onCancel}>
+          <Button variant="ghost" disabled={busy} onClick={onCancel}>
             {t('common.cancel')}
           </Button>
         </div>

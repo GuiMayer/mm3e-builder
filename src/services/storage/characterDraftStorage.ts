@@ -396,6 +396,24 @@ export function replaceDraftMulti(tabs: CharacterTab[], activeId: string | null)
   return saveDraftMulti(tabs, activeId);
 }
 
+/** Capture durable data and save bookkeeping for compensation of a multi-store import. */
+export function captureDraftRollback(): () => void {
+  const entries = Object.values(characterDraftStorageKeys).map(key => [key, localStorage.getItem(key)] as const);
+  const signature = lastSavedSignature;
+  const saveError = lastDraftSaveError;
+  const recovery = draftNeedsRecoveryBeforeSave;
+  return () => {
+    for (const [key, value] of entries) {
+      if (localStorage.getItem(key) === value) continue;
+      if (value === null) localStorage.removeItem(key);
+      else localStorage.setItem(key, value);
+    }
+    lastSavedSignature = signature;
+    lastDraftSaveError = saveError;
+    draftNeedsRecoveryBeforeSave = recovery;
+  };
+}
+
 export const characterDraftStorageKeys = {
   draft: DRAFT_KEY,
   metadata: DRAFT_METADATA_KEY,

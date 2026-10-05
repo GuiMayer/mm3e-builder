@@ -7,6 +7,8 @@ import {
   getLastDraftSaveError,
   loadDraftMulti,
   saveDraftMulti,
+  captureDraftRollback,
+  replaceDraftMulti,
 } from '../services/storage/characterDraftStorage';
 
 function createStorageMock() {
@@ -52,6 +54,21 @@ describe('characterDraftStorage', () => {
   beforeEach(() => {
     storage.clear();
     storage.setItem.mockClear();
+  });
+
+  it('restores durable draft keys and save cache after a later import step fails', () => {
+    const original = [createTab('original', 'Original')];
+    expect(replaceDraftMulti(original, 'original')).toBe(true);
+    storage.setItem(characterDraftStorageKeys.backup, 'preserved backup');
+    const before = Object.values(characterDraftStorageKeys).map(key => storage.getItem(key));
+    const rollback = captureDraftRollback();
+    const imported = [createTab('imported', 'Imported')];
+    expect(replaceDraftMulti(imported, 'imported')).toBe(true);
+    rollback();
+    expect(Object.values(characterDraftStorageKeys).map(key => storage.getItem(key))).toEqual(before);
+    // A later retry must write the imported data again instead of using the failed import's cache.
+    expect(saveDraftMulti(imported, 'imported')).toBe(true);
+    expect(loadDraftMulti()?.tabs[0].label).toBe('Imported');
   });
 
   it('round-trips the established multi-character draft format', () => {

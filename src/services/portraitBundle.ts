@@ -133,7 +133,7 @@ export async function prepareBundlePortraits(bundle: PortraitBundle, characters:
       : entry.mime === 'image/jpeg' ? bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255
       : String.fromCharCode(...bytes.slice(0, 4)) === 'RIFF' && String.fromCharCode(...bytes.slice(8, 12)) === 'WEBP';
     if (!signature) throw invalid();
-    const media = await preparePortrait(new Blob([bytes], { type: entry.mime }));
+    const media = await preparePortrait(new Blob([bytes], { type: entry.mime }), true);
     portraits.push({ characterId: entry.characterId, media });
   }
   return portraits;

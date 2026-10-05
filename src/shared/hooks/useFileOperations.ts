@@ -2,6 +2,9 @@ import { copyCharacterPortrait } from '../../services/portraits/portraitLifecycl
 import { serializeCharacterJSON } from '../../services/character-file/exportCharacter';
 import { sanitizeFileName } from '../../services/downloadHelper';
 import { exportWithPortraits } from '../../services/portraitBundleExport';
+import { readPortraitBundle, prepareBundlePortraits, withImportedPortraits } from '../../services/portraitBundle';
+import type { PortraitMedia } from '../../services/storage/portraitStorage';
+import { captureDraftRollback } from '../../services/storage/characterDraftStorage';
 import { useToast } from './useToast';
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +31,7 @@ export interface PendingCharacterImport {
   matchingTabs: CharacterTab[];
   resources: IResource[];
   replaceExisting: boolean;
+  portrait?: PortraitMedia;
 }
 
 /**
@@ -42,6 +46,7 @@ export function useFileOperations() {
   const resources = useResourcesStore((state) => state.resources);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isImporting, setIsImporting] = useState(false);
+  const committingImport = useRef(false);
   const [pendingImport, setPendingImport] = useState<PendingCharacterImport | null>(null);
   const [resourceConflicts, setResourceConflicts] = useState<IResource[] | null>(null);
   const conflictResolver = useRef<((choice: ResourceImportChoice | null) => void) | null>(null);
@@ -55,8 +60,7 @@ export function useFileOperations() {
   function persistImportedResources(incoming: IResource[], replaceExisting: boolean): boolean {
     if (!incoming.length) return true;
     if ((replaceExisting && !preserveResourceImportBackup()) || !useResourcesStore.getState().upsertResources(incoming, replaceExisting)) {
-      void dialog.alert({ title: t('errors.importError'), message: t('resources.error.storageWrite') });
-      return false;
+      throw new I18nError('resources.error.storageWrite');
     }
     return true;
   }
@@ -65,6 +69,43 @@ export function useFileOperations() {
     useCharactersStore.getState().addCharacter(
       ensureImportedCharacterIdentity(importedCharacter)
     );
+  }
+
+  async function completeCharacterImport(pending: PendingCharacterImport, tabId?: string, asCopy = false) {
+    if (committingImport.current) return;
+    committingImport.current = true;
+    setIsImporting(true);
+    try {
+      const previous = useCharactersStore.getState();
+      const previousResources = useResourcesStore.getState();
+      const previousLibrary = localStorage.getItem('mm3e-resource-library');
+      const rollbackDraft = captureDraftRollback();
+      const imported = ensureImportedCharacterIdentity(asCopy
+        ? duplicateImportedCharacter(pending.character, previous.tabs.map(tab => tab.label))
+        : pending.character);
+      await withImportedPortraits(pending.portrait ? [{ characterId: imported.characterId!, media: pending.portrait }] : [], () => {
+        try {
+          persistImportedResources(pending.resources, pending.replaceExisting);
+          const store = useCharactersStore.getState();
+          if (tabId && store.getCharacterById(tabId)) { store.updateCharacter(tabId, imported); store.setActiveCharacter(tabId); }
+          else openImportedCharacter(imported);
+          const updated = useCharactersStore.getState();
+          if (!saveDraftMulti(updated.tabs, updated.activeCharacterId)) throw new I18nError('draft.error.storageWrite');
+        } catch (error) {
+          useCharactersStore.setState(previous);
+          useResourcesStore.setState(previousResources);
+          try {
+            if (previousLibrary === null) localStorage.removeItem('mm3e-resource-library');
+            else localStorage.setItem('mm3e-resource-library', previousLibrary);
+          } finally { rollbackDraft(); }
+          throw error;
+        }
+      });
+      if (asCopy && !pending.portrait) await copyCharacterPortrait(pending.character, imported).catch(() => showToast(t('portrait.copyError'), 'error'));
+      setPendingImport(null);
+    } catch (error) {
+      await dialog.alert({ title: t('errors.importError'), message: error instanceof I18nError ? t(error.i18nKey, error.i18nParams) : t('bundle.importError') });
+    } finally { committingImport.current = false; setIsImporting(false); }
   }
 
   /**
@@ -92,8 +133,11 @@ export function useFileOperations() {
   async function importCharacter(file: File) {
     setIsImporting(true);
     try {
+      const archive = /\.zip$/i.test(file.name) ? await readPortraitBundle(file, 'character') : undefined;
+      if (archive) file = archive.data;
       const original = await file.text();
       const char = await importCharacterJSON(file, { prepareSourceReview: true });
+      const portrait = archive ? (await prepareBundlePortraits(archive, [char]))[0]?.media : undefined;
       const appendixResources = await importResourceAppendix(file);
       const reviewed = await dialog.reviewModifierSources({ character: char, resources: appendixResources }, original);
       if (!reviewed) return;
@@ -118,9 +162,9 @@ export function useFileOperations() {
       );
 
       if (matchingTabs.length === 0) {
-        if (persistImportedResources(prepared.resources, prepared.replaceExisting)) openImportedCharacter(prepared.character);
+        await completeCharacterImport({ ...prepared, matchingTabs, portrait });
       } else {
-        setPendingImport({ ...prepared, matchingTabs });
+        setPendingImport({ ...prepared, matchingTabs, portrait });
       }
     } catch (err) {
       if (err instanceof I18nError) {
@@ -155,31 +199,16 @@ export function useFileOperations() {
     fileInputRef.current?.click();
   }
 
-  function updateCharacterFromPendingImport(tabId: string) {
+  async function updateCharacterFromPendingImport(tabId: string) {
     const pending = pendingImport;
     if (!pending) return;
-    if (!persistImportedResources(pending.resources, pending.replaceExisting)) return;
-
-    const store = useCharactersStore.getState();
-    if (store.getCharacterById(tabId)) {
-      store.updateCharacter(tabId, pending.character);
-      store.setActiveCharacter(tabId);
-    } else {
-      openImportedCharacter(pending.character);
-    }
-    setPendingImport(null);
+    await completeCharacterImport(pending, tabId);
   }
 
-  function openPendingImportAsCopy() {
+  async function openPendingImportAsCopy() {
     const pending = pendingImport;
     if (!pending) return;
-    if (!persistImportedResources(pending.resources, pending.replaceExisting)) return;
-
-    const existingNames = useCharactersStore.getState().tabs.map((tab) => tab.label);
-    const copy = duplicateImportedCharacter(pending.character, existingNames);
-    openImportedCharacter(copy);
-    void copyCharacterPortrait(pending.character, copy).catch(() => showToast(t('portrait.copyError'), 'error'));
-    setPendingImport(null);
+    await completeCharacterImport(pending, undefined, true);
   }
 
   return {
@@ -194,6 +223,6 @@ export function useFileOperations() {
     resolveResourceConflict,
     updateCharacterFromPendingImport,
     openPendingImportAsCopy,
-    cancelPendingImport: () => setPendingImport(null),
+    cancelPendingImport: () => { if (!committingImport.current) setPendingImport(null); },
   };
 }
