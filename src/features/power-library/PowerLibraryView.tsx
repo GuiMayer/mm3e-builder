@@ -21,6 +21,7 @@ import { getLibraryDestinationStrength } from './libraryPricing';
 import { PowerDestinationDialog } from './PowerDestinationDialog';
 import './powerLibrary.css';
 import './personalLibrary.css';
+const CharacterCreationDialog = lazy(()=>import('../character-creation/CharacterCreationDialog').then(module=>({default:module.CharacterCreationDialog})));
 
 const PowerBuilderOverlay = lazy(() => import('../power-builder/PowerBuilderOverlay').then(module => ({ default: module.PowerBuilderOverlay })));
 
@@ -31,6 +32,7 @@ export function PowerLibraryView({ onOpenPower }: { onOpenPower: (edit: LibraryP
   const library = usePersonalLibraryStore();
   const [section, setSection] = useState<'profiles' | 'characters' | 'models'>('profiles');
   const [pendingPower, setPendingPower] = useState<ICharacterPower | null>(null);
+  const [creatingCharacter,setCreatingCharacter] = useState(false);
   const [destinationError, setDestinationError] = useState<string | null>(null);
   const [query, setQuery] = useState(''); const search = useDeferredValue(query);
   const [characterFilter, setCharacterFilter] = useState('');
@@ -125,7 +127,8 @@ export function PowerLibraryView({ onOpenPower }: { onOpenPower: (edit: LibraryP
         </section>
       </div></div>
     </div>}
-    {pendingPower && <PowerDestinationDialog power={pendingPower} error={destinationError} onClose={() => { setPendingPower(null); setDestinationError(null); }} onSelect={selectDestination} onCreate={() => selectDestination(useCharactersStore.getState().addCharacter())}/>}
+    {pendingPower && !creatingCharacter && <PowerDestinationDialog power={pendingPower} error={destinationError} onClose={() => { setPendingPower(null); setDestinationError(null); }} onSelect={selectDestination} onCreate={() => setCreatingCharacter(true)}/>}
+    {creatingCharacter && <Suspense fallback={<p role="status">{t('common.loading')}</p>}><CharacterCreationDialog onClose={()=>setCreatingCharacter(false)} onCreated={id=>{setCreatingCharacter(false);selectDestination(id);}}/></Suspense>}
     {editor && !compositionOpen && <PersonalModelEditor model={editor.draft} onChange={draft => setEditor({ ...editor, draft })} onComposition={() => setCompositionOpen(true)} onSave={saveModel} onClose={() => setEditor(null)} error={library.error}/>}
     {compositionOpen && <Suspense fallback={<p role="status">{t('common.loading')}</p>}><PowerBuilderOverlay templateMode existingPower={editor?.draft.power} isNewPower={!editor} onClose={() => setCompositionOpen(false)} onSave={power => { setEditor(editor ? { ...editor, draft: updateModelComposition(editor.draft, power) } : { draft: createPersonalModel(power) }); setCompositionOpen(false); }}/></Suspense>}
   </div>;

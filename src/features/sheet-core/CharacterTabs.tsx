@@ -3,8 +3,10 @@ import { useToast } from '../../shared/hooks/useToast';
 import { useTranslation } from 'react-i18next';
 import { useCharactersStore } from '../../store/charactersStore';
 import { Copy, Plus, X } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { lazy, Suspense, useState, useRef, useEffect } from 'react';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
+
+const CharacterCreationDialog = lazy(()=>import('../character-creation/CharacterCreationDialog').then(module=>({default:module.CharacterCreationDialog})));
 
 export function CharacterTabs() {
   const { t } = useTranslation();
@@ -12,7 +14,7 @@ export function CharacterTabs() {
   const tabs = useCharactersStore((s) => s.tabs);
   const activeCharacterId = useCharactersStore((s) => s.activeCharacterId);
   const setActiveCharacter = useCharactersStore((s) => s.setActiveCharacter);
-  const addCharacter = useCharactersStore((s) => s.addCharacter);
+  const [creating,setCreating] = useState(false);
   const duplicateCharacter = useCharactersStore((s) => s.duplicateCharacter);
   const removeCharacter = useCharactersStore((s) => s.removeCharacter);
   const reorderTabs = useCharactersStore((s) => s.reorderTabs);
@@ -29,7 +31,7 @@ export function CharacterTabs() {
 
   // Handle new character
   const handleNewCharacter = () => {
-    addCharacter();
+    setCreating(true);
   };
 
   const handleDuplicateCharacter = () => {
@@ -155,6 +157,7 @@ export function CharacterTabs() {
         <Plus size={16} />
       </button>
 
+      {creating && <Suspense fallback={<p role="status">{t('common.loading')}</p>}><CharacterCreationDialog onClose={()=>setCreating(false)} onCreated={()=>setCreating(false)}/></Suspense>}
       <style>{`
         .character-tabs {
           display: flex;

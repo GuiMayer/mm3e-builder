@@ -1,0 +1,49 @@
+.creation-intro { color: var(--c-text-secondary); margin: 0 0 var(--s-md); }
+.creation-start { display: grid; gap: var(--s-sm); }
+.creation-start button { display: flex; align-items: center; gap: var(--s-md); text-align: left; padding: var(--s-md); border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface-elevated); color: var(--c-text); }
+.creation-start button:hover { border-color: var(--c-primary); background: var(--c-primary-muted); }
+.creation-start span { display: grid; gap: 4px; }
+.creation-start small { color: var(--c-text-secondary); }
+.creation-dialog .power-library-filters > button { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.creation-dialog .power-library-filters > button, .creation-effect button { border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface-elevated); color: var(--c-text); padding: 8px 12px; cursor: pointer; }
+.creation-dialog .power-library-filters > button:hover, .creation-effect button:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.creation-dialog .power-library-workspace--no-sidebar { grid-template-columns: minmax(250px, .7fr) minmax(0, 1.3fr); }
+.creation-field { margin: var(--s-md) 0; }
+.creation-field > label { display: grid; gap: var(--s-xs); }
+.creation-field input:not([type=checkbox]), .creation-field select { width: 100%; min-height: 40px; }
+.creation-field fieldset { min-width: 0; margin: 0; padding: var(--s-sm); border: 1px solid var(--c-border); border-radius: var(--r-md); }
+.creation-field legend { font-weight: 600; padding: 0 var(--s-xs); }
+.creation-field fieldset > p { color: var(--c-text-secondary); font-size: .85rem; margin: var(--s-xs) 0 var(--s-sm); }
+.creation-checkboxes { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--s-xs); }
+.creation-checkboxes label { display: flex; align-items: flex-start; gap: var(--s-sm); min-height: 40px; padding: var(--s-xs); line-height: 1.4; }
+.creation-checkboxes input { flex-shrink: 0; margin-top: 2px; }
+.creation-effect { display: flex; align-items: center; justify-content: space-between; gap: var(--s-sm); padding: var(--s-sm) 0; border-top: 1px solid var(--c-border); }
+.creation-effect > span { overflow-wrap: anywhere; min-width: 0; }
+.creation-effect > div { display: flex; gap: var(--s-xs); flex-shrink: 0; }
+.creation-effect button { min-height: 36px; }
+.creation-name { color: var(--c-text-secondary); font-size: .9rem; }
+.creation-costs { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: var(--s-xs); padding: var(--s-sm); background: var(--c-surface-elevated); border-radius: var(--r-md); margin: var(--s-md) 0; }
+.creation-costs dt { font-size: .8rem; color: var(--c-text-secondary); overflow-wrap: anywhere; }
+.creation-costs dd { margin: var(--s-xs) 0 0; font-weight: 600; }
+.creation-preview > details, .creation-variants { padding: var(--s-sm) 0; border-top: 1px solid var(--c-border); }
+.creation-preview details > details { margin: var(--s-sm) 0; }
+.creation-preview summary, .creation-variants summary { cursor: pointer; font-weight: 600; }
+.creation-values { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--s-sm); margin-top: var(--s-sm); }
+.creation-values > div { display: grid; gap: 3px; min-width: 0; }
+.creation-values strong, .creation-values small { font-size: .8rem; color: var(--c-text-secondary); }
+.creation-values span { font-weight: 600; }
+.creation-rows { list-style: none; padding: 0; margin: var(--s-sm) 0; }
+.creation-rows li { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-sm); padding: 6px 0; border-bottom: 1px solid var(--c-border); }
+.creation-rows strong { font-size: .9rem; font-weight: 500; }
+.creation-rows span { white-space: nowrap; font-size: .85rem; color: var(--c-text-secondary); }
+.creation-dialog .power-library-apply { display: flex; align-items: center; gap: 6px; }
+@media (max-width:700px) {
+  .creation-dialog .power-library-workspace--no-sidebar { display: flex; }
+  .creation-dialog .power-library-filters { flex-wrap: nowrap; }
+  .creation-checkboxes { grid-template-columns: 1fr; }
+  .creation-values { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .creation-effect { align-items: flex-start; flex-direction: column; }
+  .creation-effect > div { width: 100%; }
+  .creation-effect button { flex: 1; min-height: 40px; }
+  .creation-costs { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
