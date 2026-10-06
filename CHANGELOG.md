@@ -10,6 +10,9 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+### Changed — Resource library columns
+- Stack resource cards vertically within responsive columns, keeping each card intact and avoiding gaps caused by neighboring card heights. Keep alphabetical ordering and the full-width empty state.
+
 ## [1.21.3] - 2026-10-05
 
 ### Changed — Duration progression and sustained library powers
