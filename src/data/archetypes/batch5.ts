@@ -26,7 +26,11 @@ export const batch5: Archetype[] = [
     if(gift==='fast')d.addPower('Fast','Veloz',[c('quickness',5),c('speed',5)]);
     if(gift==='leaping')d.addPower('Super-leaping','Supersalto',[c('leaping',10)]);
     if(gift==='flight')d.addPower('Wind-riding','Cavaleiro dos ventos',[c('flight',5)]);
-    if(gift==='senses'){const p=d.powers('senses',1,10)[0];if(p){if(p.components.some(item=>item.effectId!=='senses')||p.components.reduce((sum,item)=>sum+item.ranks,0)!==10)d.missing.push('senses');d.character.powers.push(p);}}
+    if(gift==='senses'){
+      const mode=d.select('senses-mode',text('Super-senses configuration','Configuração dos supersentidos'),options(['listed','Listed senses','Sentidos do arquétipo'],['custom','Choose other senses','Escolher outros sentidos']),true,'listed');
+      if(mode==='listed')d.addPower('Super-senses','Supersentidos',[senses([{id:'accurate',ranks:2,senseType:'Auditory',scope:'sense'},{id:'analytical',ranks:1,senseType:'Auditory',scope:'sense'},{id:'danger_sense',ranks:1,senseType:'Auditory'},{id:'extended',ranks:1,senseType:'Auditory'},{id:'extended',ranks:1,senseType:'Visual'},{id:'counters_illusion',ranks:2,senseType:'Auditory'},{id:'tracking',ranks:1,senseType:'Visual'},{id:'ultra_hearing',ranks:1}])]);
+      else{const p=d.powers('senses',1,10)[0];if(p){if(p.components.some(item=>item.effectId!=='senses'||!item.senseTraits?.length)||p.components.reduce((sum,item)=>sum+item.ranks,0)!==10)d.missing.push('senses');d.character.powers.push(p);}}
+    }
   }},
   {id:'weapon-master',name:text('Weapon Master','Mestre de Armas'),summary:text('A specialized weapon, a motorcycle and two chosen talents.','Uma arma especializada, uma motocicleta e dois talentos escolhidos.'),page:49,printed:[50,10,17,45,28],note:text('Some 7 PP Easily Removable options are printed as 5 PP. Rounding up gives a 4 PP discount and a 3 PP cost; the actual sheet total depends on the options selected.','Algumas opções Facilmente Removíveis de 7 PP estão impressas como 5 PP. O arredondamento para cima desconta 4 PP e resulta em 3 PP; o total da ficha depende das opções escolhidas.'),build(d){
     d.abilities([3,5,7,1,2,5,0,2]);d.defenses(7,7,6,8);d.advantages(a('defensive_roll',4),a('equipment',5),'evasion',a('improved_critical',1,'Weapon'));d.chosenAdvantages('advantages',6,weaponAdvantages);

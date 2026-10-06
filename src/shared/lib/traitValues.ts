@@ -2,7 +2,7 @@ import type { ICharacter, IResource, ITraitTarget } from '../../entities/types';
 import { SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { getPowerSources, resolvePowerUsage } from './powerUsage';
 import { traitTargetKey } from './traitTargets';
-import { enhancedAdvantage, liftingOnly } from './enhancedTraits';
+import { enhancedAdvantage, enhancedImpervious, liftingOnly } from './enhancedTraits';
 
 export interface TraitContribution {
   target: ITraitTarget; key: string; sourceKey: string; name: string;
@@ -26,6 +26,7 @@ function calculateTraitState(character: ICharacter, resources: readonly IResourc
       const advantage = enhancedAdvantage(component);
       if (advantage) { advantages.push({ ...advantage, ranks: component.ranks, equipment: source.equipment, sourceKey: source.key }); continue; }
       if (liftingOnly(component)) continue;
+      if (enhancedImpervious(component)) continue;
       const target = component.enhancedTarget;
       if (!target) { warnings.push({ key: 'traits.missingTarget', params: { name: source.name } }); continue; }
       if (target.kind === 'ability' && character.absentAbilities.includes(target.key)) { warnings.push({ key: 'traits.absentTarget', params: { name: source.name } }); continue; }

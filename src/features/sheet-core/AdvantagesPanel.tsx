@@ -21,9 +21,9 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
   const { t } = useTranslation();
   const advantageDefs = useLocalizedData(ADVANTAGE_DEFS);
   const skillDefs = useLocalizedData(SKILL_DEFS);
-  const { character } = useTraitValues();
+  const { character, original } = useTraitValues();
   const { setAdvantages } = useCharacterActions();
-  const advantages = character.advantages;
+  const advantages = original.advantages;
   const dialog = useAppDialog();
 
   const [showSelector, setShowSelector] = useState(false);
@@ -224,14 +224,16 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
         <span className="panel-cost">{cost} {t('common.pp')}</span>
       </div>
 
-      {advantages.length === 0 && (
+      {character.advantages.length === 0 && (
         <p className="adv-empty">{t('advantages.noAdvantages')}</p>
       )}
 
       <div className="adv-grid">
-        {advantages.map((adv, i) => {
+        {character.advantages.map((adv, i) => {
           const def = advantageDefs.find((d) => d.id === adv.advantageId);
           if (!def) return null;
+          const purchased = advantages[i];
+          const granted = adv.ranks - (purchased?.ranks ?? 0);
           return (
             <div key={`${adv.advantageId}-${i}`} className={`adv-chip${def.ranked ? ' adv-chip--ranked' : ''}`}>
               <div className="adv-details">
@@ -241,16 +243,17 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
                   {adv.subtype && <span className="adv-subtype"> ({adv.subtype})</span>}
                 </button>
               </Tooltip>
-              {def.ranked && (
+              {def.ranked && purchased && (
                 <div className="adv-ranks">
                   <NumberInput
                     variant="small"
                     className="adv-rank-input"
-                    value={adv.ranks}
+                    value={purchased.ranks}
                     onChange={(value) => updateRanks(i, value)}
                     min={1}
                     max={def.maxRank ?? undefined}
                   />
+                  {granted > 0 && <Tooltip content={t('traits.grantedHint')}><span className="adv-result-badge">+{granted} = {adv.ranks}</span></Tooltip>}
                   {def.maxRank && (
                     <span className="adv-rank-max">/ {def.maxRank}</span>
                   )}
@@ -265,9 +268,10 @@ function AdvantagesPanelComponent({ cost }: { cost: number }) {
               >
                 <Info size={12} />
               </button>
-              <button className="adv-remove" onClick={() => removeAdvantage(i)} title={t('common.remove')}>
+              {!purchased && <Tooltip content={t('traits.grantedHint')}><span className="adv-result-badge">{adv.ranks} · {t('traits.granted')}</span></Tooltip>}
+              {purchased && <button className="adv-remove" onClick={() => removeAdvantage(i)} title={t('common.remove')}>
                 <Trash2 size={12} />
-              </button>
+              </button>}
               <span className="sheet-roll-slot"><AdvantageRollActions advantage={adv} name={def.name} character={character} skillDefs={skillDefs} /></span>
               </div>
             </div>

@@ -5,6 +5,7 @@ import { POWER_DEFS, MODIFIER_DEFS, ADVANTAGE_DEFS, SKILL_DEFS } from '../../ent
 import { calculatePowerPricing } from '../../shared/lib/mathEngine';
 import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
 import { validateRequiredPowerFields } from '../../shared/lib/validation';
+import { validateCharacterSemantics } from '../../shared/lib/semanticValidation';
 import { getPowerSources } from '../../shared/lib/powerUsage';
 import { effectiveTraitCharacter } from '../../shared/lib/traitValues';
 
@@ -112,6 +113,7 @@ export class Recipe {
     if (values.length !== count || values.some(entry => {
       const price = calculatePowerPricing(entry, POWER_DEFS, MODIFIER_DEFS, strength);
       return !entry.components.length || entry.alternateEffects.length > 0 || !!entry.removable && entry.removable !== 'none'
+        || validateCharacterSemantics(createDefaultCharacter({powers:[entry]}), {powerDefs:POWER_DEFS,modifierDefs:MODIFIER_DEFS}).some(issue=>issue.severity==='error')
         || price.diagnostics.length > 0 || (equipment ? price.equipmentTotal : price.total) > budget
         || entry.components.some(item => !POWER_DEFS.some(def => def.id === item.effectId) || !!validateRequiredPowerFields(item, POWER_DEFS.find(def => def.id === item.effectId)));
     })) this.missing.push(id);

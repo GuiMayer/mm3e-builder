@@ -31,12 +31,13 @@ export const batch1: Archetype[] = [
     d.resource(power(d.label('Costume','Traje'),[c('protection',2)]));d.resource(power(d.label('Grapple gun','Pistola de gancho'),[movement(1,'Swinging')]));
     if(variant==='sentinel') {
       d.resource(power(d.label('Tonfa','Tonfa'),[damage(1,[],true)]));
-      const purchases=d.powers('sentinel-senses',1,3)[0];if(purchases){if(purchases.components.some(item=>item.effectId!=='senses')||purchases.components.reduce((sum,item)=>sum+item.ranks,0)!==3)d.missing.push('sentinel-senses');d.character.powers.push(purchases);}
-      d.chosenAdvantages('advantages',4,crimeAdvantages);return;
+      const extra=Number(d.select('sentinel-extra',text('Trade optional advantages for more Senses','Trocar vantagens opcionais por mais Sentidos'),options(['0','Keep four advantages','Manter quatro vantagens'],['1','Trade one advantage','Trocar uma vantagem'],['2','Trade two advantages','Trocar duas vantagens'],['3','Trade three advantages','Trocar três vantagens'],['4','Trade all four advantages','Trocar as quatro vantagens']),true,'0'));
+      const purchases=d.powers('sentinel-senses',1,3+extra)[0];if(purchases){if(purchases.components.some(item=>item.effectId!=='senses'||!item.senseTraits?.length)||purchases.components.reduce((sum,item)=>sum+item.ranks,0)!==3+extra)d.missing.push('sentinel-senses');d.character.powers.push(purchases);}
+      if(extra<4)d.chosenAdvantages('advantages',4-extra,crimeAdvantages);return;
     }
     d.resource(power(d.label('Commlink','Comunicador'),[c('feature',1,[],{fieldValues:{feature:'Commlink'}})]));
     const belt=power(d.label('Utility belt','Cinto de utilidades'),[dazzle(3,false,true)],[power(d.label('Smoke bombs','Bombas de fumaça'),[c('concealment',4,[m('area',1,{shape:'cloud'}),m('attack')],{fieldValues:{senses:['visual']}})]),power(d.label('Sleep gas','Gás sonífero'),[c('affliction',4,[ranged(),m('area',1,{shape:'cloud'})],{fieldValues:{resistance:'fortitude',afflictionDegree1:['dazed'],afflictionDegree2:['stunned'],afflictionDegree3:['asleep']}})]),power(d.label('Boomerang','Bumerangue'),[damage(1,[ranged()],true)])],d.label('Flash-bangs affect visual and auditory senses.','Granadas de luz afetam os sentidos visuais e auditivos.'));
     d.resource(belt);
-    if(variant==='vehicle') { vehicle(d,true); } else d.chosenAdvantages('advantages',4,crimeAdvantages);
+    if(variant==='vehicle') { const model=d.select('vehicle-model',text('Vehicle (up to 20 EP)','Veículo (até 20 EP)'),options(['motorcycle','Motorcycle','Motocicleta'],['car','Car','Carro']));if(model)vehicle(d,model==='car'); } else d.chosenAdvantages('advantages',4,crimeAdvantages);
   } }
 ];

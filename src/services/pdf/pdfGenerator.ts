@@ -160,8 +160,8 @@ export async function generateCharacterPDF(options: PDFGeneratorOptions): Promis
       skillDefs: displaySkillDefs,
       skillsCost,
     });
-    const advantagesSection = hideEmpty && character.advantages.length === 0 ? '' : renderAdvantagesSection({
-      character, labels, worksheet,
+    const advantagesSection = hideEmpty && effective.advantages.length === 0 ? '' : renderAdvantagesSection({
+      character: effective, labels, worksheet,
       advantageDefs: displayAdvantageDefs,
       advantagesCost,
     });

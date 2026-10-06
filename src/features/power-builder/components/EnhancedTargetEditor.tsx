@@ -2,7 +2,7 @@ import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacter, ICharacterPowerComponent, ITraitTarget } from '../../../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS, ADVANTAGE_DEFS } from '../../../entities/gameDataLoaders';
-import { enhancedAdvantage } from '../../../shared/lib/enhancedTraits';
+import { enhancedAdvantage, enhancedImpervious } from '../../../shared/lib/enhancedTraits';
 import { setEnhancedTarget, traitTargetKey, enhancedCostOption } from '../../../shared/lib/traitTargets';
 import { calculateComponentPricing } from '../../../shared/lib/mathEngine';
 import { useAppDialog } from '../../../shared/ui/appDialogContext';
@@ -22,11 +22,13 @@ export function EnhancedTargetEditor({ component, character, onChange, reviewAss
   const category = (Object.keys(categories) as (keyof typeof categories)[]).find(key => categories[key] === option);
   const price = calculateComponentPricing(component, effect, MODIFIER_DEFS);
   const advantage = enhancedAdvantage(component);
-  const associated = !!component.enhancedTarget || !!advantage;
+  const extra = enhancedImpervious(component);
+  const associated = !!component.enhancedTarget || !!advantage || extra;
   const fields = { ...component.fieldValues };
   function clearAssociation() {
     const rest = { ...fields };
     delete rest.enhancedAdvantageId; delete rest.enhancedAdvantageSubtype; delete rest.enhancedScope;
+    delete rest.enhancedExtraId; delete rest.enhancedExtraTarget;
     return rest;
   }
   async function choose(target?: ITraitTarget) {
@@ -53,6 +55,7 @@ export function EnhancedTargetEditor({ component, character, onChange, reviewAss
     {category && <TraitTargetSelect key={category} category={category} target={component.enhancedTarget} onChange={target => void choose(target)} disabled={busy} skills={character.skills} />}
     {option === 'Enhanced Advantage' && <><label>{t('traits.advantageTarget')}<select className="app-select" value={advantage?.advantageId ?? ''} onChange={event => onChange({ fieldValues: { ...clearAssociation(), enhancedAdvantageId: event.target.value } })}><option value="">{t('builder.selectOption')}</option>{[...ADVANTAGE_DEFS].sort((a,b) => (a.i18n?.[i18n.language]?.name ?? a.name).localeCompare(b.i18n?.[i18n.language]?.name ?? b.name, i18n.language)).map(def => <option key={def.id} value={def.id}>{def.i18n?.[i18n.language]?.name ?? def.name}</option>)}</select></label>{advantage && <label>{t('traits.advantageSpecialization')}<input value={advantage.subtype ?? ''} onChange={event => onChange({ fieldValues: { ...fields, enhancedAdvantageSubtype: event.target.value || '' } })}/></label>}</>}
     {component.enhancedTarget?.kind === 'ability' && component.enhancedTarget.key === 'str' && <label>{t('traits.strengthScope')}<select className="app-select" value={fields.enhancedScope === 'lifting' ? 'lifting' : 'all'} onChange={event => onChange({ fieldValues: { ...fields, enhancedScope: event.target.value } })}><option value="all">{t('traits.strengthAll')}</option><option value="lifting">{t('traits.strengthLifting')}</option></select></label>}
+    {option === 'Enhanced Extra' && <label>{t('traits.extraTarget')}<select className="app-select" value={extra?'impervious':''} onChange={event=>onChange({fieldValues:event.target.value?{...clearAssociation(),enhancedExtraId:'impervious',enhancedExtraTarget:'toughness'}:clearAssociation()})}><option value="">{t('traits.manualCategoryHint')}</option><option value="impervious">{t('traits.imperviousToughness')}</option></select></label>}
     <div className="enhanced-target-editor__preview"><span>{associated ? t('traits.appliedRanks', { ranks: component.ranks }) : t('traits.noTarget')}</span><strong>{price.total} {t('common.pp')}</strong></div>
     <small>{t(associated ? 'traits.targetCost' : !option ? 'traits.chooseCategory' : category ? 'traits.targetMissingHint' : 'traits.manualCategoryHint')}</small>
   </div>;

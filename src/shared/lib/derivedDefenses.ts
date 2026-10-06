@@ -3,6 +3,7 @@ import { getEffectiveAbilityRank } from './abilityRanks';
 import { calcInitiativeBonus, calcToughnessBonus } from './mathEngine';
 import { getPowerSources, resolvePowerUsage } from './powerUsage';
 import { circumstanceBonus, effectiveTraitCharacter } from './traitValues';
+import { enhancedImpervious } from './enhancedTraits';
 
 type DefensiveCharacter = Pick<ICharacter, 'abilities' | 'absentAbilities' | 'powers' | 'advantages' | 'equipment' | 'resourceLinks'> & Partial<ICharacter>;
 
@@ -23,6 +24,7 @@ export function deriveCharacterDefenses(character: DefensiveCharacter, powerDefs
   }
   // Equipment bonuses do not stack with one another or power/advantage bonuses.
   const toughness = armor.bonus > natural.bonus ? armor : natural;
+  const impervious = Math.max(0,...sources.flatMap(source=>source.power.components.filter(enhancedImpervious).map(component=>component.ranks)));
   const agility = getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, 'agl');
   let initiative = calcInitiativeBonus(agility, effective.advantages, personalPowers, powerDefs);
   for (const item of equipment) {
@@ -32,7 +34,7 @@ export function deriveCharacterDefenses(character: DefensiveCharacter, powerDefs
   return {
     toughnessBonus: toughness.bonus,
     toughnessTotal: getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, 'sta') + toughness.bonus,
-    toughnessBreakdown: toughness.breakdown,
+    toughnessBreakdown: impervious ? [...toughness.breakdown, `Impervious Toughness ${impervious}`] : toughness.breakdown,
     initiativeTotal: initiative.total,
     initiativeBreakdown: initiative.breakdown,
     dodgeTotal: agility + (effective.defenses?.dodge ?? 0),

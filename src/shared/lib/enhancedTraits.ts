@@ -14,3 +14,8 @@ export function liftingOnly(component: ICharacterPowerComponent): boolean {
   return component.effectId === 'enhanced-trait' && component.enhancedTarget?.kind === 'ability'
     && component.enhancedTarget.key === 'str' && component.fieldValues?.enhancedScope === 'lifting';
 }
+
+export function enhancedImpervious(component: ICharacterPowerComponent): boolean {
+  return component.effectId === 'enhanced-trait' && component.variableCostOption === 'Enhanced Extra'
+    && component.fieldValues?.enhancedExtraId === 'impervious' && component.fieldValues?.enhancedExtraTarget === 'toughness';
+}

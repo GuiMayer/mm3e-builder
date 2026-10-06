@@ -1,6 +1,7 @@
 import { ModifierDefinitionNotice } from '../../shared/ui/ModifierDefinitionNotice';
 import { AfflictionConditionsEditor } from './components/AfflictionConditionsEditor';
 import { EnhancedTargetEditor } from './components/EnhancedTargetEditor';
+import { AttackSkillEditor } from './components/AttackSkillEditor';
 import { formatDiagnostic } from '../../shared/lib/formatDiagnostic';
 import { InfoDialog } from '../../shared/ui/InfoDialog';
 import { getResourceCharacter, getResourceAttackBonus, type ResourceBuilderContext } from '../../shared/lib/resourceContext';
@@ -761,6 +762,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
                             />
                           </div>
                         )}
+                        {comp.fieldValues?.attackSkill && <AttackSkillEditor component={comp} character={character} onChange={fieldValues=>updateComponent(comp.id,{fieldValues})}/>}
                         {comp.effectId === 'affliction' && <AfflictionConditionsEditor component={comp} onChange={fieldValues => updateComponent(comp.id, { fieldValues })} />}
                         {comp.effectId === 'senses' && comp.senseTraits !== undefined && (
                           <SenseTraitsEditor traits={comp.senseTraits} onChange={(senseTraits) => updateComponent(comp.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })} />

@@ -1,6 +1,7 @@
 import { ModifierDefinitionNotice } from '../../shared/ui/ModifierDefinitionNotice';
 import { AfflictionConditionsEditor } from './components/AfflictionConditionsEditor';
 import { EnhancedTargetEditor } from './components/EnhancedTargetEditor';
+import { AttackSkillEditor } from './components/AttackSkillEditor';
 import React from 'react';
 import { getComponentEffectRanks } from '../../shared/lib/componentRanks';
 import { X, Plus, AlertTriangle } from 'lucide-react';
@@ -226,6 +227,7 @@ export function AltEffectCard({
                           />
                         </div>
                       )}
+                      {comp.fieldValues?.attackSkill && <AttackSkillEditor component={comp} character={character} onChange={fieldValues=>onUpdateComponent(comp.id,{fieldValues})}/>}
                       {comp.effectId === 'affliction' && <AfflictionConditionsEditor component={comp} onChange={fieldValues => onUpdateComponent(comp.id, { fieldValues })} />}
                         {comp.effectId === 'senses' && comp.senseTraits !== undefined && (
                         <SenseTraitsEditor traits={comp.senseTraits} onChange={(senseTraits) => onUpdateComponent(comp.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })} />

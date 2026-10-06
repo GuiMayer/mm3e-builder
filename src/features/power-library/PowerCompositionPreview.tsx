@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterPower, ITraitTarget } from '../../entities/types';
-import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS } from '../../entities/gameDataLoaders';
+import { POWER_DEFS, MODIFIER_DEFS, SKILL_DEFS, ADVANTAGE_DEFS } from '../../entities/gameDataLoaders';
 import { SENSE_TRAITS } from '../../data/senseTraits';
 import { calculatePowerPricing } from '../../shared/lib/mathEngine';
 import { getAffectedRanks } from '../../shared/lib/componentRanks';
@@ -29,6 +29,7 @@ export function ModelRankInputs({ model, ranks, onChange }: { model: PersonalPow
 export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP', showCost = true }: { power: ICharacterPower; strength?: number; costUnit?: 'PP' | 'EP'; showCost?: boolean }) {
   const { t, i18n } = useTranslation();
   const skills = useLocalizedData(SKILL_DEFS);
+  const advantages = useLocalizedData(ADVANTAGE_DEFS);
   const [reference, setReference] = useState<PowerReferenceTarget | null>(null);
   const pricing = showCost ? calculatePowerPricing(power, POWER_DEFS, MODIFIER_DEFS, strength) : null;
   const traitLabel = (target: ITraitTarget) => {
@@ -50,12 +51,15 @@ export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP', 
       })}</div>
       {item.component.variableCostOption && <p className="power-library-field-value">{t('builder.costOption')}: {item.component.variableCostOption}</p>}
       {Object.entries(item.component.fieldValues ?? {}).map(([id, value]) => {
+        if (id === 'enhancedExtraTarget') return null;
         const field = item.definition?.configurableFields?.find(field => field.id === id);
         const values = (Array.isArray(value) ? value : [value]).map(selection => {
           const option = field?.options?.find(option => option.value === selection);
           return option?.i18n?.[i18n.language]?.label ?? option?.label ?? selection;
         });
-        return <p className="power-library-field-value" key={id}>{field?.i18n?.[i18n.language]?.label ?? field?.label ?? id}: {values.join(', ')}</p>;
+        const label = ({enhancedAdvantageId:t('traits.advantageTarget'),enhancedAdvantageSubtype:t('traits.advantageSpecialization'),enhancedScope:t('traits.strengthScope'),enhancedExtraId:t('traits.extraTarget'),attackSkill:t('builder.attackSkill')} as Record<string,string>)[id];
+        const display = id==='enhancedAdvantageId'?advantages.find(def=>def.id===value)?.name??value:id==='enhancedScope'?t(value==='lifting'?'traits.strengthLifting':'traits.strengthAll'):id==='enhancedExtraId'&&value==='impervious'?t('traits.imperviousToughness'):values.join(', ');
+        return <p className="power-library-field-value" key={id}>{label ?? field?.i18n?.[i18n.language]?.label ?? field?.label ?? id}: {display}</p>;
       })}
       {item.component.enhancedTarget && <p className="power-library-field-value">{t('personalLibrary.traitTarget')}: {traitLabel(item.component.enhancedTarget)}</p>}
       {!!item.component.senseTraits?.length && <ul className="power-library-purchases">{item.component.senseTraits.map((trait, index) => <li key={index}>{t(`powerLibrary.sense.${trait.id}`, { defaultValue: SENSE_TRAITS.find(sense => sense.id === trait.id)?.label ?? trait.id })} · {trait.ranks}{trait.senseType ? ` · ${trait.senseType}` : ''}{trait.detail ? ` · ${trait.detail}` : ''}</li>)}</ul>}

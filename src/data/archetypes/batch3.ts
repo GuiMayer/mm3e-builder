@@ -18,7 +18,7 @@ export const batch3: Archetype[] = [
     d.abilities([2,3,8,1,2,1,0,1]);d.defenses(5,0,0,7);d.advantages('power_attack');
     d.skills(k('insight',6),k('perception',8),k('persuasion',6),k('ranged_combat',7,'Throwing'));d.expertise('expertise',7);
     d.addPower('Flight','Voo',[c('flight',9)]);
-    d.addPower('Invulnerability','Invulnerabilidade',[enhanced({kind:'ability',key:'sta'},10),c('immunity',10,[],{fieldValues:{immunity:'Life Support'}}),c('enhanced-trait',12,[],{variableCostOption:'Enhanced Extra',fieldValues:{extra:'Impervious Toughness 12'}})],[],d.label('Impervious Toughness 12 is an enhanced extra, not 12 additional Toughness ranks.','Resistência Impenetrável 12 é um extra aprimorado, e não mais 12 graduações de Resistência.'));
+    d.addPower('Invulnerability','Invulnerabilidade',[enhanced({kind:'ability',key:'sta'},10),c('immunity',10,[],{fieldValues:{immunity:'Life Support'}}),c('enhanced-trait',12,[],{variableCostOption:'Enhanced Extra',fieldValues:{enhancedExtraId:'impervious',enhancedExtraTarget:'toughness'}})],[],d.label('Impervious Toughness 12 is an enhanced extra, not 12 additional Toughness ranks.','Resistência Impenetrável 12 é um extra aprimorado, e não mais 12 graduações de Resistência.'));
     d.addPower('Super-speed','Supervelocidade',[c('quickness',2)]);
     d.addPower('Super-strength','Superforça',[enhanced({kind:'ability',key:'str'},10),enhanced({kind:'ability',key:'str'},2,true)],[],d.label('Strength 12 for attacks; lifting Strength 14.','Força 12 para ataques; Força 14 para levantar peso.'));
   }}
