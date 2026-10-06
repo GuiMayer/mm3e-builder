@@ -5,6 +5,8 @@ import { POWER_DEFS, MODIFIER_DEFS, ADVANTAGE_DEFS, SKILL_DEFS } from '../../ent
 import { calculatePowerPricing } from '../../shared/lib/mathEngine';
 import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
 import { validateRequiredPowerFields } from '../../shared/lib/validation';
+import { getPowerSources } from '../../shared/lib/powerUsage';
+import { effectiveTraitCharacter } from '../../shared/lib/traitValues';
 
 export type Text = { en: string; pt: string };
 export const text = (en: string, pt: string): Text => ({ en, pt });
@@ -22,7 +24,7 @@ export interface Archetype {
 export type Package = { character: ICharacter; resources: IResource[] };
 
 export function modifier(id: string, ranks = 1, options?: IAppliedModifier['options']): IAppliedModifier {
-  return { instanceId: createId(), modifierId: id, ranks, ...(options ? { options } : {}) };
+  return { instanceId: createId(), modifierId: id, ranks, isPowerSpecific: false, ...(options ? { options } : {}) };
 }
 export function specific(id: string, ranks = 1, options?: IAppliedModifier['options']): IAppliedModifier {
   return { ...modifier(id, ranks, options), isPowerSpecific: true };
@@ -96,7 +98,10 @@ export class Recipe {
   }
   chosenAdvantages(id: string, count: number, opts: Option[]) {
     for (const value of this.many(id, text('Choose advantages', 'Escolha as vantagens'), opts, count)) {
-      const [advantageId, subtype] = value.split(':');
+      const [advantageId, originalSubtype] = value.split(':');
+      const definition = ADVANTAGE_DEFS.find(def => def.id === advantageId);
+      const subtype = originalSubtype === 'Choose' || (!originalSubtype && definition?.subtypeRequired)
+        ? this.input(`specialization-${advantageId}`, text(`Specialization: ${definition?.name ?? advantageId}`, `Especialização: ${definition?.i18n?.['pt-BR']?.name ?? advantageId}`)) : originalSubtype;
       this.advantages(advantage(advantageId, 1, subtype));
     }
   }
@@ -126,6 +131,16 @@ export class Recipe {
 export function instantiateArchetype(archetype: Archetype, answers: Answers, language: string) {
   const recipe = new Recipe(answers, language);
   archetype.build(recipe);
+  const attackSkill = ({ 'energy-controller':'Energy', speedster:'Unarmed', 'weapon-master':'Weapon', 'crime-fighter':'Thrown' } as Record<string,string>)[archetype.id];
+  if (attackSkill) for (const source of getPowerSources(recipe.character, recipe.resources)) for (const item of [...source.power.components, ...source.power.alternateEffects.flatMap(alternate => alternate.components)]) {
+    if (['damage','affliction'].includes(item.effectId)) item.fieldValues = { ...item.fieldValues, attackSkill };
+  }
+  const effective = effectiveTraitCharacter(recipe.character, recipe.resources);
+  const throwing = effective.skills.find(item => item.skillId === 'ranged_combat' && ['throwing','thrown'].includes(item.subtype?.toLowerCase() ?? ''));
+  if (throwing && archetype.id !== 'crime-fighter') {
+    recipe.character.manualOffenseRows ??= [];
+    recipe.character.manualOffenseRows.push({ id:createId(), name:recipe.label('Throw','Arremesso'), range:'ranged', bonus:effective.abilities.dex + throwing.ranks + (effective.advantages.find(item => item.advantageId==='ranged_attack')?.ranks ?? 0), effect:recipe.label(`Damage ${effective.abilities.str}`,`Dano ${effective.abilities.str}`), notes:recipe.label('Manual throwing attack. Review this row after changing Strength or attack bonuses.','Ataque manual de arremesso. Revise esta linha após mudar a Força ou os bônus de ataque.') });
+  }
   recipe.character.header.name = local(archetype.name, language);
   const summary = calculateCharacterPointSummary(recipe.character, recipe.resources, POWER_DEFS, MODIFIER_DEFS);
   const unknown = recipe.character.advantages.some(item => !ADVANTAGE_DEFS.some(def => def.id === item.advantageId))

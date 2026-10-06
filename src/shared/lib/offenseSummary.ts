@@ -138,6 +138,7 @@ export function calcAttackBonus(
   modifierDefs: IModifierDef[]
 ): { value: number | null; breakdown: string; isNoRoll: boolean } {
   const { abilities, absentAbilities, skills, advantages } = character;
+  const attackSkill = typeof component.fieldValues?.attackSkill === 'string' ? component.fieldValues.attackSkill : powerName;
 
   // Calculate effective range (accounting for Increased Range modifier)
   const effectiveRange = resolveEffectiveRange(
@@ -172,10 +173,10 @@ export function calcAttackBonus(
     // Close Combat skill with matching subtype
     const skillEntry = skills.find((s) => {
       const def = skillDefs.find((d) => d.id === s.skillId);
-      return def?.id === 'close_combat' && s.subtype?.toLowerCase() === powerName.toLowerCase();
+      return def?.id === 'close_combat' && s.subtype?.toLowerCase() === attackSkill.toLowerCase();
     });
     const skillRanks = (skillEntry?.ranks ?? 0) + (skillEntry?.otherBonus ?? 0) + (skillEntry ? circumstanceBonus(character, { kind: 'skill', skillId: skillEntry.skillId, subtype: skillEntry.subtype }) : 0);
-    if (skillRanks !== 0) parts.push(`Close Combat: ${powerName} ${skillRanks}`);
+    if (skillRanks !== 0) parts.push(`Close Combat: ${attackSkill} ${skillRanks}`);
 
     if (accurateBonus > 0) parts.push(`Accurate ${accurateBonus}`);
     if (inaccuratePenalty > 0) parts.push(`Inaccurate -${inaccuratePenalty}`);
@@ -194,10 +195,10 @@ export function calcAttackBonus(
 
   const skillEntry = skills.find((s) => {
     const def = skillDefs.find((d) => d.id === s.skillId);
-    return def?.id === 'ranged_combat' && s.subtype?.toLowerCase() === powerName.toLowerCase();
+    return def?.id === 'ranged_combat' && s.subtype?.toLowerCase() === attackSkill.toLowerCase();
   });
   const skillRanks = (skillEntry?.ranks ?? 0) + (skillEntry?.otherBonus ?? 0) + (skillEntry ? circumstanceBonus(character, { kind: 'skill', skillId: skillEntry.skillId, subtype: skillEntry.subtype }) : 0);
-  if (skillRanks !== 0) parts.push(`Ranged Combat: ${powerName} ${skillRanks}`);
+  if (skillRanks !== 0) parts.push(`Ranged Combat: ${attackSkill} ${skillRanks}`);
 
   if (accurateBonus > 0) parts.push(`Accurate ${accurateBonus}`);
   if (inaccuratePenalty > 0) parts.push(`Inaccurate -${inaccuratePenalty}`);
