@@ -10,6 +10,15 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+### Added — Character creation from archetypes
+- Add Blank sheet and Start from an archetype to character creation. Include all 15 Deluxe Hero’s Handbook archetypes with bilingual search, previews, required choices, optional variants and independent characters/resources. Follow the Power Library layout on desktop and mobile.
+- Set Hero Name to the archetype name in the language active at creation. Later language changes do not rename existing characters.
+- Configure open power choices through the Builder or library within their budgets. Resume pending library powers after destination creation; preserve them on cancellation. Validate and persist the complete package with recovery on storage failures.
+
+### Changed — Explicit enhancement associations
+- Support explicitly associated granted advantages, lifting-only Strength and Impervious Toughness using existing optional fields. Keep purchased advantages separate from grants in editing, costs and PDF output. Preserve manual behavior for legacy powers without associations.
+- Bind archetype attacks to combat skill specializations and allow reviewing those bindings in the Builder. Use canonical engine prices and disclose printed-cost differences in archetype previews; existing sheets require no migration and character schema remains 2.3.0.
+
 ### Changed — Resource library columns
 - Stack resource cards vertically within responsive columns, keeping each card intact and avoiding gaps caused by neighboring card heights. Keep alphabetical ordering and the full-width empty state.
 

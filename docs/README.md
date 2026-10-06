@@ -27,6 +27,7 @@
 
 | Guia | Escopo |
 | --- | --- |
+| [Criação de personagens](guides/character-creation.md) | Ficha limpa, arquétipos, escolhas, prévia e compatibilidade |
 | [Política de modificadores](guides/power-builder-modifier-policy.md) | Origem, aplicações repetidas, diagnósticos e salvamento |
 | [Biblioteca de poderes](guides/power-library.md) | Catálogo, poderes locais, modelos pessoais, políticas de graduação e backup |
 | [Recursos](guides/resources.md) | PP/EP, vínculos, contexto do Builder, revisão e recuperação |
@@ -44,6 +45,6 @@
 de publicação. Trabalho ainda aberto pertence somente a Pendências; remova os
 itens concluídos e atualize o guia do comportamento atual.
 
-Os documentos em `sources/` são fontes de consulta para regras, sujeitos aos
+Os documentos locais em `sources/`, ignorados pelo Git, são fontes de consulta para regras, sujeitos aos
 direitos dos titulares. Não são planos de implementação nem especificações do
 formato JSON do aplicativo.

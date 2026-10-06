@@ -60,35 +60,17 @@ dos poderes prontos anunciados precisa ser confirmada: o desenvolvedor
 | Proposta | Escopo e decisões abertas |
 | --- | --- |
 | Checklist opcional de criação | Orientar atributos, defesas, perícias, vantagens, poderes e complicações. Reutilizar os diagnósticos existentes e distinguir orientação de limites de regras. Não impedir construções deliberadas do jogador/narrador. |
-| Arquétipos e criação rápida | Ao clicar em Criar personagem, abrir um diálogo com Ficha limpa ou Começar com um arquétipo. O catálogo inicial utiliza os arquétipos do Deluxe Hero's Handbook, com prévia de NP, PP e composição antes de criar a nova ficha. |
 | Importação do Hero Lab | Investigar o formato `.por`, obter arquivos de teste autorizados e mapear efeitos, arrays, modificadores e recursos. Apresentar campos não suportados antes de salvar, preservar o original e nunca descartar dados silenciosamente. |
 | Conteúdo de suplementos | Avaliar demanda por Gadget Guides, Cosmic Handbook, Superteam Handbook e outros. Conferir fontes, permissões de distribuição e suporte do motor antes de adicionar entradas; não presumir que uma descrição comercial comprova cobertura completa. |
 | Regras opcionais | Avaliar opções concretas do Deluxe Gamemaster's Guide. Definir escopo por ficha ou campanha, efeito sobre cálculos e portabilidade; manter as regras básicas como padrão. |
 | Exportação PNG e texto simples | Avaliar utilidade para compartilhar fichas e blocos de personagem. Reutilizar o resumo canônico e as opções de exportação, definir tratamento de múltiplas páginas e verificar legibilidade. |
 
-**Ordem sugerida para avaliação:** checklist e arquétipos primeiro, por
-reduzirem a dificuldade inicial sem exigir um novo sistema de autoria.
+**Ordem sugerida para avaliação:** checklist primeiro, por reduzir a
+dificuldade inicial sem exigir um novo sistema de autoria.
 Importação, suplementos e regras opcionais dependem de demanda e de validação
 dos formatos e regras envolvidos. Não há versão ou prazo definido para essas
 propostas. Rolagens, condições, referências, modelos pessoais e PDF
 personalizável já existem e não precisam ser recriados para obter paridade.
-
-**Fluxo definido para criação de personagem:**
-
-1. **Criar personagem** abre o diálogo com as opções **Ficha limpa** e
-   **Começar com um arquétipo**. Fechar ou cancelar não cria uma ficha.
-2. **Ficha limpa** segue a criação atual. **Começar com um arquétipo** abre
-   a lista dos arquétipos do livro, com descrição e prévia da composição.
-   Permitir voltar à escolha inicial.
-3. Confirmar o arquétipo cria uma ficha independente e editável em uma nova
-   aba, com novas identidades para o personagem e seus elementos. Não alterar
-   fichas existentes nem manter vínculo de atualização com o modelo original.
-
-Validar as composições com a fonte e calcular PP pelo motor normal, sem preço
-total imposto para reproduzir o livro. A primeira entrega preserva as
-graduações e o NP publicados; adaptação automática para outros NPs fica fora
-desse fluxo inicial. Reutilizar o padrão de diálogos do aplicativo e verificar
-acesso por teclado, retorno de foco, mobile e cancelamento.
 
 **Tutorial do aplicativo — decisão de planejamento:** o mantenedor produzirá
 o tutorial somente após concluir o escopo de funcionalidades (feature complete)
