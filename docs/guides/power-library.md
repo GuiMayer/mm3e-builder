@@ -117,7 +117,7 @@ Três entradas são **Apenas referência**: Ghost Form, Undead Form e Construct
 Body exigem atributos ausentes do personagem. A aplicação é bloqueada para impedir
 carregar uma receita incompleta. As quatro receitas de Aflição Sustentada usam a
 progressão do DC Adventures, explicada na prévia e nas notas do poder; consulte
-as [regras da biblioteca](power-library-rules.md#aflição-sustentada) para custos e
+as [regras da biblioteca](../development/power-library-rules.md#aflição-sustentada) para custos e
 compatibilidade. Invocações carregam o efeito, mas a criatura é criada
 separadamente. Extras Aprimorados indicam a melhoria comprada sobre um atributo
 existente; não modificam automaticamente outro poder da ficha.
@@ -147,5 +147,5 @@ A preferência `enforceDuplicateModifiers` permite ocultar apenas esse diagnóst
 não impede repetir compras nem oculta os outros avisos.
 
 Os contratos de autoria e compatibilidade estão em
-[Regras da biblioteca](power-library-rules.md). Limitações com trabalho aberto
-estão em [Pendências](PENDENCIAS.md).
+[Regras da biblioteca](../development/power-library-rules.md). Limitações com trabalho aberto
+estão em [Pendências](../PENDENCIAS.md).

@@ -84,8 +84,8 @@ in the current CI workflow; manual checks and model tests cover different risks.
 
 ## References
 
-- [Calculation contracts](../../docs/REGRAS_CALCULO_MM3E.md)
-- [Architecture and persisted pipeline](../../docs/ARCHITECTURE_REFINED.md)
+- [Calculation contracts](../../docs/development/REGRAS_CALCULO_MM3E.md)
+- [Architecture and persisted pipeline](../../docs/development/ARCHITECTURE_REFINED.md)
 - [Contribution guide](../../CONTRIBUTING.md)
 - Official rules in `docs/sources/`
 

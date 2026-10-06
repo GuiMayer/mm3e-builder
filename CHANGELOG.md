@@ -188,7 +188,7 @@ existing calculations and export formats are unchanged.
 - Remove the Measurements rank field's −5/30 bounds. Extrapolate from the official endpoints by doubling/halving each measure per rank, preserving published rounded values and both unit systems; show scientific notation for extreme magnitudes without infinity/underflow.
 
 The retrospective commit packages and preserved historical tags are documented
-in [Version history](docs/version-history.md). Release dates identify the
+in [Version history](docs/releases/version-history.md). Release dates identify the
 completion commit, not a verified deployment date.
 
 ---
@@ -204,7 +204,7 @@ completion commit, not a verified deployment date.
 ### Changed
 - Replace the long References view with 16 collapsible panels, topic navigation, bilingual/accent-insensitive global search, keyboard controls and mobile summaries. Wide tables scroll within their own panels; the damage matrix mounts only when expanded.
 - Review combat summaries against the supplied Deluxe Handbook, correcting Aid/Defend/Disarm/Escape/Grab/Recover/Trip/Slam/Team Attack reminders. Reuse existing condition data without changing shared names or mechanics.
-- Character schema 2.1.0, Resource version 2, Draft version 1 and calculation revision 6 remain unchanged. No migration, character store writes, cost changes or warning changes. [References guide](docs/references.md) records sources and compatibility.
+- Character schema 2.1.0, Resource version 2, Draft version 1 and calculation revision 6 remain unchanged. No migration, character store writes, cost changes or warning changes. [References guide](docs/guides/references.md) records sources and compatibility.
 
 ### Quality
 - 72 test files / 853 passing tests; lint, TypeScript/production build and static-asset verification passed. New checks cover literal rounded scales, fractions, degree boundaries, bilingual search, size baselines and localization.
@@ -230,7 +230,7 @@ completion commit, not a verified deployment date.
 ### Quality
 - 69 test files / 825 passing tests, type checking, lint, production build and static-asset verification. Added recovery, reviewed migration, official cost/context examples, import conflicts, quota/backup/stale-window checks and real PDF/Excel reopening.
 - Isolated browser checks with synthetic sheets covered 10 EP → 8 PP acquisition, Flight 7 review, 18 EP vehicle systems, generic Limited on movement with undo, nonblocking headquarters effect budgets, feature notes, import cancellation/copies, English/Portuguese and 390px layouts. Real user browser drafts were not accessed; native Save dialogs were not automated.
-- [Resources guide](docs/resources.md) and [commit packages](docs/version-history.md) document compatibility. Calculation revision is 6; no push/deploy is implied by this local release.
+- [Resources guide](docs/guides/resources.md) and [commit packages](docs/releases/version-history.md) document compatibility. Calculation revision is 6; no push/deploy is implied by this local release.
 
 ---
 
@@ -244,7 +244,7 @@ completion commit, not a verified deployment date.
 ### Changed
 - Campaign available PP now uses fixed starting PP plus the ledger. Raising PL changes character limits without granting PP again. Disabling preserves history/configuration and temporarily uses standard PL × 15.
 - Preserve every old ledger ID, date, note, amount and order, including finite fractional amounts; validate new entries as nonzero integers with local valid dates. Expose the original migration backup in budget options.
-- Characteristic pricing, modifier availability and existing rule warning messages remain unchanged. [Campaign guide](docs/campaign-mode.md) explains migration and compatibility.
+- Characteristic pricing, modifier availability and existing rule warning messages remain unchanged. [Campaign guide](docs/guides/campaign-mode.md) explains migration and compatibility.
 
 ### Fixed
 - Prevent double-counting campaign advancement after raising PL, show signed negative adjustments correctly, retain PL above 15 on JSON export and keep pending campaign actions attached to their original tab.
@@ -285,7 +285,7 @@ completion commit, not a verified deployment date.
 - Keep the top bar and settings above the draggable dice window.
 
 ### Documentation
-- Group the commit history into annotated version tags, retain existing tags, and align current package metadata with 1.15.0. See the commit ranges and historical discrepancies in [Version history](docs/version-history.md).
+- Group the commit history into annotated version tags, retain existing tags, and align current package metadata with 1.15.0. See the commit ranges and historical discrepancies in [Version history](docs/releases/version-history.md).
 - Theme and dice preferences do not change character schemas or exported character data. The existing pre-update backup notice follows the application version; no new migration was introduced.
 
 ### Quality

@@ -98,7 +98,7 @@ montada ao expandi-la. A interface usa as cores semânticas do tema atual.
 ## Fontes e critérios de consulta
 
 A fonte normativa foi o arquivo fornecido
-[`Mutants & Masterminds 3 - Heros Handbook Deluxe.md`](sources/Mutants%20%26%20Masterminds%203%20-%20Heros%20Handbook%20Deluxe.md).
+[`Mutants & Masterminds 3 - Heros Handbook Deluxe.md`](../sources/Mutants%20%26%20Masterminds%203%20-%20Heros%20Handbook%20Deluxe.md).
 Os novos resumos são paráfrases de consulta, não uma reprodução integral do
 livro. Os dados de condições existentes são reutilizados; nomes em inglês junto
 à tradução distinguem termos que compartilham rótulos no catálogo português.

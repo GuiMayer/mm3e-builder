@@ -5,7 +5,7 @@ copiar poderes para o personagem. A forma de aquisição define a cobrança:
 dispositivos usam PP; equipamento comum, veículos e bases usam EP. O mestre decide
 qual classificação é adequada à série.
 
-A referência normativa é o [Hero's Handbook Deluxe fornecido](<./sources/Mutants & Masterminds 3 - Heros Handbook Deluxe.md>),
+A referência normativa é o [Hero's Handbook Deluxe fornecido](<../sources/Mutants & Masterminds 3 - Heros Handbook Deluxe.md>),
 pp. 135, 209–214, 221–223 e 226–230. Quando exemplos editoriais de veículos
 divergem das tabelas normativas, o cálculo usa as tabelas e fórmulas normativas.
 

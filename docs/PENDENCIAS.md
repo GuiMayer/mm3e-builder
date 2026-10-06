@@ -222,7 +222,7 @@ backups de recuperação no pacote.
 **Limitação atual:** modelos pessoais têm exportação/importação própria e não
 entram no JSON de personagem nem nos rascunhos JSONL/ZIP. Um backup completo
 precisa preservar também essa biblioteca. Manter o formato das fichas e usar
-o contrato de [persistência dos modelos](power-library.md#persistência-e-backup).
+o contrato de [persistência dos modelos](guides/power-library.md#persistência-e-backup).
 
 **Requisitos de configuração pelo mantenedor:**
 

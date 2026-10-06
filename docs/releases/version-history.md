@@ -3,7 +3,7 @@
 Agrupamento reconstruído a partir dos commits e tags do repositório.
 Estado de publicação conferido em 2026-10-05.
 As versões retroativas identificam o fim de uma atualização completa: não há
-uma versão para cada etapa de implementação. O [changelog](../CHANGELOG.md)
+uma versão para cada etapa de implementação. O [changelog](../../CHANGELOG.md)
 descreve o comportamento entregue por cada pacote.
 
 ## Critério de agrupamento
@@ -118,8 +118,8 @@ alteram a versão declarada nos snapshots antigos.
   abre o editor sem salvar ou associar automaticamente um recurso à ficha.
 
 Os contratos atuais de migração e persistência estão nos guias de
-[campanha](campaign-mode.md), [recursos](resources.md),
-[retratos](character-portraits.md) e [biblioteca](power-library.md).
+[campanha](../guides/campaign-mode.md), [recursos](../guides/resources.md),
+[retratos](../guides/character-portraits.md) e [biblioteca](../guides/power-library.md).
 Versão do aplicativo e versão do schema são independentes.
 
 A v1.21.3 mantém o schema 2.3.0 e os formatos de exportação. As novas compras

@@ -6,7 +6,7 @@
 ## English
 
 Use Node.js 24 and install dependencies with `npm ci`. Read the
-[architecture](docs/ARCHITECTURE_REFINED.md) before changing module boundaries.
+[architecture](docs/development/ARCHITECTURE_REFINED.md) before changing module boundaries.
 Active limitations and proposals belong in [Pending work](docs/PENDENCIAS.md).
 
 ### Code and data
@@ -33,7 +33,7 @@ Power-library chapters contain authored recipes separate from persisted powers.
 Fixed purchases retain required ranks; scalable effects start at 1. Expected
 book prices are test evidence, not engine inputs. Document editorial differences
 in the recipe preview without artificial modifiers or manual price overrides.
-See [Recipe rules](docs/power-library-rules.md).
+See [Recipe rules](docs/development/power-library-rules.md).
 
 ### Localization
 
@@ -78,13 +78,13 @@ Update the current feature guide when behavior changes. Record unresolved work
 only in Pending work, with evidence, scope and acceptance criteria; remove it
 when completed. Do not add completed plans, audit snapshots or duplicate roadmaps.
 Release notes belong in CHANGELOG.md and commit/version grouping in
-`docs/version-history.md`. Use conventional technical language without emojis.
+`docs/releases/version-history.md`. Use conventional technical language without emojis.
 
 <a id="português"></a>
 ## Português
 
 Use Node.js 24, instale com `npm ci` e consulte a
-[arquitetura](docs/ARCHITECTURE_REFINED.md). Separe operações puras, coordenação de
+[arquitetura](docs/development/ARCHITECTURE_REFINED.md). Separe operações puras, coordenação de
 armazenamento, estado e interface. Reutilize os cálculos canônicos na ficha,
 Builder e exportações. Mudanças no modelo exigem compatibilidade, cobertura de
 importação/exportação e tratamento das falhas de persistência.

@@ -63,7 +63,7 @@ receita no catálogo. Não inventar modificadores ou descontos para alcançar o
 número impresso; divergência editorial não implica defeito do motor.
 
 Receitas que exigem atributos ausentes do personagem ficam apenas para consulta.
-O [guia da biblioteca](power-library.md) identifica essas entradas. Não aplicar
+O [guia da biblioteca](../guides/power-library.md) identifica essas entradas. Não aplicar
 versões incompletas nem introduzir mudanças de atributos disfarçadas de flaws.
 
 ### Aflição Sustentada

@@ -1,21 +1,21 @@
 # Regras de cálculo
 
 Este guia descreve os contratos de cálculo utilizados pelo aplicativo. A fonte
-normativa é o [Deluxe Hero's Handbook](<sources/Mutants & Masterminds 3 - Heros Handbook Deluxe.md>),
+normativa é o [Deluxe Hero's Handbook](<../sources/Mutants & Masterminds 3 - Heros Handbook Deluxe.md>),
 com complementos do Power Profiles para suas receitas. O catálogo contém
 configurações e descrições; não substitui a interpretação do jogador/narrador.
-Limitações verificadas estão em [Pendências](PENDENCIAS.md).
+Limitações verificadas estão em [Pendências](../PENDENCIAS.md).
 
 ## Módulos canônicos
 
 | Responsabilidade | Implementação |
 | --- | --- |
-| Preço de componentes, modificadores, arrays, Ativação e Removível | [mathEngine.ts](../src/shared/lib/mathEngine.ts) |
-| Resumo de PP/EP do personagem | [pointSummary.ts](../src/shared/lib/pointSummary.ts) |
-| Graduações efetivas e Dano baseado em Força | [componentRanks.ts](../src/shared/lib/componentRanks.ts) |
-| Cobrança de recursos e alocação dos vínculos | [resourceCalculations.ts](../src/shared/lib/resourceCalculations.ts) |
-| Alcance e duração efetivos | [effectParameters.ts](../src/shared/lib/effectParameters.ts) |
-| Diagnósticos de poderes importados/editados | [semanticValidation.ts](../src/shared/lib/semanticValidation.ts) |
+| Preço de componentes, modificadores, arrays, Ativação e Removível | [mathEngine.ts](../../src/shared/lib/mathEngine.ts) |
+| Resumo de PP/EP do personagem | [pointSummary.ts](../../src/shared/lib/pointSummary.ts) |
+| Graduações efetivas e Dano baseado em Força | [componentRanks.ts](../../src/shared/lib/componentRanks.ts) |
+| Cobrança de recursos e alocação dos vínculos | [resourceCalculations.ts](../../src/shared/lib/resourceCalculations.ts) |
+| Alcance e duração efetivos | [effectParameters.ts](../../src/shared/lib/effectParameters.ts) |
+| Diagnósticos de poderes importados/editados | [semanticValidation.ts](../../src/shared/lib/semanticValidation.ts) |
 
 Ficha, Builder e exportações devem reutilizar esses módulos. Não calcular preços
 por nome da receita nem manter fórmulas paralelas na interface ou nos exportadores.
@@ -40,7 +40,7 @@ de realizar ações que exigem uma habilidade ausente.
 Em modo padrão, PP disponíveis = NP atual × 15. Em campanha, PP disponíveis =
 base inicial fixa + soma dos lançamentos; elevar NP muda os limites, sem conceder
 PP automaticamente. Restante = disponíveis − gastos. Consultar
-[Modo campanha](campaign-mode.md) para revisão da base e migração.
+[Modo campanha](../guides/campaign-mode.md) para revisão da base e migração.
 
 `calculateCharacterPointSummary` agrega os valores canônicos. Dispositivos
 vinculados entram uma única vez em PP; equipamento legado e recursos pagos em
@@ -60,7 +60,7 @@ considera a origem genérica ou específica, o subtipo e a opção de custo vari
 `affectedRanks` indica quantas graduações do efeito recebem uma aplicação;
 quando ausente, ela afeta todas. Não confundir esse campo com as graduações do
 modificador. Aplicações independentes do mesmo extra/flaw são calculadas
-separadamente, conforme [Política de modificadores](power-builder-modifier-policy.md).
+separadamente, conforme [Política de modificadores](../guides/power-builder-modifier-policy.md).
 
 ### Progressão fracionária
 
@@ -151,9 +151,9 @@ Dano usa CD 15 + graduação; Aflição e Enfraquecer usam CD 10 + graduação.
 A consulta de dano recebe o total final da resistência: falhas de 1–5, 6–10,
 11–15 e 16+ representam um a quatro graus. A consulta não aplica condições nem
 simula recuperação. Medidas usam tabelas oficiais arredondadas e extrapolação
-por duplicação fora do intervalo publicado; ver [Referências](references.md).
+por duplicação fora do intervalo publicado; ver [Referências](../guides/references.md).
 
-O [painel de dados](dice-roller.md) reutiliza os bônus derivados e registra o
+O [painel de dados](../guides/dice-roller.md) reutiliza os bônus derivados e registra o
 resultado da sessão. Não decide sucesso, crítico, elegibilidade ou dano nem
 altera a ficha.
 
@@ -163,12 +163,12 @@ Definições legadas cujo preço difere de uma compra nova são preservadas por
 identificador. Uma correção de catálogo não autoriza conversão silenciosa das
 fichas. Os casos de Invocar e Cura estão em
 [Regras da biblioteca](power-library-rules.md); recursos têm revisão própria em
-[Recursos](resources.md).
+[Recursos](../guides/resources.md).
 
 Testes devem comparar entradas mecânicas com resultados fundamentados na fonte,
 incluindo graduações parciais, frações, contexto de Força e exportações.
 Expectativas da biblioteca são dados de teste, nunca parâmetros do motor.
-Ver [Guia de testes](../src/__tests__/README.md).
+Ver [Guia de testes](../../src/__tests__/README.md).
 
 ## Parâmetros efetivos de ação e duração
 
@@ -206,7 +206,7 @@ nem uma autorização automática para transformar Aflição em sustentada.
 
 ## Traços aprimorados e circunstâncias
 
-[Modificadores de traços](trait-modifiers.md) descreve os destinos opcionais e o
+[Modificadores de traços](../guides/trait-modifiers.md) descreve os destinos opcionais e o
 estado de uso. Traço Aprimorado usa a categoria do destino no catálogo; a projeção
 altera valores associados e treinamento sem recomprar graduações naturais. Arrays
 consideram a opção ativa ou alocação dinâmica, não a soma de todos os alternativos.

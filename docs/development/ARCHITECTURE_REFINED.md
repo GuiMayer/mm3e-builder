@@ -12,7 +12,7 @@ current PL. Character schema 2.1.0 adds versioned campaign metadata without
 replacing legacy entries. `DraftStartupController` gates loading/autosave while
 old local campaign budgets are reviewed; `services/storage/campaignMigration`
 saves and verifies raw backups before additive writes. Standard unused sheets
-do not receive campaign metadata. See [Campaign mode](./campaign-mode.md).
+do not receive campaign metadata. See [Campaign mode](../guides/campaign-mode.md).
 
 ## Responsibilities
 
@@ -67,7 +67,7 @@ mutation actions. Category/search/expansion state is transient. The isolated
 `measurementPreferences` adapter saves only the unit system in
 `mm3e-reference-measurement-system`, with guarded reads/writes and language
 fallbacks; it never reads or writes character/Resource storage.
-There is no schema or calculation revision change. See [References](references.md).
+There is no schema or calculation revision change. See [References](../guides/references.md).
 
 ## Character portraits
 
@@ -83,7 +83,7 @@ The portrait editor explains that local files stay in this browser and never
 travel with JSON. Remote URLs can be shown without offline storage when CORS
 blocks download. PDF inclusion is opt-in and resolves image bytes before
 pagination; exported HTML/PDF can embed them while character JSON cannot.
-See [Character portraits](character-portraits.md).
+See [Character portraits](../guides/character-portraits.md).
 
 `portraitBundle` wraps the existing JSON/JSONL serializer output in a versioned
 ZIP manifest plus manual portrait bytes. `fflate` is loaded on demand; bounded
@@ -126,7 +126,7 @@ only a link to a resource, not a second copy of it.
 - Resource JSONL manifests use version 2; whole-Draft JSONL remains version 1.
   Recovery and import backups are included in pre-update raw snapshots.
 
-See [Resources](./resources.md) for rules, migration keys, examples, persistence
+See [Resources](../guides/resources.md) for rules, migration keys, examples, persistence
 limits and export coverage. Calculation revision 6 announces corrected Resource
 pricing; existing modifier warning texts and generic selection policy remain.
 
@@ -158,7 +158,7 @@ before writing; memory is updated only after storage succeeds. Storage events
 refresh readers while editor snapshots protect pending edits. Import/export
 uses model JSON independently of character/Draft formats and validates the
 entire import before merging. No character migration is required.
-See [Power library](power-library.md) and [recipe rules](power-library-rules.md).
+See [Power library](../guides/power-library.md) and [recipe rules](power-library-rules.md).
 
 ## Persisted character pipeline
 
@@ -192,7 +192,7 @@ existing app preference selects its `custom` identifier only after a valid
 palette is saved. A single controller applies allowed CSS variables before
 rendering and on changes, removing custom overrides when a built-in theme is
 selected. The editor's local draft never updates character data or export
-palettes. See [custom-themes.md](./custom-themes.md).
+palettes. See [custom-themes.md](../guides/custom-themes.md).
 
 ## Temporary editing history
 
@@ -200,7 +200,7 @@ The session dice roller also uses runtime-only state, independently of editing
 history. Its colocated `features/dice-roller/rollSessionStore` retains up to 15
 results by default with a user-editable capacity. Rolls snapshot their source
 and reuse existing derived bonuses; they never mutate characters or enter
-Draft persistence or exports. See [dice-roller.md](./dice-roller.md).
+Draft persistence or exports. See [dice-roller.md](../guides/dice-roller.md).
 
 Undo/redo is runtime-only. `charactersStore` maintains one independent history
 per tab, plus a separate recent-close history. `resourcesStore` maintains its
@@ -255,7 +255,7 @@ function, a backend, or a monorepo without a demonstrated product need.
 IndexedDB is scoped to portrait media and caches; character and Resource
 persistence remain in localStorage. Prefer focused modules and existing libraries.
 
-Active limitations and maintenance work belong in [PENDENCIAS.md](PENDENCIAS.md).
+Active limitations and maintenance work belong in [PENDENCIAS.md](../PENDENCIAS.md).
 
 ## Optional trait state
 
@@ -264,7 +264,7 @@ Character schema 2.3.0 adds optional `traitModifiers`, `powerUsage` and componen
 projections shared by sheet controls, rolls, PL checks and exports. Purchased
 ranks remain the pricing input; `pricingStrength` keeps Strength-based extras
 stable across activation changes. Targetless legacy powers retain their previous
-behavior and require explicit review. See [Trait modifiers](trait-modifiers.md).
+behavior and require explicit review. See [Trait modifiers](../guides/trait-modifiers.md).
 
 Modifier-source recovery inspects and projects selected source-flag changes in
 memory. Imports validate the complete staged data before persistence; startup

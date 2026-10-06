@@ -11,21 +11,21 @@ and stores characters locally. It has no account system or backend.
 
 [Open the application](https://guimayer.github.io/mm3e-builder/).
 Release notes are in [CHANGELOG.md](CHANGELOG.md); version and commit groups are
-in [Version history](docs/version-history.md).
+in [Version history](docs/releases/version-history.md).
 
 ### Features
 
 | Area | Behavior and guide |
 | --- | --- |
 | Character sheet | Abilities, defenses, skills, advantages, complications, targeted attacks and multiple character tabs |
-| Power Builder | Linked and alternate effects, partial modifiers, independent repeated applications and [configurable diagnostics](docs/power-builder-modifier-policy.md) |
-| Power library | [Power Profiles, local character powers and personal models](docs/power-library.md), with rank policies, normal pricing and model import/export |
-| Resources | Reusable devices, equipment, vehicles and headquarters with [shared links and PP/EP allocation](docs/resources.md) |
-| Campaign | [Fixed starting budget and advancement ledger](docs/campaign-mode.md), with reviewed migration and original-data backups |
-| References | [Searchable rule panels and measurement tables](docs/references.md), metric/imperial preference and rank extrapolation |
-| Portraits | [Remote URL or local image](docs/character-portraits.md), display fit and optional PDF inclusion |
-| Dice | [Manual and contextual d20 checks](docs/dice-roller.md), with runtime-only history |
-| Themes | Built-in themes and a [locally saved custom palette](docs/custom-themes.md) |
+| Power Builder | Linked and alternate effects, partial modifiers, independent repeated applications and [configurable diagnostics](docs/guides/power-builder-modifier-policy.md) |
+| Power library | [Power Profiles, local character powers and personal models](docs/guides/power-library.md), with rank policies, normal pricing and model import/export |
+| Resources | Reusable devices, equipment, vehicles and headquarters with [shared links and PP/EP allocation](docs/guides/resources.md) |
+| Campaign | [Fixed starting budget and advancement ledger](docs/guides/campaign-mode.md), with reviewed migration and original-data backups |
+| References | [Searchable rule panels and measurement tables](docs/guides/references.md), metric/imperial preference and rank extrapolation |
+| Portraits | [Remote URL or local image](docs/guides/character-portraits.md), display fit and optional PDF inclusion |
+| Dice | [Manual and contextual d20 checks](docs/guides/dice-roller.md), with runtime-only history |
+| Themes | Built-in themes and a [locally saved custom palette](docs/guides/custom-themes.md) |
 | Files and exports | Character JSON, full-Draft JSONL, optional ZIP with local portraits, Excel, compact selectable-text HTML/PDF and an optional legacy PDF form |
 
 Calculations share canonical modules across sheet and exports. Generic modifier
@@ -71,7 +71,7 @@ Current character JSON uses schema 2.3.0 and accepts historical 1.0.0, 2.0.0,
 2.1.0 and 2.2.0. Resource library/appendix uses version 2; Draft JSONL uses version 1.
 Application versions and data-schema versions are independent. Migrations retain
 original-data backups and require review for ambiguous campaign/resource choices.
-See the [architecture](docs/ARCHITECTURE_REFINED.md) and feature guides for limits.
+See the [architecture](docs/development/ARCHITECTURE_REFINED.md) and feature guides for limits.
 
 ### Documentation and contributions
 
@@ -118,11 +118,11 @@ backups de fichas e rascunhos não incluem essa biblioteca.
 O schema de ficha atual é 2.3.0, com leitura
 de 1.0.0/2.0.0/2.1.0/2.2.0; recursos usam versão 2 e rascunhos usam versão 1.
 Exporte backups antes de limpar os dados do site. Migrações e revisões de dados
-antigos estão descritas nos guias de [campanha](docs/campaign-mode.md),
-[recursos](docs/resources.md) e [retratos](docs/character-portraits.md).
+antigos estão descritas nos guias de [campanha](docs/guides/campaign-mode.md),
+[recursos](docs/guides/resources.md) e [retratos](docs/guides/character-portraits.md).
 
 O [changelog](CHANGELOG.md) descreve as versões; o
-[histórico de versões](docs/version-history.md) agrupa seus commits. O código
+[histórico de versões](docs/releases/version-history.md) agrupa seus commits. O código
 usa [GNU GPL v3](LICENSE). Projeto de fã, sem fins comerciais ou vínculo com a
 Green Ronin Publishing; os direitos dos livros e da marca pertencem aos seus
 titulares e não são concedidos pela licença do código.
