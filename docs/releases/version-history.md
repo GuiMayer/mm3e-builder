@@ -68,6 +68,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.21.1 | 2026-10-05 | `v1.21.0..v1.21.1` | 4 | Preferências de rolagens e cards compactos de perícias/vantagens no mobile |
 | v1.21.2 | 2026-10-05 | `v1.21.1..v1.21.2` | 9 | Ajustes de interface mobile, padronização da biblioteca e criação/edição de recursos |
 | v1.21.3 | 2026-10-05 | `v1.21.2..v1.21.3` | 1 | Progressão de duração do DC Adventures e aplicação das quatro Aflições Sustentadas da biblioteca |
+| v1.22.0 | 2026-10-06 | `v1.21.3..v1.22.0` | 16 | Criação pelos 15 arquétipos, poderes de exemplo do Handbook, associações explícitas de traits, colunas de recursos e organização das fontes/documentação |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.
@@ -122,6 +123,12 @@ Os contratos atuais de migração e persistência estão nos guias de
 [retratos](../guides/character-portraits.md) e [biblioteca](../guides/power-library.md).
 Versão do aplicativo e versão do schema são independentes.
 
+A v1.22.0 mantém o schema 2.3.0 e os formatos de ficha, rascunho e ZIP.
+Arquétipos criam cópias independentes, com escolhas e salvamento revisados;
+associações opcionais usam os campos existentes. Poderes do Handbook coexistem
+com os do Power Profiles e não substituem poderes de fichas já salvas. As fontes
+de consulta em `docs/sources/` ficam apenas no checkout local, fora do índice Git.
+
 A v1.21.3 mantém o schema 2.3.0 e os formatos de exportação. As novas compras
 de etapas de Duração Aumentada usam o campo existente `options.subtypeId`;
 registros sem essa opção preservam o custo original. As quatro receitas
@@ -139,6 +146,10 @@ Sua publicação foi confirmada na
 com a versão 1.21.2 identificada no HTML/bundle público.
 A v1.21.3 reúne implementação, receitas, testes, documentação e metadados em
 um commit; sua publicação deve ser conferida após o push.
+
+A v1.22.0 reúne os 14 commits seguintes, um commit de poderes do Handbook e um
+commit de consolidação dos metadados de versão. A publicação deve ser confirmada
+no workflow e nos arquivos públicos após o push.
 
 Pushes para `main` disparam o workflow de publicação. O estado de cada deploy
 deve ser conferido nas [execuções do GitHub Actions](https://github.com/GuiMayer/mm3e-builder/actions/workflows/deploy.yml).
