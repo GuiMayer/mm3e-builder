@@ -10,6 +10,11 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+### Added — Handbook sample powers
+- Add a Basic book category alongside the 39 Power Profiles chapters, covering all 21 Deluxe Hero’s Handbook sample powers in 22 entries. Keep separate fixed Invisibility scopes and present Alternate Form as an open-composition reference.
+- Preserve each book's composition and canonical pricing, including Active Duplication, sustained Force Field, move-action Mimic/Shapeshift and non-cumulative Sleep. Add editable Energy Absorption traits, required free-text choices and structured Affliction conditions/recovery.
+- Rename the catalog tab to Published powers, show the correct book in previews and copied notes, and preserve existing character data and export formats without migration.
+
 ### Added — Character creation from archetypes
 - Add Blank sheet and Start from an archetype to character creation. Include all 15 Deluxe Hero’s Handbook archetypes with bilingual search, previews, required choices, optional variants and independent characters/resources. Follow the Power Library layout on desktop and mobile.
 - Set Hero Name to the archetype name in the language active at creation. Later language changes do not rename existing characters.

@@ -1,5 +1,6 @@
 import type { PowerProfile } from '../../features/power-library/types';
 export const POWER_PROFILES = [
+  { id: 'handbook', name: { en: 'Basic book', pt: 'Livro básico' }, page: 150 },
   {
     "id": "air",
     "name": {

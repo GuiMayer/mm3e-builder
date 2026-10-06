@@ -19707,5 +19707,446 @@ export const POWER_LIBRARY_INDEX: LibraryEntry[] = [
     "effectIds": [
       "move-object"
     ]
+  },
+  {
+    "id": "handbook-alternate-form",
+    "profileId": "handbook",
+    "name": {
+      "en": "Alternate Form",
+      "pt": "Forma Alternativa"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Build a form from the effects appropriate to its capabilities. Activation discounts the whole power by 1 PP (move) or 2 PP (standard).",
+      "pt": "Monte uma forma com os efeitos apropriados às suas capacidades. Ativação desconta 1 PP (movimento) ou 2 PP (padrão) do poder inteiro."
+    },
+    "page": 150,
+    "effectIds": [],
+    "referenceOnly": true
+  },
+  {
+    "id": "handbook-blast",
+    "profileId": "handbook",
+    "name": {
+      "en": "Blast",
+      "pt": "Rajada"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "A ranged damage attack. Choose its descriptors in the Builder.",
+      "pt": "Um ataque de dano à distância. Escolha seus descritores no Builder."
+    },
+    "page": 151,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "handbook-dazzle",
+    "profileId": "handbook",
+    "name": {
+      "en": "Dazzle",
+      "pt": "Ofuscar"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Cumulatively impair, disable and overwhelm one chosen sense. Choose Fortitude or Will resistance.",
+      "pt": "Prejudica, debilita e anula cumulativamente um sentido escolhido. Escolha resistência por Fortitude ou Vontade."
+    },
+    "page": 155,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "handbook-duplication",
+    "profileId": "handbook",
+    "name": {
+      "en": "Duplication",
+      "pt": "Duplicação"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Summon an active duplicate, still a minion. Each rank allows 15 PP of traits; the duplicate excludes this power and hero points.",
+      "pt": "Invoca uma duplicata ativa, ainda um lacaio. Cada graduação permite 15 PP de características; a duplicata exclui este poder e pontos heroicos."
+    },
+    "page": 156,
+    "effectIds": [
+      "summon"
+    ]
+  },
+  {
+    "id": "handbook-element-control",
+    "profileId": "handbook",
+    "name": {
+      "en": "Element Control",
+      "pt": "Controle de Elemento"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Move a chosen element within perception range. Effective Strength and mass rank equal the effect rank.",
+      "pt": "Move um elemento escolhido ao alcance da percepção. Força efetiva e graduação de massa são iguais à graduação do efeito."
+    },
+    "page": 157,
+    "effectIds": [
+      "move-object"
+    ]
+  },
+  {
+    "id": "handbook-energy-aura",
+    "profileId": "handbook",
+    "name": {
+      "en": "Energy Aura",
+      "pt": "Aura de Energia"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "An aura that deals damage when you touch someone or someone touches you. It can be switched on or off as a free action.",
+      "pt": "Uma aura que causa dano ao tocar alguém ou ser tocado. Pode ser ligada ou desligada como ação livre."
+    },
+    "page": 159,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "handbook-energy-control",
+    "profileId": "handbook",
+    "name": {
+      "en": "Energy Control",
+      "pt": "Controle de Energia"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Project damaging energy. Additional uses are purchased separately as Alternate Effects.",
+      "pt": "Projeta energia que causa dano. Usos adicionais são comprados separadamente como Efeitos Alternativos."
+    },
+    "page": 159,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "handbook-energy-absorption",
+    "profileId": "handbook",
+    "name": {
+      "en": "Energy Absorption",
+      "pt": "Absorção de Energia"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Enhance a chosen trait when hit by a chosen energy. The bonus is capped by the lesser of attack rank and power rank, then fades by 1 each turn. This does not resist the attack.",
+      "pt": "Aprimora uma característica ao sofrer um tipo escolhido de energia. O bônus se limita à menor graduação entre ataque e poder, depois diminui em 1 por turno. Não oferece resistência ao ataque."
+    },
+    "page": 159,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "handbook-force-field",
+    "profileId": "handbook",
+    "name": {
+      "en": "Force Field",
+      "pt": "Campo de Força"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "A protective field maintained with a free action. Impervious is optional and is not included.",
+      "pt": "Um campo protetor mantido com ação livre. Impenetrável é opcional e não está incluído."
+    },
+    "page": 161,
+    "effectIds": [
+      "protection"
+    ]
+  },
+  {
+    "id": "handbook-invisibility-normal",
+    "profileId": "handbook",
+    "name": {
+      "en": "Invisibility (normal sight)",
+      "pt": "Invisibilidade (visão normal)"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Concealment from normal sight. The required ranks are fixed; visual senses cost twice as much.",
+      "pt": "Camuflagem contra visão normal. As graduações necessárias são fixas; sentidos visuais custam o dobro."
+    },
+    "page": 166,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "handbook-invisibility-all",
+    "profileId": "handbook",
+    "name": {
+      "en": "Invisibility (all visual senses)",
+      "pt": "Invisibilidade (todos os sentidos visuais)"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Concealment from all visual senses. The required ranks are fixed; visual senses cost twice as much.",
+      "pt": "Camuflagem contra todos os sentidos visuais. As graduações necessárias são fixas; sentidos visuais custam o dobro."
+    },
+    "page": 166,
+    "effectIds": [
+      "concealment"
+    ]
+  },
+  {
+    "id": "handbook-mental-blast",
+    "profileId": "handbook",
+    "name": {
+      "en": "Mental Blast",
+      "pt": "Rajada Mental"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Damage resisted by Will, at perception range. Subtle is optional and is not included.",
+      "pt": "Dano resistido por Vontade, ao alcance da percepção. Sutil é opcional e não está incluído."
+    },
+    "page": 168,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "handbook-magic",
+    "profileId": "handbook",
+    "name": {
+      "en": "Magic",
+      "pt": "Magia"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "The default spell is a ranged magical blast. Other spells are separate Alternate Effects; speaking and gestures may be a Power Loss complication.",
+      "pt": "A magia inicial é uma rajada mágica à distância. Outros feitiços são Efeitos Alternativos separados; fala e gestos podem ser uma complicação de Perda de Poder."
+    },
+    "page": 168,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "handbook-mimic",
+    "profileId": "handbook",
+    "name": {
+      "en": "Mimic",
+      "pt": "Mimetismo"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Use a move action to copy traits of a perceived character, with a pool of 5 PP per rank. Copied ranks cannot exceed the original traits.",
+      "pt": "Usa ação de movimento para copiar características de um personagem percebido, com reserva de 5 PP por graduação. As graduações copiadas não podem superar as originais."
+    },
+    "page": 169,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "handbook-mind-control",
+    "profileId": "handbook",
+    "name": {
+      "en": "Mind Control",
+      "pt": "Controle Mental"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Cumulative mental influence: dazed, compelled, then controlled. Subtle and Progressive are optional and are not included.",
+      "pt": "Influência mental cumulativa: pasmo, compelido e controlado. Sutil e Progressivo são opcionais e não estão incluídos."
+    },
+    "page": 169,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "handbook-power-lifting",
+    "profileId": "handbook",
+    "name": {
+      "en": "Power-Lifting",
+      "pt": "Erguer Peso"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Extra Strength for lifting and carrying only; it does not increase damage or other Strength traits.",
+      "pt": "Força adicional apenas para erguer e carregar; não aumenta dano nem outros usos de Força."
+    },
+    "page": 175,
+    "effectIds": [
+      "enhanced-trait"
+    ]
+  },
+  {
+    "id": "handbook-shapeshift",
+    "profileId": "handbook",
+    "name": {
+      "en": "Shapeshift",
+      "pt": "Metamorfose"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Use a move action to redistribute 5 PP per rank into the physical traits of an assumed form. Mental traits are not gained.",
+      "pt": "Usa ação de movimento para redistribuir 5 PP por graduação nas características físicas de uma forma assumida. Não concede características mentais."
+    },
+    "page": 180,
+    "effectIds": [
+      "variable"
+    ]
+  },
+  {
+    "id": "handbook-sleep",
+    "profileId": "handbook",
+    "name": {
+      "en": "Sleep",
+      "pt": "Sono"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Ranged fatigue, exhaustion and sleep, resisted by Fortitude. Cumulative and Progressive are optional and are not included.",
+      "pt": "Fadiga, exaustão e sono à distância, resistidos por Fortitude. Cumulativo e Progressivo são opcionais e não estão incluídos."
+    },
+    "page": 181,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "handbook-snare",
+    "profileId": "handbook",
+    "name": {
+      "en": "Snare",
+      "pt": "Armadilha"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Cumulative bonds: hindered and vulnerable, then defenseless and immobile. Initially resisted by Dodge; escape with Damage or Sleight of Hand. No third degree.",
+      "pt": "Amarras cumulativas: impedido e vulnerável, depois indefeso e imóvel. Resistência inicial por Esquiva; escape com Dano ou Prestidigitação. Não há terceiro grau."
+    },
+    "page": 182,
+    "effectIds": [
+      "affliction"
+    ]
+  },
+  {
+    "id": "handbook-strike",
+    "profileId": "handbook",
+    "name": {
+      "en": "Strike",
+      "pt": "Golpe"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Close damage, replacing Strength damage by default. Choose Strength-based in the Builder to add it to Strength instead.",
+      "pt": "Dano corpo a corpo, substituindo o dano de Força por padrão. Escolha Baseado em Força no Builder para somá-lo à Força."
+    },
+    "page": 182,
+    "effectIds": [
+      "damage"
+    ]
+  },
+  {
+    "id": "handbook-super-speed",
+    "profileId": "handbook",
+    "name": {
+      "en": "Super-Speed",
+      "pt": "Supervelocidade"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Each power rank grants one rank of Improved Initiative (+4 initiative), Quickness and Speed. Components start at matching ranks and can be adjusted in the preview.",
+      "pt": "Cada graduação concede uma graduação de Iniciativa Aprimorada (+4 na iniciativa), Rapidez e Velocidade. Os componentes começam com graduações iguais e podem ser ajustados na prévia."
+    },
+    "page": 183,
+    "effectIds": [
+      "enhanced-trait",
+      "quickness",
+      "speed"
+    ]
+  },
+  {
+    "id": "handbook-suffocation",
+    "profileId": "handbook",
+    "name": {
+      "en": "Suffocation",
+      "pt": "Sufocamento"
+    },
+    "section": {
+      "en": "Sample powers",
+      "pt": "Poderes de exemplo"
+    },
+    "summary": {
+      "en": "Prevent breathing: dazed, stunned and incapacitated. Progressive worsens the condition after failed recovery checks.",
+      "pt": "Impede a respiração: pasmo, atordoado e incapacitado. Progressivo agrava a condição após falhas nos testes de recuperação."
+    },
+    "page": 183,
+    "effectIds": [
+      "affliction"
+    ]
   }
 ];

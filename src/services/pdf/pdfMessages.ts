@@ -14,6 +14,7 @@ const portuguese: Record<string, string> = {
   "Degree 3": "3º grau",
   "Variable degrees": "Graus variáveis",
   "Recovery resistance": "Resistência de recuperação",
+  "Damage or Sleight of Hand": "Dano ou Prestidigitação",
   "Conditions": "Condições",
   "Clear All": "Limpar Tudo",
   "{{count}} active": "{{count}} ativa(s)",

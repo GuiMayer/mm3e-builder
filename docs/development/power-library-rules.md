@@ -1,11 +1,23 @@
 # Regras e compatibilidade da biblioteca
 
-As receitas do Power Profiles (fonte local em `docs/sources/`)
+As receitas do Power Profiles e os poderes de exemplo do Deluxe Hero’s Handbook
+(fontes locais em `docs/sources/`)
 usam efeitos e modificadores normais, com preços calculados pelas
 [regras compartilhadas](REGRAS_CALCULO_MM3E.md). A composição mecânica é a entrada;
 o preço impresso é referência editorial, nunca um override do cálculo.
 
 ## Autoria de receitas
+
+- Receitas de livros diferentes coexistem, mesmo quando têm nomes semelhantes.
+  O campo de catálogo `book` identifica o Handbook; sua ausência mantém Power
+  Profiles como origem. A origem aparece na prévia e nas notas, sem acrescentar
+  campos ao JSON da ficha ou exigir migração.
+- O Handbook fornece 21 poderes de exemplo em 22 entradas, incluindo as duas
+  compras fixas de Invisibilidade. Forma Alternativa não define efeitos nem um
+  custo fechado: permanece como referência, sem inventar uma compra ou preço.
+- Campos livres de catálogo são escolhas obrigatórias e acompanham as notas
+  aplicadas. Políticas como `chooseEnhancedTrait` são descartadas na instanciação;
+  a característica escolhida e os modificadores são campos normais do efeito.
 
 - Efeitos escaláveis começam em graduação 1. Compras fixas que definem uma função
   mantêm as graduações necessárias, como imunidades, formas e sentidos.

@@ -7,10 +7,13 @@ import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { calculatePowerPricing } from '../../shared/lib/mathEngine';
 import { validateRequiredPowerFields } from '../../shared/lib/validation';
 import { useDialogFocus } from '../../shared/hooks/useDialogFocus';
+import { createDefaultCharacter } from '../../entities/characterDefaults';
+import { afflictionSummary, isAfflictionField } from '../../shared/lib/afflictionConfiguration';
 import { NumberInput } from '../../shared/ui/NumberInput';
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { ConfigurableFieldSelector } from '../power-builder/components/ConfigurableFieldSelector';
 import { EffectReference } from '../power-builder/components/EffectReference';
+import { EnhancedTargetEditor } from '../power-builder/components/EnhancedTargetEditor';
 import { SenseTraitsEditor } from '../power-builder/components/SenseTraitsEditor';
 import { SENSE_TRAITS } from '../../data/senseTraits';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
@@ -18,7 +21,7 @@ import { resolveModifierDefinition } from '../../shared/lib/rulesCatalog';
 import type { IPowerEffect } from '../../entities/types';
 import { applyPowerTemplate, canApplyPowerTemplate } from './powerTemplateApplication';
 import { instantiatePowerTemplate } from './powerTemplateInstantiation';
-import { libraryText, type PowerLibraryTarget, type PowerTemplate } from './types';
+import { libraryText, powerBookTitle, type PowerLibraryTarget, type PowerTemplate } from './types';
 import './powerLibrary.css';
 import './personalLibrary.css';
 import { PowerCompositionPreview } from './PowerCompositionPreview';
@@ -30,6 +33,10 @@ interface Props {
   strengthForPower?: (recipe: ICharacterPower) => number;
 }
 const PersonalModelPicker = lazy(() => import('./PersonalModelPicker').then(module => ({ default: module.PersonalModelPicker })));
+function LibraryEnhancedTraitEditor({ component, onChange }: { component: ICharacterPowerComponent; onChange: (values: Partial<ICharacterPowerComponent>) => void }) {
+  const [character] = useState(createDefaultCharacter);
+  return <EnhancedTargetEditor component={component} character={character} onChange={onChange}/>;
+}
 export function PowerLibraryDialog({ power, target, strength, costUnit, onApply, onClose, embedded, onUse, useDisabled, strengthForPower }: Props) {
   const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage ?? i18n.language;
@@ -66,7 +73,10 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
   const missingFields = allComponents.some((component, index) => {
     const original = originalComponents[index];
     return validateRequiredPowerFields(component, POWER_DEFS.find(effect => effect.id === component.effectId))
-      || original.choices?.some(choice => !component.fieldValues?.[choice.id])
+      || original.choices?.some(choice => {
+        const value = component.fieldValues?.[choice.id];
+        return typeof value !== 'string' || !value.trim();
+      })
       || (original.chooseSenses && (!component.senseTraits?.length || component.senseTraits.some(trait => {
         const definition = SENSE_TRAITS.find(item => item.id === trait.id);
         return !definition || (definition.requiresSense && !trait.senseType) || (definition.requiresDetail && !trait.detail?.trim());
@@ -86,8 +96,9 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
     if (!draft) return;
     const choices = allComponents.flatMap((component, index) => (originalComponents[index].choices ?? []).map(choice => {
       const value = component.fieldValues?.[choice.id];
-      const option = choice.options.find(item => item.value === value);
-      return option ? `${libraryText(choice.label, language)}: ${libraryText(option.label, language)}` : '';
+      const option = choice.options?.find(item => item.value === value);
+      return option || (!choice.options && typeof value === 'string' && value.trim())
+        ? `${libraryText(choice.label, language)}: ${option ? libraryText(option.label, language) : String(value).trim()}` : '';
     })).filter(Boolean);
     const recipe = { ...draft, notes: [draft.notes, ...choices].join('\n') };
     if (embedded) onUse?.(recipe); else onApply?.(recipe, useName);
@@ -112,7 +123,7 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
           {status === 'loading' && <p role="status">{t('powerLibrary.loading')}</p>}
           {status === 'error' && <div role="alert"><p>{t('powerLibrary.loadError')}</p><button type="button" onClick={() => { if (pending) void select(pending); }}>{t('powerLibrary.retry')}</button></div>}
           {selected && draft && pricing ? <>
-            <h3>{libraryText(selected.name, language)}</h3><p>{libraryText(selected.summary, language)}</p><p className="power-library-source">Power Profiles · p. {selected.page}{language.startsWith('pt') ? ` · ${selected.name.en}` : ''}</p>
+            <h3>{libraryText(selected.name, language)}</h3><p>{libraryText(selected.summary, language)}</p><p className="power-library-source">{powerBookTitle(selected)} · p. {selected.page}{language.startsWith('pt') ? ` · ${selected.name.en}` : ''}</p>
             {selected.audit.discrepancy && <p role="note" className="power-library-discrepancy">{libraryText(selected.audit.discrepancy.reason, language)}</p>}
             {selected.ruleNote && <p role="note" className="power-library-source">{libraryText(selected.ruleNote, language)}</p>}
             {selected.requiresCharacterChanges && <p role="alert" className="power-library-discrepancy">{libraryText(selected.requiresCharacterChanges, language)}</p>}
@@ -129,20 +140,26 @@ export function PowerLibraryDialog({ power, target, strength, costUnit, onApply,
                   return <Tooltip key={`${modifier.modifierId}-${modifierIndex}`} content={resolved?.i18n?.[language]?.description ?? resolved?.description ?? ''}><span tabIndex={0}>{resolved?.i18n?.[language]?.name ?? resolved?.name ?? modifier.modifierId}{modifier.ranks > 1 ? ` ${modifier.ranks}` : ''}{modifier.option ? ` (${modifier.option})` : ''}{subtype ? ` · ${subtype.i18n?.[language]?.label ?? subtype.label}` : ''}</span></Tooltip>;
                 })}</div>
                 {component.senseTraits?.length ? <ul className="power-library-purchases">{component.senseTraits.map((trait, traitIndex) => <li key={traitIndex}>{t(`powerLibrary.sense.${trait.id}`, { defaultValue: SENSE_TRAITS.find(item => item.id === trait.id)?.label ?? trait.id })} {trait.ranks}{trait.senseType ? ` · ${trait.senseType}` : ''}{trait.detail ? ` · ${trait.detail}` : ''}</li>)}</ul> : null}
-                {Object.entries(component.fieldValues ?? {}).filter(([id]) => !originalComponent.choices?.some(choice => choice.id === id)).map(([id, value]) => <p className="power-library-field-value" key={id}><strong>{definition.configurableFields?.find(field => field.id === id)?.label ?? id}: </strong>{Array.isArray(value) ? value.join(', ') : value}</p>)}
+                {afflictionSummary(component, key => t(key), definition, MODIFIER_DEFS).map((line, index) => <p className="power-library-field-value" key={`condition-${index}`}>{line}</p>)}
+                {Object.entries(component.fieldValues ?? {}).filter(([id]) => !isAfflictionField(id) && !originalComponent.choices?.some(choice => choice.id === id) && !(id === 'resistance' && component.modifiers.some(modifier => modifier.modifierId === 'alternate_resistance' && modifier.options?.subtypeId))).map(([id, value]) => {
+                  const field = definition.configurableFields?.find(field => field.id === id);
+                  const values = (Array.isArray(value) ? value : [value]).map(value => field?.options?.find(option => option.value === value)?.label ?? value);
+                  return <p className="power-library-field-value" key={id}><strong>{field?.label ?? id}: </strong>{values.join(', ')}</p>;
+                })}
                 {definition.configurableFields?.some(field => field.required && !originalComponent.fieldValues?.[field.id]) && <ConfigurableFieldSelector fields={definition.configurableFields} values={component.fieldValues ?? {}} onChange={(id, value) => update(component.id, { fieldValues: { ...component.fieldValues, [id]: value } })} t={t}/>}
-                {originalComponent.choices?.map(choice => <label className="power-library-choice" key={choice.id}>{libraryText(choice.label, language)}<select className="app-select" value={component.fieldValues?.[choice.id] as string ?? ''} onChange={event => update(component.id, { fieldValues: { ...component.fieldValues, [choice.id]: event.target.value } })}><option value="">{t('builder.selectOption')}</option>{choice.options.map(option => <option key={option.value} value={option.value}>{libraryText(option.label, language)}</option>)}</select></label>)}
+                {originalComponent.choices?.map(choice => <label className="power-library-choice" key={choice.id}>{libraryText(choice.label, language)}{choice.options ? <select className="app-select" value={component.fieldValues?.[choice.id] as string ?? ''} onChange={event => update(component.id, { fieldValues: { ...component.fieldValues, [choice.id]: event.target.value } })}><option value="">{t('builder.selectOption')}</option>{choice.options.map(option => <option key={option.value} value={option.value}>{libraryText(option.label, language)}</option>)}</select> : <input className="app-input" value={component.fieldValues?.[choice.id] as string ?? ''} onChange={event => update(component.id, { fieldValues: { ...component.fieldValues, [choice.id]: event.target.value } })}/>}</label>)}
+                {originalComponent.chooseEnhancedTrait && <LibraryEnhancedTraitEditor component={component} onChange={values => update(component.id, values)}/>}
                 {originalComponent.chooseSenses && <SenseTraitsEditor traits={component.senseTraits ?? []} onChange={senseTraits => update(component.id, { senseTraits, ranks: senseTraits.reduce((sum, trait) => sum + trait.ranks, 0) })}/>}
                 <details><summary>{t('powerLibrary.effectInfo')}</summary><EffectReference effect={definition} component={component} t={t}/></details>
               </article>;
             })}
-            {embedded && <details className="personal-alternate"><summary>{t('personalLibrary.fullReference')}</summary><PowerCompositionPreview power={draft} strength={strengthForPower?.(draft) ?? strength} costUnit={costUnit}/></details>}
+            {embedded && allComponents.length > 0 && <details className="personal-alternate"><summary>{t('personalLibrary.fullReference')}</summary><PowerCompositionPreview power={draft} strength={strengthForPower?.(draft) ?? strength} costUnit={costUnit}/></details>}
             {draft.alternateEffects.length > 0 && <p>{t('powerLibrary.includesAlternates', { count: draft.alternateEffects.length })}</p>}
             {!embedded && <><label className="power-library-name-option"><input className="app-checkbox" type="checkbox" checked={useName} onChange={event => setUseName(event.target.checked)}/>{t('powerLibrary.useName')}</label>
             <p className="power-library-impact">{t(draft.alternateEffects.length ? 'powerLibrary.replaceArray' : target?.kind === 'alternate' ? 'powerLibrary.replaceAlternate' : 'powerLibrary.replaceComponent')}</p></>}
             {!compatible && <p role="alert">{t('powerLibrary.incompatible')}</p>}
             {missingFields && <p role="status">{t('powerLibrary.requiredChoices')}</p>}
-            <footer><div><strong>{cost(pricing)} {costUnit}</strong>{finalPricing && <small>{t('powerLibrary.resultTotal', { cost: cost(finalPricing), unit: costUnit })}</small>}</div><button type="button" className="power-library-apply" disabled={useDisabled || !compatible || missingFields || pricing.diagnostics.length > 0 || !!selected.requiresCharacterChanges} onClick={apply}>{t(embedded ? 'personalLibrary.useCharacter' : draft.alternateEffects.length ? 'powerLibrary.applyArray' : 'powerLibrary.apply')}</button></footer>
+            <footer><div>{allComponents.length ? <><strong>{cost(pricing)} {costUnit}</strong>{finalPricing && <small>{t('powerLibrary.resultTotal', { cost: cost(finalPricing), unit: costUnit })}</small>}</> : <span>{t('powerLibrary.openCompositionCost')}</span>}</div><button type="button" className="power-library-apply" disabled={useDisabled || !compatible || missingFields || pricing.diagnostics.length > 0 || !!selected.requiresCharacterChanges} onClick={apply}>{t(embedded ? 'personalLibrary.useCharacter' : draft.alternateEffects.length ? 'powerLibrary.applyArray' : 'powerLibrary.apply')}</button></footer>
           </> : status === 'idle' && <p>{t('powerLibrary.choose')}</p>}
         </section>
       </div>

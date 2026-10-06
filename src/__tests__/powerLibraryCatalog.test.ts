@@ -13,7 +13,7 @@ import { applyPowerTemplate } from '../features/power-library/powerTemplateAppli
 
 const modules = import.meta.glob<PowerTemplate[]>('../data/power-library/profiles/*.ts', { eager: true, import: 'default' });
 const templates = Object.values(modules).flat();
-describe('Power Profiles catalog audit', () => {
+describe('Published powers catalog audit', () => {
   it('applies the four Sustained Afflictions with normal pricing and a localized rule note', () => {
     for (const [id, perRank] of [
       ['kinetic-friction-blindness', 0.5], ['kinetic-friction-muzzle', 0.5],
@@ -52,6 +52,14 @@ describe('Power Profiles catalog audit', () => {
   });
   for (const template of templates) {
     it(`${template.profileId}: ${template.name.en} — source price, configuration and portability`, () => {
+      // Open Handbook compositions have no defined purchase or printed price.
+      if (!template.components.length) {
+        expect(template.requiresCharacterChanges).toBeDefined();
+        expect(POWER_LIBRARY_INDEX.find(entry => entry.id === template.id)?.referenceOnly).toBe(true);
+        const power = instantiatePowerTemplate(template);
+        expect(CharacterPowerSchema.parse(power)).toEqual(power);
+        return;
+      }
       const reference = template.audit.discrepancy ?? template.audit;
       for (const ranks of [1, 5, 10]) {
         const power = instantiatePowerTemplate(template, ranks);

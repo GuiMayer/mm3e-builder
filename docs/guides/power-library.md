@@ -1,16 +1,30 @@
 # Biblioteca de poderes
 
 A aba **Biblioteca de poderes**, entre Recursos e Referências, oferece três
-seções: Power Profiles, Poderes das fichas e Modelos. A navegação usa lista e
+seções: Poderes dos livros, Poderes das fichas e Modelos. A navegação usa lista e
 detalhes lado a lado no desktop; no mobile, selecionar uma entrada abre seus
 detalhes e **Voltar aos resultados** recupera a lista. Busca e nomes são ordenados
 conforme o idioma; a busca ignora acentos.
 As três seções compartilham cabeçalho, busca, cartões, prévia e rodapé de ação.
-No desktop, Power Profiles e Poderes das fichas têm filtros na lateral; em telas
+No desktop, Poderes dos livros e Poderes das fichas têm filtros na lateral; em telas
 menores, esses filtros ficam em um seletor acima da lista. Modelos utiliza duas
 colunas, sem reservar espaço para filtros que não possui.
 
-## Power Profiles
+## Poderes dos livros
+
+O filtro **Livro básico** reúne os 21 poderes de exemplo do Deluxe Hero’s
+Handbook em 22 entradas: Invisibilidade tem versões fixas para visão normal
+(4 PP) e todos os sentidos visuais (8 PP). Forma Alternativa é uma referência
+para montar efeitos e Ativação no Builder; o livro não define uma receita fixa.
+As outras 21 entradas são aplicáveis. Efeitos escaláveis começam em graduação 1.
+
+As versões do Handbook coexistem com as do Power Profiles. Duplicação usa
+Active, Campo de Força usa duração sustentada, Mimic e Metamorfose usam ação de
+movimento e Sono não inclui Cumulative. Escolhas de elemento, sentido afetado e
+energia absorvida são solicitadas na prévia e copiadas para as notas. Absorção
+de Energia permite escolher a categoria e a característica aprimorada; o custo
+segue a seleção. Condições de Aflição e a recuperação de Armadilha são campos
+normais da composição. A referência identifica o livro correto.
 
 O catálogo do livro é somente para consulta. Graduações e escolhas necessárias
 alteram uma prévia, sem editar receitas. **Usar na ficha** abre um popup com as
@@ -88,10 +102,12 @@ todos os dados do aplicativo ou os dados do site remove também os modelos locai
 ## Biblioteca dentro do Builder
 
 No Power Builder, clique no ícone de quatro quadrados no cabeçalho do efeito
-base, componente vinculado ou efeito alternativo. Escolha um dos 39 capítulos,
+base, componente vinculado ou efeito alternativo. Escolha Livro básico ou um dos
+39 capítulos do Power Profiles,
 ou busque pelo nome em português/inglês, sem precisar digitar acentos.
 
-A biblioteca contém 982 receitas e variantes. A prévia permite escolher as
+A biblioteca contém 1.004 entradas: 982 do Power Profiles e 22 do Handbook.
+A prévia permite escolher as
 graduações variáveis, mantém as compras fixas do livro e pede escolhas que a
 receita deixa em aberto. Os componentes podem ter graduações independentes.
 Penetrante/Afeta Corpóreo declarados como compras integrais acompanham a
@@ -113,9 +129,10 @@ Receitas de array e configurações globais, como Removível/Ativação, exigem 
 destino principal; não podem ser inseridas parcialmente dentro de outro AE.
 Substituir um componente preserva seus irmãos e os demais alternativos.
 
-Três entradas são **Apenas referência**: Ghost Form, Undead Form e Construct
-Body exigem atributos ausentes do personagem. A aplicação é bloqueada para impedir
-carregar uma receita incompleta. As quatro receitas de Aflição Sustentada usam a
+Quatro entradas são **Apenas referência**: Ghost Form, Undead Form e Construct
+Body exigem atributos ausentes do personagem; Forma Alternativa deixa os efeitos
+em aberto. A aplicação é bloqueada para impedir carregar uma receita incompleta.
+As quatro receitas de Aflição Sustentada usam a
 progressão do DC Adventures, explicada na prévia e nas notas do poder; consulte
 as [regras da biblioteca](../development/power-library-rules.md#aflição-sustentada) para custos e
 compatibilidade. Invocações carregam o efeito, mas a criatura é criada

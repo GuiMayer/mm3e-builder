@@ -12,11 +12,15 @@ export interface PowerTemplateComponent extends Omit<ICharacterPowerComponent, '
   rankMultiplier?: number;
   scaledSenseTraits?: boolean;
   chooseSenses?: boolean;
-  choices?: Array<{ id: string; label: LibraryText; options: Array<{ value: string; label: LibraryText }> }>;
+  chooseEnhancedTrait?: boolean;
+  /** No options means a required free-text choice, e.g. the controlled element. */
+  choices?: Array<{ id: string; label: LibraryText; options?: Array<{ value: string; label: LibraryText }> }>;
 }
 export interface PowerTemplate {
   id: string;
   profileId: string;
+  /** Absent on existing recipes: Power Profiles. Catalog metadata only. */
+  book?: 'handbook';
   section: LibraryText;
   name: LibraryText;
   summary: LibraryText;
@@ -51,4 +55,8 @@ export type PowerLibraryTarget =
 
 export function libraryText(text: LibraryText, language: string): string {
   return language.startsWith('pt') ? text.pt : text.en;
+}
+
+export function powerBookTitle(template: Pick<PowerTemplate, 'book'>): string {
+  return template.book === 'handbook' ? 'Deluxe Hero’s Handbook' : 'Power Profiles';
 }

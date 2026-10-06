@@ -58,12 +58,18 @@ export function afflictionSummary(component: ICharacterPowerComponent, label: (k
   });
   const variable = config?.variableDegrees ?? array(fields.afflictionVariableDegrees);
   if (variable.length) lines.push(`${label('builder.affliction.variable')}: ${variable.join(', ')}`);
-  if (fields.afflictionRecovery) lines.push(`${label('builder.affliction.recovery')}: ${label(`defenses.${fields.afflictionRecovery}`)}`);
+  if (typeof fields.afflictionRecovery === 'string' && fields.afflictionRecovery) lines.push(`${label('builder.affliction.recovery')}: ${afflictionRecoveryLabel(fields.afflictionRecovery, label)}`);
   return lines;
 }
 export { AFFLICTION_CONDITIONS };
 
+export function afflictionRecoveryLabel(recovery: string, label: (key: string) => string): string {
+  if (recovery === 'damage-or-sleight-of-hand') return label('builder.affliction.damageOrSleightOfHand');
+  return ['fortitude', 'will', 'dodge', 'parry', 'toughness'].includes(recovery) ? label(`defenses.${recovery}`) : recovery;
+}
+
 export function afflictionFallbackLabel(key: string): string {
   const labels: Record<string, string> = { 'builder.affliction.degree1': 'Degree 1', 'builder.affliction.degree2': 'Degree 2', 'builder.affliction.degree3': 'Degree 3', 'builder.affliction.variable': 'Variable degrees', 'builder.affliction.recovery': 'Recovery resistance' };
+  if (key === 'builder.affliction.damageOrSleightOfHand') return 'Damage or Sleight of Hand';
   return labels[key] ?? key.split('.').pop()!.replace(/_/g, ' ').replace(/^./, letter => letter.toUpperCase());
 }

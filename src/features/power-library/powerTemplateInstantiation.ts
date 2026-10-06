@@ -1,14 +1,14 @@
 import type { ICharacterPower, ICharacterPowerComponent } from '../../entities/types';
 import { createId } from '../../shared/lib/identity';
 import type { PowerTemplate, PowerTemplateComponent } from './types';
-import { libraryText } from './types';
+import { libraryText, powerBookTitle } from './types';
 
 export function instantiatePowerTemplate(template: PowerTemplate, ranks = 1, language = 'en'): ICharacterPower {
   if (!Number.isSafeInteger(ranks) || ranks < 1) throw new Error('Invalid template ranks');
   const instantiate = (component: PowerTemplateComponent): ICharacterPowerComponent => {
-    const { scalable, scaledModifiers, modifierRanksOnly, rankMultiplier, scaledSenseTraits, chooseSenses, choices, ...fields } = component;
+    const { scalable, scaledModifiers, modifierRanksOnly, rankMultiplier, scaledSenseTraits, chooseSenses, chooseEnhancedTrait, choices, ...fields } = component;
     // These describe catalog choices, not fields in the saved character model.
-    void chooseSenses; void choices;
+    void chooseSenses; void chooseEnhancedTrait; void choices;
     const result = { ...structuredClone(fields), id: createId(), ranks: scalable && !modifierRanksOnly ? ranks * (rankMultiplier ?? 1) : component.ranks };
     result.modifiers = result.modifiers.map(modifier => ({ ...modifier, instanceId: createId(),
       ranks: scaledModifiers?.includes(modifier.modifierId) ? modifier.ranks * (modifierRanksOnly ? ranks : result.ranks) : modifier.ranks }));
@@ -18,7 +18,7 @@ export function instantiatePowerTemplate(template: PowerTemplate, ranks = 1, lan
   return {
     id: createId(), name: libraryText(template.name, language),
     components: template.components.map(instantiate),
-    notes: [libraryText(template.summary, language), template.ruleNote ? libraryText(template.ruleNote, language) : '', template.sourceFormula ? `${language.startsWith('pt') ? 'Composição original do livro' : 'Original book configuration'}: ${template.sourceFormula}` : '', `Power Profiles · ${libraryText(template.name, language)} · p. ${template.page}`].filter(Boolean).join('\n'),
+    notes: [libraryText(template.summary, language), template.ruleNote ? libraryText(template.ruleNote, language) : '', template.sourceFormula ? `${language.startsWith('pt') ? 'Composição original do livro' : 'Original book configuration'}: ${template.sourceFormula}` : '', `${powerBookTitle(template)} · ${libraryText(template.name, language)} · p. ${template.page}`].filter(Boolean).join('\n'),
     descriptors: [...(template.descriptors ?? [])],
     alternateEffects: (template.alternateEffects ?? []).map(alternate => ({
       id: createId(), name: libraryText(alternate.name, language), notes: '',
