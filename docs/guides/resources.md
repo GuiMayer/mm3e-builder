@@ -13,6 +13,13 @@ divergem das tabelas normativas, o cálculo usa as tabelas e fórmulas normativa
 
 Crie ou edite o recurso na aba **Recursos**, depois use **Adicionar recurso** na
 ficha. A seleção e os cartões acompanham a ordem alfabética do idioma ativo.
+Na aba **Recursos**, a busca encontra nomes, notas, características, descritores
+e efeitos dos poderes, incluindo movimento e efeitos alternativos. A busca ignora
+acentos e maiúsculas e reconhece os nomes dos efeitos em português e inglês.
+Combine os filtros de **Tipo** e **Forma de aquisição** (PP ou EP) para reduzir a
+lista; **Limpar filtros** restaura a visualização completa. Esses controles apenas
+filtram a biblioteca e não alteram recursos ou fichas salvas.
+
 O atalho **Criar recurso** na seção de recursos da ficha abre um seletor de tipo
 e direciona para **Recursos** com o editor de criação correspondente aberto.
 O recurso só é salvo ao confirmar; depois, use **Adicionar recurso** para vinculá-lo.

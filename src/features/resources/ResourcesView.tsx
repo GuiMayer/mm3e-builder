@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useDeferredValue, useMemo, useState } from 'react';
 import { replaceResourcePower } from '../../shared/lib/powerEditing';
-import { Archive, Copy, Edit3, Plus, Trash2, Wand2 } from 'lucide-react';
+import { Archive, Copy, Edit3, Plus, Search, Trash2, Wand2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterPower, IResource, IResourceFeature, IVehicleResource, IHeadquartersResource, ResourceType } from '../../entities/types';
 import { useResourcesStore } from '../../store/resourcesStore';
@@ -21,6 +21,7 @@ import { duplicateResource, getResourceCopyName } from '../../shared/lib/resourc
 import { Tooltip } from '../../shared/ui/Tooltip';
 import { PowerBuilderOverlay } from '../power-builder/PowerBuilderOverlay';
 import { ResourceReviewDialog } from './ResourceReviewDialog';
+import { searchResources, type ResourceAcquisitionFilter, type ResourceTypeFilter } from './resourceSearch';
 import './resources.css';
 
 const TYPES: ResourceType[] = ['gadget', 'gear', 'vehicle', 'headquarters', 'custom'];
@@ -52,8 +53,13 @@ export function ResourcesView({ initialEditTarget, initialCreateType }: {
     return resolved && resolved.target.kind !== 'traits' ? resolved.target : null;
   });
   const [review, setReview] = useState(false);
+  const [query, setQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState<ResourceTypeFilter>('all');
+  const [acquisitionFilter, setAcquisitionFilter] = useState<ResourceAcquisitionFilter>('all');
+  const search = useDeferredValue(query);
+  const hasFilters = !!query.trim() || typeFilter !== 'all' || acquisitionFilter !== 'all';
   const dialog = useAppDialog();
-  const ordered = useMemo(() => [...resources].sort((a, b) => a.name.localeCompare(b.name, i18n.language, { sensitivity: 'base', numeric: true })), [resources, i18n.language]);
+  const ordered = useMemo(() => searchResources(resources, { query: search, type: typeFilter, acquisition: acquisitionFilter, language: i18n.language }), [resources, search, typeFilter, acquisitionFilter, i18n.language]);
   const targetResource = resources.find((resource) => resource.id === powerTarget?.resourceId);
   const currentPower = targetResource && (targetResource.type === 'vehicle' ? powerTarget?.kind === 'movement' ? targetResource.movement : targetResource.systems.find((power) => power.id === powerTarget?.powerId) : targetResource.type === 'headquarters' ? targetResource.effects.find((power) => power.id === powerTarget?.powerId) : targetResource.power);
   const builderContext = useMemo(() => targetResource && powerTarget ? { resource: targetResource, kind: powerTarget.kind, effectId: powerTarget.powerId } : undefined, [targetResource, powerTarget]);
@@ -97,6 +103,12 @@ export function ResourcesView({ initialEditTarget, initialCreateType }: {
   return <div className="resources-view">
     <header className="resources-view__header"><div><h1><Archive size={21} /> {t('resources.title')}</h1><p>{t('resources.libraryHint')}</p></div><div className="resources-view__new">{TYPES.map((type) => <Button key={type} size="sm" variant="secondary" onClick={() => setEditing({ resource: makeResource(type, character.header.powerLevel), isNew: true })}><Plus size={14} /> {t(`resources.type.${type}`)}</Button>)}</div></header>
     {resources.some(needsResourceReview) && <div className="resource-notice"><p>{t('resources.review.pending')}</p><Button size="sm" onClick={() => setReview(true)}>{t('resources.review.title')}</Button></div>}
+    <div className="resources-view__filters" role="search" aria-label={t('resources.searchPlaceholder')}>
+      <label className="resources-view__search"><Search size={18} aria-hidden="true"/><input type="search" value={query} onChange={event => setQuery(event.target.value)} aria-label={t('resources.librarySearchPlaceholder')} placeholder={t('resources.librarySearchPlaceholder')}/></label>
+      <label className="resources-view__filter"><span>{t('resources.typeLabel')}</span><select className="app-select" value={typeFilter} aria-label={t('resources.filterLabel')} onChange={event => setTypeFilter(event.target.value as ResourceTypeFilter)}><option value="all">{t('resources.allTypes')}</option>{TYPES.map(type => <option value={type} key={type}>{t(`resources.type.${type}`)}</option>)}</select></label>
+      <label className="resources-view__filter"><span>{t('resources.costMode')}</span><select className="app-select" value={acquisitionFilter} onChange={event => setAcquisitionFilter(event.target.value as ResourceAcquisitionFilter)}><option value="all">{t('resources.allAcquisitions')}</option><option value="equipment">{t('resources.costMode.equipment')}</option><option value="device">{t('resources.costMode.device')}</option></select></label>
+    </div>
+    <div className="resources-view__results"><span role="status">{t('resources.resultCount', { count: ordered.length, total: resources.length })}</span>{hasFilters && <Button variant="ghost" size="sm" onClick={() => { setQuery(''); setTypeFilter('all'); setAcquisitionFilter('all'); }}>{t('resources.clearFilters')}</Button>}</div>
     <div className="resources-view__grid">{ordered.map((resource) => {
       const cost = getResourceCost(resource, undefined, undefined, getCharacterStrength(character));
       const powers = resource.type === 'vehicle' ? resource.systems : resource.type === 'headquarters' ? resource.effects : [];
@@ -118,7 +130,7 @@ export function ResourcesView({ initialEditTarget, initialCreateType }: {
         <details className="resource-card__cost-details"><summary>{t('resources.totalCost')}</summary><dl>{getResourceCostDetails(resource, getCharacterStrength(character)).map((part, index) => <div key={index}><dt>{part.key ? t(part.key) : part.name || t('resources.unnamedEffect')}</dt><dd>{part.cost} {cost.unit}</dd></div>)}</dl></details>
         <footer>{cost.total} {cost.unit}{needsResourceReview(resource) && <span> · {t('resources.review.required')}</span>}</footer>
       </article>;
-    })}{!ordered.length && <p className="resources-view__empty">{t('resources.libraryEmpty')}</p>}</div>
+    })}{!ordered.length && <p className="resources-view__empty">{t(resources.length ? 'resources.noResults' : 'resources.libraryEmpty')}</p>}</div>
     {editing && <ResourceEditor resource={editing.resource} isNew={editing.isNew} strength={getCharacterStrength(character)} onClose={() => setEditing(null)} onSave={save}/>}
     {builderContext && <PowerBuilderOverlay key={`${builderContext.resource.id}:${builderContext.kind}:${powerTarget?.powerId ?? 'new'}`} existingPower={currentPower && !currentPower.components.length ? { ...currentPower, components: blankPower().components } : currentPower} resourceContext={builderContext} saveError={saveError} equipmentMode={!isDeviceResource(builderContext.resource)} onSave={savePower} onClose={() => setPowerTarget(null)}/>}
     {review && <ResourceReviewDialog resources={resources} character={character} onClose={() => setReview(false)}/>}

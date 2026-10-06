@@ -1,7 +1,7 @@
 # Histórico de versões e pacotes de commits
 
 Agrupamento reconstruído a partir dos commits e tags do repositório.
-Estado de publicação conferido em 2026-10-05.
+Estado de publicação conferido em 2026-10-06.
 As versões retroativas identificam o fim de uma atualização completa: não há
 uma versão para cada etapa de implementação. O [changelog](../../CHANGELOG.md)
 descreve o comportamento entregue por cada pacote.
@@ -69,6 +69,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.21.2 | 2026-10-05 | `v1.21.1..v1.21.2` | 9 | Ajustes de interface mobile, padronização da biblioteca e criação/edição de recursos |
 | v1.21.3 | 2026-10-05 | `v1.21.2..v1.21.3` | 1 | Progressão de duração do DC Adventures e aplicação das quatro Aflições Sustentadas da biblioteca |
 | v1.22.0 | 2026-10-06 | `v1.21.3..v1.22.0` | 16 | Criação pelos 15 arquétipos, poderes de exemplo do Handbook, associações explícitas de traits, colunas de recursos e organização das fontes/documentação |
+| v1.22.1 | 2026-10-06 | `v1.22.0..v1.22.1` | 1 | Busca e filtros combináveis por tipo e aquisição na biblioteca de recursos, mantendo os dados existentes |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.

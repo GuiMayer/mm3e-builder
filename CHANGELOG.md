@@ -10,6 +10,11 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+## [1.22.1] - 2026-10-06
+
+### Added
+- Add search and combinable type/acquisition (PP or EP) filters to the Resources tab. Search names, notes, features, descriptors and power effects in English or Portuguese, including vehicle movement and alternate effects. Preserve the column layout, alphabetical ordering and existing saved data.
+
 ## [1.22.0] - 2026-10-06
 
 ### Added — Handbook sample powers
