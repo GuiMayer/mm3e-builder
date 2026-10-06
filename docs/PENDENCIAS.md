@@ -46,6 +46,109 @@ Não são compromissos de implementação nem impedimentos para usar a versão a
   versão desktop. Contas, backend e sincronização obrigatória continuam fora
   do escopo atual.
 
+### Criação assistida e interoperabilidade — propostas opcionais
+
+**Contexto:** a comparação de 05/10/2026 com o Mastermind Maker identificou
+possibilidades de expansão, sem caracterizar defeitos no aplicativo. A
+[descrição oficial](https://greenroninstore.com/products/mastermind-maker-character-creator-software-for-m-m-3e)
+anuncia criação rápida, orientação para iniciantes, importação do Hero Lab,
+conteúdo suplementar, regras opcionais e exportação em PNG/texto simples.
+A comparação foi documental, sem execução da versão paga. A cobertura atual
+dos poderes prontos anunciados precisa ser confirmada: o desenvolvedor
+[relatou pendências no lançamento](https://www.reddit.com/r/mutantsandmasterminds/comments/1vcfrq8/power_profiles_in_mastermind_maker_deluxe/).
+
+| Proposta | Escopo e decisões abertas |
+| --- | --- |
+| Checklist opcional de criação | Orientar atributos, defesas, perícias, vantagens, poderes e complicações. Reutilizar os diagnósticos existentes e distinguir orientação de limites de regras. Não impedir construções deliberadas do jogador/narrador. |
+| Arquétipos e criação rápida | Ao clicar em Criar personagem, abrir um diálogo com Ficha limpa ou Começar com um arquétipo. O catálogo inicial utiliza os arquétipos do Deluxe Hero's Handbook, com prévia de NP, PP e composição antes de criar a nova ficha. |
+| Importação do Hero Lab | Investigar o formato `.por`, obter arquivos de teste autorizados e mapear efeitos, arrays, modificadores e recursos. Apresentar campos não suportados antes de salvar, preservar o original e nunca descartar dados silenciosamente. |
+| Conteúdo de suplementos | Avaliar demanda por Gadget Guides, Cosmic Handbook, Superteam Handbook e outros. Conferir fontes, permissões de distribuição e suporte do motor antes de adicionar entradas; não presumir que uma descrição comercial comprova cobertura completa. |
+| Regras opcionais | Avaliar opções concretas do Deluxe Gamemaster's Guide. Definir escopo por ficha ou campanha, efeito sobre cálculos e portabilidade; manter as regras básicas como padrão. |
+| Exportação PNG e texto simples | Avaliar utilidade para compartilhar fichas e blocos de personagem. Reutilizar o resumo canônico e as opções de exportação, definir tratamento de múltiplas páginas e verificar legibilidade. |
+
+**Ordem sugerida para avaliação:** checklist e arquétipos primeiro, por
+reduzirem a dificuldade inicial sem exigir um novo sistema de autoria.
+Importação, suplementos e regras opcionais dependem de demanda e de validação
+dos formatos e regras envolvidos. Não há versão ou prazo definido para essas
+propostas. Rolagens, condições, referências, modelos pessoais e PDF
+personalizável já existem e não precisam ser recriados para obter paridade.
+
+**Fluxo definido para criação de personagem:**
+
+1. **Criar personagem** abre o diálogo com as opções **Ficha limpa** e
+   **Começar com um arquétipo**. Fechar ou cancelar não cria uma ficha.
+2. **Ficha limpa** segue a criação atual. **Começar com um arquétipo** abre
+   a lista dos arquétipos do livro, com descrição e prévia da composição.
+   Permitir voltar à escolha inicial.
+3. Confirmar o arquétipo cria uma ficha independente e editável em uma nova
+   aba, com novas identidades para o personagem e seus elementos. Não alterar
+   fichas existentes nem manter vínculo de atualização com o modelo original.
+
+Validar as composições com a fonte e calcular PP pelo motor normal, sem preço
+total imposto para reproduzir o livro. A primeira entrega preserva as
+graduações e o NP publicados; adaptação automática para outros NPs fica fora
+desse fluxo inicial. Reutilizar o padrão de diálogos do aplicativo e verificar
+acesso por teclado, retorno de foco, mobile e cancelamento.
+
+**Tutorial do aplicativo — decisão de planejamento:** o mantenedor produzirá
+o tutorial somente após concluir o escopo de funcionalidades (feature complete)
+e passar à fase de manutenção. O material deve refletir a interface e os fluxos
+estabilizados; não antecipar sua produção durante as expansões atuais.
+O checklist opcional de criação permanece uma proposta independente.
+
+### Aba Homebrew — proposta de expansão
+
+**Objetivo:** adicionar uma aba principal chamada **Homebrew**, com editores
+para criar novos poderes/efeitos, modificadores, perícias, vantagens e outras
+definições de regras conforme o escopo aprovado. O conteúdo criado deve ficar
+disponível nos seletores correspondentes da ficha e do Power Builder.
+A funcionalidade ainda não foi implementada.
+
+**Distinção da biblioteca pessoal:** modelos atuais são composições de efeitos
+e modificadores já existentes, com políticas de graduação. Homebrew permite
+definir novos elementos do catálogo. Manter os modelos na Biblioteca de
+poderes e preservar o catálogo oficial, sem substituir suas definições.
+
+**Escopo inicial a detalhar:**
+
+- Organizar a aba por tipo de conteúdo, com busca, criação, edição, duplicação,
+  exclusão e prévia. Identificar entradas personalizadas nos seletores.
+- Poderes/efeitos: nome, descrição, custo por graduação ou fixo, ação, alcance,
+  duração e parâmetros suportados pelo motor. Definir como associar ataques,
+  resistências e aprimoramentos quando aplicável.
+- Modificadores: extra/flaw, custo fixo ou por graduação, graduações afetadas,
+  opções e eventual restrição a efeitos específicos. Preservar a política
+  atual de aplicações repetidas e diagnósticos configuráveis.
+- Perícias: habilidade-base, subtipos, treinamento e custo; vantagens:
+  descrição, custo e política de graduação. Definir separadamente os vínculos
+  necessários para bônus e atalhos de rolagem.
+- Usar campos declarativos validados, sem executar código ou fórmulas
+  arbitrárias importadas. Informar quando uma mecânica depende de adjudicação
+  manual ou ainda não tem suporte de automação.
+
+**Persistência, compatibilidade e critérios de aceite:**
+
+- Armazenar definições em biblioteca local própria, com IDs estáveis, formato
+  versionado e importação/exportação. Validar conflitos de IDs e arquivos
+  inválidos antes de gravar; garantir cópia recuperável em caso de migração.
+- Definir como fichas, recursos e modelos transportam as definições utilizadas,
+  incluindo snapshots ou dependências versionadas. Uma ficha exportada deve
+  continuar legível em outro navegador sem a biblioteca local de origem.
+- Definir a política de atualização de definições usadas. Editar ou excluir
+  conteúdo Homebrew não pode modificar silenciosamente fichas existentes,
+  alterar seus custos ou deixar referências ilegíveis.
+- Verificar o estado das fichas atuais antes de implementar. Introduzir
+  migração somente se o contrato da ficha precisar mudar, preservando dados
+  originais e a leitura dos formatos históricos.
+- Reutilizar o motor canônico em ficha, Builder, recursos, modelos e
+  exportações para mecânicas suportadas. Testar custos, dependências ausentes,
+  importação em navegador sem Homebrew e edição/exclusão de conteúdo em uso.
+
+**Decisões abertas:** tipos incluídos na primeira entrega, campos e mecânicas
+automatizáveis, regras de atualização de dependências e inclusão nos backups
+de rascunho/ZIP. A expansão requer plano próprio antes da implementação;
+não há versão ou prazo definido.
+
 ### Modo offline — proposta opcional
 
 **Objetivo:** permitir abrir e usar o aplicativo sem conexão durante uma sessão,
