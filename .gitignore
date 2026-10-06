@@ -30,3 +30,6 @@ test-results.txt
 # Local PDF inspection artifacts
 /output/pdf/
 /tmp/pdfs/
+
+# Local reference books
+/docs/sources/
