@@ -1,0 +1,25 @@
+import { advantage as a, affliction, component as c, damage, enhanced, modifier as m, options, power, skill as k, specific as s, text, type Archetype } from './model';
+import { awareness, perception, shield } from './common';
+export const batch4: Archetype[] = [
+  {id:'powerhouse',name:text('Powerhouse','Brutamontes'),summary:text('Massive strength, remarkable endurance and earth-shaking attacks.','Força colossal, grande resistência e ataques que abalam o chão.'),page:44,printed:[36,85,3,16,10],build(d){
+    d.abilities([4,1,6,1,4,1,0,1]);d.defenses(5,0,0,5);d.advantages('all_out_attack','power_attack',a('ultimate_effort',1,'Toughness'));
+    d.skills(k('close_combat',2,'Unarmed'),k('insight',5),k('intimidation',7),k('perception',5),k('ranged_combat',7,'Throwing'));d.expertise();
+    d.addPower('Shockwave','Onda de choque',[damage(10,[m('area',1,{shape:'burst'}),m('limited')])],[power(d.label('Groundstrike','Golpe no chão'),[affliction(10,['vulnerable','defenseless'],[m('area',1,{shape:'burst'}),s('instant_recovery'),s('limited_degree'),m('limited')])])],d.label('Both attacks are limited to targets touching the ground. Groundstrike has instant recovery and two degrees.','Ambos os ataques são limitados a alvos em contato com o chão. Golpe no chão tem recuperação instantânea e dois graus.'));
+    d.addPower('Super-leaping','Supersalto',[c('leaping',10)]);
+    d.addPower('Invulnerability','Invulnerabilidade',[enhanced({kind:'ability',key:'sta'},10),c('immunity',12,[],{fieldValues:{immunity:'Cold damage, heat damage, fatigue, pressure'}}),c('enhanced-trait',12,[],{variableCostOption:'Enhanced Extra',fieldValues:{extra:'Impervious Toughness 12'}})],[],d.label('Impervious Toughness 12; not additional Toughness.','Resistência Impenetrável 12; não aumenta a Resistência.'));
+    d.addPower('Super-strength','Superforça',[enhanced({kind:'ability',key:'str'},8),enhanced({kind:'ability',key:'str'},4,true)],[],d.label('Strength 12 for attacks; lifting Strength 16.','Força 12 para ataques; Força 16 para levantar peso.'));
+  }},
+  {id:'psychic',name:text('Psychic','Psíquico'),summary:text('Telepathy, telekinesis, mental attacks and an impervious force field.','Telepatia, telecinese, ataques mentais e um campo de força impenetrável.'),page:45,printed:[32,78,1,12,26],note:text('The printed defenses require 27 purchased ranks (Dodge 7, Parry 6, Fortitude 6, Will 8), although the subtotal says 26. Keeping the published defense values gives 151 PP.','As defesas impressas exigem 27 graduações compradas (Esquiva 7, Aparar 6, Fortitude 6, Vontade 8), mas o subtotal diz 26. Preservar os valores de defesa publicados resulta em 151 PP.'),build(d){
+    d.abilities([0,1,2,6,0,2,2,3]);d.defenses(7,6,6,8);d.advantages(a('ultimate_effort',1,'Will'));
+    d.skills(k('insight',6),k('perception',4),k('persuasion',8));d.expertise();
+    d.addPower('Mental awareness','Consciência mental',[awareness('Mental powers')]);d.addPower('Telekinesis','Telecinese',[c('move-object',8,[m('accurate',4)])]);
+    d.addPower('Telekinetic field','Campo telecinético',[shield(12)]);d.addPower('Telekinetic levitation','Levitação telecinética',[c('flight',5)]);
+    const alternate=d.select('telepathy',text('Telepathy alternate effect','Efeito alternativo de telepatia'),options(['illusion','Telepathic illusion','Ilusão telepática'],['control','Mind control','Controle mental']),true,'illusion');
+    d.addPower('Telepathy','Telepatia',[c('mind-reading',5),c('communication',2,[m('area')],{fieldValues:{medium:'Mental'}})], [power(d.label(alternate==='control'?'Mind control':'Telepathic illusion',alternate==='control'?'Controle mental':'Ilusão telepática'),[alternate==='control'?affliction(5,['dazed','compelled','controlled'],[s('cumulative'),perception()],'will'):c('illusion',4,[s('resistible_illusion'),s('selective_illusion')],{variableCostOption:'All sense types',fieldValues:{resistance:'will'}})]),power(d.label('Mental blast','Rajada mental'),[damage(5,[perception(),m('alternate_resistance',1,{subtypeId:'will'})])])]);
+  }},
+  {id:'shapeshifter',name:text('Shapeshifter','Metamorfo'),summary:text('A flexible hero who allocates Variable points to different forms.','Um herói flexível que distribui pontos de Variável entre formas diferentes.'),page:46,printed:[38,72,5,13,22],build(d){
+    d.abilities([1,2,6,2,2,2,1,3]);d.defenses(6,2,6,8);d.advantages(a('defensive_roll',3),'move_by_action','taunt');
+    d.skills(k('close_combat',4,'Unarmed'),k('deception',6),k('expertise',4,'Zoology'),k('perception',6),k('stealth',6));
+    d.addPower('Shapeshift','Metamorfose',[c('variable',9,[s('action_variable',1,{subtypeId:'move'})])],[],d.label('45 PP for different forms, reconfigured as a move action. Configure form traits manually; values and PL limits depend on the chosen form.','45 PP para formas diferentes, reconfigurados como ação de movimento. Configure as características da forma manualmente; valores e limites de NP dependem da forma escolhida.'));
+  }}
+];
