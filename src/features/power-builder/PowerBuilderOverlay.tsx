@@ -80,11 +80,13 @@ interface Props {
   saveError?: string | null;
   /** Authoring a reusable composition without writing to a character. */
   templateMode?: boolean;
+  /** Isolated character context for creation recipes, without adding a temporary tab. */
+  draftCharacter?: import('../../entities/types').ICharacter;
 }
 
 const PowerLibraryDialog = lazy(() => import('../power-library/PowerLibraryDialog').then(module => ({ default: module.PowerLibraryDialog })));
 
-export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPower, sourceCharacterId, onSave, onClose, equipmentMode, resourceContext, saveError, templateMode }: Props) {
+export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPower, sourceCharacterId, onSave, onClose, equipmentMode, resourceContext, saveError, templateMode, draftCharacter }: Props) {
   const associationReviewIds = useMemo(() => {
     const components = !isNewPower && existingPower
       ? [...existingPower.components, ...existingPower.alternateEffects.flatMap(alternate => alternate.components)]
@@ -107,7 +109,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
   const [originId] = useState(() => sourceCharacterId ?? active.characterId);
   const origin = useCharactersStore(state => state.tabs.find(tab => tab.id === originId)?.character);
   const [initialCharacter] = useState(() => templateMode ? createDefaultCharacter() : active.character);
-  const activeCharacter = templateMode ? initialCharacter : origin ?? initialCharacter;
+  const activeCharacter = draftCharacter ?? (templateMode ? initialCharacter : origin ?? initialCharacter);
   const budgetTarget = useMemo<BudgetEditTarget>(() => resourceContext
     ? { kind: 'resource', target: { resourceId: resourceContext.resource.id, kind: resourceContext.kind, powerId: resourceContext.effectId } }
     : { kind: equipmentMode ? 'equipment' : 'power', powerId: isNewPower ? undefined : existingPower?.id }, [resourceContext, equipmentMode, existingPower?.id, isNewPower]);

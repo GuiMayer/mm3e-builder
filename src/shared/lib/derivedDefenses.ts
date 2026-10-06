@@ -15,7 +15,7 @@ export function deriveCharacterDefenses(character: DefensiveCharacter, powerDefs
   });
   const equipment = sources.filter(source => source.equipment).map(source => source.power);
   const personalPowers = sources.filter(source => !source.equipment).map(source => source.power);
-  const natural = calcToughnessBonus(personalPowers, character.advantages, powerDefs);
+  const natural = calcToughnessBonus(personalPowers, effective.advantages, powerDefs);
   let armor = { bonus: 0, breakdown: [] as string[] };
   for (const item of equipment) {
     const candidate = calcToughnessBonus([item], [], powerDefs);
@@ -24,7 +24,7 @@ export function deriveCharacterDefenses(character: DefensiveCharacter, powerDefs
   // Equipment bonuses do not stack with one another or power/advantage bonuses.
   const toughness = armor.bonus > natural.bonus ? armor : natural;
   const agility = getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, 'agl');
-  let initiative = calcInitiativeBonus(agility, character.advantages, personalPowers, powerDefs);
+  let initiative = calcInitiativeBonus(agility, effective.advantages, personalPowers, powerDefs);
   for (const item of equipment) {
     const candidate = calcInitiativeBonus(agility, [], [item], powerDefs);
     if (candidate.total > initiative.total) initiative = candidate;

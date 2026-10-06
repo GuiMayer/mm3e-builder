@@ -130,6 +130,7 @@ export type AdvantageType = 'combat' | 'fortune' | 'general' | 'skill';
 export interface IAdvantageDef {
   id: string;
   name: string;
+  i18n?: Record<string, { name?: string; description?: string; longDescription?: string }>;
   advantageType: AdvantageType;
   ranked: boolean;
   maxRank: number | null;

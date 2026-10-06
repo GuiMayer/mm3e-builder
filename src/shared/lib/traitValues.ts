@@ -2,6 +2,7 @@ import type { ICharacter, IResource, ITraitTarget } from '../../entities/types';
 import { SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { getPowerSources, resolvePowerUsage } from './powerUsage';
 import { traitTargetKey } from './traitTargets';
+import { enhancedAdvantage, liftingOnly } from './enhancedTraits';
 
 export interface TraitContribution {
   target: ITraitTarget; key: string; sourceKey: string; name: string;
@@ -14,6 +15,7 @@ const cache = new WeakMap<ICharacter, { signature: string; result: ReturnType<ty
 
 function calculateTraitState(character: ICharacter, resources: readonly IResource[]) {
   const contributions: TraitContribution[] = [];
+  const advantages: { advantageId: string; subtype: string | null; ranks: number; equipment: boolean; sourceKey: string }[] = [];
   const warnings: { key: string; params?: Record<string, string | number> }[] = [];
   for (const source of getPowerSources(character, resources)) {
     const usage = resolvePowerUsage(source, character.powerUsage?.[source.key]);
@@ -21,6 +23,9 @@ function calculateTraitState(character: ICharacter, resources: readonly IResourc
     if (!usage.personal) continue;
     for (const component of usage.components) {
       if (component.effectId !== 'enhanced-trait') continue;
+      const advantage = enhancedAdvantage(component);
+      if (advantage) { advantages.push({ ...advantage, ranks: component.ranks, equipment: source.equipment, sourceKey: source.key }); continue; }
+      if (liftingOnly(component)) continue;
       const target = component.enhancedTarget;
       if (!target) { warnings.push({ key: 'traits.missingTarget', params: { name: source.name } }); continue; }
       if (target.kind === 'ability' && character.absentAbilities.includes(target.key)) { warnings.push({ key: 'traits.absentTarget', params: { name: source.name } }); continue; }
@@ -39,7 +44,18 @@ function calculateTraitState(character: ICharacter, resources: readonly IResourc
     // Equipment contributions use the strongest source, preserving the existing stacking policy.
     values.set(key, Math.max(own, ...gear.values()));
   }
-  const result: ICharacter = { ...character, abilities: { ...character.abilities }, defenses: { ...character.defenses }, skills: character.skills.map(skill => ({ ...skill })) };
+  const result: ICharacter = { ...character, abilities: { ...character.abilities }, defenses: { ...character.defenses }, skills: character.skills.map(skill => ({ ...skill })), advantages: character.advantages.map(advantage => ({ ...advantage })) };
+  for (const key of new Set(advantages.map(item => JSON.stringify([item.advantageId, item.subtype])))) {
+    const entries = advantages.filter(item => JSON.stringify([item.advantageId, item.subtype]) === key);
+    const own = entries.filter(item => !item.equipment).reduce((sum, item) => sum + item.ranks, 0);
+    const gear = new Map<string, number>();
+    entries.filter(item => item.equipment).forEach(item => gear.set(item.sourceKey, (gear.get(item.sourceKey) ?? 0) + item.ranks));
+    const ranks = Math.max(own, ...gear.values());
+    const first = entries[0];
+    const bought = result.advantages.find(item => item.advantageId === first.advantageId && (item.subtype ?? null) === first.subtype);
+    if (bought) bought.ranks += ranks;
+    else result.advantages.push({ advantageId: first.advantageId, subtype: first.subtype, ranks });
+  }
   for (const target of contributions.map(item => item.target).filter((item, index, all) => all.findIndex(other => traitTargetKey(other) === traitTargetKey(item)) === index)) {
     const bonus = values.get(traitTargetKey(target)) ?? 0;
     if (target.kind === 'ability') result.abilities[target.key] += bonus;

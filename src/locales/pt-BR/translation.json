@@ -1485,5 +1485,10 @@
   "traits.category.Enhanced Extra (3 PP)": "Extra · categoria de 3 PP",
   "traits.status.manual": "Aplicação manual",
   "traits.allocationPool": "Alocação: {{cost}} / {{budget}} PP",
-  "traits.reviewSource": "Revisar esta fonte de aprimoramento"
+  "traits.reviewSource": "Revisar esta fonte de aprimoramento",
+  "traits.advantageTarget": "Vantagem",
+  "traits.advantageSpecialization": "Especialização (se aplicável)",
+  "traits.strengthScope": "Aplicação da Força",
+  "traits.strengthAll": "Todos os usos de Força",
+  "traits.strengthLifting": "Apenas levantar peso (exige a falha correspondente)"
 }

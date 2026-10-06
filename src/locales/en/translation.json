@@ -1485,5 +1485,10 @@
   "traits.category.Enhanced Extra (3 PP)": "Extra · 3 PP category",
   "traits.status.manual": "Manual application",
   "traits.allocationPool": "Allocation: {{cost}} / {{budget}} PP",
-  "traits.reviewSource": "Review this enhancement source"
+  "traits.reviewSource": "Review this enhancement source",
+  "traits.advantageTarget": "Advantage",
+  "traits.advantageSpecialization": "Specialization (if applicable)",
+  "traits.strengthScope": "Strength application",
+  "traits.strengthAll": "All Strength uses",
+  "traits.strengthLifting": "Lifting only (requires the appropriate flaw)"
 }

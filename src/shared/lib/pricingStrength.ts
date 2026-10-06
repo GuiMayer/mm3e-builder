@@ -1,6 +1,7 @@
 import type { ICharacter, IResource } from '../../entities/types';
 import { getCharacterStrength } from './componentRanks';
 import { getPowerSources, powerBranches } from './powerUsage';
+import { liftingOnly } from './enhancedTraits';
 
 /** Price purchased Strength-based extras at full capacity; usage never changes PP. */
 export function getPricingStrength(character: ICharacter, resources: readonly IResource[] = []): number {
@@ -9,7 +10,7 @@ export function getPricingStrength(character: ICharacter, resources: readonly IR
   for (const source of getPowerSources(character, resources)) {
     if (!source.personal) continue;
     const bonus = Math.max(0, ...powerBranches(source.power).map(branch => branch.components.reduce((sum, component) =>
-      sum + (component.effectId === 'enhanced-trait' && component.enhancedTarget?.kind === 'ability' && component.enhancedTarget.key === 'str' ? component.ranks : 0), 0)));
+      sum + (!liftingOnly(component) && component.effectId === 'enhanced-trait' && component.enhancedTarget?.kind === 'ability' && component.enhancedTarget.key === 'str' ? component.ranks : 0), 0)));
     if (source.equipment) gear = Math.max(gear, bonus);
     else own += bonus;
   }
