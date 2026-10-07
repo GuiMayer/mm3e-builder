@@ -70,6 +70,7 @@ são checkpoints de desenvolvimento, não versões de produto.
 | v1.21.3 | 2026-10-05 | `v1.21.2..v1.21.3` | 1 | Progressão de duração do DC Adventures e aplicação das quatro Aflições Sustentadas da biblioteca |
 | v1.22.0 | 2026-10-06 | `v1.21.3..v1.22.0` | 16 | Criação pelos 15 arquétipos, poderes de exemplo do Handbook, associações explícitas de traits, colunas de recursos e organização das fontes/documentação |
 | v1.22.1 | 2026-10-06 | `v1.22.0..v1.22.1` | 1 | Busca e filtros combináveis por tipo e aquisição na biblioteca de recursos, mantendo os dados existentes |
+| v1.22.2 | 2026-10-07 | `v1.22.1..v1.22.2` | 4 | Proteção de rascunhos/importações, interação do seletor numérico e correções de arrays, modificadores, perícias e resistências, sem migração das fichas |
 
 A v1.11.0 já possuía notas de versão; sua tag faltante aponta para `e00f847`.
 As tags v1.12.0 a v1.14.0 apontam para os commits finais indicados na tabela.

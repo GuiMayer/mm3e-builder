@@ -10,6 +10,21 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+## [1.22.2] - 2026-10-07
+
+### Fixed
+- Refuse stale character draft writes after another window changes or removes the saved draft, including cached autosaves. Keep local edits available for export and explain the conflict.
+- Compensate failed character/resource imports only for writes still owned by that operation. Preserve newer external libraries and portraits; capture sheet snapshots after portrait I/O.
+- Replace an imported character completely instead of merging old optional fields into it. Retain undo history and leave other characters unchanged.
+- Persist closing the last character immediately without writing an empty replacement during fresh or unrecoverable startup.
+- Make held number buttons use the latest value, bounds and callback. Support keyboard/assistive activation without double-counting mouse clicks, and cancel repeats on blur, touch cancellation or disablement.
+- Price Strength-based extras using compatible array branches, and include natural Strength and allocated enhancements in dynamic pool usage across the sheet, Builder, library and exports.
+- Keep Affects Only Others enhancements off the caster's derived traits, defenses and Strength pricing. Sum repeated Accurate/Inaccurate purchases, including partial applications.
+- Resolve effect-specific Area and range modifiers using their effect catalog, including legacy source markers. Correct manual Damage resistance DCs and show Nullify as an opposed check.
+- Include combat advantages in skill totals and roll breakdowns. Validate untrained skill modifiers and combat advantages against the power-level skill cap, without counting circumstance bonuses.
+
+Character schema remains 2.3.0. These fixes require no sheet migration. Purchased ranks and configurations retain their saved values; derived costs, bonuses, resistance descriptions and validation notices may change to match the rules. Export file formats remain compatible.
+
 ## [1.22.1] - 2026-10-06
 
 ### Added
