@@ -152,13 +152,19 @@ export async function applyLocalPortraitBatch(items: readonly { characterId: str
   }
   notify();
   return async () => {
-    const undo = db.transaction(['media', 'local'], 'readwrite');
+    const undo = db.transaction([...STORES], 'readwrite');
     const finished = complete(undo);
     for (const item of previous) {
+      const current = await read(undo.objectStore('local').get(item.id));
+      if (current !== item.newKey) continue;
       if (typeof item.key === 'string') undo.objectStore('local').put(item.key, item.id);
       else undo.objectStore('local').delete(item.id);
-      undo.objectStore('media').delete(item.newKey);
     }
+    const [local, remote] = await Promise.all([
+      read(undo.objectStore('local').getAll()), read(undo.objectStore('remote').getAll()),
+    ]);
+    const used = new Set([...local, ...remote]);
+    previous.forEach(item => { if (!used.has(item.newKey)) undo.objectStore('media').delete(item.newKey); });
     await finished;
     notify();
   };

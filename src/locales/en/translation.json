@@ -1150,6 +1150,8 @@
   "draft.saveErrorTitle": "Draft not saved",
   "draft.saveError.storageFull": "Browser storage is full. Free storage space or export and clear older drafts before trying again.",
   "draft.saveError.writeFailed": "The browser could not save this Draft. Your changes remain marked as unsaved.",
+  "draft.saveError.storageConflict": "Another window changed or removed the saved sheets. This window has not overwritten them. Export your unsaved work before reloading to load the current version.",
+  "characterImport.destinationMissing": "The character selected for replacement is no longer open. Import again and choose a destination.",
   "draft.saveError.recoveryFailed": "The new Draft was not saved because the previous unreadable Draft could not be moved safely to recovery. Export the recovery copy and try again.",
   "calculationUpdate.title": "Point calculation fixed",
   "calculationUpdate.message": "Resource costs now distinguish PP devices, EP equipment, vehicle movement, alternate resources and shared contributions. Vehicle attacks also use the vehicle’s Strength. Saved names, powers, notes and links are preserved; ambiguous legacy resources have a separate review with a backup and before/after costs.",

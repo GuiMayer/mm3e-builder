@@ -91,7 +91,9 @@ stream decompression rejects unexpected paths and oversized contents before
 retaining them. Imports reuse existing data validation and conflict workflows,
 decode all portraits before writing, and remap copied imports to their new ID.
 One IndexedDB transaction updates the images; failed data persistence restores
-previous associations, localStorage draft/resource values and in-memory state.
+previous associations, localStorage draft/resource values and in-memory state
+only while those writes still belong to the failed operation. Newer associations
+and media referenced by another character are preserved during compensation.
 This uses compensation across stores rather than a shared transaction. The
 character/resource schemas and JSONL version are unchanged. Recovery snapshots
 remain text-only; user exports can opt into portable portraits.
@@ -177,6 +179,24 @@ The multi-character draft keeps these public keys for compatibility:
 - `mm3e-draft-metadata`
 - `mm3e-draft-character` (legacy migration only)
 - `mm3e-resource-library`
+
+Character draft writes compare the exact source loaded or last saved by this
+window before writing, including signature-cache hits. External changes or
+removals block stale saves and leave local edits available for export. Resource
+writes use the same optimistic conflict policy. This is a source guard, not an
+atomic transaction across browser windows.
+
+Character imports commit synchronously after portrait I/O. Compensation restores
+only owned durable writes whose current values still match; a rejected resource
+write cannot roll back another window's library. Replacing a selected character
+uses a complete, cloned replacement and records undo history, so optional fields
+absent from the import are not inherited from the previous sheet. Partial UI
+updates continue to use the existing merge operation. The sheet schema, rule
+engine and export formats do not change.
+
+Autosave waits for hydration, debounces populated drafts, and immediately saves
+an empty draft when the last previously loaded or created character is closed.
+A fresh or unrecoverable empty startup does not overwrite stored data.
 
 Before a release changes persisted data, startup can capture a pre-update JSONL
 snapshot. Draft loading and migration are gated until that one-time backup

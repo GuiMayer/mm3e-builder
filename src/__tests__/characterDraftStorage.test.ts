@@ -9,6 +9,7 @@ import {
   saveDraftMulti,
   captureDraftRollback,
   replaceDraftMulti,
+  clearDraftMulti,
 } from '../services/storage/characterDraftStorage';
 
 function createStorageMock() {
@@ -28,6 +29,7 @@ function createStorageMock() {
 }
 
 const storage = createStorageMock();
+const defaultSetItem = storage.setItem.getMockImplementation()!;
 Object.defineProperty(globalThis, 'localStorage', { value: storage });
 
 function createTab(id: string, name: string): CharacterTab {
@@ -52,8 +54,11 @@ function createTab(id: string, name: string): CharacterTab {
 
 describe('characterDraftStorage', () => {
   beforeEach(() => {
+    storage.setItem.mockImplementation(defaultSetItem);
     storage.clear();
+    clearDraftMulti();
     storage.setItem.mockClear();
+    storage.removeItem.mockClear();
   });
 
   it('restores durable draft keys and save cache after a later import step fails', () => {
@@ -173,6 +178,7 @@ describe('characterDraftStorage', () => {
     const oldMetadata = JSON.stringify({ version: 1, characterCount: 0, activeCharacterName: 'Old', characterNames: [], totalSize: 1, savedAt: 'old' });
     storage.setItem(characterDraftStorageKeys.draft, oldDraft);
     storage.setItem(characterDraftStorageKeys.metadata, oldMetadata);
+    loadDraftMulti();
     const baseSetItem = storage.setItem.getMockImplementation();
     storage.setItem.mockImplementation((key: string, value: string) => {
       if (key === characterDraftStorageKeys.metadata && value !== oldMetadata) {
@@ -185,5 +191,77 @@ describe('characterDraftStorage', () => {
     expect(storage.getItem(characterDraftStorageKeys.draft)).toBe(oldDraft);
     expect(storage.getItem(characterDraftStorageKeys.metadata)).toBe(oldMetadata);
     expect(getLastDraftSaveError()).toBe('draft.saveError.storageFull');
+  });
+
+  it('blocks a stale window even when its unchanged draft would hit the save cache', () => {
+    const original = [createTab('one', 'Original')];
+    expect(saveDraftMulti(original, 'one')).toBe(true);
+    const foreign = JSON.stringify({ version: 1, activeCharacterId: 'two', characters: [
+      ...original, createTab('two', 'Added in another window'),
+    ], savedAt: 'later' });
+    storage.setItem(characterDraftStorageKeys.draft, foreign);
+    storage.setItem.mockClear();
+
+    expect(saveDraftMulti(original, 'one')).toBe(false);
+    expect(getLastDraftSaveError()).toBe('draft.saveError.storageConflict');
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toBe(foreign);
+    expect(storage.setItem).not.toHaveBeenCalled();
+    expect(original[0].character.header.name).toBe('Original');
+  });
+
+  it('blocks resurrection after another window deletes its saved draft', () => {
+    const original = [createTab('one', 'Original')];
+    expect(saveDraftMulti(original, 'one')).toBe(true);
+    storage.removeItem(characterDraftStorageKeys.draft);
+    expect(saveDraftMulti(original, 'one')).toBe(false);
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toBeNull();
+    expect(getLastDraftSaveError()).toBe('draft.saveError.storageConflict');
+  });
+
+  it('allows edits after explicitly loading the current draft from another window', () => {
+    expect(saveDraftMulti([createTab('one', 'Original')], 'one')).toBe(true);
+    storage.setItem(characterDraftStorageKeys.draft, JSON.stringify({ version: 1,
+      activeCharacterId: 'two', characters: [createTab('two', 'Other window')], savedAt: 'later' }));
+    const loaded = loadDraftMulti()!;
+    loaded.tabs[0].character.header.player = 'Local edit';
+    expect(saveDraftMulti(loaded.tabs, loaded.activeId)).toBe(true);
+    expect(loadDraftMulti()?.tabs[0].character.header.player).toBe('Local edit');
+  });
+
+  it('does not roll back foreign data when the attempted save was rejected', () => {
+    const original = [createTab('one', 'Original')];
+    expect(saveDraftMulti(original, 'one')).toBe(true);
+    const rollback = captureDraftRollback();
+    storage.setItem(characterDraftStorageKeys.draft, 'foreign draft');
+    expect(replaceDraftMulti([createTab('two', 'Imported')], 'two')).toBe(false);
+    rollback();
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toBe('foreign draft');
+    expect(saveDraftMulti(original, 'one')).toBe(false);
+  });
+
+  it('refuses to roll back an owned save after another window replaces it', () => {
+    expect(saveDraftMulti([createTab('one', 'Original')], 'one')).toBe(true);
+    const rollback = captureDraftRollback();
+    expect(saveDraftMulti([createTab('two', 'Imported')], 'two')).toBe(true);
+    storage.setItem(characterDraftStorageKeys.draft, 'foreign draft');
+    storage.setItem(characterDraftStorageKeys.metadata, 'foreign metadata');
+    expect(rollback).toThrow('draft.saveError.storageConflict');
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toBe('foreign draft');
+    expect(storage.getItem(characterDraftStorageKeys.metadata)).toBe('foreign metadata');
+  });
+
+  it('preserves a newer draft if another window writes while a partial save fails', () => {
+    expect(saveDraftMulti([createTab('one', 'Original')], 'one')).toBe(true);
+    storage.setItem.mockImplementation((key, value) => {
+      if (key === characterDraftStorageKeys.metadata) {
+        defaultSetItem(characterDraftStorageKeys.draft, 'foreign draft');
+        defaultSetItem(characterDraftStorageKeys.metadata, 'foreign metadata');
+        throw new DOMException('Full', 'QuotaExceededError');
+      }
+      defaultSetItem(key, value);
+    });
+    expect(saveDraftMulti([createTab('two', 'Imported')], 'two')).toBe(false);
+    expect(storage.getItem(characterDraftStorageKeys.draft)).toBe('foreign draft');
+    expect(storage.getItem(characterDraftStorageKeys.metadata)).toBe('foreign metadata');
   });
 });

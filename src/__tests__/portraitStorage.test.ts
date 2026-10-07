@@ -1,12 +1,27 @@
 import 'fake-indexeddb/auto';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { clearPortraits, collectUnusedPortraitMedia, copyLocalPortrait, getPortrait, removeLocalPortrait, savePortrait, type PortraitMedia } from '../services/storage/portraitStorage';
+import { applyLocalPortraitBatch, clearPortraits, collectUnusedPortraitMedia, copyLocalPortrait, getPortrait, removeLocalPortrait, savePortrait, type PortraitMedia } from '../services/storage/portraitStorage';
 import { MAX_PORTRAIT_BYTES, validatePortraitFile, validatePortraitUrl, downloadPortrait } from '../services/portraits/portraitImages';
 
 const media = (text: string): PortraitMedia => ({ image: new Blob([text], { type: 'image/png' }), thumbnail: new Blob([text]), width: 20, height: 30 });
 beforeEach(async () => { await clearPortraits(); });
 
 describe('separate portrait persistence', () => {
+  it('does not overwrite a newer portrait while undoing a failed import', async () => {
+    await savePortrait(media('old'), { characterId: 'hero' });
+    const rollback = await applyLocalPortraitBatch([{ characterId: 'hero', media: media('imported') }]);
+    await savePortrait(media('newer'), { characterId: 'hero' });
+    await rollback();
+    expect(await (await getPortrait('hero'))?.image.text()).toBe('newer');
+  });
+  it('keeps imported media that another character acquired before rollback', async () => {
+    await savePortrait(media('old'), { characterId: 'hero' });
+    const rollback = await applyLocalPortraitBatch([{ characterId: 'hero', media: media('imported') }]);
+    await copyLocalPortrait('hero', 'copy');
+    await rollback();
+    expect(await (await getPortrait('hero'))?.image.text()).toBe('old');
+    expect(await (await getPortrait('copy'))?.image.text()).toBe('imported');
+  });
   it('stores binary images by stable identity without using localStorage', async () => {
     await savePortrait(media('hero'), { characterId: 'hero' });
     const loaded = await getPortrait('hero');

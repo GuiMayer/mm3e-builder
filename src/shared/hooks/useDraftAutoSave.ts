@@ -18,14 +18,16 @@ export function useDraftAutoSave() {
   const dialog = useAppDialog();
   const timerRef = useRef<number | null>(null);
   const shownSaveErrorRef = useRef<string | null>(null);
+  const hadCharactersRef = useRef(false);
 
   useEffect(() => {
     // Never replace persisted data before the startup loader has established
     // whether it was restored, migrated, or needs user recovery.
     if (!isDraftHydrated) return;
-    // Do not create an empty persisted draft before the user creates their
-    // first character. Any hydrated non-empty draft is safe to reconcile.
-    if (tabs.length === 0) return;
+    // A fresh/unrecoverable startup must not write an empty replacement.
+    // After closing the last restored/created character, persist that closure.
+    if (tabs.length) hadCharactersRef.current = true;
+    else if (!hadCharactersRef.current) return;
 
     // Capture the exact revisions included in this write. A later edit gets a
     // newer revision and cannot be marked clean by this older save.
@@ -38,8 +40,7 @@ export function useDraftAutoSave() {
       clearTimeout(timerRef.current);
     }
 
-    // Debounced save (500ms)
-    timerRef.current = window.setTimeout(() => {
+    const persist = () => {
       const success = saveDraftMulti(tabs, activeId);
 
       if (success) {
@@ -55,7 +56,10 @@ export function useDraftAutoSave() {
       }
 
       timerRef.current = null;
-    }, 500);
+    };
+    // Closing the last tab must also survive an immediate reload.
+    if (!tabs.length) persist();
+    else timerRef.current = window.setTimeout(persist, 500);
 
     return () => {
       if (timerRef.current) {

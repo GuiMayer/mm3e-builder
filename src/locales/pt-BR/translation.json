@@ -1150,6 +1150,8 @@
   "draft.saveErrorTitle": "Rascunho não salvo",
   "draft.saveError.storageFull": "O armazenamento do navegador está cheio. Libere espaço ou exporte e limpe Rascunhos antigos antes de tentar novamente.",
   "draft.saveError.writeFailed": "O navegador não conseguiu salvar este Rascunho. Suas alterações continuam marcadas como não salvas.",
+  "draft.saveError.storageConflict": "Outra janela alterou ou removeu as fichas salvas. Esta janela não as sobrescreveu. Exporte seu trabalho não salvo antes de recarregar para carregar a versão atual.",
+  "characterImport.destinationMissing": "O personagem escolhido para substituir não está mais aberto. Importe novamente e escolha um destino.",
   "draft.saveError.recoveryFailed": "O novo Rascunho não foi salvo porque o Rascunho anterior ilegível não pôde ser movido com segurança para recuperação. Exporte a cópia de recuperação e tente novamente.",
   "calculationUpdate.title": "Cálculo de pontos corrigido",
   "calculationUpdate.message": "Os custos dos recursos agora distinguem dispositivos em PP, equipamento em EP, movimento de veículos, recursos alternativos e contribuições compartilhadas. Ataques de veículos também usam a Força do veículo. Nomes, poderes, notas e vínculos salvos são preservados; recursos antigos ambíguos têm uma revisão separada, com backup e custos antes/depois.",

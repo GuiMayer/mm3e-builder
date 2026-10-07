@@ -41,9 +41,18 @@ const DraftMetadataSchema = z.object({
 export type DraftMetadataMulti = z.infer<typeof DraftMetadataSchema>;
 
 let lastSavedSignature = '';
-type DraftSaveError = 'draft.saveError.storageFull' | 'draft.saveError.writeFailed' | 'draft.saveError.recoveryFailed';
+let lastSavedSource: string | null | undefined;
+type DraftSaveError = 'draft.saveError.storageFull' | 'draft.saveError.writeFailed' | 'draft.saveError.recoveryFailed' | 'draft.saveError.storageConflict';
 let lastDraftSaveError: DraftSaveError | null = null;
 let draftNeedsRecoveryBeforeSave = false;
+let writeRevision = 0;
+const ownedWrites = new Map<string, { revision: number; value: string | null }>();
+
+function writeDraftValue(key: string, value: string | null): void {
+  if (value === null) localStorage.removeItem(key);
+  else localStorage.setItem(key, value);
+  ownedWrites.set(key, { revision: ++writeRevision, value });
+}
 
 function quarantineUnreadableMultiDraft(): boolean {
   if (!draftNeedsRecoveryBeforeSave) return true;
@@ -65,17 +74,18 @@ function quarantineUnreadableMultiDraft(): boolean {
 
   try {
     // Move instead of copy to avoid temporarily doubling storage usage.
-    localStorage.removeItem(DRAFT_KEY);
-    localStorage.setItem(DRAFT_RECOVERY_KEY, stored);
+    writeDraftValue(DRAFT_KEY, null);
+    writeDraftValue(DRAFT_RECOVERY_KEY, stored);
     if (localStorage.getItem(DRAFT_RECOVERY_KEY) !== stored) {
       throw new Error('Recovery verification failed.');
     }
     draftNeedsRecoveryBeforeSave = false;
+    lastSavedSource = null;
     return true;
   } catch (error) {
     console.error('[saveDraftMulti] Could not preserve unreadable draft:', error);
     try {
-      localStorage.setItem(DRAFT_KEY, stored);
+      writeDraftValue(DRAFT_KEY, stored);
     } catch (rollbackError) {
       console.error('[saveDraftMulti] Could not restore unreadable draft:', rollbackError);
     }
@@ -124,6 +134,19 @@ export function saveDraftMulti(
   tabs: CharacterTab[],
   activeCharacterId: string | null
 ): boolean {
+  // Compare the exact bytes loaded/saved by this window, even on a cache hit.
+  // Another window's edits or removals must never be replaced by a stale snapshot.
+  try {
+    const source = localStorage.getItem(DRAFT_KEY);
+    if (lastSavedSource !== undefined && source !== lastSavedSource) {
+      lastDraftSaveError = 'draft.saveError.storageConflict';
+      return false;
+    }
+    lastSavedSource = source;
+  } catch {
+    lastDraftSaveError = 'draft.saveError.writeFailed';
+    return false;
+  }
   if (!quarantineUnreadableMultiDraft()) {
     lastDraftSaveError = 'draft.saveError.recoveryFailed';
     return false;
@@ -131,8 +154,8 @@ export function saveDraftMulti(
   const signature = createDraftSignature(tabs, activeCharacterId);
   if (signature === lastSavedSignature) {
     try {
-      localStorage.removeItem(DRAFT_BACKUP_KEY);
-      localStorage.removeItem(LEGACY_DRAFT_BACKUP_KEY);
+      writeDraftValue(DRAFT_BACKUP_KEY, null);
+      writeDraftValue(LEGACY_DRAFT_BACKUP_KEY, null);
     } catch (cleanupError) {
       console.warn('[saveDraftMulti] Could not remove obsolete draft backups:', cleanupError);
     }
@@ -143,9 +166,15 @@ export function saveDraftMulti(
   let previousDraft: string | null = null;
   let previousMetadata: string | null = null;
   let snapshotTaken = false;
+  let writtenDraft: string | undefined;
+  let writtenMetadata: string | undefined;
 
   try {
     previousDraft = localStorage.getItem(DRAFT_KEY);
+    if (previousDraft !== lastSavedSource) {
+      lastDraftSaveError = 'draft.saveError.storageConflict';
+      return false;
+    }
     previousMetadata = localStorage.getItem(DRAFT_METADATA_KEY);
     snapshotTaken = true;
     const draft = {
@@ -170,12 +199,16 @@ export function saveDraftMulti(
     // Earlier versions kept a second full copy of the active draft. Remove
     // those obsolete backups before writing so they cannot exhaust quota.
     // The current draft remains available for rollback until this write ends.
-    localStorage.removeItem(DRAFT_BACKUP_KEY);
-    localStorage.removeItem(LEGACY_DRAFT_BACKUP_KEY);
+    writeDraftValue(DRAFT_BACKUP_KEY, null);
+    writeDraftValue(LEGACY_DRAFT_BACKUP_KEY, null);
 
     // Update the in-memory signature only after both durable writes succeed.
-    localStorage.setItem(DRAFT_KEY, json);
-    localStorage.setItem(DRAFT_METADATA_KEY, JSON.stringify(metadata));
+    writeDraftValue(DRAFT_KEY, json);
+    writtenDraft = json;
+    const metadataJson = JSON.stringify(metadata);
+    writeDraftValue(DRAFT_METADATA_KEY, metadataJson);
+    writtenMetadata = metadataJson;
+    lastSavedSource = json;
     lastSavedSignature = signature;
     lastDraftSaveError = null;
     return true;
@@ -184,10 +217,8 @@ export function saveDraftMulti(
     // when a partial write fails, so a failed save never replaces a good one.
     try {
       if (!snapshotTaken) throw error;
-      if (previousDraft === null) localStorage.removeItem(DRAFT_KEY);
-      else localStorage.setItem(DRAFT_KEY, previousDraft);
-      if (previousMetadata === null) localStorage.removeItem(DRAFT_METADATA_KEY);
-      else localStorage.setItem(DRAFT_METADATA_KEY, previousMetadata);
+      if (writtenDraft !== undefined && localStorage.getItem(DRAFT_KEY) === writtenDraft) writeDraftValue(DRAFT_KEY, previousDraft);
+      if (writtenMetadata !== undefined && localStorage.getItem(DRAFT_METADATA_KEY) === writtenMetadata) writeDraftValue(DRAFT_METADATA_KEY, previousMetadata);
     } catch (rollbackError) {
       console.error('[saveDraftMulti] Failed to restore the previous local draft:', rollbackError);
     }
@@ -289,6 +320,9 @@ export function loadDraftMulti(): {
   activeId: string | null;
 } | null {
   const stored = localStorage.getItem(DRAFT_KEY);
+  lastSavedSource = stored;
+  lastSavedSignature = '';
+  draftNeedsRecoveryBeforeSave = false;
   if (!stored) return migrateLegacyDraft();
 
   const parsed = parseMultiCharacterDraft(stored);
@@ -319,7 +353,8 @@ export function hasStoredDraft(): boolean {
 export function preserveStoredDraftBeforeNextSave(): void {
   draftNeedsRecoveryBeforeSave = true;
   try {
-    if (localStorage.getItem(DRAFT_KEY) === null) draftNeedsRecoveryBeforeSave = false;
+    lastSavedSource = localStorage.getItem(DRAFT_KEY);
+    if (lastSavedSource === null) draftNeedsRecoveryBeforeSave = false;
   } catch {
     // Stay conservative: the later save must verify preservation first.
   }
@@ -386,6 +421,7 @@ export function clearDraftMulti(): void {
   localStorage.removeItem(LEGACY_DRAFT_RECOVERY_KEY);
   localStorage.removeItem(`${LEGACY_DRAFT_KEY}-metadata`);
   lastSavedSignature = '';
+  lastSavedSource = null;
   lastDraftSaveError = null;
   draftNeedsRecoveryBeforeSave = false;
 }
@@ -400,15 +436,22 @@ export function replaceDraftMulti(tabs: CharacterTab[], activeId: string | null)
 export function captureDraftRollback(): () => void {
   const entries = Object.values(characterDraftStorageKeys).map(key => [key, localStorage.getItem(key)] as const);
   const signature = lastSavedSignature;
+  const source = lastSavedSource;
   const saveError = lastDraftSaveError;
   const recovery = draftNeedsRecoveryBeforeSave;
+  const revision = writeRevision;
   return () => {
-    for (const [key, value] of entries) {
-      if (localStorage.getItem(key) === value) continue;
-      if (value === null) localStorage.removeItem(key);
-      else localStorage.setItem(key, value);
+    const changed = entries.filter(([key]) => (ownedWrites.get(key)?.revision ?? 0) > revision);
+    // Roll back only our writes. In particular, a rejected write owns nothing.
+    if (changed.some(([key]) => localStorage.getItem(key) !== ownedWrites.get(key)!.value)) {
+      lastDraftSaveError = 'draft.saveError.storageConflict';
+      throw new Error('draft.saveError.storageConflict');
+    }
+    for (const [key, value] of changed) {
+      if (localStorage.getItem(key) !== value) writeDraftValue(key, value);
     }
     lastSavedSignature = signature;
+    lastSavedSource = source;
     lastDraftSaveError = saveError;
     draftNeedsRecoveryBeforeSave = recovery;
   };

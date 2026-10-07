@@ -84,6 +84,8 @@ export interface CharactersStoreState {
     updates: Partial<ICharacter>,
     historyOptions?: CharacterHistoryOptions
   ) => void;
+  /** Complete replacement for a reviewed import; absent optional fields stay absent. */
+  replaceCharacter: (id: string, character: ICharacter) => boolean;
   duplicateCharacter: (id: string) => string;
   reorderTabs: (newOrder: string[]) => void;
 
@@ -248,6 +250,27 @@ export const useCharactersStore = create<CharactersStoreState>()(
             closedTabHistory: clearClosedTabHistory(),
           };
         });
+      },
+
+      replaceCharacter: (id, character) => {
+        if (!get().tabs.some(tab => tab.id === id)) return false;
+        const replacement = createDefaultCharacter(structuredClone(character));
+        set(state => {
+          const tab = state.tabs.find(candidate => candidate.id === id);
+          if (!tab || areCharactersEqual(tab.character, replacement)) return {};
+          return {
+            tabs: state.tabs.map(candidate => candidate.id === id ? {
+              ...candidate, character: replacement, label: replacement.header.name || 'Unnamed Character',
+              revision: getRevision(tab) + 1, persistedRevision: getPersistedRevision(tab),
+              isDirty: true, lastModified: Date.now(),
+            } : candidate),
+            historyByTabId: { ...state.historyByTabId, [id]: recordCharacterHistory(
+              state.historyByTabId[id] ?? createCharacterHistory(), tab.character, replacement,
+            ) },
+            closedTabHistory: clearClosedTabHistory(),
+          };
+        });
+        return true;
       },
 
       duplicateCharacter: (id) => {

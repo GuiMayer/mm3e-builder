@@ -4,7 +4,7 @@ import { sanitizeFileName } from '../../services/downloadHelper';
 import { exportWithPortraits } from '../../services/portraitBundleExport';
 import { readPortraitBundle, prepareBundlePortraits, withImportedPortraits } from '../../services/portraitBundle';
 import type { PortraitMedia } from '../../services/storage/portraitStorage';
-import { captureDraftRollback } from '../../services/storage/characterDraftStorage';
+import { commitCharacterImport } from '../../services/character-file/commitCharacterImport';
 import { useToast } from './useToast';
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +24,6 @@ import {
 import { migrateLegacyEquipmentToResources } from '../lib/resourceMigration';
 import { useAppDialog } from '../ui/appDialogContext';
 import { findResourceImportConflicts, prepareResourceImport, type ResourceImportChoice } from '../lib/resourceImport';
-import { preserveResourceImportBackup } from '../../services/storage/resourceImportBackup';
 
 export interface PendingCharacterImport {
   character: ICharacter;
@@ -57,49 +56,17 @@ export function useFileOperations() {
     setResourceConflicts(null);
   }
 
-  function persistImportedResources(incoming: IResource[], replaceExisting: boolean): boolean {
-    if (!incoming.length) return true;
-    if ((replaceExisting && !preserveResourceImportBackup()) || !useResourcesStore.getState().upsertResources(incoming, replaceExisting)) {
-      throw new I18nError('resources.error.storageWrite');
-    }
-    return true;
-  }
-
-  function openImportedCharacter(importedCharacter: ICharacter) {
-    useCharactersStore.getState().addCharacter(
-      ensureImportedCharacterIdentity(importedCharacter)
-    );
-  }
-
   async function completeCharacterImport(pending: PendingCharacterImport, tabId?: string, asCopy = false) {
     if (committingImport.current) return;
     committingImport.current = true;
     setIsImporting(true);
     try {
       const previous = useCharactersStore.getState();
-      const previousResources = useResourcesStore.getState();
-      const previousLibrary = localStorage.getItem('mm3e-resource-library');
-      const rollbackDraft = captureDraftRollback();
       const imported = ensureImportedCharacterIdentity(asCopy
         ? duplicateImportedCharacter(pending.character, previous.tabs.map(tab => tab.label))
         : pending.character);
       await withImportedPortraits(pending.portrait ? [{ characterId: imported.characterId!, media: pending.portrait }] : [], () => {
-        try {
-          persistImportedResources(pending.resources, pending.replaceExisting);
-          const store = useCharactersStore.getState();
-          if (tabId && store.getCharacterById(tabId)) { store.updateCharacter(tabId, imported); store.setActiveCharacter(tabId); }
-          else openImportedCharacter(imported);
-          const updated = useCharactersStore.getState();
-          if (!saveDraftMulti(updated.tabs, updated.activeCharacterId)) throw new I18nError('draft.error.storageWrite');
-        } catch (error) {
-          useCharactersStore.setState(previous);
-          useResourcesStore.setState(previousResources);
-          try {
-            if (previousLibrary === null) localStorage.removeItem('mm3e-resource-library');
-            else localStorage.setItem('mm3e-resource-library', previousLibrary);
-          } finally { rollbackDraft(); }
-          throw error;
-        }
+        commitCharacterImport(imported, pending.resources, pending.replaceExisting, tabId);
       });
       if (asCopy && !pending.portrait) await copyCharacterPortrait(pending.character, imported).catch(() => showToast(t('portrait.copyError'), 'error'));
       setPendingImport(null);

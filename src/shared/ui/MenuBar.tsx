@@ -31,6 +31,7 @@ import { downloadBlob } from '../../services/downloadHelper';
 import { exportWithPortraits } from '../../services/portraitBundleExport';
 import { readPortraitBundle, prepareBundlePortraits, withImportedPortraits } from '../../services/portraitBundle';
 import { captureDraftRollback } from '../../services/storage/characterDraftStorage';
+import { captureResourceRollback } from '../../services/storage/resourceRollback';
 import { useAppDialog } from './appDialogContext';
 import { parseDraftStorageSnapshot, restoreDraftStorageSnapshot } from '../../services/storage/draftUpdateBackup';
 
@@ -209,21 +210,20 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
       const resourceCount = t('resources.count', { count: bundle.resources.length });
       if (!await dialog.confirm({ title: t('draft.restoreTitle'), message: t('draft.restoreMessage', { characters, resources: resourceCount }), confirmLabel: t('draft.restoreAction'), danger: true })) return;
       localStorage.setItem(IMPORT_BACKUP_KEY, JSON.stringify({ exportedAt: new Date().toISOString(), draft: localStorage.getItem('mm3e-draft-characters'), resources: localStorage.getItem('mm3e-resource-library') }));
-      const previous = useCharactersStore.getState(), previousResources = useResourcesStore.getState();
-      const previousLibrary = localStorage.getItem('mm3e-resource-library');
-      const rollbackDraft = captureDraftRollback();
       await withImportedPortraits(portraits, () => {
+        const previous = useCharactersStore.getState();
+        const rollbackDraft = captureDraftRollback();
+        const resourceWrite = captureResourceRollback();
         try {
           if (!replaceResources(bundle.resources)) throw new I18nError('draft.error.storageWrite');
+          resourceWrite.markWritten();
           if (!replaceDraftMulti(bundle.tabs, bundle.activeId)) throw new I18nError('draft.error.storageWrite');
           loadTabs(bundle.tabs, bundle.activeId);
           setDraftHydrated(true);
         } catch (error) {
           useCharactersStore.setState(previous);
-          useResourcesStore.setState(previousResources);
           try {
-            if (previousLibrary === null) localStorage.removeItem('mm3e-resource-library');
-            else localStorage.setItem('mm3e-resource-library', previousLibrary);
+            resourceWrite.rollback();
           } finally { rollbackDraft(); }
           throw error;
         }
