@@ -3,6 +3,7 @@ import { SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { getPowerSources, resolvePowerUsage } from './powerUsage';
 import { traitTargetKey } from './traitTargets';
 import { enhancedAdvantage, enhancedImpervious, liftingOnly } from './enhancedTraits';
+import { affectsOnlyOthers } from './strengthContributions';
 
 export interface TraitContribution {
   target: ITraitTarget; key: string; sourceKey: string; name: string;
@@ -22,7 +23,7 @@ function calculateTraitState(character: ICharacter, resources: readonly IResourc
     warnings.push(...usage.warnings);
     if (!usage.personal) continue;
     for (const component of usage.components) {
-      if (component.effectId !== 'enhanced-trait') continue;
+      if (component.effectId !== 'enhanced-trait' || affectsOnlyOthers(component)) continue;
       const advantage = enhancedAdvantage(component);
       if (advantage) { advantages.push({ ...advantage, ranks: component.ranks, equipment: source.equipment, sourceKey: source.key }); continue; }
       if (liftingOnly(component)) continue;

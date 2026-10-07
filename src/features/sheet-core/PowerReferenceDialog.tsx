@@ -18,7 +18,7 @@ function RuleDescription({ definition, component }: { definition?: IPowerEffect 
   const context = effect ? { effect, modifierDefs: MODIFIER_DEFS } : undefined;
   const action = effect && component ? resolveEffectiveAction(effect.action, component, context) : undefined;
   const duration = effect && component ? resolveEffectiveDuration(effect.duration, component, context) : undefined;
-  const range = effect && component ? resolveEffectiveRange(effect.range, component) : undefined;
+  const range = effect && component ? resolveEffectiveRange(effect.range, component, { effect, modifierDefs: MODIFIER_DEFS }) : undefined;
   return <>
     <div className="reference-meta">
       {'baseCost' in definition ? <>

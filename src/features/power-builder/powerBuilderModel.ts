@@ -1,3 +1,4 @@
+import type { PricingStrength } from '../../shared/lib/strengthContributions';
 import type {
   ICharacterPower,
   IModifierDef,
@@ -187,7 +188,7 @@ export function getPaletteContext(
 }
 
 /** Keep pricing stable when only descriptions, palette state or drag state change. */
-export function createPowerPricingSelector(powerDefs: IPowerEffect[], modifierDefs: IModifierDef[], strength: number) {
+export function createPowerPricingSelector(powerDefs: IPowerEffect[], modifierDefs: IModifierDef[], strength: PricingStrength) {
   let previous: unknown[] = [];
   let pricing: PowerPricing | undefined;
   return (power: ICharacterPower) => {

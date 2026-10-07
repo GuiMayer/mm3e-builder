@@ -20,6 +20,7 @@ import { getEffectiveAbilityRank } from '../lib/abilityRanks';
 import { collectAbsentAbilityWarnings } from '../lib/abilityValidation';
 import { useLocalizedData } from './useLocalizedData';
 import { effectiveTraitCharacter } from '../lib/traitValues';
+import { calculateSkillCheck } from '../lib/skillCheck';
 
 /**
  * Hook that returns current character validation notices in real time.
@@ -105,14 +106,15 @@ export function usePLValidation(): CharacterValidationNotice[] {
     // Official M&M 3e rule (Hero's Handbook p.24):
     // "Your hero's total modifier with any skill cannot exceed the series power level +10."
     // Note: The book does NOT distinguish between combat and non-combat skills.
-    for (const skillEntry of character.skills) {
+    const skillEntries = [...character.skills, ...skillDefs.filter(def => !def.trainedOnly && !character.skills.some(entry => entry.skillId === def.id))
+      .map(def => ({ skillId: def.id, ranks: 0, subtype: null }))];
+    for (const skillEntry of skillEntries) {
       const def = skillDefs.find((d) => d.id === skillEntry.skillId);
       if (!def) continue;
 
-      const abilityBase = getEffectiveAbilityRank(abilities, absentAbilities, def.baseAbility);
-      const otherBonus = skillEntry.otherBonus ?? 0;
-      const totalBonusRanks = skillEntry.ranks + otherBonus;
-      const v = validateSkillCap(abilityBase, totalBonusRanks, pl);
+      const check = calculateSkillCheck(character, skillEntry, def, resources, { includeCircumstances: false });
+      const totalBonusRanks = check.ranks + check.other + (check.advantage ?? 0);
+      const v = validateSkillCap(check.ability, totalBonusRanks, pl);
 
       if (v) {
         const label = skillEntry.subtype
@@ -120,7 +122,7 @@ export function usePLValidation(): CharacterValidationNotice[] {
           : def.name;
         violations.push({
           ...v,
-          formula: `${label}: ${abilityBase} + ${skillEntry.ranks} + ${otherBonus} = ${abilityBase + totalBonusRanks} > ${pl + 10}`,
+          formula: `${label}: ${check.ability} + ${check.ranks} + ${check.other} + ${check.advantage ?? 0} = ${check.total} > ${pl + 10}`,
         });
       }
     }

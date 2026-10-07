@@ -1,3 +1,4 @@
+import type { PricingStrength } from '../shared/lib/strengthContributions';
 import { circumstanceBonus, effectiveTraitCharacter, resolveTraitState } from '../shared/lib/traitValues';
 import { formatComponentDetails } from './pdf/components/powerDetails';
 /**
@@ -8,7 +9,9 @@ import { formatComponentDetails } from './pdf/components/powerDetails';
 
 import ExcelJS from 'exceljs';
 import { deriveCharacterDefenses } from '../shared/lib/derivedDefenses';
-import { getPricingStrength } from '../shared/lib/pricingStrength';
+import { getPricingStrengthContext } from '../shared/lib/pricingStrength';
+import { calculateSkillCheck } from '../shared/lib/skillCheck';
+import { formatResistanceDescription } from '../shared/lib/offenseDisplay';
 import { traitTargetName } from '../shared/lib/traitLabels';
 import type {
   ICharacter,
@@ -20,7 +23,7 @@ import type {
   IResource,
 } from '../entities/types';
 import {
-  calcAlternateEffectCost,
+  calculatePowerPricing,
   calcEquipmentEPCost,
   calculateAbilitiesCost,
   calculateDefensesCost,
@@ -224,7 +227,7 @@ export async function generateExcel(
     undefined,
     resources
   );
-  buildOffenseSheet(wb, targetedProfiles, labels);
+  buildOffenseSheet(wb, targetedProfiles, labels, language);
 
   // ?? 10. NOTES SHEET ??
   if (character.notes?.trim()) {
@@ -481,10 +484,9 @@ function buildSkillsSheet(
     const row = ws.getRow(i + 2);
     let name = def ? locName(def, lang) : sk.skillId;
     if (sk.subtype) name += `: ${sk.subtype}`;
-    const abilityVal = def
-      ? getEffectiveAbilityRank(effective.abilities, effective.absentAbilities, def.baseAbility)
-      : 0;
-    const other = (sk.otherBonus ?? 0) + circumstanceBonus(char, { kind: 'skill', skillId: sk.skillId, subtype: sk.subtype });
+    const check = def ? calculateSkillCheck(effective, sk, def) : undefined;
+    const abilityVal = check?.ability ?? 0;
+    const other = (check?.other ?? sk.otherBonus ?? 0) + (check?.advantage ?? 0) + (check?.circumstance ?? circumstanceBonus(char, { kind: 'skill', skillId: sk.skillId, subtype: sk.subtype }));
 
     row.getCell(1).value = name;
     row.getCell(2).value = def ? def.baseAbility.toUpperCase() : '';
@@ -627,7 +629,7 @@ function buildPowersSheet(
     row.getCell(3).value = power.components.length > 1 ? `${power.components.length} effects` : (power.components[0]?.ranks ?? 0);
     row.getCell(4).value = formatPowerModifiers(power, gameData, lang);
     row.getCell(4).alignment = { wrapText: true };
-    row.getCell(5).value = formatAlternates(power, gameData, lang, labels, getPricingStrength(char, resources));
+    row.getCell(5).value = formatAlternates(power, gameData, lang, labels, getPricingStrengthContext(char, resources));
     row.getCell(5).alignment = { wrapText: true };
     row.getCell(6).value = notes;
     row.getCell(6).alignment = { wrapText: true };
@@ -673,7 +675,7 @@ function buildComplicationsSheet(wb: ExcelJS.Workbook, char: ICharacter, labels:
   autoWidth(ws, 20, 60);
 }
 
-function buildOffenseSheet(wb: ExcelJS.Workbook, profiles: IOffenseEntry[], labels: ExportLabels) {
+function buildOffenseSheet(wb: ExcelJS.Workbook, profiles: IOffenseEntry[], labels: ExportLabels, lang: string) {
   const ws = wb.addWorksheet(labels.sheetOffense);
 
   // Title row
@@ -708,7 +710,7 @@ function buildOffenseSheet(wb: ExcelJS.Workbook, profiles: IOffenseEntry[], labe
       const relation = profile.relationship === 'alternate' ? ' ↳' : profile.relationship === 'dynamic-alternate' ? ' ↳ Dynamic' : '';
       const notes = [
         profile.tags.join(', '),
-        profile.resistance,
+        profile.resistance ? formatResistanceDescription(profile.resistance, createPDFLabels(lang)) : undefined,
         profile.notes,
       ].filter(Boolean).join(' · ');
       row.values = [
@@ -797,7 +799,7 @@ export function buildEquipmentSheet(wb: ExcelJS.Workbook, char: ICharacter, labe
 
     char.equipment.forEach((eq) => {
       const row = ws.getRow(currentRow);
-      row.values = [eq.name, calcEquipmentEPCost(eq, gameData.powerDefs, gameData.modifierDefs, getPricingStrength(char, resources)), eq.notes];
+      row.values = [eq.name, calcEquipmentEPCost(eq, gameData.powerDefs, gameData.modifierDefs, getPricingStrengthContext(char, resources)), eq.notes];
       row.getCell(2).numFmt = '0 "EP"';
       row.getCell(1).font = { bold: true };
       row.getCell(2).alignment = { horizontal: 'center' };
@@ -924,9 +926,10 @@ function formatAlternates(
   gameData: GameDataRefs,
   lang: string,
   labels: ExportLabels,
-  strength: number
+  strength: PricingStrength
 ): string {
   if (power.alternateEffects.length === 0) return '—';
+  const pricing = calculatePowerPricing(power, gameData.powerDefs, gameData.modifierDefs, strength);
   return power.alternateEffects
       .map((alt) => {
         // v2 format: components[]
@@ -938,7 +941,7 @@ function formatAlternates(
           .filter(Boolean)
           .join(' + ');
         const name = alt.name || effectNames || '—';
-        const cost = calcAlternateEffectCost(alt, gameData.powerDefs, gameData.modifierDefs, strength);
+        const cost = pricing.alternateEffects.find(item => item.alternateEffectId === alt.id)?.total ?? 0;
         const dyn = alt.dynamic ? ` [${labels.dynamic}]` : '';
         const notesStr = alt.notes ? `\n  ${alt.notes}` : '';
         return `${name}: ${effectNames} [${cost}PP]${dyn}${notesStr}`;

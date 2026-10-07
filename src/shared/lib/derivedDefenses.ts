@@ -4,6 +4,7 @@ import { calcInitiativeBonus, calcToughnessBonus } from './mathEngine';
 import { getPowerSources, resolvePowerUsage } from './powerUsage';
 import { circumstanceBonus, effectiveTraitCharacter } from './traitValues';
 import { enhancedImpervious } from './enhancedTraits';
+import { affectsOnlyOthers } from './strengthContributions';
 
 type DefensiveCharacter = Pick<ICharacter, 'abilities' | 'absentAbilities' | 'powers' | 'advantages' | 'equipment' | 'resourceLinks'> & Partial<ICharacter>;
 
@@ -12,7 +13,7 @@ export function deriveCharacterDefenses(character: DefensiveCharacter, powerDefs
   const effective = character.defenses && character.skills ? effectiveTraitCharacter(character as ICharacter, resources) : character;
   const sources = getPowerSources(character, resources).flatMap(source => {
     const usage = resolvePowerUsage(source, character.powerUsage?.[source.key]);
-    return usage.personal ? [{ ...source, power: { ...source.power, components: usage.components } }] : [];
+    return usage.personal ? [{ ...source, power: { ...source.power, components: usage.components.filter(component => !affectsOnlyOthers(component)) } }] : [];
   });
   const equipment = sources.filter(source => source.equipment).map(source => source.power);
   const personalPowers = sources.filter(source => !source.equipment).map(source => source.power);

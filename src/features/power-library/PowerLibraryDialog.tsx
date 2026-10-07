@@ -1,3 +1,4 @@
+import type { PricingStrength } from '../../shared/lib/strengthContributions';
 import { lazy, Suspense, useDeferredValue, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Search, X } from 'lucide-react';
@@ -27,10 +28,10 @@ import './personalLibrary.css';
 import { PowerCompositionPreview } from './PowerCompositionPreview';
 
 interface Props {
-  power?: ICharacterPower; target?: PowerLibraryTarget; strength: number; costUnit: 'PP' | 'EP';
+  power?: ICharacterPower; target?: PowerLibraryTarget; strength: PricingStrength; costUnit: 'PP' | 'EP';
   onApply?: (recipe: ICharacterPower, useName: boolean) => void; onClose?: () => void;
   embedded?: boolean; onUse?: (recipe: ICharacterPower) => void; useDisabled?: boolean;
-  strengthForPower?: (recipe: ICharacterPower) => number;
+  strengthForPower?: (recipe: ICharacterPower) => PricingStrength;
 }
 const PersonalModelPicker = lazy(() => import('./PersonalModelPicker').then(module => ({ default: module.PersonalModelPicker })));
 function LibraryEnhancedTraitEditor({ component, onChange }: { component: ICharacterPowerComponent; onChange: (values: Partial<ICharacterPowerComponent>) => void }) {

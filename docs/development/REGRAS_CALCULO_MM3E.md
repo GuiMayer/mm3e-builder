@@ -13,6 +13,7 @@ Limitações verificadas estão em [Pendências](../PENDENCIAS.md).
 | Preço de componentes, modificadores, arrays, Ativação e Removível | [mathEngine.ts](../../src/shared/lib/mathEngine.ts) |
 | Resumo de PP/EP do personagem | [pointSummary.ts](../../src/shared/lib/pointSummary.ts) |
 | Graduações efetivas e Dano baseado em Força | [componentRanks.ts](../../src/shared/lib/componentRanks.ts) |
+| Força compatível com a opção do array e seus componentes | [pricingStrength.ts](../../src/shared/lib/pricingStrength.ts) |
 | Cobrança de recursos e alocação dos vínculos | [resourceCalculations.ts](../../src/shared/lib/resourceCalculations.ts) |
 | Alcance e duração efetivos | [effectParameters.ts](../../src/shared/lib/effectParameters.ts) |
 | Diagnósticos de poderes importados/editados | [semanticValidation.ts](../../src/shared/lib/semanticValidation.ts) |
@@ -96,6 +97,13 @@ contribuição podem gerar custo adicional; flaws não devolvem o preço da For�
 natural. `affectedRanks` continua limitando a incidência dos modificadores.
 Sem a opção, arquivos antigos usam somente as graduações do efeito.
 
+O contexto de compra considera a Força natural e os aprimoramentos compatíveis
+com a opção calculada. Força aprimorada em outro alternativo estático do mesmo
+array não aumenta o preço dos extras. Componentes vinculados contribuem juntos;
+o custo comprado permanece estável ao ativar, desativar ou trocar opções.
+Afeta Somente Outros e Força apenas para levantamento não aumentam a Força do
+usuário nesses cálculos.
+
 ## Vinculados, alternativos e desconto global
 
 Os componentes vinculados do efeito principal são somados. O custo dos
@@ -119,8 +127,10 @@ Removível desconta `ceil(custo / 5)` PP; Facilmente removível desconta o dobro
 O cálculo usa o custo após Ativação, incluindo os slots do array. Equipamento
 não recebe esse desconto novamente, pois sua aquisição já usa EP.
 
-A aplicação de Linked ou Alternate Effect não calcula automaticamente a
-alocação durante o jogo. Trocas, uso simultâneo em arrays dinâmicos e
+A seleção de uso permite trocar opções e distribuir graduações de arrays
+dinâmicos. A prévia da alocação inclui os extras sobre a Força natural e sobre
+os aprimoramentos de Força efetivamente alocados, comparando o consumo com o
+orçamento principal. Exceder o orçamento gera um aviso; uso simultâneo e
 restrições ficcionais permanecem sob adjudicação da mesa.
 
 ## Limites de NP e diagnósticos
@@ -132,7 +142,7 @@ restrições ficcionais permanecem sob adjudicação da mesa.
 | Esquiva e Resistência | Soma ≤ 2 × NP |
 | Aparar e Resistência | Soma ≤ 2 × NP |
 | Fortitude e Vontade | Soma ≤ 2 × NP |
-| Perícias não ofensivas | Bônus total ≤ NP + 10 |
+| Todas as perícias, incluindo Combate Corpo a Corpo e à Distância | Bônus total ≤ NP + 10 |
 
 As somas permitem compensações; não existe um teto isolado de NP para cada
 defesa. Bônus de perícia inclui habilidade, compra e outros ajustes aplicáveis.
@@ -148,6 +158,15 @@ validação estão integrados: as lacunas atuais constam em Pendências.
 ## Consultas e rolagens
 
 Dano usa CD 15 + graduação; Aflição e Enfraquecer usam CD 10 + graduação.
+Os efeitos manuais de Dano reconhecidos usam a mesma CD, preservando o texto
+original. Nulificar usa teste oposto contra a maior graduação entre o efeito
+alvo e Vontade (ou a resistência alternativa); contra o sujeito de um efeito,
+usa somente a graduação do efeito, sem CD fixa.
+
+Accurate e Inaccurate acumulam todas as aplicações, respeitando os respectivos
+escopos parciais. Perícias de combate incluem Close Attack ou Ranged Attack nos
+totais e rolagens. O aviso de limite de perícia inclui os modificadores de
+vantagens e perícias utilizáveis sem treinamento, excluindo circunstâncias.
 A consulta de dano recebe o total final da resistência: falhas de 1–5, 6–10,
 11–15 e 16+ representam um a quatro graus. A consulta não aplica condições nem
 simula recuperação. Medidas usam tabelas oficiais arredondadas e extrapolação

@@ -226,6 +226,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
     aeValidations,
     plViolation,
     pricingDiagnostics,
+    strengthForBranch,
   } = usePowerCostCalculation({
     power,
     powerDefs,
@@ -1003,7 +1004,7 @@ export function PowerBuilderOverlay({ existingPower, initialComponentId, isNewPo
                 <AltEffectCard
                   associationReviewIds={associationReviewIds}
                   character={character}
-                  strength={getCharacterStrength(character)}
+                  strength={strengthForBranch(ae.components)}
                   costUnit={costUnit}
                   key={ae.id}
                   ae={ae}

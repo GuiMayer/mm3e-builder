@@ -24,24 +24,58 @@ export interface EffectParameterResolution<T> {
 }
 
 const RANGE_STEPS: RangeType[] = ['close', 'ranged', 'perception'];
+const SPECIFIC_RANGE_CHANGES: Record<string, { effect: string; from: RangeType; to: RangeType }> = {
+  ranged: { effect: 'burrowing', from: 'personal', to: 'ranged' },
+  ranged_healing: { effect: 'healing', from: 'close', to: 'ranged' },
+  perception_healing: { effect: 'healing', from: 'ranged', to: 'perception' },
+  ranged_illusion: { effect: 'illusion', from: 'perception', to: 'ranged' },
+  ranged_immunity: { effect: 'immunity', from: 'close', to: 'ranged' },
+  ranged_luck: { effect: 'luck-control', from: 'perception', to: 'ranged' },
+  close_mind_reading: { effect: 'mind-reading', from: 'perception', to: 'close' },
+  ranged_mind_reading: { effect: 'mind-reading', from: 'perception', to: 'ranged' },
+  perception_move_object: { effect: 'move-object', from: 'ranged', to: 'perception' },
+  close_move_object: { effect: 'move-object', from: 'ranged', to: 'close' },
+  ranged_senses: { effect: 'senses', from: 'close', to: 'ranged' },
+  ranged_variable: { effect: 'variable', from: 'close', to: 'ranged' },
+  perception_variable: { effect: 'variable', from: 'ranged', to: 'perception' },
+};
 
 /** Resolve categorical range. Extended Range changes distance, not this category. */
 export function resolveEffectiveRange(
   baseRange: RangeType,
-  component: ICharacterPowerComponent
+  component: ICharacterPowerComponent,
+  context?: EffectParameterContext,
 ): EffectParameterResolution<RangeType> {
   const diagnostics: EffectParameterDiagnostic[] = [];
-  const targetsOthers = component.modifiers.some(({ modifierId }) =>
+  const modifiers = resolved(component, context).map(item => item.applied);
+  const targetsOthers = modifiers.some(({ modifierId }) =>
     modifierId === 'affects_others' || modifierId === 'attack'
   );
-  const startingRange: RangeType = baseRange === 'personal' && targetsOthers
+  let startingRange: RangeType = baseRange === 'personal' && targetsOthers
     ? 'close'
     : baseRange;
+  const remaining = modifiers.flatMap(applied => {
+    const change = SPECIFIC_RANGE_CHANGES[applied.modifierId];
+    return change && change.effect === component.effectId && applied.isPowerSpecific !== false ? [{ ...change, id: applied.modifierId }] : [];
+  });
+  const visited = new Set<RangeType>([startingRange]);
+  while (remaining.length) {
+    const applicable = remaining.filter(change => change.from === startingRange);
+    if (!applicable.length) break;
+    if (new Set(applicable.map(change => change.to)).size > 1 || visited.has(applicable[0].to)) {
+      diagnostics.push(ambiguous(applicable[0].id));
+      break;
+    }
+    startingRange = applicable[0].to;
+    visited.add(startingRange);
+    for (const change of applicable) remaining.splice(remaining.indexOf(change), 1);
+  }
+  for (const change of remaining) if (!diagnostics.some(item => item.modifierId === change.id)) diagnostics.push(ambiguous(change.id));
   const startingIndex = RANGE_STEPS.indexOf(startingRange);
-  const increasedRanks = component.modifiers
+  const increasedRanks = modifiers
     .filter(({ modifierId }) => modifierId === 'increased_range')
     .reduce((sum, modifier) => sum + Math.max(1, modifier.ranks), 0);
-  const reducedRanks = component.modifiers
+  const reducedRanks = modifiers
     .filter(({ modifierId }) => modifierId === 'reduced_range')
     .reduce((sum, modifier) => sum + Math.max(1, modifier.ranks), 0);
 

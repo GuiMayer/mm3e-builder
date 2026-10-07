@@ -3,6 +3,7 @@ import type { ICharacterPower } from '../entities/types';
 import { POWER_DEFS, MODIFIER_DEFS } from '../entities/gameDataLoaders';
 import { calculatePowerPricing } from '../shared/lib/mathEngine';
 import { getPricingStrength } from '../shared/lib/pricingStrength';
+import type { PricingStrength } from '../shared/lib/strengthContributions';
 import { getLibraryDestinationStrength, getLibraryRecipeStrength } from '../features/power-library/libraryPricing';
 import { createPersonalModel, duplicatePersonalModel, instantiatePersonalModel, parsePersonalLibrary, powerComponents, reconcileRankPolicies, updateModelComposition, prepareModelImport, searchPersonalModels, serializePersonalLibrary, PERSONAL_LIBRARY_KEY } from '../features/power-library/personalPowerModel';
 import { createDefaultCharacter } from '../entities/characterDefaults';
@@ -14,7 +15,7 @@ const power = (): ICharacterPower => ({ id: 'power', name: 'Custom power', notes
   components: [{ id: 'damage', effectId: 'damage', ranks: 6, modifiers: [{ modifierId: 'accurate', ranks: 2 }, { modifierId: 'accurate', ranks: 1 }], fieldValues: { damageBasis: 'strength-based' } },
     { id: 'immunity', effectId: 'immunity', ranks: 2, modifiers: [] }],
   alternateEffects: [{ id: 'ae', name: 'Flight', notes: 'Alternate notes', dynamic: true, components: [{ id: 'flight', effectId: 'flight', ranks: 3, modifiers: [] }] }], baseDynamic: true, activation: 'move', removable: 'removable' });
-const price = (p: ICharacterPower, strength = 0) => calculatePowerPricing(p, POWER_DEFS, MODIFIER_DEFS, strength).total;
+const price = (p: ICharacterPower, strength: PricingStrength = 0) => calculatePowerPricing(p, POWER_DEFS, MODIFIER_DEFS, strength).total;
 
 describe('Personal power model composition', () => {
   it('preserves fixed purchases and costs without altering a source sheet', () => {
@@ -96,11 +97,10 @@ describe('Personal power model composition', () => {
     character.powers = [parent];
     const recipe: ICharacterPower = { id: 'recipe', name: 'Replacement', notes: '', alternateEffects: [], components: [{ id: 'new-str', effectId: 'enhanced-trait', ranks: 4, enhancedTarget: { kind: 'ability', key: 'str' }, modifiers: [] }, { id: 'dmg', effectId: 'damage', ranks: 2, fieldValues: { damageBasis: 'strength-based' }, modifiers: [{ modifierId: 'multiattack', ranks: 1 }] }] };
     const target = { kind: 'component' as const, componentId: 'str' };
-    expect(getLibraryRecipeStrength(character, parent, recipe, target)).toBe(7);
     expect(price(recipe, getLibraryRecipeStrength(character, parent, recipe, target))).toBe(19);
     parent.components.push({ id: 'sibling', effectId: 'enhanced-trait', ranks: 2, enhancedTarget: { kind: 'ability', key: 'str' }, modifiers: [] });
     const strength = getLibraryRecipeStrength(character, parent, recipe, target);
-    expect(strength).toBe(9); expect(price(recipe, strength)).toBe(21);
+    expect(price(recipe, strength)).toBe(21);
     expect(price(applyPowerTemplate(parent, recipe, target), strength)).toBe(25);
     expect(parent.components[0].ranks).toBe(5);
   });

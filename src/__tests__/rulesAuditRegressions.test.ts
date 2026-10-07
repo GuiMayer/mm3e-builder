@@ -237,6 +237,26 @@ describe('rules audit regressions', () => {
     expect(workbook.getWorksheet('sheetEquipment')!.getCell('B3').value).toBe(15);
   });
 
+  it('exports corrected combat skill totals and opposed Nullify checks without changing the sheet', async () => {
+    const character = createDefaultCharacter({
+      skills: [{ skillId: 'ranged_combat', subtype: 'Bow', ranks: 4 }],
+      advantages: [{ advantageId: 'ranged_attack', ranks: 3 }],
+      powers: [power(component({ effectId: 'nullify', ranks: 5 }))],
+    });
+    character.abilities.dex = 2;
+    const serialized = JSON.stringify(character);
+    const labels = new Proxy({}, { get: (_, key) => key === 'abilityNames' || key === 'defenseNames' ? {} : String(key) }) as ExportLabels;
+    await generateExcel(character, labels, context, 'pt-BR');
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(await vi.mocked(downloadBlob).mock.calls.at(-1)![0].arrayBuffer());
+    expect(workbook.getWorksheet('sheetSkills')!.getCell('E2').value).toBe(9);
+    const rows = JSON.stringify(workbook.getWorksheet('sheetOffense')!.getSheetValues());
+    expect(rows).toContain('Teste oposto');
+    expect(rows).toContain('Vontade');
+    expect(rows).not.toContain('Will DC 15');
+    expect(JSON.stringify(character)).toBe(serialized);
+  });
+
   it('reuses the shared summary for text edits and invalidates it for rule inputs', () => {
     const select = createCharacterPointSummarySelector(POWER_DEFS, MODIFIER_DEFS);
     const character = characterWith(power());

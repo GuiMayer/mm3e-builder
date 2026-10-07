@@ -4,7 +4,7 @@ import { calculateCharacterPointSummary } from '../../shared/lib/pointSummary';
 import { replaceCharacterPower, replaceResourcePower, type CharacterPowerTarget } from '../../shared/lib/powerEditing';
 import type { ResourcePowerTarget } from '../../shared/lib/resourcePowers';
 import { calculatePowerPricing } from '../../shared/lib/mathEngine';
-import { getPricingStrength } from '../../shared/lib/pricingStrength';
+import { getPricingStrengthContext } from '../../shared/lib/pricingStrength';
 import { getResourceCost } from '../../shared/lib/resourceCalculations';
 
 export type BudgetEditTarget = CharacterPowerTarget | { kind: 'resource'; target: ResourcePowerTarget };
@@ -21,16 +21,16 @@ export function projectPowerBudget(character: ICharacter, resources: IResource[]
     const replacement = original && replaceResourcePower(original, target.target, draft);
     if (!original || !replacement) return null;
     projectedResources = resources.map(resource => resource.id === original.id ? replacement : resource);
-    const before = getResourceCost(original, powerDefs, modifierDefs, getPricingStrength(character, resources));
-    const after = getResourceCost(replacement, powerDefs, modifierDefs, getPricingStrength(character, resources));
+    const before = getResourceCost(original, powerDefs, modifierDefs, getPricingStrengthContext(character, resources));
+    const after = getResourceCost(replacement, powerDefs, modifierDefs, getPricingStrengthContext(character, projectedResources));
     oldCost = before.total; newCost = after.total; unit = after.unit;
   } else {
     const replacement = replaceCharacterPower(character, target, draft);
     if (!replacement) return null;
     projectedCharacter = replacement;
     const original = (target.kind === 'power' ? character.powers : character.equipment ?? []).find(power => power.id === target.powerId);
-    const pricing = calculatePowerPricing(draft, powerDefs, modifierDefs, getPricingStrength(projectedCharacter, projectedResources));
-    const previous = original && calculatePowerPricing(original, powerDefs, modifierDefs, getPricingStrength(character, resources));
+    const pricing = calculatePowerPricing(draft, powerDefs, modifierDefs, getPricingStrengthContext(projectedCharacter, projectedResources));
+    const previous = original && calculatePowerPricing(original, powerDefs, modifierDefs, getPricingStrengthContext(character, resources));
     oldCost = previous ? (unit === 'PP' ? previous.total : previous.equipmentTotal) : 0;
     newCost = unit === 'PP' ? pricing.total : pricing.equipmentTotal;
   }

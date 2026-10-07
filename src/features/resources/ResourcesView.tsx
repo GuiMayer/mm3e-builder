@@ -2,13 +2,13 @@ import { useDeferredValue, useMemo, useState } from 'react';
 import { replaceResourcePower } from '../../shared/lib/powerEditing';
 import { Archive, Copy, Edit3, Plus, Search, Trash2, Wand2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { ICharacterPower, IResource, IResourceFeature, IVehicleResource, IHeadquartersResource, ResourceType } from '../../entities/types';
+import type { ICharacter, ICharacterPower, IResource, IResourceFeature, IVehicleResource, IHeadquartersResource, ResourceType } from '../../entities/types';
+import { getResourcePricingStrength } from '../../shared/lib/pricingStrength';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { useCharactersStore } from '../../store/charactersStore';
 import { useActiveCharacter } from '../../shared/hooks/useActiveCharacter';
 import { useAppDialog } from '../../shared/ui/appDialogContext';
 import { getResourceCost, getResourceCostDetails, getVehicleBaseTraits, changeVehicleSize, isDeviceResource } from '../../shared/lib/resourceCalculations';
-import { getCharacterStrength } from '../../shared/lib/componentRanks';
 import { getResourcePowerWarnings } from '../../shared/lib/resourceWarnings';
 import { needsResourceReview } from '../../shared/lib/resourceReview';
 import { Button } from '../../shared/ui/Button';
@@ -110,7 +110,8 @@ export function ResourcesView({ initialEditTarget, initialCreateType }: {
     </div>
     <div className="resources-view__results"><span role="status">{t('resources.resultCount', { count: ordered.length, total: resources.length })}</span>{hasFilters && <Button variant="ghost" size="sm" onClick={() => { setQuery(''); setTypeFilter('all'); setAcquisitionFilter('all'); }}>{t('resources.clearFilters')}</Button>}</div>
     <div className="resources-view__grid">{ordered.map((resource) => {
-      const cost = getResourceCost(resource, undefined, undefined, getCharacterStrength(character));
+      const pricingStrength = getResourcePricingStrength(character, resource, resources);
+      const cost = getResourceCost(resource, undefined, undefined, pricingStrength);
       const powers = resource.type === 'vehicle' ? resource.systems : resource.type === 'headquarters' ? resource.effects : [];
       return <article className="resource-card" key={resource.id}>
         <div className="resource-card__top"><span>{t(`resources.type.${resource.type}`)}</span><div><Tooltip content={t('resources.duplicate')}><button onClick={() => duplicate(resource.id)} aria-label={t('resources.duplicate')}><Copy size={16}/></button></Tooltip><Tooltip content={t('resources.editInLibrary')}><button onClick={() => setEditing({ resource, isNew: false })} aria-label={t('common.edit')}><Edit3 size={16}/></button></Tooltip><button onClick={() => void remove(resource)} aria-label={t('common.delete')}><Trash2 size={16}/></button></div></div>
@@ -127,19 +128,20 @@ export function ResourcesView({ initialEditTarget, initialCreateType }: {
           if (current?.type === 'headquarters') useResourcesStore.getState().updateResource({ ...current, effectSettings: { ...current.effectSettings, [power.id]: { ...current.effectSettings?.[power.id], kind: current.effectSettings?.[power.id]?.kind ?? 'effect', target: event.target.value as 'resource' | 'occupants' | 'both' } } });
         }}>{['resource', 'occupants', 'both'].map((target) => <option key={target} value={target}>{t(`resources.hq.target.${target}`)}</option>)}</select></label>{getResourcePowerWarnings(resource, power, character).map((warning) => <p className="resource-warning" key={warning.key}>{t(warning.key, warning.values)}</p>)}</>}</div>)}</>
           : <ResourcePowerSummary power={resource.power} onEdit={() => setPowerTarget({ resourceId: resource.id, kind: 'power', powerId: resource.power.id })}/>}
-        <details className="resource-card__cost-details"><summary>{t('resources.totalCost')}</summary><dl>{getResourceCostDetails(resource, getCharacterStrength(character)).map((part, index) => <div key={index}><dt>{part.key ? t(part.key) : part.name || t('resources.unnamedEffect')}</dt><dd>{part.cost} {cost.unit}</dd></div>)}</dl></details>
+        <details className="resource-card__cost-details"><summary>{t('resources.totalCost')}</summary><dl>{getResourceCostDetails(resource, pricingStrength).map((part, index) => <div key={index}><dt>{part.key ? t(part.key) : part.name || t('resources.unnamedEffect')}</dt><dd>{part.cost} {cost.unit}</dd></div>)}</dl></details>
         <footer>{cost.total} {cost.unit}{needsResourceReview(resource) && <span> · {t('resources.review.required')}</span>}</footer>
       </article>;
     })}{!ordered.length && <p className="resources-view__empty">{t(resources.length ? 'resources.noResults' : 'resources.libraryEmpty')}</p>}</div>
-    {editing && <ResourceEditor resource={editing.resource} isNew={editing.isNew} strength={getCharacterStrength(character)} onClose={() => setEditing(null)} onSave={save}/>}
+    {editing && <ResourceEditor resource={editing.resource} isNew={editing.isNew} character={character} resources={resources} onClose={() => setEditing(null)} onSave={save}/>}
     {builderContext && <PowerBuilderOverlay key={`${builderContext.resource.id}:${builderContext.kind}:${powerTarget?.powerId ?? 'new'}`} existingPower={currentPower && !currentPower.components.length ? { ...currentPower, components: blankPower().components } : currentPower} resourceContext={builderContext} saveError={saveError} equipmentMode={!isDeviceResource(builderContext.resource)} onSave={savePower} onClose={() => setPowerTarget(null)}/>}
     {review && <ResourceReviewDialog resources={resources} character={character} onClose={() => setReview(false)}/>}
   </div>;
 }
-function ResourceEditor({ resource, isNew, strength, onClose, onSave }: { resource: IResource; isNew: boolean; strength: number; onClose: () => void; onSave: (resource: IResource) => void }) {
+function ResourceEditor({ resource, isNew, character, resources, onClose, onSave }: { resource: IResource; isNew: boolean; character: ICharacter; resources: IResource[]; onClose: () => void; onSave: (resource: IResource) => void }) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState(resource);
   const saveError = useResourcesStore((state) => state.storageError);
+  const strength = getResourcePricingStrength(character, draft, resources);
   const cost = getResourceCost(draft, undefined, undefined, strength);
   const base = draft.type === 'vehicle' ? getVehicleBaseTraits(draft.size) : null;
   return <div className="resource-editor-dialog"><Modal isOpen compact onClose={onClose} title={t(isNew ? 'resources.createTitle' : 'resources.editTitle')}><div className="resource-editor">

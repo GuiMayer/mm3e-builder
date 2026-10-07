@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { getPricingStrength } from '../../../shared/lib/pricingStrength';
+import { getPricingStrengthContext } from '../../../shared/lib/pricingStrength';
 import { useResourcesStore } from '../../../store/resourcesStore';
 import type {
   ICharacterPower,
@@ -17,6 +17,7 @@ import { getActiveValidationRules } from '../../../shared/lib/validationRules';
 import { buildTargetedEffectProfiles } from '../../../shared/lib/offenseSummary';
 import { createPowerPricingSelector } from '../powerBuilderModel';
 import { SKILL_DEFS, MODIFIER_DEFS } from '../../../entities/gameDataLoaders';
+import { getPowerSources } from '../../../shared/lib/powerUsage';
 
 /* ================================================
    usePowerCostCalculation Hook
@@ -48,7 +49,8 @@ export function usePowerCostCalculation({
   attackBonusOverride,
 }: UsePowerCostCalculationProps) {
   const resources = useResourcesStore(state => state.resources);
-  const strength = getPricingStrength({ ...character, powers: [...character.powers.filter(item => item.id !== power.id), power] }, resources);
+  const strength = useMemo(() => getPricingStrengthContext(getPowerSources(character, resources).some(source => source.power.id === power.id)
+    ? character : { ...character, powers: [...character.powers, power] }, resources), [character, power, resources]);
   const selectPricing = useMemo(() => createPowerPricingSelector(powerDefs, modifierDefs, strength), [powerDefs, modifierDefs, strength]);
   const pricing = selectPricing(power);
   const componentCosts = pricing.components as ComponentCostResult[];
@@ -87,6 +89,7 @@ export function usePowerCostCalculation({
     aeValidations,
     plViolation,
     pricingDiagnostics: pricing.diagnostics,
+    strengthForBranch: (components: ICharacterPower['components']) => typeof strength === 'number' ? strength : strength(power, components),
   };
 }
 

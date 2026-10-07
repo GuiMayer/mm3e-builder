@@ -168,7 +168,7 @@ function validateCoreModifierApplicability(
   }
 
   const parameterDiagnostics = [
-    ...resolveEffectiveRange(effectDef.range, component).diagnostics,
+    ...resolveEffectiveRange(effectDef.range, component, { effect: effectDef, modifierDefs }).diagnostics,
     ...resolveEffectiveDuration(effectDef.duration, component, { effect: effectDef, modifierDefs }).diagnostics,
     ...resolveEffectiveAction(effectDef.action, component, { effect: effectDef, modifierDefs }).diagnostics,
   ];

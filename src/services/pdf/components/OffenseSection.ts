@@ -6,6 +6,7 @@ import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
 
 import type { IOffenseEntry } from '../../../shared/lib/offenseSummary';
 import { escapeHtml } from './utils';
+import { formatResistanceDescription } from '../../../shared/lib/offenseDisplay';
 
 export interface OffenseSectionData {
   labels?: PDFLabels;
@@ -44,7 +45,7 @@ export function renderOffenseSection(data: OffenseSectionData): string {
  */
 function renderOffenseRow(entry: IOffenseEntry, labels: PDFLabels): string {
   const notes = [
-    entry.resistance?.replace(/\b(Toughness|Fortitude|Will|Dodge|Parry|DC)\b/g, labels),
+    entry.resistance ? formatResistanceDescription(entry.resistance, labels) : undefined,
     entry.relationship === 'alternate' ? labels('Alternate Effect') : entry.relationship === 'dynamic-alternate' ? labels('Dynamic Alternate Effect') : '',
     entry.sourceType === 'resource' ? labels('Resource') : entry.sourceType === 'equipment' ? labels('Equipment') : '',
     entry.tags.map(labels).join(', '),

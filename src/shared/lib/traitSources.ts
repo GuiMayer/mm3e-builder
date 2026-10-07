@@ -4,6 +4,7 @@ import { getPowerSources, powerBranches, resolvePowerUsage, type PowerSource } f
 import { resolveTraitState } from './traitValues';
 import { traitTargetKey } from './traitTargets';
 import { calcToughnessBonus } from './mathEngine';
+import { affectsOnlyOthers } from './strengthContributions';
 
 export interface TraitSourceEntry {
   source: PowerSource;
@@ -46,7 +47,7 @@ function calculateEntries(character: ICharacter, resources: readonly IResource[]
       const active = usage.components.find(item => item.id === component.id);
       let status: TraitSourceEntry['status'] = 'active';
       if (!destination) status = component.variableCostOption && POWER_DEFS.find(effect => effect.id === 'enhanced-trait')?.variableCost?.options.some(option => option.name === component.variableCostOption) && !['Enhanced Ability', 'Enhanced Defense', 'Enhanced Skill'].includes(component.variableCostOption) ? 'manual' : 'unbound';
-      else if (!usage.personal) status = 'recipient';
+      else if (!usage.personal || affectsOnlyOthers(component)) status = 'recipient';
       else if (destination.kind === 'ability' && character.absentAbilities.includes(destination.key)) status = 'absent';
       else if (destination.kind === 'skill' && (!SKILL_DEFS.some(def => def.id === destination.skillId) || (SKILL_DEFS.find(def => def.id === destination.skillId)?.subtyped && !destination.subtype?.trim()))) status = 'invalid';
       else if (!active) {

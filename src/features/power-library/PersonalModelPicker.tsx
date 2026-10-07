@@ -1,3 +1,4 @@
+import type { PricingStrength } from '../../shared/lib/strengthContributions';
 import { useDeferredValue, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft } from 'lucide-react';
@@ -17,7 +18,7 @@ import { searchPersonalModels } from './personalPowerModel';
 import { usePersonalLibrarySync } from './usePersonalLibrarySync';
 
 export function PersonalModelDetail({ model, strength, costUnit = 'PP', strengthForPower, onUse, disabled, compatible, resultCost, footer = false }: {
-  model: PersonalPowerModel; strength: number; costUnit?: 'PP' | 'EP'; strengthForPower?: (power: ICharacterPower) => number;
+  model: PersonalPowerModel; strength: PricingStrength; costUnit?: 'PP' | 'EP'; strengthForPower?: (power: ICharacterPower) => PricingStrength;
   onUse: (power: ICharacterPower) => void; disabled?: boolean; compatible?: (power: ICharacterPower) => boolean;
   resultCost?: (power: ICharacterPower) => number;
   footer?: boolean;
@@ -45,7 +46,7 @@ export function PersonalModelDetail({ model, strength, costUnit = 'PP', strength
   </>;
 }
 
-export function PersonalModelPicker({ power, target, strength, strengthForPower, costUnit, onApply }: { power: ICharacterPower; target: PowerLibraryTarget; strength: number; strengthForPower?: (recipe: ICharacterPower) => number; costUnit: 'PP' | 'EP'; onApply: (recipe: ICharacterPower, useName: boolean) => void }) {
+export function PersonalModelPicker({ power, target, strength, strengthForPower, costUnit, onApply }: { power: ICharacterPower; target: PowerLibraryTarget; strength: PricingStrength; strengthForPower?: (recipe: ICharacterPower) => PricingStrength; costUnit: 'PP' | 'EP'; onApply: (recipe: ICharacterPower, useName: boolean) => void }) {
   const { t, i18n } = useTranslation();
   usePersonalLibrarySync();
   const models = usePersonalLibraryStore(state => state.models);

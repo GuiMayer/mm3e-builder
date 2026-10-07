@@ -18,6 +18,7 @@ import { resolveModifierDefinition } from './rulesCatalog';
 import { isStrengthBasedDamage } from './abilityRanks';
 import { getAffectedRanks, getRankBoundaries } from './componentRanks';
 import { enhancedCostOption } from './traitTargets';
+import { affectsOnlyOthers, type PricingStrength } from './strengthContributions';
 
 export type PricingDiagnosticCode =
   | 'unknown-effect'
@@ -634,7 +635,7 @@ export function calcPowerTotalCost(
   power: ICharacterPower,
   powerDefs: IPowerEffect[],
   modifierDefs: IModifierDef[],
-  strength = 0
+  strength: PricingStrength = 0
 ): number {
   return calculatePowerPricing(power, powerDefs, modifierDefs, strength).total;
 }
@@ -643,11 +644,12 @@ export function calculatePowerPricing(
   power: ICharacterPower,
   powerDefs: IPowerEffect[],
   modifierDefs: IModifierDef[],
-  strength = 0
+  strength: PricingStrength = 0
 ): PowerPricing {
-  const main = calculateComponentListPricing(power.components, powerDefs, modifierDefs, strength);
+  const branchStrength = (components: ICharacterPowerComponent[]) => typeof strength === 'number' ? strength : strength(power, components);
+  const main = calculateComponentListPricing(power.components, powerDefs, modifierDefs, branchStrength(power.components));
   const alternateEffects = power.alternateEffects.map((alternateEffect) =>
-    calculateAlternateEffectPricing(alternateEffect, powerDefs, modifierDefs, strength)
+    calculateAlternateEffectPricing(alternateEffect, powerDefs, modifierDefs, branchStrength(alternateEffect.components))
   );
   const dynamicCount = power.alternateEffects.filter(
     (alternateEffect) => alternateEffect.dynamic
@@ -699,7 +701,7 @@ export function calcEquipmentEPCost(
   item: ICharacterPower,
   powerDefs: IPowerEffect[],
   modifierDefs: IModifierDef[],
-  strength = 0
+  strength: PricingStrength = 0
 ): number {
   return calculatePowerPricing(item, powerDefs, modifierDefs, strength).equipmentTotal;
 }
@@ -725,6 +727,7 @@ export function calcToughnessBonus(
   // Protection (and any future effect with enhancesDefense === 'toughness')
   for (const power of powers) {
     for (const comp of power.components) {
+      if (affectsOnlyOthers(comp)) continue;
       const def = powerDefs.find((d) => d.id === comp.effectId);
       if (def?.enhancesDefense === 'toughness' || (comp.effectId === 'enhanced-trait' && comp.enhancedTarget?.kind === 'defense' && comp.enhancedTarget.key === 'toughness')) {
         bonus += comp.ranks;
@@ -772,6 +775,7 @@ export function calcInitiativeBonus(
   // Enhanced Initiative power effect (effectId === 'enhanced_initiative')
   for (const power of powers) {
     for (const comp of power.components) {
+      if (affectsOnlyOthers(comp)) continue;
       const def = powerDefs.find((d) => d.id === comp.effectId);
       if (def?.id === 'enhanced_initiative') {
         total += comp.ranks;

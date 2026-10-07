@@ -8,7 +8,7 @@ export function EffectReference({ effect, component, t }: { effect: IPowerEffect
   const context = { effect, modifierDefs: MODIFIER_DEFS };
   const action = component ? resolveEffectiveAction(effect.action, component, context) : undefined;
   const duration = component ? resolveEffectiveDuration(effect.duration, component, context) : undefined;
-  const range = component ? resolveEffectiveRange(effect.range, component) : undefined;
+  const range = component ? resolveEffectiveRange(effect.range, component, context) : undefined;
   return (
     <div className="build-effect-info">
       <div className="build-effect-meta">

@@ -14,6 +14,14 @@ async function translator(language: string) {
 }
 
 describe('Targeted Effects resistance display', () => {
+  it('localizes opposed Nullify checks without inventing a DC', async () => {
+    const english = await translator('en');
+    const portuguese = await translator('pt-BR');
+    const label = 'Nullify 5 vs max(effect rank, Will); subject: effect rank';
+    expect(formatResistanceLabel(label, english)).toBe('Nullify 5 · Opposed check: max(effect rank, Will) · On the subject: effect rank only');
+    expect(formatResistanceLabel(label, portuguese)).toBe('Nulificar 5 · Teste oposto: max(graduação do efeito, Vontade) · No alvo do efeito: apenas graduação do efeito');
+    expect(formatResistanceLabel('Nullify 5 vs max(effect rank, Fortitude); subject: effect rank', portuguese)).toContain('Fortitude');
+  });
   it('translates all standard resistances and DC while retaining the exact number and English labels', async () => {
     const portuguese = await translator('pt-BR');
     const english = await translator('en');

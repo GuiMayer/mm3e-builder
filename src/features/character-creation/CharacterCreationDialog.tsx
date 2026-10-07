@@ -7,7 +7,7 @@ import type { ICharacterPower } from '../../entities/types';
 import { createDefaultCharacter } from '../../entities/characterDefaults';
 import { POWER_DEFS, MODIFIER_DEFS } from '../../entities/gameDataLoaders';
 import { calculatePowerPricing } from '../../shared/lib/mathEngine';
-import { getPricingStrength } from '../../shared/lib/pricingStrength';
+import { getPricingStrengthContext } from '../../shared/lib/pricingStrength';
 import { effectiveTraitCharacter } from '../../shared/lib/traitValues';
 import { validateRequiredPowerFields } from '../../shared/lib/validation';
 import { validateCharacterSemantics } from '../../shared/lib/semanticValidation';
@@ -59,7 +59,7 @@ export function CharacterCreationDialog({onClose,onCreated}:Props) {
   function savePower(draft:ICharacterPower) {
     if(!editor||!preview)return;
     if(editor.library) { setEditor({...editor,draft,library:false});setEditorError(null);return; }
-    const strength=getPricingStrength((editorContext??preview).character,(editorContext??preview).resources);
+    const strength=getPricingStrengthContext((editorContext??preview).character,(editorContext??preview).resources);
     const price=calculatePowerPricing(draft,POWER_DEFS,MODIFIER_DEFS,strength);
     const invalid=validateCharacterSemantics(createDefaultCharacter({powers:[draft]}),{powerDefs:POWER_DEFS,modifierDefs:MODIFIER_DEFS}).some(issue=>issue.severity==='error');
     if(invalid||!draft.components.length||draft.alternateEffects.length||draft.removable&&draft.removable!=='none'||price.diagnostics.length||(editor.choice.equipment?price.equipmentTotal:price.total)>(editor.choice.budget??0)||draft.components.some(item=>!!validateRequiredPowerFields(item,POWER_DEFS.find(def=>def.id===item.effectId)))) {
@@ -107,6 +107,6 @@ export function CharacterCreationDialog({onClose,onCreated}:Props) {
         </div>
       </div>
     </div>
-    {editor&&editorContext&&<Suspense fallback={<p role="status">{t('common.loading')}</p>}>{editor.library?<PowerLibrary strength={getPricingStrength(editorContext.character,editorContext.resources)} costUnit={editor.choice.equipment?'EP':'PP'} onClose={()=>setEditor(null)} onApply={draft=>savePower(draft)}/>:<PowerBuilder templateMode draftCharacter={{...effectiveTraitCharacter(editorContext.character,editorContext.resources),powers:[],resourceLinks:[]}} existingPower={editor.draft.components.length?editor.draft:undefined} isNewPower={!editor.draft.components.length} equipmentMode={editor.choice.equipment} saveError={editorError} onClose={()=>setEditor(null)} onSave={savePower}/>}</Suspense>}
+    {editor&&editorContext&&<Suspense fallback={<p role="status">{t('common.loading')}</p>}>{editor.library?<PowerLibrary strength={getPricingStrengthContext(editorContext.character,editorContext.resources)} costUnit={editor.choice.equipment?'EP':'PP'} onClose={()=>setEditor(null)} onApply={draft=>savePower(draft)}/>:<PowerBuilder templateMode draftCharacter={{...effectiveTraitCharacter(editorContext.character,editorContext.resources),powers:[],resourceLinks:[]}} existingPower={editor.draft.components.length?editor.draft:undefined} isNewPower={!editor.draft.components.length} equipmentMode={editor.choice.equipment} saveError={editorError} onClose={()=>setEditor(null)} onSave={savePower}/>}</Suspense>}
   </>;
 }

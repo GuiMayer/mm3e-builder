@@ -1,3 +1,4 @@
+import type { PricingStrength } from '../../shared/lib/strengthContributions';
 import { lazy, Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ICharacterPower, ITraitTarget } from '../../entities/types';
@@ -26,7 +27,7 @@ export function ModelRankInputs({ model, ranks, onChange }: { model: PersonalPow
   })}</div>;
 }
 
-export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP', showCost = true }: { power: ICharacterPower; strength?: number; costUnit?: 'PP' | 'EP'; showCost?: boolean }) {
+export function PowerCompositionPreview({ power, strength = 0, costUnit = 'PP', showCost = true }: { power: ICharacterPower; strength?: PricingStrength; costUnit?: 'PP' | 'EP'; showCost?: boolean }) {
   const { t, i18n } = useTranslation();
   const skills = useLocalizedData(SKILL_DEFS);
   const advantages = useLocalizedData(ADVANTAGE_DEFS);

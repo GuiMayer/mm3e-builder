@@ -2,6 +2,10 @@ import type { IPowerEffect, IModifierDef } from '../../entities/types';
 export type PDFLabels = (label: string) => string;
 export const englishPDFLabels: PDFLabels = label => label;
 const portuguese: Record<string, string> = {
+  'Nullify': 'Nulificar',
+  'Opposed check': 'Teste oposto',
+  'effect rank': 'graduação do efeito',
+  'On the subject: effect rank only': 'No alvo do efeito: apenas graduação do efeito',
   'Trait modifiers': 'Modificadores de traços',
   'Circumstance': 'Circunstância',
   'Check only': 'Somente teste',

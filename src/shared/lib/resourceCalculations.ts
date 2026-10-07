@@ -1,3 +1,4 @@
+import type { PricingStrength } from './strengthContributions';
 import type {
   ICharacter,
   ICharacterPower,
@@ -8,7 +9,7 @@ import type {
   IPowerEffect,
   ICharacterResourceLink,
 } from '../../entities/types';
-import { getPricingStrength } from './pricingStrength';
+import { getPricingStrengthContext } from './pricingStrength';
 import { calcEquipmentEPCost, calculatePowerPricing } from './mathEngine';
 import { MODIFIER_DEFS, POWER_DEFS } from '../../entities/gameDataLoaders';
 
@@ -30,7 +31,7 @@ function powerCost(
   power: ICharacterPower,
   powerDefs: IPowerEffect[] = POWER_DEFS,
   modifierDefs: IModifierDef[] = MODIFIER_DEFS,
-  strength = 0
+  strength: PricingStrength = 0
 ): number {
   return calcEquipmentEPCost(power, powerDefs, modifierDefs, strength);
 }
@@ -70,7 +71,7 @@ export function getResourceEPCost(
   resource: IResource,
   powerDefs: IPowerEffect[] = POWER_DEFS,
   modifierDefs: IModifierDef[] = MODIFIER_DEFS,
-  strength = 0
+  strength: PricingStrength = 0
 ): number {
   if (isDeviceResource(resource)) return 0;
   if (resource.type === 'vehicle') return getVehicleResourceCost(resource, powerDefs, modifierDefs);
@@ -92,7 +93,7 @@ export function isDeviceResource(resource: IResource): resource is Extract<IReso
   return resource.type !== 'vehicle' && resource.type !== 'headquarters' && resource.costMode === 'device';
 }
 
-export function getResourceCost(resource: IResource, powerDefs: IPowerEffect[] = POWER_DEFS, modifierDefs: IModifierDef[] = MODIFIER_DEFS, strength = 0): { total: number; unit: 'PP' | 'EP' } {
+export function getResourceCost(resource: IResource, powerDefs: IPowerEffect[] = POWER_DEFS, modifierDefs: IModifierDef[] = MODIFIER_DEFS, strength: PricingStrength = 0): { total: number; unit: 'PP' | 'EP' } {
   if (isDeviceResource(resource)) return { total: calculatePowerPricing(resource.power, powerDefs, modifierDefs, strength).total, unit: 'PP' };
   return { total: getResourceEPCost(resource, powerDefs, modifierDefs, strength), unit: 'EP' };
 }
@@ -109,10 +110,11 @@ export interface LinkedResourceCharge {
 /** One authoritative allocation for UI, budgets, PDF and Excel. Shared HQs stay separate. */
 export function getLinkedResourceCharges(character: ICharacter, resources: IResource[], powerDefs: IPowerEffect[] = POWER_DEFS, modifierDefs: IModifierDef[] = MODIFIER_DEFS): LinkedResourceCharge[] {
   const library = new Map(resources.map((resource) => [resource.id, resource]));
+  const strength = getPricingStrengthContext(character, resources);
   const charges = (character.resourceLinks ?? []).flatMap((link): LinkedResourceCharge[] => {
     const resource = library.get(link.resourceId);
     if (!resource) return [];
-    const cost = getResourceCost(resource, powerDefs, modifierDefs, getPricingStrength(character, resources));
+    const cost = getResourceCost(resource, powerDefs, modifierDefs, strength);
     return [{ link, resource, ...cost, charged: link.isFree ? 0 : cost.unit === 'EP' ? link.contributionEP ?? cost.total : cost.total, alternate: false }];
   });
   const groups = new Map<string, LinkedResourceCharge[]>();
@@ -142,7 +144,7 @@ export function changeVehicleSize(resource: IVehicleResource, size: IVehicleReso
     defense: after.defense + resource.defense - before.defense };
 }
 
-export function getResourceCostDetails(resource: IResource, strength = 0): Array<{ key?: string; name?: string; cost: number }> {
+export function getResourceCostDetails(resource: IResource, strength: PricingStrength = 0): Array<{ key?: string; name?: string; cost: number }> {
   if (resource.type === 'vehicle') {
     const base = getVehicleBaseTraits(resource.size);
     return [{ key: 'resources.size', cost: base.size },

@@ -4,12 +4,12 @@ import { englishPDFLabels, type PDFLabels } from '../pdfMessages';
    List of skills with ranks and total bonus
    ================================================ */
 
-import type { AbilityKey, ICharacter } from '../../../entities/types';
+import type { ICharacter } from '../../../entities/types';
 import type { ISkillDef } from '../../../entities/types';
 import { escapeHtml, formatBonus } from './utils';
 import { getEffectiveAbilityRank } from '../../../shared/lib/abilityRanks';
 import { hasSkillContribution } from '../../../shared/lib/skillVisibility';
-import { circumstanceBonus } from '../../../shared/lib/traitValues';
+import { calculateSkillCheck } from '../../../shared/lib/skillCheck';
 
 export interface SkillsSectionData {
   labels?: PDFLabels;
@@ -25,7 +25,7 @@ export interface SkillsSectionData {
 export function renderSkillsSection(data: SkillsSectionData): string {
   const labels = data.labels ?? englishPDFLabels;
   const { character, skillDefs, skillsCost } = data;
-  const { skills, abilities, absentAbilities } = character;
+  const { skills } = character;
 
   // Filter skills with ranks > 0
   const activeSkills = data.worksheet ? [...skills, ...Object.values(skillDefs)
@@ -49,7 +49,7 @@ export function renderSkillsSection(data: SkillsSectionData): string {
   });
 
   const skillsHtml = sortedSkills
-    .map(skill => renderSkillEntry({ ...skill, otherBonus: (skill.otherBonus ?? 0) + circumstanceBonus(character, { kind: 'skill', skillId: skill.skillId, subtype: skill.subtype }) }, skillDefs, abilities, absentAbilities, labels, !!data.worksheet, !skills.includes(skill)))
+    .map(skill => renderSkillEntry(skill, skillDefs, character, labels, !!data.worksheet, !skills.includes(skill)))
     .join('');
   
   const totalRanks = skills.reduce((sum, s) => sum + s.ranks, 0);
@@ -74,8 +74,7 @@ export function renderSkillsSection(data: SkillsSectionData): string {
 function renderSkillEntry(
   skill: ICharacter['skills'][0],
   skillDefs: Record<string, ISkillDef>,
-  abilities: ICharacter['abilities'],
-  absentAbilities: AbilityKey[],
+  character: ICharacter,
   labels: PDFLabels,
   worksheet = false,
   blank = false
@@ -86,10 +85,11 @@ function renderSkillEntry(
   const linkedAbility = skillDef?.baseAbility || 'int';
 
   // Calculate ability bonus
-  const abilityBonus = getEffectiveAbilityRank(abilities, absentAbilities, linkedAbility);
-
-  const otherBonus = skill.otherBonus ?? 0;
-  const total = skill.ranks + abilityBonus + otherBonus;
+  const check = skillDef ? calculateSkillCheck(character, skill, skillDef) : undefined;
+  const abilityBonus = check?.ability ?? getEffectiveAbilityRank(character.abilities, character.absentAbilities, linkedAbility);
+  const otherBonus = (check?.other ?? skill.otherBonus ?? 0) + (check?.advantage ?? 0) + (check?.circumstance ?? 0);
+  const ranks = check?.ranks ?? skill.ranks;
+  const total = ranks + abilityBonus + otherBonus;
   
   // Add subtype if present
   const displayName = skill.subtype ? `${skillName} (${skill.subtype})` : skillName;
@@ -97,7 +97,7 @@ function renderSkillEntry(
   return `
     <div class="skill-entry${worksheet ? ' worksheet-skill' : ''}">
       <span class="skill-name">${escapeHtml(displayName)}${worksheet && skillDef?.subtyped && !skill.subtype ? '<span class="pdf-inline-blank"></span>' : ''}</span>
-      <span class="skill-ranks">${blank ? '<span class="pdf-inline-blank short"></span>' : skill.ranks}${worksheet ? '' : ` ${labels('ranks')}${otherBonus !== 0 ? `, ${otherBonus > 0 ? '+' : ''}${otherBonus} ${labels('other')}` : ''}`}</span>
+      <span class="skill-ranks">${blank ? '<span class="pdf-inline-blank short"></span>' : ranks}${worksheet ? '' : ` ${labels('ranks')}${otherBonus !== 0 ? `, ${otherBonus > 0 ? '+' : ''}${otherBonus} ${labels('other')}` : ''}`}</span>
       ${worksheet ? `<span class="skill-other">${blank ? '<span class="pdf-inline-blank short"></span>' : formatBonus(otherBonus)}</span>` : ''}
       <span class="skill-total">${blank ? '<span class="pdf-inline-blank short"></span>' : formatBonus(total)}</span>
     </div>

@@ -6,7 +6,7 @@ export function getAffectedRanks(modifier: IAppliedModifier): number | undefined
     ?? (typeof modifier.options?.affectedRanks === 'number' ? modifier.options.affectedRanks : undefined);
 }
 
-export function getCharacterStrength(character: ICharacter): number {
+export function getCharacterStrength(character: Pick<ICharacter, 'abilities' | 'absentAbilities'>): number {
   return getEffectiveAbilityRank(character.abilities, character.absentAbilities, 'str');
 }
 

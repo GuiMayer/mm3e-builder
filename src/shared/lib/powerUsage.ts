@@ -4,15 +4,18 @@ import { calculateComponentPricing, calculatePowerPricing } from './mathEngine';
 import { getResourcePowers } from './resourcePowers';
 import { isDeviceResource } from './resourceCalculations';
 import { resolveEffectiveDuration } from './effectParameters';
+import { getCharacterStrength } from './componentRanks';
+import { pricingStrengthForSources, type PricingStrength } from './strengthContributions';
 
 export type UsageCharacter = Pick<ICharacter, 'powers' | 'equipment' | 'resourceLinks' | 'powerUsage' | 'abilities' | 'absentAbilities'>;
 export interface PowerSource {
   key: string; power: ICharacterPower; name: string; equipment: boolean;
   personal: boolean; resource?: IResource;
+  pricingStrength?: PricingStrength;
 }
 export function getPowerSources(character: UsageCharacter, resources: readonly IResource[] = []): PowerSource[] {
   const linkedIds = new Set(character.resourceLinks?.map(link => link.resourceId));
-  return [
+  const sources: PowerSource[] = [
     ...character.powers.map(power => ({ key: `power:${power.id}`, power, name: power.name, equipment: false, personal: true })),
     ...(character.equipment ?? []).map(power => ({ key: `equipment:${power.id}`, power, name: power.name, equipment: true, personal: true })),
     ...resources.filter(resource => linkedIds.has(resource.id)).flatMap(resource => getResourcePowers(resource).map(({ power }) => ({
@@ -20,6 +23,15 @@ export function getPowerSources(character: UsageCharacter, resources: readonly I
       equipment: !isDeviceResource(resource), personal: resource.type !== 'vehicle' && resource.type !== 'headquarters',
     }))),
   ];
+  return sources.map(source => {
+    const resource = source.resource;
+    const context = resource?.type === 'vehicle' || resource?.type === 'headquarters'
+      ? sources.filter(item => item.resource?.id === resource.id).map(item => ({ ...item, personal: true, equipment: false }))
+      : sources;
+    const natural = resource?.type === 'vehicle' ? resource.strength : resource?.type === 'headquarters' ? 0 : getCharacterStrength(character);
+    return { ...source, pricingStrength: (power, components) => character.absentAbilities.includes('str') && source.personal ? 0
+      : pricingStrengthForSources(natural, context, power, components) };
+  });
 }
 export function isPermanentComponent(component: ICharacterPowerComponent): boolean {
   const effect = POWER_DEFS.find(def => def.id === component.effectId);
@@ -44,11 +56,12 @@ export function resolvePowerUsage(source: PowerSource, usage: IPowerUsage = {}) 
         const ranks = Math.min(component.ranks, Math.max(0, requested));
         return ranks > 0 ? [{ ...component, ranks }] : [];
       }));
+      const strength = allocationStrength(source, components);
       const cost = components.reduce((sum, component) => {
         const effect = POWER_DEFS.find(def => def.id === component.effectId);
-        return sum + (effect ? calculateComponentPricing(component, effect, MODIFIER_DEFS).total : 0);
+        return sum + (effect ? calculateComponentPricing(component, effect, MODIFIER_DEFS, strength).total : 0);
       }, 0);
-      const budget = calculatePowerPricing(source.power, POWER_DEFS, MODIFIER_DEFS).mainCost;
+      const budget = calculatePowerPricing(source.power, POWER_DEFS, MODIFIER_DEFS, source.pricingStrength).mainCost;
       if (cost > budget) warnings.push({ key: 'traits.arrayBudget', params: { name: source.name, cost, budget } });
     } else components = branch.components;
   }
@@ -59,11 +72,16 @@ export function resolvePowerUsage(source: PowerSource, usage: IPowerUsage = {}) 
 /** Allocation preview uses the same component prices and base pool as the rules resolver. */
 export function powerAllocationSummary(source: PowerSource, usage: IPowerUsage = {}) {
   const allocation = resolvePowerUsage(source, { ...usage, enabled: true });
+  const strength = allocationStrength(source, allocation.components);
   return {
     cost: allocation.components.reduce((sum, component) => {
       const effect = POWER_DEFS.find(def => def.id === component.effectId);
-      return sum + (effect ? calculateComponentPricing(component, effect, MODIFIER_DEFS).total : 0);
+      return sum + (effect ? calculateComponentPricing(component, effect, MODIFIER_DEFS, strength).total : 0);
     }, 0),
-    budget: calculatePowerPricing(source.power, POWER_DEFS, MODIFIER_DEFS).mainCost,
+    budget: calculatePowerPricing(source.power, POWER_DEFS, MODIFIER_DEFS, source.pricingStrength).mainCost,
   };
+}
+
+function allocationStrength(source: PowerSource, components: ICharacterPowerComponent[]): number {
+  return typeof source.pricingStrength === 'function' ? source.pricingStrength(source.power, components) : source.pricingStrength ?? 0;
 }

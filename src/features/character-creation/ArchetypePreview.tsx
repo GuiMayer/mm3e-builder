@@ -3,7 +3,7 @@ import type { ReturnTypeOfArchetype } from './types';
 import { effectiveTraitCharacter } from '../../shared/lib/traitValues';
 import { deriveCharacterDefenses } from '../../shared/lib/derivedDefenses';
 import { buildTargetedEffectProfiles } from '../../shared/lib/offenseSummary';
-import { getPricingStrength } from '../../shared/lib/pricingStrength';
+import { getPricingStrengthContext } from '../../shared/lib/pricingStrength';
 import { ADVANTAGE_DEFS, MODIFIER_DEFS, POWER_DEFS, SKILL_DEFS } from '../../entities/gameDataLoaders';
 import { PowerCompositionPreview } from '../power-library/PowerCompositionPreview';
 import { useLocalizedData } from '../../shared/hooks/useLocalizedData';
@@ -16,7 +16,7 @@ export function ArchetypePreview({ preview }: { preview: ReturnTypeOfArchetype }
   const effective=effectiveTraitCharacter(character,resources);
   const defenses=deriveCharacterDefenses(character,POWER_DEFS,resources);
   const attacks=buildTargetedEffectProfiles(character,POWER_DEFS,SKILL_DEFS,ADVANTAGE_DEFS,MODIFIER_DEFS,undefined,resources,false);
-  const strength=getPricingStrength(character,resources);
+  const strength=getPricingStrengthContext(character,resources);
   return <div className="creation-preview">
     <dl className="creation-costs">{[['abilities',summary.abilitiesCost],['powers',summary.powersCost],['advantages',summary.advantagesCost],['skills',summary.skillsCost],['defenses',summary.defensesCost]].map(([key,value])=><div key={key}><dt>{t(`${key}.title`)}</dt><dd>{value} PP</dd></div>)}</dl>
     <details open><summary>{t('abilities.title')}</summary><div className="creation-values">{Object.entries(character.abilities).map(([key,base])=><div key={key}><strong>{t(`abilities.${key}`)}</strong><span>{character.absentAbilities.includes(key as keyof typeof character.abilities)?'—':effective.abilities[key as keyof typeof effective.abilities]}</span><small>{t('creation.baseValue',{value:base})}</small></div>)}</div></details>

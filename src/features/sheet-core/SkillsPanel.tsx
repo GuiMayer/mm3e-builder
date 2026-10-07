@@ -200,7 +200,7 @@ function SkillsPanelComponent({ cost }: { cost: number }) {
               <div className="skill-row-actions sheet-item-actions">
               <span className="sheet-check-result">
                 <span className="skill-total">= {check.total}</span>
-                <span className="sheet-roll-slot"><RollButton warning={warning} bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : []), ...(check.circumstance ? [`${t('traits.circumstance')} ${check.circumstance}`] : [])]} /></span>
+                <span className="sheet-roll-slot"><RollButton warning={warning} bonus={check.total} label={displayName} section={t('skills.title')} breakdown={[`${t(`abilities.${def.baseAbility}`)} ${check.ability}`, `${t('common.ranks')} ${check.ranks}`, ...(check.advantage ? [`${t('advantages.title')} ${check.advantage}`] : []), ...(check.other ? [`${t('skills.otherBonus')} ${check.other}`] : []), ...(check.circumstance ? [`${t('traits.circumstance')} ${check.circumstance}`] : [])]} /></span>
               </span>
               <TraitModifiersControl key={bonusKey} target={{ kind: 'skill', skillId: skill.skillId, subtype: skill.subtype }} onAddLegacy={() => setAddedBonuses(keys => new Set([...keys, bonusKey]))} />
               <button className="skill-remove" disabled={!natural} onClick={() => removeSkill(i)} title={t('common.remove')}>
