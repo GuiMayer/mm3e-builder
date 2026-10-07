@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useLayoutEffect } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
@@ -24,6 +24,17 @@ export function NumberInput({
 }: NumberInputProps) {
   const holdIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const holdTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentValueRef = useRef(value);
+  const currentConfigRef = useRef({ onChange, min, max, step, disabled });
+
+  useLayoutEffect(() => {
+    currentValueRef.current = value;
+    currentConfigRef.current = { onChange, min, max, step, disabled };
+    if (disabled) {
+      if (holdTimeoutRef.current) clearTimeout(holdTimeoutRef.current);
+      if (holdIntervalRef.current) clearInterval(holdIntervalRef.current);
+    }
+  }, [value, onChange, min, max, step, disabled]);
 
   // Clear timers on unmount
   useEffect(() => {
@@ -40,15 +51,21 @@ export function NumberInput({
     return clamped;
   };
 
-  const handleIncrement = () => {
-    const newValue = clampValue(value + step);
-    if (newValue !== value) onChange(newValue);
+  // Repeat handlers read the latest committed props, never the initial closure.
+  const changeByStep = (direction: 1 | -1) => {
+    const config = currentConfigRef.current;
+    if (config.disabled) return;
+    const previous = currentValueRef.current;
+    let next = previous + config.step * direction;
+    if (config.min !== undefined) next = Math.max(config.min, next);
+    if (config.max !== undefined) next = Math.min(config.max, next);
+    if (next !== previous) {
+      currentValueRef.current = next;
+      config.onChange(next);
+    }
   };
-
-  const handleDecrement = () => {
-    const newValue = clampValue(value - step);
-    if (newValue !== value) onChange(newValue);
-  };
+  const handleIncrement = () => changeByStep(1);
+  const handleDecrement = () => changeByStep(-1);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const parsed = Number(e.target.value);
@@ -63,6 +80,7 @@ export function NumberInput({
   // Hold functionality: 300ms initial delay, then 100ms interval
   const startHold = (action: () => void, e?: React.TouchEvent | React.MouseEvent) => {
     if (disabled) return;
+    if (e && 'button' in e && e.button !== 0) return;
     
     // Prevent touch events from triggering mouse events (fixes double-increment on mobile)
     if (e && 'touches' in e) {
@@ -111,6 +129,9 @@ export function NumberInput({
         onMouseLeave={(e) => stopHold(e)}
         onTouchStart={(e) => startHold(handleDecrement, e)}
         onTouchEnd={(e) => stopHold(e)}
+        onTouchCancel={(e) => stopHold(e)}
+        onBlur={() => stopHold()}
+        onClick={(e) => { if (e.detail === 0) handleDecrement(); }}
         disabled={disabled || (min !== undefined && value <= min)}
         aria-label="Decrement"
       >
@@ -137,6 +158,9 @@ export function NumberInput({
         onMouseLeave={(e) => stopHold(e)}
         onTouchStart={(e) => startHold(handleIncrement, e)}
         onTouchEnd={(e) => stopHold(e)}
+        onTouchCancel={(e) => stopHold(e)}
+        onBlur={() => stopHold()}
+        onClick={(e) => { if (e.detail === 0) handleIncrement(); }}
         disabled={disabled || (max !== undefined && value >= max)}
         aria-label="Increment"
       >
