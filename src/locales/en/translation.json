@@ -1,4 +1,9 @@
 {
+  "analytics.title": "Usage statistics",
+  "analytics.allow": "Allow usage statistics",
+  "analytics.description": "We use Cloudflare Web Analytics to understand traffic volume and its distribution by country. These statistics do not use tracking cookies. No character sheet content is sent.",
+  "analytics.privacy": "Service privacy information",
+  "analytics.pending": "The change will take effect the next time the app loads.",
   "personalLibrary.destinationHelp": "Choose a current character or create a new one. The power opens in Power Builder for review before saving.",
   "personalLibrary.currentCharacters": "Current characters",
   "personalLibrary.noCurrentCharacters": "No characters are open. Create one to use this power.",

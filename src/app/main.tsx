@@ -6,6 +6,7 @@ import '../locales'
 import { applyTheme } from '../features/themes/applyTheme'
 import { useAppStore } from '../store/appStore'
 import { useCustomThemeStore } from '../features/themes/customThemeStore'
+import { startWebAnalytics } from '../features/usage-statistics/startup'
 
 applyTheme(document.documentElement, useAppStore.getState().theme, useCustomThemeStore.getState().palette);
 
@@ -14,3 +15,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>,
 )
+
+void startWebAnalytics();

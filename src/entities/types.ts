@@ -497,6 +497,7 @@ export interface IValidationRules {
 export interface IAppPreferences {
   theme: string;
   language: string;
+  analyticsEnabled: boolean;                 // Browser preference, independent of character data
   validationRules?: IValidationRules;         // Optional validation rule overrides
   useLegacyPdfExporter?: boolean;             // Use legacy PDF system (pdf-lib) instead of new HTML→PDF system
 }

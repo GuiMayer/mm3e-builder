@@ -10,6 +10,15 @@ while fixes and small convenience improvements use patch versions.
 
 ## [Unreleased]
 
+## [1.22.3] - 2026-10-13
+
+### Added
+- Add optional Cloudflare Web Analytics for aggregate traffic statistics on the production site. Put the default-on browser preference last in desktop and mobile settings, with bilingual privacy information and a notice that changes apply on the next page load. Restore opt-out before loading the script; exclude local development and keep character data and exports unchanged.
+
+### Fixed
+- Keep the sheet and usage settings independent of the optional statistics collector. Load it dynamically after UI startup and handle blocked module requests, including uBlock Origin/EasyPrivacy filters during local development.
+- Let the usage statistics explanation fill the settings menu width on desktop and mobile without expanding the menu to fit the paragraph.
+
 ## [1.22.2] - 2026-10-07
 
 ### Fixed

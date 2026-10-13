@@ -10,6 +10,7 @@ import { DEFAULT_VALIDATION_RULES } from '../shared/lib/validationRules';
    ================================================ */
 
 interface AppStoreState extends IAppPreferences {
+  setAnalyticsEnabled: (value: boolean) => void;
   setTheme: (theme: string) => void;
   setLanguage: (lang: string) => void;
   setValidationRules: (rules: Partial<IValidationRules>) => void;
@@ -23,6 +24,8 @@ export const useAppStore = create<AppStoreState>()(
       (set) => ({
         theme: 'dark-knight',
         language: 'en',
+        analyticsEnabled: true,
+        setAnalyticsEnabled: (analyticsEnabled) => set({ analyticsEnabled }),
         validationRules: DEFAULT_VALIDATION_RULES,
         useLegacyPdfExporter: false,
 

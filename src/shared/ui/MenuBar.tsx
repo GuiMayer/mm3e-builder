@@ -14,6 +14,7 @@ import { useResourceHistory } from '../hooks/useResourceHistory';
 import { useFileOperations } from '../hooks/useFileOperations';
 import { useExcelExport } from '../hooks/useExcelExport';
 import { MobileDrawer } from './MobileDrawer';
+import { UsageStatisticsSettings } from '../../features/usage-statistics/UsageStatisticsSettings';
 import { CharacterImportConflictDialog } from './CharacterImportConflictDialog';
 import { ResourceImportConflictDialog } from './ResourceImportConflictDialog';
 import { preserveResourceImportBackup } from '../../services/storage/resourceImportBackup';
@@ -498,6 +499,8 @@ export function MenuBar({ activeView, onViewChange, onExportPDF, isGeneratingPre
                 <button className="dropdown-item dropdown-item--danger" onClick={handleClearDraft}><Trash2 size={14} /> {t('draft.clearAction')}</button>
                 <span className="dropdown-hint">{t('draft.managementHint')}</span>
               </div>
+              <div className="dropdown-divider" />
+              <div className="dropdown-section"><UsageStatisticsSettings /></div>
             </div>
           )}
         </div>

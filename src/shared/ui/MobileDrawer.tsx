@@ -3,6 +3,7 @@ import { X, Eraser, Download, Upload, FileSpreadsheet, FileText, BookOpen, Shiel
 import { useTranslation } from 'react-i18next';
 import { ThemeSelector } from './ThemeSelector';
 import { LanguageSelector } from './LanguageSelector';
+import { UsageStatisticsSettings } from '../../features/usage-statistics/UsageStatisticsSettings';
 import type { IValidationRules } from '../../entities/types';
 
 interface MobileDrawerProps {
@@ -293,6 +294,8 @@ export function MobileDrawer({
             </button>
             <span className="mobile-drawer-hint">{t('draft.managementHint')}</span>
           </div>
+          <div className="mobile-drawer-divider" />
+          <div className="mobile-drawer-section"><UsageStatisticsSettings /></div>
         </div>
       </div>
 

@@ -1,0 +1,51 @@
+.analytics-settings {
+  width: 100%;
+  min-width: 0;
+  /* Fill the menu without letting the paragraph determine its intrinsic width. */
+  contain: inline-size;
+}
+.analytics-settings-title {
+  display: block;
+  color: var(--c-text-muted);
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: var(--s-xs);
+}
+.analytics-settings-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-sm);
+  min-height: 44px;
+  color: var(--c-text);
+  font-size: .8rem;
+  cursor: pointer;
+}
+.analytics-settings-control input {
+  appearance: none;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 18px;
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  background: var(--c-bg);
+  position: relative;
+  cursor: pointer;
+}
+.analytics-settings-control input::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  background: var(--c-text-muted);
+}
+.analytics-settings-control input:checked { background: var(--c-primary-muted); border-color: var(--c-primary); }
+.analytics-settings-control input:checked::before { left: 16px; background: var(--c-primary); }
+.analytics-settings-control input:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 3px; }
+.analytics-settings-hint { margin: var(--s-xs) 0; color: var(--c-text-muted); font-size: .75rem; line-height: 1.5; }
+.analytics-settings-link { color: var(--c-primary); font-size: .75rem; text-underline-offset: 3px; }

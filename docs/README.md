@@ -37,6 +37,7 @@
 | [Modificadores de traços](guides/trait-modifiers.md) | Circunstâncias, aprimoramentos, destinos, uso e compatibilidade |
 | [Rolagens](guides/dice-roller.md) | Bônus contextuais e histórico temporário |
 | [Temas](guides/custom-themes.md) | Paleta personalizada, notações de cor e persistência |
+| [Estatísticas de uso](guides/usage-statistics.md) | Cloudflare Web Analytics, preferência local e configuração de produção |
 
 ## Versões e fontes
 
